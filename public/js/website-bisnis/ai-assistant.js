@@ -53,6 +53,13 @@
     launcher.addEventListener("click", () => {
         setPanelOpen(!panel.classList.contains("is-open"));
     });
+    const consultButton = document.getElementById("webia-nav-consult");
+
+    if (consultButton) {
+        consultButton.addEventListener("click", () => {
+            setPanelOpen(true);
+        });
+    }
 
     closeButton.addEventListener("click", () => {
         setPanelOpen(false);

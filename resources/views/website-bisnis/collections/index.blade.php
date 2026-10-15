@@ -108,6 +108,7 @@
                     [
                         'name' => 'Maison Beauty',
                         'category' => 'beauty',
+                        'preview_folder' => 'beauty/beauty-satu',
                         'label' => 'Beauty',
                         'desc' => 'Website salon, barbershop, beauty clinic, skincare, dan makeup artist.',
                         'style' => 'preview-beauty',
@@ -218,8 +219,20 @@
                 ];
             @endphp
             @foreach ($templates as $template)
+                @php
+                    $previewImages = [];
+                    if (!empty($template['preview_folder'])) {
+                        $previewDirectory = public_path('images/template website/' . $template['preview_folder']);
+                        if (is_dir($previewDirectory)) {
+                            foreach (glob($previewDirectory . '/*.png') ?: [] as $previewImage) {
+                                $previewImages[] = asset('images/template website/' . $template['preview_folder'] . '/' . basename($previewImage));
+                            }
+                        }
+                    }
+                @endphp
                 <article class="webia-template-card webia-gallery-card" data-category="{{ $template['category'] }}"
-                    data-search="{{ strtolower($template['name'] . ' ' . $template['label'] . ' ' . $template['desc']) }}">
+                    data-search="{{ strtolower($template['name'] . ' ' . $template['label'] . ' ' . $template['desc']) }}"
+                    data-preview-images="{{ e(json_encode($previewImages)) }}">
                     <div class="webia-template-preview {{ $template['style'] }}">
                         <div class="webia-preview-browser">
                             <i></i><i></i><i></i><span>{{ strtolower(str_replace(' ', '', $template['name'])) }}.webia</span>
@@ -231,6 +244,9 @@
                             <div class="webia-preview-tiles"><i></i><i></i><i></i></div>
                         </div>
                         <span class="webia-preview-open">Template Preview ✦</span>
+                        <button type="button" class="webia-explore-trigger" aria-label="Explore tampilan lengkap {{ $template['name'] }}">
+                            <span>Explore Template</span><b aria-hidden="true">↗</b>
+                        </button>
                     </div>
                     <div class="webia-template-meta">
                         <span>{{ strtoupper($template['label']) }}</span>

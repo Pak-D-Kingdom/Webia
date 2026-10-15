@@ -4025,6 +4025,24 @@ html {
     height: 92px;
 }
 
+
+/* 07 — Konfirmasi Order: ungu + bintang */
+.website-process-grid article:nth-child(7) {
+    background: linear-gradient(
+        125deg,
+       #fefefe 0%
+        #fff2fb 58%,
+        #e1efff 100%
+    );
+    border-color: #e2c4ff;
+}
+
+.website-process-grid article:nth-child(7)::after {
+    background-image: url("/images/website-bisnis/aibot3.png");
+    width: 92px;
+    height: 92px;
+}
+
 /* Nomor langkah dibuat lebih berwarna */
 .website-process-grid article:nth-child(1) > span {
     background: #c8e4ff;
@@ -4053,6 +4071,11 @@ html {
 
 .website-process-grid article:nth-child(6) > span {
     background: #e7d1ff;
+    color: #8729ce;
+}
+
+.website-process-grid article:nth-child(7) > span {
+    background: #ffe6ef;
     color: #8729ce;
 }
 
@@ -4439,5 +4462,1670 @@ html {
         width: 23px;
         height: 23px;
         font-size: 12px;
+    }
+}
+
+
+/* ==========================================
+   WEBIA — TEXT READABILITY FIX
+   Teks aman dari warna dan ilustrasi gambar
+   ========================================== */
+
+.webia-category-card {
+    isolation: isolate;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Ilustrasi dibatasi di area kanan */
+.webia-category-card::after {
+    z-index: -1;
+    right: 5px;
+    bottom: 5px;
+    width: 42%;
+    height: 60%;
+    background-position: right bottom;
+    background-size: contain;
+    opacity: 1;
+}
+
+/* Lingkaran dekoratif lama dihilangkan */
+.webia-category-card::before {
+    content: none !important;
+}
+
+/* Area teks diberi lapisan solid yang menyatu
+   dengan warna kartu, bukan transparan */
+.webia-category-card .webia-category-count,
+.webia-category-card strong,
+.webia-category-card small {
+    position: relative;
+    z-index: 2;
+    width: fit-content;
+    max-width: 75%;
+    padding: 2px 5px;
+    margin-left: -5px;
+    border-radius: 4px;
+    background: #173D78;
+    color: #FFFFFF !important;
+    text-shadow: none !important;
+    -webkit-text-fill-color: #FFFFFF;
+    overflow-wrap: anywhere;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+}
+
+/* Nama kategori lebih jelas */
+.webia-category-card strong {
+    font-size: 17px;
+    font-weight: 800;
+    line-height: 1.4;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+/* Deskripsi mudah dibaca */
+.webia-category-card small {
+    font-size: 11px;
+    line-height: 1.6;
+    font-weight: 500;
+}
+
+/* Nomor kategori */
+.webia-category-card .webia-category-count {
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: .6px;
+}
+
+/* Warna lapisan teks menyesuaikan setiap kategori */
+.webia-category-card.category-fnb .webia-category-count,
+.webia-category-card.category-fnb strong,
+.webia-category-card.category-fnb small {
+    background: #123568;
+}
+
+.webia-category-card.category-beauty .webia-category-count,
+.webia-category-card.category-beauty strong,
+.webia-category-card.category-beauty small {
+    background: #48245F;
+}
+
+.webia-category-card.category-auto .webia-category-count,
+.webia-category-card.category-auto strong,
+.webia-category-card.category-auto small {
+    background: #12313E;
+}
+
+.webia-category-card.category-company .webia-category-count,
+.webia-category-card.category-company strong,
+.webia-category-card.category-company small {
+    background: #25275D;
+}
+
+.webia-category-card.category-property .webia-category-count,
+.webia-category-card.category-property strong,
+.webia-category-card.category-property small {
+    background: #663122;
+}
+
+.webia-category-card.category-education .webia-category-count,
+.webia-category-card.category-education strong,
+.webia-category-card.category-education small {
+    background: #194831;
+}
+
+.webia-category-card.category-professional .webia-category-count,
+.webia-category-card.category-professional strong,
+.webia-category-card.category-professional small {
+    background: #163251;
+}
+
+.webia-category-card.category-personal .webia-category-count,
+.webia-category-card.category-personal strong,
+.webia-category-card.category-personal small {
+    background: #402568;
+}
+
+.webia-category-card.category-retail .webia-category-count,
+.webia-category-card.category-retail strong,
+.webia-category-card.category-retail small {
+    background: #12484D;
+}
+
+.webia-category-card.category-healthcare .webia-category-count,
+.webia-category-card.category-healthcare strong,
+.webia-category-card.category-healthcare small {
+    background: #164541;
+}
+
+/* Pastikan ikon dan tombol tetap terlihat */
+.webia-category-card .webia-category-symbol,
+.webia-category-card .webia-category-arrow {
+    z-index: 3;
+}
+
+/* HP */
+@media (max-width: 600px) {
+    .webia-category-card strong {
+        font-size: 15px;
+    }
+
+    .webia-category-card small {
+        font-size: 10px;
+        max-width: 78%;
+    }
+
+    .webia-category-card::after {
+        width: 40%;
+        height: 52%;
+    }
+}
+/* =========================================================
+   WEBIA CATEGORY CARDS — PASTEL NEON / MODERN GEN Z
+   Final visual override: soft medium pastels, luminous edges,
+   clear dark text, and category illustrations on the right.
+   ========================================================= */
+.webia-category-grid {
+    gap: 16px;
+    align-items: stretch;
+}
+
+.webia-body .webia-category-card {
+    --category-glow: #a9a1ff;
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 8px;
+    min-width: 0;
+    min-height: 232px;
+    padding: 20px 18px;
+    overflow: hidden;
+    border: 1.5px solid rgb(255 255 255 / 96%);
+    border-radius: 24px;
+    color: #172554 !important;
+    background: linear-gradient(135deg, #fff 0%, #f1edff 100%);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--category-glow) 42%, white),
+                0 0 18px color-mix(in srgb, var(--category-glow) 32%, transparent),
+                0 12px 28px rgb(77 63 126 / 8%);
+    transition: transform .28s ease, box-shadow .28s ease, border-color .28s ease;
+}
+
+/* Lembutkan sisi kiri agar teks tetap terbaca tanpa kotak highlight */
+.webia-body .webia-category-card::before {
+    content: "" !important;
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(90deg,
+        rgb(255 255 255 / 48%) 0%,
+        rgb(255 255 255 / 30%) 43%,
+        rgb(255 255 255 / 0%) 76%);
+    pointer-events: none;
+}
+
+/* Ilustrasi berada di sisi kanan dan tidak menimpa area teks */
+.webia-body .webia-category-card::after {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    right: 3px;
+    bottom: 7px;
+    width: 54%;
+    height: 70%;
+    background-repeat: no-repeat;
+    background-position: center right;
+    background-size: contain;
+    opacity: .98;
+    pointer-events: none;
+    filter: drop-shadow(0 8px 10px rgb(54 49 94 / 9%));
+}
+
+.webia-body .webia-category-card > * {
+    position: relative;
+    z-index: 1;
+}
+
+.webia-body .webia-category-card .webia-category-symbol {
+    display: grid;
+    place-items: center;
+    flex: 0 0 42px;
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    margin: 0 0 3px;
+    border: 1px solid rgb(255 255 255 / 95%);
+    border-radius: 14px;
+    background: rgb(255 255 255 / 62%);
+    color: #35336f !important;
+    font-size: 19px;
+    box-shadow: 0 3px 12px rgb(75 67 128 / 7%);
+    backdrop-filter: blur(8px);
+}
+
+.webia-body .webia-category-card .webia-category-count,
+.webia-body .webia-category-card strong,
+.webia-body .webia-category-card small {
+    width: auto;
+    max-width: 65%;
+    padding: 0;
+    margin-left: 0;
+    border-radius: 0;
+    background: transparent !important;
+    color: #24336b !important;
+    text-shadow: none !important;
+    -webkit-text-fill-color: #24336b !important;
+    box-decoration-break: initial;
+    -webkit-box-decoration-break: initial;
+    overflow-wrap: break-word;
+}
+
+.webia-body .webia-category-card .webia-category-count {
+    margin-top: 1px;
+    font-size: 10px;
+    line-height: 1.4;
+    font-weight: 850;
+    letter-spacing: .8px;
+}
+
+.webia-body .webia-category-card strong {
+    margin-top: 4px;
+    font-size: 21px;
+    line-height: 1.16;
+    font-weight: 850;
+    letter-spacing: -.45px;
+    text-wrap: balance;
+}
+
+.webia-body .webia-category-card small {
+    margin-top: 2px;
+    font-size: 13px;
+    line-height: 1.55;
+    font-weight: 500;
+}
+
+.webia-body .webia-category-card .webia-category-arrow {
+    right: 12px;
+    bottom: 12px;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 39px;
+    height: 39px;
+    border: 1.5px solid rgb(255 255 255 / 96%);
+    border-radius: 50%;
+    background: linear-gradient(135deg, #fff, color-mix(in srgb, var(--category-glow) 38%, white));
+    color: #34336d !important;
+    font-size: 19px;
+    box-shadow: 0 0 14px color-mix(in srgb, var(--category-glow) 42%, transparent);
+    transition: transform .25s ease;
+}
+
+/* Distinct pastel hues with a soft neon outline for each category */
+.webia-body .webia-category-card.category-fnb {
+    --category-glow: #ffb6a5;
+    background: linear-gradient(135deg, #fff0d8 0%, #ffd9d7 54%, #ffe7f1 100%);
+    border-color: #fff;
+}
+.webia-body .webia-category-card.category-beauty {
+    --category-glow: #e6a8ff;
+    background: linear-gradient(135deg, #fce5ff 0%, #f4d8ff 55%, #ffe3f0 100%);
+    border-color: #fff;
+}
+.webia-body .webia-category-card.category-auto {
+    --category-glow: #7ee7f4;
+    background: linear-gradient(135deg, #dffaff 0%, #c9f0ff 55%, #e2e8ff 100%);
+    border-color: #fff;
+}
+.webia-body .webia-category-card.category-company {
+    --category-glow: #b7a6ff;
+    background: linear-gradient(135deg, #f0eaff 0%, #dcdcff 55%, #e9eaff 100%);
+    border-color: #fff;
+}
+.webia-body .webia-category-card.category-property {
+    --category-glow: #ffc58c;
+    background: linear-gradient(135deg, #fff0df 0%, #ffe0c9 55%, #fff0e7 100%);
+    border-color: #fff;
+}
+.webia-body .webia-category-card.category-education {
+    --category-glow: #8becc8;
+    background: linear-gradient(135deg, #e1fff1 0%, #c8f8e8 55%, #e2fff8 100%);
+    border-color: #fff;
+}
+.webia-body .webia-category-card.category-professional {
+    --category-glow: #9cc8ff;
+    background: linear-gradient(135deg, #e6f3ff 0%, #d4e8ff 55%, #e9eaff 100%);
+    border-color: #fff;
+}
+.webia-body .webia-category-card.category-personal {
+    --category-glow: #f0a9f5;
+    background: linear-gradient(135deg, #ffe7fa 0%, #f6d8ff 55%, #ffe6ef 100%);
+    border-color: #fff;
+}
+.webia-body .webia-category-card.category-retail {
+    --category-glow: #75e6ee;
+    background: linear-gradient(135deg, #e0ffff 0%, #c9f7fb 55%, #e2f2ff 100%);
+    border-color: #fff;
+}
+.webia-body .webia-category-card.category-healthcare {
+    --category-glow: #91e8c8;
+    background: linear-gradient(135deg, #e5fff1 0%, #d0f8e8 55%, #e4fff9 100%);
+    border-color: #fff;
+}
+
+@media (hover: hover) {
+    .webia-body .webia-category-card:hover {
+        transform: translateY(-5px);
+        border-color: #fff;
+        box-shadow: 0 0 0 1px var(--category-glow),
+                    0 0 25px color-mix(in srgb, var(--category-glow) 52%, transparent),
+                    0 18px 36px rgb(77 63 126 / 12%);
+    }
+    .webia-body .webia-category-card:hover .webia-category-arrow {
+        transform: translateX(3px);
+    }
+}
+
+@media (max-width: 1100px) {
+    .webia-category-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+    .webia-body .webia-category-card { min-height: 220px; padding: 17px; }
+}
+
+@media (max-width: 700px) {
+    .webia-category-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .webia-body .webia-category-card { min-height: 205px; padding: 14px; border-radius: 20px; gap: 7px; }
+    .webia-body .webia-category-card .webia-category-symbol { width: 35px; height: 35px; min-width: 35px; flex-basis: 35px; font-size: 16px; }
+    .webia-body .webia-category-card .webia-category-count { font-size: 8px; letter-spacing: .45px; }
+    .webia-body .webia-category-card strong { font-size: 17px; max-width: 72%; }
+    .webia-body .webia-category-card small { font-size: 11px; line-height: 1.45; max-width: 72%; }
+    .webia-body .webia-category-card::after { width: 51%; height: 58%; right: 1px; bottom: 6px; }
+    .webia-body .webia-category-card .webia-category-arrow { width: 31px; height: 31px; right: 8px; bottom: 8px; font-size: 15px; }
+}
+
+@media (max-width: 390px) {
+    .webia-category-grid { gap: 9px; }
+    .webia-body .webia-category-card { min-height: 190px; padding: 11px; }
+    .webia-body .webia-category-card strong { font-size: 15px; }
+    .webia-body .webia-category-card small { font-size: 10px; max-width: 75%; }
+    .webia-body .webia-category-card::after { width: 48%; height: 52%; }
+}
+
+
+/* =========================================================
+   WEBIA CATEGORY CARDS — COMPACT LANDSCAPE LAYOUT
+   Teks dan ilustrasi memiliki area masing-masing.
+   Tambahan override ini sengaja diletakkan paling akhir.
+   ========================================================= */
+.webia-body .webia-category-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 14px;
+}
+
+.webia-body .webia-category-card {
+    --category-glow: #b8a5fa;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 38%;
+    grid-template-rows: auto auto minmax(0, 1fr);
+    align-content: start;
+    align-items: start;
+    column-gap: 5px;
+    row-gap: 7px;
+    min-width: 0;
+    min-height: 178px;
+    height: 100%;
+    padding: 15px 14px 16px;
+    border: 1px solid rgb(255 255 255 / 96%);
+    border-radius: 20px;
+    color: #24336b !important;
+    box-shadow:
+        0 0 0 1px color-mix(in srgb, var(--category-glow) 48%, white),
+        0 0 15px color-mix(in srgb, var(--category-glow) 30%, transparent),
+        0 9px 24px rgb(77 63 126 / 7%);
+}
+
+.webia-body .webia-category-card::before {
+    content: "" !important;
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(100deg,
+        rgb(255 255 255 / 48%) 0%,
+        rgb(255 255 255 / 28%) 48%,
+        rgb(255 255 255 / 0%) 78%);
+    pointer-events: none;
+}
+
+/* The illustration stays in its own right-side column. */
+.webia-body .webia-category-card::after {
+    z-index: 0;
+    right: 8px;
+    bottom: 9px;
+    width: 37%;
+    height: 48%;
+    background-position: right bottom;
+    background-size: contain;
+    opacity: .98;
+    filter: drop-shadow(0 5px 7px rgb(54 49 94 / 8%));
+}
+
+/* Icon is compact and stays in the text column. */
+.webia-body .webia-category-card .webia-category-symbol {
+    grid-column: 1;
+    grid-row: 1;
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    flex-basis: 34px;
+    margin: 0 0 1px;
+    border-radius: 12px;
+    font-size: 16px;
+}
+
+/* Keep all copy inside the left text column, without highlight blocks. */
+.webia-body .webia-category-card .webia-category-count,
+.webia-body .webia-category-card strong,
+.webia-body .webia-category-card small {
+    grid-column: 1;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent !important;
+    color: #24336b !important;
+    text-shadow: none !important;
+    -webkit-text-fill-color: #24336b !important;
+    overflow-wrap: normal;
+    word-break: normal;
+    hyphens: auto;
+    box-decoration-break: initial;
+    -webkit-box-decoration-break: initial;
+}
+
+.webia-body .webia-category-card .webia-category-count {
+    grid-row: 2;
+    font-size: 9px;
+    line-height: 1.35;
+    font-weight: 850;
+    letter-spacing: .45px;
+}
+
+.webia-body .webia-category-card strong {
+    grid-row: 3;
+    align-self: start;
+    margin-top: 1px;
+    font-size: 17px;
+    line-height: 1.2;
+    font-weight: 850;
+    letter-spacing: -.25px;
+    text-wrap: pretty;
+}
+
+.webia-body .webia-category-card small {
+    grid-column: 1 / 3;
+    grid-row: 4;
+    align-self: end;
+    max-width: 62%;
+    margin-top: 2px;
+    padding-bottom: 1px;
+    font-size: 11px;
+    line-height: 1.45;
+    font-weight: 500;
+    text-wrap: pretty;
+}
+
+/* Arrow remains at the bottom-right, below the illustration edge. */
+.webia-body .webia-category-card .webia-category-arrow {
+    right: 8px;
+    bottom: 8px;
+    width: 27px;
+    height: 27px;
+    border: 1px solid rgb(255 255 255 / 96%);
+    background: rgb(255 255 255 / 78%);
+    color: #34336d !important;
+    font-size: 14px;
+    box-shadow: 0 0 12px color-mix(in srgb, var(--category-glow) 35%, transparent);
+}
+
+/* Soft-medium hues: vibrant edge, calm card surface, readable ink. */
+.webia-body .webia-category-card.category-fnb {
+    --category-glow: #ffb6a5;
+    background: linear-gradient(135deg, #fff0d8 0%, #ffd9d7 56%, #ffe7f1 100%);
+}
+.webia-body .webia-category-card.category-beauty {
+    --category-glow: #e6a8ff;
+    background: linear-gradient(135deg, #fce5ff 0%, #f4d8ff 56%, #ffe3f0 100%);
+}
+.webia-body .webia-category-card.category-auto {
+    --category-glow: #7ee7f4;
+    background: linear-gradient(135deg, #dffaff 0%, #c9f0ff 56%, #e2e8ff 100%);
+}
+.webia-body .webia-category-card.category-company {
+    --category-glow: #b7a6ff;
+    background: linear-gradient(135deg, #f0eaff 0%, #dcdcff 56%, #e9eaff 100%);
+}
+.webia-body .webia-category-card.category-property {
+    --category-glow: #ffc58c;
+    background: linear-gradient(135deg, #fff0df 0%, #ffe0c9 56%, #fff0e7 100%);
+}
+.webia-body .webia-category-card.category-education {
+    --category-glow: #8becc8;
+    background: linear-gradient(135deg, #e1fff1 0%, #c8f8e8 56%, #e2fff8 100%);
+}
+.webia-body .webia-category-card.category-professional {
+    --category-glow: #9cc8ff;
+    background: linear-gradient(135deg, #e6f3ff 0%, #d4e8ff 56%, #e9eaff 100%);
+}
+.webia-body .webia-category-card.category-personal {
+    --category-glow: #f0a9f5;
+    background: linear-gradient(135deg, #ffe7fa 0%, #f6d8ff 56%, #ffe6ef 100%);
+}
+.webia-body .webia-category-card.category-retail {
+    --category-glow: #75e6ee;
+    background: linear-gradient(135deg, #e0ffff 0%, #c9f7fb 56%, #e2f2ff 100%);
+}
+.webia-body .webia-category-card.category-healthcare {
+    --category-glow: #91e8c8;
+    background: linear-gradient(135deg, #e5fff1 0%, #d0f8e8 56%, #e4fff9 100%);
+}
+
+@media (hover: hover) {
+    .webia-body .webia-category-card:hover {
+        transform: translateY(-3px);
+        box-shadow:
+            0 0 0 1px var(--category-glow),
+            0 0 20px color-mix(in srgb, var(--category-glow) 48%, transparent),
+            0 14px 28px rgb(77 63 126 / 10%);
+    }
+    .webia-body .webia-category-card:hover .webia-category-arrow {
+        transform: translate(2px, -2px);
+    }
+}
+
+/* Medium screens: three cards per row, still landscape. */
+@media (max-width: 1100px) {
+    .webia-body .webia-category-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 13px;
+    }
+    .webia-body .webia-category-card {
+        min-height: 172px;
+        padding: 14px;
+    }
+    .webia-body .webia-category-card strong { font-size: 17px; }
+    .webia-body .webia-category-card small { font-size: 11px; max-width: 65%; }
+}
+
+/* Phones: two compact landscape cards per row. */
+@media (max-width: 700px) {
+    .webia-body .webia-category-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 11px;
+    }
+    .webia-body .webia-category-card {
+        grid-template-columns: minmax(0, 1fr) 31%;
+        min-height: 165px;
+        padding: 12px;
+        border-radius: 16px;
+        row-gap: 6px;
+    }
+    .webia-body .webia-category-card .webia-category-symbol {
+        width: 30px;
+        height: 30px;
+        min-width: 30px;
+        flex-basis: 30px;
+        font-size: 14px;
+        border-radius: 10px;
+    }
+    .webia-body .webia-category-card .webia-category-count {
+        font-size: 8px;
+        letter-spacing: .2px;
+    }
+    .webia-body .webia-category-card strong {
+        font-size: 15px;
+        line-height: 1.2;
+    }
+    .webia-body .webia-category-card small {
+        max-width: 100%;
+        padding-right: 3px;
+        font-size: 10px;
+        line-height: 1.4;
+    }
+    .webia-body .webia-category-card::after {
+        right: 4px;
+        bottom: 6px;
+        width: 34%;
+        height: 37%;
+    }
+    .webia-body .webia-category-card .webia-category-arrow {
+        right: 6px;
+        bottom: 6px;
+        width: 23px;
+        height: 23px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 390px) {
+    .webia-body .webia-category-grid { gap: 8px; }
+    .webia-body .webia-category-card {
+        min-height: 160px;
+        padding: 10px;
+    }
+    .webia-body .webia-category-card strong { font-size: 14px; }
+    .webia-body .webia-category-card small { font-size: 9px; }
+}
+
+
+
+/* =========================================================
+   WEBIA — NEON BORDER UNTUK KARTU KEUNGGULAN
+   Permukaan tetap putih, hanya garis tepi yang bercahaya.
+   Selector spesifik agar tidak kalah dengan CSS sebelumnya.
+   ========================================================= */
+
+.webia-body .website-benefits .website-benefit-grid > .website-benefit-card {
+    position: relative !important;
+    isolation: isolate;
+    overflow: visible;
+    background: #fff !important;
+    border: 1px solid rgb(255 255 255 / 96%) !important;
+    border-radius: 24px;
+    box-shadow:
+        0 0 0 1px rgb(181 148 255 / 52%),
+        0 0 10px rgb(181 148 255 / 24%),
+        0 0 22px rgb(236 143 220 / 15%),
+        0 14px 34px rgb(76 55 139 / 6%);
+    transition: transform .28s ease, box-shadow .28s ease;
+}
+
+/* Gradient ring sits behind the card content and never covers text. */
+.webia-body .website-benefits .website-benefit-grid > .website-benefit-card::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: -1.5px;
+    padding: 1.5px;
+    border-radius: inherit;
+    background: linear-gradient(
+        125deg,
+        #c7a6ff 0%,
+        #ff9ddd 34%,
+        #8ceaff 68%,
+        #b5a7ff 100%
+    );
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: .95;
+    filter: drop-shadow(0 0 3px rgb(190 144 255 / 45%));
+}
+
+/* Extra gentle glow on hover; white fill remains unchanged. */
+@media (hover: hover) {
+    .webia-body .website-benefits .website-benefit-grid > .website-benefit-card:hover {
+        transform: translateY(-4px);
+        box-shadow:
+            0 0 0 1px rgb(255 255 255 / 95%),
+            0 0 12px rgb(190 144 255 / 48%),
+            0 0 26px rgb(255 143 220 / 28%),
+            0 0 34px rgb(113 224 255 / 17%),
+            0 16px 34px rgb(76 55 139 / 8%);
+    }
+
+    .webia-body .website-benefits .website-benefit-grid > .website-benefit-card:hover::before {
+        opacity: 1;
+        filter: drop-shadow(0 0 5px rgb(190 144 255 / 68%));
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .webia-body .website-benefits .website-benefit-grid > .website-benefit-card {
+        transition: none;
+    }
+}
+
+/* ==========================================
+   WEBIA — FAQ NEON BORDER FIX
+   Selector sesuai index.blade.php
+   ========================================== */
+
+.website-faq .website-faq-list details {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+
+    /* Background tetap putih */
+    background:
+        linear-gradient(#ffffff, #ffffff) padding-box,
+        linear-gradient(
+            110deg,
+            #B99AFF 0%,
+            #FF8BD7 35%,
+            #70DFFF 70%,
+            #A99AFF 100%
+        ) border-box !important;
+
+    border: 1.5px solid transparent !important;
+    border-radius: 22px;
+
+    box-shadow:
+        0 0 0 1px rgb(185 154 255 / 18%),
+        0 0 12px rgb(185 154 255 / 12%),
+        0 6px 22px rgb(87 71 160 / 5%);
+
+    transition:
+        box-shadow .25s ease,
+        transform .25s ease;
+}
+
+/* Pertanyaan */
+.website-faq .website-faq-list details summary {
+    color: #44376F;
+    background: transparent;
+    cursor: pointer;
+}
+
+/* Hilangkan marker bawaan browser */
+.website-faq .website-faq-list details summary {
+    list-style: none;
+}
+
+.website-faq .website-faq-list details summary::-webkit-details-marker {
+    display: none;
+}
+
+/* Jawaban */
+.website-faq .website-faq-list details p {
+    color: #77749A;
+    background: transparent;
+}
+
+/* Neon lebih terlihat saat hover */
+@media (hover: hover) {
+    .website-faq .website-faq-list details:hover {
+        transform: translateY(-2px);
+
+        box-shadow:
+            0 0 0 1px rgb(185 154 255 / 35%),
+            0 0 10px rgb(185 154 255 / 30%),
+            0 0 24px rgb(255 139 215 / 18%),
+            0 8px 24px rgb(87 71 160 / 7%);
+    }
+}
+
+/* Saat FAQ dibuka */
+.website-faq .website-faq-list details[open] {
+    box-shadow:
+        0 0 0 1px rgb(185 154 255 / 35%),
+        0 0 16px rgb(185 154 255 / 22%),
+        0 0 26px rgb(112 223 255 / 12%);
+}
+
+
+/* ==========================================
+   WEBIA — FEATURED GALLERY: 4 CARDS
+   ========================================== */
+
+.webia-featured-templates .webia-featured-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
+    align-items: stretch;
+}
+
+.webia-featured-templates .webia-template-card {
+    min-width: 0;
+    height: 100%;
+}
+
+.webia-featured-templates .webia-template-preview {
+    min-height: 250px;
+}
+
+.webia-featured-templates .webia-template-meta h3 {
+    font-size: 17px;
+    line-height: 1.35;
+}
+
+.webia-featured-templates .webia-template-meta p {
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+/* Tablet */
+@media (max-width: 1100px) {
+    .webia-featured-templates .webia-featured-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+    }
+}
+
+/* HP */
+@media (max-width: 600px) {
+    .webia-featured-templates .webia-featured-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .webia-featured-templates .webia-template-preview {
+        min-height: 220px;
+    }
+}
+
+/* ==========================================
+   VELOCITY GARAGE — AUTOMOTIVE THEME
+   Charcoal + burnt orange + silver
+   ========================================== */
+
+.webia-featured-templates .preview-automotive {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    color: #ffffff;
+    background:
+        radial-gradient(
+            circle at 88% 78%,
+            rgb(255 118 46 / 22%),
+            transparent 36%
+        ),
+        linear-gradient(135deg, #25282d, #343942 65%, #17191d);
+    border: 1px solid rgb(255 118 46 / 55%);
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 4%);
+}
+
+.webia-featured-templates .preview-automotive::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    width: 160px;
+    height: 160px;
+    right: -48px;
+    bottom: -55px;
+    border: 2px solid rgb(255 118 46 / 60%);
+    border-radius: 50%;
+    box-shadow:
+        0 0 18px rgb(255 118 46 / 24%),
+        inset 0 0 18px rgb(255 118 46 / 10%);
+    pointer-events: none;
+}
+
+.webia-featured-templates .preview-automotive .webia-preview-browser {
+    background: #202328;
+    border-color: rgb(255 255 255 / 10%);
+}
+
+.webia-featured-templates .preview-automotive .webia-preview-browser span {
+    color: #c6c9ce;
+}
+
+.webia-featured-templates .preview-automotive .webia-automotive-badge {
+    position: absolute;
+    top: 54px;
+    left: 16px;
+    z-index: 2;
+    color: #ff995f;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+}
+
+.webia-featured-templates .preview-automotive .webia-preview-content {
+    position: relative;
+    z-index: 2;
+    width: 70%;
+    padding: 27px 16px 18px;
+}
+
+.webia-featured-templates .preview-automotive .webia-preview-content small {
+    color: #ff995f;
+    font-size: 9px;
+    letter-spacing: 1px;
+}
+
+.webia-featured-templates .preview-automotive .webia-preview-content b {
+    display: block;
+    margin-top: 13px;
+    color: #ffffff;
+    font-size: clamp(21px, 2vw, 30px);
+    line-height: 1.08;
+}
+
+.webia-featured-templates .preview-automotive .webia-automotive-accent {
+    display: block;
+    width: 54px;
+    height: 4px;
+    margin-top: 15px;
+    border-radius: 99px;
+    background: #ff762e;
+    box-shadow: 0 0 12px rgb(255 118 46 / 55%);
+}
+
+.webia-featured-templates .preview-automotive .webia-preview-content p {
+    color: #d1d5db;
+    font-size: 10px;
+    margin-top: 10px;
+}
+
+.webia-featured-templates .preview-automotive .webia-automotive-image {
+    position: absolute;
+    z-index: 1;
+    width: 43%;
+    max-height: 46%;
+    object-fit: contain;
+    right: 8px;
+    bottom: 34px;
+    filter: drop-shadow(0 8px 12px rgb(0 0 0 / 24%));
+}
+
+.webia-featured-templates .preview-automotive .webia-preview-open {
+    color: #ffffff;
+    background: #ff762e;
+    border: 1px solid #ff9c69;
+}
+
+.webia-featured-templates .webia-template-card-automotive .webia-template-meta > span {
+    color: #e96a2b;
+}
+
+.webia-featured-templates .webia-template-card-automotive {
+    border-color: rgb(255 118 46 / 30%);
+}
+
+@media (max-width: 600px) {
+    .webia-featured-templates .preview-automotive .webia-preview-content {
+        width: 72%;
+        padding-left: 12px;
+    }
+
+    .webia-featured-templates .preview-automotive .webia-automotive-image {
+        width: 39%;
+        right: 5px;
+    }
+}
+
+/* ==========================================================
+   WEBIA EXPLORE TEMPLATE — SCROLLABLE FULL-PAGE PREVIEW GALLERY
+   Added without changing the existing WEBIA gallery styling.
+========================================================== */
+.webia-explore-modal[hidden] { display: none !important; }
+.webia-explore-modal:not([hidden]) { display: grid; }
+.webia-explore-modal { position: fixed; inset: 0; z-index: 10050; place-items: center; padding: clamp(10px, 2.5vw, 30px); }
+.webia-explore-backdrop { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: rgb(25 20 48 / 64%); backdrop-filter: blur(12px); cursor: pointer; }
+.webia-explore-dialog { position: relative; z-index: 1; display: flex; flex-direction: column; width: min(1100px, 100%); max-height: min(92vh, 1000px); overflow: hidden; border: 1px solid rgb(255 255 255 / 85%); border-radius: 26px; background: #fbf9ff; box-shadow: 0 35px 110px rgb(20 14 49 / 35%), 0 0 0 1px rgb(190 160 255 / 25%); animation: webiaExploreIn .28s cubic-bezier(.2,.8,.2,1) both; }
+@keyframes webiaExploreIn { from { opacity: 0; transform: translateY(14px) scale(.985); } to { opacity: 1; transform: translateY(0) scale(1); } }
+.webia-explore-header { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 21px 25px; border-bottom: 1px solid rgb(167 139 250 / 18%); background: rgb(255 255 255 / 90%); }
+.webia-explore-kicker { color: #8c67c8; font-size: 9px; font-weight: 900; letter-spacing: 1.5px; }
+.webia-explore-heading h2 { margin: 5px 0 3px; color: #302650; font-size: clamp(19px, 3vw, 27px); letter-spacing: -.04em; }
+.webia-explore-heading p { margin: 0; color: #85809f; font-size: 12px; }
+.webia-explore-close { display: grid; place-items: center; flex: 0 0 42px; width: 42px; height: 42px; border: 1px solid rgb(167 139 250 / 22%); border-radius: 15px; color: #5b4b83; background: linear-gradient(135deg,#f0eaff,#fff0f8,#e8faff); font-size: 28px; line-height: 1; cursor: pointer; transition: transform .2s ease, box-shadow .2s ease; }
+.webia-explore-close:hover { transform: rotate(5deg); box-shadow: 0 0 22px rgb(192 132 252 / 28%); }
+.webia-explore-scroll { min-height: 0; overflow: auto; overscroll-behavior: contain; padding: clamp(14px, 2.5vw, 28px); scrollbar-color: #c3a8f4 #f3edff; }
+.webia-page-gallery { --explore-accent: #a78bfa; --explore-accent-2: #f3a8d5; --explore-ink: #302650; --explore-soft: #f8f4ff; display: grid; gap: 18px; max-width: 920px; margin: 0 auto; }
+.webia-capture-intro { display: flex; align-items: center; gap: 12px; padding: 3px 2px 6px; color: var(--explore-ink); }
+.webia-capture-number { display: grid; place-items: center; flex: 0 0 46px; height: 46px; border-radius: 15px; color: #fff; background: linear-gradient(135deg,var(--explore-accent),var(--explore-accent-2)); font-size: 10px; font-weight: 900; }
+.webia-capture-intro div { display: grid; gap: 3px; min-width: 0; }
+.webia-capture-intro div b { font-size: 15px; }
+.webia-capture-intro div small,.webia-capture-scroll-hint { color: #8881a2; font-size: 10px; }
+.webia-capture-scroll-hint { margin-left: auto; white-space: nowrap; }
+.webia-page-capture { position: relative; overflow: hidden; border: 1px solid rgb(167 139 250 / 20%); border-radius: 20px; background: white; box-shadow: 0 14px 38px rgb(58 43 101 / 8%); }
+.capture-browser-bar { display: flex; align-items: center; gap: 5px; padding: 10px 13px; background: #f6f4fb; border-bottom: 1px solid #ece7f7; }
+.capture-browser-bar>span { width: 7px; height: 7px; border-radius: 50%; background: #f5a9cf; }
+.capture-browser-bar>span:nth-child(2) { background: #f8ce7d; }.capture-browser-bar>span:nth-child(3) { background: #8ed9ad; }
+.capture-browser-bar small { margin-left: auto; color: #8c85a5; font-size: 8px; }
+.capture-topbar { display: flex; justify-content: space-between; gap: 10px; padding: 10px 20px; color: var(--explore-ink); background: var(--explore-soft); font-size: 9px; }
+.capture-topbar span:first-child { font-weight: 900; }.capture-topbar span:nth-child(2) { color: #8b83a2; }
+.capture-navbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 17px 22px; border-bottom: 1px solid rgb(80 60 120 / 8%); background: #fff; color: var(--explore-ink); }
+.capture-navbar strong { font-size: 15px; white-space: nowrap; }.capture-navbar strong i { margin-left: 4px; color: var(--explore-accent); font-style: normal; }
+.capture-navbar div { display: flex; justify-content: flex-end; gap: clamp(7px, 1.7vw, 20px); flex-wrap: wrap; }.capture-navbar div span { color: #7f7898; font-size: 9px; }.capture-navbar div span.is-current { color: var(--explore-accent); font-weight: 900; }.capture-navbar>b { display: none; }
+.capture-hero { display: grid; grid-template-columns: 1.1fr .9fr; align-items: center; gap: 20px; padding: clamp(24px, 5vw, 48px); background: radial-gradient(circle at 80% 25%, color-mix(in srgb,var(--explore-accent-2) 48%,white), transparent 35%), linear-gradient(125deg,var(--explore-soft),#fff 70%); }
+.capture-hero-copy>small,.capture-section-heading>small,.capture-showcase-copy>small,.capture-quote>small,.capture-cta>small { color: var(--explore-accent); font-size: 9px; font-weight: 900; letter-spacing: 1.2px; }
+.capture-hero-copy h3 { max-width: 430px; margin: 14px 0 11px; color: var(--explore-ink); font-size: clamp(27px, 4.4vw, 48px); line-height: 1.03; letter-spacing: -.055em; }
+.capture-hero-copy p,.capture-section-heading p,.capture-showcase-copy p,.capture-cta p { color: #79748f; font-size: 12px; line-height: 1.8; }
+.capture-hero-button { display: inline-flex; margin-top: 9px; padding: 11px 15px; border-radius: 10px; color: white; background: var(--explore-accent); font-size: 10px; font-weight: 850; box-shadow: 0 8px 20px color-mix(in srgb,var(--explore-accent) 25%,transparent); }
+.capture-proof { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; color: #8a829d; font-size: 8px; }
+.capture-hero-visual { position: relative; display: grid; place-items: center; min-height: 230px; overflow: hidden; border-radius: 18px; background: linear-gradient(145deg,color-mix(in srgb,var(--explore-accent) 22%,white),var(--explore-soft)); }
+.capture-hero-orb { display: grid; place-items: center; width: min(56%,170px); aspect-ratio: 1; border: 1px solid rgb(255 255 255 / 80%); border-radius: 50%; color: white; background: linear-gradient(140deg,var(--explore-accent),var(--explore-accent-2)); box-shadow: 0 20px 40px color-mix(in srgb,var(--explore-accent) 22%,transparent), inset 0 0 0 10px rgb(255 255 255 / 16%); font-size: clamp(27px,4vw,42px); font-weight: 900; }
+.capture-hero-card { position: absolute; right: 9%; bottom: 8%; display: grid; gap: 5px; width: 47%; padding: 12px; border: 1px solid rgb(255 255 255 / 85%); border-radius: 12px; background: rgb(255 255 255 / 88%); box-shadow: 0 12px 30px rgb(38 30 66 / 10%); }.capture-hero-card small { color: var(--explore-accent); font-size: 7px; font-weight: 900; }.capture-hero-card b { color: var(--explore-ink); font-size: 10px; }.capture-hero-card>span { height: 4px; width: 90%; border-radius: 5px; background: #e9e5f1; }.capture-hero-card>span:last-child { width: 65%; }
+.capture-page-label { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 11px 17px; border-top: 1px solid rgb(167 139 250 / 14%); color: #8981a0; background: #fcfbff; font-size: 9px; }.capture-page-label span { color: var(--explore-accent); font-size: 8px; font-weight: 900; letter-spacing: .8px; }
+.capture-content { padding: clamp(22px,4vw,40px); background: linear-gradient(145deg,#fff,var(--explore-soft)); }.capture-section-heading { max-width: 560px; margin: 0 auto 24px; text-align: center; }.capture-section-heading h3,.capture-showcase-copy h3 { margin: 10px 0; color: var(--explore-ink); font-size: clamp(23px,3.3vw,36px); line-height: 1.12; letter-spacing: -.045em; }.capture-service-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; }.capture-service-card { min-width: 0; padding: 17px; border: 1px solid color-mix(in srgb,var(--explore-accent) 18%,white); border-radius: 14px; background: rgb(255 255 255 / 88%); }.capture-service-card>span { color: var(--explore-accent); font-size: 9px; font-weight: 900; }.capture-service-card i { display: grid; place-items: center; width: 34px; height: 34px; margin: 13px 0; border-radius: 11px; color: var(--explore-accent); background: var(--explore-soft); font-size: 17px; font-style: normal; }.capture-service-card h4 { margin: 0 0 7px; color: var(--explore-ink); font-size: 12px; }.capture-service-card p { margin: 0; color: #89829e; font-size: 9px; line-height: 1.7; }
+.capture-showcase { display: grid; grid-template-columns: .8fr 1.2fr; align-items: center; gap: 25px; padding: clamp(22px,4vw,40px); background: #fff; }.capture-showcase-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 100px 100px; gap: 10px; }.showcase-tile { display: flex; flex-direction: column; justify-content: space-between; padding: 12px; overflow: hidden; border-radius: 12px; color: var(--explore-ink); background: linear-gradient(135deg,var(--explore-soft),color-mix(in srgb,var(--explore-accent-2) 45%,white)); }.showcase-tile span { font-size: 9px; font-weight: 900; color: var(--explore-accent); }.showcase-tile b { font-size: 11px; }.tile-two { background: linear-gradient(145deg,color-mix(in srgb,var(--explore-accent-2) 65%,white),var(--explore-soft)); }.tile-three { grid-column: 1 / -1; background: linear-gradient(100deg,var(--explore-accent),var(--explore-accent-2)); color: white; }.tile-three span { color: white; }
+.capture-ending { background: var(--explore-soft); }.capture-quote { padding: clamp(25px,5vw,45px); text-align: center; background: white; }.capture-quote h3 { max-width: 600px; margin: 14px auto; color: var(--explore-ink); font-size: clamp(21px,3.5vw,34px); line-height: 1.18; letter-spacing: -.04em; }.capture-quote p { color: #89829e; font-size: 10px; }.capture-cta { padding: clamp(28px,5vw,48px); text-align: center; color: white; background: linear-gradient(120deg,var(--explore-ink),color-mix(in srgb,var(--explore-accent) 70%,var(--explore-ink))); }.capture-cta>small { color: var(--explore-accent-2); }.capture-cta h3 { margin: 12px 0 8px; font-size: clamp(24px,3.5vw,37px); letter-spacing: -.04em; }.capture-cta p { max-width: 500px; margin: 0 auto 17px; color: rgb(255 255 255 / 76%); }.capture-cta>span { display: inline-flex; padding: 11px 16px; border-radius: 10px; color: var(--explore-ink); background: white; font-size: 10px; font-weight: 900; }.capture-real-footer { display: grid; justify-items: center; gap: 9px; padding: 25px 18px; text-align: center; color: white; background: #24213d; }.capture-real-footer strong { font-size: 15px; }.capture-real-footer p,.capture-real-footer small { margin: 0; color: #d2cde5; font-size: 9px; }.capture-real-footer div { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin: 6px 0; }.capture-real-footer div span { color: #e9e2f7; font-size: 9px; }
+.webia-explore-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 22px; border-top: 1px solid rgb(167 139 250 / 18%); background: #fff; }.webia-explore-footer>span { color: #89829e; font-size: 10px; }.webia-explore-consult { display: inline-flex; align-items: center; gap: 9px; padding: 11px 15px; border-radius: 12px; color: white; background: linear-gradient(110deg,#9270e9,#d477bd); font-size: 10px; font-weight: 850; text-decoration: none; white-space: nowrap; }
+.webia-explore-trigger { position: absolute; z-index: 5; right: 12px; bottom: 12px; display: inline-flex; align-items: center; gap: 9px; padding: 10px 13px; border: 1px solid rgb(255 255 255 / 95%); border-radius: 13px; color: #fff; background: linear-gradient(110deg,#8d5ee8,#d55fc3); box-shadow: 0 8px 22px rgb(70 45 120 / 20%), 0 0 0 1px rgb(255 255 255 / 20%); font: inherit; font-size: 10px; font-weight: 900; cursor: pointer; transition: transform .22s ease, box-shadow .22s ease; }.webia-explore-trigger b { display: grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; color: #7550b5; background: white; font-size: 12px; }.webia-explore-trigger:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgb(130 80 210 / 32%), 0 0 20px rgb(225 115 213 / 26%); }.webia-gallery-card .webia-template-preview { padding-bottom: 60px; }
+@media (max-width: 680px) { .webia-explore-modal { padding: 7px; }.webia-explore-dialog { max-height: 96vh; border-radius: 19px; }.webia-explore-header { padding: 15px; }.webia-explore-scroll { padding: 12px; }.webia-capture-scroll-hint { display: none; }.capture-topbar span:nth-child(2) { display: none; }.capture-navbar { padding: 13px; }.capture-navbar div { gap: 7px; }.capture-navbar div span { font-size: 8px; }.capture-navbar>b { display: block; color: var(--explore-accent); font-size: 16px; }.capture-hero { grid-template-columns: 1fr; padding: 23px; }.capture-hero-visual { min-height: 170px; }.capture-service-grid { grid-template-columns: 1fr; }.capture-service-card { display: grid; grid-template-columns: 30px 35px 1fr; align-items: center; column-gap: 8px; padding: 12px; }.capture-service-card i { margin: 0; }.capture-service-card h4 { margin: 0; }.capture-service-card p { grid-column: 3; }.capture-showcase { grid-template-columns: 1fr; }.capture-showcase-grid { grid-template-rows: 85px 85px; }.webia-explore-footer { align-items: flex-start; flex-direction: column; padding: 12px 15px; }.webia-explore-consult { align-self: stretch; justify-content: center; }.webia-explore-trigger { right: 9px; bottom: 9px; padding: 9px 10px; font-size: 9px; } }
+@media (prefers-reduced-motion: reduce) { .webia-explore-dialog { animation: none; }.webia-explore-trigger { transition: none; } }
+
+/* Card actions: keep the two explicit actions side-by-side */
+.webia-gallery-card .webia-template-preview .webia-preview-open { right: auto; left: 12px; bottom: 12px; }
+.webia-gallery-card .webia-template-preview .webia-explore-trigger { right: 12px; bottom: 12px; }
+@media (max-width: 420px) { .webia-gallery-card .webia-template-preview .webia-preview-open { left: 8px; bottom: 8px; padding: 8px 9px; font-size: 9px; } .webia-gallery-card .webia-template-preview .webia-explore-trigger { right: 8px; bottom: 8px; padding: 8px 9px; font-size: 9px; } }
+
+
+/* WEBIA Template Explorer — real PNG captures + refined button */
+.webia-gallery-card .webia-template-preview .webia-explore-trigger {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 38px;
+    padding: 10px 14px !important;
+    border: 1px solid rgb(255 255 255 / 82%) !important;
+    border-radius: 999px !important;
+    color: #493b70 !important;
+    background: rgb(255 255 255 / 94%) !important;
+    box-shadow: 0 5px 18px rgb(55 42 91 / 12%), inset 0 1px 0 rgb(255 255 255 / 95%) !important;
+    font-size: 11px !important;
+    font-weight: 750 !important;
+    letter-spacing: .01em;
+    text-shadow: none !important;
+    cursor: pointer;
+    transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
+}
+.webia-gallery-card .webia-template-preview .webia-explore-trigger b {
+    display: grid;
+    place-items: center;
+    width: 19px;
+    height: 19px;
+    border-radius: 50%;
+    color: #fff !important;
+    background: linear-gradient(135deg, #8d75d8, #6d91c9) !important;
+    font-size: 12px;
+}
+.webia-gallery-card .webia-template-preview .webia-explore-trigger:hover {
+    transform: translateY(-2px);
+    background: #fff !important;
+    box-shadow: 0 8px 22px rgb(55 42 91 / 20%), 0 0 0 2px rgb(255 255 255 / 36%) !important;
+}
+.webia-gallery-card .webia-template-preview .webia-explore-trigger:focus-visible {
+    outline: 3px solid #8d75d8;
+    outline-offset: 3px;
+}
+.webia-capture-gallery { max-width: 100%; margin: 0 auto; }
+.webia-capture-gallery-intro {
+    margin: 0 auto 18px;
+    padding: 22px;
+    border: 1px solid color-mix(in srgb, var(--explore-accent) 28%, white);
+    border-radius: 20px;
+    background: linear-gradient(135deg, var(--explore-soft), #fff 78%);
+}
+.webia-capture-gallery-intro > span,
+.webia-real-capture figcaption {
+    color: var(--explore-accent, #8066bc);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+.webia-capture-gallery-intro h3 { margin: 8px 0 4px; color: #30264e; font-size: clamp(21px, 3vw, 30px); }
+.webia-capture-gallery-intro p { margin: 0 0 8px; color: #746b8b; font-size: 13px; }
+.webia-capture-gallery-intro small { color: #8a819e; font-size: 12px; }
+.webia-real-capture {
+    overflow: hidden;
+    margin: 0 0 20px;
+    border: 1px solid rgb(140 120 180 / 22%);
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 12px 35px rgb(52 39 85 / 9%);
+}
+.webia-real-capture figcaption {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 15px;
+    background: #fff;
+    border-bottom: 1px solid #eee8f7;
+    letter-spacing: .07em;
+}
+.webia-real-capture img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    background: #fff;
+}
+@media (max-width: 680px) {
+    .webia-gallery-card .webia-template-preview .webia-explore-trigger { min-height: 34px; padding: 8px 10px !important; font-size: 10px !important; }
+    .webia-capture-gallery-intro { padding: 16px; }
+    .webia-real-capture figcaption { font-size: 9px; }
+}
+
+/* ==========================================
+   WEBIA — ORDER PROCESS REDESIGN
+   7 Steps | Modern | Responsive
+   ========================================== */
+
+.website-process .website-section-heading {
+    margin-bottom: 42px;
+}
+
+.website-process .website-process-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
+    width: min(1200px, 100%);
+    margin: 0 auto;
+    align-items: stretch;
+}
+
+.website-process .process-step-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 0;
+    padding: 24px;
+    border: 1px solid #e4ddff;
+    border-radius: 20px;
+    background: linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.96),
+        rgba(240, 245, 255, 0.92)
+    );
+    box-shadow: 0 8px 24px rgba(74, 55, 130, 0.05);
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+}
+
+/* Aksen warna di atas kartu */
+.website-process .process-step-card::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: 22px;
+    right: 22px;
+    height: 4px;
+    border-radius: 0 0 8px 8px;
+    background: linear-gradient(90deg, #a855f7, #38bdf8);
+}
+
+/* Variasi warna untuk kartu */
+.website-process .process-step-card:nth-child(4n + 1) {
+    border-color: #c8d9ff;
+}
+
+.website-process .process-step-card:nth-child(4n + 2) {
+    border-color: #dfccff;
+}
+
+.website-process .process-step-card:nth-child(4n + 3) {
+    border-color: #b8edfa;
+}
+
+.website-process .process-step-card:nth-child(4n) {
+    border-color: #ffd8b5;
+}
+
+.website-process .process-step-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+/* Nomor langkah */
+.website-process .process-step-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    border-radius: 13px;
+    background: #e7eaff;
+    color: #5141a5;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.4px;
+}
+
+/* Ikon langkah */
+.website-process .process-step-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 15px;
+    background: rgba(218, 210, 255, 0.48);
+    font-size: 27px;
+    line-height: 1;
+}
+
+/* Judul */
+.website-process .process-step-card h3 {
+    margin: 0 0 10px;
+    color: #342c62;
+    font-size: 17px;
+    line-height: 1.45;
+    font-weight: 750;
+}
+
+/* Deskripsi */
+.website-process .process-step-card p {
+    margin: 0;
+    color: #747997;
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+/* Hover */
+@media (hover: hover) {
+    .website-process .process-step-card:hover {
+        transform: translateY(-5px);
+        border-color: #bba4ff;
+        box-shadow: 0 16px 32px rgba(94, 66, 170, 0.12);
+    }
+}
+
+/* Tablet */
+@media (max-width: 1000px) {
+    .website-process .website-process-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+    }
+}
+
+/* HP */
+@media (max-width: 520px) {
+    .website-process {
+        padding: 42px 16px;
+    }
+
+    .website-process .website-section-heading {
+        margin-bottom: 28px;
+    }
+
+    .website-process .website-process-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .website-process .process-step-card {
+        padding: 22px;
+        border-radius: 17px;
+    }
+
+    .website-process .process-step-top {
+        margin-bottom: 18px;
+    }
+
+    .website-process .process-step-card h3 {
+        font-size: 16px;
+    }
+
+    .website-process .process-step-card p {
+        font-size: 13px;
+    }
+}
+
+/* ==========================================
+   WEBIA — 4 PACKAGE REDESIGN
+   ========================================== */
+
+.website-packages .website-package-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 16px;
+    width: min(1240px, 100%);
+}
+
+.website-packages .website-package-card {
+    min-width: 0;
+    padding: 23px 20px;
+    border-radius: 22px;
+}
+
+.website-packages .website-package-card h3 {
+    margin-top: 22px;
+    font-size: 24px;
+}
+
+.website-packages .website-package-description {
+    min-height: 68px;
+    margin-bottom: 14px;
+}
+
+.website-package-type {
+    display: inline-flex;
+    align-self: flex-start;
+    margin: 0 0 15px;
+    padding: 6px 9px;
+    border-radius: 8px;
+    background: #f0ebff;
+    color: #7862bd;
+    font-size: 9px;
+    font-weight: 850;
+    letter-spacing: .7px;
+}
+
+.website-price-old {
+    margin-top: 9px;
+    color: #a2a0b5;
+    font-size: 13px;
+    text-decoration: line-through;
+    text-decoration-thickness: 1.5px;
+}
+
+.website-packages .website-price {
+    margin-top: 2px;
+    color: #44376f;
+    font-size: clamp(21px, 1.8vw, 27px);
+    line-height: 1.35;
+    letter-spacing: -.6px;
+    overflow-wrap: anywhere;
+}
+
+.website-packages .website-price-caption {
+    margin-top: 5px;
+}
+
+.website-packages .website-package-button {
+    width: 100%;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.website-package-detail {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+    margin-top: 10px;
+    padding: 12px 14px;
+    border: 1px solid #e1d9fa;
+    border-radius: 12px;
+    background: #fff;
+    color: #66558e;
+    font: inherit;
+    font-size: 11px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: background .2s ease, border-color .2s ease;
+}
+
+.website-package-detail span {
+    font-size: 17px;
+}
+
+.website-package-detail:hover {
+    background: #f5f0ff;
+    border-color: #b8a4ff;
+}
+
+.website-packages .website-package-divider {
+    margin: 20px 0 16px;
+}
+
+.website-packages .website-package-card h4 {
+    margin-bottom: 12px;
+}
+
+.website-packages .website-package-card ul {
+    gap: 10px;
+}
+
+.website-packages .website-package-card li {
+    font-size: 11px;
+    line-height: 1.65;
+}
+
+/* Warna dasar setiap paket */
+.package-pixel {
+    border-top: 4px solid #a78bfa !important;
+}
+
+.package-pulse {
+    border-top: 4px solid #f472b6 !important;
+}
+
+.package-nexus {
+    border-top: 4px solid #38bdf8 !important;
+}
+
+/* INFINITY — rekomendasi utama */
+.website-packages .package-infinity {
+    overflow: hidden;
+    border: 2px solid #7154ff;
+    background:
+        radial-gradient(
+            circle at 100% 0%,
+            rgba(31, 151, 255, .28),
+            transparent 40%
+        ),
+        linear-gradient(155deg, #102d68 0%, #10245a 48%, #30166f 100%);
+    box-shadow: 0 22px 48px rgba(35, 40, 111, .24);
+    transform: translateY(-7px);
+}
+
+.website-packages .package-infinity h3,
+.website-packages .package-infinity .website-package-description,
+.website-packages .package-infinity .website-package-number,
+.website-packages .package-infinity .website-price-label,
+.website-packages .package-infinity .website-price-caption,
+.website-packages .package-infinity .website-package-card h4,
+.website-packages .package-infinity h4,
+.website-packages .package-infinity li {
+    color: #fff;
+}
+
+.website-packages .package-infinity .website-price {
+    color: #fff;
+}
+
+.website-packages .package-infinity .website-price-old {
+    color: #c3c8e7;
+}
+
+.website-packages .package-infinity .website-package-type {
+    background: rgba(255, 255, 255, .13);
+    color: #bceeff;
+}
+
+.website-packages .package-infinity .website-package-icon {
+    background: rgba(255, 255, 255, .14);
+    color: #d5c9ff;
+}
+
+.website-packages .package-infinity .website-package-divider {
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, .35),
+        transparent
+    );
+}
+
+.website-packages .package-infinity .website-package-button {
+    background: linear-gradient(110deg, #b5ff38, #20d9e8);
+    color: #10245a;
+    box-shadow: 0 10px 25px rgba(32, 217, 232, .16);
+}
+
+.website-packages .package-infinity .website-package-detail {
+    border-color: rgba(255, 255, 255, .35);
+    background: rgba(255, 255, 255, .08);
+    color: #fff;
+}
+
+.website-packages .package-infinity .website-package-detail:hover {
+    background: rgba(255, 255, 255, .17);
+}
+
+.website-packages .package-infinity li::before {
+    color: #71f0ca;
+}
+
+.website-packages .package-infinity .website-package-ribbon {
+    z-index: 2;
+    padding: 10px 12px;
+    background: linear-gradient(110deg, #c7ff38, #7effa1);
+    color: #15234b;
+    font-size: 9px;
+}
+
+/* Popup detail paket */
+.website-package-dialog {
+    width: min(620px, calc(100% - 28px));
+    max-width: 620px;
+    max-height: min(82vh, 760px);
+    padding: 0;
+    overflow: auto;
+    border: 1px solid #e3dcfa;
+    border-radius: 24px;
+    background: #fff;
+    color: #342c62;
+    box-shadow: 0 28px 90px rgba(31, 25, 74, .28);
+}
+
+.website-package-dialog::backdrop {
+    background: rgba(19, 22, 54, .64);
+    backdrop-filter: blur(5px);
+}
+
+.website-package-dialog-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 25px 26px 20px;
+    background: linear-gradient(120deg, #f3eaff, #e7f9ff);
+}
+
+.website-package-dialog-header .website-eyebrow {
+    padding: 7px 10px;
+    font-size: 9px;
+}
+
+.website-package-dialog-header h3 {
+    margin: 15px 0 7px;
+    color: #342c62;
+    font-size: 25px;
+}
+
+.website-package-dialog-header p {
+    margin: 0;
+    color: #747997;
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+.website-package-dialog-close {
+    display: grid;
+    place-items: center;
+    flex: 0 0 36px;
+    width: 36px;
+    height: 36px;
+    border: 1px solid #e3dcfa;
+    border-radius: 12px;
+    background: #fff;
+    color: #514775;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.website-package-dialog-content {
+    padding: 22px 26px;
+}
+
+.website-package-dialog-content h4 {
+    margin: 0 0 16px;
+    color: #45386f;
+    font-size: 14px;
+}
+
+.website-package-dialog-content ul {
+    display: grid;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.website-package-dialog-content li {
+    position: relative;
+    padding-left: 25px;
+    color: #686b89;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.website-package-dialog-content li::before {
+    content: "✓";
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: #37b995;
+    font-weight: 900;
+}
+
+.website-package-dialog-footer {
+    padding: 18px 26px 25px;
+    border-top: 1px solid #eee9fa;
+}
+
+.website-package-dialog-footer p {
+    margin: 0 0 14px;
+    color: #8583a1;
+    font-size: 11px;
+    line-height: 1.7;
+}
+
+.website-package-dialog-footer .website-package-button {
+    width: 100%;
+}
+
+/* Tablet */
+@media (max-width: 1100px) {
+    .website-packages .website-package-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .website-packages .package-infinity {
+        transform: none;
+    }
+}
+
+/* HP */
+@media (max-width: 560px) {
+    .website-packages .website-package-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .website-packages .website-package-card {
+        padding: 23px 21px;
+    }
+
+    .website-packages .website-package-description {
+        min-height: 0;
+    }
+
+    .website-package-dialog-header,
+    .website-package-dialog-content,
+    .website-package-dialog-footer {
+        padding-right: 20px;
+        padding-left: 20px;
+    }
+
+    .website-package-dialog-header h3 {
+        font-size: 22px;
     }
 }

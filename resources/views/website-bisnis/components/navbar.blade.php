@@ -17,42 +17,45 @@
             <span></span>
         </button>
 
-<div class="webia-navigation" id="webia-navigation">
+        <div class="webia-navigation" id="webia-navigation">
 
-    <a href="{{ route('webia.index') }}">
-        Beranda
-    </a>
+            <a href="{{ route('webia.index') }}">
+                Beranda
+            </a>
 
-    <a href="{{ route('webia.index') }}#kategori-website">
-        Kategori
-    </a>
+            <a href="{{ route('webia.index') }}#kategori-website">
+                Kategori
+            </a>
 
-    <a href="{{ route('webia.index') }}#koleksi-template">
-        Galeri Template
-    </a>
+            <a href="{{ route('webia.index') }}#koleksi-template">
+                Galeri Template
+            </a>
 
-    <a href="{{ route('webia.index') }}#keunggulan-website">
-        Keunggulan
-    </a>
+            <a href="{{ route('webia.index') }}#keunggulan-website">
+                Keunggulan
+            </a>
 
-    <a href="{{ route('webia.index') }}#paket-website">
-        Paket Website
-    </a>
+            <a href="{{ route('webia.index') }}#paket-website">
+                Paket Website
+            </a>
 
-    <a href="{{ route('webia.index') }}#faq-website">
-        FAQ
-    </a>
+            <a href="{{ route('webia.index') }}#faq-website">
+                FAQ
+            </a>
 
-    <a href="{{ route('webia.index') }}#konsultasi-website"
+            {{-- <a href="{{ route('webia.index') }}#konsultasi-website"
        class="webia-nav-cta">
         Konsultasi
-    </a>
+    </a> --}}
+            <button type="button" class="webia-nav-cta" id="webia-nav-consult">
+                Konsultasi
+            </button>
 
-    <a href="{{ url('/') }}" class="webia-homebase-link">
-        ← D-KREASI
-    </a>
+            <a href="{{ url('/') }}" class="webia-homebase-link">
+                ← D-KREASI
+            </a>
 
-</div>
+        </div>
 
     </nav>
 </header>

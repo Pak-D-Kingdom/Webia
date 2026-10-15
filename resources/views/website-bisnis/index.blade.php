@@ -96,7 +96,7 @@
             <h2>Mulai dari <span>Kategori Bisnismu.</span></h2>
             <p>Pilih bidang usaha, lalu temukan inspirasi website yang paling cocok dengan cerita brand-mu.</p>
         </div>
-        
+
         <div class="webia-category-grid">
             {{-- 01. F&B --}}
             <a class="webia-category-card category-fnb" href="{{ route('webia.collections', ['category' => 'fnb']) }}">
@@ -197,7 +197,7 @@
                 <span class="webia-category-arrow">↗</span>
             </a>
         </div>
-        
+
         <div class="webia-discovery-footer">
             <span>Belum menemukan kategori yang pas? Masih banyak kemungkinan ✨</span>
             <a class="website-button website-button-secondary" href="{{ route('webia.collections') }}">Jelajahi Semua
@@ -262,6 +262,37 @@
                     <p>Confident, clean, and professional.</p>
                 </div>
             </article>
+            <article class="webia-template-card webia-template-card-automotive">
+                <a class="webia-template-preview preview-automotive"
+                    href="{{ route('webia.collections', ['category' => 'automotive']) }}"
+                    aria-label="Lihat template Velocity Garage">
+
+                    <div class="webia-preview-browser">
+                        <i></i><i></i><i></i>
+                        <span>velocity.garage</span>
+                    </div>
+
+                    <div class="webia-automotive-badge">AUTOMOTIVE / PERFORMANCE</div>
+
+                    <div class="webia-preview-content">
+                        <small>DRIVE WITH CONFIDENCE</small>
+                        <b>Built for<br>the road ahead.</b>
+                        <span class="webia-automotive-accent"></span>
+                        <p>Service. Performance. Care.</p>
+                    </div>
+
+                    <img class="webia-automotive-image" src="{{ asset('images/website-bisnis/automotive.png') }}"
+                        alt="Ilustrasi otomotif" loading="lazy">
+
+                    <span class="webia-preview-open">Explore ↗</span>
+                </a>
+
+                <div class="webia-template-meta">
+                    <span>AUTOMOTIVE</span>
+                    <h3>Velocity Garage</h3>
+                    <p>Bold, precise, and built to perform.</p>
+                </div>
+            </article>
         </div>
         <div class="webia-featured-bottom"><span>✦ Koleksi akan terus bertambah seiring berkembangnya semesta
                 WEBIA.</span><a href="{{ route('webia.collections') }}">Lihat semua template <span>→</span></a></div>
@@ -323,219 +354,284 @@
         <div class="website-section-heading">
             <span class="website-eyebrow">ALUR PEMESANAN</span>
             <h2>Dari Ide Menjadi <span>Website.</span></h2>
-            <p>Proses pemesanan dirancang agar kebutuhan bisnis bisa dipetakan dengan jelas.</p>
+            <p>
+                Ikuti langkah pemesanan secara bertahap, mulai dari memilih
+                desain hingga menyiapkan AI Chatbot untuk bisnis Anda.
+            </p>
         </div>
 
         <div class="website-process-grid">
-            <article><span>01</span>
+
+            {{-- STEP 1 --}}
+            <article class="process-step-card">
+                <div class="process-step-top">
+                    <span class="process-step-number">01</span>
+                    <span class="process-step-icon">▦</span>
+                </div>
                 <h3>Pilih Kategori</h3>
-                <p>Tentukan jenis website sesuai kebutuhan bisnis.</p>
+                <p>Pilih kategori bisnis dan subkategori yang paling sesuai dengan bidang usaha Anda.</p>
             </article>
-            <article><span>02</span>
+
+            {{-- STEP 2 --}}
+            <article class="process-step-card">
+                <div class="process-step-top">
+                    <span class="process-step-number">02</span>
+                    <span class="process-step-icon">🎨</span>
+                </div>
                 <h3>Pilih Template</h3>
-                <p>Temukan tampilan yang paling sesuai dengan identitas brand.</p>
+                <p>Temukan desain website yang sesuai dengan karakter dan identitas brand Anda.</p>
             </article>
-            <article><span>03</span>
+
+            {{-- STEP 3 --}}
+            <article class="process-step-card">
+                <div class="process-step-top">
+                    <span class="process-step-number">03</span>
+                    <span class="process-step-icon">✦</span>
+                </div>
                 <h3>Pilih Paket</h3>
-                <p>Tentukan paket dan modul yang dibutuhkan.</p>
+                <p>Tentukan paket website dan fitur tambahan sesuai kebutuhan bisnis.</p>
             </article>
-            <article><span>04</span>
-                <h3>Isi Data Bisnis</h3>
-                <p>Siapkan profil, layanan, kontak, dan informasi bisnis.</p>
-            </article>
-            <article><span>05</span>
-                <h3>Konfigurasi AI</h3>
-                <p>Siapkan sumber informasi untuk AI Chatbot bisnis.</p>
-            </article>
-            <article><span>06</span>
+
+            {{-- STEP 4 --}}
+            <article class="process-step-card">
+                <div class="process-step-top">
+                    <span class="process-step-number">04</span>
+                    <span class="process-step-icon">☑</span>
+                </div>
                 <h3>Konfirmasi Order</h3>
-                <p>Tim meninjau detail pesanan dan kebutuhan proyek.</p>
+                <p>Periksa kembali pilihan kategori, template, paket, dan detail pesanan sebelum melanjutkan.</p>
             </article>
+
+            {{-- STEP 5 --}}
+            <article class="process-step-card">
+                <div class="process-step-top">
+                    <span class="process-step-number">05</span>
+                    <span class="process-step-icon">💳</span>
+                </div>
+                <h3>Melakukan Pembayaran</h3>
+                <p>Selesaikan pembayaran sesuai metode dan ketentuan yang disepakati.</p>
+            </article>
+
+            {{-- STEP 6 --}}
+            <article class="process-step-card">
+                <div class="process-step-top">
+                    <span class="process-step-number">06</span>
+                    <span class="process-step-icon">✎</span>
+                </div>
+                <h3>Isi Data Bisnis</h3>
+                <p>Lengkapi profil bisnis, layanan, kontak, alamat, dan informasi pendukung website.</p>
+            </article>
+
+            {{-- STEP 7 --}}
+            <article class="process-step-card">
+                <div class="process-step-top">
+                    <span class="process-step-number">07</span>
+                    <span class="process-step-icon">✧</span>
+                </div>
+                <h3>Konfigurasi AI Chatbot</h3>
+                <p>Siapkan FAQ, informasi produk, layanan, harga, dan data bisnis sebagai sumber jawaban AI Chatbot.</p>
+            </article>
+
         </div>
     </section>
 
-    {{-- LIMA PAKET WEBSITE --}}
+    {{-- EMPAT PAKET WEBSITE WEBIA --}}
     <section class="website-packages" id="paket-website">
         <div class="website-section-heading">
             <span class="website-eyebrow">FIND YOUR PERFECT PACKAGE</span>
             <h2>Pilih Paket, <span>Mulai Berkarya!</span></h2>
             <p>
-                Dari landing page sederhana hingga website bisnis dengan dashboard.
-                Temukan solusi yang paling sesuai dengan kebutuhan Anda.
+                Dari landing page hingga website dengan CMS dan fitur custom.
+                Pilih solusi yang sesuai dengan kebutuhan bisnismu.
             </p>
         </div>
 
         <div class="website-package-grid">
 
-            {{-- PAKET 1 --}}
-            <article class="website-package-card package-static">
+            {{-- 01 PIXEL --}}
+            <article class="website-package-card package-pixel">
                 <div class="website-package-top">
-                    <span class="website-package-number">01 / START HERE</span>
+                    <span class="website-package-number">01 / START SIMPLE</span>
                     <div class="website-package-icon">◈</div>
                 </div>
 
-                <h3>Static</h3>
+                <h3>Pixel</h3>
                 <p class="website-package-description">
-                    Untuk bisnis yang membutuhkan halaman informasi sederhana dan profesional.
+                    Tampil profesional di internet dengan landing page sederhana.
                 </p>
 
-                <div class="website-price-label">Harga paket</div>
-                <div class="website-price">Segera ditentukan</div>
-                <div class="website-price-caption">Landing page statis</div>
+                <span class="website-package-type">TANPA CMS</span>
+
+                <div class="website-price-label">Biaya pembuatan</div>
+                <div class="website-price-old">Rp699.000</div>
+                <div class="website-price">Rp499.000</div>
+                <div class="website-price-caption">Sekali bayar</div>
 
                 <a href="#konsultasi-website" class="website-package-button">
-                    Pilih Static <span>↗</span>
+                    Pilih Pixel <span>↗</span>
                 </a>
 
+                <button type="button" class="website-package-detail" data-package-detail="pixel">
+                    Detail Paket <span>＋</span>
+                </button>
+
                 <div class="website-package-divider"></div>
-                <h4>Yang kamu dapatkan:</h4>
+                <h4>Highlight fitur</h4>
                 <ul>
-                    <li>Landing page statis</li>
-                    <li>Desain responsif</li>
-                    <li>AI Chatbot</li>
-                    <li>SEO dasar</li>
-                    <li>Tombol WhatsApp</li>
+                    <li>1 halaman landing page</li>
+                    <li>WhatsApp, kontak, dan peta</li>
+                    <li>AI Chatbot 500 pesan/bulan*</li>
                 </ul>
             </article>
 
-
-            {{-- PAKET 2 --}}
-            <article class="website-package-card package-starter">
+            {{-- 02 PULSE --}}
+            <article class="website-package-card package-pulse">
                 <div class="website-package-top">
-                    <span class="website-package-number">02 / GET STARTED</span>
+                    <span class="website-package-number">02 / GET NOTICED</span>
                     <div class="website-package-icon">✦</div>
                 </div>
 
-                <h3>Starter</h3>
+                <h3>Pulse</h3>
                 <p class="website-package-description">
-                    Untuk bisnis yang ingin memperkuat kehadiran digitalnya.
+                    Landing page lebih lengkap untuk memperkuat kehadiran digital.
                 </p>
 
-                <div class="website-price-label">Harga paket</div>
-                <div class="website-price">Segera ditentukan</div>
-                <div class="website-price-caption">Landing page dengan fitur bisnis</div>
+                <span class="website-package-type">TANPA CMS</span>
+
+                <div class="website-price-label">Biaya pembuatan</div>
+                <div class="website-price-old">Rp1.199.000</div>
+                <div class="website-price">Rp899.000</div>
+                <div class="website-price-caption">Sekali bayar</div>
 
                 <a href="#konsultasi-website" class="website-package-button">
-                    Pilih Starter <span>↗</span>
+                    Pilih Pulse <span>↗</span>
                 </a>
 
+                <button type="button" class="website-package-detail" data-package-detail="pulse">
+                    Detail Paket <span>＋</span>
+                </button>
+
                 <div class="website-package-divider"></div>
-                <h4>Yang kamu dapatkan:</h4>
+                <h4>Highlight fitur</h4>
                 <ul>
-                    <li>Landing page bisnis</li>
-                    <li>AI Chatbot</li>
-                    <li>SEO dasar dan metadata</li>
-                    <li>CTA WhatsApp</li>
-                    <li>Animasi ringan</li>
+                    <li>Galeri, testimoni, layanan, FAQ</li>
+                    <li>AI Chatbot 1.500 pesan/bulan*</li>
+                    <li>SEO dasar dan analitik</li>
                 </ul>
             </article>
 
-
-            {{-- PAKET 3 --}}
-            <article class="website-package-card package-business">
-                <div class="website-package-ribbon">★ PILIHAN FAVORIT</div>
-
+            {{-- 03 NEXUS --}}
+            <article class="website-package-card package-nexus">
                 <div class="website-package-top">
-                    <span class="website-package-number">03 / GROW YOUR BRAND</span>
-                    <div class="website-package-icon">✳</div>
-                </div>
-
-                <h3>Business</h3>
-                <p class="website-package-description">
-                    Untuk bisnis yang ingin tampil lebih lengkap dan meyakinkan.
-                </p>
-
-                <div class="website-price-label">Harga paket</div>
-                <div class="website-price">Segera ditentukan</div>
-                <div class="website-price-caption">Website multi-section</div>
-
-                <a href="#konsultasi-website" class="website-package-button">
-                    Pilih Business <span>↗</span>
-                </a>
-
-                <div class="website-package-divider"></div>
-                <h4>Yang kamu dapatkan:</h4>
-                <ul>
-                    <li>Website profil bisnis</li>
-                    <li>AI Chatbot</li>
-                    <li>SEO standar</li>
-                    <li>Galeri produk atau portfolio</li>
-                    <li>Formulir kontak</li>
-                    <li>Integrasi WhatsApp</li>
-                </ul>
-            </article>
-
-
-            {{-- PAKET 4 --}}
-            <article class="website-package-card package-professional">
-                <div class="website-package-top">
-                    <span class="website-package-number">04 / LEVEL UP</span>
+                    <span class="website-package-number">03 / TAKE CONTROL</span>
                     <div class="website-package-icon">▦</div>
                 </div>
 
-                <h3>Professional</h3>
+                <h3>Nexus</h3>
                 <p class="website-package-description">
-                    Untuk bisnis yang memerlukan website dan pengelolaan konten.
+                    Kelola konten, layanan, produk, dan artikel secara mandiri.
                 </p>
 
-                <div class="website-price-label">Harga paket</div>
-                <div class="website-price">Segera ditentukan</div>
-                <div class="website-price-caption">Website + admin dashboard</div>
+                <span class="website-package-type">DENGAN CMS</span>
+
+                <div class="website-price-label">Biaya pembuatan</div>
+                <div class="website-price-old">Rp1.999.000</div>
+                <div class="website-price">Rp1.499.000</div>
+                <div class="website-price-caption">Sekali bayar</div>
 
                 <a href="#konsultasi-website" class="website-package-button">
-                    Pilih Professional <span>↗</span>
+                    Pilih Nexus <span>↗</span>
                 </a>
 
+                <button type="button" class="website-package-detail" data-package-detail="nexus">
+                    Detail Paket <span>＋</span>
+                </button>
+
                 <div class="website-package-divider"></div>
-                <h4>Yang kamu dapatkan:</h4>
+                <h4>Highlight fitur</h4>
                 <ul>
-                    <li>Website bisnis</li>
-                    <li>Admin dashboard</li>
-                    <li>AI Chatbot</li>
-                    <li>SEO lebih lengkap</li>
-                    <li>Pengelolaan konten sesuai modul</li>
-                    <li>Integrasi sesuai cakupan paket</li>
+                    <li>Website beberapa halaman</li>
+                    <li>CMS dan tracking data pelanggan</li>
+                    <li>AI Chatbot 2.500 pesan/bulan*</li>
                 </ul>
             </article>
 
-
-            {{-- PAKET 5 --}}
-            <article class="website-package-card package-custom">
-                <div class="website-package-top">
-                    <span class="website-package-number">05 / BUILT FOR YOU</span>
-                    <div class="website-package-icon">✺</div>
+            {{-- 04 INFINITY - RECOMMENDED --}}
+            <article class="website-package-card package-infinity">
+                <div class="website-package-ribbon">
+                    ★ REKOMENDASI UTAMA
                 </div>
 
-                <h3>Custom</h3>
+                <div class="website-package-top">
+                    <span class="website-package-number">04 / BEYOND LIMITS</span>
+                    <div class="website-package-icon">✧</div>
+                </div>
+
+                <h3>Infinity</h3>
                 <p class="website-package-description">
-                    Untuk kebutuhan khusus dengan fitur dan modul yang fleksibel.
+                    Website fleksibel dengan CMS lanjutan dan fitur custom.
                 </p>
 
-                <div class="website-price-label">Harga paket</div>
-                <div class="website-price">Konsultasi</div>
-                <div class="website-price-caption">Disesuaikan kebutuhan bisnis</div>
+                <span class="website-package-type">ADVANCED CMS</span>
+
+                <div class="website-price-label">Biaya pembuatan</div>
+                <div class="website-price-old">Rp3.499.000</div>
+                <div class="website-price">Rp2.499.000</div>
+                <div class="website-price-caption">Sekali bayar</div>
 
                 <a href="#konsultasi-website" class="website-package-button">
-                    Diskusikan Proyek <span>↗</span>
+                    Pilih Infinity <span>↗</span>
                 </a>
 
+                <button type="button" class="website-package-detail" data-package-detail="infinity">
+                    Detail Paket <span>＋</span>
+                </button>
+
                 <div class="website-package-divider"></div>
-                <h4>Yang kamu dapatkan:</h4>
+                <h4>Highlight fitur</h4>
                 <ul>
-                    <li>Fitur sesuai kebutuhan</li>
-                    <li>AI Chatbot</li>
-                    <li>SEO sesuai ruang lingkup</li>
-                    <li>Integrasi API berdasarkan kesepakatan</li>
-                    <li>Estimasi biaya dan waktu pengerjaan</li>
+                    <li>Custom fitur sesuai kebutuhan</li>
+                    <li>CMS lanjutan dan tracking pelanggan</li>
+                    <li>AI Chatbot 5.000 pesan/bulan*</li>
                 </ul>
             </article>
 
         </div>
 
         <p class="website-package-note">
-            Harga final mengikuti ruang lingkup, modul, dan kebutuhan proyek.
-            Detail paket akan dikonfirmasi sebelum pemesanan.
+            Harga pembuatan sekali bayar. Hosting terkelola tersedia melalui
+            langganan. Kuota AI merupakan kuota awal dan dapat disesuaikan.
+            *Kuota dan ketentuan final dikonfirmasi sebelum pemesanan.
         </p>
+
+        {{-- POPUP DETAIL PAKET --}}
+        <dialog class="website-package-dialog" id="websitePackageDialog" aria-labelledby="websitePackageDialogTitle">
+
+            <div class="website-package-dialog-header">
+                <div>
+                    <span class="website-eyebrow">PACKAGE DETAILS</span>
+                    <h3 id="websitePackageDialogTitle">Detail Paket</h3>
+                    <p id="websitePackageDialogDescription"></p>
+                </div>
+
+                <button type="button" class="website-package-dialog-close" id="websitePackageDialogClose"
+                    aria-label="Tutup detail paket">
+                    &times;
+                </button>
+            </div>
+
+            <div class="website-package-dialog-content">
+                <h4>Yang kamu dapatkan</h4>
+                <ul id="websitePackageDialogFeatures"></ul>
+            </div>
+
+            <div class="website-package-dialog-footer">
+                <p id="websitePackageDialogNote"></p>
+                <a href="#konsultasi-website" class="website-package-button" id="websitePackageDialogChoose">
+                    Pilih Paket <span>↗</span>
+                </a>
+            </div>
+        </dialog>
     </section>
 
     {{-- SEO DAN ADD-ON --}}
@@ -601,16 +697,19 @@
         <div class="website-faq-list">
             <details>
                 <summary>Apakah semua paket mendapatkan AI Chatbot?</summary>
-                <p>Ya, kelima paket dirancang mencakup AI Chatbot. Cakupan konfigurasi, integrasi, dan penggunaan mengikuti
+                <p>Ya, keempat dirancang mencakup AI Chatbot. Cakupan konfigurasi, integrasi, dan penggunaan mengikuti
                     detail paket yang disepakati.</p>
             </details>
 
             <details>
-                <summary>Apa perbedaan paket Static dan Professional?</summary>
-                <p>Static berfokus pada landing page statis. Professional dirancang untuk kebutuhan website dengan admin
-                    dashboard dan pengelolaan konten sesuai modul.</p>
+                <summary>Apa perbedaan paket Pixel dan Nexus?</summary>
+                <p>
+                    Pixel berfokus pada landing page tanpa CMS, sedangkan Nexus
+                    menyediakan CMS agar pelanggan dapat mengelola konten website
+                    secara mandiri sesuai cakupan paket.
+                </p>
             </details>
-
+        
             <details>
                 <summary>Apakah saya bisa menambahkan fitur khusus?</summary>
                 <p>Bisa. Fitur tambahan akan ditinjau berdasarkan kebutuhan, kelayakan teknis, biaya, dan ruang lingkup
@@ -652,4 +751,135 @@
 
 @push('scripts')
     <script src="{{ asset('js/website-bisnis/website-bisnis.js') }}" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dialog = document.getElementById('websitePackageDialog');
+
+            if (!dialog) return;
+
+            const title = document.getElementById('websitePackageDialogTitle');
+            const description = document.getElementById('websitePackageDialogDescription');
+            const features = document.getElementById('websitePackageDialogFeatures');
+            const note = document.getElementById('websitePackageDialogNote');
+            const closeButton = document.getElementById('websitePackageDialogClose');
+            const chooseButton = document.getElementById('websitePackageDialogChoose');
+
+            const packages = {
+                pixel: {
+                    name: 'Pixel',
+                    description: 'Landing page sederhana untuk usaha kecil yang ingin tampil profesional.',
+                    price: 'Rp499.000',
+                    features: [
+                        '1 halaman landing page dari template.',
+                        'Tombol WhatsApp, kontak, dan peta lokasi.',
+                        'AI Chatbot dengan kuota awal 500 pesan/bulan.',
+                        'Dashboard konsumen untuk mengelola pengetahuan chatbot melalui login WEBIA.',
+                        'Hosting terkelola dan SSL jika berlangganan layanan hosting.',
+                        '1 kali revisi konten saat pengerjaan.'
+                    ],
+                    note: 'Tanpa CMS. Perubahan desain dan konten setelah website terbit diajukan melalui permintaan revisi.'
+                },
+
+                pulse: {
+                    name: 'Pulse',
+                    description: 'Landing page lebih lengkap tanpa perlu mengelola website sendiri.',
+                    price: 'Rp899.000',
+                    features: [
+                        'Landing page dengan bagian konten lebih lengkap.',
+                        'Galeri, testimoni, daftar layanan, dan FAQ.',
+                        'AI Chatbot dengan kuota awal 1.500 pesan/bulan.',
+                        'Dashboard konsumen dan pengaturan pengetahuan chatbot melalui login WEBIA.',
+                        'SEO dasar dan integrasi analitik sederhana.',
+                        '2 kali revisi saat pengerjaan.',
+                        'Hosting terkelola tersedia melalui langganan.'
+                    ],
+                    note: 'Tanpa CMS. Konten website dikelola penyedia, sedangkan informasi chatbot bisa diperbarui pelanggan sendiri.'
+                },
+
+                nexus: {
+                    name: 'Nexus',
+                    description: 'Website dengan CMS untuk bisnis yang rutin memperbarui konten.',
+                    price: 'Rp1.499.000',
+                    features: [
+                        'Website beberapa halaman sesuai batas paket.',
+                        'Admin panel CMS untuk mengubah konten secara mandiri.',
+                        'Pengelolaan layanan, galeri, artikel, atau produk sederhana.',
+                        'Fitur tracking data pelanggan melalui CMS sesuai cakupan paket.',
+                        'AI Chatbot dengan kuota awal 2.500 pesan/bulan.',
+                        'Dashboard konsumen untuk paket, tagihan, dan chatbot.',
+                        'SEO dasar dan analitik.',
+                        '3 kali revisi saat pengerjaan.',
+                        'Hosting terkelola tersedia melalui langganan.'
+                    ],
+                    note: 'Dengan CMS. Batas halaman, modul, dan cakupan tracking dikonfirmasi sebelum pemesanan.'
+                },
+
+                infinity: {
+                    name: 'Infinity',
+                    description: 'Solusi website custom dengan CMS lanjutan untuk bisnis berkembang.',
+                    price: 'Rp2.499.000',
+                    features: [
+                        'Website multi-halaman dengan kustomisasi lebih luas.',
+                        'Custom fitur sesuai kebutuhan dan kesepakatan proyek.',
+                        'Dashboard konsumen dan pengaturan pengetahuan chatbot melalui login WEBIA.',
+                        'CMS lanjutan untuk pengelolaan konten dan kategori.',
+                        'Tracking data pelanggan melalui CMS sesuai cakupan proyek.',
+                        'AI Chatbot dengan kuota awal 5.000 pesan/bulan.',
+                        'Pengaturan sumber pengetahuan chatbot yang lebih luas.',
+                        'SEO dan analitik lebih lengkap.',
+                        'Prioritas dukungan teknis.',
+                        '4 kali revisi saat pengerjaan.',
+                        'Hosting terkelola tersedia melalui langganan.'
+                    ],
+                    note: 'CMS lanjutan dan fitur custom. Ruang lingkup fitur, estimasi biaya, dan ketentuan akhir disepakati sebelum pengerjaan.'
+                }
+            };
+
+            document.querySelectorAll('[data-package-detail]').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    const selected = packages[this.dataset.packageDetail];
+
+                    if (!selected) return;
+
+                    title.textContent = selected.name + ' — ' + selected.price;
+                    description.textContent = selected.description;
+                    note.textContent = selected.note;
+
+                    features.replaceChildren();
+
+                    selected.features.forEach(function(feature) {
+                        const item = document.createElement('li');
+                        item.textContent = feature;
+                        features.appendChild(item);
+                    });
+
+                    chooseButton.textContent = 'Pilih ' + selected.name + ' ↗';
+
+                    if (!dialog.open) {
+                        dialog.showModal();
+                    }
+                });
+            });
+
+            closeButton.addEventListener('click', function() {
+                dialog.close();
+            });
+
+            dialog.addEventListener('click', function(event) {
+                if (event.target === dialog) {
+                    dialog.close();
+                }
+            });
+
+            chooseButton.addEventListener('click', function() {
+                dialog.close();
+            });
+
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape' && dialog.open) {
+                    dialog.close();
+                }
+            });
+        });
+    </script>
 @endpush

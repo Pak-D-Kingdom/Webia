@@ -41,9 +41,6 @@
 
         <div class="webia-footer-links">
             <h3>Informasi</h3>
-            <a href="{{ route('webia.index') }}#konsultasi-website">
-                Konsultasi
-            </a>
             <a href="{{ url('/') }}">
                 D-KREASI Homebase
             </a>
