@@ -463,8 +463,8 @@
                 <span class="website-package-type">TANPA CMS</span>
 
                 <div class="website-price-label">Biaya pembuatan</div>
-                <div class="website-price-old">Rp699.000</div>
-                <div class="website-price">Rp499.000</div>
+                <div class="website-price-old">Rp589.500</div>
+                <div class="website-price">Rp99.500</div>
                 <div class="website-price-caption">Sekali bayar</div>
 
                 <a href="#konsultasi-website" class="website-package-button">
