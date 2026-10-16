@@ -8,7 +8,6 @@
     </nav>
     <div class="nav__tools">
         <button class="icon-btn" aria-label="Cari"><svg class="i" aria-hidden="true"><use href="#i-search"/></svg></button>
-        <button class="icon-btn" aria-label="Keranjang"><svg class="i" aria-hidden="true"><use href="#i-cart"/></svg><span class="badge">0</span></button>
         <a class="btn nav__cta" href="{{ route('webia.fnb.minimalis.reservasi') }}"><svg class="i" aria-hidden="true"><use href="#i-calendar"/></svg> Reservasi Sekarang</a>
         <button id="navToggle" class="icon-btn burger" aria-label="Buka menu" aria-expanded="false" aria-controls="navLinks">☰</button>
     </div>

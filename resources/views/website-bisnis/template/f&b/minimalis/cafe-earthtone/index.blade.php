@@ -4,13 +4,12 @@
     @include("$v.sections.hero")
     @include("$v.sections.features")
 
-    {{-- Baris 1: preview menu (ukuran tetap) + AI FAQ ringkas --}}
-    <div class="container row row--top">
+    {{-- Preview menu --}}
+    <div class="container row">
         @include("$v.sections.menu")
-        @include("$v.sections.faq")
     </div>
 
-    {{-- Baris 2: promo selebar halaman --}}
+    {{-- Promo (1 / 2 / 5 / 9 atau lebih, atur di config) --}}
     <div class="container row">
         @include("$v.sections.promo")
     </div>
@@ -19,7 +18,9 @@
         @include("$v.sections.services")
     </div>
 
+    {{-- Baris paling bawah: Lokasi + AI FAQ ringkas --}}
     <div class="container row row--info">
         @include("$v.sections.location", ['wide' => true])
+        @include("$v.sections.faq")
     </div>
 @endsection

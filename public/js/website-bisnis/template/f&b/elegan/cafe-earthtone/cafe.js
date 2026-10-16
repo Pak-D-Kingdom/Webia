@@ -37,17 +37,17 @@
         document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
         matchMedia('(min-width: 992px)').addEventListener('change', (e) => { if (e.matches) setOpen(false); });
 
-        // Penanda menu aktif
-        const links = $$('[data-spy]', nav);
-        const setActive = (id) => links.forEach((a) => a.classList.toggle('is-active', a.getAttribute('href') === `#${id}`));
-        links.forEach((a) => a.addEventListener('click', () => setActive(a.getAttribute('href').slice(1))));
-        if ('IntersectionObserver' in window) {
+        // Penanda menu aktif (hanya link yang menuju halaman ini)
+        const links = $$('[data-spy]', nav).filter((a) => a.pathname === location.pathname && a.hash);
+        const setActive = (id) => links.forEach((a) => a.classList.toggle('is-active', a.hash === `#${id}`));
+        links.forEach((a) => a.addEventListener('click', () => setActive(a.hash.slice(1))));
+        if (links.length && 'IntersectionObserver' in window) {
             const io = new IntersectionObserver((entries) => {
                 entries.forEach((en) => { if (en.isIntersecting) setActive(en.target.id); });
             }, { rootMargin: '-40% 0px -55% 0px' });
-            links.forEach((a) => { const t = $(a.getAttribute('href')); if (t) io.observe(t); });
+            links.forEach((a) => { const t = $(a.hash); if (t) io.observe(t); });
         }
-        setActive('beranda');
+        if (links.length) setActive('beranda');
     }
 
     const onScroll = () => {
@@ -58,39 +58,50 @@
     onScroll();
     if (toTop) toTop.addEventListener('click', () => scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' }));
 
-    /* 3. Hero slider: panah, autoplay, geser (swipe) */
-    const hero = $('#beranda');
-    if (hero) {
-        const slides = $$('.lm-slide', hero);
+    /* 3. Slider generik: dipakai hero (panah) dan promo (titik). 1 slide = statis */
+    const slider = (root, { slides, interval = 6500, dots = false, label = 'slide' }) => {
+        if (slides.length < 2) return null;
         let idx = 0;
         let timer = null;
+        const dotBtns = [];
 
         const go = (n) => {
             idx = (n + slides.length) % slides.length;
-            slides.forEach((s, i) => {
+            slides.forEach((sl, i) => {
                 const on = i === idx;
-                s.classList.toggle('is-active', on);
-                s.setAttribute('aria-hidden', String(!on));
+                sl.classList.toggle('is-active', on);
+                sl.setAttribute('aria-hidden', String(!on));
             });
+            dotBtns.forEach((b, i) => b.setAttribute('aria-current', String(i === idx)));
         };
         const stop = () => clearInterval(timer);
         const play = () => {
             stop();
-            if (!reduceMotion && slides.length > 1) timer = setInterval(() => go(idx + 1), 6500);
+            if (!reduceMotion) timer = setInterval(() => go(idx + 1), interval);
         };
 
-        $$('[data-slide]', hero).forEach((btn) => btn.addEventListener('click', () => {
-            go(idx + (btn.dataset.slide === 'next' ? 1 : -1));
-            play();
-        }));
-        hero.addEventListener('mouseenter', stop);
-        hero.addEventListener('mouseleave', play);
-        hero.addEventListener('focusin', stop);
-        hero.addEventListener('focusout', play);
+        if (dots) {
+            const wrap = document.createElement('div');
+            wrap.className = 'lm-dots';
+            slides.forEach((_, i) => {
+                const b = document.createElement('button');
+                b.type = 'button';
+                b.setAttribute('aria-label', `Tampilkan ${label} ${i + 1}`);
+                b.addEventListener('click', () => { go(i); play(); });
+                wrap.append(b);
+                dotBtns.push(b);
+            });
+            root.append(wrap);
+        }
+
+        root.addEventListener('mouseenter', stop);
+        root.addEventListener('mouseleave', play);
+        root.addEventListener('focusin', stop);
+        root.addEventListener('focusout', play);
 
         let x0 = null;
-        hero.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });
-        hero.addEventListener('touchend', (e) => {
+        root.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+        root.addEventListener('touchend', (e) => {
             if (x0 === null) return;
             const dx = e.changedTouches[0].clientX - x0;
             x0 = null;
@@ -99,32 +110,25 @@
 
         go(0);
         play();
+        return { go: (n) => { go(n); play(); }, next: () => { go(idx + 1); play(); }, prev: () => { go(idx - 1); play(); } };
+    };
+
+    // Hero: panah kiri/kanan
+    const hero = $('#beranda');
+    if (hero) {
+        const ctl = slider(hero, { slides: $$('.lm-slide', hero) });
+        if (ctl) $$('[data-slide]', hero).forEach((btn) => btn.addEventListener('click', () => (btn.dataset.slide === 'next' ? ctl.next() : ctl.prev())));
     }
 
-    /* 4. Menu: filter kategori. Tab "Semua" dibatasi oleh data-limit */
-    const grid = $('#menu-grid');
-    if (grid) {
-        const items = $$('.lm-product', grid);
-        const tabs = $$('[data-filter]');
-        const empty = $('.lm-empty');
-        const limit = Number(grid.dataset.limit) || Infinity;
-
-        const apply = (cat) => {
-            let shown = 0;
-            items.forEach((el) => {
-                const match = cat === 'all' ? shown < limit : el.dataset.category === cat;
-                el.hidden = !match;
-                if (match) shown++;
-            });
-            if (empty) empty.hidden = shown > 0;
-            tabs.forEach((t) => {
-                const on = t.dataset.filter === cat;
-                t.classList.toggle('is-active', on);
-                t.setAttribute('aria-pressed', String(on));
-            });
-        };
-        tabs.forEach((t) => t.addEventListener('click', () => apply(t.dataset.filter)));
-    }
+    // Promo: mode "slider" = bergantian (otomatis + titik). Mode "grid" = tampil bersamaan, tanpa JS.
+    $$('.lm-promos[data-mode="slider"]').forEach((zone) => {
+        slider(zone, {
+            slides: $$(':scope > .lm-promo, :scope > .lm-banner', zone),
+            interval: Number(zone.dataset.interval) || 6000,
+            dots: true,
+            label: 'promo',
+        });
+    });
 
     /* 5. Jam operasional: tandai hari ini */
     const today = new Date().getDay();
@@ -132,27 +136,21 @@
         tr.classList.toggle('is-today', tr.dataset.days.split(',').map(Number).includes(today));
     });
 
-    /* 6. Reservasi: dialog + kirim ke WhatsApp */
-    const modal = $('#reservasi-modal');
-    if (modal && typeof modal.showModal === 'function') {
-        const form = $('form', modal);
+    /* 6. Reservasi (halaman sendiri): kirim ke WhatsApp */
+    const rform = $('#reservasi-form');
+    if (rform) {
+        const status = $('.lm-form__status', rform);
         const isoToday = () => new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+        rform.elements.tanggal.min = isoToday();
 
-        $$('[data-modal-open]').forEach((btn) => btn.addEventListener('click', () => {
-            form.elements.tanggal.min = isoToday();
-            modal.showModal();
-        }));
-        $$('[data-modal-close]', modal).forEach((btn) => btn.addEventListener('click', () => modal.close()));
-        modal.addEventListener('click', (e) => { if (e.target === modal) modal.close(); });
-
-        form.addEventListener('submit', (e) => {
+        rform.addEventListener('submit', (e) => {
             e.preventDefault(); // submit hanya terpicu bila validasi bawaan browser lolos
-            const d = Object.fromEntries(new FormData(form));
+            const d = Object.fromEntries(new FormData(rform));
             const tanggal = new Date(`${d.tanggal}T00:00`).toLocaleDateString('id-ID', {
                 weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
             });
             const text = [
-                `Halo ${form.dataset.brand}, saya ingin reservasi meja:`,
+                `Halo ${rform.dataset.brand}, saya ingin reservasi meja:`,
                 `Nama: ${d.nama}`,
                 `No. WhatsApp: ${d.telepon}`,
                 `Tanggal: ${tanggal}`,
@@ -161,10 +159,11 @@
                 d.catatan ? `Catatan: ${d.catatan}` : '',
             ].filter(Boolean).join('\n');
 
-            form.dispatchEvent(new CustomEvent('lm:reservation', { bubbles: true, detail: d }));
-            window.open(`https://wa.me/${form.dataset.wa}?text=${encodeURIComponent(text)}`, '_blank', 'noopener');
-            form.reset();
-            modal.close();
+            rform.dispatchEvent(new CustomEvent('lm:reservation', { bubbles: true, detail: d }));
+            window.open(`https://wa.me/${rform.dataset.wa}?text=${encodeURIComponent(text)}`, '_blank', 'noopener');
+            rform.reset();
+            status.hidden = false;
+            status.textContent = 'Reservasi Anda dibuka di WhatsApp. Kirim pesannya untuk menyelesaikan reservasi.';
         });
     }
 

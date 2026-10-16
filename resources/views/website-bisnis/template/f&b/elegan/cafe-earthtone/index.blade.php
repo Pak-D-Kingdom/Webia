@@ -1,7 +1,6 @@
 {{--
-    The Lumière Café & Kitchen — Template F&B · Elegan · Cafe Earthtone
-    Halaman satu layar (one-page). Seluruh data ada di:
-    config/template/f&b/elegan/cafe-earthtone/cafe.php
+    Halaman BERANDA — The Lumière Café & Kitchen · Elegan · Cafe Earthtone
+    Data: config/template/f&b/elegan/cafe-earthtone/cafe.php
 --}}
 @php
     $v    = 'website-bisnis.template.f&b.elegan.cafe-earthtone';
@@ -9,6 +8,10 @@
     $img  = fn (string $file) => asset($cafe['assets']['images'].$file);
     $rp   = fn (int $n) => 'Rp '.number_format($n, 0, ',', '.');
     $wa   = fn (string $text = '') => 'https://wa.me/'.$cafe['contact']['whatsapp'].($text !== '' ? '?text='.rawurlencode($text) : '');
+    // URL halaman: pakai route bila sudah terdaftar, kalau belum jatuh ke anchor biasa
+    $url  = fn (string $page, string $anchor = '') => \Illuminate\Support\Facades\Route::has($cafe['route_prefix'].$page)
+        ? route($cafe['route_prefix'].$page).$anchor
+        : ($anchor !== '' ? $anchor : '#');
 @endphp
 
 @extends("$v.layouts.app")

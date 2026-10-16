@@ -43,4 +43,6 @@ $elegan = function (string $page) {
 
 Route::prefix('webia/template/fnb/elegan')->name('webia.fnb.elegan.')->group(function () use ($elegan) {
     Route::get('/', $elegan('index'))->name('home');
+    Route::get('/menu', $elegan('menu'))->name('menu');
+    Route::get('/reservasi', $elegan('reservasi'))->name('reservasi');
 });

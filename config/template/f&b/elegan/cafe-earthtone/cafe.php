@@ -17,6 +17,9 @@ return [
         'images' => 'images/website-bisnis/template/f&b/elegan/cafe-earthtone/',
     ],
 
+    // Awalan nama route (lihat routes/web.php). Halaman: home, menu, reservasi.
+    'route_prefix' => 'webia.fnb.elegan.',
+
     'brand' => [
         'name'        => 'The Lumière',
         'title'       => 'The Lumière Café & Kitchen',
@@ -43,16 +46,28 @@ return [
         ['name' => 'YouTube',   'icon' => 'youtube',   'url' => '#'],
     ],
 
+    // Navigasi atas (navbar). page = nama halaman, anchor = bagian di halaman itu.
     'nav' => [
-        ['label' => 'Beranda',      'href' => '#beranda'],
-        ['label' => 'Menu',         'href' => '#menu'],
-        ['label' => 'Tentang Kami', 'href' => '#tentang'],
-        ['label' => 'Promo',        'href' => '#promo'],
-        ['label' => 'Lokasi',       'href' => '#lokasi'],
-        ['label' => 'Reservasi',    'href' => '#reservasi'],
-        ['label' => 'FAQ',          'href' => '#faq'],
+        ['label' => 'Beranda',      'page' => 'home', 'anchor' => '#beranda'],
+        ['label' => 'Tentang Kami', 'page' => 'home', 'anchor' => '#tentang'],
+        ['label' => 'Promo',        'page' => 'home', 'anchor' => '#promo'],
+        ['label' => 'Lokasi',       'page' => 'home', 'anchor' => '#lokasi'],
+        ['label' => 'FAQ',          'page' => 'home', 'anchor' => '#faq'],
     ],
 
+    // Quick Links di footer
+    'footer_nav' => [
+        ['label' => 'Beranda',      'page' => 'home',      'anchor' => '#beranda'],
+        ['label' => 'Menu',         'page' => 'menu',      'anchor' => ''],
+        ['label' => 'Tentang Kami', 'page' => 'home',      'anchor' => '#tentang'],
+        ['label' => 'Promo',        'page' => 'home',      'anchor' => '#promo'],
+        ['label' => 'Lokasi',       'page' => 'home',      'anchor' => '#lokasi'],
+        ['label' => 'Reservasi',    'page' => 'reservasi', 'anchor' => ''],
+        ['label' => 'FAQ',          'page' => 'home',      'anchor' => '#faq'],
+    ],
+
+    // Hero. Panah kiri/kanan muncul otomatis bila slide lebih dari 1
+    // (salin satu blok; image = file di folder images).
     'slides' => [
         [
             'image'   => 'hero.jpg',
@@ -60,20 +75,6 @@ return [
             'title'   => ['Good Food', 'Better Moments'],
             'text'    => 'Nikmati pengalaman bersantap yang tak terlupakan dengan cita rasa istimewa, suasana elegan, dan pelayanan terbaik di The Lumière Café & Kitchen.',
             'script'  => ['Good Coffee', 'Great Vibes'],
-        ],
-        [
-            'image'   => 'hero-2.jpg',
-            'eyebrow' => 'Freshly brewed',
-            'title'   => ['Crafted With', 'Passion & Care'],
-            'text'    => 'Biji kopi pilihan, disangrai segar dan diseduh barista berpengalaman untuk setiap cangkir Anda.',
-            'script'  => ['Brewed', 'With Love'],
-        ],
-        [
-            'image'   => 'hero-3.jpg',
-            'eyebrow' => 'Made to share',
-            'title'   => ['Gather Around', 'Our Table'],
-            'text'    => 'Rayakan momen spesial bersama keluarga dan sahabat dengan hidangan hangat di suasana yang nyaman.',
-            'script'  => ['Good Food,', 'Good Mood'],
         ],
     ],
 
@@ -85,39 +86,57 @@ return [
         ['icon' => 'parking', 'title' => 'Area Parkir Luas', 'text' => 'Nyaman & aman'],
     ],
 
+    // Menu: beranda menampilkan home_limit item pertama; halaman Menu menampilkan semuanya.
     'menu' => [
         'eyebrow'    => 'Our Menu',
         'title'      => 'Menu Pilihan Kami',
         'text'       => 'Rasakan kelezatan setiap hidangan yang dibuat dengan bahan terbaik dan resep istimewa.',
-        'all_url'    => '#menu', // ganti ke halaman menu lengkap bila sudah ada
-        'home_limit' => 5,       // jumlah menu pada tab "Semua"
-        'categories' => [
-            'all'        => 'Semua',
-            'coffee'     => 'Coffee',
-            'non-coffee' => 'Non Coffee',
-            'food'       => 'Makanan',
-            'dessert'    => 'Dessert',
-        ],
+        'home_limit' => 5,
         // price: angka rupiah tanpa titik
         'items' => [
-            ['name' => 'Espresso',            'price' => 25000, 'category' => 'coffee',     'image' => 'espresso.jpg'],
-            ['name' => 'Latte',               'price' => 32000, 'category' => 'coffee',     'image' => 'latte.jpg'],
-            ['name' => 'Beef Steak',          'price' => 85000, 'category' => 'food',       'image' => 'beef-steak.jpg'],
-            ['name' => 'Spaghetti Carbonara', 'price' => 58000, 'category' => 'food',       'image' => 'spaghetti-carbonara.jpg'],
-            ['name' => 'Chocolate Lava Cake', 'price' => 45000, 'category' => 'dessert',    'image' => 'chocolate-lava-cake.jpg'],
-            ['name' => 'Matcha Latte',        'price' => 35000, 'category' => 'non-coffee', 'image' => 'matcha-latte.jpg'],
+            ['name' => 'Espresso',            'price' => 25000, 'image' => 'espresso.jpg'],
+            ['name' => 'Latte',               'price' => 32000, 'image' => 'latte.jpg'],
+            ['name' => 'Beef Steak',          'price' => 85000, 'image' => 'beef-steak.jpg'],
+            ['name' => 'Spaghetti Carbonara', 'price' => 58000, 'image' => 'spaghetti-carbonara.jpg'],
+            ['name' => 'Chocolate Lava Cake', 'price' => 45000, 'image' => 'chocolate-lava-cake.jpg'],
         ],
     ],
 
-    'promo' => [
-        'eyebrow'  => 'Special Promo',
-        'title'    => 'Buy 1 Get 1 Free',
-        'subtitle' => 'for Selected Beverages',
-        'period'   => '1 - 31 Oktober 2025',
-        'badge'    => ['Beli 1', 'Gratis 1'],
-        'cta'      => 'Lihat Promo',
-        'url'      => '#promo',
-        'image'    => 'promo-drinks.jpg',
+    /*
+    | PROMO — ada dua tempat tampil (kartu di samping menu, banner di bawah).
+    | Masing-masing bisa berisi 1, 2, 5, 9, atau lebih promo. Tambah promo = salin satu blok di 'items'.
+    |   mode 'slider' → promo tampil bergantian (otomatis, titik navigasi muncul bila lebih dari 1)
+    |   mode 'grid'   → semua promo tampil bersamaan
+    |   interval      → jeda pergantian (ms), hanya untuk slider
+    | badge boleh dihapus bila tidak dipakai.
+    */
+    'promo_card' => [
+        'mode'     => 'slider',
+        'interval' => 5000,
+        'items'    => [
+            [
+                'eyebrow'  => 'Special Promo',
+                'title'    => 'Buy 1 Get 1 Free',
+                'subtitle' => 'for Selected Beverages',
+                'period'   => '1 - 31 Oktober 2025',
+                'badge'    => ['Beli 1', 'Gratis 1'],
+                'image'    => 'promo-drinks.jpg',
+            ],
+        ],
+    ],
+
+    'promo_banner' => [
+        'mode'     => 'slider',
+        'interval' => 6000,
+        'items'    => [
+            [
+                'eyebrow' => 'Promo Spesial',
+                'title'   => 'Diskon 20% untuk Menu Makanan',
+                'text'    => 'Hanya di akhir pekan, 18 - 19 Oktober 2025',
+                'script'  => ['Good Food,', 'Good Mood'],
+                'image'   => 'promo-cake.jpg',
+            ],
+        ],
     ],
 
     'about' => [
@@ -144,7 +163,6 @@ return [
         'eyebrow'   => 'Our Location',
         'title'     => 'Lokasi Kami',
         'map_image' => 'map.jpg',
-        'map_label' => 'The Lumière Café & Kitchen',
         'cta'       => 'Lihat di Google Maps',
     ],
 
@@ -153,7 +171,7 @@ return [
         'title'      => 'Reservasi Meja',
         'text'       => 'Reservasi meja sekarang untuk pengalaman bersantap yang lebih nyaman.',
         'cta'        => 'Reservasi Sekarang',
-        'modal_text' => 'Isi data berikut. Reservasi Anda akan dikirim ke WhatsApp kami untuk dikonfirmasi.',
+        'form_text'  => 'Isi data berikut. Reservasi Anda akan dikirim ke WhatsApp kami untuk dikonfirmasi.',
         'max_guests' => 12,
     ],
 
@@ -162,16 +180,6 @@ return [
         'title'   => 'Hubungi Kami',
         'text'    => 'Tanya menu, promo, atau reservasi melalui WhatsApp.',
         'cta'     => 'Chat Sekarang',
-    ],
-
-    'banner' => [
-        'eyebrow' => 'Promo Spesial',
-        'title'   => 'Diskon 20% untuk Menu Makanan',
-        'text'    => 'Hanya di akhir pekan, 18 - 19 Oktober 2025',
-        'cta'     => 'Lihat Detail',
-        'url'     => '#promo',
-        'script'  => ['Good Food,', 'Good Mood'],
-        'image'   => 'promo-cake.jpg',
     ],
 
     'faq' => [
@@ -215,5 +223,6 @@ return [
             ['label' => 'Kebijakan Privasi',  'url' => '#'],
         ],
         'newsletter_placeholder' => 'Email Anda',
+        'credit' => '© 2026 WEBIA by D-KREASI. Seluruh hak cipta dilindungi.',
     ],
 ];

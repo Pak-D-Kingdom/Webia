@@ -14,8 +14,8 @@
         <nav aria-labelledby="ft-links">
             <h3 class="lm-footer__h" id="ft-links">Quick Links</h3>
             <ul class="lm-footer__links">
-                @foreach ($cafe['nav'] as $n)
-                    <li><a href="{{ $n['href'] }}">{{ $n['label'] }}</a></li>
+                @foreach ($cafe['footer_nav'] as $n)
+                    <li><a href="{{ $url($n['page'], $n['anchor']) }}">{{ $n['label'] }}</a></li>
                 @endforeach
             </ul>
         </nav>
@@ -50,6 +50,10 @@
                 @endforeach
             </p>
         </div>
+    </div>
+
+    <div class="lm-footer__credit">
+        <div class="lm-container"><p>{{ $cafe['footer']['credit'] }}</p></div>
     </div>
 
     <button class="lm-top" type="button" data-top aria-label="Kembali ke atas"><svg class="i" aria-hidden="true"><use href="#i-up"/></svg></button>

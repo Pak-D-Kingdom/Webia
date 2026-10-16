@@ -14,9 +14,6 @@
         @if (!empty($full)) <p class="desc">{{ $m['desc'] }}</p> @endif
         <div class="item__row item__foot">
             <p class="price">Rp {{ number_format($m['price'], 0, ',', '.') }}</p>
-            @if (!empty($full))
-                <a class="btn btn--sm" href="https://wa.me/{{ config('cafe.whatsapp') }}?text={{ rawurlencode('Halo ' . config('cafe.name') . ', saya ingin pesan ' . $m['name']) }}" target="_blank" rel="noopener">Pesan</a>
-            @endif
         </div>
     </div>
 </article>

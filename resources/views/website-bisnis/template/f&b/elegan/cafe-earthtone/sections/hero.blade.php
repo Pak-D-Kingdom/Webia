@@ -1,7 +1,7 @@
-<section class="lm-hero" id="beranda" aria-roledescription="carousel" aria-label="Sorotan {{ $cafe['brand']['name'] }}">
+<section class="lm-hero" id="beranda" @if (count($cafe['slides']) > 1) aria-roledescription="carousel" @endif aria-label="Sorotan {{ $cafe['brand']['name'] }}">
     @foreach ($cafe['slides'] as $s)
         @php($tag = $loop->first ? 'h1' : 'h2')
-        <article class="lm-slide {{ $loop->first ? 'is-active' : '' }}" aria-roledescription="slide" aria-hidden="{{ $loop->first ? 'false' : 'true' }}">
+        <article class="lm-slide {{ $loop->first ? 'is-active' : '' }}" aria-hidden="{{ $loop->first ? 'false' : 'true' }}">
             <img class="lm-slide__bg" src="{{ $img($s['image']) }}" alt="" @if ($loop->first) fetchpriority="high" @else loading="lazy" @endif>
 
             <div class="lm-container lm-slide__in">
@@ -10,10 +10,10 @@
                     <{{ $tag }} class="lm-hero__title">{{ $s['title'][0] }}<em>{{ $s['title'][1] }}</em></{{ $tag }}>
                     <p class="lm-hero__text">{{ $s['text'] }}</p>
                     <div class="lm-hero__actions">
-                        <a class="lm-btn lm-btn--gold" href="#menu">Lihat Menu <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-                        <button class="lm-btn lm-btn--ghost" type="button" data-modal-open>
+                        <a class="lm-btn lm-btn--gold" href="{{ $url('menu') }}">Lihat Menu <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                        <a class="lm-btn lm-btn--ghost" href="{{ $url('reservasi') }}">
                             <svg class="i" aria-hidden="true"><use href="#i-calendar"/></svg> Reservasi Meja
-                        </button>
+                        </a>
                     </div>
                 </div>
                 <p class="lm-hero__script" aria-hidden="true">{!! implode('<br>', array_map('e', $s['script'])) !!}</p>

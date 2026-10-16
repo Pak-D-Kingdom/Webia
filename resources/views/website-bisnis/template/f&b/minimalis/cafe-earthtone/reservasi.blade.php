@@ -42,10 +42,16 @@
 
         <div class="res-side">
             @include("$v.sections.location")
-            <section class="panel note">
-                <h2>Perlu bantuan?</h2>
-                <p>Untuk acara besar atau private event, hubungi kami langsung.</p>
-                <a class="btn btn--ghost" href="https://wa.me/{{ config('cafe.whatsapp') }}" target="_blank" rel="noopener"><svg class="i" aria-hidden="true"><use href="#i-chat"/></svg> Chat via WhatsApp</a>
+            <section class="wa-card" aria-labelledby="t-wa">
+                <div class="wa-card__top">
+                    <span class="wa-card__ico"><svg class="i" aria-hidden="true"><use href="#i-chat"/></svg></span>
+                    <div>
+                        <h2 id="t-wa">Butuh bantuan reservasi?</h2>
+                        <div class="wa-card__meta"><span><i></i> Dibalas di jam operasional</span><span>{{ config('cafe.phone') }}</span></div>
+                    </div>
+                </div>
+                <p>Untuk acara besar atau private event, hubungi kami langsung. Tim kami siap membantu memilih tanggal dan menyiapkan tempat.</p>
+                <a class="btn" href="https://wa.me/{{ config('cafe.whatsapp') }}?text={{ rawurlencode('Halo ' . config('cafe.name') . ', saya ingin bertanya tentang reservasi') }}" target="_blank" rel="noopener">Chat via WhatsApp <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
             </section>
         </div>
     </div>

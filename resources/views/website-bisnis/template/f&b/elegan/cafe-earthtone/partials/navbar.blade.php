@@ -10,12 +10,12 @@
             <nav aria-label="Navigasi utama">
                 <ul class="lm-nav__list">
                     @foreach ($cafe['nav'] as $n)
-                        <li><a href="{{ $n['href'] }}" data-spy>{{ $n['label'] }}</a></li>
+                        <li><a href="{{ $url($n['page'], $n['anchor']) }}" data-spy>{{ $n['label'] }}</a></li>
                     @endforeach
                 </ul>
             </nav>
             <div class="lm-nav__actions">
-                <a class="lm-icon-btn" href="#faq" data-faq-focus aria-label="Cari jawaban atau bertanya">
+                <a class="lm-icon-btn" href="{{ $url('home', '#faq') }}" data-faq-focus aria-label="Cari jawaban atau bertanya">
                     <svg class="i" aria-hidden="true"><use href="#i-search"/></svg>
                 </a>
                 <a class="lm-btn lm-btn--gold lm-btn--pill lm-btn--sm" href="{{ $wa($cafe['contact']['order_message']) }}" target="_blank" rel="noopener">Pesan Sekarang</a>

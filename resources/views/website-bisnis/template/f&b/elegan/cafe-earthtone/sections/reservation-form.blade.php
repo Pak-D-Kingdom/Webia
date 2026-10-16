@@ -1,17 +1,11 @@
 @php($b = $cafe['booking'])
-<dialog class="lm-modal" id="reservasi-modal" aria-labelledby="reservasi-title">
-    {{-- Statis: data dikirim lewat WhatsApp. JS juga memicu event "lm:reservation" (detail = data form) untuk backend. --}}
-    <form class="lm-modal__box" id="reservasi-form" data-wa="{{ $cafe['contact']['whatsapp'] }}" data-brand="{{ $cafe['brand']['title'] }}">
-        <header class="lm-modal__head">
-            <div>
-                <p class="lm-eyebrow">{{ $b['eyebrow'] }}</p>
-                <h2 class="lm-card__title" id="reservasi-title">{{ $b['title'] }}</h2>
-            </div>
-            <button class="lm-icon-btn" type="button" data-modal-close aria-label="Tutup"><svg class="i" aria-hidden="true"><use href="#i-close"/></svg></button>
-        </header>
+{{-- Statis: data dikirim lewat WhatsApp. JS juga memicu event "lm:reservation" (detail = data form) untuk backend. --}}
+<div class="lm-card lm-reserve__card">
+    <p class="lm-eyebrow">{{ $b['eyebrow'] }}</p>
+    <h2 class="lm-card__title">{{ $b['title'] }}</h2>
+    <p class="lm-muted">{{ $b['form_text'] }}</p>
 
-        <p class="lm-muted">{{ $b['modal_text'] }}</p>
-
+    <form class="lm-form" id="reservasi-form" data-wa="{{ $cafe['contact']['whatsapp'] }}" data-brand="{{ $cafe['brand']['title'] }}">
         <div class="lm-form__row">
             <label class="lm-field">Nama
                 <input type="text" name="nama" required maxlength="60" autocomplete="name">
@@ -45,5 +39,7 @@
         <button class="lm-btn lm-btn--gold" type="submit">
             <svg class="i" aria-hidden="true"><use href="#i-whatsapp"/></svg> Kirim via WhatsApp
         </button>
+
+        <div class="lm-form__status" role="status" hidden></div>
     </form>
-</dialog>
+</div>

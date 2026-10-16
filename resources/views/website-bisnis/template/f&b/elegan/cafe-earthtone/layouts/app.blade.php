@@ -26,7 +26,6 @@
     </main>
 
     @include("$v.partials.footer")
-    @include("$v.partials.reservation-modal")
 
     <script src="{{ asset($cafe['assets']['js']) }}" defer></script>
     @stack('scripts')

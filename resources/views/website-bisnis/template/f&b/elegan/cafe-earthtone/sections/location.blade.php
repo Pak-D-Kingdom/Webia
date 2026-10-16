@@ -5,8 +5,7 @@
     <address>{{ $cafe['contact']['address_full'] }}</address>
 
     <a class="lm-map" href="{{ $cafe['contact']['maps_url'] }}" target="_blank" rel="noopener" aria-label="{{ $l['cta'] }}">
-        <img src="{{ $img($l['map_image']) }}" alt="" loading="lazy">
-        <span class="lm-map__pin"><svg class="i" aria-hidden="true"><use href="#i-pin"/></svg>{{ $l['map_label'] }}</span>
+        <img src="{{ $img($l['map_image']) }}" alt="Peta lokasi {{ $cafe['brand']['title'] }}" loading="lazy">
     </a>
 
     <a class="lm-btn lm-btn--line lm-btn--xs" href="{{ $cafe['contact']['maps_url'] }}" target="_blank" rel="noopener">
