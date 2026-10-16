@@ -3969,7 +3969,7 @@ html {
 }
 
 .website-process-grid article:nth-child(3)::after {
-    background-image: url("/images/website-bisnis/galaksi4.png");
+    background-image: url("/images/website-bisnis/paket.png");
     width: 100px;
     height: 100px;
 }
@@ -3986,7 +3986,7 @@ html {
 }
 
 .website-process-grid article:nth-child(4)::after {
-    background-image: url("/images/website-bisnis/pencil.png");
+    background-image: url("/images/website-bisnis/confirmoder.png");
     width: 88px;
     height: 88px;
 }
@@ -4003,7 +4003,7 @@ html {
 }
 
 .website-process-grid article:nth-child(5)::after {
-    background-image: url("/images/website-bisnis/galaksi11.png");
+    background-image: url("/images/website-bisnis/payment.png");
     width: 108px;
     height: 108px;
 }
@@ -4020,14 +4020,31 @@ html {
 }
 
 .website-process-grid article:nth-child(6)::after {
-    background-image: url("/images/website-bisnis/stars2.png");
+    background-image: url("/images/website-bisnis/akun.png");
+    width: 92px;
+    height: 92px;
+}
+
+/* 07 — Konfirmasi Order: ungu + bintang */
+.website-process-grid article:nth-child(7) {
+    background: linear-gradient(
+        125deg,
+        #f2e7ff 0%,
+        #fff2fb 58%,
+        #e1efff 100%
+    );
+    border-color: #e2c4ff;
+}
+
+.website-process-grid article:nth-child(7)::after {
+    background-image: url("/images/website-bisnis/data1.png");
     width: 92px;
     height: 92px;
 }
 
 
-/* 07 — Konfirmasi Order: ungu + bintang */
-.website-process-grid article:nth-child(7) {
+/* 08 — Konfirmasi Order: ungu + bintang */
+.website-process-grid article:nth-child(8) {
     background: linear-gradient(
         125deg,
        #fefefe 0%
@@ -4037,7 +4054,7 @@ html {
     border-color: #e2c4ff;
 }
 
-.website-process-grid article:nth-child(7)::after {
+.website-process-grid article:nth-child(8)::after {
     background-image: url("/images/website-bisnis/aibot3.png");
     width: 92px;
     height: 92px;
@@ -4075,6 +4092,11 @@ html {
 }
 
 .website-process-grid article:nth-child(7) > span {
+    background: #e7d1ff;
+    color: #8729ce;
+}
+
+.website-process-grid article:nth-child(8) > span {
     background: #ffe6ef;
     color: #8729ce;
 }

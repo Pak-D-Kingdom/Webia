@@ -386,7 +386,7 @@
             <article class="process-step-card">
                 <div class="process-step-top">
                     <span class="process-step-number">03</span>
-                    <span class="process-step-icon">✦</span>
+                    <span class="process-step-icon">📦</span>
                 </div>
                 <h3>Pilih Paket</h3>
                 <p>Tentukan paket website dan fitur tambahan sesuai kebutuhan bisnis.</p>
@@ -412,20 +412,30 @@
                 <p>Selesaikan pembayaran sesuai metode dan ketentuan yang disepakati.</p>
             </article>
 
-            {{-- STEP 6 --}}
+                      {{-- STEP 6 --}}
             <article class="process-step-card">
                 <div class="process-step-top">
                     <span class="process-step-number">06</span>
-                    <span class="process-step-icon">✎</span>
+                    <span class="process-step-icon">👤</span>
                 </div>
-                <h3>Isi Data Bisnis</h3>
-                <p>Lengkapi profil bisnis, layanan, kontak, alamat, dan informasi pendukung website.</p>
+                <h3>Mendapatkan Personal Akun</h3>
+                <p>Dapatkan akses ke akun personal Anda untuk memantau pembayaran dan mengisi data website anda</p>
             </article>
 
             {{-- STEP 7 --}}
             <article class="process-step-card">
                 <div class="process-step-top">
                     <span class="process-step-number">07</span>
+                    <span class="process-step-icon">✎</span>
+                </div>
+                <h3>Isi Data Bisnis</h3>
+                <p>Lengkapi profil bisnis, layanan, kontak, alamat, dan informasi pendukung website.</p>
+            </article>
+
+            {{-- STEP 8 --}}
+            <article class="process-step-card">
+                <div class="process-step-top">
+                    <span class="process-step-number">08</span>
                     <span class="process-step-icon">✧</span>
                 </div>
                 <h3>Konfigurasi AI Chatbot</h3>
