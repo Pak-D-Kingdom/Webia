@@ -1,16 +1,12 @@
-
 <?php
 
 use Illuminate\Support\Facades\Route;
 
-// D-KREASI — Homepage utama
-Route::get('/', function () {
-    return view('home.index');
-})->name('home');
+// WEBIA — Homepage utama
+Route::view('/', 'website-bisnis.index')->name('home');
 
-Route::view('/webia', 'website-bisnis.index')
-    ->name('webia.index');
+Route::view('/koleksi', 'website-bisnis.collections.index')->name('collections');
 
-Route::view('/webia/koleksi', 'website-bisnis.collections.index')
-    ->name('webia.collections');
-
+// Kompatibilitas URL lama (/webia*) — redirect permanen, query string dipertahankan.
+Route::get('/webia', fn () => redirect()->route('home', [], 301));
+Route::get('/webia/koleksi', fn () => redirect()->route('collections', request()->query(), 301));

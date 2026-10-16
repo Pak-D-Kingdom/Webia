@@ -99,7 +99,7 @@
 
         <div class="webia-category-grid">
             {{-- 01. F&B --}}
-            <a class="webia-category-card category-fnb" href="{{ route('webia.collections', ['category' => 'fnb']) }}">
+            <a class="webia-category-card category-fnb" href="{{ route('collections', ['category' => 'fnb']) }}">
                 <span class="webia-category-symbol">☕</span>
                 <span class="webia-category-count">01 · F&B</span>
                 <strong>F&B</strong>
@@ -109,7 +109,7 @@
 
             {{-- 02. BEAUTY --}}
             <a class="webia-category-card category-beauty"
-                href="{{ route('webia.collections', ['category' => 'beauty']) }}">
+                href="{{ route('collections', ['category' => 'beauty']) }}">
                 <span class="webia-category-symbol">✿</span>
                 <span class="webia-category-count">02 · BEAUTY</span>
                 <strong>Beauty</strong>
@@ -119,7 +119,7 @@
 
             {{-- 03. AUTOMOTIVE --}}
             <a class="webia-category-card category-auto"
-                href="{{ route('webia.collections', ['category' => 'automotive']) }}">
+                href="{{ route('collections', ['category' => 'automotive']) }}">
                 <span class="webia-category-symbol">✦</span>
                 <span class="webia-category-count">03 · AUTOMOTIVE</span>
                 <strong>Automotive</strong>
@@ -129,7 +129,7 @@
 
             {{-- 04. COMPANY --}}
             <a class="webia-category-card category-company"
-                href="{{ route('webia.collections', ['category' => 'company']) }}">
+                href="{{ route('collections', ['category' => 'company']) }}">
                 <span class="webia-category-symbol">▧</span>
                 <span class="webia-category-count">04 · COMPANY</span>
                 <strong>Company</strong>
@@ -139,7 +139,7 @@
 
             {{-- 05. PROPERTY --}}
             <a class="webia-category-card category-property"
-                href="{{ route('webia.collections', ['category' => 'property']) }}">
+                href="{{ route('collections', ['category' => 'property']) }}">
                 <span class="webia-category-symbol">⌂</span>
                 <span class="webia-category-count">05 · PROPERTY</span>
                 <strong>Property</strong>
@@ -149,7 +149,7 @@
 
             {{-- 06. EDUCATION --}}
             <a class="webia-category-card category-education"
-                href="{{ route('webia.collections', ['category' => 'education']) }}">
+                href="{{ route('collections', ['category' => 'education']) }}">
                 <span class="webia-category-symbol">✎</span>
                 <span class="webia-category-count">06 · EDUCATION</span>
                 <strong>Education</strong>
@@ -159,7 +159,7 @@
 
             {{-- 07. PROFESSIONAL SERVICE --}}
             <a class="webia-category-card category-professional"
-                href="{{ route('webia.collections', ['category' => 'professional-service']) }}">
+                href="{{ route('collections', ['category' => 'professional-service']) }}">
                 <span class="webia-category-symbol">◇</span>
                 <span class="webia-category-count">07 · PROFESSIONAL SERVICE</span>
                 <strong>Professional Service</strong>
@@ -169,7 +169,7 @@
 
             {{-- 08. PERSONAL BRAND --}}
             <a class="webia-category-card category-personal"
-                href="{{ route('webia.collections', ['category' => 'personal-brand']) }}">
+                href="{{ route('collections', ['category' => 'personal-brand']) }}">
                 <span class="webia-category-symbol">✧</span>
                 <span class="webia-category-count">08 · PERSONAL BRAND</span>
                 <strong>Personal Brand</strong>
@@ -179,7 +179,7 @@
 
             {{-- 09. RETAIL --}}
             <a class="webia-category-card category-retail"
-                href="{{ route('webia.collections', ['category' => 'retail']) }}">
+                href="{{ route('collections', ['category' => 'retail']) }}">
                 <span class="webia-category-symbol">▣</span>
                 <span class="webia-category-count">09 · RETAIL</span>
                 <strong>Retail</strong>
@@ -189,7 +189,7 @@
 
             {{-- 10. HEALTHCARE --}}
             <a class="webia-category-card category-healthcare"
-                href="{{ route('webia.collections', ['category' => 'healthcare']) }}">
+                href="{{ route('collections', ['category' => 'healthcare']) }}">
                 <span class="webia-category-symbol">✚</span>
                 <span class="webia-category-count">10 · HEALTHCARE</span>
                 <strong>Healthcare</strong>
@@ -200,7 +200,7 @@
 
         <div class="webia-discovery-footer">
             <span>Belum menemukan kategori yang pas? Masih banyak kemungkinan ✨</span>
-            <a class="website-button website-button-secondary" href="{{ route('webia.collections') }}">Jelajahi Semua
+            <a class="website-button website-button-secondary" href="{{ route('collections') }}">Jelajahi Semua
                 Kategori <span>↗</span></a>
         </div>
     </section>
@@ -213,12 +213,12 @@
                 <h2>Template yang Bikin <span>Brand Makin Bersinar.</span></h2>
                 <p>Intip beberapa gaya desain. Temukan favoritmu di galeri koleksi WEBIA.</p>
             </div>
-            <a class="webia-text-link" href="{{ route('webia.collections') }}">Lihat Koleksi Kami <span>↗</span></a>
+            <a class="webia-text-link" href="{{ route('collections') }}">Lihat Koleksi Kami <span>↗</span></a>
         </div>
         <div class="webia-featured-grid">
             <article class="webia-template-card">
                 <a class="webia-template-preview preview-cafe"
-                    href="{{ route('webia.collections', ['category' => 'fnb']) }}" aria-label="Lihat template cafe">
+                    href="{{ route('collections', ['category' => 'fnb']) }}" aria-label="Lihat template cafe">
                     <div class="webia-preview-browser"><i></i><i></i><i></i><span>littlecorner.cafe</span></div>
                     <div class="webia-preview-content"><small>YOUR DAILY HAPPY PLACE</small><b>Good coffee.<br>Good
                             mood.</b><span></span>
@@ -233,7 +233,7 @@
             </article>
             <article class="webia-template-card">
                 <a class="webia-template-preview preview-beauty"
-                    href="{{ route('webia.collections', ['category' => 'beauty']) }}" aria-label="Lihat template beauty">
+                    href="{{ route('collections', ['category' => 'beauty']) }}" aria-label="Lihat template beauty">
                     <div class="webia-preview-browser"><i></i><i></i><i></i><span>maison.beauty</span></div>
                     <div class="webia-preview-content"><small>YOUR BEAUTY RITUAL</small><b>Feel good<br>in your
                             skin.</b><span></span>
@@ -248,7 +248,7 @@
             </article>
             <article class="webia-template-card">
                 <a class="webia-template-preview preview-company"
-                    href="{{ route('webia.collections', ['category' => 'company']) }}"
+                    href="{{ route('collections', ['category' => 'company']) }}"
                     aria-label="Lihat template company">
                     <div class="webia-preview-browser"><i></i><i></i><i></i><span>northstar.co</span></div>
                     <div class="webia-preview-content"><small>BUILT FOR WHAT'S NEXT</small><b>Ideas
@@ -264,7 +264,7 @@
             </article>
             <article class="webia-template-card webia-template-card-automotive">
                 <a class="webia-template-preview preview-automotive"
-                    href="{{ route('webia.collections', ['category' => 'automotive']) }}"
+                    href="{{ route('collections', ['category' => 'automotive']) }}"
                     aria-label="Lihat template Velocity Garage">
 
                     <div class="webia-preview-browser">
@@ -295,7 +295,7 @@
             </article>
         </div>
         <div class="webia-featured-bottom"><span>✦ Koleksi akan terus bertambah seiring berkembangnya semesta
-                WEBIA.</span><a href="{{ route('webia.collections') }}">Lihat semua template <span>→</span></a></div>
+                WEBIA.</span><a href="{{ route('collections') }}">Lihat semua template <span>→</span></a></div>
     </section>
 
 

@@ -1,5 +1,6 @@
+{{-- shortcut: href="#" sementara, ganti URL eksternal D-KREASI saat domain tersedia --}}
 <a
-    href="{{ url('/') }}"
+    href="#"
     class="webia-portal"
     aria-label="Kembali ke D-KREASI Homebase"
 >
