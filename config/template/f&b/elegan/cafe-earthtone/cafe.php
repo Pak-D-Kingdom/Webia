@@ -35,7 +35,6 @@ return [
         'email'         => 'hello@thelumierecafe.id',
         'open_text'     => 'Buka setiap hari 07.00 - 22.00',
         'maps_url'      => 'https://www.google.com/maps/search/?api=1&query=Jl.+Melati+No.+12+Surabaya',
-        'order_message' => 'Halo The Lumière, saya ingin memesan.',
         'chat_message'  => 'Halo The Lumière, saya ingin bertanya tentang menu dan promo.',
     ],
 
@@ -48,22 +47,22 @@ return [
 
     // Navigasi atas (navbar). page = nama halaman, anchor = bagian di halaman itu.
     'nav' => [
-        ['label' => 'Beranda',      'page' => 'home', 'anchor' => '#beranda'],
-        ['label' => 'Tentang Kami', 'page' => 'home', 'anchor' => '#tentang'],
-        ['label' => 'Promo',        'page' => 'home', 'anchor' => '#promo'],
-        ['label' => 'Lokasi',       'page' => 'home', 'anchor' => '#lokasi'],
-        ['label' => 'FAQ',          'page' => 'home', 'anchor' => '#faq'],
+        ['label' => 'Beranda', 'page' => 'home', 'anchor' => '#beranda'],
+        ['label' => 'Layanan', 'page' => 'home', 'anchor' => '#layanan'],
+        ['label' => 'Promo',   'page' => 'home', 'anchor' => '#promo'],
+        ['label' => 'Lokasi',  'page' => 'home', 'anchor' => '#lokasi'],
+        ['label' => 'FAQ',     'page' => 'home', 'anchor' => '#faq'],
     ],
 
     // Quick Links di footer
     'footer_nav' => [
-        ['label' => 'Beranda',      'page' => 'home',      'anchor' => '#beranda'],
-        ['label' => 'Menu',         'page' => 'menu',      'anchor' => ''],
-        ['label' => 'Tentang Kami', 'page' => 'home',      'anchor' => '#tentang'],
-        ['label' => 'Promo',        'page' => 'home',      'anchor' => '#promo'],
-        ['label' => 'Lokasi',       'page' => 'home',      'anchor' => '#lokasi'],
-        ['label' => 'Reservasi',    'page' => 'reservasi', 'anchor' => ''],
-        ['label' => 'FAQ',          'page' => 'home',      'anchor' => '#faq'],
+        ['label' => 'Beranda',   'page' => 'home',      'anchor' => '#beranda'],
+        ['label' => 'Menu',      'page' => 'menu',      'anchor' => ''],
+        ['label' => 'Layanan',   'page' => 'home',      'anchor' => '#layanan'],
+        ['label' => 'Promo',     'page' => 'home',      'anchor' => '#promo'],
+        ['label' => 'Lokasi',    'page' => 'home',      'anchor' => '#lokasi'],
+        ['label' => 'Reservasi', 'page' => 'reservasi', 'anchor' => ''],
+        ['label' => 'FAQ',       'page' => 'home',      'anchor' => '#faq'],
     ],
 
     // Hero. Panah kiri/kanan muncul otomatis bila slide lebih dari 1
@@ -86,34 +85,63 @@ return [
         ['icon' => 'parking', 'title' => 'Area Parkir Luas', 'text' => 'Nyaman & aman'],
     ],
 
-    // Menu: beranda menampilkan home_limit item pertama; halaman Menu menampilkan semuanya.
+    /*
+    | Menu
+    |   featured => true  : tampil di beranda (5 menu sesuai desain)
+    |   category          : dipakai filter di halaman Menu (kunci harus ada di 'categories')
+    |   price             : angka rupiah tanpa titik
+    |   desc              : keterangan singkat (tampil di halaman Menu)
+    | Tambah menu = salin satu baris, lalu taruh fotonya di folder images.
+    | (Foto menu selain 5 yang featured masih foto contoh: ganti dengan foto asli.)
+    */
     'menu' => [
-        'eyebrow'    => 'Our Menu',
-        'title'      => 'Menu Pilihan Kami',
-        'text'       => 'Rasakan kelezatan setiap hidangan yang dibuat dengan bahan terbaik dan resep istimewa.',
-        'home_limit' => 5,
-        // price: angka rupiah tanpa titik
+        'eyebrow' => 'Our Menu',
+        'title'   => 'Menu Pilihan Kami',
+        'text'    => 'Rasakan kelezatan setiap hidangan yang dibuat dengan bahan terbaik dan resep istimewa.',
+        'categories' => [           // hanya tampil di halaman Menu (label = tab, title/text = judul grup)
+            'kopi'    => ['label' => 'Kopi',    'title' => 'Kopi Pilihan',   'text' => 'Diseduh dari biji pilihan, dari espresso klasik hingga kopi susu.'],
+            'makanan' => ['label' => 'Makanan', 'title' => 'Hidangan Utama', 'text' => 'Hidangan hangat yang dimasak segar, dari steak hingga pasta.'],
+            'snack'   => ['label' => 'Snack',   'title' => 'Snack & Dessert', 'text' => 'Camilan manis untuk menutup momen Anda.'],
+        ],
         'items' => [
-            ['name' => 'Espresso',            'price' => 25000, 'image' => 'espresso.jpg'],
-            ['name' => 'Latte',               'price' => 32000, 'image' => 'latte.jpg'],
-            ['name' => 'Beef Steak',          'price' => 85000, 'image' => 'beef-steak.jpg'],
-            ['name' => 'Spaghetti Carbonara', 'price' => 58000, 'image' => 'spaghetti-carbonara.jpg'],
-            ['name' => 'Chocolate Lava Cake', 'price' => 45000, 'image' => 'chocolate-lava-cake.jpg'],
+            // Kopi
+            ['name' => 'Espresso',            'price' => 25000, 'category' => 'kopi',    'image' => 'espresso.jpg', 'desc' => 'Shot kopi pekat dengan crema tebal dan aroma kuat.',            'featured' => true],
+            ['name' => 'Americano',           'price' => 28000, 'category' => 'kopi',    'image' => 'americano.jpg', 'desc' => 'Espresso dengan air panas, ringan dan bersih.'],
+            ['name' => 'Cappuccino',          'price' => 32000, 'category' => 'kopi',    'image' => 'cappuccino.jpg', 'desc' => 'Espresso, susu panas, dan busa lembut berlapis.'],
+            ['name' => 'Latte',               'price' => 32000, 'category' => 'kopi',    'image' => 'latte.jpg', 'desc' => 'Kopi susu lembut dengan latte art khas kami.',               'featured' => true],
+            ['name' => 'Flat White',          'price' => 34000, 'category' => 'kopi',    'image' => 'flat-white.jpg', 'desc' => 'Espresso ganda dengan susu mikro-foam yang halus.'],
+            ['name' => 'Es Kopi Susu',        'price' => 30000, 'category' => 'kopi',    'image' => 'es-kopi-susu.jpg', 'desc' => 'Kopi susu dingin dengan es, segar dan manis pas.'],
+            // Makanan
+            ['name' => 'Beef Steak',          'price' => 85000, 'category' => 'makanan', 'image' => 'beef-steak.jpg', 'desc' => 'Daging sapi panggang juicy dengan saus dan sayuran.',          'featured' => true],
+            ['name' => 'Chicken Steak',       'price' => 65000, 'category' => 'makanan', 'image' => 'chicken-steak.jpg', 'desc' => 'Ayam panggang empuk dengan saus dan sayuran segar.'],
+            ['name' => 'Spaghetti Carbonara', 'price' => 58000, 'category' => 'makanan', 'image' => 'spaghetti-carbonara.jpg', 'desc' => 'Pasta creamy dengan telur, keju, dan taburan lada.', 'featured' => true],
+            ['name' => 'Aglio Olio',          'price' => 52000, 'category' => 'makanan', 'image' => 'aglio-olio.jpg', 'desc' => 'Pasta bawang putih, cabai, dan minyak zaitun.'],
+            // Snack
+            ['name' => 'Chocolate Lava Cake', 'price' => 45000, 'category' => 'snack',   'image' => 'chocolate-lava-cake.jpg', 'desc' => 'Kue cokelat hangat dengan lelehan cokelat di tengahnya.', 'featured' => true],
+            ['name' => 'Chocolate Cake',      'price' => 38000, 'category' => 'snack',   'image' => 'chocolate-cake.jpg', 'desc' => 'Kue cokelat lembut berlapis krim cokelat.'],
+            ['name' => 'Tiramisu',            'price' => 42000, 'category' => 'snack',   'image' => 'tiramisu.jpg', 'desc' => 'Dessert klasik berlapis kopi, krim mascarpone, dan kakao.'],
         ],
     ],
 
     /*
-    | PROMO — ada dua tempat tampil (kartu di samping menu, banner di bawah).
+    | PROMO — dua tempat tampil: kartu (di samping menu) dan banner (di bawah).
     | Masing-masing bisa berisi 1, 2, 5, 9, atau lebih promo. Tambah promo = salin satu blok di 'items'.
-    |   mode 'slider' → promo tampil bergantian (otomatis, titik navigasi muncul bila lebih dari 1)
-    |   mode 'grid'   → semua promo tampil bersamaan
-    |   interval      → jeda pergantian (ms), hanya untuk slider
+    |
+    |   mode      'slider' → bergantian (otomatis, titik navigasi muncul bila ada yang tersembunyi)
+    |             'grid'   → semua promo tampil bersamaan
+    |   per_view  (slider) jumlah promo yang tampil sekaligus: 1, 2, 3, 5, ...
+    |             otomatis berkurang di layar sempit supaya kartu tetap terbaca
+    |   min_width lebar minimal satu kartu promo (px); dipakai untuk menghitung muat berapa kartu
+    |   interval  jeda pergantian (ms), hanya untuk slider
     | badge boleh dihapus bila tidak dipakai.
     */
+    // (promo ke-2 dan seterusnya adalah CONTOH: ubah atau hapus sesuai promo asli)
     'promo_card' => [
-        'mode'     => 'slider',
-        'interval' => 5000,
-        'items'    => [
+        'mode'      => 'slider',   // bergantian, 1 per tampil (di samping menu)
+        'per_view'  => 1,
+        'min_width' => 320,
+        'interval'  => 5000,
+        'items'     => [
             [
                 'eyebrow'  => 'Special Promo',
                 'title'    => 'Buy 1 Get 1 Free',
@@ -122,13 +150,39 @@ return [
                 'badge'    => ['Beli 1', 'Gratis 1'],
                 'image'    => 'promo-drinks.jpg',
             ],
+            [
+                'eyebrow'  => 'Special Promo',
+                'title'    => 'Free Dessert',
+                'subtitle' => 'untuk setiap menu utama',
+                'period'   => 'Setiap akhir pekan',
+                'badge'    => ['Gratis', 'Dessert'],
+                'image'    => 'promo-dessert.jpg',
+            ],
+            [
+                'eyebrow'  => 'Special Promo',
+                'title'    => 'Paket Berdua',
+                'subtitle' => 'Menu utama + 2 minuman',
+                'period'   => 'Senin - Jumat',
+                'badge'    => ['Hemat', 'Berdua'],
+                'image'    => 'promo-steak.jpg',
+            ],
+            [
+                'eyebrow'  => 'Special Promo',
+                'title'    => 'Happy Hour',
+                'subtitle' => 'untuk semua minuman kopi',
+                'period'   => 'Setiap hari, 14.00 - 17.00',
+                'badge'    => ['Happy', 'Hour'],
+                'image'    => 'promo-coffee.jpg',
+            ],
         ],
     ],
 
     'promo_banner' => [
-        'mode'     => 'slider',
-        'interval' => 6000,
-        'items'    => [
+        'mode'      => 'slider',   // bergantian, 2 tampil sekaligus (di kolom kiri, FAQ tetap di kanan)
+        'per_view'  => 2,
+        'min_width' => 330,
+        'interval'  => 6000,
+        'items'     => [
             [
                 'eyebrow' => 'Promo Spesial',
                 'title'   => 'Diskon 20% untuk Menu Makanan',
@@ -136,16 +190,45 @@ return [
                 'script'  => ['Good Food,', 'Good Mood'],
                 'image'   => 'promo-cake.jpg',
             ],
+            [
+                'eyebrow' => 'Promo Spesial',
+                'title'   => 'Diskon 15% untuk Semua Menu Pasta',
+                'text'    => 'Berlaku Senin - Kamis',
+                'script'  => ['Fresh', 'Pasta'],
+                'image'   => 'promo-pasta.jpg',
+            ],
+            [
+                'eyebrow' => 'Promo Spesial',
+                'title'   => 'Kopi Spesial Hanya 25 Ribu',
+                'text'    => 'Setiap hari, 14.00 - 17.00',
+                'script'  => ['Coffee', 'Time'],
+                'image'   => 'promo-coffee.jpg',
+            ],
+            [
+                'eyebrow' => 'Promo Spesial',
+                'title'   => 'Gratis Tiramisu untuk Paket Berdua',
+                'text'    => 'Berlaku Jumat - Minggu',
+                'script'  => ['Sweet', 'Moments'],
+                'image'   => 'promo-dessert.jpg',
+            ],
         ],
     ],
 
-    'about' => [
-        'eyebrow' => 'About Us',
-        'title'   => 'Tentang Kami',
-        'text'    => 'The Lumière Café & Kitchen adalah tempat di mana rasa, suasana, dan kebersamaan bertemu. Kami percaya bahwa makanan yang baik dapat menciptakan momen indah dalam hidup.',
-        'cta'     => 'Pelajari Lebih Lanjut',
-        'url'     => '#tentang',
-        'image'   => 'about.jpg',
+    // Produk & Layanan (tambah/ubah kartu di 'items'; image = file di folder images)
+    'services' => [
+        'eyebrow' => 'Products & Services',
+        'title'   => 'Produk & Layanan Kami',
+        'text'    => 'Pilihan layanan untuk setiap kebutuhan, dari bersantap santai hingga acara spesial.',
+        'items'   => [
+            ['title' => 'Dine In',       'image' => 'dine-in.jpg',
+             'text'  => 'Nikmati hidangan dalam suasana hangat dan elegan bersama keluarga dan sahabat.'],
+            ['title' => 'Take Away',     'image' => 'take-away.jpg',
+             'text'  => 'Bawa pulang menu favorit Anda, dikemas rapi dan siap dinikmati di mana saja.'],
+            ['title' => 'Catering',      'image' => 'catering.jpg',
+             'text'  => 'Hidangan untuk acara kantor, arisan, dan perayaan dengan porsi sesuai kebutuhan.'],
+            ['title' => 'Private Event', 'image' => 'private-event.jpg',
+             'text'  => 'Ruang dan menu khusus untuk ulang tahun, pertemuan, atau acara privat Anda.'],
+        ],
     ],
 
     // days: 0 = Minggu ... 6 = Sabtu (dipakai JS untuk menandai hari ini)
@@ -162,24 +245,31 @@ return [
     'location' => [
         'eyebrow'   => 'Our Location',
         'title'     => 'Lokasi Kami',
-        'map_image' => 'map.jpg',
+        'embed_url' => 'https://www.google.com/maps?q=Jl.+Melati+No.+12+Surabaya&output=embed',
         'cta'       => 'Lihat di Google Maps',
     ],
 
+    // Dipakai di halaman Reservasi
     'booking' => [
-        'eyebrow'    => 'Booking',
-        'title'      => 'Reservasi Meja',
-        'text'       => 'Reservasi meja sekarang untuk pengalaman bersantap yang lebih nyaman.',
-        'cta'        => 'Reservasi Sekarang',
-        'form_text'  => 'Isi data berikut. Reservasi Anda akan dikirim ke WhatsApp kami untuk dikonfirmasi.',
-        'max_guests' => 12,
+        'eyebrow'       => 'Booking',
+        'title'         => 'Reservasi Meja',
+        'text'          => 'Reservasi meja sekarang untuk pengalaman bersantap yang lebih nyaman.',
+        'form_text'     => 'Isi data berikut. Reservasi Anda akan dikirim ke WhatsApp kami untuk dikonfirmasi.',
+        'max_guests'    => 12,
+        'nav_cta'       => 'Reservasi Sekarang', // teks tombol di navbar
+        'image'         => 'reservasi.jpg',
+        'steps_title'   => 'Cara Reservasi',
+        'steps'         => [
+            ['title' => 'Isi data reservasi',  'text' => 'Nama, nomor WhatsApp, tanggal, jam, dan jumlah tamu.'],
+            ['title' => 'Kirim via WhatsApp',  'text' => 'Data Anda otomatis tersusun dalam pesan WhatsApp.'],
+            ['title' => 'Tunggu konfirmasi',   'text' => 'Tim kami akan mengonfirmasi ketersediaan meja Anda.'],
+        ],
+        'contact_title' => 'Butuh Bantuan?',
     ],
 
+    // Tombol WhatsApp bulat (melayang di pojok kanan bawah)
     'whatsapp' => [
-        'eyebrow' => 'Chat via WhatsApp',
-        'title'   => 'Hubungi Kami',
-        'text'    => 'Tanya menu, promo, atau reservasi melalui WhatsApp.',
-        'cta'     => 'Chat Sekarang',
+        'label' => 'Chat via WhatsApp',
     ],
 
     'faq' => [

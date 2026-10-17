@@ -46,3 +46,21 @@ Route::prefix('webia/template/fnb/elegan')->name('webia.fnb.elegan.')->group(fun
     Route::get('/menu', $elegan('menu'))->name('menu');
     Route::get('/reservasi', $elegan('reservasi'))->name('reservasi');
 });
+
+$vintage = fn (string $page) => fn () => view(
+    "website-bisnis.template.f&b.vintage.cafe-earthtone.{$page}",
+    ['cafe' => config('template.f&b.vintage.cafe-earthtone.cafe')]
+);
+
+Route::prefix('webia/template/fnb/vintage')->name('webia.fnb.vintage.')->group(function () use ($vintage) {
+    Route::get('/', $vintage('index'))->name('home');
+    Route::get('/menu', $vintage('menu'))->name('menu');
+    Route::get('/reservasi', $vintage('reservasi'))->name('reservasi');
+});
+
+// Route::view(
+//     '/template/company/elegan/company-profile-terracotta',
+//     'website-bisnis.template.company.elegan.company-profile-terracotta.index'
+// )->name('template.company.elegan.company-profile-terracotta');
+Route::view('/webia/template/company/elegan/company-profile-terracotta',
+    'website-bisnis.template.company.elegan.company-profile-terracotta.index');

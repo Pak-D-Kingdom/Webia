@@ -58,83 +58,185 @@
     onScroll();
     if (toTop) toTop.addEventListener('click', () => scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' }));
 
-    /* 3. Slider generik: dipakai hero (panah) dan promo (titik). 1 slide = statis */
-    const slider = (root, { slides, interval = 6500, dots = false, label = 'slide' }) => {
-        if (slides.length < 2) return null;
+    /* 3. Hero: slider fade dengan panah. 1 slide = statis */
+    const hero = $('#beranda');
+    if (hero) {
+        const slides = $$('.lm-slide', hero);
+        if (slides.length > 1) {
+            let idx = 0;
+            let timer = null;
+            const go = (n) => {
+                idx = (n + slides.length) % slides.length;
+                slides.forEach((sl, i) => {
+                    sl.classList.toggle('is-active', i === idx);
+                    sl.setAttribute('aria-hidden', String(i !== idx));
+                });
+            };
+            const stop = () => clearInterval(timer);
+            const play = () => { stop(); if (!reduceMotion) timer = setInterval(() => go(idx + 1), 6500); };
+
+            $$('[data-slide]', hero).forEach((btn) => btn.addEventListener('click', () => {
+                go(idx + (btn.dataset.slide === 'next' ? 1 : -1));
+                play();
+            }));
+            hero.addEventListener('mouseenter', stop);
+            hero.addEventListener('mouseleave', play);
+            hero.addEventListener('focusin', stop);
+            hero.addEventListener('focusout', play);
+
+            let x0 = null;
+            hero.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+            hero.addEventListener('touchend', (e) => {
+                if (x0 === null) return;
+                const dx = e.changedTouches[0].clientX - x0;
+                x0 = null;
+                if (Math.abs(dx) > 50) { go(idx + (dx < 0 ? 1 : -1)); play(); }
+            });
+            go(0);
+            play();
+        }
+    }
+
+    /* 4. Promo mode "slider": tampil bergantian, 1..N promo sekaligus (data-per-view).
+          Jumlah sekaligus otomatis berkurang bila lebar zona tidak muat (data-min-width).
+          Mode "grid": semua tampil bersamaan, murni CSS. */
+    $$('.lm-promos[data-mode="slider"]').forEach((zone) => {
+        const track = $('.lm-promos__track', zone);
+        const items = [...track.children];
+        const wanted = Math.max(1, Number(zone.dataset.perView) || 1);
+        const minW = Number(zone.dataset.minWidth) || 320;
+        const interval = Number(zone.dataset.interval) || 6000;
+        const gap = 16;
+        let pv = 1;
+        let max = 0;
         let idx = 0;
         let timer = null;
-        const dotBtns = [];
+        let dots = null;
 
-        const go = (n) => {
-            idx = (n + slides.length) % slides.length;
-            slides.forEach((sl, i) => {
-                const on = i === idx;
-                sl.classList.toggle('is-active', on);
-                sl.setAttribute('aria-hidden', String(!on));
-            });
-            dotBtns.forEach((b, i) => b.setAttribute('aria-current', String(i === idx)));
+        const render = () => {
+            zone.style.setProperty('--pv', pv);
+            zone.style.setProperty('--idx', idx);
+            if (dots) [...dots.children].forEach((b, i) => b.setAttribute('aria-current', String(i === idx)));
+            items.forEach((el, i) => el.setAttribute('aria-hidden', String(i < idx || i >= idx + pv)));
         };
+        const go = (n) => { idx = n > max ? 0 : (n < 0 ? max : n); render(); };
         const stop = () => clearInterval(timer);
-        const play = () => {
-            stop();
-            if (!reduceMotion) timer = setInterval(() => go(idx + 1), interval);
+        const play = () => { stop(); if (!reduceMotion && max > 0) timer = setInterval(() => go(idx + 1), interval); };
+
+        const layout = () => {
+            const fit = Math.max(1, Math.floor((zone.clientWidth + gap) / (minW + gap)));
+            pv = Math.min(wanted, fit, items.length);
+            max = items.length - pv;
+            idx = Math.min(idx, max);
+            if (dots) dots.remove();
+            dots = null;
+            if (max > 0) {
+                dots = document.createElement('div');
+                dots.className = 'lm-dots';
+                for (let i = 0; i <= max; i++) {
+                    const b = document.createElement('button');
+                    b.type = 'button';
+                    b.setAttribute('aria-label', `Tampilkan promo ${i + 1}`);
+                    b.addEventListener('click', () => { go(i); play(); });
+                    dots.append(b);
+                }
+                zone.append(dots);
+            }
+            render(); // menerapkan --pv dulu, baru ukur lebar kartu
+            zone.dataset.compact = String(items[0].getBoundingClientRect().width < 480);
+            play();
         };
 
-        if (dots) {
-            const wrap = document.createElement('div');
-            wrap.className = 'lm-dots';
-            slides.forEach((_, i) => {
-                const b = document.createElement('button');
-                b.type = 'button';
-                b.setAttribute('aria-label', `Tampilkan ${label} ${i + 1}`);
-                b.addEventListener('click', () => { go(i); play(); });
-                wrap.append(b);
-                dotBtns.push(b);
-            });
-            root.append(wrap);
-        }
-
-        root.addEventListener('mouseenter', stop);
-        root.addEventListener('mouseleave', play);
-        root.addEventListener('focusin', stop);
-        root.addEventListener('focusout', play);
-
+        zone.addEventListener('mouseenter', stop);
+        zone.addEventListener('mouseleave', play);
+        zone.addEventListener('focusin', stop);
+        zone.addEventListener('focusout', play);
         let x0 = null;
-        root.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });
-        root.addEventListener('touchend', (e) => {
-            if (x0 === null) return;
+        zone.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+        zone.addEventListener('touchend', (e) => {
+            if (x0 === null || max === 0) return;
             const dx = e.changedTouches[0].clientX - x0;
             x0 = null;
             if (Math.abs(dx) > 50) { go(idx + (dx < 0 ? 1 : -1)); play(); }
         });
 
-        go(0);
-        play();
-        return { go: (n) => { go(n); play(); }, next: () => { go(idx + 1); play(); }, prev: () => { go(idx - 1); play(); } };
-    };
-
-    // Hero: panah kiri/kanan
-    const hero = $('#beranda');
-    if (hero) {
-        const ctl = slider(hero, { slides: $$('.lm-slide', hero) });
-        if (ctl) $$('[data-slide]', hero).forEach((btn) => btn.addEventListener('click', () => (btn.dataset.slide === 'next' ? ctl.next() : ctl.prev())));
-    }
-
-    // Promo: mode "slider" = bergantian (otomatis + titik). Mode "grid" = tampil bersamaan, tanpa JS.
-    $$('.lm-promos[data-mode="slider"]').forEach((zone) => {
-        slider(zone, {
-            slides: $$(':scope > .lm-promo, :scope > .lm-banner', zone),
-            interval: Number(zone.dataset.interval) || 6000,
-            dots: true,
-            label: 'promo',
-        });
+        if ('ResizeObserver' in window) {
+            let lastW = -1;
+            new ResizeObserver(() => {
+                const w = Math.round(zone.clientWidth);
+                if (w !== lastW) { lastW = w; layout(); }
+            }).observe(zone);
+        } else {
+            layout();
+            addEventListener('resize', layout);
+        }
     });
+
+    // Mode grid: hanya perlu menandai kartu sempit
+    $$('.lm-promos[data-mode="grid"]').forEach((zone) => {
+        const mark = () => {
+            const first = $('.lm-promos__track > *', zone);
+            if (first) zone.dataset.compact = String(first.getBoundingClientRect().width < 480);
+        };
+        if ('ResizeObserver' in window) new ResizeObserver(mark).observe(zone);
+        else { mark(); addEventListener('resize', mark); }
+    });
+
+    /* 4b. Halaman Menu: filter kategori (menampilkan/menyembunyikan grup). Bisa dibuka langsung: /menu#kopi */
+    const groups = $$('[data-group]');
+    if (groups.length) {
+        const tabs = $$('[data-filter]');
+        const bar = $('.lm-tabsbar');
+        const navEl = $('#navbar');
+
+        const apply = (cat) => {
+            groups.forEach((g) => { g.hidden = !(cat === 'all' || g.dataset.group === cat); });
+            tabs.forEach((t) => {
+                const active = t.dataset.filter === cat;
+                t.classList.toggle('is-active', active);
+                t.setAttribute('aria-pressed', String(active));
+            });
+        };
+
+        // Gulir otomatis: judul grup + kartu menu langsung terlihat tepat di bawah navbar dan tab
+        const showMenu = (instant) => {
+            const first = groups.find((g) => !g.hidden);
+            if (!first) return;
+            const offset = (navEl ? navEl.offsetHeight : 0) + (bar ? bar.offsetHeight : 0) + 24;
+            const y = first.getBoundingClientRect().top + window.pageYOffset - offset;
+            scrollTo({ top: Math.max(0, y), behavior: (instant || reduceMotion) ? 'auto' : 'smooth' });
+        };
+
+        tabs.forEach((t) => t.addEventListener('click', () => {
+            apply(t.dataset.filter);
+            history.replaceState(null, '', t.dataset.filter === 'all' ? location.pathname : `#${t.dataset.filter}`);
+            showMenu(false);
+        }));
+
+        const fromHash = () => {
+            const h = location.hash.slice(1);
+            if (tabs.some((t) => t.dataset.filter === h)) { apply(h); showMenu(true); }
+        };
+        fromHash();
+        addEventListener('hashchange', fromHash);
+    }
 
     /* 5. Jam operasional: tandai hari ini */
     const today = new Date().getDay();
     $$('.lm-hours__table tr[data-days]').forEach((tr) => {
         tr.classList.toggle('is-today', tr.dataset.days.split(',').map(Number).includes(today));
     });
+
+    /* 5b. Peta lokasi: terkunci sampai diklik/diketuk (agar tidak menangkap scroll halaman) */
+    const map = $('[data-map]');
+    if (map) {
+        const lock = $('.lm-map__lock', map);
+        const unlock = () => map.classList.add('is-active');
+        const relock = () => map.classList.remove('is-active');
+        lock.addEventListener('click', unlock);
+        map.addEventListener('mouseleave', relock);
+        document.addEventListener('touchstart', (e) => { if (!map.contains(e.target)) relock(); }, { passive: true });
+    }
 
     /* 6. Reservasi (halaman sendiri): kirim ke WhatsApp */
     const rform = $('#reservasi-form');

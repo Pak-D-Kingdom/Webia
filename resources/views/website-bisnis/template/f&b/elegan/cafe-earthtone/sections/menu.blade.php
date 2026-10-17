@@ -1,6 +1,10 @@
 @php($m = $cafe['menu'])
+@php($featured = array_values(array_filter($m['items'], fn ($i) => ! empty($i['featured']))))
+@php($zc = $cafe['promo_card'])
+{{-- Bila promo banyak / bersamaan, zona promo pindah ke baris sendiri selebar penuh --}}
+@php($stack = count($zc['items']) > 1 && ($zc['mode'] === 'grid' || ($zc['per_view'] ?? 1) > 1))
 <section class="lm-section lm-menu" id="menu" aria-labelledby="menu-title">
-    <div class="lm-container lm-menu__wrap">
+    <div class="lm-container lm-menu__wrap {{ $stack ? 'lm-menu__wrap--stack' : '' }}">
         <div class="lm-menu__main">
             <header class="lm-menu__head">
                 <div>
@@ -12,7 +16,7 @@
             </header>
 
             <ul class="lm-products">
-                @foreach (array_slice($m['items'], 0, $m['home_limit']) as $item)
+                @foreach ($featured as $item)
                     @include("$v.partials.product-card", ['item' => $item])
                 @endforeach
             </ul>

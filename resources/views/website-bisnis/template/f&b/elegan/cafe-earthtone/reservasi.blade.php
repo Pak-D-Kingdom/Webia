@@ -19,8 +19,16 @@
     @include("$v.partials.page-header", ['title' => $cafe['booking']['title'], 'text' => $cafe['booking']['text'], 'current' => 'Reservasi'])
 
     <section class="lm-section lm-reserve" aria-label="Form reservasi">
-        <div class="lm-container">
-            @include("$v.sections.reservation-form")
+        <div class="lm-container lm-reserve__grid">
+            <div class="lm-reserve__main">
+                @include("$v.sections.reservation-form")
+            </div>
+            <aside class="lm-reserve__side" aria-label="Informasi reservasi">
+                @include("$v.sections.reservation-info")
+                @include("$v.sections.hours")
+            </aside>
         </div>
     </section>
+
+    @include("$v.sections.features")
 @endsection

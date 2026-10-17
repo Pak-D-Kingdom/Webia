@@ -20,14 +20,12 @@
     @include("$v.sections.hero")
     @include("$v.sections.features")
     @include("$v.sections.menu")
+    @include("$v.sections.services")
 
-    <section class="lm-info" aria-label="Informasi kafe">
-        <div class="lm-container lm-info__grid">
-            @include("$v.sections.about")
+    <section class="lm-section lm-visit" aria-label="Jam operasional dan lokasi">
+        <div class="lm-container lm-visit__grid">
             @include("$v.sections.hours")
             @include("$v.sections.location")
-            @include("$v.sections.booking")
-            @include("$v.sections.whatsapp")
         </div>
     </section>
 

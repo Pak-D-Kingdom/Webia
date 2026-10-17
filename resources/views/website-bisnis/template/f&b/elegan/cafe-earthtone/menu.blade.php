@@ -17,14 +17,50 @@
 
 @section('content')
     @include("$v.partials.page-header", ['title' => $cafe['menu']['title'], 'text' => $cafe['menu']['text'], 'current' => 'Menu'])
+    
+    @php($m = $cafe['menu'])
+    <section class="lm-menu lm-menu--page" aria-label="Daftar menu">
+        {{-- Kategori hanya ada di halaman ini (tidak di beranda). Data: cafe.php → menu.categories --}}
+        <div class="lm-tabsbar">
+            <div class="lm-container">
+                <div class="lm-tabs lm-tabs--center" role="group" aria-label="Kategori menu">
+                    <button class="lm-tab is-active" type="button" data-filter="all" aria-pressed="true">Semua <small>{{ count($m['items']) }}</small></button>
+                    @foreach ($m['categories'] as $key => $cat)
+                        @php($n = count(array_filter($m['items'], fn ($i) => $i['category'] === $key)))
+                        <button class="lm-tab" type="button" data-filter="{{ $key }}" aria-pressed="false">{{ $cat['label'] }} <small>{{ $n }}</small></button>
+                    @endforeach
+                </div>
+            </div>
+        </div>
 
-    <section class="lm-section lm-menu" aria-label="Daftar menu">
-        <div class="lm-container">
-            <ul class="lm-products lm-products--all">
-                @foreach ($cafe['menu']['items'] as $item)
-                    @include("$v.partials.product-card", ['item' => $item])
-                @endforeach
-            </ul>
+        <div class="lm-container lm-menu__groups">
+            @foreach ($m['categories'] as $key => $cat)
+                @php($rows = array_values(array_filter($m['items'], fn ($i) => $i['category'] === $key)))
+                @if (count($rows) > 0)
+                    <section class="lm-menu-group" id="menu-{{ $key }}" data-group="{{ $key }}" aria-labelledby="grup-{{ $key }}">
+                        <header class="lm-menu-group__head">
+                            <div class="lm-orn" aria-hidden="true"><svg class="i"><use href="#i-leaf"/></svg></div>
+                            <p class="lm-eyebrow">{{ $cat['label'] }} &middot; {{ count($rows) }} Menu</p>
+                            <h2 class="lm-title" id="grup-{{ $key }}">{{ $cat['title'] }}</h2>
+                            <p class="lm-lead">{{ $cat['text'] }}</p>
+                        </header>
+                        <ul class="lm-products lm-products--all lm-products--detail">
+                            @foreach ($rows as $item)
+                                @include("$v.partials.product-card", ['item' => $item, 'detail' => true, 'catLabel' => $cat['label']])
+                            @endforeach
+                        </ul>
+                    </section>
+                @endif
+            @endforeach
         </div>
     </section>
+
+    {{-- Promo (banner) dan ajakan reservasi --}}
+    <section class="lm-menu-promo" aria-label="Promo">
+        <div class="lm-container">
+            @include("$v.sections.promo-banner")
+        </div>
+    </section>
+
+    @include("$v.sections.cta-reservasi")
 @endsection

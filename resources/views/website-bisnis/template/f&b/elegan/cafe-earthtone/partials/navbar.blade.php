@@ -18,7 +18,7 @@
                 <a class="lm-icon-btn" href="{{ $url('home', '#faq') }}" data-faq-focus aria-label="Cari jawaban atau bertanya">
                     <svg class="i" aria-hidden="true"><use href="#i-search"/></svg>
                 </a>
-                <a class="lm-btn lm-btn--gold lm-btn--pill lm-btn--sm" href="{{ $wa($cafe['contact']['order_message']) }}" target="_blank" rel="noopener">Pesan Sekarang</a>
+                <a class="lm-btn lm-btn--gold lm-btn--pill lm-btn--sm" href="{{ $url('reservasi') }}">{{ $cafe['booking']['nav_cta'] }}</a>
             </div>
         </div>
     </div>

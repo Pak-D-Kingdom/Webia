@@ -16,7 +16,6 @@
                     <li><a href="{{ $s['url'] }}" target="_blank" rel="noopener" aria-label="{{ $s['name'] }}"><svg class="i" aria-hidden="true"><use href="#i-{{ $s['icon'] }}"/></svg></a></li>
                 @endforeach
             </ul>
-            <a class="lm-btn lm-btn--gold lm-btn--pill lm-btn--xs" href="{{ $wa($c['order_message']) }}" target="_blank" rel="noopener">Pesan Sekarang</a>
         </div>
     </div>
 </div>

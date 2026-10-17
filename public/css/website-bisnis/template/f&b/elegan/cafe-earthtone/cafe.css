@@ -173,8 +173,18 @@ html { scroll-behavior: smooth; scroll-padding-top: calc(var(--lm-nav-h) + 8px);
 .lm-section { padding-block: clamp(36px, 5vw, 64px); }
 .lm-menu__wrap { display: grid; gap: 28px; }
 @media (min-width: 1200px) { .lm-menu__wrap { grid-template-columns: minmax(0, 1.75fr) minmax(0, 1fr); gap: 32px; } }
+@media (min-width: 1200px) { .lm-menu__wrap--stack { grid-template-columns: minmax(0, 1fr); } }
 .lm-menu__head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 24px; margin-bottom: 22px; }
 .lm-menu__head .lm-title { margin: 6px 0 8px; }
+
+/* Tab kategori: hanya dipakai di halaman Menu */
+.lm-tabs { display: flex; gap: 8px; margin-bottom: 26px; padding-bottom: 6px; overflow-x: auto; scrollbar-width: none; }
+.lm-tabs::-webkit-scrollbar { display: none; }
+.lm-tabs--center { justify-content: safe center; }
+.lm-tab { flex: none; padding: .6rem 1.4rem; border: 1px solid var(--lm-line); border-radius: 999px; background: #fff; font-size: .85rem; color: var(--lm-text); transition: background-color .2s, color .2s, border-color .2s; }
+.lm-tab:hover { border-color: var(--lm-gold); color: var(--lm-gold-d); }
+.lm-tab.is-active { border-color: var(--lm-gold); background: var(--lm-gold); color: #fff; }
+.lm-empty { padding: 32px 0; text-align: center; font-size: .88rem; color: var(--lm-muted); }
 
 .lm-products { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
 @media (min-width: 576px) { .lm-products { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
@@ -193,13 +203,50 @@ html { scroll-behavior: smooth; scroll-padding-top: calc(var(--lm-nav-h) + 8px);
 .lm-product .lm-media { aspect-ratio: 423 / 225; }
 .lm-product:hover .lm-media img { transform: scale(1.06); }
 
+/* ---------- 8b. Halaman Menu (lebih ramai) ---------- */
+.lm-menu--page { padding: 0; }
+.lm-tabsbar { position: sticky; top: var(--lm-nav-h); z-index: 30; padding-block: 14px 8px; background: rgba(250, 248, 244, .94); border-bottom: 1px solid var(--lm-line); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+.lm-tabsbar .lm-tabs { margin: 0; padding-bottom: 6px; }
+.lm-tab small { margin-left: 6px; padding: 1px 7px; border-radius: 999px; background: rgba(176, 138, 79, .14); font-size: .68rem; color: var(--lm-gold-d); }
+.lm-tab.is-active small { background: rgba(255, 255, 255, .25); color: #fff; }
+.lm-menu__groups { display: flex; flex-direction: column; gap: clamp(44px, 6vw, 76px); padding-block: clamp(32px, 5vw, 56px); }
+.lm-menu-group__head { margin-bottom: 30px; text-align: center; }
+.lm-menu-group__head .lm-title { margin: 6px 0 8px; }
+.lm-menu-group__head .lm-lead { margin-inline: auto; }
+.lm-orn { display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 10px; color: var(--lm-gold); }
+.lm-orn::before, .lm-orn::after { content: ""; flex: 0 1 110px; height: 1px; }
+.lm-orn::before { background: linear-gradient(90deg, transparent, var(--lm-gold-l)); }
+.lm-orn::after { background: linear-gradient(270deg, transparent, var(--lm-gold-l)); }
+.lm-orn .i { width: 1.7rem; height: 1.7rem; stroke-width: 1.1; }
+
+.lm-products--detail { grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 22px; }
+.lm-products--detail .lm-product { display: flex; flex-direction: column; }
+.lm-products--detail .lm-media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(16, 32, 27, .28), transparent 55%); pointer-events: none; }
+.lm-product__tag { position: absolute; left: 12px; top: 12px; z-index: 2; padding: .25rem .7rem; border-radius: 999px; background: rgba(16, 32, 27, .78); color: #fff; font-size: .66rem; letter-spacing: .12em; text-transform: uppercase; -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+.lm-product__fav { position: absolute; right: 12px; top: 12px; z-index: 2; display: inline-flex; align-items: center; gap: 4px; padding: .25rem .65rem; border-radius: 999px; background: var(--lm-gold); color: #fff; font-size: .68rem; font-weight: 500; }
+.lm-products--detail .lm-product__body { display: flex; flex: 1; flex-direction: column; gap: 6px; padding: 16px 18px 18px; }
+.lm-products--detail .lm-product h3 { font-family: var(--lm-serif); font-weight: 600; font-size: 1.1rem; line-height: 1.25; }
+.lm-products--detail .lm-product .lm-product__desc { margin: 0; font-size: .82rem; font-weight: 400; line-height: 1.6; color: var(--lm-muted); }
+.lm-products--detail .lm-product .lm-product__price { margin-top: auto; padding-top: 12px; border-top: 1px solid var(--lm-line); font-family: var(--lm-serif); font-size: 1.1rem; font-weight: 600; }
+
+.lm-menu-promo { padding-block: clamp(8px, 2vw, 20px) clamp(40px, 6vw, 72px); }
+
+.lm-cta { position: relative; isolation: isolate; overflow: hidden; background: var(--lm-dark); color: #fff; }
+.lm-cta__bg { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; }
+.lm-cta::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgba(10, 18, 15, .94), rgba(10, 18, 15, .78) 55%, rgba(10, 18, 15, .5)); }
+.lm-cta__in { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px 40px; padding-block: clamp(36px, 6vw, 64px); }
+.lm-cta h2 { margin: 8px 0; font-family: var(--lm-serif); font-weight: 600; font-size: clamp(1.7rem, 3.4vw, 2.4rem); line-height: 1.15; }
+.lm-cta p:not(.lm-eyebrow) { max-width: 46ch; font-size: .9rem; color: #ece7da; }
+
 /* ---------- 9. Promo: kartu & banner, berisi 1 sampai banyak promo ---------- */
-.lm-promos { position: relative; display: grid; gap: 16px; min-width: 0; }
-.lm-promos[data-mode="slider"] { gap: 0; }
-.lm-promos[data-mode="slider"] > .lm-promo,
-.lm-promos[data-mode="slider"] > .lm-banner { grid-area: 1 / 1; opacity: 0; visibility: hidden; transition: opacity .6s ease, visibility .6s; }
-.lm-promos[data-mode="slider"] > .is-active { opacity: 1; visibility: visible; }
-.lm-promos[data-mode="grid"] { grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); }
+.lm-promos { position: relative; min-width: 0; }
+.lm-promos__track { height: 100%; }
+/* bergantian: baris geser. --pv = jumlah tampil sekaligus, --idx = posisi (diatur cafe.js) */
+.lm-promos[data-mode="slider"] { overflow: hidden; border-radius: var(--lm-r); }
+.lm-promos[data-mode="slider"] .lm-promos__track { display: flex; gap: 16px; transition: transform .6s cubic-bezier(.4, 0, .2, 1); transform: translateX(calc(var(--idx, 0) * (100% + 16px) / var(--pv, 1) * -1)); }
+.lm-promos[data-mode="slider"] .lm-promos__track > * { flex: 0 0 calc((100% - (var(--pv, 1) - 1) * 16px) / var(--pv, 1)); min-width: 0; }
+/* bersamaan: semua tampil, kolom menyesuaikan lebar */
+.lm-promos[data-mode="grid"] .lm-promos__track { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--lm-min, 320px)), 1fr)); }
 
 .lm-dots { position: absolute; left: 0; right: 0; bottom: 10px; z-index: 4; display: flex; justify-content: center; gap: 8px; pointer-events: none; }
 .lm-dots button { position: relative; width: 8px; height: 8px; padding: 0; border: 0; border-radius: 8px; background: rgba(255, 255, 255, .4); pointer-events: auto; transition: width .25s, background-color .25s; }
@@ -216,59 +263,66 @@ html { scroll-behavior: smooth; scroll-padding-top: calc(var(--lm-nav-h) + 8px);
 .lm-promo__badge { position: absolute; top: 20px; right: 22px; display: grid; place-content: center; width: 74px; height: 74px; border: 2px solid var(--lm-gold-l); border-radius: 50%; background: #fff; color: var(--lm-dark); text-align: center; font-family: var(--lm-script); font-size: 1.15rem; line-height: 1; transform: rotate(8deg); box-shadow: 0 4px 14px rgba(0, 0, 0, .3); }
 .lm-promo__badge b { display: block; font-weight: 600; }
 
-/* ---------- 10. Kartu informasi ---------- */
-.lm-info { padding-block: 28px; background: var(--lm-alt); }
-.lm-info__grid { display: grid; gap: 16px; }
-@media (min-width: 768px) {
-    .lm-info__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .lm-about { grid-column: 1 / -1; }
-}
-@media (min-width: 1200px) {
-    .lm-info__grid { grid-template-columns: minmax(0, 1.8fr) repeat(4, minmax(0, 1fr)); }
-    .lm-about { grid-column: auto; }
-}
-
+/* ---------- 10. Layanan, jam operasional & lokasi ---------- */
 .lm-card { display: flex; flex-direction: column; gap: 12px; min-width: 0; padding: 20px; background: #fff; border: 1px solid var(--lm-line); border-radius: var(--lm-r); }
 .lm-card__title { font-family: var(--lm-serif); font-weight: 600; font-size: 1.3rem; line-height: 1.2; color: var(--lm-ink); }
 .lm-card__title--sm { font-size: 1.1rem; }
 .lm-card p:not(.lm-eyebrow) { font-size: .78rem; line-height: 1.65; color: var(--lm-muted); }
-.lm-booking p:not(.lm-eyebrow), .lm-wa p:not(.lm-eyebrow) { flex: 1; }
-.lm-booking .lm-btn { align-self: flex-start; }
 
-/* Tentang kami */
-.lm-about { display: grid; gap: 0; padding: 0; overflow: hidden; }
-.lm-about__text { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; padding: 22px; }
-.lm-about__img { min-height: 200px; }
-@media (min-width: 576px) {
-    .lm-about { grid-template-columns: 1.1fr 1fr; }
-    .lm-about__img { min-height: 0; }
-}
+/* Produk & Layanan */
+.lm-services { background: #fff; border-block: 1px solid var(--lm-line); }
+.lm-services__head { margin-bottom: 26px; }
+.lm-services__head .lm-title { margin: 6px 0 8px; }
+.lm-services__grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; }
+@media (min-width: 576px) { .lm-services__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 992px) { .lm-services__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; } }
+.lm-service { overflow: hidden; background: var(--lm-bg); border: 1px solid var(--lm-line); border-radius: var(--lm-r); transition: transform .25s, box-shadow .25s; }
+.lm-service:hover { transform: translateY(-4px); box-shadow: var(--lm-shadow); }
+.lm-service .lm-media { aspect-ratio: 4 / 3; }
+.lm-service:hover .lm-media img { transform: scale(1.05); }
+.lm-service__body { padding: 18px 20px 22px; }
+.lm-service h3 { font-family: var(--lm-serif); font-weight: 600; font-size: 1.2rem; line-height: 1.25; color: var(--lm-ink); }
+.lm-service h3::after { content: ""; display: block; width: 28px; height: 2px; margin-top: 10px; background: var(--lm-gold); }
+.lm-service p { margin-top: 10px; font-size: .84rem; line-height: 1.7; color: var(--lm-muted); }
 
-/* Jam operasional */
-.lm-hours__table { width: 100%; border-collapse: collapse; font-size: .78rem; }
+/* Jam operasional + lokasi (satu baris) */
+.lm-visit { background: var(--lm-alt); }
+.lm-visit__grid { display: grid; gap: 18px; }
+@media (min-width: 992px) { .lm-visit__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 2.3fr); } }
+.lm-visit .lm-card { padding: clamp(20px, 3vw, 28px); }
+
+.lm-hours__table { width: 100%; border-collapse: collapse; font-size: .85rem; }
 .lm-hours__table tr + tr { border-top: 1px solid var(--lm-line); }
-.lm-hours__table th, .lm-hours__table td { padding: 12px 0; font-weight: 400; text-align: left; }
+.lm-hours__table th, .lm-hours__table td { padding: 14px 0; font-weight: 400; text-align: left; }
 .lm-hours__table th { display: flex; align-items: center; gap: 10px; color: var(--lm-ink); }
 .lm-hours__table th .i { font-size: 1.1rem; color: var(--lm-gold); }
 .lm-hours__table td { text-align: right; white-space: nowrap; color: var(--lm-text); }
 .lm-hours__table tr.is-today th, .lm-hours__table tr.is-today td { font-weight: 500; color: var(--lm-gold-d); }
-@media (min-width: 1200px) and (max-width: 1359.98px) { .lm-hours__table th .i { display: none; } }
 
-/* Lokasi */
-.lm-loc address { font-size: .78rem; line-height: 1.6; color: var(--lm-muted); }
-.lm-map { position: relative; display: block; aspect-ratio: 181 / 43; overflow: hidden; border: 1px solid var(--lm-line); border-radius: var(--lm-r-sm); background: #e4ece3; }
-.lm-map img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.lm-loc .lm-btn { align-self: center; }
+.lm-loc { gap: 18px; }
+.lm-loc__head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 14px 24px; }
+.lm-loc__title { margin: 6px 0 8px; font-size: 1.55rem; }
+.lm-loc address { max-width: 44ch; font-size: .9rem; line-height: 1.65; color: var(--lm-muted); }
+.lm-map { position: relative; height: clamp(280px, 38vw, 420px); overflow: hidden; border: 1px solid var(--lm-line); border-radius: var(--lm-r-sm); background: #e4ece3; }
+.lm-map iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+/* Peta terkunci sampai diklik/diketuk agar tidak "menangkap" scroll halaman */
+.lm-map__lock { position: absolute; inset: 0; z-index: 2; display: flex; align-items: flex-end; justify-content: center; padding: 16px; border: 0; background: transparent; cursor: pointer; }
+.lm-map__lock span { padding: .55rem 1.1rem; border-radius: 999px; background: rgba(16, 32, 27, .88); color: #fff; font-size: .74rem; opacity: 0; transform: translateY(4px); transition: opacity .25s, transform .25s; }
+.lm-map:hover .lm-map__lock span, .lm-map__lock:focus-visible span { opacity: 1; transform: none; }
+@media (hover: none) { .lm-map__lock span { opacity: 1; transform: none; } }
+.lm-map.is-active .lm-map__lock { display: none; }
 
 /* ---------- 11. Banner promo & FAQ ---------- */
 .lm-lower { padding-block: 28px 44px; }
 .lm-lower__grid { display: grid; gap: 18px; }
 @media (min-width: 992px) { .lm-lower__grid { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); } }
+/* FAQ selalu di kolom kanan dengan tinggi alaminya (tidak ikut melebar/memanjang mengikuti promo) */
+.lm-lower__grid > .lm-faq { align-self: start; }
 
 .lm-banner { position: relative; display: grid; align-items: center; min-height: 150px; overflow: hidden; border-radius: var(--lm-r); background: linear-gradient(135deg, #0f1f1a, #16302a); color: #fff; }
 .lm-banner__visual { position: relative; display: flex; align-items: center; height: 100%; min-height: 140px; }
-.lm-banner__img { position: absolute; top: 0; right: 0; width: 66%; max-width: none; height: 100%; object-fit: cover; -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 24%, #000 76%, transparent 100%); mask-image: linear-gradient(90deg, transparent 0, #000 24%, #000 76%, transparent 100%); }
-.lm-banner__script { position: relative; z-index: 2; padding-left: clamp(18px, 3vw, 28px); font-family: var(--lm-script); font-size: clamp(1.9rem, 3.2vw, 2.5rem); line-height: .98; color: rgba(255, 255, 255, .92); transform: rotate(-8deg); }
+.lm-banner__img { position: absolute; top: 0; right: 0; width: 58%; max-width: none; height: 100%; object-fit: cover; -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 24%, #000 76%, transparent 100%); mask-image: linear-gradient(90deg, transparent 0, #000 24%, #000 76%, transparent 100%); }
+.lm-banner__script { position: relative; z-index: 2; padding-left: clamp(18px, 3vw, 28px); font-family: var(--lm-script); font-size: clamp(1.7rem, 2.6vw, 2.3rem); line-height: .98; color: rgba(255, 255, 255, .92); transform: rotate(-8deg); }
 .lm-banner__body { padding: 8px clamp(18px, 3vw, 28px) 30px; }
 .lm-banner h2 { margin: 8px 0 6px; font-family: var(--lm-serif); font-weight: 500; font-size: clamp(1.25rem, 2.2vw, 1.55rem); line-height: 1.25; }
 .lm-banner__body p:not(.lm-eyebrow) { font-size: .8rem; color: #d9d4c8; }
@@ -276,6 +330,11 @@ html { scroll-behavior: smooth; scroll-padding-top: calc(var(--lm-nav-h) + 8px);
     .lm-banner { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); }
     .lm-banner__body { padding: 20px 28px 20px 0; }
 }
+/* Kartu banner sempit (diatur cafe.js lewat data-compact): foto di atas, teks di bawah */
+.lm-promos[data-compact="true"] .lm-banner { grid-template-columns: minmax(0, 1fr); align-content: start; }
+.lm-promos[data-compact="true"] .lm-banner__visual { min-height: 140px; }
+.lm-promos[data-compact="true"] .lm-banner__body { padding: 6px 22px 34px; }
+.lm-promos[data-compact="true"] .lm-banner h2 { font-size: 1.2rem; }
 
 .lm-faq { gap: 10px; }
 .lm-faq__form { display: flex; align-items: center; gap: 8px; padding: 5px 5px 5px 14px; background: #fff; border: 1px solid var(--lm-line); border-radius: 999px; color: var(--lm-muted); }
@@ -317,9 +376,21 @@ html { scroll-behavior: smooth; scroll-padding-top: calc(var(--lm-nav-h) + 8px);
 .lm-footer__bar { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 20px; padding-block: 16px; font-size: .7rem; color: #a8a294; }
 .lm-footer__credit { border-top: 1px solid rgba(255, 255, 255, .12); background: rgba(0, 0, 0, .2); }
 .lm-footer__credit p { padding-block: 12px; text-align: center; font-size: .72rem; color: #a8a294; }
-.lm-top { position: fixed; right: 18px; bottom: 18px; z-index: 40; display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid rgba(255, 255, 255, .3); border-radius: 50%; background: var(--lm-dark); color: #fff; font-size: 1.1rem; opacity: 0; visibility: hidden; transition: opacity .25s, visibility .25s, background-color .2s; }
+.lm-top { position: fixed; right: 27px; bottom: calc(92px + env(safe-area-inset-bottom, 0px)); z-index: 40; display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid rgba(255, 255, 255, .3); border-radius: 50%; background: var(--lm-dark); color: #fff; font-size: 1.1rem; opacity: 0; visibility: hidden; transition: opacity .25s, visibility .25s, background-color .2s; }
 .lm-top.is-visible { opacity: 1; visibility: visible; }
 .lm-top:hover { background: var(--lm-gold); }
+
+/* Tombol WhatsApp bulat (melayang) */
+.lm-wa-float { position: fixed; right: 20px; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); z-index: 45; display: grid; place-items: center; width: 58px; height: 58px; border: 2px solid var(--lm-gold-l); border-radius: 50%; background: linear-gradient(145deg, #1f5a45, var(--lm-dark)); color: #fff; font-size: 1.9rem; box-shadow: 0 8px 22px rgba(16, 32, 27, .38); transition: transform .25s; animation: lm-pulse 2.8s ease-out infinite; }
+.lm-wa-float:hover { transform: translateY(-3px) scale(1.05); }
+.lm-wa-float .i { width: 1em; height: 1em; }
+.lm-wa-float__tip { position: absolute; right: calc(100% + 12px); top: 50%; translate: 0 -50%; padding: .45rem .85rem; border-radius: 999px; background: var(--lm-dark); color: #fff; font-size: .74rem; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity .2s; }
+.lm-wa-float:hover .lm-wa-float__tip, .lm-wa-float:focus-visible .lm-wa-float__tip { opacity: 1; }
+@media (hover: none) { .lm-wa-float__tip { display: none; } }
+@keyframes lm-pulse {
+    0% { box-shadow: 0 8px 22px rgba(16, 32, 27, .38), 0 0 0 0 rgba(214, 181, 122, .55); }
+    70%, 100% { box-shadow: 0 8px 22px rgba(16, 32, 27, .38), 0 0 0 16px rgba(214, 181, 122, 0); }
+}
 
 /* ---------- 13. Halaman menu & reservasi ---------- */
 .lm-pagehead { position: relative; isolation: isolate; overflow: hidden; background: var(--lm-dark); color: #fff; }
@@ -331,17 +402,50 @@ html { scroll-behavior: smooth; scroll-padding-top: calc(var(--lm-nav-h) + 8px);
 .lm-pagehead__title { font-family: var(--lm-serif); font-weight: 600; font-size: clamp(1.9rem, 4vw, 2.8rem); line-height: 1.15; }
 .lm-pagehead__text { max-width: 52ch; margin-top: 8px; font-size: .9rem; color: #ece7da; }
 
+/* Reservasi: form + panel informasi */
 .lm-reserve { background: var(--lm-bg); }
-.lm-reserve__card { max-width: 720px; margin-inline: auto; padding: clamp(20px, 4vw, 32px); box-shadow: var(--lm-shadow); }
-.lm-form { display: grid; gap: 14px; margin-top: 6px; }
-.lm-form__row { display: grid; gap: 14px; }
+.lm-reserve__grid { display: grid; gap: 24px; }
+@media (min-width: 992px) { .lm-reserve__grid { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); align-items: start; } }
+.lm-reserve__main { min-width: 0; }
+@media (min-width: 992px) { .lm-reserve__main { position: sticky; top: calc(var(--lm-nav-h) + 20px); } }
+.lm-reserve__side { display: grid; gap: 18px; min-width: 0; }
+@media (max-width: 991.98px) { .lm-reserve__side { order: 2; } }
+
+.lm-reserve__card { padding: clamp(22px, 4vw, 36px); border-top: 3px solid var(--lm-gold); box-shadow: var(--lm-shadow); }
+.lm-reserve__card .lm-card__title { font-size: clamp(1.6rem, 3vw, 2rem); }
+.lm-form { display: grid; gap: 16px; margin-top: 10px; }
+.lm-form__row { display: grid; gap: 16px; }
 @media (min-width: 480px) { .lm-form__row { grid-template-columns: 1fr 1fr; } }
-.lm-field { display: grid; gap: 6px; font-size: .78rem; font-weight: 500; color: var(--lm-ink); }
-.lm-field input, .lm-field select, .lm-field textarea { width: 100%; padding: .7rem .85rem; border: 1px solid var(--lm-line); border-radius: var(--lm-r-sm); background: #fff; font-size: .85rem; font-weight: 400; }
+.lm-field { display: grid; gap: 7px; font-size: .8rem; font-weight: 500; color: var(--lm-ink); }
+.lm-input { position: relative; display: flex; align-items: center; }
+.lm-input > .i { position: absolute; left: 14px; z-index: 1; font-size: 1.05rem; color: var(--lm-gold); pointer-events: none; }
+.lm-input--area > .i { top: 15px; }
+.lm-field input, .lm-field select, .lm-field textarea { width: 100%; padding: .82rem .9rem .82rem 2.6rem; border: 1px solid var(--lm-line); border-radius: var(--lm-r-sm); background: #fff; font-size: .88rem; font-weight: 400; transition: border-color .2s, box-shadow .2s; }
 .lm-field textarea { resize: vertical; }
 .lm-field input:focus, .lm-field select:focus, .lm-field textarea:focus { outline: 0; border-color: var(--lm-gold); box-shadow: 0 0 0 3px rgba(176, 138, 79, .18); }
 .lm-field input:user-invalid { border-color: #c0392b; }
+.lm-btn--block { width: 100%; padding-block: 1rem; font-size: .92rem; }
 .lm-form__status { padding: 12px 14px; border-left: 3px solid var(--lm-wa); border-radius: var(--lm-r-sm); background: #eef7f1; font-size: .82rem; color: var(--lm-ink); }
+
+.lm-rsv-photo { position: relative; isolation: isolate; display: flex; align-items: flex-end; min-height: 280px; overflow: hidden; border-radius: var(--lm-r); background: linear-gradient(135deg, #0f1f1a, #1b3a31); color: #fff; }
+.lm-rsv-photo img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; }
+.lm-rsv-photo::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(0deg, rgba(10, 18, 15, .92) 0%, rgba(10, 18, 15, .4) 55%, rgba(10, 18, 15, .1) 100%); }
+.lm-rsv-photo__txt { padding: 24px 26px; }
+.lm-rsv-photo h2 { margin: 8px 0 0; font-family: var(--lm-serif); font-weight: 600; font-size: clamp(1.7rem, 3vw, 2.2rem); line-height: 1.12; }
+.lm-rsv-photo h2 em { display: block; font-weight: 500; font-style: italic; }
+.lm-rsv-photo__txt p:not(.lm-eyebrow) { max-width: 36ch; margin-top: 10px; font-size: .84rem; color: #ece7da; }
+
+.lm-steps__list { display: grid; gap: 18px; }
+.lm-steps__list li { position: relative; display: flex; gap: 14px; }
+.lm-steps__list li:not(:last-child)::after { content: ""; position: absolute; left: 16px; top: 38px; bottom: -14px; width: 1px; background: var(--lm-line); }
+.lm-steps__n { display: grid; place-items: center; flex: none; width: 33px; height: 33px; border-radius: 50%; background: var(--lm-gold); color: #fff; font-family: var(--lm-serif); font-weight: 600; }
+.lm-steps strong { display: block; font-size: .92rem; font-weight: 500; color: var(--lm-ink); }
+.lm-steps__list p { margin-top: 2px; }
+
+.lm-rsv-contact ul { display: grid; gap: 12px; }
+.lm-rsv-contact li { display: flex; gap: 12px; font-size: .85rem; color: var(--lm-text); }
+.lm-rsv-contact .i { margin-top: 3px; color: var(--lm-gold); }
+.lm-rsv-contact a:hover { color: var(--lm-gold-d); }
 
 /* ---------- 14. Preferensi gerak ---------- */
 @media (prefers-reduced-motion: reduce) {

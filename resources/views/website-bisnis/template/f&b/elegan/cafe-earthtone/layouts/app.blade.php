@@ -26,6 +26,7 @@
     </main>
 
     @include("$v.partials.footer")
+    @include("$v.partials.wa-float")
 
     <script src="{{ asset($cafe['assets']['js']) }}" defer></script>
     @stack('scripts')
