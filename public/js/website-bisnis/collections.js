@@ -1,62 +1,134 @@
-/* WEBIA template gallery: client-side category and search filters */
+/* WEBIA template gallery: multi-category, up to 3 business types, design-style filters */
 document.addEventListener('DOMContentLoaded', () => {
     const grid = document.getElementById('webia-gallery-grid');
     if (!grid) return;
 
     const cards = Array.from(grid.querySelectorAll('.webia-gallery-card'));
-    const filters = Array.from(document.querySelectorAll('.webia-gallery-filters [data-category]'));
     const search = document.getElementById('webia-template-search');
     const count = document.getElementById('webia-template-count');
     const empty = document.getElementById('webia-gallery-empty');
     const reset = document.getElementById('webia-gallery-reset');
-    let activeCategory = 'all';
+    const categoryRoot = document.getElementById('webia-category-options');
+    const subcategoryRoot = document.getElementById('webia-subcategory-options');
+    const styleRoot = document.getElementById('webia-style-options');
+    const typeCount = document.getElementById('webia-type-selection-count');
+    const summary = document.getElementById('webia-filter-summary');
+
+    const categories = [
+        {id:'fnb',name:'F&B',types:['Restaurant','Cafe','Catering','Bakery','Food Product']},
+        {id:'beauty',name:'Beauty',types:['Salon','Nail Art & Nail Care','Beauty Clinic','Skincare & Beauty Treatment','Makeup Artist']},
+        {id:'automotive',name:'Automotive',types:['Auto Detailing & Car Care','Modifikasi & Aksesori Kendaraan','Bengkel & Servis Kendaraan','Dealer & Showroom Kendaraan']},
+        {id:'company',name:'Company',types:['Company Profile','Contractor','Logistics & Supply Chain']},
+        {id:'property',name:'Property',types:['Real Estate Agency','Property Agent','Perumahan & Cluster']},
+        {id:'education',name:'Education',types:['School','Online Course & E-learning','Preschool & Daycare']},
+        {id:'professional-service',name:'Professional Service',types:['Branding & Creative Agency','Lawyer','Translation & Interpreter Service']},
+        {id:'personal-brand',name:'Personal Brand',types:['Content Creator & Influencer','Author & Writer','Public Speaker']},
+        {id:'retail',name:'Retail',types:['Fashion & Clothing Store','Skincare & Beauty Products','Baby & Kids Products']},
+        {id:'healthcare',name:'Healthcare',types:['Klinik kecantikan & aesthetic','Dental Clinic & Orthodontics','Psikologi & konseling']},
+        {id:'travel-tourism',name:'Travel & Tourism',types:['Travel Agent & Tour Operator','Umrah & Haji','Adventure & Outdoor Tour']},
+        {id:'wedding-event',name:'Wedding & Event',types:['Wedding Organizer','Event Organizer','Catering & Wedding Cake']},
+        {id:'sports-fitness',name:'Sports & Fitness',types:['Personal Trainer','Gym & Fitness Center','Pilates Studio']},
+        {id:'interior-architecture',name:'Interior & Architecture',types:['Interior Design Studio','Architecture & Building Design','Furniture & Custom Furniture']},
+        {id:'home-services',name:'Home Services',types:['Home Renovation & Repair','Laundry','Home Cleaning & Deep Cleaning']},
+        {id:'photography-creative-studio',name:'Photography & Creative Studio',types:['Product Photography & Videography','Motion Graphics & 3D Studio','UGC & Content Creator Studio']},
+        {id:'pet-animal-services',name:'Pet & Animal Services',types:['Pet Shop','Pet Training','Animal Care']},
+        {id:'transportation-logistics',name:'Transportation & Logistics',types:['Logistics Company','Delivery Service','Moving Company']},
+        {id:'agriculture-farming',name:'Agriculture & Farming',types:['Agribisnis & Perdagangan Komoditas Pertanian','Perlengkapan & Peralatan Pertanian','Peternakan & Budidaya Hewan']},
+        {id:'nonprofit-community',name:'Nonprofit & Community',types:['Foundation','Social Organization','Volunteer Group']},
+        {id:'technology-it',name:'Technology & IT',types:['Software House','Data Analytics','Hardware & Computer Networking']}
+    ];
+    const styles = ['Modern','Classic','Elegant','Minimalist','Vintage','Professional','Luxury','Playful & Colorful','Bold','Futuristic','Artistic','Friendly','Premium Minimal'];
+    const selectedCategories = new Set();
+    const selectedTypes = new Set();
+    let selectedStyle = '';
+
+    const makeOption = (label, value, checked, onChange, className='') => {
+        const labelNode = document.createElement('label');
+        labelNode.className = `webia-filter-chip ${className}`.trim();
+        const input = document.createElement('input');
+        input.type = 'checkbox'; input.value = value; input.checked = checked;
+        const text = document.createElement('span'); text.textContent = label;
+        labelNode.append(input, text);
+        input.addEventListener('change', () => onChange(input.checked));
+        return labelNode;
+    };
+
+    const renderCategories = () => {
+        if (!categoryRoot) return;
+        categoryRoot.replaceChildren();
+        categories.forEach(category => categoryRoot.appendChild(makeOption(category.name, category.id, selectedCategories.has(category.id), checked => {
+            if (checked) selectedCategories.add(category.id); else {
+                selectedCategories.delete(category.id);
+                category.types.forEach(type => selectedTypes.delete(type));
+            }
+            renderCategories(); renderSubcategories(); applyFilters();
+        })));
+    };
+
+    const renderSubcategories = () => {
+        if (!subcategoryRoot) return;
+        subcategoryRoot.replaceChildren();
+        const selected = categories.filter(category => selectedCategories.has(category.id));
+        if (!selected.length) {
+            const hint = document.createElement('p'); hint.className='webia-filter-hint'; hint.textContent='Pilih kategori bisnis terlebih dahulu.'; subcategoryRoot.appendChild(hint);
+        } else {
+            selected.forEach(category => {
+                const group = document.createElement('div'); group.className='webia-subcategory-group';
+                const heading = document.createElement('h4'); heading.textContent=category.name; group.appendChild(heading);
+                const chips = document.createElement('div'); chips.className='webia-subcategory-chips';
+                category.types.forEach(type => chips.appendChild(makeOption(type,type,selectedTypes.has(type),checked => {
+                    if (checked && selectedTypes.size >= 3) { window.alert('Maksimal 3 tipe bisnis, ya.'); renderSubcategories(); return; }
+                    if (checked) selectedTypes.add(type); else selectedTypes.delete(type);
+                    renderSubcategories(); applyFilters();
+                })));
+                group.appendChild(chips);
+                subcategoryRoot.appendChild(group);
+            });
+        }
+        if (typeCount) typeCount.textContent = `${selectedTypes.size}/3 dipilih`;
+    };
+
+    const renderStyles = () => {
+        if (!styleRoot) return;
+        styleRoot.replaceChildren();
+        styles.forEach(style => {
+            const label = document.createElement('label'); label.className='webia-filter-chip webia-style-chip' + (selectedStyle===style?' is-selected':'');
+            const input=document.createElement('input'); input.type='radio'; input.name='webia-design-style'; input.value=style; input.checked=selectedStyle===style;
+            const text=document.createElement('span'); text.textContent=style; label.append(input,text);
+            input.addEventListener('change',()=>{selectedStyle=style;renderStyles();applyFilters();}); styleRoot.appendChild(label);
+        });
+    };
 
     const applyFilters = () => {
-        const term = (search?.value || '').trim().toLowerCase();
-        let visible = 0;
-
-        cards.forEach((card) => {
-            const categoryMatch = activeCategory === 'all' || card.dataset.category === activeCategory;
-            const searchMatch = !term || (card.dataset.search || '').includes(term);
-            const show = categoryMatch && searchMatch;
-            card.hidden = !show;
-            if (show) visible += 1;
+        const term=(search?.value||'').trim().toLowerCase(); let visible=0;
+        cards.forEach(card=>{
+            const category=card.dataset.category||'';
+            let businessTypes=[]; try { businessTypes=JSON.parse(card.dataset.businessTypes||'[]'); } catch (_) { businessTypes=[]; }
+            const categoryMatch=selectedCategories.size===0||selectedCategories.has(category);
+            const typeMatch=selectedTypes.size===0||businessTypes.some(type=>selectedTypes.has(type));
+            const styleMatch=!selectedStyle||(card.dataset.designStyle||'Modern')===selectedStyle;
+            const searchMatch=!term||(card.dataset.search||'').toLowerCase().includes(term);
+            const show=categoryMatch&&typeMatch&&styleMatch&&searchMatch;
+            card.hidden=!show; if(show) visible++;
         });
-
-        if (count) {
-            count.textContent = `Menampilkan ${visible} inspirasi`;
-        }
-        if (empty) {
-            empty.hidden = visible !== 0;
+        if(count) count.textContent=`Menampilkan ${visible} template`;
+        if(empty) empty.hidden=visible!==0;
+        if(summary){
+            const catNames=categories.filter(c=>selectedCategories.has(c.id)).map(c=>c.name);
+            const parts=[]; if(catNames.length)parts.push(`${catNames.length} kategori`); if(selectedTypes.size)parts.push(`${selectedTypes.size} tipe bisnis`); if(selectedStyle)parts.push(`Gaya ${selectedStyle}`); if(term)parts.push('pencarian aktif');
+            summary.textContent=parts.length?`Filter aktif: ${parts.join(' · ')}`:'Belum ada filter yang dipilih.';
         }
     };
 
-    filters.forEach((button) => {
-        button.addEventListener('click', () => {
-            activeCategory = button.dataset.category || 'all';
-            filters.forEach((filter) => {
-                const isActive = filter === button;
-                filter.classList.toggle('is-active', isActive);
-                filter.setAttribute('aria-pressed', String(isActive));
-            });
-            applyFilters();
-        });
-    });
+    const resetFilters = () => {
+        selectedCategories.clear(); selectedTypes.clear(); selectedStyle=''; if(search)search.value='';
+        renderCategories(); renderSubcategories(); renderStyles(); applyFilters();
+    };
+    search?.addEventListener('input',applyFilters);
+    reset?.addEventListener('click',resetFilters);
+    renderCategories(); renderSubcategories(); renderStyles(); applyFilters();
 
-    search?.addEventListener('input', applyFilters);
-
-    reset?.addEventListener('click', () => {
-        activeCategory = 'all';
-        if (search) search.value = '';
-        filters.forEach((filter) => {
-            const isActive = filter.dataset.category === 'all';
-            filter.classList.toggle('is-active', isActive);
-            filter.setAttribute('aria-pressed', String(isActive));
-        });
-        applyFilters();
-    });
-
-    /* WEBIA: per-card Explore Template gallery. Modal stays closed until clicked. */
+        /* WEBIA: per-card Explore Template gallery. Modal stays closed until clicked. */
     const escapeHtml = (value = '') => String(value).replace(/[&<>"']/g, (char) => ({
         '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
     }[char]));
@@ -189,7 +261,14 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
         event.stopPropagation();
         const card = button.closest('.webia-gallery-card');
-        if (card) openGallery(card, button);
+        if (card) {
+            const templateUrl = card.dataset.templateUrl;
+            if (templateUrl) {
+                window.location.href = templateUrl;
+                return;
+            }
+            openGallery(card, button);
+        }
     });
 
     modal.addEventListener('click', (event) => {
@@ -207,4 +286,117 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         applyFilters();
     }
+
+    /* ---------- Cart & checkout frontend demo; no backend requests ---------- */
+    const templateCards = Array.from(grid.querySelectorAll('.webia-gallery-card'));
+    const packagePicker = document.getElementById('webia-package-picker');
+    const cartDialog = document.getElementById('webia-cart-dialog');
+    const checkoutDialog = document.getElementById('webia-checkout-dialog');
+    const successDialog = document.getElementById('webia-checkout-success');
+    const cartItemsNode = document.getElementById('webia-cart-items');
+    const cartBadge = document.getElementById('webia-cart-badge');
+    const cartTotalNode = document.getElementById('webia-cart-total');
+    const packageOptionsNode = document.getElementById('webia-package-options');
+    const checkoutSummary = document.getElementById('webia-checkout-summary');
+    let activeTemplate = null;
+    let cart = [];
+
+    const packageCatalog = [
+        { id: 'pixel', name: 'Pixel', price: 99500, oldPrice: 589500, tagline: 'Landing page sederhana', features: ['1 halaman landing page', 'WhatsApp, kontak, dan peta', 'AI Chatbot 500 pesan/bulan*', 'Tanpa CMS'] },
+        { id: 'pulse', name: 'Pulse', price: 899000, oldPrice: 1199000, tagline: 'Landing page lebih lengkap', features: ['Galeri, testimoni, layanan, FAQ', 'AI Chatbot 1.500 pesan/bulan*', 'SEO dasar dan analitik', 'Tanpa CMS'] },
+        { id: 'nexus', name: 'Nexus', price: 1499000, oldPrice: 1999000, tagline: 'Website dengan CMS', features: ['Website beberapa halaman', 'CMS untuk mengelola konten', 'Tracking data pelanggan sesuai cakupan', 'AI Chatbot 2.500 pesan/bulan*'] },
+        { id: 'infinity', name: 'Infinity', price: 2499000, oldPrice: 3499000, tagline: 'CMS lanjutan dan fitur custom', features: ['Website multi-halaman', 'Custom fitur sesuai kebutuhan', 'CMS lanjutan dan tracking pelanggan', 'AI Chatbot 5.000 pesan/bulan*'] }
+    ];
+    const rupiah = (amount) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(amount);
+    const openDialog = (dialog) => { if (dialog && !dialog.open) dialog.showModal(); };
+    const closeDialog = (dialog) => { if (dialog?.open) dialog.close(); };
+
+    const renderPackageOptions = () => {
+        if (!packageOptionsNode || !activeTemplate) return;
+        packageOptionsNode.replaceChildren();
+        packageCatalog.forEach((item) => {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'webia-package-option';
+            const title = document.createElement('strong'); title.textContent = item.name;
+            const old = document.createElement('del'); old.textContent = rupiah(item.oldPrice);
+            const price = document.createElement('span'); price.className = 'webia-option-price'; price.textContent = rupiah(item.price);
+            const tagline = document.createElement('small'); tagline.textContent = item.tagline + ' · ' + item.features.join(' · ');
+            const choose = document.createElement('em'); choose.textContent = 'Pilih paket ini +';
+            button.append(title, old, price, tagline, choose);
+            button.addEventListener('click', () => {
+                cart.push({ key: `${Date.now()}-${Math.random().toString(16).slice(2)}`, template: activeTemplate.name, category: activeTemplate.categoryLabel, packageId: item.id, packageName: item.name, price: item.price });
+                renderCart();
+                closeDialog(packagePicker);
+                openDialog(cartDialog);
+            });
+            packageOptionsNode.appendChild(button);
+        });
+    };
+
+    const renderCart = () => {
+        if (!cartItemsNode) return;
+        cartBadge.textContent = String(cart.length);
+        cartItemsNode.replaceChildren();
+        if (!cart.length) {
+            const emptyState = document.createElement('div'); emptyState.className = 'webia-cart-empty'; emptyState.textContent = 'Keranjangmu masih kosong. Tambahkan template yang kamu suka, ya!';
+            cartItemsNode.appendChild(emptyState);
+        } else {
+            cart.forEach((item) => {
+                const article = document.createElement('article'); article.className = 'webia-cart-item';
+                const info = document.createElement('div');
+                const title = document.createElement('h3'); title.textContent = item.template;
+                const desc = document.createElement('p'); desc.textContent = `${item.category} · Paket ${item.packageName}`;
+                const price = document.createElement('strong'); price.textContent = rupiah(item.price);
+                info.append(title, desc, price);
+                const remove = document.createElement('button'); remove.type = 'button'; remove.className = 'webia-cart-remove'; remove.textContent = 'Hapus';
+                remove.addEventListener('click', () => { cart = cart.filter((entry) => entry.key !== item.key); renderCart(); });
+                article.append(info, remove); cartItemsNode.appendChild(article);
+            });
+        }
+        const total = cart.reduce((sum, item) => sum + item.price, 0);
+        cartTotalNode.textContent = rupiah(total);
+        checkoutSummary.textContent = cart.length ? `${cart.length} item dipilih · Estimasi total ${rupiah(total)}. Harga ini masih demo frontend.` : 'Keranjang masih kosong.';
+        document.getElementById('webia-checkout-open').disabled = !cart.length;
+    };
+
+    templateCards.forEach((card) => {
+        const addButton = card.querySelector('[data-template-add]');
+        addButton?.addEventListener('click', () => {
+            activeTemplate = {
+                name: card.querySelector('.webia-template-meta h3')?.textContent.trim() || 'Template Website',
+                category: card.dataset.category || 'company',
+                categoryLabel: card.querySelector('.webia-template-meta > span')?.textContent.trim() || 'WEBSITE'
+            };
+            document.getElementById('webia-package-template-name').textContent = `Template: ${activeTemplate.name}`;
+            renderPackageOptions();
+            openDialog(packagePicker);
+        });
+    });
+
+    document.getElementById('webia-cart-open')?.addEventListener('click', () => { renderCart(); openDialog(cartDialog); });
+    document.getElementById('webia-checkout-open')?.addEventListener('click', () => {
+        if (!cart.length) return;
+        closeDialog(cartDialog); renderCart(); openDialog(checkoutDialog);
+    });
+    document.querySelectorAll('[data-close-dialog]').forEach((button) => {
+        button.addEventListener('click', () => closeDialog(button.closest('dialog')));
+    });
+    [packagePicker, cartDialog, checkoutDialog, successDialog].forEach((dialog) => {
+        dialog?.addEventListener('click', (event) => { if (event.target === dialog) closeDialog(dialog); });
+    });
+    document.getElementById('webia-checkout-form')?.addEventListener('submit', (event) => {
+        event.preventDefault();
+        if (!cart.length) return;
+        const form = event.currentTarget;
+        if (!form.reportValidity()) return;
+        // Deliberately frontend-only: no network, API, or persistent storage.
+        closeDialog(checkoutDialog);
+        cart = [];
+        renderCart();
+        form.reset();
+        openDialog(successDialog);
+    });
+    renderCart();
+
 });
