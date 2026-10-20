@@ -2,7 +2,7 @@
     <div class="webia-footer-container">
 
         <div class="webia-footer-main">
-            <a href="{{ route('webia.index') }}" class="webia-footer-brand">
+            <a href="{{ route('home') }}" class="webia-footer-brand">
                 <span class="webia-brand-mark">W</span>
                 <span>
                     <strong>WEBIA</strong>
@@ -18,30 +18,30 @@
 
         <div class="webia-footer-links">
             <h3>Layanan</h3>
-            <a href="{{ route('webia.index') }}#paket-website">
+            <a href="{{ route('home') }}#paket-website">
                 Paket Website
             </a>
-            <a href="{{ route('webia.index') }}#keunggulan-website">
+            <a href="{{ route('home') }}#keunggulan-website">
                 Keunggulan
             </a>
-            <a href="{{ route('webia.index') }}#faq-website">
+            <a href="{{ route('home') }}#faq-website">
                 Pertanyaan Umum
             </a>
-            <a href="{{ route('webia.index') }}#kategori-website">
+            <a href="{{ route('home') }}#kategori-website">
                 Kategori Bisnis
             </a>
 
-            <a href="{{ route('webia.index') }}#koleksi-template">
+            <a href="{{ route('home') }}#koleksi-template">
                 Galeri Template
             </a>
-             <a href="{{ url('/') }}">
+             <a href="#">
                 Jelajahi D-KREASI Homebase ↗
             </a>
         </div>
 
         <div class="webia-footer-links">
             <h3>Informasi</h3>
-            <a href="{{ url('/') }}">
+            <a href="#">
                 D-KREASI Homebase
             </a>
         </div>

@@ -1,16 +1,10 @@
-
 <?php
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WebsiteBisnis\TemplateCollectionController;
 
-// D-KREASI — Homepage utama
-Route::get('/', function () {
-    return view('home.index');
-})->name('home');
-
-Route::view('/webia', 'website-bisnis.index')
-    ->name('webia.index');
+// WEBIA — Homepage utama
+Route::view('/', 'website-bisnis.index')->name('home');
 
 // Route::view('/webia/koleksi', 'website-bisnis.collections.index')
 //     ->name('webia.collections');

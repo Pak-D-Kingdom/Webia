@@ -1,6 +1,6 @@
 <header class="webia-header">
     <nav class="webia-navbar" aria-label="Navigasi utama">
-        <a href="{{ route('webia.index') }}" class="webia-brand" aria-label="WEBIA — Beranda">
+        <a href="{{ route('home') }}" class="webia-brand" aria-label="WEBIA — Beranda">
 
             <span class="webia-brand-mark">W</span>
 
@@ -19,31 +19,31 @@
 
         <div class="webia-navigation" id="webia-navigation">
 
-            <a href="{{ route('webia.index') }}">
+            <a href="{{ route('home') }}">
                 Beranda
             </a>
 
-            <a href="{{ route('webia.index') }}#kategori-website">
+            <a href="{{ route('home') }}#kategori-website">
                 Kategori
             </a>
 
-            <a href="{{ route('webia.index') }}#koleksi-template">
+            <a href="{{ route('home') }}#koleksi-template">
                 Galeri Template
             </a>
 
-            <a href="{{ route('webia.index') }}#keunggulan-website">
+            <a href="{{ route('home') }}#keunggulan-website">
                 Keunggulan
             </a>
 
-            <a href="{{ route('webia.index') }}#paket-website">
+            <a href="{{ route('home') }}#paket-website">
                 Paket Website
             </a>
 
-            <a href="{{ route('webia.index') }}#faq-website">
+            <a href="{{ route('home') }}#faq-website">
                 FAQ
             </a>
 
-            {{-- <a href="{{ route('webia.index') }}#konsultasi-website"
+            {{-- <a href="{{ route('home') }}#konsultasi-website"
        class="webia-nav-cta">
         Konsultasi
     </a> --}}
@@ -51,7 +51,7 @@
                 Konsultasi
             </button>
 
-            <a href="{{ url('/') }}" class="webia-homebase-link">
+            <a href="#" class="webia-homebase-link">
                 ← D-KREASI
             </a>
 

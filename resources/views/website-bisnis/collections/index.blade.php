@@ -10,7 +10,7 @@
         <div class="webia-gallery-orb webia-gallery-orb-one"></div>
         <div class="webia-gallery-orb webia-gallery-orb-two"></div>
         <div class="webia-gallery-hero-inner">
-            <a class="webia-gallery-back" href="{{ route('webia.index') }}">← Kembali ke WEBIA</a>
+            <a class="webia-gallery-back" href="{{ route('home') }}">← Kembali ke WEBIA</a>
             <span class="website-eyebrow">THE WEBIA TEMPLATE UNIVERSE</span>
             <h1>Temukan Tampilan yang <span>Pas untuk Ceritamu.</span></h1>
             <p>Jelajahi inspirasi website berdasarkan kategori bisnis. Pilih gaya yang kamu suka, lalu konsultasikan
@@ -29,7 +29,7 @@
                 <h2>Galeri <span>Template WEBIA.</span></h2>
                 <p>Gunakan filter atau pencarian untuk menemukan kategori yang kamu butuhkan.</p>
             </div>
-            <a class="website-button website-button-secondary" href="{{ route('webia.index') }}#paket-website">Lihat Paket
+            <a class="website-button website-button-secondary" href="{{ route('home') }}#paket-website">Lihat Paket
                 <span>↗</span></a>
         </div>
 
@@ -103,7 +103,7 @@
                         <h3>{{ $template['name'] }}</h3>
                         <p>{{ $template['desc'] }}</p>
                         <div class="webia-gallery-card-bottom"><small>{{ $template['tag'] }}</small><a
-                                href="{{ route('webia.index') }}#konsultasi-website"
+                                href="{{ route('home') }}#konsultasi-website"
                                 aria-label="Konsultasikan template {{ $template['name'] }}">Konsultasi ↗</a></div>
                     </div>
                 </article>
@@ -122,7 +122,7 @@
             <h2>Belum menemukan yang <span>benar-benar kamu?</span></h2>
             <p>Jadikan inspirasi ini titik awal. Kita bisa diskusikan penyesuaian desain sesuai karakter dan kebutuhan
                 bisnismu.</p>
-            <a href="{{ route('webia.index') }}#konsultasi-website"
+            <a href="{{ route('home') }}#konsultasi-website"
                 class="website-button website-button-primary">Diskusikan Kebutuhanmu <span>↗</span></a>
         </div>
     </section>
