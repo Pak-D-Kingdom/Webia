@@ -12,4 +12,15 @@ return [
 
     // Catatan opsional di bawah daftar rekening, misal: "Nama penerima harus sesuai."
     'payment_note' => null,
+
+    /*
+    | Midtrans Snap — pembayaran online di atas transfer manual.
+    | Tanpa server_key, percobaan pembayaran disimulasikan lokal (dev/E2E).
+    | Isi MIDTRANS_MERCHANT_ID + MIDTRANS_SERVER_KEY dari dashboard Midtrans sebelum production.
+    */
+    'midtrans' => [
+        'merchant_id' => env('MIDTRANS_MERCHANT_ID'),
+        'server_key' => env('MIDTRANS_SERVER_KEY'),
+        'is_production' => env('MIDTRANS_ENV', 'sandbox') === 'production',
+    ],
 ];

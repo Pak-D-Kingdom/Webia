@@ -7,6 +7,7 @@ use App\Models\WebiaOrder;
 use App\Models\WebiaOrderLog;
 use App\Models\WebiaPackage;
 use App\Models\WebiaTemplate;
+use App\Services\Midtrans;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
@@ -16,10 +17,13 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
+use RuntimeException;
 use Throwable;
 
 class WebiaOrderController extends Controller
 {
+    public function __construct(private Midtrans $midtrans) {}
+
     public function index(Request $request): View
     {
         $orders = WebiaOrder::whereBelongsTo($request->user())->with('package')->latest()->get();
@@ -58,9 +62,10 @@ class WebiaOrderController extends Controller
     public function show(Request $request, WebiaOrder $order): View
     {
         abort_unless($order->user_id === $request->user()->id, 404);
-        $order->load(['package', 'template', 'logs']);
+        $order->load(['package', 'template', 'logs', 'payments']);
+        $pendingPayment = $order->payments->where('status', 'created')->last();
 
-        return view('orders.show', compact('order'));
+        return view('orders.show', compact('order', 'pendingPayment'));
     }
 
     public function uploadReceipt(Request $request, WebiaOrder $order): RedirectResponse
@@ -104,6 +109,56 @@ class WebiaOrderController extends Controller
         }
 
         return redirect()->route('orders.show', $order)->with('status', 'Bukti pembayaran berhasil dikirim.');
+    }
+
+    public function pay(Request $request, WebiaOrder $order): RedirectResponse
+    {
+        abort_unless($order->user_id === $request->user()->id, 404);
+        abort_unless(in_array($order->status, ['awaiting_payment', 'rejected'], true), 422);
+
+        try {
+            $payment = $order->payments()->where('status', 'created')->latest()->first()
+                ?? $this->midtrans->createTransaction($order, $this->nextMidtransOrderId($order));
+        } catch (RuntimeException $exception) {
+            report($exception);
+
+            return redirect()->route('orders.show', $order)->with('status', 'Pembayaran Midtrans gagal dibuat. Coba lagi sebentar.');
+        }
+
+        return redirect()->away($payment->snap_redirect_url ?? route('orders.show', $order));
+    }
+
+    public function checkStatus(Request $request, WebiaOrder $order): RedirectResponse
+    {
+        abort_unless($order->user_id === $request->user()->id, 404);
+
+        $payment = $order->payments()->where('status', 'created')->latest()->first();
+
+        if ($payment === null) {
+            return redirect()->route('orders.show', $order)->with('status', 'Belum ada pembayaran Midtrans untuk dicek.');
+        }
+
+        $result = $this->midtrans->status($payment->midtrans_order_id);
+
+        if ($result === null) {
+            return redirect()->route('orders.show', $order)->with('status', 'Status Midtrans belum bisa diambil. Coba lagi sebentar.');
+        }
+
+        $this->midtrans->applyNotification($payment, $result);
+
+        $message = match ($this->midtrans->mapTransactionStatus((string) data_get($result, 'transaction_status'))) {
+            'paid' => 'Pembayaran berhasil dikonfirmasi.',
+            'failed' => 'Pembayaran gagal. Silakan bayar ulang.',
+            'expired' => 'Sesi pembayaran sudah kedaluwarsa. Silakan bayar ulang.',
+            default => 'Pembayaran masih menunggu.',
+        };
+
+        return redirect()->route('orders.show', $order)->with('status', $message);
+    }
+
+    private function nextMidtransOrderId(WebiaOrder $order): string
+    {
+        return 'WEB-'.$order->id.'-'.str_pad((string) ($order->payments()->count() + 1), 2, '0', STR_PAD_LEFT);
     }
 
     public function saveBusinessData(Request $request, WebiaOrder $order): RedirectResponse
@@ -170,7 +225,7 @@ class WebiaOrderController extends Controller
             }
         }
 
-        throw new QueryException('', '', [], new \RuntimeException('Nomor order gagal dibuat.'));
+        throw new QueryException('', '', [], new RuntimeException('Nomor order gagal dibuat.'));
     }
 
     private function orderNumber(): string
