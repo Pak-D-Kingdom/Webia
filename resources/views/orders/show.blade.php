@@ -15,7 +15,7 @@
         </div>
 
         @php
-            $progressSteps = ['Menunggu bukti', 'Diperiksa admin', 'Dibayar', 'Dikerjakan', 'Selesai'];
+            $progressSteps = ['Menunggu pembayaran', 'Diperiksa admin', 'Dibayar', 'Dikerjakan', 'Selesai'];
             $progressIndex = match (true) {
                 $order->delivery_status === 'delivered' => 4,
                 $order->delivery_status === 'in_progress' => 3,
@@ -34,6 +34,22 @@
         </ol>
 
         @if (in_array($order->status, ['awaiting_payment', 'rejected']))
+            <div class="dashboard-empty">
+                <h2>Bayar via Midtrans</h2>
+                <p>QRIS, virtual account, e-wallet, atau kartu kredit di halaman pembayaran Midtrans @if (! config('webia.midtrans.server_key'))<em>(mode simulasi lokal)</em>@endif.</p>
+                <form method="POST" action="{{ route('orders.pay', $order) }}">
+                    @csrf
+                    <button class="account-submit" type="submit">Bayar via Midtrans</button>
+                </form>
+                @if ($pendingPayment?->snap_redirect_url)
+                    <p><a href="{{ $pendingPayment->snap_redirect_url }}">Lanjutkan sesi pembayaran sebelumnya</a></p>
+                    <form method="POST" action="{{ route('orders.pay.check', $order) }}">
+                        @csrf
+                        <button class="account-submit" type="submit">Cek status pembayaran</button>
+                    </form>
+                @endif
+            </div>
+
             <div class="dashboard-empty">
                 <h2>Instruksi transfer</h2>
                 @if (config('webia.payment_accounts'))
