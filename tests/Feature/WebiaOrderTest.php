@@ -155,6 +155,35 @@ class WebiaOrderTest extends TestCase
             ->assertSee('Nominal transfer tidak sesuai.');
     }
 
+    public function test_order_instruction_shows_configured_payment_accounts(): void
+    {
+        config(['webia.payment_accounts' => [
+            ['bank' => 'BCA', 'number' => '0000000000', 'holder' => 'WEBIA (dummy)'],
+        ]]);
+
+        $order = WebiaOrder::factory()->create(['status' => 'awaiting_payment']);
+
+        $this->actingAs($order->user)
+            ->get(route('orders.show', $order))
+            ->assertOk()
+            ->assertSee('BCA')
+            ->assertSee('0000000000')
+            ->assertSee('WEBIA (dummy)');
+    }
+
+    public function test_order_instruction_falls_back_without_payment_accounts(): void
+    {
+        config(['webia.payment_accounts' => []]);
+
+        $order = WebiaOrder::factory()->create(['status' => 'awaiting_payment']);
+
+        $this->actingAs($order->user)
+            ->get(route('orders.show', $order))
+            ->assertOk()
+            ->assertSee('rekening WEBIA yang dikonfirmasi tim')
+            ->assertDontSee('0000000000');
+    }
+
     public function test_payment_receipt_rejects_unsafe_file(): void
     {
         Storage::fake('local');

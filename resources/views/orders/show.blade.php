@@ -14,10 +14,20 @@
             <dl><div><dt>Status</dt><dd>{{ str_replace('_', ' ', ucfirst($order->status)) }}</dd></div><div><dt>Total</dt><dd>Rp{{ number_format($order->total_price, 0, ',', '.') }}</dd></div></dl>
         </div>
 
-        @if ($order->status === 'awaiting_payment')
+        @if (in_array($order->status, ['awaiting_payment', 'rejected']))
             <div class="dashboard-empty">
                 <h2>Instruksi transfer</h2>
-                <p>Transfer sesuai total pesanan ke rekening WEBIA yang dikonfirmasi tim, lalu unggah bukti di bawah.</p>
+                @if (config('webia.payment_accounts'))
+                    <ul>
+                        @foreach (config('webia.payment_accounts') as $account)
+                            <li><strong>{{ $account['bank'] }}</strong> {{ $account['number'] }} a.n. {{ $account['holder'] }}</li>
+                        @endforeach
+                    </ul>
+                    <p>Transfer sesuai total ke salah satu rekening di atas, lalu unggah bukti di bawah.</p>
+                    @if (config('webia.payment_note'))<p>{{ config('webia.payment_note') }}</p>@endif
+                @else
+                    <p>Transfer sesuai total ke rekening WEBIA yang dikonfirmasi tim, lalu unggah bukti di bawah.</p>
+                @endif
             </div>
         @endif
 
