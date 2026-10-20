@@ -37,6 +37,24 @@ return [
     |
     */
 
+    // Akun admin yang dibuat oleh AdminUserSeeder; env override selama setup lokal.
+    'admins' => [
+        'admin' => [
+            'email' => env('ADMIN_EMAIL', 'admin@webia.test'),
+            'name' => env('ADMIN_NAME', 'Admin WEBIA'),
+            'password' => env('ADMIN_PASSWORD', 'password'),
+        ],
+    ],
+
+    // Akun admin yang dibuat oleh AdminUserSeeder; env override selama setup lokal.
+    'admins' => [
+        'admin' => [
+            'email' => env('ADMIN_EMAIL', 'admin@webia.test'),
+            'name' => env('ADMIN_NAME', 'Admin WEBIA'),
+            'password' => env('ADMIN_PASSWORD', 'password'),
+        ],
+    ],
+
     'guards' => [
         'web' => [
             'driver' => 'session',
