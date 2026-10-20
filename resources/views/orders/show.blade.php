@@ -14,6 +14,25 @@
             <dl><div><dt>Status</dt><dd>{{ str_replace('_', ' ', ucfirst($order->status)) }}</dd></div><div><dt>Total</dt><dd>Rp{{ number_format($order->total_price, 0, ',', '.') }}</dd></div></dl>
         </div>
 
+        @php
+            $progressSteps = ['Menunggu bukti', 'Diperiksa admin', 'Dibayar', 'Dikerjakan', 'Selesai'];
+            $progressIndex = match (true) {
+                $order->delivery_status === 'delivered' => 4,
+                $order->delivery_status === 'in_progress' => 3,
+                $order->status === 'paid' => 2,
+                $order->status === 'payment_uploaded' => 1,
+                default => 0,
+            };
+        @endphp
+        <ol class="order-steps" aria-label="Progres pesanan">
+            @foreach ($progressSteps as $index => $step)
+                <li @if ($index === $progressIndex) aria-current="step" @endif>
+                    <span class="order-step-state" aria-hidden="true">{{ $index < $progressIndex ? '✓' : $index + 1 }}</span>
+                    {{ $step }}
+                </li>
+            @endforeach
+        </ol>
+
         @if (in_array($order->status, ['awaiting_payment', 'rejected']))
             <div class="dashboard-empty">
                 <h2>Instruksi transfer</h2>
@@ -47,10 +66,42 @@
                 <div class="form-field"><label for="payment_note">Catatan (opsional)</label><textarea id="payment_note" name="payment_note" rows="3">{{ old('payment_note') }}</textarea>@error('payment_note') <p class="form-error">{{ $message }}</p> @enderror</div>
                 <button class="account-submit" type="submit">Kirim bukti</button>
             </form>
+        @elseif ($order->status === 'paid')
+            <div class="dashboard-empty">
+                <h2>Data bisnis</h2>
+                @if ($order->business_data)
+                    <dl class="business-data-list">
+                        <div><dt>Nama usaha</dt><dd>{{ $order->business_data['business_name'] }}</dd></div>
+                        @if ($order->business_data['tagline'] ?? null)<div><dt>Tagline</dt><dd>{{ $order->business_data['tagline'] }}</dd></div>@endif
+                        @if ($order->business_data['whatsapp'] ?? null)<div><dt>WhatsApp</dt><dd>{{ $order->business_data['whatsapp'] }}</dd></div>@endif
+                        @if ($order->business_data['description'] ?? null)<div><dt>Deskripsi</dt><dd>{{ $order->business_data['description'] }}</dd></div>@endif
+                        @if ($order->business_data['address_url'] ?? null)<div><dt>Alamat</dt><dd><a href="{{ $order->business_data['address_url'] }}" rel="noopener">Lihat lokasi</a></dd></div>@endif
+                        @if ($order->business_data['instagram'] ?? null)<div><dt>Instagram</dt><dd>{{ $order->business_data['instagram'] }}</dd></div>@endif
+                    </dl>
+                @endif
+                @if ($order->delivery_status === 'delivered')
+                    <p>Pesanan ini sudah selesai. Silakan hubungi tim WEBIA untuk perubahan data.</p>
+                @else
+                    <p>Isi data bisnis di bawah agar tim WEBIA bisa mulai mengerjakan website. Data bisa diubah sampai pesanan selesai.</p>
+                @endif
+            </div>
+
+            @if ($order->delivery_status !== 'delivered')
+                <form class="account-form admin-form" method="POST" action="{{ route('orders.business', $order) }}">
+                    @csrf
+                    <h2>{{ $order->business_data ? 'Ubah data bisnis' : 'Isi data bisnis' }}</h2>
+                    @php $business = $order->business_data ?? []; @endphp
+                    <div class="form-field"><label for="business_name">Nama usaha</label><input id="business_name" name="business_name" type="text" value="{{ old('business_name', $business['business_name'] ?? '') }}" required>@error('business_name') <p class="form-error">{{ $message }}</p> @enderror</div>
+                    <div class="form-field"><label for="tagline">Tagline (opsional)</label><input id="tagline" name="tagline" type="text" value="{{ old('tagline', $business['tagline'] ?? '') }}">@error('tagline') <p class="form-error">{{ $message }}</p> @enderror</div>
+                    <div class="form-field"><label for="whatsapp">Nomor WhatsApp (opsional)</label><input id="whatsapp" name="whatsapp" type="text" inputmode="tel" value="{{ old('whatsapp', $business['whatsapp'] ?? '') }}">@error('whatsapp') <p class="form-error">{{ $message }}</p> @enderror</div>
+                    <div class="form-field"><label for="description">Deskripsi usaha (opsional)</label><textarea id="description" name="description" rows="3">{{ old('description', $business['description'] ?? '') }}</textarea>@error('description') <p class="form-error">{{ $message }}</p> @enderror</div>
+                    <div class="form-field"><label for="address_url">Link alamat Google Maps (opsional)</label><input id="address_url" name="address_url" type="url" value="{{ old('address_url', $business['address_url'] ?? '') }}">@error('address_url') <p class="form-error">{{ $message }}</p> @enderror</div>
+                    <div class="form-field"><label for="instagram">Instagram (opsional)</label><input id="instagram" name="instagram" type="text" value="{{ old('instagram', $business['instagram'] ?? '') }}">@error('instagram') <p class="form-error">{{ $message }}</p> @enderror</div>
+                    <button class="account-submit" type="submit">Simpan data bisnis</button>
+                </form>
+            @endif
         @elseif ($order->status === 'payment_uploaded')
             <div class="dashboard-empty" role="status"><h2>Menunggu verifikasi</h2><p>Admin sedang memeriksa bukti pembayaranmu.</p></div>
-        @elseif ($order->status === 'paid')
-            <div class="dashboard-empty" role="status"><h2>Pembayaran diterima</h2><p>Tim WEBIA akan melanjutkan order ke tahap pengisian data bisnis.</p></div>
         @endif
     </section>
 @endsection

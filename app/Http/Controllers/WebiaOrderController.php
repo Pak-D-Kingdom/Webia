@@ -75,7 +75,6 @@ class WebiaOrderController extends Controller
 
         $newPath = $request->file('payment_receipt')->store('payment-receipts');
         $oldPath = $order->payment_receipt_path;
-
         try {
             DB::transaction(function () use ($order, $request, $validated, $newPath): void {
                 $lockedOrder = WebiaOrder::whereKey($order->id)->lockForUpdate()->firstOrFail();
@@ -105,6 +104,31 @@ class WebiaOrderController extends Controller
         }
 
         return redirect()->route('orders.show', $order)->with('status', 'Bukti pembayaran berhasil dikirim.');
+    }
+
+    public function saveBusinessData(Request $request, WebiaOrder $order): RedirectResponse
+    {
+        abort_unless($order->user_id === $request->user()->id, 404);
+
+        $validated = $request->validate([
+            'business_name' => ['required', 'string', 'max:120'],
+            'tagline' => ['nullable', 'string', 'max:150'],
+            'whatsapp' => ['nullable', 'string', 'regex:/^[0-9+\-\s]{6,20}$/'],
+            'description' => ['nullable', 'string', 'max:1000'],
+            'address_url' => ['nullable', 'url:http,https', 'max:500'],
+            'instagram' => ['nullable', 'string', 'max:80'],
+        ]);
+
+        DB::transaction(function () use ($order, $validated): void {
+            $lockedOrder = WebiaOrder::whereKey($order->id)->lockForUpdate()->firstOrFail();
+            abort_unless($lockedOrder->status === 'paid' && $lockedOrder->delivery_status !== 'delivered', 422);
+
+            $lockedOrder->update([
+                'business_data' => $validated,
+            ]);
+        });
+
+        return redirect()->route('orders.show', $order)->with('status', 'Data bisnis berhasil disimpan.');
     }
 
     /** @param Collection<int, WebiaAddon> $addons */

@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 #[Fillable([
     'user_id', 'order_number', 'webia_package_id', 'package_snapshot', 'webia_template_id', 'template_snapshot', 'category_slug',
     'addon_ids', 'addon_snapshot', 'status', 'total_price', 'payment_receipt_path', 'payment_note', 'paid_at',
+    'business_data', 'delivery_status',
 ])]
 class WebiaOrder extends Model
 {
@@ -45,6 +46,7 @@ class WebiaOrder extends Model
             'template_snapshot' => 'array',
             'addon_ids' => 'array',
             'addon_snapshot' => 'array',
+            'business_data' => 'array',
             'paid_at' => 'datetime',
         ];
     }

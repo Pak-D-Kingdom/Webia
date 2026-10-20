@@ -18,16 +18,17 @@ class WebiaOrderController extends Controller
 {
     protected const STATUSES = ['awaiting_payment', 'payment_uploaded', 'paid', 'rejected'];
 
+    protected const DELIVERY_STATUSES = ['not_started', 'in_progress', 'delivered'];
+
     public function index(Request $request): View
     {
-        $status = $request->string('status')->value();
-        if (! in_array($status, self::STATUSES, true)) {
-            $status = '';
-        }
+        $status = $this->matchingValue($request->string('status'), self::STATUSES);
+        $delivery = $this->matchingValue($request->string('delivery'), self::DELIVERY_STATUSES);
 
         $orders = WebiaOrder::query()
             ->with(['user', 'package'])
             ->when($status !== '', fn ($query) => $query->where('status', $status))
+            ->when($delivery !== '', fn ($query) => $query->where('delivery_status', $delivery))
             ->latest()
             ->paginate(20)
             ->withQueryString();
@@ -36,7 +37,15 @@ class WebiaOrderController extends Controller
             'orders' => $orders,
             'activeStatus' => $status,
             'statuses' => self::STATUSES,
+            'activeDelivery' => $delivery,
+            'deliveries' => self::DELIVERY_STATUSES,
         ]);
+    }
+
+    /** @param array<int, string> $allowed */
+    private function matchingValue(string $value, array $allowed): string
+    {
+        return in_array($value, $allowed, true) ? $value : '';
     }
 
     public function show(WebiaOrder $order): View
@@ -44,6 +53,36 @@ class WebiaOrderController extends Controller
         $order->load(['user', 'package', 'template', 'logs.actor']);
 
         return view('admin.orders.show', compact('order'));
+    }
+
+    public function progress(Request $request, WebiaOrder $order): RedirectResponse
+    {
+        $validated = $request->validate([
+            'action' => ['required', Rule::in(['start', 'finish'])],
+        ]);
+
+        DB::transaction(function () use ($request, $order, $validated): void {
+            $lockedOrder = WebiaOrder::whereKey($order->id)->lockForUpdate()->firstOrFail();
+
+            $transitions = [
+                'start' => ['from' => 'not_started', 'to' => 'in_progress'],
+                'finish' => ['from' => 'in_progress', 'to' => 'delivered'],
+            ];
+
+            /** @var array{from: string, to: string} $transition */
+            $transition = $transitions[$validated['action']];
+            abort_unless($lockedOrder->status === 'paid' && $lockedOrder->delivery_status === $transition['from'], 422);
+
+            $lockedOrder->update(['delivery_status' => $transition['to']]);
+            WebiaOrderLog::create([
+                'webia_order_id' => $lockedOrder->id,
+                'actor_id' => $request->user()->id,
+                'from_status' => 'delivery_'.$transition['from'],
+                'to_status' => 'delivery_'.$transition['to'],
+            ]);
+        });
+
+        return redirect()->route('admin.orders.show', $order)->with('status', 'Progres pengerjaan berhasil diperbarui.');
     }
 
     public function receipt(WebiaOrder $order): StreamedResponse

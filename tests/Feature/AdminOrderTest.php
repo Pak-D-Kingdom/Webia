@@ -106,6 +106,57 @@ class AdminOrderTest extends TestCase
         $this->assertSame('awaiting_payment', $order->fresh()->status);
     }
 
+    public function test_admin_can_start_working_on_paid_order(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $order = WebiaOrder::factory()->create([
+            'status' => 'paid',
+            'business_data' => ['business_name' => 'Salon Ayu'],
+        ]);
+
+        $this->actingAs($admin)->post(route('admin.orders.progress', $order), [
+            'action' => 'start',
+        ])->assertRedirect(route('admin.orders.show', $order));
+
+        $this->assertSame('in_progress', $order->fresh()->delivery_status);
+        $this->assertDatabaseHas('webia_order_logs', [
+            'webia_order_id' => $order->id,
+            'from_status' => 'delivery_not_started',
+            'to_status' => 'delivery_in_progress',
+        ]);
+    }
+
+    public function test_admin_can_finish_order_in_progress(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $order = WebiaOrder::factory()->create([
+            'status' => 'paid',
+            'delivery_status' => 'in_progress',
+            'business_data' => ['business_name' => 'Salon Ayu'],
+        ]);
+
+        $this->actingAs($admin)->post(route('admin.orders.progress', $order), [
+            'action' => 'finish',
+        ])->assertRedirect(route('admin.orders.show', $order));
+
+        $this->assertSame('delivered', $order->fresh()->delivery_status);
+    }
+
+    public function test_progress_requires_order_state_alignment(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $order = WebiaOrder::factory()->create([
+            'status' => 'paid',
+            'delivery_status' => 'not_started',
+        ]);
+
+        $this->actingAs($admin)->post(route('admin.orders.progress', $order), [
+            'action' => 'finish',
+        ])->assertUnprocessable();
+
+        $this->assertSame('not_started', $order->fresh()->delivery_status);
+    }
+
     public function test_admin_order_list_filters_by_status(): void
     {
         $admin = User::factory()->admin()->create();

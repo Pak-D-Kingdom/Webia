@@ -195,4 +195,71 @@ class WebiaOrderTest extends TestCase
 
         $this->assertSame('awaiting_payment', $order->fresh()->status);
     }
+
+    public function test_paid_order_can_save_business_data(): void
+    {
+        $order = WebiaOrder::factory()->create(['status' => 'paid']);
+
+        $this->actingAs($order->user)->post(route('orders.business', $order), [
+            'business_name' => 'Salon Ayu',
+            'tagline' => 'Rapi dalam 30 menit',
+            'whatsapp' => '+62 812-0000-0000',
+            'description' => 'Nail art home service.',
+            'address_url' => 'https://maps.google.com/?q=salon-ayu',
+            'instagram' => '@salonayu',
+        ])->assertRedirect(route('orders.show', $order));
+
+        $order->refresh();
+        $this->assertSame('Salon Ayu', $order->business_data['business_name']);
+        $this->assertSame('Nail art home service.', $order->business_data['description']);
+    }
+
+    public function test_business_data_is_rejected_before_payment_verified(): void
+    {
+        $order = WebiaOrder::factory()->create(['status' => 'awaiting_payment']);
+
+        $this->actingAs($order->user)->post(route('orders.business', $order), [
+            'business_name' => 'Salon Ayu',
+        ])->assertUnprocessable();
+
+        $this->assertNull($order->fresh()->business_data);
+    }
+
+    public function test_business_data_cannot_be_changed_after_delivery(): void
+    {
+        $order = WebiaOrder::factory()->create([
+            'status' => 'paid',
+            'delivery_status' => 'delivered',
+            'business_data' => ['business_name' => 'Salon Ayu'],
+        ]);
+
+        $this->actingAs($order->user)->post(route('orders.business', $order), [
+            'business_name' => 'Salon Baru',
+        ])->assertUnprocessable();
+
+        $this->assertSame('Salon Ayu', $order->fresh()->business_data['business_name']);
+    }
+
+    public function test_business_data_requires_business_name(): void
+    {
+        $order = WebiaOrder::factory()->create(['status' => 'paid']);
+
+        $this->actingAs($order->user)->post(route('orders.business', $order), [
+            'whatsapp' => '+62 812-0000-0000',
+        ])->assertSessionHasErrors('business_name');
+
+        $this->assertNull($order->fresh()->business_data);
+    }
+
+    public function test_business_data_validates_address_url(): void
+    {
+        $order = WebiaOrder::factory()->create(['status' => 'paid']);
+
+        $this->actingAs($order->user)->post(route('orders.business', $order), [
+            'business_name' => 'Salon Ayu',
+            'address_url' => 'not-a-url',
+        ])->assertSessionHasErrors('address_url');
+
+        $this->assertNull($order->fresh()->business_data);
+    }
 }

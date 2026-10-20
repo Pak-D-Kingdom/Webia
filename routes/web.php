@@ -27,6 +27,7 @@ Route::middleware('auth')->group(function (): void {
     Route::post('/orders', [WebiaOrderController::class, 'store'])->middleware('throttle:10,1')->name('orders.store');
     Route::get('/orders/{order}', [WebiaOrderController::class, 'show'])->name('orders.show');
     Route::post('/orders/{order}/receipt', [WebiaOrderController::class, 'uploadReceipt'])->middleware('throttle:5,1')->name('orders.receipt');
+    Route::post('/orders/{order}/business', [WebiaOrderController::class, 'saveBusinessData'])->middleware('throttle:10,1')->name('orders.business');
 
     Route::middleware('admin')->prefix('admin')->name('admin.')->group(function (): void {
         Route::view('/', 'admin.dashboard')->name('dashboard');
@@ -36,6 +37,7 @@ Route::middleware('auth')->group(function (): void {
         Route::get('orders/{order}', [AdminWebiaOrderController::class, 'show'])->name('orders.show');
         Route::get('orders/{order}/receipt', [AdminWebiaOrderController::class, 'receipt'])->name('orders.receipt');
         Route::post('orders/{order}/verify', [AdminWebiaOrderController::class, 'verify'])->name('orders.verify');
+        Route::post('orders/{order}/progress', [AdminWebiaOrderController::class, 'progress'])->name('orders.progress');
     });
 });
 
