@@ -39,6 +39,11 @@ class WebiaOrder extends Model
         return $this->hasMany(WebiaOrderLog::class);
     }
 
+    public function payments(): HasMany
+    {
+        return $this->hasMany(WebiaPayment::class);
+    }
+
     protected function casts(): array
     {
         return [
