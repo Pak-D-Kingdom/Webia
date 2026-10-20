@@ -447,6 +447,26 @@ html { scroll-behavior: smooth; scroll-padding-top: calc(var(--lm-nav-h) + 8px);
 .lm-rsv-contact .i { margin-top: 3px; color: var(--lm-gold); }
 .lm-rsv-contact a:hover { color: var(--lm-gold-d); }
 
+/* ---------- 13b. Efek interaktif AI FAQ ----------
+   Tambahan murni: hanya gerak & respons saat diinteraksi. Ukuran, posisi, warna, dan bentuk FAQ
+   saat diam TIDAK berubah (blok .lm-faq di bagian 11 tidak disentuh). Kelas fx-* ditambah oleh cafe.js. */
+.lm-faq { transition: box-shadow .35s ease; }
+.lm-faq.fx-wait, .lm-faq.fx-in { transition: opacity .7s ease, transform .7s cubic-bezier(.2, .7, .2, 1), box-shadow .35s ease; }
+.lm-faq.fx-wait { opacity: 0; transform: translateY(18px); }
+.lm-faq.fx-in { opacity: 1; transform: none; }
+.lm-faq:hover, .lm-faq:focus-within { box-shadow: 0 14px 38px rgba(176, 138, 79, .22); }
+.lm-faq.fx-pulse { animation: lm-faq-glow 1.2s ease-out 2; }
+@keyframes lm-faq-glow { 0% { box-shadow: 0 0 0 0 rgba(176, 138, 79, .45); } 100% { box-shadow: 0 0 0 22px rgba(176, 138, 79, 0); } }
+.lm-faq .lm-faq__form { transition: border-color .2s, box-shadow .25s; }
+.lm-faq .lm-faq__form:focus-within { box-shadow: 0 0 0 4px rgba(176, 138, 79, .16); }
+.lm-faq .lm-faq__form button { transition: background-color .2s, transform .25s; }
+.lm-faq .lm-faq__form button:hover { transform: scale(1.08) rotate(-8deg); }
+.lm-faq .lm-chip { transition: border-color .2s, color .2s, transform .2s, box-shadow .2s; }
+.lm-faq .lm-chip:hover { transform: translateY(-2px); box-shadow: 0 6px 14px rgba(176, 138, 79, .2); }
+.lm-faq .lm-chip:active { transform: translateY(0); }
+.lm-faq__answer.fx-show { animation: lm-faq-rise .45s ease both; }
+@keyframes lm-faq-rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
 /* ---------- 14. Preferensi gerak ---------- */
 @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }

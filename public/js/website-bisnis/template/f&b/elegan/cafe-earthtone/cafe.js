@@ -336,4 +336,48 @@
             }
         });
     }
+
+    /* 9. AI FAQ: efek interaktif tambahan (tidak mengubah isi/logika FAQ di modul 7).
+          Muncul halus saat terlihat, denyut emas sebentar, jawaban muncul halus & otomatis terlihat. */
+    const faqFx = $('#faq');
+    if (faqFx) {
+        const answer = $('.lm-faq__answer', faqFx);
+        const pulse = () => {
+            faqFx.classList.remove('fx-pulse');
+            void faqFx.offsetWidth; // mulai ulang animasi
+            faqFx.classList.add('fx-pulse');
+        };
+        faqFx.addEventListener('animationend', (e) => { if (e.target === faqFx) faqFx.classList.remove('fx-pulse'); });
+
+        if ('IntersectionObserver' in window && !reduceMotion) {
+            let shown = false;
+            const reveal = () => {
+                if (shown) return;
+                shown = true;
+                faqFx.classList.remove('fx-wait');
+                faqFx.classList.add('fx-in');
+                setTimeout(pulse, 700);
+            };
+            faqFx.classList.add('fx-wait');
+            new IntersectionObserver((entries, obs) => {
+                if (entries.some((en) => en.isIntersecting)) { obs.disconnect(); reveal(); }
+            }, { threshold: 0.2 }).observe(faqFx);
+            setTimeout(reveal, 8000); // jaring pengaman: kartu tidak pernah tertinggal tersembunyi
+        }
+
+        // Dibuka lewat menu/tautan FAQ: beri denyut agar mata langsung tertuju ke sana
+        $$('a[href$="#faq"]').forEach((a) => a.addEventListener('click', () => setTimeout(pulse, 700)));
+        if (location.hash === '#faq') setTimeout(pulse, 900);
+
+        // Jawaban baru: muncul halus dan pastikan terlihat di layar
+        if (answer) {
+            new MutationObserver(() => {
+                if (answer.hidden) return;
+                answer.classList.remove('fx-show');
+                void answer.offsetWidth;
+                answer.classList.add('fx-show');
+                answer.scrollIntoView({ block: 'nearest', behavior: reduceMotion ? 'auto' : 'smooth' });
+            }).observe(answer, { childList: true });
+        }
+    }
 })();
