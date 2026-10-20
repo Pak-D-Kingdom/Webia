@@ -1,6 +1,6 @@
 @extends('website-bisnis.layouts.app')
 
-@section('title', 'Website Bisnis — D-KREASI')
+@section('title', 'WEBIA — Website Bisnis Profesional')
 @section('meta_description',
     'Temukan paket pembuatan website bisnis dari D-KREASI. Website responsif, AI Chatbot, SEO,
     dan solusi digital sesuai kebutuhan bisnis Anda.')
@@ -474,10 +474,10 @@
 
                 <div class="website-price-label">Biaya pembuatan</div>
                 <div class="website-price-old">Rp589.500</div>
-                <div class="website-price">Rp99.500</div>
+                <div class="website-price">Rp499.000</div>
                 <div class="website-price-caption">Sekali bayar</div>
 
-                <a href="#konsultasi-website" class="website-package-button">
+                <a href="{{ route('orders.create', ['package' => 'pixel']) }}" class="website-package-button">
                     Pilih Pixel <span>↗</span>
                 </a>
 
@@ -513,7 +513,7 @@
                 <div class="website-price">Rp899.000</div>
                 <div class="website-price-caption">Sekali bayar</div>
 
-                <a href="#konsultasi-website" class="website-package-button">
+                <a href="{{ route('orders.create', ['package' => 'pulse']) }}" class="website-package-button">
                     Pilih Pulse <span>↗</span>
                 </a>
 
@@ -549,7 +549,7 @@
                 <div class="website-price">Rp1.499.000</div>
                 <div class="website-price-caption">Sekali bayar</div>
 
-                <a href="#konsultasi-website" class="website-package-button">
+                <a href="{{ route('orders.create', ['package' => 'nexus']) }}" class="website-package-button">
                     Pilih Nexus <span>↗</span>
                 </a>
 
@@ -589,7 +589,7 @@
                 <div class="website-price">Rp2.499.000</div>
                 <div class="website-price-caption">Sekali bayar</div>
 
-                <a href="#konsultasi-website" class="website-package-button">
+                <a href="{{ route('orders.create', ['package' => 'infinity']) }}" class="website-package-button">
                     Pilih Infinity <span>↗</span>
                 </a>
 
@@ -637,7 +637,7 @@
 
             <div class="website-package-dialog-footer">
                 <p id="websitePackageDialogNote"></p>
-                <a href="#konsultasi-website" class="website-package-button" id="websitePackageDialogChoose">
+                <a href="{{ route('orders.create') }}" class="website-package-button" id="websitePackageDialogChoose">
                     Pilih Paket <span>↗</span>
                 </a>
             </div>
@@ -864,6 +864,7 @@
                     });
 
                     chooseButton.textContent = 'Pilih ' + selected.name + ' ↗';
+                    chooseButton.href = @json(route('orders.create')) + '?package=' + this.dataset.packageDetail;
 
                     if (!dialog.open) {
                         dialog.showModal();
