@@ -58,9 +58,27 @@ Route::prefix('webia/template/fnb/vintage')->name('webia.fnb.vintage.')->group(f
     Route::get('/reservasi', $vintage('reservasi'))->name('reservasi');
 });
 
-// Route::view(
-//     '/template/company/elegan/company-profile-terracotta',
-//     'website-bisnis.template.company.elegan.company-profile-terracotta.index'
-// )->name('template.company.elegan.company-profile-terracotta');
-Route::view('/webia/template/company/elegan/company-profile-terracotta',
-    'website-bisnis.template.company.elegan.company-profile-terracotta.index');
+Route::prefix('webia/template/company/elegan/company-profile-terracotta')
+    ->name('company-terracotta.')
+    ->group(function () {
+        $v = 'website-bisnis.template.company.elegan.company-profile-terracotta';
+
+        Route::view('/', "$v.index")->name('home');
+        Route::view('/tentang-kami', "$v.tentang-kami")->name('about');
+        Route::view('/portofolio', "$v.portofolio")->name('portfolio');
+    });
+
+Route::prefix('webia/template/company/modern/company-profile-ocean-teal')
+    ->name('company-profile-ocean-teal.')
+    ->group(function () {
+        $ns = 'website-bisnis.template.company.modern.company-profile-ocean-teal';
+
+        Route::view('/', $ns.'.index')->name('home');
+        Route::view('/tentang-kami', $ns.'.tentang-kami')->name('about');
+        Route::view('/portofolio', $ns.'.portofolio')->name('portfolio');
+    });
+
+Route::view(
+    'webia/template/property/luxury/real-estate-agency-emerald-green',
+    'website-bisnis.template.property.luxury.real-estate-agency-emerald-green.index'
+)->name('website-bisnis.template.property.luxury.real-estate-agency-emerald-green');

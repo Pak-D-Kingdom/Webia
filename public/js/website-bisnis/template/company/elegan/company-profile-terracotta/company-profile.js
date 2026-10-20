@@ -26,7 +26,7 @@
   toTop.addEventListener('click', () => scrollTo({ top: 0, behavior: 'smooth' }));
 
   /* menu aktif sesuai section */
-  const links = $$('a', menu);
+  const links = $$('a', menu).filter(a => a.getAttribute('href').startsWith('#'));
   const byId = new Map(links.map(a => [a.getAttribute('href').slice(1), a]));
   if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver(entries => entries.forEach(e => {

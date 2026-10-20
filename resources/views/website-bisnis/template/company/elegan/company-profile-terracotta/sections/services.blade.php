@@ -5,7 +5,6 @@
             <p class="cp-label">{{ $s['eyebrow'] }}</p>
             <h2 id="cp-svc-t" class="cp-h2 cp-h2--sm">{{ $s['title'] }}</h2>
         </div>
-        <a class="cp-more" href="#layanan">{{ $s['more'] }} {{ $ic('arrow') }}</a>
     </header>
     <ul class="cp-svc">
         @foreach ($s['items'] as $i)

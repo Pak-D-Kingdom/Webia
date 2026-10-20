@@ -1,7 +1,7 @@
 <footer class="cp-foot">
     <div class="cp-wrap cp-foot__in">
         <div>
-            <a class="cp-brand" href="#beranda">
+            <a class="cp-brand" href="{{ $home }}">
                 @include("$v.partials.logo")
                 <span><b>{{ strtoupper($c['brand']['name']) }}</b><small>{{ $c['brand']['tagline'] }}</small></span>
             </a>
@@ -9,8 +9,8 @@
         <div>
             <h3>Quick Links</h3>
             <ul class="cp-foot__links">
-                @foreach ($c['nav'] as $n)
-                    <li><a href="{{ $n['u'] }}">{{ $n['t'] }}</a></li>
+                @foreach ($c['footer_links'] as $n)
+                    <li><a href="{{ $link($n) }}">{{ $n['t'] }}</a></li>
                 @endforeach
             </ul>
         </div>

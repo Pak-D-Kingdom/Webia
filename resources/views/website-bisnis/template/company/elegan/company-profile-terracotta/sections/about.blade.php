@@ -4,7 +4,6 @@
         <p class="cp-label">{{ $a['eyebrow'] }}</p>
         <h2 id="cp-about-t" class="cp-h2">{{ $a['title'] }}</h2>
         <p class="cp-muted">{{ $a['text'] }}</p>
-        <a class="cp-btn" href="{{ $a['cta'][1] }}">{{ $a['cta'][0] }} {{ $ic('arrow') }}</a>
     </div>
     <figure class="cp-video cp-ph">
         <img src="{{ $img($a['video']['image']) }}" alt="" loading="lazy" onerror="this.remove()">

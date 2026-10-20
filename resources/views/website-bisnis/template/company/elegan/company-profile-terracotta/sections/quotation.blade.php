@@ -4,6 +4,6 @@
     <div class="cp-quote__in">
         <h2 id="cp-q-t">{{ $q['title'] }}</h2>
         <p>{{ $q['text'] }}</p>
-        <a class="cp-btn cp-btn--light" href="#kontak" data-quote>{{ $q['cta'] }} {{ $ic('arrow') }}</a>
+        <a class="cp-btn cp-btn--light" href="{{ $link(['h' => '#kontak']) }}" data-quote>{{ $q['cta'] }} {{ $ic('arrow') }}</a>
     </div>
 </section>

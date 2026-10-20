@@ -2,7 +2,6 @@
 <section id="proyek" class="cp-card" aria-labelledby="cp-projects-t">
     <header class="cp-card__head">
         <div><h2 id="cp-projects-t">{{ $p['title'] }}</h2><p>{{ $p['desc'] }}</p></div>
-        <a class="cp-more" href="#proyek">{{ $p['more'] }} {{ $ic('arrow') }}</a>
     </header>
     <ul class="cp-thumbs">
         @foreach ($p['items'] as $i)

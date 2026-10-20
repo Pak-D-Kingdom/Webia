@@ -1,19 +1,24 @@
 @php $a = $c['ai']; @endphp
 <aside class="cp-ai" id="cp-ai" data-fallback="{{ $a['fallback'] }}">
     <button class="cp-ai__fab" type="button" data-ai-open aria-label="Buka {{ $a['title'] }}" aria-expanded="false">
+        <span class="cp-wa__tip">{{ $a['fab_label'] }}</span>
         <span class="cp-bot">{{ $ic('bot') }}<img src="{{ $img($a['image']) }}" alt="" onerror="this.remove()"></span>
+        <span class="cp-ai__spark" aria-hidden="true"></span>
     </button>
+
     <div class="cp-ai__panel" role="dialog" aria-label="{{ $a['title'] }}" hidden>
-        <header class="cp-ai__head">
-            <span class="cp-bot">{{ $ic('bot') }}<img src="{{ $img($a['image']) }}" alt="" onerror="this.remove()"></span>
-            <div><strong>{{ $a['title'] }}</strong><small>{{ $a['subtitle'] }}</small></div>
-            <button class="cp-iconbtn" type="button" data-ai-close aria-label="Tutup">{{ $ic('x') }}</button>
-        </header>
-        <div class="cp-ai__log"><p class="cp-ai__msg">{{ $a['hello'] }}</p></div>
-        <div class="cp-ai__chips">
-            @foreach ($a['faq'] as $f)
-                <button type="button" data-ai-q>{{ $f['q'] }}</button>
-            @endforeach
+        <img class="cp-ai__robot" src="{{ $img($a['image']) }}" alt="" aria-hidden="true" onerror="this.remove()">
+        <div class="cp-ai__main">
+            <header class="cp-ai__head">
+                <div><strong>{{ $a['title'] }}</strong><small>{{ $a['subtitle'] }}</small></div>
+                <button class="cp-ai__close" type="button" data-ai-close aria-label="Tutup">{{ $ic('x') }}</button>
+            </header>
+            <div class="cp-ai__log"><p class="cp-ai__msg">{{ $a['hello'] }}</p></div>
+            <div class="cp-ai__chips">
+                @foreach ($a['faq'] as $f)
+                    <button type="button" data-ai-q>{{ $f['q'] }}</button>
+                @endforeach
+            </div>
         </div>
         <form class="cp-ai__form">
             <label class="cp-sr" for="cp-ai-in">Pertanyaan Anda</label>
