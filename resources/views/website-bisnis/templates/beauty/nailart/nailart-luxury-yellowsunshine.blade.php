@@ -22,7 +22,7 @@
         <button class="soleil-menu-toggle" type="button" aria-expanded="false" aria-controls="soleil-nav">Menu <span>＋</span></button>
         <nav class="soleil-nav" id="soleil-nav">
             <a href="#experience">Experience</a>
-            <a href="#collections">Collections</a>
+            <a href="/webia/template/nail-art-luxury-yellow-sunshine/gallery">Our Gallery</a><a href="#collections">Collections</a>
             <a href="#atelier">The Atelier</a>
             <a href="#membership">Private Client</a>
             <a class="soleil-nav-cta" href="#booking">Reserve a Session <span>↗</span></a>

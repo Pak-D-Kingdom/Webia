@@ -280,6 +280,45 @@ class WebiaTemplateSeeder extends Seeder
                 'is_active' => true,
                 'sort_order' => 15,
             ],
+            [
+                'name' => 'Heritage Motors',
+                'slug' => 'automotive-dealer-vintage',
+                'category_slug' => 'automotive',
+                'category_label' => 'Automotive',
+                'business_types' => ['Dealer & Showroom Kendaraan',],
+                'design_style' => 'Vintage',
+                'color_theme' => 'Forest Green, Cream & Burgundy',
+                'description' => 'Website dealer dan showroom kendaraan dengan katalog mobil, detail kendaraan, booking test drive, dan konsultasi melalui WhatsApp.',
+                'preview_style' => 'preview-auto',
+                'eyebrow' => 'CURATED AUTOMOBILES · EST. 1998',
+                'headline' => 'Some things<br>never go out of style.',
+                'tag' => 'Automotive · Dealer & Showroom · Vintage',
+                'preview_folder' => 'automotive/dealer',
+                'template_url' => '/webia/template/automotive-dealer-vintage',
+                'is_active' => true,
+                'sort_order' => 16,
+            ],
+
+            [
+                'name' => 'Mint Dental House',
+                'slug' => 'healthcare-dental-mint',
+                'category_slug' => 'healthcare',
+                'category_label' => 'Healthcare',
+                'business_types' => ['Dental Clinic & Orthodontics'],
+                'design_style' => 'Classic',
+                'color_theme' => 'Mint Green & Ivory',
+                'description' => 'Website klinik gigi dengan informasi layanan dental, detail treatment, profil dokter, fasilitas klinik, daftar harga, testimoni pasien, dan booking appointment melalui WhatsApp.',
+                'preview_style' => 'preview-dental',
+                'eyebrow' => 'GENTLE CARE · HEALTHY SMILES',
+                'headline' => 'Your Smile,<br>Our Gentle Care.',
+                'tag' => 'Healthcare · Dental Clinic & Orthodontics · Classic',
+                'preview_folder' => 'healthcare/dental',
+                'template_url' => '/webia/template/healthcare-dental-mint',
+                'is_active' => true,
+                'sort_order' => 17,
+            ],
+
+
         ];
 
         foreach ($templates as $template) {

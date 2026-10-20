@@ -16,7 +16,7 @@
         <a class="blush-brand" href="#home" aria-label="Blush Nail Studio home"><span class="blush-brand-mark">b.</span><span><strong>BLUSH</strong><small>NAIL STUDIO</small></span></a>
         <button class="blush-menu-toggle" type="button" aria-label="Buka navigasi" aria-expanded="false">☰</button>
         <nav class="blush-nav" aria-label="Navigasi utama">
-            <a href="#services">Services</a><a href="#gallery">Nail Gallery</a><a href="#pricing">Pricing</a><a href="#reviews">Reviews</a>
+            <a href="#services">Services</a><a href="/webia/template/nail-art-professional-soft-pink/gallery">Our Gallery</a><a href="#gallery">Nail Gallery</a><a href="#pricing">Pricing</a><a href="#reviews">Reviews</a>
             <a class="blush-nav-cta" href="#booking">Book an Appointment <span>↗</span></a>
         </nav>
     </header>

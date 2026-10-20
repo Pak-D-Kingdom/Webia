@@ -23,20 +23,42 @@
     const year = document.getElementById('sage-current-year');
     if (year) year.textContent = String(new Date().getFullYear());
 
+
     const bookingForm = document.getElementById('sage-booking-form');
+
     if (bookingForm) {
-        bookingForm.addEventListener('submit', event => {
+        bookingForm.addEventListener('submit', function (event) {
             event.preventDefault();
-            const formData = new FormData(bookingForm);
-            const name = String(formData.get('name') || '').trim();
-            const phone = String(formData.get('phone') || '').trim();
-            const service = String(formData.get('service') || '').trim();
-            const date = String(formData.get('date') || '').trim();
-            if (!name || !phone || !service || !date) return;
-            alert(`Terima kasih, ${name}!\n\nPermintaan booking demo:\nLayanan: ${service}\nTanggal: ${date}\nWhatsApp: ${phone}\n\nIni masih preview template. Hubungkan form ke WhatsApp atau backend untuk menerima booking sungguhan.`);
-            bookingForm.reset();
+
+            const data = new FormData(bookingForm);
+            const name = String(data.get('name') || '').trim();
+            const phone = String(data.get('phone') || '').trim();
+            const service = String(data.get('service') || '').trim();
+            const date = String(data.get('date') || '').trim();
+
+            if (!name || !phone || !service || !date) {
+                bookingForm.reportValidity();
+                return;
+            }
+
+            const message = [
+                'Halo Admin, saya ingin melakukan reservasi.',
+                '',
+                'Template: Sage Nail Atelier',
+                `Nama: ${name}`,
+                `Nomor WhatsApp: ${phone}`,
+                `Ritual pilihan: ${service}`,
+                `Tanggal pilihan: ${date}`,
+                '',
+                'Mohon informasi ketersediaan jadwal dan harga. Terima kasih!'
+            ].join('\n');
+
+            window.location.href =
+                'https://wa.me/6285850180285?text=' +
+                encodeURIComponent(message);
         });
     }
+
 
 
     // Front-end demo assistant: useful quick answers without pretending to use a live AI backend.
