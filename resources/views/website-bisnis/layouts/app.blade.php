@@ -32,6 +32,7 @@
      <script src="{{ asset('js/website-bisnis/ai-assistant.js') }}" defer></script>
 
      @include('website-bisnis.components.ai-assistant')
+     @include('website-bisnis.components.whatsapp-fab')
      @include('website-bisnis.components.portal-dkreasi')
  </body>
 
