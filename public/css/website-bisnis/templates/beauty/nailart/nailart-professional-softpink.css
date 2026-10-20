@@ -49,3 +49,17 @@
 .blush-chat-disclaimer{margin:0;padding:0 12px 12px;text-align:center;color:#927b86;font-size:8px}
 @media(max-width:900px){.blush-footer-main{grid-template-columns:1.2fr 1fr;gap:34px 28px}}
 @media(max-width:680px){.blush-footer-main{grid-template-columns:1fr 1fr;padding:42px 22px 32px;gap:30px 18px}.blush-footer-brand-col{grid-column:1/-1}.blush-footer-about{max-width:460px}.blush-footer-col h3{font-size:16px}.blush-footer-bottom{align-items:flex-start;flex-direction:column;padding:16px 22px;gap:5px}.blush-whatsapp-fab{right:16px;bottom:92px;width:48px;height:48px}.blush-whatsapp-fab svg{width:27px;height:27px}.blush-chat-widget{right:14px;bottom:14px}.blush-ai-fab{min-height:50px;padding-right:16px}.blush-ai-icon{width:33px;height:33px}.blush-chat-panel{height: min(430px,calc(100dvh - 145px))}.blush-template-ribbon{max-width:calc(100vw - 150px)}}
+
+
+/* WEBIA collection iframe preview: only show the real hero section. */
+body.webia-hero-preview-mode{width:1200px!important;min-width:1200px!important;max-width:1200px!important;overflow:hidden!important}
+body.webia-hero-preview-mode>.blush-announcement,
+body.webia-hero-preview-mode>.blush-header,
+body.webia-hero-preview-mode>footer,
+body.webia-hero-preview-mode>script,
+body.webia-hero-preview-mode>main>*:not(.blush-hero){display:none!important}
+body.webia-hero-preview-mode>main{display:block!important;width:1200px!important;max-width:none!important;margin:0!important;padding:0!important}
+body.webia-hero-preview-mode .blush-hero{width:1200px!important;min-height:650px!important;height:650px!important;max-height:650px!important;padding:52px 66px!important;grid-template-columns:.92fr 1.08fr!important;gap:42px!important}
+body.webia-hero-preview-mode .blush-hero h1{font-size:76px!important}
+body.webia-hero-preview-mode .blush-hero-image{height:460px!important}
+body.webia-hero-preview-mode .blush-hero-note{margin-top:28px!important}

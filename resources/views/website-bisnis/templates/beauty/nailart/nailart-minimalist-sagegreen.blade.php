@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/website-bisnis/templates/beauty/nailart/nailart-minimalist-sagegreen.css') }}">
 </head>
-<body class="sage-template">
+<body class="sage-template{{ request()->boolean('preview') ? ' webia-hero-preview-mode' : '' }}">
     <div class="sage-announcement">SLOW BEAUTY, THOUGHTFUL DETAILS <span>·</span> YOUR NAIL RITUAL</div>
     <header class="sage-header">
         <a class="sage-brand" href="#home" aria-label="Sage Nail Atelier home"><span class="sage-brand-mark">b.</span><span><strong>SAGE</strong><small>NAIL ATELIER</small></span></a>
