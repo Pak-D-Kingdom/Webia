@@ -53,3 +53,44 @@
 /* Template 02: Minimalist Sage Green — distinct content sections */
 .sage-approach{padding-top:92px;padding-bottom:100px}.sage-process-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:36px}.sage-process-grid article{padding:28px;border:1px solid var(--sage-line);background:#fbfcf8;min-height:210px}.sage-process-grid article>span{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:#dce5d4;color:#425b45;font-size:11px;font-weight:700}.sage-process-grid h3{font:600 23px var(--sage-display);margin:22px 0 8px}.sage-process-grid p{font-size:12px;color:var(--sage-muted);margin:0;max-width:280px}.sage-care-note{display:flex;align-items:flex-start;gap:18px;padding:25px 28px;margin-top:18px;background:#e7eee1;border-left:3px solid #81977d}.sage-care-mark{font-size:25px;color:#657d62}.sage-care-note strong{font:600 18px var(--sage-display)}.sage-care-note p{font-size:12px;color:#566457;max-width:800px;margin:7px 0 0}.sage-gallery-section{background:#eaf0e5}.sage-service-featured{background:#e8eee3;border-color:#c8d7c0}.sage-price-popular{background:#e8eee3;border-color:#c8d7c0}.sage-review-section{background:#29382f;color:#f7f8f2}.sage-review-inner>.sage-eyebrow{color:#cbdcc4}.sage-review-inner h2 em{color:#cbdcc4}.sage-review-grid blockquote{background:#35483a;border-color:#4a5d4c}.sage-stars{color:#c8d9c1}.sage-review-avatar{background:#dce5d4;color:#354a37}.sage-review-grid blockquote footer small{color:#c3cdbd}.sage-booking-section{background:#eaf0e5}.sage-booking-card{background:#fbfcf8}.sage-footer{background:#29382f;color:#f7f8f2}.sage-footer .sage-brand-mark{background:#dce5d4;color:#425b45}.sage-footer .sage-brand strong{color:#f7f8f2}.sage-footer .sage-brand small{color:#c3cdbd}.sage-footer-cta{background:#dce5d4;color:#29382f!important}.sage-footer-col>a:hover{color:#cbdcc4}.sage-footer-col p span{color:#cbdcc4}.sage-chat-head{background:#29382f}.sage-chat-bot{background:#e9efe4;color:#354a37}.sage-chat-user{background:#718e6d;color:#fff}.sage-chat-quick button{border-color:#d2dfcb;color:#4c644d}.sage-chat-form button{background:#657d62}.sage-whatsapp-fab{background:#25d366}
 @media(max-width:680px){.sage-process-grid{grid-template-columns:1fr}.sage-process-grid article{min-height:0;padding:22px}.sage-care-note{padding:20px;gap:12px}}
+
+
+/* WEBIA collection iframe preview: only show the real hero section. */
+body.webia-hero-preview-mode{width:1200px!important;min-width:1200px!important;max-width:1200px!important;overflow:hidden!important}
+body.webia-hero-preview-mode>.sage-announcement,
+body.webia-hero-preview-mode>.sage-header,
+body.webia-hero-preview-mode>footer,
+body.webia-hero-preview-mode>script,
+body.webia-hero-preview-mode>main>*:not(.sage-hero){display:none!important}
+body.webia-hero-preview-mode>main{display:block!important;width:1200px!important;max-width:none!important;margin:0!important;padding:0!important}
+body.webia-hero-preview-mode .sage-hero{width:1200px!important;min-height:650px!important;height:650px!important;max-height:650px!important;padding:52px 66px!important;grid-template-columns:.92fr 1.08fr!important;gap:42px!important}
+body.webia-hero-preview-mode .sage-hero h1{font-size:76px!important}
+body.webia-hero-preview-mode .sage-hero-image{height:460px!important}
+body.webia-hero-preview-mode .sage-hero-note{margin-top:28px!important}
+
+
+/* WEBIA Our Gallery standalone page */
+.webia-gallery-page { min-height:100vh; background:#f5f6ef; padding:clamp(38px,7vw,88px) max(5vw,22px) 80px; }
+.webia-gallery-page .webia-gallery-wrap { max-width:1240px; margin:0 auto; }
+.webia-gallery-page .webia-gallery-back { display:inline-flex; gap:10px; align-items:center; font-size:12px; font-weight:700; margin-bottom:34px; opacity:.78; }
+.webia-gallery-page .webia-gallery-heading { display:grid; grid-template-columns:1fr minmax(240px,.62fr); align-items:end; gap:30px; margin-bottom:38px; }
+.webia-gallery-page .webia-gallery-eyebrow { margin:0 0 16px; color:#657d62; font-size:10px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; }
+.webia-gallery-page h1 { margin:0; max-width:760px; font:600 clamp(38px,6vw,76px)/1.03 'Playfair Display',serif; letter-spacing:-.045em; }
+.webia-gallery-page h1 em { color:#657d62; font-weight:500; }
+.webia-gallery-page .webia-gallery-intro { color:var(--muted, #777); font-size:14px; max-width:430px; margin:0 0 5px; }
+.webia-gallery-page .webia-gallery-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px; }
+.webia-gallery-page .webia-gallery-card { min-width:0; background:#fff; border:1px solid #dfe5d9; overflow:hidden; }
+.webia-gallery-page .webia-gallery-card img { display:block; width:100%; aspect-ratio:4/5; object-fit:cover; transition:transform .5s; }
+.webia-gallery-page .webia-gallery-card:hover img { transform:scale(1.035); }
+.webia-gallery-page .webia-gallery-image { overflow:hidden; background:#dfe5d9; }
+.webia-gallery-page .webia-gallery-caption { display:flex; gap:16px; align-items:flex-start; padding:17px 18px 19px; }
+.webia-gallery-page .webia-gallery-number { font-size:10px; letter-spacing:.12em; color:#657d62; padding-top:4px; }
+.webia-gallery-page .webia-gallery-caption h2 { margin:0 0 4px; font:600 21px/1.2 'Playfair Display',serif; }
+.webia-gallery-page .webia-gallery-caption p { margin:0; font-size:11px; color:#777; }
+.webia-gallery-page .webia-gallery-note { margin:24px 0 0; font-size:11px; color:#777; }
+.webia-gallery-page .webia-gallery-cta { display:flex; align-items:center; justify-content:space-between; gap:24px; margin-top:58px; padding:clamp(24px,4vw,44px); background:#dfe5d9; }
+.webia-gallery-page .webia-gallery-cta h2 { margin:0; font:600 clamp(26px,3.4vw,42px)/1.1 'Playfair Display',serif; }
+.webia-gallery-page .webia-gallery-cta p { margin:8px 0 0; font-size:13px; }
+.webia-gallery-page .webia-gallery-cta a { display:inline-flex; align-items:center; justify-content:center; gap:18px; padding:15px 20px; background:#657d62; color:#fff; font-size:12px; font-weight:700; white-space:nowrap; }
+@media(max-width:800px) { .webia-gallery-page .webia-gallery-heading { grid-template-columns:1fr; gap:16px; } .webia-gallery-page .webia-gallery-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; } .webia-gallery-page .webia-gallery-cta { align-items:flex-start; flex-direction:column; } }
+@media(max-width:480px) { .webia-gallery-page .webia-gallery-grid { grid-template-columns:1fr; } .webia-gallery-page .webia-gallery-card img { aspect-ratio:5/4; } }

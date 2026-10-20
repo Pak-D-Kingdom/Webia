@@ -49,3 +49,44 @@
 .blush-chat-disclaimer{margin:0;padding:0 12px 12px;text-align:center;color:#927b86;font-size:8px}
 @media(max-width:900px){.blush-footer-main{grid-template-columns:1.2fr 1fr;gap:34px 28px}}
 @media(max-width:680px){.blush-footer-main{grid-template-columns:1fr 1fr;padding:42px 22px 32px;gap:30px 18px}.blush-footer-brand-col{grid-column:1/-1}.blush-footer-about{max-width:460px}.blush-footer-col h3{font-size:16px}.blush-footer-bottom{align-items:flex-start;flex-direction:column;padding:16px 22px;gap:5px}.blush-whatsapp-fab{right:16px;bottom:92px;width:48px;height:48px}.blush-whatsapp-fab svg{width:27px;height:27px}.blush-chat-widget{right:14px;bottom:14px}.blush-ai-fab{min-height:50px;padding-right:16px}.blush-ai-icon{width:33px;height:33px}.blush-chat-panel{height: min(430px,calc(100dvh - 145px))}.blush-template-ribbon{max-width:calc(100vw - 150px)}}
+
+
+/* WEBIA collection iframe preview: only show the real hero section. */
+body.webia-hero-preview-mode{width:1200px!important;min-width:1200px!important;max-width:1200px!important;overflow:hidden!important}
+body.webia-hero-preview-mode>.blush-announcement,
+body.webia-hero-preview-mode>.blush-header,
+body.webia-hero-preview-mode>footer,
+body.webia-hero-preview-mode>script,
+body.webia-hero-preview-mode>main>*:not(.blush-hero){display:none!important}
+body.webia-hero-preview-mode>main{display:block!important;width:1200px!important;max-width:none!important;margin:0!important;padding:0!important}
+body.webia-hero-preview-mode .blush-hero{width:1200px!important;min-height:650px!important;height:650px!important;max-height:650px!important;padding:52px 66px!important;grid-template-columns:.92fr 1.08fr!important;gap:42px!important}
+body.webia-hero-preview-mode .blush-hero h1{font-size:76px!important}
+body.webia-hero-preview-mode .blush-hero-image{height:460px!important}
+body.webia-hero-preview-mode .blush-hero-note{margin-top:28px!important}
+
+
+/* WEBIA Our Gallery standalone page */
+.webia-gallery-page { min-height:100vh; background:#fff9fb; padding:clamp(38px,7vw,88px) max(5vw,22px) 80px; }
+.webia-gallery-page .webia-gallery-wrap { max-width:1240px; margin:0 auto; }
+.webia-gallery-page .webia-gallery-back { display:inline-flex; gap:10px; align-items:center; font-size:12px; font-weight:700; margin-bottom:34px; opacity:.78; }
+.webia-gallery-page .webia-gallery-heading { display:grid; grid-template-columns:1fr minmax(240px,.62fr); align-items:end; gap:30px; margin-bottom:38px; }
+.webia-gallery-page .webia-gallery-eyebrow { margin:0 0 16px; color:#b96885; font-size:10px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; }
+.webia-gallery-page h1 { margin:0; max-width:760px; font:600 clamp(38px,6vw,76px)/1.03 'Playfair Display',serif; letter-spacing:-.045em; }
+.webia-gallery-page h1 em { color:#b96885; font-weight:500; }
+.webia-gallery-page .webia-gallery-intro { color:var(--muted, #777); font-size:14px; max-width:430px; margin:0 0 5px; }
+.webia-gallery-page .webia-gallery-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px; }
+.webia-gallery-page .webia-gallery-card { min-width:0; background:#fff; border:1px solid #eadde3; overflow:hidden; }
+.webia-gallery-page .webia-gallery-card img { display:block; width:100%; aspect-ratio:4/5; object-fit:cover; transition:transform .5s; }
+.webia-gallery-page .webia-gallery-card:hover img { transform:scale(1.035); }
+.webia-gallery-page .webia-gallery-image { overflow:hidden; background:#eadde3; }
+.webia-gallery-page .webia-gallery-caption { display:flex; gap:16px; align-items:flex-start; padding:17px 18px 19px; }
+.webia-gallery-page .webia-gallery-number { font-size:10px; letter-spacing:.12em; color:#b96885; padding-top:4px; }
+.webia-gallery-page .webia-gallery-caption h2 { margin:0 0 4px; font:600 21px/1.2 'Playfair Display',serif; }
+.webia-gallery-page .webia-gallery-caption p { margin:0; font-size:11px; color:#777; }
+.webia-gallery-page .webia-gallery-note { margin:24px 0 0; font-size:11px; color:#777; }
+.webia-gallery-page .webia-gallery-cta { display:flex; align-items:center; justify-content:space-between; gap:24px; margin-top:58px; padding:clamp(24px,4vw,44px); background:#eadde3; }
+.webia-gallery-page .webia-gallery-cta h2 { margin:0; font:600 clamp(26px,3.4vw,42px)/1.1 'Playfair Display',serif; }
+.webia-gallery-page .webia-gallery-cta p { margin:8px 0 0; font-size:13px; }
+.webia-gallery-page .webia-gallery-cta a { display:inline-flex; align-items:center; justify-content:center; gap:18px; padding:15px 20px; background:#b96885; color:#fff; font-size:12px; font-weight:700; white-space:nowrap; }
+@media(max-width:800px) { .webia-gallery-page .webia-gallery-heading { grid-template-columns:1fr; gap:16px; } .webia-gallery-page .webia-gallery-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; } .webia-gallery-page .webia-gallery-cta { align-items:flex-start; flex-direction:column; } }
+@media(max-width:480px) { .webia-gallery-page .webia-gallery-grid { grid-template-columns:1fr; } .webia-gallery-page .webia-gallery-card img { aspect-ratio:5/4; } }

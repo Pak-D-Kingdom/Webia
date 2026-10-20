@@ -10,13 +10,13 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/website-bisnis/templates/beauty/nailart/nailart-professional-softpink.css') }}">
 </head>
-<body class="blush-template">
+<body class="blush-template{{ request()->boolean('preview') ? ' webia-hero-preview-mode' : '' }}">
     <div class="blush-announcement">YOUR LITTLE MOMENT OF SELF-CARE <span>✦</span> BOOK YOUR NAIL APPOINTMENT</div>
     <header class="blush-header">
         <a class="blush-brand" href="#home" aria-label="Blush Nail Studio home"><span class="blush-brand-mark">b.</span><span><strong>BLUSH</strong><small>NAIL STUDIO</small></span></a>
         <button class="blush-menu-toggle" type="button" aria-label="Buka navigasi" aria-expanded="false">☰</button>
         <nav class="blush-nav" aria-label="Navigasi utama">
-            <a href="#services">Services</a><a href="#gallery">Nail Gallery</a><a href="#pricing">Pricing</a><a href="#reviews">Reviews</a>
+            <a href="#services">Services</a><a href="/webia/template/nail-art-professional-soft-pink/gallery">Our Gallery</a><a href="#gallery">Nail Gallery</a><a href="#pricing">Pricing</a><a href="#reviews">Reviews</a>
             <a class="blush-nav-cta" href="#booking">Book an Appointment <span>↗</span></a>
         </nav>
     </header>

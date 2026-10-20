@@ -7590,31 +7590,291 @@ html {
 
 /* ===== WEBIA COMPACT FILTER REVISION ===== */
 /* WEBIA compact filter UI — merge into public/css/website-bisnis/website-bisnis.css */
-.webia-filter-wizard{display:grid;gap:12px;margin:18px 0 24px;padding:clamp(14px,2vw,22px);border:1px solid rgba(130,103,190,.18);border-radius:22px;background:rgba(255,255,255,.76);box-shadow:0 16px 45px rgba(73,48,119,.06);backdrop-filter:blur(12px)}
-.webia-filter-step{min-width:0;padding:0 0 12px;border-bottom:1px solid rgba(130,103,190,.13)}
-.webia-filter-step:last-of-type{border-bottom:0;padding-bottom:0}
-.webia-filter-step-heading{display:flex;align-items:center;gap:10px;margin-bottom:9px;min-width:0}
-.webia-filter-step-heading>span{display:grid;place-items:center;flex:0 0 32px;width:32px;height:32px;border-radius:11px;background:linear-gradient(135deg,#e9d8ff,#f7d8ee);color:#67439b;font-size:12px;font-weight:800}
-.webia-filter-step-heading h3{margin:0;color:#342653;font-size:clamp(14px,1.5vw,17px)}
-.webia-filter-step-heading p{margin:3px 0 0;color:#81769b;font-size:11px;line-height:1.45}
-.webia-filter-limit{margin-left:auto;white-space:nowrap;color:#7955ae;font-size:11px}
+.webia-filter-wizard {
+    display: grid;
+    gap: 9px;
+    margin: 14px 0 20px;
+    padding: 16px;
+    border: 1px solid rgba(130, 103, 190, .18);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, .76);
+    box-shadow: 0 12px 32px rgba(73, 48, 119, .05);
+    backdrop-filter: blur(12px);
+}
+
+.webia-filter-step {
+    min-width: 0;
+    padding: 0 0 10px;
+    border-bottom: 1px solid rgba(130, 103, 190, .13);
+}
+
+.webia-filter-step:last-of-type {
+    padding-bottom: 0;
+    border-bottom: 0;
+}
+
+.webia-filter-step-heading {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 8px;
+    min-width: 0;
+}
+
+.webia-filter-step-heading>span {
+    display: grid;
+    place-items: center;
+    flex: 0 0 28px;
+    width: 28px;
+    height: 28px;
+    border-radius: 9px;
+    background: linear-gradient(135deg, #e9d8ff, #f7d8ee);
+    color: #67439b;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.webia-filter-step-heading h3 {
+    margin: 0;
+    color: #342653;
+    font-size: 14px !important;
+    line-height: 1.35;
+    font-weight: 700;
+}
+
+.webia-filter-step-heading p {
+    margin: 3px 0 0;
+    color: #81769b;
+    font-size: 10px !important;
+    line-height: 1.5;
+}
+
+.webia-filter-limit {
+    margin-left: auto;
+    white-space: nowrap;
+    color: #7955ae;
+    font-size: 10px !important;
+}
+
 /* Category and style choices stay on one compact, swipeable line. */
-.webia-filter-options{display:flex;flex-wrap:nowrap;gap:8px;min-width:0;max-width:100%;overflow-x:auto;overflow-y:hidden;padding:2px 2px 8px;scrollbar-width:thin;scrollbar-color:rgba(141,75,209,.38) transparent;overscroll-behavior-x:contain;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}
-.webia-filter-options::-webkit-scrollbar,.webia-subcategory-chips::-webkit-scrollbar{height:5px}
-.webia-filter-options::-webkit-scrollbar-thumb,.webia-subcategory-chips::-webkit-scrollbar-thumb{border-radius:99px;background:rgba(141,75,209,.32)}
-.webia-filter-options::-webkit-scrollbar-track,.webia-subcategory-chips::-webkit-scrollbar-track{background:transparent}
-.webia-filter-chip{position:relative;display:inline-flex;align-items:center;gap:7px;flex:0 0 auto;min-height:34px;padding:7px 11px;border:1px solid rgba(127,101,179,.2);border-radius:999px;background:#fff;color:#655782;font-size:11px;font-weight:650;cursor:pointer;white-space:nowrap;scroll-snap-align:start;transition:background .18s,border-color .18s,transform .18s}
-.webia-filter-chip:hover{transform:translateY(-1px);border-color:#b99ce9}
-.webia-filter-chip input{width:14px;height:14px;margin:0;accent-color:#8d4bd1;flex:0 0 auto}
-.webia-filter-chip:has(input:checked),.webia-filter-chip.is-selected{border-color:#a884e2;background:linear-gradient(110deg,#f0e5ff,#fce8f4);color:#593b91}
-.webia-subcategory-options{display:grid;gap:10px;max-height:142px;overflow-y:auto;overflow-x:hidden;padding:2px 3px 4px 0;scrollbar-width:thin;scrollbar-color:rgba(141,75,209,.38) transparent}
-.webia-subcategory-group{display:grid;gap:5px;min-width:0}
-.webia-subcategory-group h4{margin:0;color:#4e3a72;font-size:11px;font-weight:800}
-.webia-subcategory-chips{display:flex;gap:7px;min-width:0;max-width:100%;overflow-x:auto;overflow-y:hidden;padding:1px 1px 6px;scrollbar-width:thin;scrollbar-color:rgba(141,75,209,.28) transparent;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
-.webia-filter-hint{margin:0;color:#8c82a3;font-size:12px}
-.webia-filter-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;color:#81769b;font-size:11px}
-.webia-filter-actions button{border:1px solid rgba(127,101,179,.25);border-radius:999px;padding:8px 12px;background:#fff;color:#6b4a9d;font:inherit;font-weight:700;cursor:pointer}
-.webia-filter-actions button:hover{background:#f4ecff}
-.webia-filter-toolbar{margin-bottom:10px}
-.webia-gallery-card[hidden]{display:none!important}
-@media(max-width:640px){.webia-filter-wizard{padding:12px;border-radius:17px;gap:10px;margin:14px 0 20px}.webia-filter-step{padding-bottom:10px}.webia-filter-step-heading{gap:8px;align-items:center}.webia-filter-step-heading>span{flex-basis:29px;width:29px;height:29px;border-radius:9px;font-size:11px}.webia-filter-step-heading h3{font-size:14px}.webia-filter-step-heading p{font-size:10px}.webia-filter-chip{font-size:10px;padding:7px 9px;min-height:32px}.webia-filter-limit{font-size:10px}.webia-subcategory-options{max-height:125px}.webia-filter-actions{align-items:center}.webia-filter-actions button{margin-left:auto}}
+.webia-filter-options {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 7px;
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 2px 2px 7px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(141, 75, 209, .32) transparent;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+}
+
+.webia-filter-options::-webkit-scrollbar,
+.webia-subcategory-chips::-webkit-scrollbar {
+    height: 4px;
+}
+
+.webia-filter-options::-webkit-scrollbar-thumb,
+.webia-subcategory-chips::-webkit-scrollbar-thumb {
+    border-radius: 99px;
+    background: rgba(141, 75, 209, .3);
+}
+
+.webia-filter-options::-webkit-scrollbar-track,
+.webia-subcategory-chips::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+
+.webia-filter-chip {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex: 0 0 auto;
+    min-height: 30px;
+    padding: 6px 9px;
+    border: 1px solid rgba(127, 101, 179, .2);
+    border-radius: 999px;
+    background: #fff;
+    color: #655782;
+    font-size: 10px !important;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    scroll-snap-align: start;
+    transition: background .18s, border-color .18s, transform .18s;
+}
+
+.webia-filter-chip:hover {
+    transform: translateY(-1px);
+    border-color: #b99ce9;
+}
+
+.webia-filter-chip input {
+    width: 12px;
+    height: 12px;
+    margin: 0;
+    accent-color: #8d4bd1;
+    flex: 0 0 auto;
+}
+
+.webia-filter-chip:has(input:checked),
+.webia-filter-chip.is-selected {
+    border-color: #a884e2;
+    background: linear-gradient(110deg, #f0e5ff, #fce8f4);
+    color: #593b91;
+}
+
+.webia-subcategory-options {
+    display: grid;
+    gap: 8px;
+    max-height: 125px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 2px 3px 4px 0;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(141, 75, 209, .32) transparent;
+}
+
+.webia-subcategory-group {
+    display: grid;
+    gap: 5px;
+    min-width: 0;
+}
+
+.webia-subcategory-group h4 {
+    margin: 0;
+    color: #4e3a72;
+    font-size: 10px !important;
+    font-weight: 700;
+}
+
+.webia-subcategory-chips {
+    display: flex;
+    gap: 6px;
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 1px 1px 5px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(141, 75, 209, .28) transparent;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+}
+
+.webia-subcategory-chips .webia-filter-chip {
+    min-height: 27px;
+    padding: 5px 8px;
+    font-size: 10px !important;
+}
+
+.webia-filter-hint {
+    margin: 0;
+    color: #8c82a3;
+    font-size: 10px !important;
+    line-height: 1.5;
+}
+
+.webia-filter-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+    color: #81769b;
+    font-size: 10px !important;
+}
+
+.webia-filter-actions button {
+    border: 1px solid rgba(127, 101, 179, .25);
+    border-radius: 999px;
+    padding: 7px 11px;
+    background: #fff;
+    color: #6b4a9d;
+    font: inherit;
+    font-weight: 650;
+    cursor: pointer;
+}
+
+.webia-filter-actions button:hover {
+    background: #f4ecff;
+}
+
+.webia-filter-toolbar {
+    margin-bottom: 8px;
+}
+
+.webia-gallery-card[hidden] {
+    display: none !important;
+}
+
+/* Search input di halaman koleksi */
+.webia-filter-toolbar input[type="search"],
+.webia-filter-toolbar input[type="text"] {
+    font-size: 12px !important;
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+    .webia-filter-wizard {
+        padding: 11px;
+        border-radius: 15px;
+        gap: 8px;
+        margin: 12px 0 17px;
+    }
+
+    .webia-filter-step {
+        padding-bottom: 9px;
+    }
+
+    .webia-filter-step-heading {
+        gap: 7px;
+        align-items: center;
+    }
+
+    .webia-filter-step-heading > span {
+        flex-basis: 25px;
+        width: 25px;
+        height: 25px;
+        border-radius: 8px;
+        font-size: 9px;
+    }
+
+    .webia-filter-step-heading h3 {
+        font-size: 13px !important;
+    }
+
+    .webia-filter-step-heading p {
+        font-size: 9px !important;
+    }
+
+    .webia-filter-chip {
+        min-height: 28px;
+        padding: 6px 8px;
+        font-size: 10px !important;
+    }
+
+    .webia-filter-limit,
+    .webia-filter-hint,
+    .webia-filter-actions {
+        font-size: 9px !important;
+    }
+
+    .webia-subcategory-options {
+        max-height: 115px;
+    }
+
+    .webia-filter-actions {
+        align-items: center;
+    }
+
+    .webia-filter-actions button {
+        margin-left: auto;
+    }
+}

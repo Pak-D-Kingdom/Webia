@@ -8,7 +8,7 @@
     <meta name="description" content="Luxury nail atelier with bespoke nail artistry, golden-hour appointments, and signature experiences.">
     <link rel="stylesheet" href="{{ asset('css/website-bisnis/templates/beauty/nailart/nailart-luxury-yellowsunshine.css') }}">
 </head>
-<body class="soleil-template">
+<body class="soleil-template{{ request()->boolean('preview') ? ' webia-hero-preview-mode' : '' }}">
     <div class="soleil-topline">
         <span>MAISON SOLEIL · NAIL ATELIER</span>
         <span>JAKARTA · BY APPOINTMENT</span>
@@ -22,7 +22,7 @@
         <button class="soleil-menu-toggle" type="button" aria-expanded="false" aria-controls="soleil-nav">Menu <span>＋</span></button>
         <nav class="soleil-nav" id="soleil-nav">
             <a href="#experience">Experience</a>
-            <a href="#collections">Collections</a>
+            <a href="/webia/template/nail-art-luxury-yellow-sunshine/gallery">Our Gallery</a><a href="#collections">Collections</a>
             <a href="#atelier">The Atelier</a>
             <a href="#membership">Private Client</a>
             <a class="soleil-nav-cta" href="#booking">Reserve a Session <span>↗</span></a>

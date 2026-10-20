@@ -10,13 +10,13 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/website-bisnis/templates/beauty/nailart/nailart-minimalist-sagegreen.css') }}">
 </head>
-<body class="sage-template">
+<body class="sage-template{{ request()->boolean('preview') ? ' webia-hero-preview-mode' : '' }}">
     <div class="sage-announcement">SLOW BEAUTY, THOUGHTFUL DETAILS <span>·</span> YOUR NAIL RITUAL</div>
     <header class="sage-header">
         <a class="sage-brand" href="#home" aria-label="Sage Nail Atelier home"><span class="sage-brand-mark">b.</span><span><strong>SAGE</strong><small>NAIL ATELIER</small></span></a>
         <button class="sage-menu-toggle" type="button" aria-label="Buka navigasi" aria-expanded="false">☰</button>
         <nav class="sage-nav" aria-label="Navigasi utama">
-            <a href="#rituals">Rituals</a><a href="#journal">The Journal</a><a href="#membership">Membership</a><a href="#approach">Our Approach</a>
+            <a href="#rituals">Rituals</a><a href="/webia/template/nail-art-minimalist-sage-green/gallery">Our Gallery</a><a href="#journal">The Journal</a><a href="#membership">Membership</a><a href="#approach">Our Approach</a>
             <a class="sage-nav-cta" href="#booking">Reserve a Ritual <span>↗</span></a>
         </nav>
     </header>
@@ -85,6 +85,6 @@
         <button class="sage-ai-fab" id="sage-ai-fab" type="button" aria-expanded="false" aria-controls="sage-chat-panel"><span class="sage-ai-icon">✦</span><span>AI Assistant</span></button>
     </div>
     <div class="sage-template-ribbon">WEBIA TEMPLATE PREVIEW <span>02 · MINIMALIST SAGE GREEN</span></div>
-    <script src="{{ asset('js/website-bisnis/templates/beauty/nailart/nailart-professional-minimalist-sagegreen.js') }}" defer></script>
+   <script src="{{ asset('js/website-bisnis/templates/beauty/nailart/nailart-minimalist-sagegreen.js') }}" defer></script>
 </body>
 </html>

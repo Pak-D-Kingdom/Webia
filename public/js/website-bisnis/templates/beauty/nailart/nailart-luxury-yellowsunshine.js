@@ -20,29 +20,55 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const year = document.getElementById('soleil-year');
     if (year) year.textContent = String(new Date().getFullYear());
+    const dateInput = document.querySelector('#soleil-booking-form input[name="date"]');
+    if (dateInput) {
+        const now = new Date();
+        dateInput.min = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+    }
 
     const bookingForm = document.getElementById('soleil-booking-form');
+
     if (bookingForm) {
         bookingForm.addEventListener('submit', function (event) {
             event.preventDefault();
-            if (!bookingForm.reportValidity()) return;
+
             const data = new FormData(bookingForm);
             const name = String(data.get('name') || '').trim();
             const phone = String(data.get('phone') || '').trim();
             const service = String(data.get('service') || '').trim();
             const date = String(data.get('date') || '').trim();
             const notes = String(data.get('notes') || '').trim();
+
+            if (!name || !phone || !service || !date) {
+                bookingForm.reportValidity();
+                return;
+            }
+
             const message = [
-                'Halo Maison Soleil, saya ingin mengajukan appointment.',
-                'Nama: ' + name,
-                'WhatsApp: ' + phone,
-                'Layanan: ' + service,
-                'Tanggal pilihan: ' + date,
-                notes ? 'Inspirasi/catatan: ' + notes : ''
-            ].filter(Boolean).join('\n');
-            window.open('https://wa.me/6285850180285?text=' + encodeURIComponent(message), '_blank', 'noopener');
+                'Halo Admin, saya ingin melakukan reservasi.',
+                '',
+                'Template: Maison Soleil',
+                `Nama: ${name}`,
+                `Nomor WhatsApp: ${phone}`,
+                `Layanan: ${service}`,
+                `Tanggal pilihan: ${date}`,
+                `Inspirasi desain: ${notes || '-'}`,
+                '',
+                'Mohon informasi ketersediaan jadwal dan harga. Terima kasih!'
+            ].join('\n');
+
+            const whatsappUrl =
+                'https://wa.me/6285850180285?text=' +
+                encodeURIComponent(message);
+
+            window.open(
+                whatsappUrl,
+                '_blank',
+                'noopener,noreferrer'
+            );
         });
     }
+
 
     const panel = document.getElementById('soleil-ai-panel');
     const fab = document.getElementById('soleil-ai-fab');
