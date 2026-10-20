@@ -36,6 +36,7 @@ test('customer order can be rejected, reuploaded, and approved by admin', async 
     await page.getByRole('button', { name: 'Lanjut ke pembayaran' }).click();
 
     await expect(page.getByRole('heading', { name: 'Pixel' })).toBeVisible();
+    const orderId = new URL(page.url()).pathname.split('/').pop() as string;
     await page.getByLabel(/Bukti transfer/).setInputFiles(path.join(process.cwd(), 'tests', 'E2E', 'fixtures', 'receipt.png'));
     await page.getByLabel('Catatan (opsional)').fill('Transfer test Playwright.');
     await page.getByRole('button', { name: 'Kirim bukti' }).click();
@@ -43,8 +44,7 @@ test('customer order can be rejected, reuploaded, and approved by admin', async 
 
     await logout(page);
     await login(page, 'admin@webia.test', 'password');
-    await page.goto('/admin/orders');
-    await page.getByRole('link', { name: 'Periksa' }).click();
+    await page.goto(`/admin/orders/${orderId}`);
     await expect(page.getByText('Transfer test Playwright.')).toBeVisible();
     await page.getByLabel('Catatan').fill('Bukti kurang jelas.');
     await page.getByRole('button', { name: 'Tolak pembayaran' }).click();
@@ -59,8 +59,7 @@ test('customer order can be rejected, reuploaded, and approved by admin', async 
 
     await logout(page);
     await login(page, 'admin@webia.test', 'password');
-    await page.goto('/admin/orders');
-    await page.getByRole('link', { name: 'Periksa' }).click();
+    await page.goto(`/admin/orders/${orderId}`);
     await page.getByRole('button', { name: 'Terima pembayaran' }).click();
     await expect(page.getByText('paid', { exact: true })).toBeVisible();
 });
