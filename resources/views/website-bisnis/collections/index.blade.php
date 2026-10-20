@@ -103,8 +103,8 @@
                         <h3>{{ $template['name'] }}</h3>
                         <p>{{ $template['desc'] }}</p>
                         <div class="webia-gallery-card-bottom"><small>{{ $template['tag'] }}</small><a
-                                href="{{ route('home') }}#konsultasi-website"
-                                aria-label="Konsultasikan template {{ $template['name'] }}">Konsultasi ↗</a></div>
+                                href="{{ route('orders.create', ['template' => $template['id'], 'category' => $template['category']]) }}"
+                                aria-label="Pesan template {{ $template['name'] }}">Pilih template ↗</a></div>
                     </div>
                 </article>
             @endforeach

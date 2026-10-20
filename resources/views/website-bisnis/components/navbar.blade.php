@@ -51,6 +51,10 @@
                 Konsultasi
             </button>
 
+            <a href="{{ auth()->check() ? route('dashboard') : route('login') }}">
+                {{ auth()->check() ? 'Dashboard' : 'Masuk' }}
+            </a>
+
             <a href="#" class="webia-homebase-link">
                 ← D-KREASI
             </a>
