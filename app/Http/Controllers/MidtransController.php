@@ -7,6 +7,7 @@ use App\Services\Midtrans;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
 class MidtransController extends Controller
@@ -22,12 +23,24 @@ class MidtransController extends Controller
         $payment = WebiaPayment::where('midtrans_order_id', $midtransOrderId)->first();
         abort_unless($payment, 404);
 
-        abort_unless($this->midtrans->signatureValid(
+        if (! $this->midtrans->signatureValid(
             $midtransOrderId,
             data_get($payload, 'status_code'),
             data_get($payload, 'gross_amount'),
             data_get($payload, 'signature_key'),
-        ), 403);
+        )) {
+            Log::warning('Midtrans notify ditolak: signature tidak valid', ['ip' => $request->ip(), 'order_id' => $midtransOrderId]);
+            abort(403);
+        }
+
+        // Order masih nil di lingkungan tanpa merchant id; payload boleh tak mengirimnya juga.
+        $merchantId = config('webia.midtrans.merchant_id');
+        abort_unless($merchantId === null || data_get($payload, 'merchant_id') === null
+            || $merchantId === (string) data_get($payload, 'merchant_id'), 400);
+
+        // Nominal notifikasi harus sama dengan total order, kalau beda jangan pernah tandai paid.
+        $grossAmount = (float) data_get($payload, 'gross_amount', 0);
+        abort_unless(abs($grossAmount - (float) $payment->order->total_price) < 0.01, 400);
 
         $this->midtrans->applyNotification($payment, $payload);
 

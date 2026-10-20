@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 #[Fillable([
     'webia_order_id', 'provider', 'midtrans_order_id', 'snap_token', 'snap_redirect_url',
-    'status', 'payload', 'paid_at',
+    'status', 'payload', 'paid_at', 'expires_at',
 ])]
 class WebiaPayment extends Model
 {
@@ -27,6 +27,7 @@ class WebiaPayment extends Model
         return [
             'payload' => 'array',
             'paid_at' => 'datetime',
+            'expires_at' => 'datetime',
         ];
     }
 }

@@ -117,8 +117,17 @@ class WebiaOrderController extends Controller
         abort_unless(in_array($order->status, ['awaiting_payment', 'rejected'], true), 422);
 
         try {
-            $payment = $order->payments()->where('status', 'created')->latest()->first()
-                ?? $this->midtrans->createTransaction($order, $this->nextMidtransOrderId($order));
+            $payment = null;
+
+            // Selama satu order hanya boleh punya satu sesi bayar hidup — saat kedaluwarsa, buat sesi baru.
+            foreach ($order->payments()->where('status', 'created')->latest()->get() as $created) {
+                if ($created->expires_at === null || $created->expires_at->isFuture()) {
+                    $payment = $created;
+                    break;
+                }
+            }
+
+            $payment ??= $this->midtrans->createTransaction($order, $this->nextMidtransOrderId($order));
         } catch (RuntimeException $exception) {
             report($exception);
 

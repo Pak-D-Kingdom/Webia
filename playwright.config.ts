@@ -43,6 +43,9 @@ export default defineConfig({
             MAIL_MAILER: 'array',
             QUEUE_CONNECTION: 'sync',
             SESSION_DRIVER: 'file',
+            // E2E tanpa kredensial Midtrans: paksa mode simulasi meski .env dev punya server key.
+            MIDTRANS_SERVER_KEY: '',
+            MIDTRANS_MERCHANT_ID: '',
         },
     },
 });

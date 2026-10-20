@@ -50,7 +50,7 @@ class WebiaOrderController extends Controller
 
     public function show(WebiaOrder $order): View
     {
-        $order->load(['user', 'package', 'template', 'logs.actor']);
+        $order->load(['user', 'package', 'template', 'logs.actor', 'payments']);
 
         return view('admin.orders.show', compact('order'));
     }

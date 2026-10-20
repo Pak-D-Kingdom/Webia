@@ -32,6 +32,19 @@
             </div>
         @endif
 
+        @if ($order->payments->isNotEmpty())
+            <div class="dashboard-empty">
+                <h2>Pembayaran Midtrans</h2>
+                <ul>
+                    @foreach ($order->payments as $payment)
+                        <li @if ($payment->status === 'duplicate') style="color: #b00020" aria-label="Perlu refund" @endif>
+                            {{ $payment->midtrans_order_id }} — <strong>{{ str_replace('_', ' ', $payment->status) }}</strong>@if ($payment->status === 'duplicate') — pembayaran ganda, perlu refund manual @endif
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         @if ($order->payment_note)
             <div class="dashboard-empty"><h2>Catatan pembayaran</h2><p>{{ $order->payment_note }}</p></div>
         @endif

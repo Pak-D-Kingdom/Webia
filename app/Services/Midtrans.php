@@ -19,6 +19,7 @@ class Midtrans
             'webia_order_id' => $order->id,
             'midtrans_order_id' => $midtransOrderId,
             'status' => 'created',
+            'expires_at' => now()->addHours(24),
         ]);
 
         if (! $this->configured()) {
@@ -34,6 +35,10 @@ class Midtrans
                 'transaction_details' => [
                     'order_id' => $midtransOrderId,
                     'gross_amount' => (int) $order->total_price,
+                ],
+                'expiry' => [
+                    'duration' => 1440,
+                    'unit' => 'minutes',
                 ],
                 'callbacks' => [
                     'finish' => route('payments.midtrans.callback'),
@@ -90,6 +95,19 @@ class Midtrans
             $locked = WebiaPayment::whereKey($payment->id)->lockForUpdate()->firstOrFail();
             $newStatus = $this->mapTransactionStatus((string) data_get($payload, 'transaction_status'));
 
+            if ($newStatus === 'paid' && $locked->status !== 'paid' && $this->orderAlreadyPaid($locked)) {
+                // Customer terlanjur bayar dua kali (dua sesi / Midtrans + transfer manual) — dana ganda harus di-refund admin.
+                $locked->update(['status' => 'duplicate', 'payload' => $payload, 'paid_at' => now()]);
+                WebiaOrderLog::create([
+                    'webia_order_id' => $locked->webia_order_id,
+                    'actor_id' => null,
+                    'to_status' => 'paid',
+                    'note' => 'Pembayaran ganda ('.$locked->midtrans_order_id.') terdeteksi — perlu refund manual admin.',
+                ]);
+
+                return;
+            }
+
             $locked->update([
                 'status' => $newStatus ?? $locked->status,
                 'payload' => $payload,
@@ -100,6 +118,18 @@ class Midtrans
                 $this->markOrderPaid($locked);
             }
         });
+    }
+
+    private function orderAlreadyPaid(WebiaPayment $payment): bool
+    {
+        $order = WebiaOrder::find($payment->webia_order_id);
+
+        if ($order === null) {
+            return false;
+        }
+
+        return $order->status === 'paid'
+            || $order->payments()->where('status', 'paid')->whereKeyNot($payment->id)->exists();
     }
 
     /** Status notifikasi yang dikenal; null berarti dibiarkan (mis. pending). */
@@ -139,7 +169,9 @@ class Midtrans
 
     private function serverKey(): ?string
     {
-        return config('webia.midtrans.server_key');
+        $key = config('webia.midtrans.server_key');
+
+        return $key ? $key : null;
     }
 
     private function baseUrl(): string

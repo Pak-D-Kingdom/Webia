@@ -57,6 +57,10 @@ class MidtransPaymentTest extends TestCase
             'midtrans_order_id' => 'WEB-'.$order->id.'-01',
             'status' => 'created',
         ]);
+
+        $payment = $order->payments()->first();
+        $this->assertTrue($payment->expires_at->greaterThan(now()->addHours(23)));
+        $this->assertTrue($payment->expires_at->lessThan(now()->addHours(25)));
     }
 
     public function test_payment_is_reused_while_still_pending(): void
@@ -67,6 +71,27 @@ class MidtransPaymentTest extends TestCase
         $this->actingAs($order->user)->post(route('orders.pay', $order))->assertRedirect($payment->snap_redirect_url);
 
         $this->assertSame(1, $order->payments()->count());
+    }
+
+    public function test_expired_payment_session_is_replaced_by_a_new_one(): void
+    {
+        Http::fake([
+            'api.sandbox.midtrans.com/snap/v1/transactions' => Http::response(['token' => 'snap-token-2', 'redirect_url' => 'https://sandbox.midtrans.com/pay/new'], 200),
+        ]);
+
+        $order = WebiaOrder::factory()->create(['status' => 'awaiting_payment']);
+        WebiaPayment::factory()->create([
+            'webia_order_id' => $order->id,
+            'midtrans_order_id' => 'WEB-'.$order->id.'-01',
+            'expires_at' => now()->subMinute(),
+        ]);
+
+        $this->actingAs($order->user)
+            ->post(route('orders.pay', $order))
+            ->assertRedirect('https://sandbox.midtrans.com/pay/new');
+
+        $this->assertSame('WEB-'.$order->id.'-02', $order->payments()->latest('id')->first()->midtrans_order_id);
+        $this->assertSame(2, $order->payments()->count());
     }
 
     public function test_pay_requires_ownership(): void
@@ -143,6 +168,56 @@ class MidtransPaymentTest extends TestCase
         ])->assertForbidden();
 
         $this->assertSame('awaiting_payment', $order->fresh()->status);
+    }
+
+    public function test_notification_rejects_amount_mismatch(): void
+    {
+        $order = WebiaOrder::factory()->create(['status' => 'awaiting_payment']);
+        WebiaPayment::factory()->create(['webia_order_id' => $order->id, 'midtrans_order_id' => 'WEB-'.$order->id.'-01']);
+
+        $payload = ['order_id' => 'WEB-'.$order->id.'-01', 'status_code' => '200', 'gross_amount' => '1000', 'transaction_status' => 'settlement'];
+
+        $this->postJson(route('payments.midtrans.notify'), $payload + ['signature_key' => $this->signature($payload)])
+            ->assertBadRequest();
+
+        $this->assertSame('created', $order->payments()->first()->status);
+        $this->assertSame('awaiting_payment', $order->fresh()->status);
+    }
+
+    public function test_notification_rejects_merchant_id_mismatch(): void
+    {
+        config(['webia.midtrans.merchant_id' => 'G12345']);
+        $order = WebiaOrder::factory()->create(['status' => 'awaiting_payment']);
+        WebiaPayment::factory()->create(['webia_order_id' => $order->id, 'midtrans_order_id' => 'WEB-'.$order->id.'-01']);
+
+        $payload = ['order_id' => 'WEB-'.$order->id.'-01', 'status_code' => '200', 'gross_amount' => '499000', 'transaction_status' => 'settlement', 'merchant_id' => 'G99999'];
+
+        $this->postJson(route('payments.midtrans.notify'), $payload + ['signature_key' => $this->signature($payload)])
+            ->assertBadRequest();
+
+        $this->assertSame('awaiting_payment', $order->fresh()->status);
+    }
+
+    public function test_duplicate_settlement_is_flagged_for_admin_refund(): void
+    {
+        $order = WebiaOrder::factory()->create(['status' => 'awaiting_payment']);
+        $first = WebiaPayment::factory()->create(['webia_order_id' => $order->id, 'midtrans_order_id' => 'WEB-'.$order->id.'-01']);
+        $second = WebiaPayment::factory()->create(['webia_order_id' => $order->id, 'midtrans_order_id' => 'WEB-'.$order->id.'-02']);
+
+        $firstPayload = ['order_id' => 'WEB-'.$order->id.'-01', 'status_code' => '200', 'gross_amount' => '499000', 'transaction_status' => 'settlement'];
+        $this->postJson(route('payments.midtrans.notify'), $firstPayload + ['signature_key' => $this->signature($firstPayload)])->assertOk();
+
+        $secondPayload = ['order_id' => 'WEB-'.$order->id.'-02', 'status_code' => '200', 'gross_amount' => '499000', 'transaction_status' => 'settlement'];
+        $this->postJson(route('payments.midtrans.notify'), $secondPayload + ['signature_key' => $this->signature($secondPayload, 'WEB-'.$order->id.'-02')])->assertOk();
+
+        $order->refresh();
+        $this->assertSame('paid', $order->status);
+        $this->assertSame('paid', $first->fresh()->status);
+        $this->assertSame('duplicate', $second->fresh()->status);
+        $this->assertDatabaseHas('webia_order_logs', [
+            'webia_order_id' => $order->id,
+            'note' => 'Pembayaran ganda (WEB-'.$order->id.'-02) terdeteksi — perlu refund manual admin.',
+        ]);
     }
 
     public function test_notification_is_idempotent(): void
