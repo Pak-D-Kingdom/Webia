@@ -266,6 +266,64 @@ input {
     cursor: pointer;
 }
 
+.admin-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+}
+
+.admin-filter a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0.35rem 0.85rem;
+    color: var(--account-action);
+    background: var(--account-surface);
+    border: 1px solid var(--account-line);
+    border-radius: 999px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.admin-filter a[aria-current='page'] {
+    color: #ffffff;
+    background: var(--account-action);
+    border-color: var(--account-action);
+}
+
+.admin-filter a:focus-visible {
+    outline: 2px solid var(--account-action);
+    outline-offset: 2px;
+}
+
+.admin-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    margin-top: 1.5rem;
+}
+
+.admin-pagination-cell {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0.35rem 0.9rem;
+    color: var(--account-action);
+    background: var(--account-surface);
+    border: 1px solid var(--account-line);
+    border-radius: 0.35rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.admin-pagination a:focus-visible {
+    outline: 2px solid var(--account-action);
+    outline-offset: 2px;
+}
+
 .admin-form {
     max-width: 40rem;
     margin-top: 2rem;

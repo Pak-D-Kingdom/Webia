@@ -16,11 +16,27 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class WebiaOrderController extends Controller
 {
-    public function index(): View
-    {
-        $orders = WebiaOrder::with(['user', 'package'])->latest()->get();
+    protected const STATUSES = ['awaiting_payment', 'payment_uploaded', 'paid', 'rejected'];
 
-        return view('admin.orders.index', compact('orders'));
+    public function index(Request $request): View
+    {
+        $status = $request->string('status')->value();
+        if (! in_array($status, self::STATUSES, true)) {
+            $status = '';
+        }
+
+        $orders = WebiaOrder::query()
+            ->with(['user', 'package'])
+            ->when($status !== '', fn ($query) => $query->where('status', $status))
+            ->latest()
+            ->paginate(20)
+            ->withQueryString();
+
+        return view('admin.orders.index', [
+            'orders' => $orders,
+            'activeStatus' => $status,
+            'statuses' => self::STATUSES,
+        ]);
     }
 
     public function show(WebiaOrder $order): View

@@ -105,4 +105,41 @@ class AdminOrderTest extends TestCase
 
         $this->assertSame('awaiting_payment', $order->fresh()->status);
     }
+
+    public function test_admin_order_list_filters_by_status(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $paid = WebiaOrder::factory()->create(['status' => 'paid']);
+        WebiaOrder::factory()->create(['status' => 'awaiting_payment']);
+
+        $this->actingAs($admin)
+            ->get(route('admin.orders.index', ['status' => 'paid']))
+            ->assertOk()
+            ->assertSee($paid->order_number)
+            ->assertSee('>Paid</a>', false)
+            ->assertSee('aria-current="page"', false)
+            ->assertViewHas('activeStatus', 'paid');
+    }
+
+    public function test_admin_order_list_pagination_orders_limit_per_page(): void
+    {
+        $admin = User::factory()->admin()->create();
+        WebiaOrder::factory()->count(30)->create();
+
+        $this->actingAs($admin)->get(route('admin.orders.index', ['page' => 1]))
+            ->assertOk()
+            ->assertViewHas('orders', fn ($orders) => $orders->count() === 20 && $orders->hasMorePages());
+    }
+
+    public function test_admin_order_list_paginator_preserves_status_filter_in_links(): void
+    {
+        $admin = User::factory()->admin()->create();
+        WebiaOrder::factory()->count(25)->create(['status' => 'paid']);
+        WebiaOrder::factory()->count(25)->create();
+
+        $this->actingAs($admin)->get(route('admin.orders.index', ['status' => 'paid']))
+            ->assertOk()
+            ->assertSee('page=2', false)
+            ->assertViewHas('orders', fn ($orders) => $orders->count() === 20);
+    }
 }
