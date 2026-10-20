@@ -8,6 +8,7 @@ use App\Models\WebiaOrderLog;
 use App\Models\WebiaPackage;
 use App\Models\WebiaTemplate;
 use App\Services\Midtrans;
+use App\Services\OrderMail;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
@@ -22,7 +23,7 @@ use Throwable;
 
 class WebiaOrderController extends Controller
 {
-    public function __construct(private Midtrans $midtrans) {}
+    public function __construct(private Midtrans $midtrans, private OrderMail $orderMail) {}
 
     public function index(Request $request): View
     {
@@ -107,6 +108,8 @@ class WebiaOrderController extends Controller
         if ($oldPath) {
             Storage::disk('local')->delete($oldPath);
         }
+
+        $this->orderMail->notifyAdmins($order);
 
         return redirect()->route('orders.show', $order)->with('status', 'Bukti pembayaran berhasil dikirim.');
     }

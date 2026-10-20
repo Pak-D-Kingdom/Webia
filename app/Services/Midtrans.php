@@ -13,6 +13,8 @@ use Throwable;
 
 class Midtrans
 {
+    public function __construct(private OrderMail $orderMail) {}
+
     public function createTransaction(WebiaOrder $order, string $midtransOrderId): WebiaPayment
     {
         $payment = WebiaPayment::create([
@@ -160,6 +162,7 @@ class Midtrans
             'to_status' => 'paid',
             'note' => 'Dibayar via Midtrans ('.$payment->midtrans_order_id.').',
         ]);
+        $this->orderMail->notifyCustomer($order, 'paid');
     }
 
     public function configured(): bool

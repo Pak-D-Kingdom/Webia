@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\WebiaOrder;
 use App\Models\WebiaOrderLog;
+use App\Services\OrderMail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,6 +17,8 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class WebiaOrderController extends Controller
 {
+    public function __construct(private OrderMail $orderMail) {}
+
     protected const STATUSES = ['awaiting_payment', 'payment_uploaded', 'paid', 'rejected'];
 
     protected const DELIVERY_STATUSES = ['not_started', 'in_progress', 'delivered'];
@@ -61,6 +64,8 @@ class WebiaOrderController extends Controller
             'action' => ['required', Rule::in(['start', 'finish'])],
         ]);
 
+        $emailType = $validated['action'] === 'start' ? 'in_progress' : 'delivered';
+
         DB::transaction(function () use ($request, $order, $validated): void {
             $lockedOrder = WebiaOrder::whereKey($order->id)->lockForUpdate()->firstOrFail();
 
@@ -81,6 +86,8 @@ class WebiaOrderController extends Controller
                 'to_status' => 'delivery_'.$transition['to'],
             ]);
         });
+
+        $this->orderMail->notifyCustomer($order, $emailType);
 
         return redirect()->route('admin.orders.show', $order)->with('status', 'Progres pengerjaan berhasil diperbarui.');
     }
@@ -118,6 +125,9 @@ class WebiaOrderController extends Controller
                 'note' => $validated['note'] ?? null,
             ]);
         });
+
+        $newStatus = $validated['action'] === 'approve' ? 'paid' : 'rejected';
+        $this->orderMail->notifyCustomer($order, $newStatus);
 
         return redirect()->route('admin.orders.show', $order)->with('status', 'Status pembayaran berhasil diperbarui.');
     }
