@@ -56,7 +56,7 @@ Route::middleware('auth')->group(function (): void {
 Route::get(
     '/webia/koleksi',
     [TemplateCollectionController::class, 'index']
-)->name('collections');
+)->name('webia.collections');
 
 // WEBIA — Template Nail Art Professional Soft Pink
 // URL lama dipertahankan agar konsisten; view mengikuti struktur folder baru.
@@ -66,14 +66,12 @@ Route::view(
 )->name('webia.template.beauty.nailart.professional-softpink');
 Route::view('/webia/template/nail-art-professional-soft-pink/gallery', 'website-bisnis.templates.beauty.nailart.nailart-professional-softpink-gallery')->name('webia.template.beauty.nailart.professional-softpink.gallery');
 
-
 // WEBIA Template 02 — Nail Art Minimalist Sage Green
 Route::view(
     '/webia/template/nail-art-minimalist-sage-green',
     'website-bisnis.templates.beauty.nailart.nailart-minimalist-sagegreen'
 )->name('webia.template.beauty.nailart.minimalist-sagegreen');
 Route::view('/webia/template/nail-art-minimalist-sage-green/gallery', 'website-bisnis.templates.beauty.nailart.nailart-minimalist-sagegreen-gallery')->name('webia.template.beauty.nailart.minimalist-sagegreen.gallery');
-
 
 // WEBIA Template 03 — Luxury Yellow Sunshine
 Route::view(
@@ -93,8 +91,6 @@ Route::view(
     '/webia/template/automotive-dealer-vintage/collection',
     'website-bisnis.templates.automotive.dealer.automotive-dealer-vintage-collection'
 )->name('webia.template.automotive.dealer.vintage.collection');
-
-
 
 Route::view(
     '/webia/template/healthcare-dental-mint',

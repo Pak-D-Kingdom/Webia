@@ -51,6 +51,29 @@ class EmailNotificationTest extends TestCase
         Mail::assertSentCount(1);
     }
 
+    public function test_superseded_settlement_emails_paid_only_once(): void
+    {
+        Mail::fake();
+        $order = WebiaOrder::factory()->create(['status' => 'awaiting_payment']);
+        $oldPayment = WebiaPayment::factory()->create([
+            'webia_order_id' => $order->id,
+            'midtrans_order_id' => 'WEB-'.$order->id.'-01',
+            'status' => 'superseded',
+        ]);
+        $newPayment = WebiaPayment::factory()->create([
+            'webia_order_id' => $order->id,
+            'midtrans_order_id' => 'WEB-'.$order->id.'-02',
+        ]);
+
+        $oldPayload = ['order_id' => $oldPayment->midtrans_order_id, 'status_code' => '200', 'gross_amount' => '499000', 'transaction_status' => 'settlement'];
+        $newPayload = ['order_id' => $newPayment->midtrans_order_id, 'status_code' => '200', 'gross_amount' => '499000', 'transaction_status' => 'settlement'];
+        $this->postJson(route('payments.midtrans.notify'), $oldPayload + ['signature_key' => $this->signature($oldPayload)])->assertOk();
+        $this->postJson(route('payments.midtrans.notify'), $newPayload + ['signature_key' => $this->signature($newPayload)])->assertOk();
+
+        Mail::assertSentCount(1);
+        Mail::assertSent(fn (OrderStatusMail $mail): bool => $mail->type === 'paid');
+    }
+
     public function test_uploading_receipt_notifies_admins(): void
     {
         Mail::fake();
