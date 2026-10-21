@@ -1,0 +1,397 @@
+/* WEBIA — Luxury Shopping Cart Popup */
+:root {
+    --webia-cart-rose: #b97978;
+    --webia-cart-rose-dark: #895653;
+    --webia-cart-ivory: #fffaf7;
+    --webia-cart-ink: #352b2a;
+    --webia-cart-muted: #897c78;
+    --webia-cart-border: #eee1dc;
+}
+
+.webia-cart-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99998;
+    background: rgba(39, 27, 27, 0.42);
+    backdrop-filter: blur(5px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .3s ease, visibility .3s ease;
+}
+
+.webia-cart-overlay.is-open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.webia-cart-drawer {
+    position: fixed;
+    z-index: 99999;
+    top: 0;
+    right: 0;
+    width: min(460px, 100%);
+    height: 100%;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    background: var(--webia-cart-ivory);
+    color: var(--webia-cart-ink);
+    box-shadow: -18px 0 60px rgba(35, 20, 20, .16);
+    transform: translateX(105%);
+    transition: transform .38s cubic-bezier(.22, 1, .36, 1);
+    font-family: inherit;
+}
+
+.webia-cart-drawer.is-open {
+    transform: translateX(0);
+}
+
+.webia-cart-header {
+    padding: 25px 25px 20px;
+    border-bottom: 1px solid var(--webia-cart-border);
+    background:
+        radial-gradient(circle at top right, rgba(185, 121, 120, .13), transparent 55%),
+        var(--webia-cart-ivory);
+}
+
+.webia-cart-kicker {
+    margin: 0 0 6px;
+    color: var(--webia-cart-rose-dark);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .19em;
+    text-transform: uppercase;
+}
+
+.webia-cart-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.webia-cart-heading h2 {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(25px, 5vw, 31px);
+    font-weight: 500;
+    letter-spacing: -.04em;
+}
+
+.webia-cart-close {
+    display: grid;
+    place-items: center;
+    flex: 0 0 40px;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--webia-cart-border);
+    border-radius: 50%;
+    background: #fff;
+    color: var(--webia-cart-ink);
+    font-size: 24px;
+    cursor: pointer;
+    transition: background .2s ease, transform .2s ease;
+}
+
+.webia-cart-close:hover {
+    background: #f6e8e4;
+    transform: rotate(90deg);
+}
+
+.webia-cart-caption {
+    margin: 8px 0 0;
+    color: var(--webia-cart-muted);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.webia-cart-items {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 8px 25px 24px;
+    overscroll-behavior: contain;
+}
+
+.webia-cart-item {
+    display: grid;
+    grid-template-columns: 82px minmax(0, 1fr);
+    gap: 15px;
+    padding: 19px 0;
+    border-bottom: 1px solid var(--webia-cart-border);
+}
+
+.webia-cart-item-image {
+    width: 82px;
+    height: 94px;
+    overflow: hidden;
+    border-radius: 12px;
+    background: #f0e5df;
+}
+
+.webia-cart-item-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.webia-cart-item-image-placeholder {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    place-items: center;
+    color: var(--webia-cart-rose-dark);
+    font-size: 26px;
+}
+
+.webia-cart-item-info {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 9px;
+}
+
+.webia-cart-item-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.webia-cart-item-name {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+    font-weight: 650;
+    overflow-wrap: anywhere;
+}
+
+.webia-cart-item-price {
+    margin: 5px 0 0;
+    color: var(--webia-cart-rose-dark);
+    font-size: 12px;
+    font-weight: 650;
+}
+
+.webia-cart-remove {
+    padding: 2px 0 2px 8px;
+    border: 0;
+    background: transparent;
+    color: #9d8882;
+    font-size: 11px;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.webia-cart-item-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.webia-cart-qty {
+    display: inline-flex;
+    align-items: center;
+    gap: 0;
+    border: 1px solid var(--webia-cart-border);
+    border-radius: 7px;
+    background: #fff;
+    overflow: hidden;
+}
+
+.webia-cart-qty button {
+    width: 29px;
+    height: 29px;
+    border: 0;
+    background: transparent;
+    color: var(--webia-cart-ink);
+    font-size: 17px;
+    cursor: pointer;
+}
+
+.webia-cart-qty button:hover {
+    background: #f6e8e4;
+}
+
+.webia-cart-qty span {
+    min-width: 25px;
+    text-align: center;
+    font-size: 12px;
+}
+
+.webia-cart-line-total {
+    font-size: 12px;
+    font-weight: 700;
+    text-align: right;
+}
+
+.webia-cart-footer {
+    padding: 20px 25px max(22px, env(safe-area-inset-bottom));
+    border-top: 1px solid var(--webia-cart-border);
+    background: #fff;
+}
+
+.webia-cart-summary-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.webia-cart-summary-label {
+    color: var(--webia-cart-muted);
+    font-size: 12px;
+}
+
+.webia-cart-subtotal {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -.03em;
+}
+
+.webia-cart-disclaimer {
+    margin: 9px 0 15px;
+    color: var(--webia-cart-muted);
+    font-size: 10px;
+    line-height: 1.6;
+}
+
+.webia-cart-checkout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    min-height: 49px;
+    padding: 13px 18px;
+    border: 0;
+    border-radius: 7px;
+    background: var(--webia-cart-rose-dark);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .04em;
+    cursor: pointer;
+    transition: background .2s ease, transform .2s ease;
+}
+
+.webia-cart-checkout:hover {
+    background: #70413f;
+    transform: translateY(-1px);
+}
+
+.webia-cart-checkout:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.webia-cart-empty {
+    display: flex;
+    min-height: 290px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 25px 12px;
+}
+
+.webia-cart-empty-icon {
+    display: grid;
+    place-items: center;
+    width: 76px;
+    height: 76px;
+    margin-bottom: 20px;
+    border: 1px solid #e9d2ca;
+    border-radius: 50%;
+    background: #f9efea;
+    font-size: 30px;
+}
+
+.webia-cart-empty h3 {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 23px;
+    font-weight: 500;
+}
+
+.webia-cart-empty p {
+    max-width: 250px;
+    margin: 10px 0 20px;
+    color: var(--webia-cart-muted);
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+.webia-cart-continue {
+    padding: 11px 17px;
+    border: 1px solid var(--webia-cart-rose);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--webia-cart-rose-dark);
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.webia-cart-toast {
+    position: fixed;
+    z-index: 100001;
+    left: 50%;
+    bottom: 24px;
+    max-width: calc(100% - 32px);
+    padding: 12px 18px;
+    border: 1px solid rgba(255,255,255,.18);
+    border-radius: 30px;
+    background: #352b2a;
+    color: #fff;
+    font-size: 12px;
+    text-align: center;
+    box-shadow: 0 8px 30px rgba(0,0,0,.15);
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, 12px);
+    transition: opacity .2s ease, transform .2s ease;
+}
+
+.webia-cart-toast.is-visible {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+body.webia-cart-locked {
+    overflow: hidden;
+}
+
+@media (max-width: 480px) {
+    .webia-cart-drawer {
+        width: 100%;
+    }
+
+    .webia-cart-header {
+        padding: 20px 19px 17px;
+    }
+
+    .webia-cart-items {
+        padding-right: 19px;
+        padding-left: 19px;
+    }
+
+    .webia-cart-footer {
+        padding-right: 19px;
+        padding-left: 19px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .webia-cart-overlay,
+    .webia-cart-drawer,
+    .webia-cart-close,
+    .webia-cart-toast {
+        transition: none;
+    }
+}
