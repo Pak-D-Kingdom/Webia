@@ -78,7 +78,43 @@ Route::prefix('webia/template/company/modern/company-profile-ocean-teal')
         Route::view('/portofolio', $ns.'.portofolio')->name('portfolio');
     });
 
+    Route::prefix('webia/template/company/classic/company-profile-warm-neutral')
+    ->name('company-profile-warm-neutral.')
+    ->group(function () {
+        $ns = 'website-bisnis.template.company.classic.company-profile-warm-neutral';
+
+        Route::view('/', $ns.'.index')->name('home');
+        Route::view('/tentang-kami', $ns.'.tentang-kami')->name('about');
+        Route::view('/portofolio', $ns.'.portofolio')->name('portfolio');
+    });
+
 Route::view(
     'webia/template/property/luxury/real-estate-agency-emerald-green',
     'website-bisnis.template.property.luxury.real-estate-agency-emerald-green.index'
 )->name('website-bisnis.template.property.luxury.real-estate-agency-emerald-green');
+
+Route::prefix('webia/template/property/premium-minimal/real-estate-agency-nature-green')
+    ->name('property.premium-minimal.nature-green.')
+    ->group(function () {
+        $name = 'property.premium-minimal.nature-green.';
+        $ns   = 'website-bisnis.template.property.premium-minimal.real-estate-agency-nature-green.';
+        $cfg  = 'template.property.premium-minimal.real-estate-agency-nature-green.real-estate-agency';
+
+        // Satu pintu render: semua halaman mendapat data & helper yang sama.
+        $page = fn (string $view, string $active) => view($ns . $view, [
+            'ns'     => $ns,
+            'active' => $active,
+            't'      => config($cfg),
+            'r'      => fn (string $route) => route($name . $route),
+            'img'    => fn (string $file)  => asset(config($cfg . '.assets.images') . '/' . $file),
+        ]);
+
+        Route::get('/',              fn () => $page('index', 'home'))->name('home');
+        Route::get('/properties',    fn () => $page('properties', 'properties'))->name('properties');
+        Route::get('/specification', fn () => $page('specification', 'specification'))->name('specification');
+        Route::get('/price',         fn () => $page('price', 'price'))->name('price');
+        Route::get('/about-us',      fn () => $page('about', 'about'))->name('about');
+        Route::get('/gallery',       fn () => $page('gallery', 'gallery'))->name('gallery');
+        Route::get('/booking',       fn () => $page('booking', 'booking'))->name('booking');
+        Route::get('/blog',          fn () => $page('blog', 'blog'))->name('blog');
+    });
