@@ -106,3 +106,48 @@ Route::view(
     '/webia/template/healthcare-dental-azure',
     'website-bisnis.templates.healthcare.dental.azure-smile-clinic'
 )->name('webia.template.healthcare-dental-azure');
+
+// Sunset Dental Care Template
+Route::view(
+    '/webia/template/healthcare-dental-sunset',
+    'website-bisnis.templates.healthcare.dental.sunset-dental-care'
+)->name('webia.template.healthcare-dental-sunset');
+
+
+// =====================================================
+// WEBIA - PET SHOP MINIMALIST GLACIER BLUE
+// =====================================================
+
+Route::view(
+    '/webia/template/petshop-minimalist-glacierblue',
+    'website-bisnis.templates.pet-animal-service.petshop.glacierblue.petshop-minimalist-glacierblue'
+)->name('webia.template.petshop-minimalist-glacierblue');
+
+Route::view(
+    '/webia/template/petshop-minimalist-glacierblue/katalog',
+    'website-bisnis.templates.pet-animal-service.petshop.glacierblue.petshop-katalog-minimalist-glacierblue'
+)->name('webia.template.petshop-minimalist-glacierblue.katalog');
+
+Route::view(
+    '/webia/template/petshop-minimalist-glacierblue/produk/{slug}',
+    'website-bisnis.templates.pet-animal-service.petshop.glacierblue.petshop-produk-minimalist-glacierblue'
+)->name('webia.template.petshop-minimalist-glacierblue.produk');
+
+// =====================================================
+// WEBIA - PET SHOP LUXURY ROSE GOLD
+// =====================================================
+
+Route::view(
+    '/webia/template/petshop-luxury-rosegold',
+    'website-bisnis.templates.pet-animal-service.petshop.rosegold.petshop-luxury-rosegold'
+)->name('webia.template.petshop-luxury-rosegold');
+
+Route::view(
+    '/webia/template/petshop-luxury-rosegold/katalog',
+    'website-bisnis.templates.pet-animal-service.petshop.rosegold.petshop-katalog-luxury-rosegold'
+)->name('webia.template.petshop-luxury-rosegold.katalog');
+
+Route::view(
+    '/webia/template/petshop-luxury-rosegold/produk/{slug}',
+    'website-bisnis.templates.pet-animal-service.petshop.rosegold.petshop-produk-luxury-rosegold'
+)->name('webia.template.petshop-luxury-rosegold.produk');
