@@ -1,10 +1,13 @@
 {{-- ===================== AI PROPERTY ASSISTANT (FAQ) ===================== --}}
 <aside class="rea-assistant" lang="id" aria-label="AI Property Assistant" data-assistant
+       data-start="{{ $page === 'index' ? 'open' : 'closed' }}"
        data-fallback="{{ $assistant['fallback'] }}"
        data-faq="{{ json_encode($assistant['faq'], JSON_UNESCAPED_UNICODE) }}">
 
     <button class="rea-assistant__launcher" type="button" aria-label="Buka AI Property Assistant" aria-expanded="false" aria-controls="rea-assistant-panel" data-assistant-open hidden>
+        <span class="rea-assistant__orbit" aria-hidden="true"></span>
         <img src="{{ $img('ai-assistant.png') }}" alt="" width="56" height="56">
+        <span class="rea-assistant__teaser" aria-hidden="true">{{ $assistant['teaser'] }}</span>
     </button>
 
     <section class="rea-assistant__panel" id="rea-assistant-panel" aria-labelledby="rea-assistant-title" data-assistant-panel>

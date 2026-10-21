@@ -25,7 +25,7 @@
                     <button class="fav" type="button" aria-pressed="false" aria-label="Simpan {{ $p['name'] }}" data-fav><svg class="i" aria-hidden="true"><use href="#i-heart"/></svg></button>
                 </div>
                 <div class="card__body">
-                    <h3>{{ $p['name'] }}</h3>
+                    <h3><a href="{{ $r('property', ['slug' => $p['slug']]) }}">{{ $p['name'] }}</a></h3>
                     <p class="card__loc"><svg class="i" aria-hidden="true"><use href="#i-pin"/></svg>{{ $p['city'] }}</p>
                     <ul class="card__meta" aria-label="Spesifikasi singkat">
                         <li><svg class="i" aria-hidden="true"><use href="#i-bed"/></svg><span class="sr-only">Kamar tidur</span>{{ $p['beds'] }}</li>
@@ -34,7 +34,7 @@
                     </ul>
                     <div class="card__foot">
                         <strong>{{ $p['price'] }}</strong>
-                        <a class="round-btn" href="{{ $r('specification') }}" aria-label="Lihat detail {{ $p['name'] }}"><svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                        <a class="round-btn" href="{{ $r('property', ['slug' => $p['slug']]) }}" aria-label="View details: {{ $p['name'] }}"><svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
                     </div>
                 </div>
             </article>

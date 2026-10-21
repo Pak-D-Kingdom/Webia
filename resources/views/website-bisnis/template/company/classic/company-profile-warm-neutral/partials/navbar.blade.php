@@ -11,7 +11,7 @@
 
         <nav class="cp-nav" id="cp-nav" aria-label="Navigasi utama" data-cp-nav>
             <ul class="cp-nav__list">
-                @foreach ($nav as $item)
+                @foreach ($navbar as $item)
                     <li>
                         <a class="cp-nav__link{{ $item['current'] ? ' is-active' : '' }}"
                            href="{{ $item['href'] }}"

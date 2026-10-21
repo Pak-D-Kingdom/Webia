@@ -1,5 +1,5 @@
-{{-- AI COMPANY FAQ: widget chat statis. Jawaban dibaca dari <script id="cp-faq-data"> di layout. --}}
-<aside class="cp-ai" data-cp-ai data-autoopen="desktop" aria-label="AI Assistant">
+{{-- AI COMPANY FAQ + TOMBOL MELAYANG. Jawaban dibaca dari <script id="cp-faq-data"> di layout. --}}
+<aside class="cp-ai" data-cp-ai data-autoopen="desktop" aria-label="Bantuan cepat">
     <div class="cp-ai__panel" id="cp-ai-panel" role="dialog" aria-modal="false" aria-labelledby="cp-ai-title" data-cp-ai-panel hidden>
         <header class="cp-ai__head">
             <img class="cp-ai__avatar" src="{{ $img('ai-avatar.png') }}" alt="" width="198" height="234" loading="lazy">
@@ -30,7 +30,19 @@
         </form>
     </div>
 
-    <button class="cp-ai__toggle" type="button" data-cp-ai-toggle aria-expanded="false" aria-controls="cp-ai-panel" aria-label="Buka AI Assistant">
-        {!! $icon('bot') !!}
-    </button>
+    @include($ns . '.partials.whatsapp-button')
+
+    <div class="cp-ai__dock">
+        <button class="cp-ai__teaser" type="button" data-cp-ai-teaser hidden>
+            <span class="cp-ai__teaser-text">{{ $ai['teaser'] ?? 'Halo! Ada yang bisa kami bantu?' }}</span>
+        </button>
+
+        <button class="cp-ai__toggle" type="button" data-cp-ai-toggle aria-expanded="false" aria-controls="cp-ai-panel" aria-label="Buka AI Assistant">
+            <span class="cp-ai__halo" aria-hidden="true"></span>
+            <span class="cp-ai__face">
+                <img class="cp-ai__robot" src="{{ $img('ai-avatar.png') }}" alt="" width="198" height="234">
+            </span>
+            <span class="cp-ai__online" aria-hidden="true"></span>
+        </button>
+    </div>
 </aside>

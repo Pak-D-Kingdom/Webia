@@ -6,7 +6,6 @@
                 <h2 class="cp-title" id="cp-services-title">Layanan</h2>
                 <p class="cp-subtitle">Solusi Lengkap untuk Kebutuhan Anda</p>
             </div>
-            <a class="cp-link" href="#layanan">Lihat Semua Layanan {!! $icon('arrow') !!}</a>
         </div>
 
         <ul class="cp-services__grid">

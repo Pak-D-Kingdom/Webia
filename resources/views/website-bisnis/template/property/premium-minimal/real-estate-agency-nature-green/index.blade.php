@@ -10,9 +10,7 @@
                 @include($ns.'sections.gallery', ['preview' => true])
             </div>
             <div class="home__row home__row--b">
-                @include($ns.'sections.specification', ['preview' => true])
                 @include($ns.'sections.location')
-                @include($ns.'sections.price', ['preview' => true])
             </div>
         </div>
 

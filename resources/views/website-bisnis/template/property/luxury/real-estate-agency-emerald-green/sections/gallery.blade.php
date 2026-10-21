@@ -1,38 +1,52 @@
-{{-- ---------- GALLERY ---------- --}}
-<section class="rea-gallery" id="gallery" aria-labelledby="gallery-title" data-gallery>
-    <header class="rea-section-head">
-        <h2 id="gallery-title">Property Gallery</h2>
-        <p>Explore the beauty and elegance of this property</p>
-    </header>
+{{-- ===================== GALLERY (preview di beranda & halaman Gallery) ===================== --}}
+@php
+    $isPreview = $preview ?? false;
+    $photos    = $property['gallery'];
+@endphp
+<section class="rea-section {{ $isPreview ? 'rea-section--alt' : '' }}" id="gallery" aria-label="{{ $pages['gallery']['title'] }}" data-gallery>
+    <div class="rea-container">
+        @if ($isPreview)
+            <header class="rea-sec-head">
+                <div class="rea-section-head">
+                    <p class="rea-eyebrow rea-eyebrow--dark">PHOTOS</p>
+                    <h2>{{ $pages['gallery']['title'] }}</h2>
+                    <p>{{ $pages['gallery']['subtitle'] }}</p>
+                </div>
+                <a class="rea-link" href="{{ $route('gallery') }}">View Full Gallery {{ $icon('arrow') }}</a>
+            </header>
 
-    <div class="rea-gallery__grid">
-        <figure class="rea-gallery__main">
-            <img src="{{ $property['gallery'][0]['src'] }}" alt="{{ $property['gallery'][0]['alt'] }}" data-gallery-main>
-            <button class="rea-gallery__expand" type="button" aria-label="Open photo viewer" data-gallery-open="0">{{ $icon('expand') }}</button>
-            <button class="rea-gallery__more" type="button" data-gallery-open="0">+{{ $property['more_photos'] }} More Photos</button>
-        </figure>
-
-        <ul class="rea-gallery__thumbs">
-            @foreach (array_slice($property['gallery'], 1) as $i => $photo)
-                <li>
-                    <button class="rea-gallery__thumb" type="button" aria-label="Show photo: {{ $photo['alt'] }}"
-                            data-gallery-thumb="{{ $i + 1 }}" data-src="{{ $photo['src'] }}" data-alt="{{ $photo['alt'] }}">
+            <div class="rea-bento">
+                @foreach ($photos as $i => $photo)
+                    <button class="rea-photo {{ $i === 0 ? 'rea-photo--main' : '' }}" type="button" data-gallery-open="{{ $i }}" aria-label="Open photo: {{ $photo['alt'] }}">
                         <img src="{{ $photo['src'] }}" alt="" loading="lazy">
+                        @if ($i === 0)
+                            <span class="rea-photo__expand">{{ $icon('expand') }}</span>
+                            <span class="rea-photo__more">+{{ $property['more_photos'] }} More Photos</span>
+                        @endif
                     </button>
-                </li>
-            @endforeach
-        </ul>
-    </div>
+                @endforeach
+            </div>
+        @else
+            <div class="rea-gallerygrid">
+                @foreach ($photos as $i => $photo)
+                    <button class="rea-photo" type="button" data-gallery-open="{{ $i }}" aria-label="Open photo: {{ $photo['alt'] }}">
+                        <img src="{{ $photo['src'] }}" alt="" loading="lazy">
+                        <span class="rea-photo__cap">{{ $photo['alt'] }}</span>
+                    </button>
+                @endforeach
+            </div>
+        @endif
 
-    {{-- Lightbox --}}
-    <dialog class="rea-lightbox" aria-label="Photo viewer" data-lightbox>
-        <button class="rea-lightbox__close rea-roundbtn" type="button" aria-label="Close photo viewer" data-lightbox-close>{{ $icon('x') }}</button>
-        <button class="rea-lightbox__nav rea-lightbox__nav--prev rea-roundbtn" type="button" aria-label="Previous photo" data-lightbox-prev>{{ $icon('chev-l') }}</button>
-        <figure class="rea-lightbox__figure">
-            <img src="" alt="" data-lightbox-img>
-            <figcaption><span data-lightbox-caption></span> <span class="rea-lightbox__count" data-lightbox-count></span></figcaption>
-        </figure>
-        <button class="rea-lightbox__nav rea-lightbox__nav--next rea-roundbtn" type="button" aria-label="Next photo" data-lightbox-next>{{ $icon('chev-r') }}</button>
-        <script type="application/json" data-lightbox-data>@json($property['gallery'])</script>
-    </dialog>
+        {{-- Lightbox --}}
+        <dialog class="rea-lightbox" aria-label="Photo viewer" data-lightbox>
+            <button class="rea-lightbox__close rea-roundbtn" type="button" aria-label="Close photo viewer" data-lightbox-close>{{ $icon('x') }}</button>
+            <button class="rea-lightbox__nav rea-lightbox__nav--prev rea-roundbtn" type="button" aria-label="Previous photo" data-lightbox-prev>{{ $icon('chev-l') }}</button>
+            <figure class="rea-lightbox__figure">
+                <img alt="" data-lightbox-img>
+                <figcaption><span data-lightbox-caption></span> <span class="rea-lightbox__count" data-lightbox-count></span></figcaption>
+            </figure>
+            <button class="rea-lightbox__nav rea-lightbox__nav--next rea-roundbtn" type="button" aria-label="Next photo" data-lightbox-next>{{ $icon('chev-r') }}</button>
+            <script type="application/json" data-lightbox-data>@json($photos)</script>
+        </dialog>
+    </div>
 </section>

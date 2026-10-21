@@ -10,8 +10,8 @@
             <a href="{{ $r('properties') }}">Properties</a>
             <a href="{{ $r('about') }}">About Us</a>
             <a href="{{ $r('gallery') }}">Gallery</a>
-            <a href="{{ $r('home') }}#location">Location</a>
-            <a href="{{ $r('home') }}#inquiry">Contact</a>
+            <a href="{{ $r('contact') }}#location">Location</a>
+            <a href="{{ $r('contact') }}">Contact</a>
         </nav>
 
         <div class="footer__follow">

@@ -48,11 +48,12 @@ return [
         ['icon' => 'youtube',   'label' => 'YouTube',   'url' => '#'],
     ],
 
+    // 'navbar' => false: tidak tampil di navbar (tetap tampil di footer & pencarian)
     'nav' => [
         ['label' => 'Beranda',      'type' => 'home'],
-        ['label' => 'Tentang Kami', 'type' => 'page',    'page' => 'tentang'],
+        ['label' => 'Tentang Kami', 'type' => 'page',    'page' => 'tentang',    'navbar' => false],
         ['label' => 'Layanan',      'type' => 'section', 'id' => 'layanan'],
-        ['label' => 'Portofolio',   'type' => 'page',    'page' => 'portofolio'],
+        ['label' => 'Portofolio',   'type' => 'page',    'page' => 'portofolio', 'navbar' => false],
         ['label' => 'Proyek',       'type' => 'section', 'id' => 'proyek'],
         ['label' => 'Sertifikasi',  'type' => 'section', 'id' => 'sertifikasi'],
         ['label' => 'Klien',        'type' => 'section', 'id' => 'klien'],
@@ -63,8 +64,29 @@ return [
         'eyebrow'   => 'Solusi Kreatif untuk Masa Depan',
         'title'     => ['Bersama Membangun', 'Karya Terbaik'],
         'lead'      => 'Nusantara Kreasi hadir sebagai mitra terpercaya dalam menghadirkan solusi kreatif dan inovatif untuk mendukung pertumbuhan bisnis Anda.',
-        'cta_about' => 'Mengenal Kami',
-        'cta_video' => 'Tonton Profil Kami',
+        'cta_primary'   => 'Jelajahi Layanan',
+        'cta_secondary' => 'Tentang Kami',
+    ],
+
+    // Tombol melayang (kanan bawah)
+    'whatsapp' => [
+        'number'  => '6281234567890',
+        'message' => 'Halo Nusantara Kreasi, saya ingin berkonsultasi mengenai proyek saya.',
+        'label'   => 'Chat WhatsApp',
+    ],
+
+    'ai' => [
+        'teaser' => 'Halo! Ada yang bisa kami bantu?',
+    ],
+
+    // Teks formulir penawaran
+    'quote' => [
+        'title'   => 'Formulir Penawaran',
+        'intro'   => 'Ceritakan kebutuhan proyek Anda, kami siap membantu.',
+        'note'    => 'Tim kami merespons dalam 1×24 jam kerja.',
+        'privacy' => 'Data Anda aman dan hanya dipakai untuk menanggapi permintaan ini.',
+        'success_title' => 'Permintaan terkirim',
+        'success_text'  => 'Terima kasih! Tim kami akan segera menghubungi Anda untuk membahas kebutuhan proyek.',
     ],
 
     'about' => [

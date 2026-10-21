@@ -33,6 +33,9 @@
     $social         = $cfg['social'] ?? [];
     $hero           = $cfg['hero'] ?? [];
     $about          = $cfg['about'] ?? [];
+    $whatsapp       = $cfg['whatsapp'] ?? [];
+    $ai             = $cfg['ai'] ?? [];
+    $quote          = $cfg['quote'] ?? [];
     $services       = $cfg['services'] ?? [];
     $portfolio      = $cfg['portfolio'] ?? [];
     $projects       = $cfg['projects'] ?? [];
@@ -74,7 +77,19 @@
         'current' => ($item['type'] ?? '') === 'page' && ($item['page'] ?? null) === $pageKey,
     ], $cfg['nav'] ?? []);
 
+    // Navbar hanya menampilkan item yang tidak ditandai 'navbar' => false di config.
+    $navbar = array_values(array_filter($cfg['nav'] ?? [], fn (array $item) => ($item['navbar'] ?? true) !== false));
+    $navbar = array_map(fn (array $item) => [
+        'label'   => $item['label'],
+        'href'    => $resolve($item),
+        'current' => ($item['type'] ?? '') === 'page' && ($item['page'] ?? null) === $pageKey,
+    ], $navbar);
+
     $footerNav = array_chunk($nav, 4);
+
+    /* ----- WhatsApp -------------------------------------------------------- */
+    $waUrl = 'https://wa.me/' . preg_replace('/\D+/', '', $whatsapp['number'] ?? '')
+        . '?text=' . rawurlencode($whatsapp['message'] ?? '');
 
     /* ----- AI Company FAQ -------------------------------------------------- */
     $faq = array_map(function (array $entry) use ($resolve) {
