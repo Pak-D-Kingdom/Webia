@@ -12,8 +12,8 @@
             </h1>
             <p class="cp-hero__lead">{{ $hero['lead'] }}</p>
             <div class="cp-hero__actions">
-                <a class="cp-btn cp-btn--primary" href="{{ $page('tentang') }}">{{ $hero['cta_about'] }} {!! $icon('arrow') !!}</a>
-                <button class="cp-btn cp-btn--outline" type="button" data-cp-video-open>{!! $icon('play-circle') !!}{{ $hero['cta_video'] }}</button>
+                <a class="cp-btn cp-btn--primary" href="{{ $link('layanan') }}">{{ $hero['cta_primary'] }} {!! $icon('arrow') !!}</a>
+                <a class="cp-btn cp-btn--outline" href="{{ $page('tentang') }}"><span class="cp-btn__badge">{!! $icon('leaf') !!}</span>{{ $hero['cta_secondary'] }}</a>
             </div>
         </div>
     </div>

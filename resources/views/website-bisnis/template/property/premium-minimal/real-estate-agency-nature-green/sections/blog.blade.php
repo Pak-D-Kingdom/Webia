@@ -19,7 +19,7 @@
     <div class="cards cards--page">
         @foreach ($posts as $post)
             <article class="card">
-                <div class="card__media media"><img src="{{ $img($post['image']) }}" alt="" loading="lazy" data-fallback></div>
+                <div class="card__media card__media--blog media"><img src="{{ $img($post['image']) }}" alt="" loading="lazy" data-fallback></div>
                 <div class="card__body">
                     <p class="card__tag"><span>{{ $post['category'] }}</span><time>{{ $post['date'] }}</time></p>
                     <h3>{{ $post['title'] }}</h3>

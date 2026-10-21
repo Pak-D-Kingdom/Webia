@@ -21,7 +21,7 @@
                     @endforeach
                 </ul>
 
-                <a class="rea-btn rea-btn--gold rea-btn--lg" href="#gallery">View Gallery {{ $icon('arrow') }}</a>
+                <a class="rea-btn rea-btn--gold rea-btn--lg" href="{{ $route('gallery') }}">View Gallery {{ $icon('arrow') }}</a>
             </div>
 
             <div class="rea-hero__price" aria-label="Asking price">

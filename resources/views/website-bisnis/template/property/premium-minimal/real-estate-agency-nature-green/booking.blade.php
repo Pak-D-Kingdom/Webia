@@ -8,6 +8,7 @@
     <div class="container page page-split">
         @include($ns.'sections.booking', ['preview' => false])
         <aside class="page-split__side">
+            @include($ns.'sections.photo', ['image' => $t['gallery']['items'][1]['image'], 'caption' => $t['gallery']['items'][1]['alt']])
             @include($ns.'sections.price-start')
             @include($ns.'sections.inquiry')
         </aside>

@@ -24,50 +24,81 @@
             </div>
 
             <div class="cp-quote" id="penawaran">
-                <h3 class="cp-contact__heading">Formulir Penawaran</h3>
-                <p class="cp-quote__intro">Ceritakan kebutuhan proyek Anda, kami siap membantu.</p>
-
-                <form class="cp-form" method="POST" action="#" novalidate data-cp-quote-form>
-                    @csrf
-                    <div class="cp-form__grid">
-                        <div class="cp-field cp-field--name">
-                            <label class="cp-sr" for="cp-q-name">Nama Lengkap</label>
-                            <input class="cp-input" id="cp-q-name" name="name" type="text" placeholder="Nama Lengkap" autocomplete="name" required minlength="2" maxlength="120" aria-describedby="cp-q-name-error">
-                            <p class="cp-field__error" id="cp-q-name-error" hidden></p>
+                <div class="cp-quote__card">
+                    <header class="cp-quote__head">
+                        <span class="cp-quote__badge">{!! $icon('message') !!}</span>
+                        <div>
+                            <h3 class="cp-quote__title">{{ $quote['title'] ?? 'Formulir Penawaran' }}</h3>
+                            <p class="cp-quote__intro">{{ $quote['intro'] ?? '' }}</p>
                         </div>
+                    </header>
 
-                        <div class="cp-field cp-field--email">
-                            <label class="cp-sr" for="cp-q-email">Email</label>
-                            <input class="cp-input" id="cp-q-email" name="email" type="email" placeholder="Email" autocomplete="email" required maxlength="160" aria-describedby="cp-q-email-error">
-                            <p class="cp-field__error" id="cp-q-email-error" hidden></p>
+                    <form class="cp-form" method="POST" action="#" novalidate data-cp-quote-form>
+                        @csrf
+                        <div class="cp-form__grid">
+                            <div class="cp-field">
+                                <label class="cp-label" for="cp-q-name">Nama Lengkap <span aria-hidden="true">*</span></label>
+                                <div class="cp-input-wrap">
+                                    {!! $icon('user') !!}
+                                    <input class="cp-input" id="cp-q-name" name="name" type="text" placeholder="Contoh: Budi Santoso" autocomplete="name" required minlength="2" maxlength="120" aria-describedby="cp-q-name-error">
+                                </div>
+                                <p class="cp-field__error" id="cp-q-name-error" hidden></p>
+                            </div>
+
+                            <div class="cp-field">
+                                <label class="cp-label" for="cp-q-email">Email <span aria-hidden="true">*</span></label>
+                                <div class="cp-input-wrap">
+                                    {!! $icon('mail') !!}
+                                    <input class="cp-input" id="cp-q-email" name="email" type="email" placeholder="nama@perusahaan.com" autocomplete="email" required maxlength="160" aria-describedby="cp-q-email-error">
+                                </div>
+                                <p class="cp-field__error" id="cp-q-email-error" hidden></p>
+                            </div>
+
+                            <fieldset class="cp-field cp-field--wide cp-choices" id="cp-q-service" aria-describedby="cp-q-service-error">
+                                <legend class="cp-label">Jenis Layanan <span aria-hidden="true">*</span></legend>
+                                <div class="cp-choices__list">
+                                    @foreach ($services as $service)
+                                        <label class="cp-choice">
+                                            <input type="radio" name="service" value="{{ $service['title'] }}" required>
+                                            <span>{!! $icon('check') !!}{{ $service['title'] }}</span>
+                                        </label>
+                                    @endforeach
+                                </div>
+                                <p class="cp-field__error" id="cp-q-service-error" hidden></p>
+                            </fieldset>
+
+                            <div class="cp-field cp-field--wide">
+                                <div class="cp-label-row">
+                                    <label class="cp-label" for="cp-q-message">Pesan / Detail Kebutuhan <span aria-hidden="true">*</span></label>
+                                    <span class="cp-counter" aria-hidden="true" data-cp-counter>0/2000</span>
+                                </div>
+                                <textarea class="cp-input cp-input--area" id="cp-q-message" name="message" rows="4" placeholder="Jelaskan tujuan, target waktu, dan gambaran proyek Anda..." required minlength="10" maxlength="2000" aria-describedby="cp-q-message-error"></textarea>
+                                <p class="cp-field__error" id="cp-q-message-error" hidden></p>
+                            </div>
+
+                            <div class="cp-hp" aria-hidden="true">
+                                <label for="cp-q-website">Jangan diisi</label>
+                                <input id="cp-q-website" name="website" type="text" tabindex="-1" autocomplete="off">
+                            </div>
+
+                            <div class="cp-form__foot cp-field--wide">
+                                <button class="cp-btn cp-btn--primary cp-form__submit" type="submit"><span class="cp-form__submit-text">Kirim Permintaan</span> {!! $icon('send') !!}</button>
+                                <ul class="cp-form__assure">
+                                    <li>{!! $icon('clock') !!}<span>{{ $quote['note'] ?? '' }}</span></li>
+                                    <li>{!! $icon('shield') !!}<span>{{ $quote['privacy'] ?? '' }}</span></li>
+                                </ul>
+                            </div>
                         </div>
+                        <p class="cp-form__status" role="status" aria-live="polite" data-cp-form-status></p>
+                    </form>
 
-                        <div class="cp-field cp-field--service">
-                            <label class="cp-sr" for="cp-q-service">Jenis Layanan</label>
-                            <select class="cp-input cp-input--select" id="cp-q-service" name="service" required aria-describedby="cp-q-service-error">
-                                <option value="" selected disabled>Jenis Layanan</option>
-                                @foreach ($services as $service)
-                                    <option value="{{ $service['title'] }}">{{ $service['title'] }}</option>
-                                @endforeach
-                            </select>
-                            <p class="cp-field__error" id="cp-q-service-error" hidden></p>
-                        </div>
-
-                        <div class="cp-field cp-field--message">
-                            <label class="cp-sr" for="cp-q-message">Pesan / Detail Kebutuhan</label>
-                            <textarea class="cp-input cp-input--area" id="cp-q-message" name="message" rows="4" placeholder="Pesan / Detail Kebutuhan" required minlength="10" maxlength="2000" aria-describedby="cp-q-message-error"></textarea>
-                            <p class="cp-field__error" id="cp-q-message-error" hidden></p>
-                        </div>
-
-                        <div class="cp-hp" aria-hidden="true">
-                            <label for="cp-q-website">Jangan diisi</label>
-                            <input id="cp-q-website" name="website" type="text" tabindex="-1" autocomplete="off">
-                        </div>
-
-                        <button class="cp-btn cp-btn--primary cp-form__submit" type="submit">Kirim Permintaan {!! $icon('arrow') !!}</button>
+                    <div class="cp-quote__success" data-cp-quote-success tabindex="-1" hidden>
+                        <span class="cp-quote__check">{!! $icon('check') !!}</span>
+                        <h3 class="cp-quote__title">{{ $quote['success_title'] ?? 'Permintaan terkirim' }}</h3>
+                        <p>{{ $quote['success_text'] ?? '' }}</p>
+                        <button class="cp-btn cp-btn--outline cp-btn--sm" type="button" data-cp-quote-reset>Kirim permintaan lain</button>
                     </div>
-                    <p class="cp-form__status" role="status" aria-live="polite" data-cp-form-status></p>
-                </form>
+                </div>
             </div>
         </div>
     </div>

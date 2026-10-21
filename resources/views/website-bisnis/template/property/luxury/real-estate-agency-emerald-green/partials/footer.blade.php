@@ -1,7 +1,7 @@
 {{-- ===================== FOOTER ===================== --}}
 <footer class="rea-footer">
     <div class="rea-container rea-footer__grid">
-        <a class="rea-brand rea-brand--light" href="#top" aria-label="{{ $site['name'] }} - back to top">
+        <a class="rea-brand rea-brand--light" href="{{ $route('index', '#top') }}" aria-label="{{ $site['name'] }} - home">
             <svg class="rea-brand__logo" aria-hidden="true" focusable="false"><use href="#i-logo"></use></svg>
             <span class="rea-brand__text">
                 <span class="rea-brand__name">{{ strtoupper($site['name']) }}</span>
@@ -11,8 +11,8 @@
 
         <nav class="rea-footer__nav" aria-label="Footer navigation">
             <ul>
-                @foreach ($nav as $item)
-                    <li><a href="{{ $item['href'] }}">{{ $item['label'] }}</a></li>
+                @foreach ($footerNav as $item)
+                    <li><a href="{{ $route($item['page'], $item['hash']) }}">{{ $item['label'] }}</a></li>
                 @endforeach
             </ul>
         </nav>

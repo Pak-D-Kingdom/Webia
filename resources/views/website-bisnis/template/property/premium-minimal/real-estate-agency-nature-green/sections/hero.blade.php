@@ -17,7 +17,7 @@
                         <li><svg class="i" aria-hidden="true"><use href="#i-area"/></svg><span><b>{{ $p['land'] }} m²</b><small>Luas Tanah</small></span></li>
                     </ul>
 
-                    <a class="btn btn--primary" href="{{ $r('specification') }}">Lihat Detail Properti <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                    <a class="btn btn--primary" href="{{ $r('property', ['slug' => $p['slug']]) }}">Lihat Detail Properti <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
                 </div>
             </div>
             <div class="hero__media media">

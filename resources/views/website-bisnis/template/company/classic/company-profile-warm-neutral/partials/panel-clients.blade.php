@@ -5,6 +5,9 @@
             <h2 class="cp-panel__title" id="cp-clients-title">Klien Kami</h2>
             <p class="cp-subtitle">Dipercaya oleh berbagai perusahaan</p>
         </div>
+        @if ($pageKey !== 'tentang')
+            <a class="cp-link" href="{{ $page('tentang') }}#klien">Lihat Semua {!! $icon('arrow') !!}</a>
+        @endif
     </div>
     <div class="cp-clients__viewport" data-cp-clients tabindex="0" role="region" aria-label="Daftar klien">
         <ul class="cp-clients__track">

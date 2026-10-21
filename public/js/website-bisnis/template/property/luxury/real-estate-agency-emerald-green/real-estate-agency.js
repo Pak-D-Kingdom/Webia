@@ -6,6 +6,8 @@
 
    Modul : Navbar · Search · Hero slider · Gallery + Lightbox
            Forms (inquiry & booking) · AI Property Assistant (FAQ)
+   Dipakai di semua halaman template (beranda, property, specification, price,
+   about, gallery, booking, blog): tiap modul hanya aktif jika elemennya ada.
 
    Integrasi backend (opsional):
    - Form: isi atribut data-endpoint pada <form> untuk mengirim via fetch (POST,
@@ -47,6 +49,30 @@
             }
         };
 
+        // Dropdown (Property / Explore): klik/Enter membuka, Escape atau klik di luar menutup
+        const subs = $$('.rea-nav__item--sub', nav);
+        const closeSubs = (except) => subs.forEach((li) => {
+            if (li === except) return;
+            li.classList.remove('is-open');
+            const btn = $('[data-nav-sub]', li);
+            btn && btn.setAttribute('aria-expanded', 'false');
+        });
+        subs.forEach((li) => {
+            const btn = $('[data-nav-sub]', li);
+            btn.addEventListener('click', () => {
+                const open = !li.classList.contains('is-open');
+                closeSubs(li);
+                li.classList.toggle('is-open', open);
+                btn.setAttribute('aria-expanded', String(open));
+            });
+        });
+        document.addEventListener('click', (e) => { if (!e.target.closest('.rea-nav__item--sub')) closeSubs(); });
+        document.addEventListener('keydown', (e) => {
+            if (e.key !== 'Escape') return;
+            const openLi = subs.find((li) => li.classList.contains('is-open'));
+            if (openLi) { closeSubs(); $('[data-nav-sub]', openLi).focus(); }
+        });
+
         toggle && toggle.addEventListener('click', () => setOpen(!nav.classList.contains('is-open')));
         menu && menu.addEventListener('click', (e) => { if (e.target.closest('a')) setOpen(false); });
         document.addEventListener('keydown', (e) => {
@@ -62,35 +88,32 @@
         onScroll();
         window.addEventListener('scroll', onScroll, { passive: true });
 
-        // Link placeholder (href="#") tidak melompat ke atas halaman
-        links.forEach((a) => a.addEventListener('click', (e) => { if (a.getAttribute('href') === '#') e.preventDefault(); }));
-
-        // Scroll-spy
+        // Scroll-spy: hanya untuk link yang menuju anchor di halaman ini (mis. /beranda#location)
         const map = new Map();
         links.forEach((a) => {
-            const href = a.getAttribute('href') || '';
-            if (href.length > 1 && href.startsWith('#') && href !== '#top') {
-                const target = document.getElementById(href.slice(1));
-                if (target) map.set(target, a);
-            }
+            let url;
+            try { url = new URL(a.getAttribute('href') || '', window.location.href); } catch (e) { return; }
+            if (url.pathname !== window.location.pathname || url.hash.length < 2 || url.hash === '#top') return;
+            const target = document.getElementById(url.hash.slice(1));
+            if (target) map.set(target, a);
         });
         if (!map.size || !('IntersectionObserver' in window)) return;
 
+        const homeLink = links.find((a) => a.classList.contains('is-active'));
         const setActive = (link) => {
             links.forEach((a) => {
                 const on = a === link;
                 a.classList.toggle('is-active', on);
-                on ? a.setAttribute('aria-current', 'true') : a.removeAttribute('aria-current');
+                on ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current');
             });
         };
         const visible = new Set();
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => (entry.isIntersecting ? visible.add(entry.target) : visible.delete(entry.target)));
-            if (!visible.size) return;
             const first = Array.from(map.keys())
                 .filter((el) => visible.has(el))
                 .sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top)[0];
-            first && setActive(map.get(first));
+            setActive(first ? map.get(first) : homeLink || null);
         }, { rootMargin: '-35% 0px -55% 0px' });
         map.forEach((_, el) => observer.observe(el));
     }
@@ -106,15 +129,8 @@
         if (!toggle || !panel || !form) return;
 
         const input = $('input', form);
-        const targets = [
-            { id: 'property',      words: ['property', 'villa', 'listing', 'home'] },
-            { id: 'gallery',       words: ['gallery', 'photo', 'photos', 'image', 'picture', 'foto', 'galeri'] },
-            { id: 'specification', words: ['spec', 'specification', 'detail', 'bedroom', 'bathroom', 'land', 'building', 'carport', 'certificate', 'shm', 'year'] },
-            { id: 'location',      words: ['location', 'map', 'address', 'lokasi', 'alamat', 'peta'] },
-            { id: 'price',         words: ['price', 'harga', 'cost', 'negotiable'] },
-            { id: 'inquiry',       words: ['inquiry', 'inquire', 'contact', 'message', 'kontak', 'pesan'] },
-            { id: 'booking',       words: ['booking', 'viewing', 'schedule', 'visit', 'jadwal', 'kunjungan'] },
-        ];
+        let targets = [];
+        try { targets = JSON.parse(form.dataset.targets || '[]'); } catch (e) { targets = []; }
 
         const setOpen = (open) => {
             panel.hidden = !open;
@@ -129,12 +145,18 @@
             e.preventDefault();
             const q = input.value.trim().toLowerCase();
             if (!q) { hint.textContent = 'Type a keyword, for example: price, gallery, location or booking.'; return; }
-            const match = targets.find((t) => t.words.some((w) => q.includes(w) || w.includes(q)));
-            const el = match && document.getElementById(match.id);
-            if (!el) { hint.textContent = 'No result. Try: price, gallery, location, booking.'; return; }
+            const match = targets.find((t) => (t.words || []).some((w) => q.includes(w) || w.includes(q)));
+            if (!match) { hint.textContent = 'No result. Try: price, gallery, location, booking, blog.'; return; }
+
             setOpen(false);
             input.value = '';
-            el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+            const url = new URL(match.url, window.location.href);
+            const el = url.hash.length > 1 ? document.getElementById(url.hash.slice(1)) : null;
+            if (url.pathname === window.location.pathname && el) {
+                el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+            } else {
+                window.location.href = match.url;
+            }
         });
     }
 
@@ -204,31 +226,10 @@
         const root = $('[data-gallery]');
         if (!root) return;
 
-        const main   = $('[data-gallery-main]', root);
-        const thumbs = $$('[data-gallery-thumb]', root);
         const box    = $('[data-lightbox]', root);
         const dataEl = $('[data-lightbox-data]', root);
         let photos = [];
         try { photos = JSON.parse(dataEl ? dataEl.textContent : '[]'); } catch (e) { photos = []; }
-
-        let activeIndex = 0;
-
-        // Ganti foto utama dari thumbnail
-        const setMain = (i) => {
-            const photo = photos[i];
-            if (!photo || !main) return;
-            activeIndex = i;
-            main.classList.add('is-swapping');
-            window.setTimeout(() => {
-                main.src = photo.src;
-                main.alt = photo.alt;
-                main.classList.remove('is-swapping');
-            }, reduceMotion ? 0 : 160);
-            thumbs.forEach((t) => t.classList.toggle('is-active', Number(t.dataset.galleryThumb) === i));
-            $$('[data-gallery-open]', root).forEach((b) => { b.dataset.galleryOpen = String(i); });
-        };
-        thumbs.forEach((t) => t.addEventListener('click', () => setMain(Number(t.dataset.galleryThumb))));
-
         if (!box || typeof box.showModal !== 'function' || !photos.length) return;
 
         const img     = $('[data-lightbox-img]', box);
@@ -249,7 +250,7 @@
             document.documentElement.classList.add('rea-lock');
         };
 
-        $$('[data-gallery-open]', root).forEach((b) => b.addEventListener('click', () => open(Number(b.dataset.galleryOpen) || activeIndex)));
+        $$('[data-gallery-open]', root).forEach((b) => b.addEventListener('click', () => open(Number(b.dataset.galleryOpen) || 0)));
         $('[data-lightbox-close]', box).addEventListener('click', () => box.close());
         $('[data-lightbox-prev]', box).addEventListener('click', () => render(current - 1));
         $('[data-lightbox-next]', box).addEventListener('click', () => render(current + 1));
@@ -279,12 +280,25 @@
     };
 
     function initForms() {
+        // Link placeholder (href="#") tidak melompat ke atas halaman
+        document.addEventListener('click', (e) => {
+            const a = e.target.closest('a[href="#"]');
+            if (a) e.preventDefault();
+        });
+
         // Tanggal minimum = hari ini (zona waktu lokal)
         $$('[data-min-today]').forEach((input) => {
             const d = new Date();
             const pad = (n) => String(n).padStart(2, '0');
             input.min = d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
         });
+
+        // Halaman Booking: isi tanggal & jam dari banner beranda (?date=YYYY-MM-DD&time=HH:MM)
+        const query = new URLSearchParams(window.location.search);
+        const dateField = $('form[data-form="booking"] [name="date"]');
+        const timeField = $('form[data-form="booking"] [name="time"]');
+        if (dateField && /^\d{4}-\d{2}-\d{2}$/.test(query.get('date') || '')) dateField.value = query.get('date');
+        if (timeField && Array.from(timeField.options).some((o) => o.value === query.get('time'))) timeField.value = query.get('time');
 
         $$('form[data-form]').forEach((form) => {
             const status = $('[data-form-status]', form);
@@ -376,9 +390,9 @@
             if (remember) store.set(KEY, open ? '0' : '1');
         };
 
-        // Terbuka di desktop (seperti desain), tertutup di layar kecil atau jika pernah ditutup
+        // Terbuka di beranda desktop (seperti desain); tertutup di halaman dalam, layar kecil, atau jika pernah ditutup
         const wide = window.matchMedia('(min-width: 1200px)').matches;
-        setOpen(wide && store.get(KEY) !== '1', false);
+        setOpen(wide && root.dataset.start !== 'closed' && store.get(KEY) !== '1', false);
 
         // Panel terbuka mengikuti desain, tetapi agar tidak menutupi form/tombol saat halaman
         // di-scroll, ia menciut ke launcher sekali saja kecuali pengunjung sudah memakainya.

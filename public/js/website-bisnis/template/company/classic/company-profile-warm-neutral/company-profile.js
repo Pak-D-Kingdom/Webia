@@ -206,6 +206,7 @@
         }
 
         toggle.addEventListener('click', function () { setOpen(panel.hidden); });
+
         input.addEventListener('input', function () { render(input.value); });
 
         if (form) {
@@ -331,6 +332,12 @@
         var form = $('[data-cp-quote-form]');
         if (!form) { return; }
         var status = $('[data-cp-form-status]', form);
+        var success = $('[data-cp-quote-success]');
+        var resetBtn = $('[data-cp-quote-reset]');
+        var counter = $('[data-cp-counter]');
+        var submitBtn = $('.cp-form__submit', form);
+        var submitText = $('.cp-form__submit-text', form);
+        var submitLabel = submitText ? submitText.textContent : '';
         var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
         var rules = {
@@ -351,23 +358,39 @@
                 return '';
             }
         };
+        var names = Object.keys(rules);
 
-        function field(name) { return form.elements[name]; }
+        // "service" berupa grup radio: pembungkusnya adalah <fieldset id="cp-q-service">.
+        function control(name) { return name === 'service' ? doc.getElementById('cp-q-service') : form.elements[name]; }
 
-        function showError(control, message) {
-            var error = doc.getElementById(control.id + '-error');
-            control.setAttribute('aria-invalid', message ? 'true' : 'false');
+        function valueOf(name) {
+            if (name === 'service') {
+                var checked = form.querySelector('input[name="service"]:checked');
+                return checked ? checked.value : '';
+            }
+            var el = form.elements[name];
+            return el ? el.value.trim() : '';
+        }
+
+        function showError(name, message) {
+            var el = control(name);
+            var error = doc.getElementById('cp-q-' + name + '-error');
+            if (!el) { return; }
+            el.setAttribute('aria-invalid', message ? 'true' : 'false');
             if (!error) { return; }
             error.textContent = message;
             error.hidden = !message;
         }
 
         function validateField(name) {
-            var control = field(name);
-            if (!control) { return ''; }
-            var message = rules[name](control.value.trim());
-            showError(control, message);
+            var message = rules[name](valueOf(name));
+            showError(name, message);
             return message;
+        }
+
+        function focusField(name) {
+            var el = name === 'service' ? form.querySelector('input[name="service"]') : form.elements[name];
+            if (el) { el.focus(); }
         }
 
         function setStatus(message, type) {
@@ -376,51 +399,97 @@
             status.className = 'cp-form__status' + (type ? ' is-' + type : '');
         }
 
-        Object.keys(rules).forEach(function (name) {
-            var control = field(name);
-            if (!control) { return; }
-            control.addEventListener('blur', function () { validateField(name); });
-            control.addEventListener('input', function () {
-                if (control.getAttribute('aria-invalid') === 'true') { validateField(name); }
+        function setLoading(loading) {
+            form.classList.toggle('is-loading', loading);
+            form.setAttribute('aria-busy', loading ? 'true' : 'false');
+            if (submitBtn) { submitBtn.disabled = loading; }
+            if (submitText) { submitText.textContent = loading ? 'Mengirim...' : submitLabel; }
+        }
+
+        function updateCounter() {
+            var area = form.elements.message;
+            if (counter && area) { counter.textContent = area.value.length + '/' + (area.maxLength > 0 ? area.maxLength : 2000); }
+        }
+
+        function resetForm() {
+            form.reset();
+            names.forEach(function (name) { showError(name, ''); });
+            setStatus('', '');
+            updateCounter();
+        }
+
+        names.forEach(function (name) {
+            if (name === 'service') {
+                $$('input[name="service"]', form).forEach(function (radio) {
+                    radio.addEventListener('change', function () { validateField('service'); });
+                });
+                return;
+            }
+            var el = form.elements[name];
+            if (!el) { return; }
+            el.addEventListener('blur', function () { validateField(name); });
+            el.addEventListener('input', function () {
+                if (el.getAttribute('aria-invalid') === 'true') { validateField(name); }
             });
-            control.addEventListener('change', function () { validateField(name); });
         });
+        if (form.elements.message) { form.elements.message.addEventListener('input', updateCounter); }
 
         form.addEventListener('submit', function (event) {
             event.preventDefault();
             setStatus('', '');
 
-            var firstInvalid = null;
-            Object.keys(rules).forEach(function (name) {
-                if (validateField(name) && !firstInvalid) { firstInvalid = field(name); }
+            var firstInvalid = '';
+            names.forEach(function (name) {
+                if (validateField(name) && !firstInvalid) { firstInvalid = name; }
             });
-
             if (firstInvalid) {
                 setStatus('Periksa kembali isian yang ditandai.', 'error');
-                firstInvalid.focus();
+                focusField(firstInvalid);
                 return;
             }
 
             // Honeypot: bot mengisi kolom tersembunyi, tampilkan sukses tanpa mengirim.
-            var honey = field('website');
-            if (honey && honey.value) { setStatus('Terima kasih! Permintaan Anda telah kami terima.', 'success'); form.reset(); return; }
+            var honey = form.elements.website;
+            var isBot = !!(honey && honey.value);
 
             var action = form.getAttribute('action');
-            if (action && action !== '#') { form.submit(); return; }
+            if (!isBot && action && action !== '#') { setLoading(true); form.submit(); return; }
 
-            setStatus('Terima kasih! Permintaan penawaran Anda telah kami terima. Tim kami akan segera menghubungi Anda.', 'success');
-            form.reset();
-            Object.keys(rules).forEach(function (name) { var c = field(name); if (c) { c.setAttribute('aria-invalid', 'false'); } });
+            // Frontend statis: simulasi pengiriman singkat lalu tampilkan konfirmasi.
+            setLoading(true);
+            win.setTimeout(function () {
+                setLoading(false);
+                resetForm();
+                if (success) {
+                    form.hidden = true;
+                    success.hidden = false;
+                    success.focus({ preventScroll: true });
+                } else {
+                    setStatus('Terima kasih! Permintaan penawaran Anda telah kami terima.', 'success');
+                }
+            }, reduceMotion ? 0 : 700);
         });
+
+        if (resetBtn) {
+            resetBtn.addEventListener('click', function () {
+                if (success) { success.hidden = true; }
+                form.hidden = false;
+                focusField('name');
+            });
+        }
 
         // Tombol "Minta Penawaran": setelah menggulir, fokuskan kolom pertama.
         $$('[data-cp-focus-quote]').forEach(function (link) {
             link.addEventListener('click', function () {
-                var first = field('name');
-                if (!first) { return; }
-                win.setTimeout(function () { first.focus({ preventScroll: true }); }, reduceMotion ? 0 : 650);
+                if (form.hidden) { return; }
+                win.setTimeout(function () {
+                    var first = form.elements.name;
+                    if (first) { first.focus({ preventScroll: true }); }
+                }, reduceMotion ? 0 : 650);
             });
         });
+
+        updateCounter();
     }
 
     /* ---------------------------------------------------------------------
@@ -439,6 +508,7 @@
         var dataNode = doc.getElementById('cp-faq-data');
         if (!root || !panel || !toggle || !log || !form || !input) { return; }
 
+        var teaser = $('[data-cp-ai-teaser]');
         var faq = [];
         try { faq = JSON.parse(dataNode ? dataNode.textContent : '[]'); } catch (e) { faq = []; }
 
@@ -447,6 +517,11 @@
             link: { href: doc.getElementById('kontak') ? '#kontak' : '/', label: 'Lihat kontak kami' }
         };
 
+        function hideTeaser() {
+            if (teaser) { teaser.hidden = true; }
+            store.set('cp-ai-teaser', '1');
+        }
+
         function setOpen(open, options) {
             options = options || {};
             panel.hidden = !open;
@@ -454,7 +529,7 @@
             toggle.setAttribute('aria-label', open ? 'Tutup AI Assistant' : 'Buka AI Assistant');
             if (open && options.focus !== false) { input.focus(); }
             if (!open && options.remember) { store.set('cp-ai-dismissed', '1'); }
-            if (open) { scrollLog(); }
+            if (open) { hideTeaser(); scrollLog(); }
         }
 
         function scrollLog() { log.scrollTop = log.scrollHeight; }
@@ -538,6 +613,17 @@
         });
 
         toggle.addEventListener('click', function () { setOpen(panel.hidden); });
+        // Gelembung sapaan di samping tombol robot: muncul sekali per sesi, hilang sendiri.
+        if (teaser) {
+            teaser.addEventListener('click', function () { setOpen(true); });
+            if (!store.get('cp-ai-teaser')) {
+                win.setTimeout(function () {
+                    if (!panel.hidden) { return; }
+                    teaser.hidden = false;
+                    win.setTimeout(hideTeaser, 9000);
+                }, 3500);
+            }
+        }
         if (closeBtn) { closeBtn.addEventListener('click', function () { setOpen(false, { remember: true }); toggle.focus(); }); }
         doc.addEventListener('keydown', function (event) {
             if (event.key === 'Escape' && !panel.hidden && root.contains(doc.activeElement)) {

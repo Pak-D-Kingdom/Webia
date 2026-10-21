@@ -198,6 +198,22 @@ html {
 .cp-btn--outline:hover { background: #fff; border-color: var(--cp-c-brand); }
 .cp-btn--outline .cp-i { width: 1.4em; height: 1.4em; color: var(--cp-c-ink); }
 
+/* Ikon bulat kecil di tombol outline "Tentang Kami" (daun = motif merek, bukan tombol video) */
+.cp-btn__badge {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 1.7rem;
+    height: 1.7rem;
+    margin-left: -.55rem;
+    border-radius: 50%;
+    background: rgba(133, 89, 46, .12);
+    color: var(--cp-c-brand);
+    transition: background-color .2s, color .2s;
+}
+.cp-btn--outline .cp-btn__badge .cp-i { width: 1rem; height: 1rem; color: inherit; }
+.cp-btn--outline:hover .cp-btn__badge { background: var(--cp-c-brand); color: #fff; }
+
 .cp-btn--sm { min-height: 42px; padding: .5rem 1.3rem; font-size: .8125rem; }
 
 .cp-link {
@@ -686,56 +702,151 @@ html {
 .cp-contact__list .cp-i { width: 1.05rem; height: 1.05rem; margin-top: .15rem; color: var(--cp-c-brand); }
 .cp-contact__list a:hover { color: var(--cp-c-brand); text-decoration: underline; text-underline-offset: 3px; }
 
-.cp-quote { grid-area: form; padding: 1.6rem 1.4rem 1.6rem; }
-.cp-quote__intro { margin: .25rem 0 1rem; font-size: .75rem; color: var(--cp-c-muted); }
-
-.cp-form__grid {
-    display: grid;
-    gap: .75rem;
-    grid-template-areas: "name" "email" "service" "message" "submit";
+.cp-quote { grid-area: form; padding: 1.4rem; }
+.cp-quote__card {
+    position: relative;
+    max-width: 60rem;
+    margin-inline: auto;
+    padding: 1.6rem 1.25rem 1.3rem;
+    overflow: hidden;
+    border: 1px solid var(--cp-c-line);
+    border-radius: 18px;
+    background: var(--cp-c-surface);
+    box-shadow: 0 18px 40px rgba(90, 67, 53, .12);
 }
-.cp-field { min-width: 0; }
-.cp-field--name { grid-area: name; }
-.cp-field--email { grid-area: email; }
-.cp-field--service { grid-area: service; }
-.cp-field--message { grid-area: message; display: flex; flex-direction: column; }
-.cp-field--message .cp-input { flex: 1 1 auto; }
-.cp-form__submit { grid-area: submit; width: 100%; align-self: start; }
+.cp-quote__card::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--cp-c-brand), #d9a566 60%, #f0d4ab);
+}
+.cp-quote__head { display: flex; align-items: center; gap: .85rem; margin-bottom: 1.25rem; }
+.cp-quote__badge {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    background: radial-gradient(circle at 30% 28%, #fcf1e3 0%, #ecd3b5 100%);
+    color: #8a5a2f;
+}
+.cp-quote__badge .cp-i { width: 1.35rem; height: 1.35rem; }
+.cp-quote__title {
+    font-family: var(--cp-font-heading);
+    font-size: 1.2rem;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--cp-c-ink-strong);
+}
+.cp-quote__intro { margin-top: .2rem; font-size: .8125rem; color: var(--cp-c-muted); }
+
+.cp-form__grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.05rem; }
+.cp-field { min-width: 0; margin: 0; padding: 0; border: 0; }
+
+.cp-label { display: block; margin: 0 0 .4rem; padding: 0; font-size: .75rem; font-weight: 600; color: var(--cp-c-ink); }
+.cp-label span { color: var(--cp-c-brand); }
+.cp-label-row { display: flex; align-items: baseline; justify-content: space-between; gap: .5rem; }
+.cp-counter { font-size: .6875rem; color: var(--cp-c-muted); font-variant-numeric: tabular-nums; }
+
+.cp-input-wrap { position: relative; }
+.cp-input-wrap > .cp-i {
+    position: absolute;
+    left: .9rem;
+    top: 50%;
+    width: 1.05rem;
+    height: 1.05rem;
+    color: #a38468;
+    transform: translateY(-50%);
+    pointer-events: none;
+    transition: color .2s;
+}
+.cp-input-wrap:focus-within > .cp-i { color: var(--cp-c-brand); }
+.cp-input-wrap .cp-input { padding-left: 2.6rem; }
 
 .cp-input {
     display: block;
     width: 100%;
-    min-height: 46px;
+    min-height: 48px;
     padding: .65rem .9rem;
-    border: 1px solid #dfd3c5;
-    border-radius: var(--cp-radius-sm);
+    border: 1px solid #e3d5c3;
+    border-radius: var(--cp-radius-md);
     background: #fff;
     font-size: .875rem;
     color: var(--cp-c-ink);
-    transition: border-color .2s, box-shadow .2s;
+    transition: border-color .2s, box-shadow .2s, background-color .2s;
 }
-.cp-input::placeholder { color: #7d6e61; opacity: 1; }
+.cp-input::placeholder { color: #8d7e70; opacity: 1; }
 .cp-input:hover { border-color: var(--cp-c-line-strong); }
 .cp-input:focus { outline: none; border-color: var(--cp-c-brand); box-shadow: 0 0 0 3px rgba(133, 89, 46, .18); }
-.cp-input[aria-invalid="true"] { border-color: var(--cp-c-error); }
+.cp-input[aria-invalid="true"] { border-color: var(--cp-c-error); background: #fffaf8; }
 .cp-input[aria-invalid="true"]:focus { box-shadow: 0 0 0 3px rgba(154, 59, 46, .18); }
-.cp-input--area { min-height: 124px; resize: vertical; line-height: 1.5; }
-.cp-input--select {
-    padding-right: 2.4rem;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2378695b' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right .9rem center;
-}
-.cp-input--select:invalid { color: #7d6e61; }
+.cp-input--area { min-height: 128px; resize: vertical; line-height: 1.55; }
 
-.cp-field__error { margin-top: .3rem; font-size: .75rem; line-height: 1.4; color: var(--cp-c-error); }
+/* Pilihan jenis layanan: chip radio */
+.cp-choices__list { display: flex; flex-wrap: wrap; gap: .5rem; }
+.cp-choice { position: relative; cursor: pointer; }
+.cp-choice input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.cp-choice span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0;
+    min-height: 40px;
+    padding: .45rem .95rem;
+    border: 1px solid #e3d5c3;
+    border-radius: 999px;
+    background: #fff;
+    font-size: .8125rem;
+    font-weight: 500;
+    color: var(--cp-c-ink);
+    transition: background-color .2s, border-color .2s, color .2s, box-shadow .2s;
+}
+.cp-choice span .cp-i { width: 0; height: .9rem; opacity: 0; stroke-width: 2.4; transition: width .2s, margin .2s, opacity .2s; }
+.cp-choice:hover span { border-color: var(--cp-c-brand); background: #fdf6ec; }
+.cp-choice input:checked + span {
+    border-color: var(--cp-c-brand);
+    background: var(--cp-c-brand);
+    color: #fff;
+    box-shadow: 0 6px 14px rgba(133, 89, 46, .25);
+}
+.cp-choice input:checked + span .cp-i { width: .9rem; margin-right: .35rem; opacity: 1; }
+.cp-choice input:focus-visible + span { outline: 2px solid var(--cp-focus); outline-offset: 2px; }
+.cp-choices[aria-invalid="true"] .cp-choice span { border-color: var(--cp-c-error); }
+
+.cp-field__error { margin-top: .35rem; font-size: .75rem; line-height: 1.4; color: var(--cp-c-error); }
 
 .cp-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 
+.cp-form__foot { display: grid; gap: .9rem; align-items: center; padding-top: .35rem; }
+.cp-form__submit { width: 100%; min-height: 50px; }
+.cp-form__submit:disabled { opacity: .75; cursor: progress; }
+.cp-form__assure { display: grid; gap: .45rem; }
+.cp-form__assure li { display: flex; align-items: flex-start; gap: .5rem; font-size: .75rem; line-height: 1.45; color: var(--cp-c-muted); }
+.cp-form__assure .cp-i { width: .95rem; height: .95rem; margin-top: .1rem; color: var(--cp-c-brand); }
+
 .cp-form__status { min-height: 1.4em; margin-top: .7rem; font-size: .8125rem; line-height: 1.45; }
+.cp-form__status:empty { min-height: 0; margin-top: 0; }
 .cp-form__status.is-success { color: var(--cp-c-success); font-weight: 600; }
 .cp-form__status.is-error { color: var(--cp-c-error); font-weight: 600; }
+
+/* Tampilan setelah terkirim */
+.cp-quote__success { display: grid; justify-items: center; gap: .7rem; padding: 1.75rem .5rem 1rem; text-align: center; }
+.cp-quote__success:focus { outline: none; }
+.cp-quote__success p { max-width: 28rem; font-size: .875rem; color: var(--cp-c-muted); }
+.cp-quote__check {
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--cp-c-success);
+    color: #fff;
+    box-shadow: 0 10px 24px rgba(63, 107, 58, .3);
+    animation: cp-pop-in .4s cubic-bezier(.2, 1.4, .4, 1);
+}
+.cp-quote__check .cp-i { width: 2rem; height: 2rem; stroke-width: 2.4; }
+@keyframes cp-pop-in { from { transform: scale(.4); opacity: 0; } to { transform: none; opacity: 1; } }
 
 /* 10. Footer ------------------------------------------------------------- */
 .cp-footer {
@@ -794,26 +905,165 @@ html {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: .8rem;
+    gap: .7rem;
     pointer-events: none;
 }
 .cp-ai > * { pointer-events: auto; }
 
+.cp-ai__dock { position: relative; display: flex; align-items: center; justify-content: flex-end; }
+
+/* Tombol robot: cincin gradien berputar, denyut, melayang, dan robot melambai */
 .cp-ai__toggle {
-    display: grid;
-    place-items: center;
-    width: 58px;
-    height: 58px;
+    position: relative;
+    display: block;
+    width: 68px;
+    height: 68px;
     padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: none;
+    isolation: isolate;
+    animation: cp-float 3.6s ease-in-out infinite;
+}
+.cp-ai__toggle::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    border: 2px solid rgba(201, 138, 75, .6);
+    border-radius: 50%;
+    animation: cp-ring 2.4s ease-out infinite;
+}
+.cp-ai__halo {
+    position: absolute;
+    inset: -5px;
+    z-index: -1;
+    border-radius: 50%;
+    background: conic-gradient(#85592e, #e9b36f, #fbe6c8, #c98a4b, #85592e);
+    animation: cp-spin 6s linear infinite;
+}
+.cp-ai__face {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
     border: 3px solid #fff;
     border-radius: 50%;
-    background: var(--cp-c-brand);
-    color: #fff;
+    background: linear-gradient(135deg, #fdecde 0%, #fff7ef 100%);
     box-shadow: 0 10px 26px rgba(61, 42, 28, .35);
-    transition: background-color .2s, transform .2s;
 }
-.cp-ai__toggle:hover { background: var(--cp-c-brand-dark); }
-.cp-ai__toggle .cp-i { width: 1.6rem; height: 1.6rem; stroke-width: 1.8; }
+.cp-ai__robot {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 30%;
+    transform: scale(1.12);
+    transform-origin: 50% 60%;
+    transition: transform .25s ease;
+    animation: cp-wave 7s ease-in-out infinite;
+}
+.cp-ai__toggle:hover .cp-ai__robot { animation: none; transform: scale(1.22); }
+.cp-ai__online {
+    position: absolute;
+    right: 1px;
+    bottom: 3px;
+    z-index: 2;
+    width: 16px;
+    height: 16px;
+    border: 3px solid #fff;
+    border-radius: 50%;
+    background: #4f9a5a;
+    animation: cp-online 2s ease-in-out infinite;
+}
+.cp-ai__toggle[aria-expanded="true"] { animation: none; }
+.cp-ai__toggle[aria-expanded="true"]::before { display: none; }
+
+@keyframes cp-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+@keyframes cp-spin { to { transform: rotate(360deg); } }
+@keyframes cp-ring { 0% { transform: scale(1); opacity: .75; } 80%, 100% { transform: scale(1.6); opacity: 0; } }
+@keyframes cp-wave {
+    0%, 68%, 100% { transform: scale(1.12) rotate(0); }
+    74% { transform: scale(1.12) rotate(-7deg); }
+    80% { transform: scale(1.12) rotate(7deg); }
+    86% { transform: scale(1.12) rotate(-5deg); }
+    92% { transform: scale(1.12) rotate(4deg); }
+}
+@keyframes cp-online { 0%, 100% { box-shadow: 0 0 0 0 rgba(79, 154, 90, .55); } 50% { box-shadow: 0 0 0 5px rgba(79, 154, 90, 0); } }
+
+/* Gelembung sapaan di sisi kiri tombol robot */
+.cp-ai__teaser {
+    position: absolute;
+    right: calc(100% + .85rem);
+    top: 50%;
+    width: max-content;
+    max-width: min(240px, calc(100vw - 150px));
+    padding: .65rem .9rem;
+    border: 1px solid var(--cp-c-line-strong);
+    border-radius: 14px 14px 4px 14px;
+    background: var(--cp-c-surface);
+    box-shadow: var(--cp-shadow-soft);
+    font-size: .8125rem;
+    font-weight: 500;
+    line-height: 1.4;
+    text-align: left;
+    color: var(--cp-c-ink);
+    transform: translateY(-50%);
+    animation: cp-teaser .4s ease-out;
+}
+.cp-ai__teaser::after {
+    content: "";
+    position: absolute;
+    right: -6px;
+    top: 50%;
+    width: 10px;
+    height: 10px;
+    border-top: 1px solid var(--cp-c-line-strong);
+    border-right: 1px solid var(--cp-c-line-strong);
+    background: var(--cp-c-surface);
+    transform: translateY(-50%) rotate(45deg);
+}
+.cp-ai__teaser:hover { border-color: var(--cp-c-brand); }
+@keyframes cp-teaser { from { opacity: 0; transform: translate(12px, -50%); } to { opacity: 1; transform: translate(0, -50%); } }
+
+/* Tombol WhatsApp melayang: hijau sage senada palet hangat, label melebar saat hover/fokus */
+.cp-wa {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    height: 52px;
+    margin-right: 8px;
+    border: 3px solid #fff;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #5f9a6b 0%, #3f7a52 100%);
+    box-shadow: 0 10px 24px rgba(40, 70, 48, .32);
+    color: #fff;
+    isolation: isolate;
+    transition: transform .2s, box-shadow .2s;
+}
+.cp-wa::before {
+    content: "";
+    position: absolute;
+    inset: -3px;
+    z-index: -1;
+    border: 2px solid rgba(95, 154, 107, .6);
+    border-radius: inherit;
+    animation: cp-ring 2.8s ease-out 1s infinite;
+}
+.cp-wa:hover { transform: translateY(-2px); box-shadow: 0 14px 28px rgba(40, 70, 48, .4); }
+.cp-wa__icon { display: grid; place-items: center; flex: none; width: 46px; height: 46px; }
+.cp-wa__icon .cp-i { width: 1.6rem; height: 1.6rem; stroke-width: 1.6; }
+.cp-wa__label {
+    max-width: 0;
+    padding-left: 0;
+    overflow: hidden;
+    font-size: .8125rem;
+    font-weight: 600;
+    white-space: nowrap;
+    opacity: 0;
+    transition: max-width .3s ease, padding .3s ease, opacity .2s;
+}
+.cp-wa:hover .cp-wa__label,
+.cp-wa:focus-visible .cp-wa__label { max-width: 10rem; padding-left: 1rem; opacity: 1; }
+@media (hover: none) { .cp-wa__label { display: none; } }
 
 .cp-ai__panel {
     width: min(368px, calc(100vw - 24px));
@@ -970,13 +1220,10 @@ html {
 
 /* ≥ 640 */
 @media (min-width: 640px) {
-    .cp-form__grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        grid-template-areas:
-            "name email"
-            "service message"
-            "submit message";
-    }
+    .cp-form__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.1rem 1rem; }
+    .cp-field--wide { grid-column: 1 / -1; }
+    .cp-form__foot { grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 1.1rem; }
+    .cp-quote__card { padding: 1.75rem 1.75rem 1.5rem; }
     .cp-thumbs { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     .cp-hero__media { aspect-ratio: 21 / 9; }
 }
@@ -999,7 +1246,7 @@ html {
     .cp-contact__media { aspect-ratio: auto; min-height: 100%; }
     .cp-contact__cta { align-self: center; padding: 1.75rem 1.5rem; }
     .cp-contact__info { align-self: center; padding: 1.75rem 1.5rem; border-left: 1px solid var(--cp-c-line-strong); }
-    .cp-quote { padding: 1.5rem 1.75rem 1.9rem; border-top: 1px solid var(--cp-c-line-strong); }
+    .cp-quote { padding: 1.75rem; border-top: 1px solid var(--cp-c-line-strong); }
 
     .cp-footer__inner { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
     .cp-footer__follow { padding-top: 0; border-top: 0; }
@@ -1108,7 +1355,8 @@ html {
         grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 2fr);
         grid-template-areas: "media cta info form";
     }
-    .cp-quote { padding: 1.75rem 2rem; border-top: 0; align-self: center; }
+    .cp-quote { padding: 1.5rem 1.75rem; border-top: 0; align-self: center; }
+    .cp-quote__card { max-width: none; }
 
     .cp-footer__inner {
         grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.3fr) minmax(0, .8fr) minmax(0, 1.2fr);
@@ -1132,7 +1380,8 @@ html {
     .cp-brand__mark { width: 40px; }
     .cp-hero__actions .cp-btn { flex: 1 1 100%; }
     .cp-head { flex-wrap: wrap; }
-    .cp-ai__toggle { width: 54px; height: 54px; }
+    .cp-ai__toggle { width: 60px; height: 60px; }
+    .cp-wa { margin-right: 4px; }
     .cp-ai__log { max-height: min(40vh, 300px); }
 }
 
