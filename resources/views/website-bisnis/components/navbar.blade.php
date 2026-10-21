@@ -27,7 +27,7 @@
                 Kategori
             </a>
 
-            <a href="{{ route('webia.collections') }}">
+            <a href="{{ route('collections') }}">
                 Galeri Template
             </a>
 
