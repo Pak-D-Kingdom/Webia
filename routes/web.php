@@ -100,3 +100,9 @@ Route::view(
     '/webia/template/healthcare-dental-mint',
     'website-bisnis.templates.healthcare.dental.mint-dental-house'
 )->name('webia.template.healthcare-dental-mint');
+
+
+Route::view(
+    '/webia/template/healthcare-dental-azure',
+    'website-bisnis.templates.healthcare.dental.azure-smile-clinic'
+)->name('webia.template.healthcare-dental-azure');

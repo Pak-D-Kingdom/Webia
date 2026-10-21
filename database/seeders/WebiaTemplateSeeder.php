@@ -136,24 +136,7 @@ class WebiaTemplateSeeder extends Seeder
                 'is_active' => true,
                 'sort_order' => 7,
             ],
-            [
-                'name' => 'The Creator Room',
-                'slug' => 'the-creator-room',
-                'category_slug' => 'personal-brand',
-                'category_label' => 'Personal Brand',
-                'business_types' => ['Content Creator & Influencer', 'Public Speaker'],
-                'design_style' => 'Artistic',
-                'color_theme' => 'Lavender Pop',
-                'description' => 'Website creator, influencer, dan portfolio personal.',
-                'preview_style' => 'preview-creative',
-                'eyebrow' => 'MAKE YOUR MARK',
-                'headline' => 'Your story.<br>Your impact.',
-                'tag' => 'Personal branding',
-                'preview_folder' => null,
-                'template_url' => null,
-                'is_active' => true,
-                'sort_order' => 8,
-            ],
+
             [
                 'name' => 'Urban Supply',
                 'slug' => 'urban-supply',
@@ -317,6 +300,26 @@ class WebiaTemplateSeeder extends Seeder
                 'is_active' => true,
                 'sort_order' => 17,
             ],
+
+            [
+                'name' => 'Azure Smile Clinic',
+                'slug' => 'healthcare-dental-azure',
+                'category_slug' => 'healthcare',
+                'category_label' => 'Healthcare',
+                'business_types' => ['Dental Clinic & Orthodontics'],
+                'design_style' => 'Elegant',
+                'color_theme' => 'Ocean Blue, Ivory & Champagne Gold',
+                'description' => 'Website klinik gigi premium dengan signature dental treatments, profil dan kualifikasi dokter, paket perawatan, smile gallery, fasilitas klinik, testimoni pasien, serta online appointment booking.',
+                'preview_style' => 'preview-dental-elegant',
+                'eyebrow' => 'EXCEPTIONAL CARE · TIMELESS SMILES',
+                'headline' => 'The Art of<br>Beautiful Smiles.',
+                'tag' => 'Healthcare · Dental Clinic & Orthodontics · Elegant',
+                'preview_folder' => 'healthcare/dental',
+                'template_url' => '/webia/template/healthcare-dental-azure',
+                'is_active' => true,
+                'sort_order' => 18,
+            ],
+
 
 
         ];
