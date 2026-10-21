@@ -57,7 +57,7 @@ Route::middleware('auth')->group(function (): void {
 Route::get(
     '/webia/koleksi',
     [TemplateCollectionController::class, 'index']
-)->name('collections');
+)->name('webia.collections');
 
 Route::view(
     '/webia/template/aurumco-catering',
