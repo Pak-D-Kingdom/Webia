@@ -2,13 +2,6 @@
 
 @section('title', 'Admin')
 
-@section('header-action')
-    <form method="POST" action="{{ route('logout') }}">
-        @csrf
-        <button class="account-header-link account-link-button" type="submit">Keluar</button>
-    </form>
-@endsection
-
 @section('content')
     <section class="dashboard-panel" aria-labelledby="admin-title">
         <p class="account-label">Admin WEBIA</p>

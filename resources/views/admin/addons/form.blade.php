@@ -7,6 +7,7 @@
 
 @section('content')
     <section class="dashboard-panel" aria-labelledby="addon-form-title">
+        <p class="account-label">Master data</p>
         <h1 id="addon-form-title">{{ $addon->exists ? 'Ubah add-on' : 'Tambah add-on' }}</h1>
         <form class="account-form admin-form" method="POST" action="{{ $addon->exists ? route('admin.addons.update', $addon) : route('admin.addons.store') }}">
             @csrf
