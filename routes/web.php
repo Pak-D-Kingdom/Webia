@@ -151,3 +151,60 @@ Route::view(
     '/webia/template/petshop-luxury-rosegold/produk/{slug}',
     'website-bisnis.templates.pet-animal-service.petshop.rosegold.petshop-produk-luxury-rosegold'
 )->name('webia.template.petshop-luxury-rosegold.produk');
+
+
+// =====================================================
+// WEBIA - PET SHOP CORPORATE PLUM VELVET
+// =====================================================
+
+Route::prefix('webia/template')->group(function () {
+    Route::view(
+        '/petshop-corporate-plumvelvet',
+        'website-bisnis.templates.pet-animal-service.petshop.plumvelvet.petshop-corporate-plumvelvet'
+    )->name('webia.template.petshop.corporate.plumvelvet');
+
+    Route::view(
+        '/petshop-corporate-plumvelvet/katalog',
+        'website-bisnis.templates.pet-animal-service.petshop.plumvelvet.petshop-katalog-corporate-plumvelvet'
+    )->name('webia.template.petshop.corporate.plumvelvet.katalog');
+
+    Route::view(
+        '/petshop-corporate-plumvelvet/produk/{slug}',
+        'website-bisnis.templates.pet-animal-service.petshop.plumvelvet.petshop-produk-corporate-plumvelvet'
+    )->name('webia.template.petshop.corporate.plumvelvet.produk');
+});
+
+Route::prefix('webia/template')->group(function () {
+    Route::view(
+        '/event-organizer-modern-burgundy-wine',
+        'website-bisnis.templates.wedding-event.event-organizer.burgundy-wine.event-organizer-modern-burgundy-wine'
+    )->name('webia.template.event-organizer.burgundy-wine');
+
+    Route::view(
+        '/event-organizer-modern-burgundy-wine/katalog',
+        'website-bisnis.templates.wedding-event.event-organizer.burgundy-wine.event-organizer-katalog-burgundy-wine'
+    )->name('webia.template.event-organizer.burgundy-wine.katalog');
+
+    Route::view(
+        '/event-organizer-modern-burgundy-wine/detail',
+        'website-bisnis.templates.wedding-event.event-organizer.burgundy-wine.event-organizer-detail-burgundy-wine'
+    )->name('webia.template.event-organizer.burgundy-wine.detail');
+});
+
+
+Route::prefix('webia/template')->group(function () {
+    Route::view(
+        '/catering-wedding-cake-ruby-luxe',
+        'website-bisnis.templates.wedding-event.catering-wedding-cake.ruby-luxe.catering-wedding-cake-ruby-luxe'
+    )->name('webia.template.catering-wedding-cake.ruby-luxe');
+
+    Route::view(
+        '/catering-wedding-cake-ruby-luxe/katalog',
+        'website-bisnis.templates.wedding-event.catering-wedding-cake.ruby-luxe.catering-katalog-ruby-luxe'
+    )->name('webia.template.catering-wedding-cake.ruby-luxe.katalog');
+
+    Route::view(
+        '/catering-wedding-cake-ruby-luxe/detail',
+        'website-bisnis.templates.wedding-event.catering-wedding-cake.ruby-luxe.catering-detail-ruby-luxe'
+    )->name('webia.template.catering-wedding-cake.ruby-luxe.detail');
+});
