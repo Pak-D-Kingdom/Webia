@@ -14,7 +14,7 @@
         <div class="order-summary">
             <dl>
                 <div><dt>Paket</dt><dd>{{ $order->package_snapshot['name'] ?? $order->package->name }}</dd></div>
-                <div><dt>Status</dt><dd><span class="status-pill">{{ str_replace('_', ' ', $order->status) }}</span></dd></div>
+                <div><dt>Status</dt><dd><x-status-pill :status="$order->status" :label="str_replace('_', ' ', $order->status)" /></dd></div>
                 <div><dt>Total</dt><dd>Rp{{ number_format($order->total_price, 0, ',', '.') }}</dd></div>
                 <div><dt>Kategori</dt><dd>{{ $order->category_slug ?: 'Tidak dipilih' }}</dd></div>
                 <div><dt>Template</dt><dd>{{ $order->template_snapshot['name'] ?? $order->template?->name ?? 'Tidak dipilih' }}</dd></div>

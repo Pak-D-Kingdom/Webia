@@ -18,7 +18,7 @@
     @if ($isAdmin)
         <div class="admin-shell">
             <aside class="admin-sidebar" aria-label="Navigasi admin">
-                <a class="account-brand account-brand-inverse" href="{{ route('admin.dashboard') }}" aria-label="WEBIA, panel admin">
+                <a class="account-brand account-brand-inverse" href="{{ route('admin.dashboard') }}" aria-label="WEBIA panel admin">
                     <span aria-hidden="true">W</span>
                     <strong>WEBIA</strong>
                 </a>
@@ -40,10 +40,11 @@
 
             <div class="admin-workspace">
                 <header class="account-header admin-topbar">
-                    <a class="account-brand admin-mobile-brand" href="{{ route('admin.dashboard') }}" aria-label="WEBIA, panel admin">
+                    <a class="account-brand admin-mobile-brand" href="{{ route('admin.dashboard') }}" aria-label="WEBIA panel admin">
                         <span aria-hidden="true">W</span>
                         <strong>WEBIA</strong>
                     </a>
+                    <p class="admin-context"><strong>Panel admin</strong><span>{{ auth()->user()->name }}</span></p>
                     <nav class="admin-mobile-nav" aria-label="Navigasi admin seluler">
                         <a href="{{ route('admin.dashboard') }}" @if (request()->routeIs('admin.dashboard')) aria-current="page" @endif>Ringkasan</a>
                         <a href="{{ route('admin.orders.index') }}" @if (request()->routeIs('admin.orders.*')) aria-current="page" @endif>Pesanan</a>
@@ -59,7 +60,7 @@
         </div>
     @else
         <header class="account-header">
-            <a class="account-brand" href="{{ route('home') }}" aria-label="WEBIA, kembali ke beranda">
+            <a class="account-brand" href="{{ route('home') }}" aria-label="WEBIA kembali ke beranda">
                 <span aria-hidden="true">W</span>
                 <strong>WEBIA</strong>
             </a>

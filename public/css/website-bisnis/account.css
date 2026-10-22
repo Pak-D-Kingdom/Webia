@@ -203,12 +203,38 @@ a {
     letter-spacing: -0.035em;
 }
 
-.account-copy > p:last-child,
+.account-copy > p,
 .dashboard-panel > h1 + p:not([role='status']) {
     max-width: 42rem;
     margin: 0.9rem 0 0;
     color: var(--account-muted);
     font-size: 1rem;
+}
+
+.account-points {
+    display: grid;
+    gap: 0.75rem;
+    margin: 2rem 0 0;
+    padding: 0;
+    color: var(--account-ink);
+    list-style: none;
+}
+
+.account-points li {
+    position: relative;
+    padding-left: 1.4rem;
+    font-weight: 700;
+}
+
+.account-points li::before {
+    position: absolute;
+    top: 0.55rem;
+    left: 0;
+    width: 0.45rem;
+    height: 0.45rem;
+    background: var(--account-action);
+    border-radius: 50%;
+    content: '';
 }
 
 .dashboard-panel > p[role='status'] {
@@ -341,6 +367,161 @@ a {
     color: var(--account-muted);
     background: var(--account-page);
     border-color: var(--account-line);
+}
+
+.status-pill--success {
+    color: #237a57;
+    background: #eaf7f1;
+    border-color: #bfe7d2;
+}
+
+.status-pill--warning {
+    color: #8a5400;
+    background: #fff6de;
+    border-color: #edd9a4;
+}
+
+.status-pill--info {
+    color: #3566a8;
+    background: #eef5ff;
+    border-color: #c7ddf5;
+}
+
+.status-pill--danger {
+    color: #a51d32;
+    background: #fff0f2;
+    border-color: #f3c9cf;
+}
+
+/* ---------- GRID DASHBOARD ---------- */
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(16rem, 1fr);
+    gap: 1.25rem;
+    align-items: start;
+    margin-top: 1.5rem;
+}
+
+.dashboard-grid > .dashboard-card-active {
+    margin-top: 0;
+}
+
+.dashboard-card-side {
+    align-self: stretch;
+}
+
+.dashboard-card-action {
+    margin-top: 1.25rem;
+}
+
+.order-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.order-heading h2 {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 800;
+}
+
+.dashboard-history {
+    box-shadow: var(--account-shadow);
+}
+
+.dashboard-history-list {
+    margin-top: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+}
+
+.admin-count-list {
+    font-size: 1rem;
+}
+
+.admin-count-list dd {
+    font-size: 1.35rem;
+    font-weight: 900;
+    color: var(--account-action-hover);
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.admin-table-wrap {
+    margin-top: 1.5rem;
+    overflow-x: auto;
+    background: var(--account-surface);
+    border: 1px solid var(--account-line);
+    border-radius: var(--account-radius-lg);
+    box-shadow: var(--account-shadow);
+}
+
+.admin-table {
+    width: 100%;
+    min-width: 58rem;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--account-line);
+    vertical-align: middle;
+}
+
+.admin-table thead th {
+    color: var(--account-muted);
+    background: var(--account-lavender);
+    font-size: 0.76rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.admin-table tbody th {
+    color: var(--account-ink);
+    font-size: 0.9rem;
+}
+
+.admin-table tbody tr:hover {
+    background: #fdfcff;
+}
+
+.admin-table tbody tr:last-child > * {
+    border-bottom: 0;
+}
+
+.admin-table-action {
+    text-align: right;
+}
+
+.admin-table-action a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0.5rem 0.85rem;
+    color: var(--account-action);
+    border: 1px solid var(--account-line-strong);
+    border-radius: 0.45rem;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
 }
 
 .admin-list-item > a,
@@ -766,12 +947,20 @@ a {
 
 .admin-topbar {
     min-height: 4rem;
-    justify-content: flex-end;
+    justify-content: space-between;
     padding-inline: clamp(1rem, 3vw, 2.5rem);
 }
 
-.admin-topbar:has(.header-actions:empty) {
-    display: none;
+.admin-context {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin: 0;
+}
+
+.admin-context span {
+    color: var(--account-muted);
+    font-size: 0.85rem;
 }
 
 .admin-mobile-brand,
@@ -803,12 +992,15 @@ a {
         margin-left: 0;
     }
 
-    .admin-topbar,
-    .admin-topbar:has(.header-actions:empty) {
+    .admin-topbar {
         display: flex;
         justify-content: space-between;
         flex-wrap: wrap;
         padding-inline: 1rem;
+    }
+
+    .admin-context {
+        display: none;
     }
 
     .admin-mobile-brand,
@@ -859,6 +1051,10 @@ a {
         min-height: 0;
     }
 
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
     .account-copy {
         padding: 0;
     }
@@ -866,6 +1062,75 @@ a {
     .admin-list-item {
         align-items: stretch;
         flex-direction: column;
+    }
+
+    .admin-table-wrap {
+        overflow: visible;
+        background: transparent;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    .admin-table,
+    .admin-table tbody,
+    .admin-table tr,
+    .admin-table th,
+    .admin-table td {
+        display: block;
+        width: 100%;
+        min-width: 0;
+    }
+
+    .admin-table thead {
+        display: none;
+    }
+
+    .admin-table tbody {
+        display: grid;
+        gap: 1rem;
+    }
+
+    .admin-table tbody tr {
+        padding: 1rem;
+        background: var(--account-surface);
+        border: 1px solid var(--account-line);
+        border-radius: var(--account-radius-lg);
+        box-shadow: var(--account-shadow);
+    }
+
+    .admin-table th,
+    .admin-table td {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0.55rem 0;
+        border: 0;
+        text-align: right;
+    }
+
+    .admin-table tbody th {
+        display: block;
+        padding-top: 0;
+        text-align: left;
+    }
+
+    .admin-table td[data-label]::before {
+        color: var(--account-muted);
+        content: attr(data-label);
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-align: left;
+    }
+
+    .admin-table-action {
+        justify-content: stretch;
+        padding-bottom: 0;
+    }
+
+    .admin-table-action a {
+        width: 100%;
     }
 
     .admin-list-item > a,
