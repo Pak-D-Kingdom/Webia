@@ -27,6 +27,7 @@
 
      @include('website-bisnis.components.footer')
 
+     <script src="{{ asset('js/website-bisnis/website-bisnis.js') }}" defer></script>
      @stack('scripts')
 
      <script src="{{ asset('js/website-bisnis/ai-assistant.js') }}" defer></script>

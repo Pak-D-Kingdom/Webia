@@ -34,14 +34,16 @@
             <a href="{{ route('home') }}#koleksi-template">
                 Galeri Template
             </a>
-             <a href="#">
+            <a href="{{ config('webia.dkreasi_url') ?: '#' }}"
+                @if (config('webia.dkreasi_url')) target="_blank" rel="noopener noreferrer" @endif>
                 Jelajahi D-KREASI Homebase ↗
             </a>
         </div>
 
         <div class="webia-footer-links">
             <h3>Informasi</h3>
-            <a href="#">
+            <a href="{{ config('webia.dkreasi_url') ?: '#' }}"
+                @if (config('webia.dkreasi_url')) target="_blank" rel="noopener noreferrer" @endif>
                 D-KREASI Homebase
             </a>
         </div>

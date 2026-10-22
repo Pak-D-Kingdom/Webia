@@ -55,7 +55,8 @@
                 {{ auth()->check() ? 'Dashboard' : 'Masuk' }}
             </a>
 
-            <a href="#" class="webia-homebase-link">
+            <a href="{{ config('webia.dkreasi_url') ?: '#' }}" class="webia-homebase-link"
+                @if (config('webia.dkreasi_url')) target="_blank" rel="noopener noreferrer" @endif>
                 ← D-KREASI
             </a>
 
