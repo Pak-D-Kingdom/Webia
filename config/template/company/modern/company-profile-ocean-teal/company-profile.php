@@ -75,7 +75,7 @@ return [
 
     // Floating WhatsApp (nomor format internasional tanpa + / spasi)
     'whatsapp' => [
-        'number'  => '6281234567890',
+        'number'  => '62895630300345', // 0895630300345 (format internasional, tanpa + / spasi)
         'message' => 'Halo Inovatek, saya ingin berkonsultasi mengenai kebutuhan teknologi bisnis saya.',
         'label'   => 'Chat WhatsApp',
     ],
@@ -196,15 +196,16 @@ return [
         'title' => 'Kontak Kami',
     ],
 
-    // Quotation lead. Isi 'action' dengan URL endpoint dari backend (POST).
-    // Jika null, form hanya mensimulasikan pengiriman (frontend saja).
+    // Quotation lead. Pesan dikirim ke WhatsApp (nomor di 'whatsapp.number').
+    // Opsional: isi 'action' dengan URL endpoint backend agar data juga dikirim via POST.
     'quotation' => [
         'action'   => null,
         'title'    => 'Dapatkan Penawaran',
-        'text'     => 'Ceritakan kebutuhan Anda. Tim kami akan menghubungi Anda dalam 1x24 jam kerja.',
-        'submit'   => 'Kirim Permintaan',
-        'success'  => 'Terima kasih! Permintaan penawaran Anda sudah kami terima.',
-        'error'    => 'Permintaan belum terkirim. Periksa koneksi Anda lalu coba lagi.',
+        'text'     => 'Isi formulir singkat ini. Pesan Anda akan dikirim ke tim kami melalui WhatsApp.',
+        'submit'   => 'Kirim via WhatsApp',
+        'success'  => 'WhatsApp terbuka dengan pesan Anda. Tekan kirim di WhatsApp untuk menyelesaikan.',
+        'error'    => 'Pesan belum terkirim. Periksa koneksi Anda lalu coba lagi.',
+        'wa_intro' => 'Halo Inovatek, saya ingin meminta penawaran.',
     ],
 
     'ai_faq' => [
@@ -213,7 +214,8 @@ return [
         'bubble'    => ['Ada pertanyaan tentang layanan kami?', 'Tanyakan apa saja, kami siap membantu!'],
         'button'    => 'Mulai Chat',
         'greeting'  => 'Halo! Saya asisten AI Inovatek. Pilih pertanyaan di bawah atau ketik pertanyaan Anda.',
-        'fallback'  => 'Maaf, saya belum menemukan jawabannya. Silakan hubungi tim kami atau ajukan permintaan penawaran.',
+        'fallback'  => 'Maaf, saya belum menemukan jawabannya. Silakan lanjutkan pertanyaan Anda langsung ke tim kami melalui WhatsApp.',
+        'wa_button' => 'Lanjutkan via WhatsApp',
         'placeholder' => 'Ketik pertanyaan Anda...',
         'items' => [
             ['q' => 'Layanan apa saja yang tersedia?',

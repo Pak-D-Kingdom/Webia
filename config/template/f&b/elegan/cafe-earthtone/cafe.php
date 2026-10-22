@@ -31,7 +31,7 @@ return [
         'address'       => 'Jl. Melati No. 12, Surabaya',
         'address_full'  => 'Jl. Melati No. 12, Surabaya, Jawa Timur 60271',
         'phone'         => '+62 812 3456 7890',
-        'whatsapp'      => '6281234567890', // format internasional tanpa + atau spasi
+        'whatsapp'      => '62895630300345', // 0895630300345 → format internasional tanpa + atau spasi (tujuan semua pesan WhatsApp)
         'email'         => 'hello@thelumierecafe.id',
         'open_text'     => 'Buka setiap hari 07.00 - 22.00',
         'maps_url'      => 'https://www.google.com/maps/search/?api=1&query=Jl.+Melati+No.+12+Surabaya',

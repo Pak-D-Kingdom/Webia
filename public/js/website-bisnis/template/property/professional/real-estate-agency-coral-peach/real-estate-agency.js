@@ -526,16 +526,6 @@
       });
     });
     if (search) search.addEventListener('input', debounce(apply, 150));
-
-    $$('[data-post-toggle]', grid).forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var more = $('[data-post-more]', btn.closest('.b-card'));
-        var open = more.hidden;
-        more.hidden = !open;
-        btn.setAttribute('aria-expanded', String(open));
-        btn.firstChild.textContent = open ? 'Tutup ' : 'Baca selengkapnya ';
-      });
-    });
   }
 
   /* ---------- 12. Dropdown kustom (progressive enhancement dari <select>) ---------- */
@@ -658,10 +648,33 @@
     window.addEventListener('resize', debounce(function () { closeAll(null); }, 100));
   }
 
+  /* ---------- 13. Salin tautan artikel ---------- */
+  function initCopyLink() {
+    $$('[data-copy-link]').forEach(function (btn) {
+      var label = $('[data-copy-label]', btn.parentNode);
+      function done() {
+        if (!label) return;
+        var old = label.textContent; label.textContent = 'Tautan disalin!';
+        window.setTimeout(function () { label.textContent = old; }, 2000);
+      }
+      function fallback() {
+        var i = document.createElement('input');
+        i.value = window.location.href; document.body.appendChild(i); i.select();
+        try { document.execCommand('copy'); done(); } catch (e) { /* abaikan */ }
+        i.remove();
+      }
+      btn.addEventListener('click', function () {
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(window.location.href).then(done, fallback);
+        else fallback();
+      });
+    });
+  }
+
   /* ---------- Init ---------- */
   function init() {
     initNavbar(); initReveal(); initSearchForm(); initPropertyFilter(); initFavorites();
     initLightbox(); initGalleryFilter(); initForms(); initChatbot(); initToTop(); initBlog();
+    initCopyLink();
     initSelects(); // terakhir: membaca nilai <select> yang sudah diisi filter/prefill
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();

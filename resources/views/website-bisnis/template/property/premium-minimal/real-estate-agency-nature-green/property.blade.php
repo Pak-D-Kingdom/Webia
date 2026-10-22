@@ -23,11 +23,12 @@
             @include($ns.'sections.gallery', ['preview' => false, 'titled' => true, 'items' => $property['gallery']])
             @include($ns.'sections.specification')
             @include($ns.'sections.location', ['loc' => $loc])
+            @include($ns.'sections.booking', ['preview' => false])
         </div>
 
         <aside class="detail__side" aria-label="Harga dan booking">
             @include($ns.'sections.price')
-            @include($ns.'sections.booking', ['preview' => false, 'stack' => true])
+            <a class="btn btn--primary btn--block" href="#booking">Jadwalkan Viewing <svg class="i" aria-hidden="true"><use href="#i-calendar"/></svg></a>
         </aside>
     </div>
 

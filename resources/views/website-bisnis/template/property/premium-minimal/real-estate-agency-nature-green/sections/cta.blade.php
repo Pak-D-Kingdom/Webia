@@ -5,6 +5,5 @@
             <p class="cta__eyebrow">JANGAN LEWATKAN KESEMPATAN INI</p>
             <h2 class="cta__title">Properti Impian Anda<br>Hanya Selangkah Lagi</h2>
         </div>
-        <a class="btn btn--light" href="{{ $r('properties') }}">Lihat Semua Properti <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
     </div>
 </section>

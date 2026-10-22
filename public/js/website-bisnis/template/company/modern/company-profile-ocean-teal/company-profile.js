@@ -9,6 +9,14 @@
     var $ = function (s, r) { return (r || document).querySelector(s); };
     var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
     var root = document.documentElement;
+    var WA_NUMBER = document.body.dataset.wa || '';
+    var waUrl = function (text) { return 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(text); };
+    // Buka WhatsApp di tab baru lewat klik tautan (lebih andal daripada window.open)
+    var openWhatsApp = function (url) {
+        var a = document.createElement('a');
+        a.href = url; a.target = '_blank'; a.rel = 'noopener';
+        document.body.appendChild(a); a.click(); a.remove();
+    };
 
     /* ---------- Navbar: sticky shadow + menu mobile ---------- */
     var nav = $('[data-nav]');
@@ -137,7 +145,20 @@
             q = q.trim();
             if (!q) return;
             say(q, 'user');
-            setTimeout(function () { say(answer(q), 'bot'); }, 450);
+            setTimeout(function () {
+                var a = answer(q);
+                say(a, 'bot');
+                if (a === chat.dataset.fallback && WA_NUMBER) { // tidak ada jawaban -> arahkan ke WhatsApp
+                    var l = document.createElement('a');
+                    l.className = 'ot-msg ot-msg--bot ot-msg--link';
+                    l.href = waUrl('Halo Inovatek, saya ingin bertanya: ' + q);
+                    l.target = '_blank';
+                    l.rel = 'noopener';
+                    l.textContent = chat.dataset.waLabel || 'WhatsApp';
+                    log.appendChild(l);
+                    log.scrollTop = log.scrollHeight;
+                }
+            }, 450);
         };
 
         faq.forEach(function (it) {
@@ -222,11 +243,27 @@
         var show = function (text, cls) { status.textContent = text; status.className = 'ot-form__status ' + cls; };
         var done = function () { qf.reset(); show(status.dataset.success, 'is-ok'); };
 
+        // Susun isi pesan WhatsApp dari field formulir
+        var buildMessage = function () {
+            var f = qf.elements;
+            var v = function (n) { return (f[n].value || '').trim(); };
+            var lines = [qf.dataset.waIntro || 'Halo, saya ingin meminta penawaran.', '',
+                'Nama: ' + v('name'),
+                v('company') ? 'Perusahaan: ' + v('company') : '',
+                'Email: ' + v('email'),
+                'Telepon: ' + v('phone'),
+                'Layanan: ' + v('service'),
+                v('message') ? 'Kebutuhan: ' + v('message') : ''];
+            return lines.filter(function (l, i) { return l !== '' || i === 1; }).join('\n');
+        };
+
         qf.addEventListener('submit', function (e) {
             e.preventDefault();
             if (!validate()) return;
+            var url = waUrl(buildMessage());
+            openWhatsApp(url); // dipanggil langsung dari aksi submit agar tidak diblokir popup blocker
             var action = qf.getAttribute('action');
-            if (!action || action === '#') { done(); return; } // mode frontend: belum ada endpoint
+            if (!action || action === '#') { done(); return; } // tanpa endpoint backend: cukup WhatsApp
             var btn = $('button[type="submit"]', qf);
             btn.disabled = true;
             fetch(action, { method: 'POST', body: new FormData(qf), headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' }, credentials: 'same-origin' })

@@ -11,9 +11,8 @@
     <div class="container section res-grid">
         <section class="panel" aria-labelledby="t-res">
             <h2 id="t-res"><svg class="i" aria-hidden="true"><use href="#i-calendar"/></svg> Form Reservasi</h2>
-            {{-- Backend: buat route POST /reservations. JS saat ini hanya validasi & console.log. --}}
-            <form id="reservationForm" method="POST" action="{{ url('/reservations') }}" data-endpoint="{{ url('/reservations') }}" novalidate>
-                @csrf
+            {{-- Setelah divalidasi, data reservasi dikirim ke WhatsApp (nomor di config 'whatsapp'). --}}
+            <form id="reservationForm" data-wa="{{ config('cafe.whatsapp') }}" data-name="{{ config('cafe.name') }}" novalidate>
                 <div class="field"><label for="name">Nama lengkap</label>
                     <div class="input"><svg class="i" aria-hidden="true"><use href="#i-user"/></svg><input id="name" name="name" type="text" autocomplete="name" placeholder="Nama Anda" data-req></div>
                     <small class="err" data-err="name"></small></div>
@@ -35,7 +34,7 @@
                     <small class="err" data-err="guests"></small></div>
                 <div class="field"><label for="notes">Catatan (opsional)</label>
                     <textarea id="notes" name="notes" rows="3" placeholder="Contoh: ulang tahun, butuh kursi bayi, area non-smoking"></textarea></div>
-                <button class="btn btn--block" type="submit"><svg class="i" aria-hidden="true"><use href="#i-calendar"/></svg> Reservasi Sekarang</button>
+                <button class="btn btn--block" type="submit"><svg class="i" aria-hidden="true"><use href="#i-chat"/></svg> Kirim Reservasi via WhatsApp</button>
                 <p id="formMsg" class="form-msg" role="status"></p>
             </form>
         </section>

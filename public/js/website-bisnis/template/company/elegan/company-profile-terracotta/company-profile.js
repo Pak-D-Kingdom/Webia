@@ -37,13 +37,27 @@
     byId.forEach((_, id) => { const el = document.getElementById(id); if (el) io.observe(el); });
   }
 
-  /* form kontak & penawaran (statis; isi data-endpoint untuk mengirim ke backend) */
+  /* kirim isi form ke WhatsApp (dipanggil langsung dari event klik/submit agar tidak diblokir popup blocker) */
+  const toWhatsApp = f => {
+    const d = Object.fromEntries(new FormData(f));
+    const jenis = d.type === 'penawaran' ? 'Permintaan penawaran' : 'Pesan kontak';
+    const text = [f.dataset.waIntro, '', `Jenis: ${jenis}`, `Nama: ${d.name}`, `Email: ${d.email}`, `Layanan: ${d.service}`, `Pesan: ${d.message}`].join('\n');
+    const a = document.createElement('a');
+    a.href = `https://wa.me/${f.dataset.waNumber}?text=${encodeURIComponent(text)}`;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.click();
+  };
+
+  /* form kontak & penawaran: buka WhatsApp; bila data-endpoint diisi, data juga dikirim ke backend */
   $$('[data-cp-form]').forEach(form => {
     const status = $('.cp-form__status', form), btn = $('[type=submit]', form);
     const say = (msg, s) => { status.textContent = msg; status.dataset.s = s; };
     form.addEventListener('submit', async e => {
       e.preventDefault();
       if (!form.checkValidity()) { form.reportValidity(); return say('Lengkapi semua kolom yang wajib diisi.', 'err'); }
+      const wa = !!form.dataset.waNumber;
+      if (wa) toWhatsApp(form);
       btn.disabled = true;
       try {
         const url = form.dataset.endpoint;
@@ -52,7 +66,7 @@
           if (!res.ok) throw new Error(res.status);
         }
         form.reset();
-        say('Terima kasih! Pesan Anda sudah kami terima.', 'ok');
+        say(wa ? 'Terima kasih! Lanjutkan pengiriman pesan di WhatsApp.' : 'Terima kasih! Pesan Anda sudah kami terima.', 'ok');
       } catch {
         say('Pesan belum terkirim. Coba lagi beberapa saat.', 'err');
       }

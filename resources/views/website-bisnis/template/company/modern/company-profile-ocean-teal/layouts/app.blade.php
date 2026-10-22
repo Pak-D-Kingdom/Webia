@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="{{ asset($z['paths']['css'].'/company-profile.css') }}">
     @stack('styles')
 </head>
-<body class="ot" data-page="{{ $active ?? 'home' }}">
+<body class="ot" data-page="{{ $active ?? 'home' }}" data-wa="{{ $z['whatsapp']['number'] }}">
     @include($ns.'.partials.icons')
 
     <a class="ot-skip" href="#konten">Lewati ke konten utama</a>

@@ -33,8 +33,7 @@
                         </div>
                     </header>
 
-                    <form class="cp-form" method="POST" action="#" novalidate data-cp-quote-form>
-                        @csrf
+                    <form class="cp-form" action="{{ $waBase }}" method="GET" novalidate data-cp-quote-form data-cp-wa="{{ $waBase }}" data-cp-wa-greeting="{{ $quote['wa_greeting'] ?? '' }}">
                         <div class="cp-form__grid">
                             <div class="cp-field">
                                 <label class="cp-label" for="cp-q-name">Nama Lengkap <span aria-hidden="true">*</span></label>
@@ -82,7 +81,7 @@
                             </div>
 
                             <div class="cp-form__foot cp-field--wide">
-                                <button class="cp-btn cp-btn--primary cp-form__submit" type="submit"><span class="cp-form__submit-text">Kirim Permintaan</span> {!! $icon('send') !!}</button>
+                                <button class="cp-btn cp-btn--primary cp-form__submit" type="submit"><span class="cp-form__submit-text">{{ $quote['submit'] ?? 'Kirim via WhatsApp' }}</span> {!! $icon('whatsapp') !!}</button>
                                 <ul class="cp-form__assure">
                                     <li>{!! $icon('clock') !!}<span>{{ $quote['note'] ?? '' }}</span></li>
                                     <li>{!! $icon('shield') !!}<span>{{ $quote['privacy'] ?? '' }}</span></li>
@@ -96,7 +95,10 @@
                         <span class="cp-quote__check">{!! $icon('check') !!}</span>
                         <h3 class="cp-quote__title">{{ $quote['success_title'] ?? 'Permintaan terkirim' }}</h3>
                         <p>{{ $quote['success_text'] ?? '' }}</p>
-                        <button class="cp-btn cp-btn--outline cp-btn--sm" type="button" data-cp-quote-reset>Kirim permintaan lain</button>
+                        <div class="cp-quote__actions">
+                            <a class="cp-btn cp-btn--primary cp-btn--sm" href="{{ $waBase }}" target="_blank" rel="noopener noreferrer" data-cp-wa-reopen>Buka WhatsApp lagi</a>
+                            <button class="cp-btn cp-btn--outline cp-btn--sm" type="button" data-cp-quote-reset>Kirim pesan lain</button>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -325,8 +325,8 @@
     /* ---------------------------------------------------------------------
        Formulir penawaran (quotation lead)
        - Validasi sisi klien dengan pesan error yang jelas.
-       - Jika action form bukan "#", form dikirim normal (POST + CSRF) setelah valid.
-       - Jika action masih "#", tampil konfirmasi demo (frontend statis).
+       - Setelah valid, isian disusun menjadi pesan dan WhatsApp dibuka (wa.me)
+         ke nomor di config (whatsapp.number). Tidak ada pengiriman ke backend.
        --------------------------------------------------------------------- */
     function initQuoteForm() {
         var form = $('[data-cp-quote-form]');
@@ -338,7 +338,23 @@
         var submitBtn = $('.cp-form__submit', form);
         var submitText = $('.cp-form__submit-text', form);
         var submitLabel = submitText ? submitText.textContent : '';
+        var reopen = $('[data-cp-wa-reopen]');
         var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+        // Susun isi pesan WhatsApp dari isian form, lalu kembalikan URL wa.me lengkap.
+        function buildWhatsAppUrl() {
+            var base = form.getAttribute('data-cp-wa');
+            if (!base) { return ''; }
+            var lines = [
+                form.getAttribute('data-cp-wa-greeting') || 'Halo, saya ingin meminta penawaran.',
+                '',
+                'Nama: ' + valueOf('name'),
+                'Email: ' + valueOf('email'),
+                'Layanan: ' + valueOf('service'),
+                'Pesan: ' + valueOf('message')
+            ];
+            return base + '?text=' + encodeURIComponent(lines.join('\n'));
+        }
 
         var rules = {
             name: function (v) {
@@ -448,26 +464,32 @@
                 return;
             }
 
-            // Honeypot: bot mengisi kolom tersembunyi, tampilkan sukses tanpa mengirim.
+            // Honeypot: bot mengisi kolom tersembunyi, tampilkan sukses tanpa membuka WhatsApp.
             var honey = form.elements.website;
             var isBot = !!(honey && honey.value);
 
-            var action = form.getAttribute('action');
-            if (!isBot && action && action !== '#') { setLoading(true); form.submit(); return; }
-
-            // Frontend statis: simulasi pengiriman singkat lalu tampilkan konfirmasi.
+            var waUrl = isBot ? '' : buildWhatsAppUrl();
             setLoading(true);
+
+            // Buka WhatsApp langsung di dalam klik pengguna agar tidak diblokir pop-up blocker.
+            if (waUrl) {
+                var popup = win.open(waUrl, '_blank');
+                if (popup) { popup.opener = null; }
+                else { win.location.href = waUrl; } // pop-up diblokir: buka di tab ini
+            }
+
             win.setTimeout(function () {
                 setLoading(false);
+                if (reopen && waUrl) { reopen.href = waUrl; }
                 resetForm();
                 if (success) {
                     form.hidden = true;
                     success.hidden = false;
                     success.focus({ preventScroll: true });
                 } else {
-                    setStatus('Terima kasih! Permintaan penawaran Anda telah kami terima.', 'success');
+                    setStatus('WhatsApp dibuka dengan pesan Anda. Tekan Kirim di WhatsApp untuk mengirimnya.', 'success');
                 }
-            }, reduceMotion ? 0 : 700);
+            }, reduceMotion ? 0 : 500);
         });
 
         if (resetBtn) {
@@ -513,7 +535,7 @@
         try { faq = JSON.parse(dataNode ? dataNode.textContent : '[]'); } catch (e) { faq = []; }
 
         var fallback = {
-            answer: 'Maaf, saya belum menemukan jawaban untuk itu. Anda bisa menghubungi tim kami langsung atau mengirim formulir penawaran.',
+            answer: 'Maaf, saya belum menemukan jawaban untuk itu. Anda bisa menanyakannya langsung ke tim kami lewat WhatsApp.',
             link: { href: doc.getElementById('kontak') ? '#kontak' : '/', label: 'Lihat kontak kami' }
         };
 
@@ -544,6 +566,7 @@
                 var a = doc.createElement('a');
                 a.href = link.href;
                 a.textContent = link.label;
+                if (link.external) { a.target = '_blank'; a.rel = 'noopener noreferrer'; }
                 msg.appendChild(a);
             }
             log.appendChild(msg);
@@ -589,7 +612,15 @@
             var clean = text.trim();
             if (!clean) { return; }
             addMessage('user', clean);
-            reply(entry || findAnswer(clean));
+            var result = entry || findAnswer(clean);
+            var waBase = root.getAttribute('data-wa');
+            if (result === fallback && waBase) {
+                result = {
+                    answer: fallback.answer,
+                    link: { href: waBase + '?text=' + encodeURIComponent('Halo Nusantara Kreasi, saya ingin bertanya: ' + clean), label: 'Tanya via WhatsApp', external: true }
+                };
+            }
+            reply(result);
         }
 
         form.addEventListener('submit', function (event) {

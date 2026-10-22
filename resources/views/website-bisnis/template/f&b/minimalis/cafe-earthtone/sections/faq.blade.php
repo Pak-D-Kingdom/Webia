@@ -1,4 +1,4 @@
-<section id="faq" class="panel chat" aria-labelledby="t-faq">
+<section id="faq" class="panel chat" aria-labelledby="t-faq" data-wa="{{ config('cafe.whatsapp') }}" data-name="{{ config('cafe.name') }}">
     <h2 id="t-faq"><svg class="i" aria-hidden="true"><use href="#i-bot"/></svg> Tanya AI</h2>
     {{-- Backend/AI: ganti fungsi reply() di public/js/.../cafe.js dengan panggilan API chatbot. --}}
     <div id="chatLog" class="chat__log" role="log" aria-live="polite">

@@ -22,9 +22,10 @@ return [
         'phone'   => '+62 812 3456 7890',
     ],
     'whatsapp' => [
-        'number' => '6281234567890', // format internasional tanpa + atau 0
+        'number' => '62895630300345', // 0895630300345 → format internasional tanpa + atau 0; dipakai tombol floating, panel kontak, dan form
         'text'   => 'Halo KreasiNusa, saya ingin berkonsultasi tentang proyek saya.',
         'label'  => 'Chat WhatsApp',
+        'form_intro' => 'Halo KreasiNusa, saya mengirim pesan melalui website.',
     ],
     'social' => [
         ['k' => 'in', 'n' => 'LinkedIn',  'u' => '#'],

@@ -1,5 +1,5 @@
 @php $a = $z['ai_faq']; @endphp
-<section class="ot-chat" id="ot-chat" role="dialog" aria-label="{{ $a['title'] }}" hidden data-chat data-greeting="{{ $a['greeting'] }}" data-fallback="{{ $a['fallback'] }}">
+<section class="ot-chat" id="ot-chat" role="dialog" aria-label="{{ $a['title'] }}" hidden data-chat data-greeting="{{ $a['greeting'] }}" data-fallback="{{ $a['fallback'] }}" data-wa-label="{{ $a['wa_button'] }}">
     <header class="ot-chat__head">
         <img src="{{ $img('mascot.png') }}" alt="" width="40" height="40">
         <div><strong>{{ $a['title'] }}</strong><small>Asisten {{ $z['brand']['name'] }}</small></div>

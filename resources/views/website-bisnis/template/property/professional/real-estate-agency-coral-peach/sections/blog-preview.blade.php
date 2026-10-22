@@ -8,10 +8,10 @@
   <div class="b-grid">
     @foreach ($bl['posts'] as $post)
       <article class="b-card reveal">
-        <a class="b-card__media" href="{{ route('coral-peach.blog') }}#{{ $post['slug'] }}" tabindex="-1" aria-hidden="true"><img src="{{ asset($img.'/'.$post['image']) }}" alt="" loading="lazy" width="465" height="300"></a>
+        <a class="b-card__media" href="{{ route('coral-peach.blog.show', $post['slug']) }}" tabindex="-1" aria-hidden="true"><img src="{{ asset($img.'/'.$post['image']) }}" alt="" loading="lazy" width="465" height="300"></a>
         <div class="b-card__body">
           <p class="b-card__meta"><span class="tag">{{ $post['cat_label'] }}</span><time>{{ $post['date'] }}</time></p>
-          <h3 class="b-card__title"><a href="{{ route('coral-peach.blog') }}#{{ $post['slug'] }}">{{ $post['title'] }}</a></h3>
+          <h3 class="b-card__title"><a href="{{ route('coral-peach.blog.show', $post['slug']) }}">{{ $post['title'] }}</a></h3>
         </div>
       </article>
     @endforeach

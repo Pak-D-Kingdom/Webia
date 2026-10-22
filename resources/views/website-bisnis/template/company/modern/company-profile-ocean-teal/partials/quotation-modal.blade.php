@@ -5,7 +5,7 @@
         <h2 id="ot-quote-title">{{ $q['title'] }}</h2>
         <p class="ot-modal__lead">{{ $q['text'] }}</p>
 
-        <form class="ot-form" method="POST" action="{{ $q['action'] ?? '#' }}" data-quote-form novalidate>
+        <form class="ot-form" method="POST" action="{{ $q['action'] ?? '#' }}" data-quote-form data-wa-intro="{{ $q['wa_intro'] }}" novalidate>
             @csrf
             <div class="ot-form__grid">
                 <label class="ot-field">
@@ -45,7 +45,7 @@
             <p class="ot-form__status" role="status" aria-live="polite" data-form-status
                data-success="{{ $q['success'] }}" data-error="{{ $q['error'] }}"></p>
             <button class="ot-btn ot-btn--primary ot-btn--block" type="submit">
-                {{ $q['submit'] }}<svg class="ot-ic" aria-hidden="true"><use href="#i-arrow-right"/></svg>
+                <svg class="ot-ic" aria-hidden="true"><use href="#i-whatsapp"/></svg>{{ $q['submit'] }}
             </button>
         </form>
     </div>

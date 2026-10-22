@@ -120,10 +120,17 @@
       });
       if (!valid) { msg.textContent = ''; return; }
       const data = Object.fromEntries(new FormData(rf));
-      // TODO (backend): kirim `data` ke rf.dataset.endpoint. Laravel butuh token CSRF (ada di <meta name="csrf-token">):
-      // fetch(rf.dataset.endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').content }, body: JSON.stringify(data) })
-      console.log('Reservation payload:', data);
-      msg.textContent = `Terima kasih, ${data.name}! Reservasi ${data.date} pukul ${data.time} untuk ${data.guests} orang tercatat.`;
+      const [y, m, d] = data.date.split('-').map(Number);
+      const tgl = new Date(y, m - 1, d).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+      const text = [`Halo ${rf.dataset.name}, saya ingin melakukan reservasi.`, '',
+        `Nama: ${data.name}`, `No. WhatsApp: ${data.phone}`, `Tanggal: ${tgl}`, `Waktu: ${data.time}`, `Jumlah orang: ${data.guests}`,
+        data.notes ? `Catatan: ${data.notes}` : null].filter(v => v !== null).join('\n');
+      const url = `https://wa.me/${rf.dataset.wa}?text=${encodeURIComponent(text)}`;   // semua data form dikirim ke WhatsApp
+      window.open(url, '_blank', 'noopener');
+      msg.textContent = `Terima kasih, ${data.name}! Kami membuka WhatsApp untuk mengirim reservasi Anda. Jika tidak terbuka, `;
+      const a = document.createElement('a');
+      a.href = url; a.target = '_blank'; a.rel = 'noopener'; a.textContent = 'klik di sini';
+      msg.append(a, '.');
       rf.reset();
     });
   }
@@ -143,11 +150,21 @@
       el.className = 'msg' + (mine ? ' msg--me' : '');
       el.textContent = text;                       // textContent: aman dari XSS
       log.append(el); log.scrollTop = log.scrollHeight;
+      return el;
     };
     // TODO (backend/AI): ganti isi reply() dengan panggilan ke API chatbot.
+    const faq = $('#faq');
     const reply = q => {
       const key = Object.keys(answers).find(k => q.toLowerCase().includes(k));
-      setTimeout(() => say(answers[key] || 'Maaf, saya belum paham. Pilih topik di atas atau hubungi kami lewat WhatsApp.'), 400);
+      setTimeout(() => {
+        if (key) { say(answers[key]); return; }
+        // tidak ada jawaban otomatis -> arahkan pertanyaan ke WhatsApp
+        const el = say('Maaf, saya belum menemukan jawabannya. Kirim pertanyaan Anda langsung ke tim kami lewat WhatsApp:');
+        const a = document.createElement('a');
+        a.className = 'msg__wa'; a.target = '_blank'; a.rel = 'noopener'; a.textContent = 'Kirim ke WhatsApp →';
+        a.href = `https://wa.me/${faq.dataset.wa}?text=${encodeURIComponent(`Halo ${faq.dataset.name}, saya ingin bertanya: ${q}`)}`;
+        el.append(document.createElement('br'), a);
+      }, 400);
     };
     $$('.chip').forEach(c => c.addEventListener('click', () => { say(c.textContent, true); reply(c.dataset.q); }));
     const cf = $('#chatForm');

@@ -12,8 +12,8 @@
         <a class="cp-btn cp-btn--light" href="https://wa.me/{{ $w['number'] }}?text={{ rawurlencode($w['text']) }}" target="_blank" rel="noopener">{{ $ic('wa') }} {{ $w['label'] }}</a>
     </aside>
 
-    {{-- Statis: JS menampilkan pesan sukses. Backend: isi action & data-endpoint. --}}
-    <form class="cp-form cp-contact__form" method="post" action="#" data-cp-form data-endpoint="" novalidate>
+    {{-- Submit membuka WhatsApp (data-wa-*). Backend opsional: isi data-endpoint untuk menyimpan juga ke server. --}}
+    <form class="cp-form cp-contact__form" method="post" action="#" data-cp-form data-endpoint="" data-wa-number="{{ $w['number'] }}" data-wa-intro="{{ $w['form_intro'] }}" novalidate>
         @csrf
         <input type="hidden" name="type" value="kontak">
         <h2>{{ $k['form'] }}</h2>

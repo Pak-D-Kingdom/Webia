@@ -131,6 +131,12 @@ Route::prefix('webia/template/property/premium-minimal/real-estate-agency-nature
         Route::get('/gallery',    fn () => $page('gallery', 'gallery'))->name('gallery');
         Route::get('/booking',    fn () => $page('booking', 'booking'))->name('booking');
         Route::get('/blog',       fn () => $page('blog', 'blog'))->name('blog');
+        Route::get('/blog/{slug}', function (string $slug) use ($page, $cfg) {
+            $post = collect(config($cfg . '.blog'))->firstWhere('slug', $slug);
+            abort_if($post === null, 404);
+
+            return $page('article', 'blog')->with('post', $post);
+        })->name('blog.show');
         Route::get('/contact',    fn () => $page('contact', 'contact'))->name('contact');
     });
 
@@ -148,6 +154,13 @@ Route::prefix('webia/template/property/professional/real-estate-agency-coral-pea
         Route::get('/gallery',       fn () => view("$view.gallery",       ['site' => $site()]))->name('gallery');
         Route::get('/booking',       fn () => view("$view.booking",       ['site' => $site()]))->name('booking');
         Route::get('/blog',          fn () => view("$view.blog",          ['site' => $site()]))->name('blog');
+        Route::get('/blog/{slug}', function (string $slug) use ($view, $site) {
+            $data = $site();
+            $post = collect($data['blog']['posts'])->firstWhere('slug', $slug);
+            abort_if(! $post, 404);
+
+            return view("$view.blog-show", ['site' => $data, 'post' => $post]);
+        })->name('blog.show');
         Route::get('/contact',       fn () => view("$view.contact",       ['site' => $site()]))->name('contact');
     });
 
@@ -165,3 +178,34 @@ Route::prefix('webia/template/e-learning/modern/e-learning-ocean-blue')
         Route::view('/course-content',  "{$elNs}.course-content")->name('course-content');
         Route::view('/member-area',     "{$elNs}.member-area")->name('member-area');
     });
+
+$elNs   = 'website-bisnis.template.e-learning.playful-colorful.e-learning-pastel-mix';
+$elPath = 'webia/template/e-learning/playful-colorful/e-learning-pastel-mix';
+
+// Nama route = "{$elNs}.{halaman}" → harus sama dengan config 'route_prefix' di e-learning.php
+Route::prefix($elPath)->name($elNs.'.')->group(function () use ($elNs) {
+    Route::view('/', $elNs.'.index')->name('home');
+    Route::view('/programs', $elNs.'.programs')->name('programs');
+    Route::view('/schedules', $elNs.'.schedules')->name('schedules');
+    Route::view('/teachers', $elNs.'.teachers')->name('teachers');
+    Route::view('/pricing', $elNs.'.pricing')->name('pricing');
+    Route::view('/registration', $elNs.'.registration')->name('registration');
+    Route::view('/course-content', $elNs.'.course-content')->name('course-content');
+    Route::view('/member-area', $elNs.'.member-area')->name('member-area');
+});
+
+Route::prefix('webia/template/e-learning/futuristic/e-learning-dark-mode')
+    ->name('e-learning-dark-mode.')
+    ->group(function () {
+        $ns = 'website-bisnis.template.e-learning.futuristic.e-learning-dark-mode';
+
+        Route::view('/', $ns.'.index')->name('home');
+        Route::view('/programs', $ns.'.programs')->name('programs');
+        Route::view('/schedules', $ns.'.schedules')->name('schedules');
+        Route::view('/teachers', $ns.'.teachers')->name('teachers');
+        Route::view('/pricing', $ns.'.pricing')->name('pricing');
+        Route::view('/registration', $ns.'.registration')->name('registration');
+        Route::view('/course-content', $ns.'.course-content')->name('course-content');
+        Route::view('/member-area', $ns.'.member-area')->name('member-area');
+    });
+

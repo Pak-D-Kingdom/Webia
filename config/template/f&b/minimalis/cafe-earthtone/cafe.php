@@ -3,8 +3,8 @@
 return [
     'name'       => 'Origins Cafe',
     'tagline'    => 'Coffee • Food • Space',
-    'phone'      => '+62 812-3456-7890',
-    'whatsapp'   => '6281234567890',
+    'phone'      => '+62 895-6303-00345',
+    'whatsapp'   => '62895630300345',   // tujuan semua pesan form + tombol WhatsApp (format internasional, tanpa 0 / +)
     'email'      => 'hello@originscafe.id',
     'address'    => 'Jl. Raya Dharmahusada No. 88',
     'city'       => 'Surabaya, Jawa Timur',
@@ -45,7 +45,7 @@ return [
 
     'categories' => ['all' => 'Semua', 'kopi' => 'Kopi', 'nonkopi' => 'Minuman Non-Kopi', 'makanan' => 'Makanan', 'snack' => 'Snack'],
 
-    // img = file di public/images/website-bisnis/template/f&b/minimalis/ (null = pakai emoji 'icon' sampai foto tersedia)
+    // img = file di public/images/website-bisnis/template/f&b/minimalis/cafe-earthtone/ (null = pakai emoji 'icon' sampai foto tersedia)
     // fav = tampil di "Menu Favorit" beranda
     'menu' => [
         ['name' => 'Café Latte',           'price' => 28000, 'cat' => 'kopi',    'img' => 'latte.jpg',        'icon' => '☕', 'fav' => true,  'desc' => 'Espresso dengan susu steamed dan latte art.'],

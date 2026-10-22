@@ -78,7 +78,7 @@ return [
         'hours'         => 'Mon - Sun 08.00 - 18.00',
         'phone'         => '+62 812 3456 7890',
         'phone_tel'     => '+6281234567890',
-        'whatsapp'      => '6281234567890',
+        'whatsapp'      => '62895630300345', // 0895630300345 — tujuan semua form, tombol WhatsApp, & asisten AI
         'whatsapp_text' => 'Halo GreenEstate, saya tertarik dengan properti Anda.',
         'maps_embed'    => $embed($address),
         'maps_url'      => 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode($address),
@@ -141,11 +141,74 @@ return [
         'points' => ['Desain elegan dan lingkungan asri', 'Lokasi strategis dengan akses mudah', 'Pendampingan dari viewing hingga serah terima'],
     ],
 
+    // Artikel blog: tiap item punya halaman sendiri (/blog/{slug}). `body` berisi blok h (judul), p (paragraf), ul (daftar).
     'blog' => [
-        ['image' => 'blog-1.jpg', 'category' => 'Tips Properti', 'date' => '12 Okt 2026', 'title' => '5 Tips Memilih Rumah yang Asri dan Nyaman',  'excerpt' => 'Mulai dari sirkulasi udara hingga akses jalan, ini hal yang perlu dicek sebelum memutuskan.'],
-        ['image' => 'blog-2.jpg', 'category' => 'Panduan',       'date' => '28 Sep 2026', 'title' => 'Mengenal Sertifikat SHM dan Keunggulannya', 'excerpt' => 'Pahami perbedaan jenis sertifikat agar transaksi properti Anda aman dan tenang.'],
-        ['image' => 'blog-3.jpg', 'category' => 'Panduan',       'date' => '14 Sep 2026', 'title' => 'Persiapan Sebelum Viewing Properti',        'excerpt' => 'Daftar singkat pertanyaan dan hal yang perlu diperhatikan saat berkunjung ke lokasi.'],
+        [
+            'slug' => 'tips-memilih-rumah-asri-dan-nyaman', 'image' => 'blog-1.jpg', 'category' => 'Tips Properti',
+            'date' => '12 Okt 2026', 'read' => '4 menit baca', 'author' => 'Tim GreenEstate',
+            'title' => '5 Tips Memilih Rumah yang Asri dan Nyaman',
+            'excerpt' => 'Mulai dari sirkulasi udara hingga akses jalan, ini hal yang perlu dicek sebelum memutuskan.',
+            'lead' => 'Rumah yang asri bukan hanya soal taman yang hijau. Sirkulasi udara, cahaya, lingkungan, dan akses harian ikut menentukan apakah rumah itu benar-benar nyaman ditinggali.',
+            'body' => [
+                ['h' => '1. Perhatikan sirkulasi udara dan cahaya alami'],
+                ['p' => 'Rumah dengan bukaan yang baik terasa lebih sejuk dan hemat listrik. Saat viewing, cek apakah jendela dan ventilasi saling berhadapan sehingga udara bisa mengalir, dan apakah sinar matahari pagi masuk ke ruang keluarga atau kamar tidur.'],
+                ['h' => '2. Nilai lingkungan sekitar'],
+                ['p' => 'Lihat ruang hijau, kebersihan saluran air, dan kondisi jalan lingkungan. Kawasan yang tertata biasanya lebih nyaman dan nilainya lebih terjaga dalam jangka panjang.'],
+                ['h' => '3. Pastikan akses dan lokasi sesuai rutinitas'],
+                ['p' => 'Hitung waktu tempuh ke kantor, sekolah, dan fasilitas kesehatan pada jam sibuk, bukan hanya jarak di peta. Rumah yang indah akan terasa melelahkan jika perjalanan harian terlalu menyita waktu.'],
+                ['h' => '4. Periksa kualitas bangunan'],
+                ['p' => 'Perhatikan retakan dinding, tanda rembesan di plafon, kondisi atap, dan tekanan air. Hal-hal kecil ini sering luput saat kita terpukau oleh tampilan luar.'],
+                ['h' => '5. Cek legalitas dan sesuaikan dengan anggaran'],
+                ['p' => 'Pastikan jenis sertifikat dan dokumen bangunan jelas, lalu bandingkan total biaya, termasuk pajak dan biaya pengurusan, dengan anggaran Anda. Pilih rumah yang nyaman tanpa membuat keuangan keluarga tertekan.'],
+                ['p' => 'Dengan daftar sederhana ini, proses memilih rumah menjadi lebih terarah. Jadwalkan viewing agar Anda bisa merasakan langsung suasana rumahnya.'],
+            ],
+        ],
+        [
+            'slug' => 'mengenal-sertifikat-shm', 'image' => 'blog-2.jpg', 'category' => 'Panduan',
+            'date' => '28 Sep 2026', 'read' => '5 menit baca', 'author' => 'Tim GreenEstate',
+            'title' => 'Mengenal Sertifikat SHM dan Keunggulannya',
+            'excerpt' => 'Pahami perbedaan jenis sertifikat agar transaksi properti Anda aman dan tenang.',
+            'lead' => 'Sebelum membeli properti, pahami dulu jenis sertifikatnya. Sertifikat Hak Milik (SHM) termasuk yang paling banyak dicari karena kedudukannya yang kuat.',
+            'body' => [
+                ['h' => 'Apa itu SHM?'],
+                ['p' => 'SHM adalah bukti kepemilikan tanah dengan hak yang paling kuat dan penuh. Pemegangnya dapat memakai, mewariskan, menjual, dan menjadikannya jaminan, serta tidak dibatasi jangka waktu tertentu.'],
+                ['h' => 'Apa bedanya dengan HGB?'],
+                ['p' => 'Hak Guna Bangunan (HGB) memberi hak mendirikan dan memiliki bangunan di atas tanah dengan jangka waktu tertentu yang dapat diperpanjang. Karena itu, status tanah perlu diperhatikan bila Anda berencana tinggal atau berinvestasi dalam waktu lama.'],
+                ['h' => 'Yang perlu dicek sebelum membeli'],
+                ['ul' => ['Nama pemilik di sertifikat sesuai dengan penjual', 'Luas dan batas tanah sesuai kondisi di lapangan', 'Tanah tidak sedang bersengketa atau dijaminkan', 'Keaslian sertifikat sudah dicek melalui kantor pertanahan setempat']],
+                ['h' => 'Libatkan notaris atau PPAT'],
+                ['p' => 'Proses jual beli sebaiknya dilakukan di hadapan PPAT agar balik nama berjalan sah dan tercatat. Informasi di artikel ini bersifat umum, jadi konsultasikan kondisi spesifik Anda dengan notaris atau PPAT.'],
+            ],
+        ],
+        [
+            'slug' => 'persiapan-sebelum-viewing-properti', 'image' => 'blog-3.jpg', 'category' => 'Panduan',
+            'date' => '14 Sep 2026', 'read' => '4 menit baca', 'author' => 'Tim GreenEstate',
+            'title' => 'Persiapan Sebelum Viewing Properti',
+            'excerpt' => 'Daftar singkat pertanyaan dan hal yang perlu diperhatikan saat berkunjung ke lokasi.',
+            'lead' => 'Viewing adalah kesempatan terbaik untuk menilai rumah secara langsung. Dengan persiapan singkat, kunjungan Anda akan jauh lebih efektif.',
+            'body' => [
+                ['h' => 'Tentukan prioritas lebih dulu'],
+                ['p' => 'Tulis tiga hal yang paling penting bagi keluarga, misalnya jumlah kamar, ukuran carport, atau jarak ke sekolah. Daftar ini membantu Anda menilai tanpa terbawa suasana.'],
+                ['h' => 'Yang perlu dicek di lokasi'],
+                ['ul' => ['Kondisi atap, plafon, dan dinding (cari tanda rembesan atau retak)', 'Tekanan air serta fungsi keran dan saluran pembuangan', 'Jumlah titik listrik dan daya yang terpasang', 'Sirkulasi udara dan cahaya di tiap ruangan', 'Suasana lingkungan, termasuk keamanan dan kebisingan']],
+                ['h' => 'Pertanyaan untuk tim penjualan'],
+                ['ul' => ['Berapa total biaya di luar harga rumah (pajak, notaris, dan lainnya)?', 'Apa jenis sertifikat dan bagaimana status dokumen bangunannya?', 'Skema pembayaran apa saja yang tersedia?', 'Kapan unit bisa diserahterimakan?']],
+                ['p' => 'Jangan ragu mengambil foto dan catatan agar mudah membandingkan beberapa properti. Dokumen bangunan kini dikenal sebagai PBG (Persetujuan Bangunan Gedung), yang sebelumnya bernama IMB.'],
+            ],
+        ],
     ],
+
+    // Halaman Booking / Viewing
+    'booking' => [
+        'slots'    => ['08.00', '09.00', '10.00', '11.00', '13.00', '14.00', '15.00', '16.00', '17.00'],
+        'visitors' => ['1 orang', '2 orang', '3 orang', '4 orang', '5 orang atau lebih'],
+        'steps'    => [
+            ['title' => 'Pilih properti dan jadwal', 'text' => 'Tentukan unit yang ingin dikunjungi serta tanggal dan jam yang nyaman bagi Anda.'],
+            ['title' => 'Tunggu konfirmasi', 'text' => 'Tim kami menghubungi Anda untuk memastikan jadwal kunjungan.'],
+            ['title' => 'Kunjungi dan rasakan langsung', 'text' => 'Lihat kondisi rumah, lingkungan, dan tanyakan apa pun kepada tim kami di lokasi.'],
+        ],
+    ],
+
 
     // Dipakai AI Property Assistant. `keywords` dicocokkan dengan pertanyaan pengunjung.
     'faq' => [

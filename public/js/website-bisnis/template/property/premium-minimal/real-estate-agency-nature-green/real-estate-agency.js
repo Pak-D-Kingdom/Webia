@@ -100,8 +100,38 @@
     };
     $$('[data-picker]').forEach(initPicker);
 
-    /* 5. Form (inquiry & booking): validasi native + kirim.
-          Backend: isi data-endpoint / action pada <form>; tanpa itu form hanya simulasi sukses. */
+    /* 5. Form (inquiry & booking): validasi native, lalu pesan dikirim lewat WhatsApp.
+          Tujuan = atribut data-wa pada <form> (diisi dari config contact.whatsapp).
+          Alternatif backend: hapus data-wa dan isi data-endpoint untuk POST AJAX. */
+    const LABELS = {
+        nama: 'Nama', email: 'Email', telepon: 'No. Telepon', pesan: 'Pesan / Pertanyaan',
+        properti: 'Properti', tanggal: 'Tanggal', waktu: 'Jam', pengunjung: 'Jumlah Pengunjung', catatan: 'Catatan',
+    };
+    const composeMessage = (form) => {
+        const lines = [`*${form.dataset.waTitle || 'Pesan'} - GreenEstate*`, ''];
+        const seen = new Set();
+        Array.from(form.elements).forEach((el) => {
+            if (!el.name || el.name === '_token' || el.disabled || seen.has(el.name)) return;
+            seen.add(el.name);
+            let v = '';
+            if (el.type === 'radio') {
+                const on = form.querySelector(`input[name="${el.name}"]:checked`);
+                v = on ? (on.dataset.waValue || on.value) : '';
+            } else if (el.tagName === 'SELECT') {
+                v = el.selectedOptions[0]?.textContent.trim() || '';
+            } else {
+                v = el.dataset.waValue || el.value;
+            }
+            v = String(v).trim();
+            if (!v) return;
+            if (el.name === 'tanggal' && /^\d{4}-\d{2}-\d{2}$/.test(v)) {
+                v = new Date(v + 'T00:00:00').toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+            }
+            lines.push(`${LABELS[el.name] || el.name}: ${v}`);
+        });
+        return lines.join('\n');
+    };
+
     $$('form[data-form]').forEach((form) => {
         const status = $('[data-form-status]', form);
         const say = (msg, ok) => {
@@ -109,10 +139,24 @@
             status.textContent = msg;
             status.className = 'form-status ' + (ok ? 'is-ok' : 'is-err');
         };
+        const done = () => {
+            form.reset();
+            say(form.dataset.success || 'Terkirim.', true);
+            form.dispatchEvent(new CustomEvent('ge:sent', { bubbles: true }));
+        };
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             if (!form.checkValidity()) { form.reportValidity(); return; }
+
+            // Kirim lewat WhatsApp (dijalankan sinkron agar tidak diblokir popup blocker)
+            if (form.dataset.wa) {
+                const url = form.dataset.wa + '?text=' + encodeURIComponent(composeMessage(form));
+                const win = window.open(url, '_blank');
+                if (win) win.opener = null; else window.location.href = url;
+                done();
+                return;
+            }
 
             const btn = $('[type="submit"]', form);
             if (btn) btn.disabled = true;
@@ -129,9 +173,7 @@
                 } else {
                     await new Promise((r) => setTimeout(r, 450));
                 }
-                form.reset();
-                say(form.dataset.success || 'Terkirim.', true);
-                form.dispatchEvent(new CustomEvent('ge:sent', { bubbles: true }));
+                done();
             } catch (_) {
                 say('Gagal mengirim. Periksa koneksi Anda lalu coba lagi.', false);
             } finally {

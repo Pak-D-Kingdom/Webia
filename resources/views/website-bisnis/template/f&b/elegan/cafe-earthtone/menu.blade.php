@@ -17,7 +17,6 @@
 
 @section('content')
     @include("$v.partials.page-header", ['title' => $cafe['menu']['title'], 'text' => $cafe['menu']['text'], 'current' => 'Menu'])
-    
     @php($m = $cafe['menu'])
     <section class="lm-menu lm-menu--page" aria-label="Daftar menu">
         {{-- Kategori hanya ada di halaman ini (tidak di beranda). Data: cafe.php → menu.categories --}}

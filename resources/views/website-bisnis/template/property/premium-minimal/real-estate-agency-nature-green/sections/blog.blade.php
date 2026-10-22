@@ -16,14 +16,15 @@
         <h2 id="h-blog" class="sr-only">Artikel blog</h2>
     @endif
 
-    <div class="cards cards--page">
+    <div class="cards cards--blog">
         @foreach ($posts as $post)
-            <article class="card">
+            <article class="card card--link">
                 <div class="card__media card__media--blog media"><img src="{{ $img($post['image']) }}" alt="" loading="lazy" data-fallback></div>
                 <div class="card__body">
                     <p class="card__tag"><span>{{ $post['category'] }}</span><time>{{ $post['date'] }}</time></p>
-                    <h3>{{ $post['title'] }}</h3>
+                    <h3><a href="{{ $r('blog.show', ['slug' => $post['slug']]) }}">{{ $post['title'] }}</a></h3>
                     <p class="card__text">{{ $post['excerpt'] }}</p>
+                    <span class="card__more">Baca Selengkapnya <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></span>
                 </div>
             </article>
         @endforeach

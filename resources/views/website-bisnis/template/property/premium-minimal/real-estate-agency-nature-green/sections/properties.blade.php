@@ -3,7 +3,7 @@
     if (isset($limit)) { $items = array_slice($items, 0, $limit); }
     $isPreview = !empty($preview);
 @endphp
-<section class="panel" id="properties" aria-labelledby="h-properties">
+<section class="panel {{ $isPreview ? 'panel--cards' : '' }}" id="properties" aria-labelledby="h-properties">
     @if ($isPreview)
         <header class="panel__head">
             <div>
@@ -16,7 +16,7 @@
         <h2 id="h-properties" class="sr-only">Daftar properti</h2>
     @endif
 
-    <div class="cards {{ $isPreview ? '' : 'cards--page' }}">
+    <div class="cards {{ $isPreview ? 'cards--preview' : 'cards--page' }}">
         @foreach ($items as $p)
             <article class="card">
                 <div class="card__media media">
