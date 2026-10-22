@@ -56,7 +56,7 @@ Route::middleware('auth')->group(function (): void {
 Route::get(
     '/webia/koleksi',
     [TemplateCollectionController::class, 'index']
-)->name('webia.collections');
+)->name('collections');
 
 // WEBIA — Template Nail Art Professional Soft Pink
 // URL lama dipertahankan agar konsisten; view mengikuti struktur folder baru.
@@ -66,12 +66,14 @@ Route::view(
 )->name('webia.template.beauty.nailart.professional-softpink');
 Route::view('/webia/template/nail-art-professional-soft-pink/gallery', 'website-bisnis.templates.beauty.nailart.nailart-professional-softpink-gallery')->name('webia.template.beauty.nailart.professional-softpink.gallery');
 
+
 // WEBIA Template 02 — Nail Art Minimalist Sage Green
 Route::view(
     '/webia/template/nail-art-minimalist-sage-green',
     'website-bisnis.templates.beauty.nailart.nailart-minimalist-sagegreen'
 )->name('webia.template.beauty.nailart.minimalist-sagegreen');
 Route::view('/webia/template/nail-art-minimalist-sage-green/gallery', 'website-bisnis.templates.beauty.nailart.nailart-minimalist-sagegreen-gallery')->name('webia.template.beauty.nailart.minimalist-sagegreen.gallery');
+
 
 // WEBIA Template 03 — Luxury Yellow Sunshine
 Route::view(
@@ -92,7 +94,60 @@ Route::view(
     'website-bisnis.templates.automotive.dealer.automotive-dealer-vintage-collection'
 )->name('webia.template.automotive.dealer.vintage.collection');
 
+
+
 Route::view(
     '/webia/template/healthcare-dental-mint',
     'website-bisnis.templates.healthcare.dental.mint-dental-house'
 )->name('webia.template.healthcare-dental-mint');
+
+
+Route::view(
+    '/webia/template/healthcare-dental-azure',
+    'website-bisnis.templates.healthcare.dental.azure-smile-clinic'
+)->name('webia.template.healthcare-dental-azure');
+
+// Sunset Dental Care Template
+Route::view(
+    '/webia/template/healthcare-dental-sunset',
+    'website-bisnis.templates.healthcare.dental.sunset-dental-care'
+)->name('webia.template.healthcare-dental-sunset');
+
+
+// =====================================================
+// WEBIA - PET SHOP MINIMALIST GLACIER BLUE
+// =====================================================
+
+Route::view(
+    '/webia/template/petshop-minimalist-glacierblue',
+    'website-bisnis.templates.pet-animal-service.petshop.glacierblue.petshop-minimalist-glacierblue'
+)->name('webia.template.petshop-minimalist-glacierblue');
+
+Route::view(
+    '/webia/template/petshop-minimalist-glacierblue/katalog',
+    'website-bisnis.templates.pet-animal-service.petshop.glacierblue.petshop-katalog-minimalist-glacierblue'
+)->name('webia.template.petshop-minimalist-glacierblue.katalog');
+
+Route::view(
+    '/webia/template/petshop-minimalist-glacierblue/produk/{slug}',
+    'website-bisnis.templates.pet-animal-service.petshop.glacierblue.petshop-produk-minimalist-glacierblue'
+)->name('webia.template.petshop-minimalist-glacierblue.produk');
+
+// =====================================================
+// WEBIA - PET SHOP LUXURY ROSE GOLD
+// =====================================================
+
+Route::view(
+    '/webia/template/petshop-luxury-rosegold',
+    'website-bisnis.templates.pet-animal-service.petshop.rosegold.petshop-luxury-rosegold'
+)->name('webia.template.petshop-luxury-rosegold');
+
+Route::view(
+    '/webia/template/petshop-luxury-rosegold/katalog',
+    'website-bisnis.templates.pet-animal-service.petshop.rosegold.petshop-katalog-luxury-rosegold'
+)->name('webia.template.petshop-luxury-rosegold.katalog');
+
+Route::view(
+    '/webia/template/petshop-luxury-rosegold/produk/{slug}',
+    'website-bisnis.templates.pet-animal-service.petshop.rosegold.petshop-produk-luxury-rosegold'
+)->name('webia.template.petshop-luxury-rosegold.produk');
