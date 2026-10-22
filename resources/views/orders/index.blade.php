@@ -17,7 +17,7 @@
                         <p>{{ $order->order_number }}</p>
                     </div>
                     <div class="list-item-meta">
-                        <span class="status-pill">{{ str_replace('_', ' ', ucfirst($order->status)) }}</span>
+                        <x-status-pill :status="$order->status" />
                         <a href="{{ route('orders.show', $order) }}">Lihat detail</a>
                     </div>
                 </article>

@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\WebiaAddonController;
 use App\Http\Controllers\Admin\WebiaOrderController as AdminWebiaOrderController;
 use App\Http\Controllers\Admin\WebiaPackageController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MidtransController;
 use App\Http\Controllers\WebiaOrderController;
 use App\Http\Controllers\WebsiteBisnis\TemplateCollectionController;
@@ -25,7 +27,7 @@ Route::middleware('guest')->group(function (): void {
 });
 
 Route::middleware('auth')->group(function (): void {
-    Route::view('/dashboard', 'dashboard')->name('dashboard');
+    Route::get('/dashboard', DashboardController::class)->name('dashboard');
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
     Route::get('/orders', [WebiaOrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/create', [WebiaOrderController::class, 'create'])->name('orders.create');
@@ -39,7 +41,7 @@ Route::middleware('auth')->group(function (): void {
     Route::post('/orders/{order}/business', [WebiaOrderController::class, 'saveBusinessData'])->middleware('throttle:10,1')->name('orders.business');
 
     Route::middleware('admin')->prefix('admin')->name('admin.')->group(function (): void {
-        Route::view('/', 'admin.dashboard')->name('dashboard');
+        Route::get('/', AdminDashboardController::class)->name('dashboard');
         Route::resource('packages', WebiaPackageController::class)->except('show');
         Route::resource('addons', WebiaAddonController::class)->except('show');
         Route::get('orders', [AdminWebiaOrderController::class, 'index'])->name('orders.index');
@@ -66,14 +68,12 @@ Route::view(
 )->name('webia.template.beauty.nailart.professional-softpink');
 Route::view('/webia/template/nail-art-professional-soft-pink/gallery', 'website-bisnis.templates.beauty.nailart.nailart-professional-softpink-gallery')->name('webia.template.beauty.nailart.professional-softpink.gallery');
 
-
 // WEBIA Template 02 — Nail Art Minimalist Sage Green
 Route::view(
     '/webia/template/nail-art-minimalist-sage-green',
     'website-bisnis.templates.beauty.nailart.nailart-minimalist-sagegreen'
 )->name('webia.template.beauty.nailart.minimalist-sagegreen');
 Route::view('/webia/template/nail-art-minimalist-sage-green/gallery', 'website-bisnis.templates.beauty.nailart.nailart-minimalist-sagegreen-gallery')->name('webia.template.beauty.nailart.minimalist-sagegreen.gallery');
-
 
 // WEBIA Template 03 — Luxury Yellow Sunshine
 Route::view(
@@ -94,13 +94,10 @@ Route::view(
     'website-bisnis.templates.automotive.dealer.automotive-dealer-vintage-collection'
 )->name('webia.template.automotive.dealer.vintage.collection');
 
-
-
 Route::view(
     '/webia/template/healthcare-dental-mint',
     'website-bisnis.templates.healthcare.dental.mint-dental-house'
 )->name('webia.template.healthcare-dental-mint');
-
 
 Route::view(
     '/webia/template/healthcare-dental-azure',
@@ -112,7 +109,6 @@ Route::view(
     '/webia/template/healthcare-dental-sunset',
     'website-bisnis.templates.healthcare.dental.sunset-dental-care'
 )->name('webia.template.healthcare-dental-sunset');
-
 
 // =====================================================
 // WEBIA - PET SHOP MINIMALIST GLACIER BLUE

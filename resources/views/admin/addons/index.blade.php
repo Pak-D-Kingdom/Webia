@@ -12,7 +12,7 @@
                 <article class="admin-list-item">
                     <div><h2>{{ $addon->name }}</h2><p>{{ $addon->price === null ? 'Konsultasi' : 'Rp'.number_format($addon->price, 0, ',', '.') }}</p></div>
                     <div class="list-item-meta">
-                        <span class="status-pill {{ $addon->is_active ? '' : 'status-pill-muted' }}">{{ $addon->is_active ? 'Aktif' : 'Nonaktif' }}</span>
+                        <span class="status-pill {{ $addon->is_active ? 'status-pill--success' : 'status-pill-muted' }}">{{ $addon->is_active ? 'Aktif' : 'Nonaktif' }}</span>
                         <div class="admin-actions">
                             <a href="{{ route('admin.addons.edit', $addon) }}">Ubah</a>
                             <form method="POST" action="{{ route('admin.addons.destroy', $addon) }}">@csrf @method('DELETE')<button type="submit">Hapus</button></form>

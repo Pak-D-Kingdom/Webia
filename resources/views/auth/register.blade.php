@@ -12,6 +12,11 @@
             <p class="account-label">Akun WEBIA</p>
             <h1 id="register-title">Buat akun customer</h1>
             <p>Gunakan akun ini untuk mengelola pesanan dan data website bisnis.</p>
+            <ul class="account-points">
+                <li>Pilih paket sesuai kebutuhan bisnis</li>
+                <li>Kirim pembayaran dari halaman pesanan</li>
+                <li>Pantau progres sampai website diserahkan</li>
+            </ul>
         </div>
 
         <form method="POST" action="{{ route('register') }}" class="account-form">

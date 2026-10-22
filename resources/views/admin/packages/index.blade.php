@@ -18,7 +18,7 @@
                         <p>Rp{{ number_format($package->price, 0, ',', '.') }}</p>
                     </div>
                     <div class="list-item-meta">
-                        <span class="status-pill {{ $package->is_active ? '' : 'status-pill-muted' }}">{{ $package->is_active ? 'Aktif' : 'Nonaktif' }}</span>
+                        <span class="status-pill {{ $package->is_active ? 'status-pill--success' : 'status-pill-muted' }}">{{ $package->is_active ? 'Aktif' : 'Nonaktif' }}</span>
                         <div class="admin-actions">
                             <a href="{{ route('admin.packages.edit', $package) }}">Ubah</a>
                             <form method="POST" action="{{ route('admin.packages.destroy', $package) }}">

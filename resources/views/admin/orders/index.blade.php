@@ -16,22 +16,34 @@
                 <a href="{{ route('admin.orders.index', array_filter(['status' => $activeStatus, 'delivery' => $delivery], fn ($v) => $v !== '')) }}" @if ($activeDelivery === $delivery) aria-current="page" @endif>{{ ucfirst(str_replace('_', ' ', $delivery)) }}</a>
             @endforeach
         </nav>
-        <div class="admin-list">
-            @forelse ($orders as $order)
-                <article class="admin-list-item">
-                    <div>
-                        <h2>{{ $order->order_number }}</h2>
-                        <p>{{ $order->user->name }} · {{ $order->package->name }}</p>
-                    </div>
-                    <div class="list-item-meta">
-                        <span class="status-pill">{{ str_replace('_', ' ', $order->status) }}</span>
-                        <span class="status-pill status-pill-muted">{{ str_replace('_', ' ', $order->delivery_status) }}</span>
-                        <a href="{{ route('admin.orders.show', $order) }}">Periksa</a>
-                    </div>
-                </article>
-            @empty
-                <div class="dashboard-empty" role="status"><h2>Belum ada pesanan</h2><p>Pesanan customer akan muncul di sini.</p></div>
-            @endforelse
+        <div class="admin-table-wrap">
+            <table class="admin-table">
+                <caption class="sr-only">Daftar pesanan customer</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">Pesanan</th>
+                        <th scope="col">Customer</th>
+                        <th scope="col">Paket</th>
+                        <th scope="col">Pembayaran</th>
+                        <th scope="col">Pengerjaan</th>
+                        <th scope="col"><span class="sr-only">Aksi</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($orders as $order)
+                        <tr>
+                            <th scope="row">{{ $order->order_number }}</th>
+                            <td data-label="Customer">{{ $order->user?->name ?? 'Akun dihapus' }}</td>
+                            <td data-label="Paket">{{ $order->package->name }}</td>
+                            <td data-label="Pembayaran"><x-status-pill :status="$order->status" /></td>
+                            <td data-label="Pengerjaan"><x-status-pill :status="$order->delivery_status" /></td>
+                            <td class="admin-table-action"><a href="{{ route('admin.orders.show', $order) }}">Periksa</a></td>
+                        </tr>
+                    @empty
+                        <tr><td colspan="6"><div class="dashboard-empty" role="status"><h2>Belum ada pesanan</h2><p>Pesanan customer akan muncul di sini.</p></div></td></tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
         {{ $orders->links('pagination.webia') }}
     </section>
