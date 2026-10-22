@@ -18,9 +18,10 @@
     @if ($isAdmin)
         <div class="admin-shell">
             <aside class="admin-sidebar" aria-label="Navigasi admin">
-                <a class="account-brand account-brand-inverse" href="{{ route('admin.dashboard') }}" aria-label="WEBIA panel admin">
+                <a class="account-brand account-brand-inverse" href="{{ route('admin.dashboard') }}">
                     <span aria-hidden="true">W</span>
                     <strong>WEBIA</strong>
+                    <span class="sr-only"> panel admin</span>
                 </a>
                 <p class="sidebar-label">Panel admin</p>
                 <nav class="sidebar-nav">
@@ -40,9 +41,10 @@
 
             <div class="admin-workspace">
                 <header class="account-header admin-topbar">
-                    <a class="account-brand admin-mobile-brand" href="{{ route('admin.dashboard') }}" aria-label="WEBIA panel admin">
+                    <a class="account-brand admin-mobile-brand" href="{{ route('admin.dashboard') }}">
                         <span aria-hidden="true">W</span>
                         <strong>WEBIA</strong>
+                        <span class="sr-only"> panel admin</span>
                     </a>
                     <p class="admin-context"><strong>Panel admin</strong><span>{{ auth()->user()->name }}</span></p>
                     <nav class="admin-mobile-nav" aria-label="Navigasi admin seluler">
@@ -60,9 +62,10 @@
         </div>
     @else
         <header class="account-header">
-            <a class="account-brand" href="{{ route('home') }}" aria-label="WEBIA kembali ke beranda">
+            <a class="account-brand" href="{{ route('home') }}">
                 <span aria-hidden="true">W</span>
                 <strong>WEBIA</strong>
+                <span class="sr-only"> kembali ke beranda</span>
             </a>
             @auth
                 <nav class="customer-nav" aria-label="Navigasi akun">
