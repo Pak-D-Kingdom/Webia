@@ -3,6 +3,7 @@
     --account-muted: #595679;
     --account-line: #e9e4f6;
     --account-line-strong: #cdc8e0;
+    --account-control-line: #77718f;
     --account-surface: #ffffff;
     --account-page: #fbf9ff;
     --account-lavender: #f4f1fc;
@@ -432,7 +433,7 @@ textarea {
     padding: 0.65rem 0.85rem;
     color: var(--account-ink);
     background: var(--account-surface);
-    border: 1px solid var(--account-line-strong);
+    border: 1px solid var(--account-control-line);
     border-radius: 0.5rem;
     transition: border-color 160ms ease-out, box-shadow 160ms ease-out;
 }
