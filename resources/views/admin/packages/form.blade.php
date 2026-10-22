@@ -7,6 +7,7 @@
 
 @section('content')
     <section class="dashboard-panel" aria-labelledby="package-form-title">
+        <p class="account-label">Master data</p>
         <h1 id="package-form-title">{{ $package->exists ? 'Ubah paket' : 'Tambah paket' }}</h1>
         <form class="account-form admin-form" method="POST" action="{{ $package->exists ? route('admin.packages.update', $package) : route('admin.packages.store') }}">
             @csrf

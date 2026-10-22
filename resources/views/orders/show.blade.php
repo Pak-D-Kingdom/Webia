@@ -11,7 +11,7 @@
         <h1 id="order-title">{{ $order->package->name }}</h1>
         @if (session('status')) <p role="status">{{ session('status') }}</p> @endif
         <div class="order-summary">
-            <dl><div><dt>Status</dt><dd>{{ str_replace('_', ' ', ucfirst($order->status)) }}</dd></div><div><dt>Total</dt><dd>Rp{{ number_format($order->total_price, 0, ',', '.') }}</dd></div></dl>
+            <dl><div><dt>Status</dt><dd><span class="status-pill">{{ str_replace('_', ' ', ucfirst($order->status)) }}</span></dd></div><div><dt>Total</dt><dd>Rp{{ number_format($order->total_price, 0, ',', '.') }}</dd></div></dl>
         </div>
 
         @php

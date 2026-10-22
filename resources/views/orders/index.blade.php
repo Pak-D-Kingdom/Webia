@@ -12,8 +12,14 @@
         <div class="admin-list">
             @forelse ($orders as $order)
                 <article class="admin-list-item">
-                    <div><h2>{{ $order->package->name }}</h2><p>{{ $order->order_number }} · {{ str_replace('_', ' ', ucfirst($order->status)) }}</p></div>
-                    <a href="{{ route('orders.show', $order) }}">Lihat detail</a>
+                    <div>
+                        <h2>{{ $order->package->name }}</h2>
+                        <p>{{ $order->order_number }}</p>
+                    </div>
+                    <div class="list-item-meta">
+                        <span class="status-pill">{{ str_replace('_', ' ', ucfirst($order->status)) }}</span>
+                        <a href="{{ route('orders.show', $order) }}">Lihat detail</a>
+                    </div>
                 </article>
             @empty
                 <div class="dashboard-empty" role="status"><h2>Belum ada pesanan</h2><p>Pilih paket dari halaman utama untuk memulai.</p><a class="account-submit" href="{{ route('home') }}#paket-website">Lihat paket</a></div>
