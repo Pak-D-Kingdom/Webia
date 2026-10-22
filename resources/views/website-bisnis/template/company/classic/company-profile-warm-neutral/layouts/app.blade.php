@@ -88,8 +88,13 @@
     $footerNav = array_chunk($nav, 4);
 
     /* ----- WhatsApp -------------------------------------------------------- */
+<<<<<<< HEAD
     $waBase = 'https://wa.me/' . preg_replace('/\D+/', '', $whatsapp['number'] ?? '');
     $waUrl  = $waBase . '?text=' . rawurlencode($whatsapp['message'] ?? '');
+=======
+    $waUrl = 'https://wa.me/' . preg_replace('/\D+/', '', $whatsapp['number'] ?? '')
+        . '?text=' . rawurlencode($whatsapp['message'] ?? '');
+>>>>>>> webia/nabiila-fe
 
     /* ----- AI Company FAQ -------------------------------------------------- */
     $faq = array_map(function (array $entry) use ($resolve) {

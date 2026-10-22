@@ -18,7 +18,11 @@
 
     <div class="cards cards--blog">
         @foreach ($posts as $post)
+<<<<<<< HEAD
             <article class="card card--link">
+=======
+            <article class="card">
+>>>>>>> webia/nabiila-fe
                 <div class="card__media card__media--blog media"><img src="{{ $img($post['image']) }}" alt="" loading="lazy" data-fallback></div>
                 <div class="card__body">
                     <p class="card__tag"><span>{{ $post['category'] }}</span><time>{{ $post['date'] }}</time></p>

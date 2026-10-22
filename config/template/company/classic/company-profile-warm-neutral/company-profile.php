@@ -70,7 +70,11 @@ return [
 
     // Tombol melayang (kanan bawah)
     'whatsapp' => [
+<<<<<<< HEAD
         'number'  => '62895630300345', // 0895630300345 (format internasional, tanpa 0 di depan)
+=======
+        'number'  => '6281234567890',
+>>>>>>> webia/nabiila-fe
         'message' => 'Halo Nusantara Kreasi, saya ingin berkonsultasi mengenai proyek saya.',
         'label'   => 'Chat WhatsApp',
     ],
@@ -84,11 +88,17 @@ return [
         'title'   => 'Formulir Penawaran',
         'intro'   => 'Ceritakan kebutuhan proyek Anda, kami siap membantu.',
         'note'    => 'Tim kami merespons dalam 1×24 jam kerja.',
+<<<<<<< HEAD
         'privacy' => 'Anda akan diarahkan ke WhatsApp untuk mengirim pesan ini.',
         'submit'  => 'Kirim via WhatsApp',
         'wa_greeting'   => 'Halo Nusantara Kreasi, saya ingin meminta penawaran.',
         'success_title' => 'Pesan siap dikirim',
         'success_text'  => 'WhatsApp akan terbuka dengan pesan yang sudah terisi. Tekan Kirim di WhatsApp agar pesan sampai ke tim kami.',
+=======
+        'privacy' => 'Data Anda aman dan hanya dipakai untuk menanggapi permintaan ini.',
+        'success_title' => 'Permintaan terkirim',
+        'success_text'  => 'Terima kasih! Tim kami akan segera menghubungi Anda untuk membahas kebutuhan proyek.',
+>>>>>>> webia/nabiila-fe
     ],
 
     'about' => [

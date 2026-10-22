@@ -338,7 +338,10 @@
         var submitBtn = $('.cp-form__submit', form);
         var submitText = $('.cp-form__submit-text', form);
         var submitLabel = submitText ? submitText.textContent : '';
+<<<<<<< HEAD
         var reopen = $('[data-cp-wa-reopen]');
+=======
+>>>>>>> webia/nabiila-fe
         var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
         // Susun isi pesan WhatsApp dari isian form, lalu kembalikan URL wa.me lengkap.
@@ -464,6 +467,7 @@
                 return;
             }
 
+<<<<<<< HEAD
             // Honeypot: bot mengisi kolom tersembunyi, tampilkan sukses tanpa membuka WhatsApp.
             var honey = form.elements.website;
             var isBot = !!(honey && honey.value);
@@ -481,15 +485,34 @@
             win.setTimeout(function () {
                 setLoading(false);
                 if (reopen && waUrl) { reopen.href = waUrl; }
+=======
+            // Honeypot: bot mengisi kolom tersembunyi, tampilkan sukses tanpa mengirim.
+            var honey = form.elements.website;
+            var isBot = !!(honey && honey.value);
+
+            var action = form.getAttribute('action');
+            if (!isBot && action && action !== '#') { setLoading(true); form.submit(); return; }
+
+            // Frontend statis: simulasi pengiriman singkat lalu tampilkan konfirmasi.
+            setLoading(true);
+            win.setTimeout(function () {
+                setLoading(false);
+>>>>>>> webia/nabiila-fe
                 resetForm();
                 if (success) {
                     form.hidden = true;
                     success.hidden = false;
                     success.focus({ preventScroll: true });
                 } else {
+<<<<<<< HEAD
                     setStatus('WhatsApp dibuka dengan pesan Anda. Tekan Kirim di WhatsApp untuk mengirimnya.', 'success');
                 }
             }, reduceMotion ? 0 : 500);
+=======
+                    setStatus('Terima kasih! Permintaan penawaran Anda telah kami terima.', 'success');
+                }
+            }, reduceMotion ? 0 : 700);
+>>>>>>> webia/nabiila-fe
         });
 
         if (resetBtn) {

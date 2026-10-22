@@ -60,7 +60,10 @@ return [
         ['label' => 'Property', 'route' => 'coral-peach.property', 'hash' => null, 'match' => 'coral-peach.property'],
         ['label' => 'About Us', 'route' => 'coral-peach.about',    'hash' => null, 'match' => 'coral-peach.about'],
         ['label' => 'Gallery',  'route' => 'coral-peach.gallery',  'hash' => null, 'match' => 'coral-peach.gallery'],
+<<<<<<< HEAD
         ['label' => 'Blog',     'route' => 'coral-peach.blog',     'hash' => null, 'match' => 'coral-peach.blog*'],
+=======
+>>>>>>> webia/nabiila-fe
         ['label' => 'Contact',  'route' => 'coral-peach.contact',  'hash' => null, 'match' => 'coral-peach.contact'],
     ],
 
@@ -233,6 +236,7 @@ return [
             ['value' => 'invest', 'label' => 'Investasi'],
         ],
         'posts' => [
+<<<<<<< HEAD
             [
                 'slug' => 'tips-memilih-rumah-pertama', 'cat' => 'tips', 'cat_label' => 'Tips Membeli', 'date' => '12 Okt 2026', 'read' => '5 menit', 'author' => 'Tim Coral Homes',
                 'image' => 'property-1.jpg', 'cover' => 'banner-house.jpg',
@@ -304,6 +308,20 @@ return [
                     ['type' => 'p', 'text' => 'Artikel ini bersifat informasi umum dan bukan nasihat keuangan. Konsultasikan rencana investasi Anda dengan penasihat keuangan, dan hubungi tim kami bila ingin berdiskusi tentang unit yang tersedia.'],
                 ],
             ],
+=======
+            ['slug' => 'tips-memilih-rumah-pertama', 'cat' => 'tips', 'cat_label' => 'Tips Membeli', 'date' => '12 Okt 2026', 'read' => '5 menit', 'image' => 'property-1.jpg',
+             'title' => '7 Tips Memilih Rumah Pertama agar Tidak Menyesal',
+             'excerpt' => 'Mulai dari lokasi, legalitas, hingga akses transportasi — inilah hal penting yang perlu dicek sebelum menandatangani akad.',
+             'body' => 'Pastikan Anda memeriksa legalitas (SHM/IMB), jarak ke tempat kerja dan sekolah, kualitas bangunan, serta rencana pengembangan kawasan. Hitung juga cicilan agar tidak melebihi sepertiga penghasilan bulanan.'],
+            ['slug' => 'desain-rumah-modern-tropis', 'cat' => 'desain', 'cat_label' => 'Desain & Interior', 'date' => '05 Okt 2026', 'read' => '4 menit', 'image' => 'gallery-main.jpg',
+             'title' => 'Desain Rumah Modern Tropis: Terang, Sejuk, dan Hangat',
+             'excerpt' => 'Jendela besar, material kayu, dan tanaman hijau membuat hunian terasa lapang tanpa bergantung pada pendingin ruangan.',
+             'body' => 'Gunakan ventilasi silang, overhang yang cukup untuk meredam panas, serta perpaduan material alami seperti kayu dan batu. Tambahkan tanaman indoor untuk suasana yang lebih segar.'],
+            ['slug' => 'properti-sebagai-investasi', 'cat' => 'invest', 'cat_label' => 'Investasi', 'date' => '28 Sep 2026', 'read' => '6 menit', 'image' => 'property-2.jpg',
+             'title' => 'Kenapa Properti Residensial Masih Jadi Investasi Favorit',
+             'excerpt' => 'Nilai aset yang cenderung naik dan potensi sewa menjadikan rumah pilihan investasi jangka panjang yang stabil.',
+             'body' => 'Pilih kawasan yang berkembang dengan akses infrastruktur baik. Perhatikan potensi kenaikan harga tanah, tingkat hunian sewa, dan biaya perawatan untuk menghitung imbal hasil yang realistis.'],
+>>>>>>> webia/nabiila-fe
         ],
     ],
 
