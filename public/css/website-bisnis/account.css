@@ -1907,6 +1907,133 @@ a {
     border-top: 1px solid var(--account-line);
 }
 
+.catalog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 0.9rem;
+    margin-top: 1.25rem;
+}
+
+.catalog-grid-narrow {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    max-width: 100%;
+}
+
+.catalog-grid > .dashboard-empty {
+    grid-column: 1 / -1;
+}
+
+.catalog-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1.1rem;
+    border: 1px solid var(--account-line);
+    border-radius: var(--account-radius-lg);
+    background: var(--account-surface);
+    box-shadow: var(--account-shadow);
+}
+
+.catalog-card-off {
+    opacity: 0.65;
+}
+
+.catalog-card header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.catalog-card h2 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--account-action);
+}
+
+.catalog-price {
+    margin: 0;
+    color: var(--account-action);
+    font-size: 1.15rem;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+}
+
+.catalog-price s {
+    margin-left: 0.25rem;
+    color: var(--account-muted);
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.catalog-card ul {
+    margin: 0;
+    padding-left: 1.1rem;
+    color: var(--account-muted);
+    font-size: 0.8rem;
+}
+
+.catalog-card ul li + li {
+    margin-top: 0.2rem;
+}
+
+.catalog-card footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-top: auto;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--account-line);
+}
+
+.catalog-card footer a {
+    color: var(--account-action);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.catalog-card footer a:hover {
+    text-decoration: underline;
+}
+
+.catalog-card footer form {
+    margin: 0;
+}
+
+.catalog-card footer button {
+    height: 28px;
+    padding: 0 0.6rem;
+    border: 0;
+    border-radius: 0.4rem;
+    cursor: pointer;
+    color: var(--account-error);
+    background: #ffdad6;
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.catalog-add {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    height: 38px;
+    padding: 0 1rem;
+    border-radius: 10px;
+    color: #fff;
+    background: var(--account-action);
+    font-size: 0.88rem;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 8px 20px rgba(26, 20, 107, 0.25);
+}
+
+.catalog-add:hover {
+    background: var(--account-action-hover);
+}
+
 @media (max-width: 700px) {
     .dash-reject-form input {
         width: 7rem;
