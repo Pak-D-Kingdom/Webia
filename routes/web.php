@@ -59,7 +59,7 @@ Route::middleware('auth')->group(function (): void {
 Route::get(
     '/webia/koleksi',
     [TemplateCollectionController::class, 'index']
-)->name('webia.collections');
+)->name('collections');
 
 Route::view(
     '/webia/template/aurumco-catering',
