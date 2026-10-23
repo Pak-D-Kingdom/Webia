@@ -2038,3 +2038,98 @@ a {
         transform: none;
     }
 }
+
+/* ==== Polish shell admin: layout, ikon, avatar ==== */
+
+.admin-page-stack {
+    display: grid;
+    gap: 1.25rem;
+}
+
+.sidebar-nav a {
+    gap: 0.6rem;
+}
+
+.sidebar-nav .material-symbols-outlined {
+    font-size: 1.2rem;
+    line-height: 1;
+}
+
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+}
+
+.brand-copy {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+    min-width: 0;
+}
+
+.brand-copy strong {
+    color: #ffffff;
+}
+
+.brand-copy small {
+    color: #ded8e9;
+    white-space: nowrap;
+    font-weight: 600;
+}
+
+.account-avatar {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    flex-shrink: 0;
+    border-radius: 50%;
+    color: #ffffff;
+    background: var(--account-action-hover);
+    font-weight: 800;
+    letter-spacing: 0.02em;
+}
+
+.admin-topbar-account {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.admin-topbar-account .account-avatar {
+    width: 1.9rem;
+    height: 1.9rem;
+}
+
+.sidebar-account-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-width: 0;
+    margin-bottom: 0.6rem;
+}
+
+.sidebar-account-row .account-avatar {
+    width: 2.1rem;
+    height: 2.1rem;
+    margin: 0;
+    background: rgba(255, 255, 255, 0.16);
+}
+
+.sidebar-account-row .sidebar-account-name {
+    display: grid;
+    margin: 0;
+    min-width: 0;
+    color: #ffffff;
+    line-height: 1.25;
+}
+
+.sidebar-account-row .sidebar-account-name strong {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.sidebar-account-row .sidebar-account-name small {
+    color: #ded8e9;
+    font-weight: 600;
+}

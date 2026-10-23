@@ -16,6 +16,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0,0&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/website-bisnis/account.css') }}">
     <script src="{{ asset('js/website-bisnis/account.js') }}" defer></script>
 @endif
@@ -44,20 +45,22 @@
                 </div>
                 <p class="sidebar-label">Ringkasan</p>
                 <nav class="sidebar-nav">
-                    <a href="{{ route('admin.dashboard') }}" @if (request()->routeIs('admin.dashboard')) aria-current="page" @endif><span aria-hidden="true">⌂</span>Ringkasan</a>
+                    <a href="{{ route('admin.dashboard') }}" @if (request()->routeIs('admin.dashboard')) aria-current="page" @endif><span class="material-symbols-outlined" aria-hidden="true">space_dashboard</span>Ringkasan</a>
                 </nav>
                 <p class="sidebar-label">Operasional</p>
                 <nav class="sidebar-nav">
-                    <a href="{{ route('admin.orders.index') }}" @if (request()->routeIs('admin.orders.*')) aria-current="page" @endif><span aria-hidden="true">▣</span>Pesanan</a>
+                    <a href="{{ route('admin.orders.index') }}" @if (request()->routeIs('admin.orders.*')) aria-current="page" @endif><span class="material-symbols-outlined" aria-hidden="true">receipt_long</span>Pesanan</a>
                 </nav>
                 <p class="sidebar-label">Master data</p>
                 <nav class="sidebar-nav">
-                    <a href="{{ route('admin.packages.index') }}" @if (request()->routeIs('admin.packages.*')) aria-current="page" @endif><span aria-hidden="true">◇</span>Paket layanan</a>
-                    <a href="{{ route('admin.addons.index') }}" @if (request()->routeIs('admin.addons.*')) aria-current="page" @endif><span aria-hidden="true">✚</span>Add-on</a>
+                    <a href="{{ route('admin.packages.index') }}" @if (request()->routeIs('admin.packages.*')) aria-current="page" @endif><span class="material-symbols-outlined" aria-hidden="true">workspace_premium</span>Paket layanan</a>
+                    <a href="{{ route('admin.addons.index') }}" @if (request()->routeIs('admin.addons.*')) aria-current="page" @endif><span class="material-symbols-outlined" aria-hidden="true">add_circle</span>Add-on</a>
                 </nav>
                 <div class="sidebar-account">
-                    <span class="account-avatar" aria-hidden="true">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</span>
-                    <span class="sidebar-account-name"><strong>{{ auth()->user()->name }}</strong><small>Admin WEBIA</small></span>
+                    <div class="sidebar-account-row">
+                        <span class="account-avatar" aria-hidden="true">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</span>
+                        <span class="sidebar-account-name"><strong>{{ auth()->user()->name }}</strong><small>Administrator</small></span>
+                    </div>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit">Keluar</button>

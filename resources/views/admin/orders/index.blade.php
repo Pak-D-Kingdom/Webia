@@ -3,7 +3,7 @@
 @section('title', 'Daftar Pesanan')
 
 @section('content')
-    <section class="dashboard-panel" aria-labelledby="admin-orders-title">
+    <section class="admin-page-stack" aria-labelledby="admin-orders-title">
         <header class="dash-header">
             <div>
                 <p class="account-label">Operasional</p>
