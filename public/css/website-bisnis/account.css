@@ -1841,6 +1841,18 @@ a {
     text-align: right;
 }
 
+.orders-top-link {
+    flex-shrink: 0;
+    color: var(--account-action);
+    font-size: 0.88rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.orders-top-link:hover {
+    text-decoration: underline;
+}
+
 @media (max-width: 700px) {
     .dash-reject-form input {
         width: 7rem;
