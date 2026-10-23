@@ -394,6 +394,24 @@ class WebiaTemplateSeeder extends Seeder
                 'is_active' => true,
                 'sort_order' => 21,
             ],
+            [
+                'name' => 'Laut Biru Seafood',
+                'slug' => 'laut-biru-seafood',
+                'category_slug' => 'fnb',
+                'category_label' => 'F&B',
+                'business_types' => ['Restaurant', 'Seafood Restaurant'],
+                'design_style' => 'Modern',
+                'color_theme' => 'Ocean Blue & Aqua',
+                'description' => 'Website restoran seafood modern dengan menu interaktif, promo, jam operasional, reservasi WhatsApp, dan asisten FAQ.',
+                'preview_style' => 'preview-cafe',
+                'eyebrow' => 'SEAFOOD SEGAR · LANGSUNG DARI DERMAGA',
+                'headline' => 'Seafood segar,<br>langsung ke meja Anda.',
+                'tag' => 'F&B · Restaurant · Seafood Modern',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/laut-biru-seafood',
+                'is_active' => true,
+                'sort_order' => 22,
+            ],
 
 
             [

@@ -87,6 +87,12 @@ Route::view(
 )->name('webia.template.beauty.nailart.luxury-yellowsunshine');
 Route::view('/webia/template/nail-art-luxury-yellow-sunshine/gallery', 'website-bisnis.templates.beauty.nailart.nailart-luxury-yellowsunshine-gallery')->name('webia.template.beauty.nailart.luxury-yellowsunshine.gallery');
 
+// WEBIA — Laut Biru Seafood Restaurant
+Route::view(
+    '/webia/template/laut-biru-seafood',
+    'website-bisnis.templates.fnb.restaurant.laut-biru-seafood'
+)->name('webia.template.fnb.restaurant.laut-biru-seafood');
+
 // WEBIA template 4 — Automotive Dealer Vintage (Heritage Motors)
 Route::view(
     '/webia/template/automotive-dealer-vintage',
