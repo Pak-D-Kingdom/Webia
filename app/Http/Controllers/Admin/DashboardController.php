@@ -61,9 +61,9 @@ class DashboardController extends Controller
             'attention' => WebiaOrder::where('status', 'payment_uploaded')
                 ->with(['package', 'user'])
                 ->latest()
-                ->take(3)
+                ->take(4)
                 ->get(),
-            'recent' => WebiaOrder::with(['package', 'user'])->latest()->take(5)->get(),
+            'recent' => WebiaOrder::with(['package', 'user', 'template'])->latest()->take(5)->get(),
             'counts' => $counts,
             'chart' => $chart,
             'prevChart' => $prevChart,
@@ -72,6 +72,7 @@ class DashboardController extends Controller
             'revenueDelta' => $revenuePrevMonth > 0 ? round(($revenueMonth - $revenuePrevMonth) / $revenuePrevMonth * 100, 1) : null,
             'paidCount30' => $paidCount30,
             'createdCount30' => $createdCount30,
+            'newYesterday' => WebiaOrder::whereDate('created_at', now()->subDay())->count(),
             'totalOrders' => WebiaOrder::count(),
         ]);
     }
