@@ -1415,63 +1415,6 @@ a {
 
 /* ==== Admin dashboard (ala Stitch "Operational Dashboard") ==== */
 
-.dash-header {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 0.75rem;
-}
-
-.dash-header h1 {
-    margin: 0.5rem 0 0;
-    font-size: 1.7rem;
-    font-weight: 800;
-}
-
-.dash-lede {
-    margin: 0.35rem 0 0;
-    color: var(--account-muted);
-    max-width: 60ch;
-}
-
-.dash-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin: 0;
-    padding: 0.25rem 0.75rem;
-    border-radius: 999px;
-    font-size: 0.7rem;
-    font-weight: 800;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--account-teal);
-    background: var(--account-mint);
-}
-
-.dash-pill span {
-    width: 0.45rem;
-    height: 0.45rem;
-    border-radius: 50%;
-    background: var(--account-teal);
-    animation: dash-pulse 2s infinite;
-}
-
-@keyframes dash-pulse {
-    50% {
-        opacity: 0.35;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    @keyframes dash-pulse {
-        50% {
-            opacity: 1;
-        }
-    }
-}
-
 .dash-kpis {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
@@ -2169,37 +2112,50 @@ a {
     padding-bottom: 0.9rem;
 }
 
-.admin-sidebar .brand-copy strong {
-    color: var(--account-action);
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    min-height: 44px;
+    text-decoration: none;
 }
 
-.admin-sidebar .brand-copy small:first-child,
-.brand-copy-top small {
+.sidebar-brand-tile {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    flex-shrink: 0;
+    border-radius: 0.55rem;
     color: #fff;
-    background: var(--account-primary-container, var(--account-action-hover));
-    border-radius: 0.25rem;
-    padding: 0.05rem 0.3rem;
-    font-size: 0.6rem;
-    letter-spacing: 0.06em;
+    background: var(--account-action);
+    font-weight: 800;
 }
 
 .brand-copy-top {
     display: flex;
     align-items: center;
-    gap: 0.3rem;
+    gap: 0.35rem;
 }
 
-.brand-copy-top small {
-    color: #fff !important;
+.admin-sidebar .brand-copy strong {
+    color: var(--account-action);
+    font-size: 1rem;
+}
+
+.brand-copy-top .brand-badge {
+    padding: 0.08rem 0.35rem;
+    border-radius: 0.25rem;
+    color: #fff;
+    background: var(--account-action-hover);
+    font-size: 0.6rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
 }
 
 .admin-sidebar .brand-copy small:last-child {
     color: var(--account-muted);
     font-weight: 600;
-}
-
-.account-brand-admin {
-    color: var(--account-ink);
 }
 
 .sidebar-account {
@@ -2407,6 +2363,7 @@ a {
     cursor: pointer;
     font-weight: 700;
     font-size: 0.8rem;
+    text-decoration: none;
 }
 
 .ops-refresh:hover {

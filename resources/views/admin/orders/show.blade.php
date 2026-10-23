@@ -1,18 +1,15 @@
 @extends('auth.layout')
 
 @section('title', $order->order_number)
-@section('header-action')
-    <a class="account-header-link" href="{{ route('admin.orders.index') }}">Daftar pesanan</a>
-@endsection
 
 @section('content')
-    <header class="dash-header">
-        <div>
-            <p class="dash-pill"><span aria-hidden="true"></span> {{ $order->order_number }}</p>
+    <header class="ops-header">
+        <div class="ops-header-copy">
+            <span class="ops-pill"><span aria-hidden="true"></span> {{ $order->order_number }}</span>
             <h1 id="admin-order-title">{{ $order->user?->name ?? 'Akun dihapus' }}</h1>
-            <p class="dash-lede">{{ $order->package_snapshot['name'] ?? $order->package->name }} — total Rp {{ number_format($order->total_price, 0, ',', '.') }}</p>
+            <p>{{ $order->package_snapshot['name'] ?? $order->package->name }} — total Rp {{ number_format($order->total_price, 0, ',', '.') }}</p>
         </div>
-        <x-status-pill :status="$order->status" />
+        <div class="ops-actionbar"><x-status-pill :status="$order->status" /></div>
     </header>
 
     @if (session('status')) <p role="status">{{ session('status') }}</p> @endif

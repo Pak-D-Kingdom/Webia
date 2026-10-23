@@ -37,13 +37,13 @@
         <aside class="admin-sidebar" id="admin-sidebar" aria-label="Navigasi admin">
             <div>
                 <div class="sidebar-brand-row">
-                    <div class="account-brand account-brand-admin" href="{{ route('admin.dashboard') }}">
-                        <span aria-hidden="true">W</span>
+                    <a class="sidebar-brand" href="{{ route('admin.dashboard') }}">
+                        <span class="sidebar-brand-tile" aria-hidden="true">W</span>
                         <span class="brand-copy">
-                            <span class="brand-copy-top"><strong>WEBIA</strong><small>ADMIN</small></span>
+                            <span class="brand-copy-top"><strong>WEBIA</strong><small class="brand-badge">ADMIN</small></span>
                             <small>Template Marketplace</small>
                         </span>
-                    </div>
+                    </a>
                     <button class="sidebar-close" type="button" data-sidebar-close aria-label="Tutup navigasi">×</button>
                 </div>
                 <nav class="sidebar-nav">

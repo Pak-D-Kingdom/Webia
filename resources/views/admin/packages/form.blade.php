@@ -1,14 +1,20 @@
 @extends('auth.layout')
 
 @section('title', $package->exists ? 'Ubah paket' : 'Tambah paket')
-@section('header-action')
-    <a class="account-header-link" href="{{ route('admin.packages.index') }}">Kembali</a>
-@endsection
 
 @section('content')
-    <section class="dashboard-panel" aria-labelledby="package-form-title">
-        <p class="account-label">Master data</p>
-        <h1 id="package-form-title">{{ $package->exists ? 'Ubah paket' : 'Tambah paket' }}</h1>
+    <header class="ops-header">
+        <div class="ops-header-copy">
+            <span class="ops-pill"><span aria-hidden="true"></span> Master data</span>
+            <h1 id="package-form-title">{{ $package->exists ? 'Ubah paket' : 'Tambah paket' }}</h1>
+            <p>Atur nama, harga, kuota chatbot, dan fitur yang tampil di katalog.</p>
+        </div>
+        <div class="ops-actionbar">
+            <a class="ops-refresh" href="{{ route('admin.packages.index') }}"><span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>Kembali</a>
+        </div>
+    </header>
+
+    <section class="dashboard-panel">
         <form class="account-form admin-form" method="POST" action="{{ $package->exists ? route('admin.packages.update', $package) : route('admin.packages.store') }}">
             @csrf
             @if ($package->exists) @method('PUT') @endif

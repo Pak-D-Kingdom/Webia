@@ -4,13 +4,12 @@
 
 @section('content')
     <section class="admin-page-stack" aria-labelledby="admin-orders-title">
-        <header class="dash-header">
-            <div>
-                <p class="account-label">Operasional</p>
+        <header class="ops-header">
+            <div class="ops-header-copy">
+                <span class="ops-pill"><span aria-hidden="true"></span> Operasional</span>
                 <h1 id="admin-orders-title">Daftar Pesanan</h1>
-                <p class="dash-lede">{{ $orders->total() }} pesanan; filter per status pembayaran &amp; pengerjaan.</p>
+                <p>{{ $orders->total() }} pesanan; filter per status pembayaran &amp; pengerjaan.</p>
             </div>
-            <a class="orders-top-link" href="{{ route('admin.dashboard') }}">← Dashboard</a>
         </header>
 
         <nav class="admin-filter" aria-label="Filter status pembayaran">

@@ -3,13 +3,15 @@
 @section('title', 'Paket Lisensi')
 
 @section('content')
-    <header class="dash-header">
-        <div>
-            <p class="account-label">Master data</p>
+    <header class="ops-header">
+        <div class="ops-header-copy">
+            <span class="ops-pill"><span aria-hidden="true"></span> Master data</span>
             <h1 id="packages-title">Paket Lisensi</h1>
-            <p class="dash-lede">{{ $packages->count() }} paket; harga &amp; kuota chatbot yang ditawarkan saat pemesanan.</p>
+            <p>{{ $packages->count() }} paket; harga &amp; kuota chatbot yang ditawarkan saat pemesanan.</p>
         </div>
-        <a class="catalog-add" href="{{ route('admin.packages.create') }}">+ Tambah paket</a>
+        <div class="ops-actionbar">
+            <a class="ops-refresh" href="{{ route('admin.packages.create') }}"><span class="material-symbols-outlined" aria-hidden="true">add</span>Tambah paket</a>
+        </div>
     </header>
 
     @if (session('status'))

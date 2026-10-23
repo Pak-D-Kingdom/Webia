@@ -3,13 +3,15 @@
 @section('title', 'Add-on')
 
 @section('content')
-    <header class="dash-header">
-        <div>
-            <p class="account-label">Master data</p>
+    <header class="ops-header">
+        <div class="ops-header-copy">
+            <span class="ops-pill"><span aria-hidden="true"></span> Master data</span>
             <h1 id="addons-title">Add-on Layanan</h1>
-            <p class="dash-lede">{{ $addons->count() }} layanan tambahan yang bisa di-tambahkan ke pesanan.</p>
+            <p>{{ $addons->count() }} layanan tambahan yang bisa di-tambahkan ke pesanan.</p>
         </div>
-        <a class="catalog-add" href="{{ route('admin.addons.create') }}">+ Tambah add-on</a>
+        <div class="ops-actionbar">
+            <a class="ops-refresh" href="{{ route('admin.addons.create') }}"><span class="material-symbols-outlined" aria-hidden="true">add</span>Tambah add-on</a>
+        </div>
     </header>
 
     @if (session('status'))
