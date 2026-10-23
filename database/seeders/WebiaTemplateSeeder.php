@@ -227,6 +227,7 @@ class WebiaTemplateSeeder extends Seeder
                 'is_active' => true,
                 'sort_order' => 12,
             ],
+           
             [
                 'name' => 'Blush Nail Studio',
                 'slug' => 'nailart-professional-softpink',
@@ -393,6 +394,65 @@ class WebiaTemplateSeeder extends Seeder
                 'is_active' => true,
                 'sort_order' => 21,
             ],
+
+
+            [
+                'name' => 'PetBase — Pet Shop Corporate Plum Velvet',
+                'slug' => 'petshop-corporate-plumvelvet',
+                'category_slug' => 'pet-animal-service',
+                'category_label' => 'Pet & Animal Services',
+                'business_types' => ['Pet Shop'],
+                'design_style' => 'Corporate',
+                'color_theme' => 'Plum Velvet — Deep Plum, Velvet Purple, Lavender & Ivory',
+                'description' => 'Website pet shop profesional dengan hero banner, kategori makanan dan perlengkapan hewan, katalog produk, detail produk, harga dan spesifikasi, brand listings, informasi ketersediaan produk, promo, pemesanan grosir, lokasi toko, jam operasional, panduan pemesanan, FAQ, WhatsApp, dan antarmuka chatbot AI untuk informasi produk, ketersediaan stok, pesanan grosir, serta pertanyaan pemesanan.',
+                'preview_style' => 'preview-petshop-plumvelvet',
+                'eyebrow' => 'TRUSTED ESSENTIALS FOR EVERY PET',
+                'headline' => 'Better Care. Happier Paws.',
+                'tag' => 'Pet & Animal Services · Pet Shop · Corporate',
+                'preview_folder' => 'pet-animal-service/petshop/plumvelvet',
+                'template_url' => '/webia/template/petshop-corporate-plumvelvet',
+                'is_active' => true,
+                'sort_order' => 22,
+            ],
+
+            [
+                'name' => 'Burgundy Moments — Event Organizer Modern Burgundy Wine',
+                'slug' => 'event-organizer-modern-burgundy-wine',
+                'category_slug' => 'wedding-event',
+                'category_label' => 'Wedding & Event',
+                'business_types' => ['Event Organizer'],
+                'design_style' => 'Modern',
+                'color_theme' => 'Burgundy Wine — Burgundy Wine, Warm Ivory, Champagne Beige & Espresso Charcoal',
+                'description' => 'Website event organizer modern untuk layanan wedding, corporate event, private celebration, dan acara spesial. Dilengkapi showcase layanan, paket dan harga, galeri portfolio, pilihan venue dan dekorasi, proses perencanaan, testimoni klien, form inquiry, FAQ, WhatsApp, dan tombol AI chatbot floating.',
+                'preview_style' => 'preview-event-organizer-burgundy-wine',
+                'eyebrow' => 'YOUR VISION, BEAUTIFULLY PLANNED',
+                'headline' => 'Every celebration deserves to be unforgettable.',
+                'tag' => 'Wedding & Event · Event Organizer · Modern',
+                'preview_folder' => 'wedding-event/event-organizer/burgundy-wine',
+                'template_url' => '/webia/template/event-organizer-modern-burgundy-wine',
+                'is_active' => true,
+                'sort_order' => 23,
+            ],
+
+            [
+                'name' => 'Ruby Luxe — Catering & Wedding Cake Minimalist Ruby Luxe',
+                'slug' => 'catering-wedding-cake-minimalist-ruby-luxe',
+                'category_slug' => 'wedding-event',
+                'category_label' => 'Wedding & Event',
+                'business_types' => ['Catering & Wedding Cake'],
+                'design_style' => 'Minimalist',
+                'color_theme' => 'Ruby Luxe — Ruby Red, Wine Red & Warm Ivory',
+                'description' => 'Website catering dan wedding cake bergaya minimalist luxury dengan katalog menu catering, galeri wedding cake, kategori paket, informasi harga, pilihan ukuran dan rasa kue, konsultasi kapasitas catering, custom cake order, informasi food tasting, testimoni pelanggan, form inquiry WhatsApp, informasi area pengiriman, FAQ, dan tombol AI chatbot floating.',
+                'preview_style' => 'preview-catering-wedding-cake-ruby-luxe',
+                'eyebrow' => 'MADE FOR YOUR MOST SPECIAL DAYS',
+                'headline' => 'Beautifully served. Sweetly remembered.',
+                'tag' => 'Wedding & Event · Catering & Wedding Cake · Minimalist',
+                'preview_folder' => 'wedding-event/catering-wedding-cake/ruby-luxe',
+                'template_url' => '/webia/template/catering-wedding-cake-ruby-luxe',
+                'is_active' => true,
+                'sort_order' => 24,
+            ],
+
 
         ];
 
