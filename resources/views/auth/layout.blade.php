@@ -15,7 +15,7 @@
 @else
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0,0&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/website-bisnis/account.css') }}">
     <script src="{{ asset('js/website-bisnis/account.js') }}" defer></script>
@@ -34,56 +34,62 @@
     <a class="skip-link" href="#main-content">Lewati ke konten</a>
 
     @if ($isAdmin)
-        <div class="admin-shell">
-            <aside class="admin-sidebar" id="admin-sidebar" aria-label="Navigasi admin">
+        <aside class="admin-sidebar" id="admin-sidebar" aria-label="Navigasi admin">
+            <div>
                 <div class="sidebar-brand-row">
-                    <a class="account-brand account-brand-admin" href="{{ route('admin.dashboard') }}">
+                    <div class="account-brand account-brand-admin" href="{{ route('admin.dashboard') }}">
                         <span aria-hidden="true">W</span>
-                        <span class="brand-copy"><strong>WEBIA</strong><small>Portal administrasi</small></span>
-                    </a>
+                        <span class="brand-copy">
+                            <span class="brand-copy-top"><strong>WEBIA</strong><small>ADMIN</small></span>
+                            <small>Template Marketplace</small>
+                        </span>
+                    </div>
                     <button class="sidebar-close" type="button" data-sidebar-close aria-label="Tutup navigasi">×</button>
                 </div>
-                <p class="sidebar-label">Ringkasan</p>
                 <nav class="sidebar-nav">
-                    <a href="{{ route('admin.dashboard') }}" @if (request()->routeIs('admin.dashboard')) aria-current="page" @endif><span class="material-symbols-outlined" aria-hidden="true">space_dashboard</span>Ringkasan</a>
+                    <a href="{{ route('admin.dashboard') }}" @if (request()->routeIs('admin.dashboard')) aria-current="page" @endif><span class="material-symbols-outlined" aria-hidden="true">grid_view</span>Dashboard</a>
+                    <a href="{{ route('admin.orders.index') }}" @if (request()->routeIs('admin.orders.*')) aria-current="page" @endif><span class="material-symbols-outlined" aria-hidden="true">shopping_bag</span>Pesanan</a>
+                    <a href="{{ route('admin.packages.index') }}" @if (request()->routeIs('admin.packages.*')) aria-current="page" @endif><span class="material-symbols-outlined" aria-hidden="true">inventory_2</span>Paket</a>
+                    <a href="{{ route('admin.addons.index') }}" @if (request()->routeIs('admin.addons.*')) aria-current="page" @endif><span class="material-symbols-outlined" aria-hidden="true">extension</span>Add-on</a>
                 </nav>
-                <p class="sidebar-label">Operasional</p>
-                <nav class="sidebar-nav">
-                    <a href="{{ route('admin.orders.index') }}" @if (request()->routeIs('admin.orders.*')) aria-current="page" @endif><span class="material-symbols-outlined" aria-hidden="true">receipt_long</span>Pesanan</a>
-                </nav>
-                <p class="sidebar-label">Master data</p>
-                <nav class="sidebar-nav">
-                    <a href="{{ route('admin.packages.index') }}" @if (request()->routeIs('admin.packages.*')) aria-current="page" @endif><span class="material-symbols-outlined" aria-hidden="true">workspace_premium</span>Paket layanan</a>
-                    <a href="{{ route('admin.addons.index') }}" @if (request()->routeIs('admin.addons.*')) aria-current="page" @endif><span class="material-symbols-outlined" aria-hidden="true">add_circle</span>Add-on</a>
-                </nav>
-                <div class="sidebar-account">
-                    <div class="sidebar-account-row">
-                        <span class="account-avatar" aria-hidden="true">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</span>
-                        <span class="sidebar-account-name"><strong>{{ auth()->user()->name }}</strong><small>Administrator</small></span>
-                    </div>
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit">Keluar</button>
-                    </form>
-                </div>
-            </aside>
-            <button class="sidebar-scrim" type="button" data-sidebar-close aria-label="Tutup navigasi"></button>
-
-            <div class="admin-workspace">
-                <header class="account-header admin-topbar">
-                    <button class="sidebar-toggle" type="button" data-sidebar-toggle aria-controls="admin-sidebar" aria-expanded="false">Menu</button>
-                    <p class="admin-context"><span>Portal Admin</span><b>/</b><strong>@yield('title')</strong></p>
-                    <div class="admin-topbar-account">
-                        <span class="account-avatar" aria-hidden="true">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</span>
-                        <strong>{{ auth()->user()->name }}</strong>
-                    </div>
-                    <div class="header-actions">@yield('header-action')</div>
-                </header>
-                <main id="main-content" class="account-main admin-main">
-                    @yield('content')
-                </main>
             </div>
+            <div class="sidebar-account">
+                <form class="sidebar-logout" method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit"><span class="material-symbols-outlined" aria-hidden="true">logout</span>Keluar</button>
+                </form>
+                <div class="sidebar-account-row">
+                    <span class="account-avatar" aria-hidden="true">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</span>
+                    <span class="sidebar-account-name">
+                        <span>{{ auth()->user()->name }}</span>
+                        <small>Administrator</small>
+                    </span>
+                </div>
+            </div>
+        </aside>
+        <button class="sidebar-scrim" type="button" data-sidebar-close aria-label="Tutup navigasi"></button>
+
+        <div class="admin-workspace">
+            <header class="account-header admin-topbar">
+                <button class="sidebar-toggle" type="button" data-sidebar-toggle aria-controls="admin-sidebar" aria-expanded="false">Menu</button>
+                <p class="admin-context"><span>Admin</span><b>/</b><strong>@yield('title')</strong></p>
+                <div class="admin-topbar-account">
+                    <span class="account-avatar" aria-hidden="true">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</span>
+                    <strong>{{ auth()->user()->name }}</strong>
+                </div>
+                <div class="header-actions">@yield('header-action')</div>
+            </header>
+            <main id="main-content" class="account-main admin-main">
+                @yield('content')
+            </main>
         </div>
+
+        <nav class="admin-mobile-nav" aria-label="Navigasi admin mobile">
+            <a href="{{ route('admin.dashboard') }}" @if (request()->routeIs('admin.dashboard')) aria-current="page" @endif>Dashboard</a>
+            <a href="{{ route('admin.orders.index') }}" @if (request()->routeIs('admin.orders.*')) aria-current="page" @endif>Pesanan</a>
+            <a href="{{ route('admin.packages.index') }}" @if (request()->routeIs('admin.packages.*')) aria-current="page" @endif>Paket</a>
+            <a href="{{ route('admin.addons.index') }}" @if (request()->routeIs('admin.addons.*')) aria-current="page" @endif>Add-on</a>
+        </nav>
     @else
         <header class="account-header customer-header">
             @guest

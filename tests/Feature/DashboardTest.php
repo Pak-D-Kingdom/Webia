@@ -59,12 +59,7 @@ class DashboardTest extends TestCase
             ->assertOk()
             ->assertSee('WEB-VERIFY')
             ->assertViewHas('attention', fn ($orders): bool => $orders->contains($verification))
-            ->assertViewHas('counts', [
-                'verification' => 1,
-                'in_progress' => 1,
-                'active' => 2,
-                'delivered' => 1,
-            ]);
+            ->assertViewHas('counts', fn ($c): bool => $c['verification'] === 1 && $c['in_progress'] === 1 && $c['new_today'] === 3);
     }
 
     public function test_admin_dashboard_sums_verified_revenue_within_last_30_days(): void
@@ -84,7 +79,7 @@ class DashboardTest extends TestCase
         $this->actingAs($admin)
             ->get(route('admin.dashboard'))
             ->assertOk()
-            ->assertSee('Pendapatan 30 hari')
+            ->assertSee('Pendapatan Bulan Ini')
             ->assertSee('Rp 150.000');
     }
 
