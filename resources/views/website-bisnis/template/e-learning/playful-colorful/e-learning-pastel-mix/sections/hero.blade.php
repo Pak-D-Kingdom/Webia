@@ -29,13 +29,11 @@
                 @endforeach
             </ul>
 
-            <form class="search search--hero" action="{{ route($rp.'programs') }}" method="get" role="search">
-                <div class="search__box">
-                    <span class="search__ico" aria-hidden="true"><i class="bi bi-search"></i></span>
-                    <label class="sr-only" for="hero-q">Cari kursus</label>
-                    <input id="hero-q" class="search__input" type="search" name="q" placeholder="{{ $t['hero']['search_placeholder'] }}" autocomplete="off" data-suggest>
-                    <button class="search__btn" type="submit"><span>Cari</span><i class="bi bi-arrow-right" aria-hidden="true"></i></button>
-                </div>
+            <form class="hero__search" action="{{ route($rp.'programs') }}" method="get" role="search">
+                <i class="bi bi-search" aria-hidden="true"></i>
+                <label class="sr-only" for="hero-q">Cari kursus</label>
+                <input id="hero-q" type="search" name="q" placeholder="{{ $t['hero']['search_placeholder'] }}" autocomplete="off">
+                <button class="go-btn go-btn--primary" type="submit" aria-label="Cari kursus"><i class="bi bi-arrow-right" aria-hidden="true"></i></button>
             </form>
         </div>
 

@@ -9,6 +9,6 @@
 @section('page', 'member-area')
 
 @section('content')
-    @include($ns.'.partials.page-header', ['key' => 'member-area'])
+    @include($ns.'.partials.page-header', ['key' => 'member-area', 'art' => 'mascot-head.png'])
     @include($ns.'.sections.member-area', ['mode' => 'full'])
 @endsection

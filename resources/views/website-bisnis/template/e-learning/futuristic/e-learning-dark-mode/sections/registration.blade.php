@@ -26,9 +26,10 @@
                 @endforeach
             </ul>
 
-            <form class="nl-card nl-form" id="form-registrasi" data-register action="{{ $e['registration_action'] }}" method="post" novalidate aria-labelledby="form-title">
-                @csrf
+            {{-- Tanpa backend: data dikirim ke WhatsApp admin lewat JS (atribut data-wa-form) --}}
+            <form class="nl-card nl-form" id="form-registrasi" data-wa-form data-wa="{{ $e['whatsapp']['number'] }}" data-wa-title="Pendaftaran Baru" novalidate aria-labelledby="form-title">
                 <h2 id="form-title">Formulir Registrasi</h2>
+                <p class="nl-form__hint"><svg class="ic"><use href="#i-whatsapp"/></svg>Data pendaftaranmu akan dikirim ke WhatsApp admin NovaLearn ({{ $e['whatsapp']['display'] }}).</p>
                 <div class="nl-form__grid">
                     <div class="nl-field"><label for="reg-name">Nama lengkap</label>
                         <input id="reg-name" name="name" type="text" autocomplete="name" required aria-describedby="reg-name-err"><small class="nl-err" id="reg-name-err"></small></div>
@@ -41,17 +42,17 @@
                             <option value="">Pilih program</option>
                             @foreach($e['programs'] as $p)<option value="{{ $p['slug'] }}">{{ $p['title'] }}</option>@endforeach
                         </select><small class="nl-err" id="reg-program-err"></small></div>
-                    <div class="nl-field"><label for="reg-plan">Paket</label>
+                    <div class="nl-field nl-field--wide"><label for="reg-plan">Paket</label>
                         <select id="reg-plan" name="plan" required aria-describedby="reg-plan-err">
                             <option value="">Pilih paket</option>
                             @foreach($e['pricing']['plans'] as $p)<option value="{{ $p['slug'] }}">{{ $p['name'] }} – Rp {{ number_format($p['monthly'], 0, ',', '.') }}/bulan</option>@endforeach
                         </select><small class="nl-err" id="reg-plan-err"></small></div>
-                    <div class="nl-field"><label for="reg-pass">Kata sandi</label>
-                        <input id="reg-pass" name="password" type="password" autocomplete="new-password" minlength="8" required aria-describedby="reg-pass-err"><small class="nl-err" id="reg-pass-err"></small></div>
+                    <div class="nl-field nl-field--wide"><label for="reg-note">Catatan (opsional)</label>
+                        <textarea id="reg-note" name="note" rows="3" maxlength="300" placeholder="Tulis pertanyaan atau kebutuhan belajarmu..."></textarea></div>
                 </div>
-                <label class="nl-check"><input type="checkbox" name="agree" required> <span>Saya setuju dengan ketentuan belajar di {{ $e['brand']['name'] }}.</span></label>
+                <label class="nl-check"><input type="checkbox" name="agree" required> <span>Saya setuju data saya dikirim ke admin {{ $e['brand']['name'] }} melalui WhatsApp.</span></label>
                 <small class="nl-err" data-agree-err></small>
-                <button class="nl-btn nl-btn--primary nl-btn--block" type="submit">Daftar Sekarang <svg class="ic"><use href="#i-arrow"/></svg></button>
+                <button class="nl-btn nl-btn--primary nl-btn--block" type="submit"><svg class="ic"><use href="#i-whatsapp"/></svg>Kirim via WhatsApp</button>
                 <p class="nl-form-msg" data-form-msg role="status" aria-live="polite"></p>
             </form>
         </div>

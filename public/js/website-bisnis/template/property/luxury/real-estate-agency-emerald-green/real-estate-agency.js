@@ -39,7 +39,6 @@
 
         const toggle = $('[data-nav-toggle]', nav);
         const menu   = $('[data-nav-menu]', nav);
-        const links  = $$('.rea-nav__link', nav);
 
         const setOpen = (open) => {
             nav.classList.toggle('is-open', open);
@@ -48,30 +47,6 @@
                 toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
             }
         };
-
-        // Dropdown (Property / Explore): klik/Enter membuka, Escape atau klik di luar menutup
-        const subs = $$('.rea-nav__item--sub', nav);
-        const closeSubs = (except) => subs.forEach((li) => {
-            if (li === except) return;
-            li.classList.remove('is-open');
-            const btn = $('[data-nav-sub]', li);
-            btn && btn.setAttribute('aria-expanded', 'false');
-        });
-        subs.forEach((li) => {
-            const btn = $('[data-nav-sub]', li);
-            btn.addEventListener('click', () => {
-                const open = !li.classList.contains('is-open');
-                closeSubs(li);
-                li.classList.toggle('is-open', open);
-                btn.setAttribute('aria-expanded', String(open));
-            });
-        });
-        document.addEventListener('click', (e) => { if (!e.target.closest('.rea-nav__item--sub')) closeSubs(); });
-        document.addEventListener('keydown', (e) => {
-            if (e.key !== 'Escape') return;
-            const openLi = subs.find((li) => li.classList.contains('is-open'));
-            if (openLi) { closeSubs(); $('[data-nav-sub]', openLi).focus(); }
-        });
 
         toggle && toggle.addEventListener('click', () => setOpen(!nav.classList.contains('is-open')));
         menu && menu.addEventListener('click', (e) => { if (e.target.closest('a')) setOpen(false); });
@@ -87,35 +62,6 @@
         const onScroll = () => nav.classList.toggle('is-stuck', window.scrollY > 8);
         onScroll();
         window.addEventListener('scroll', onScroll, { passive: true });
-
-        // Scroll-spy: hanya untuk link yang menuju anchor di halaman ini (mis. /beranda#location)
-        const map = new Map();
-        links.forEach((a) => {
-            let url;
-            try { url = new URL(a.getAttribute('href') || '', window.location.href); } catch (e) { return; }
-            if (url.pathname !== window.location.pathname || url.hash.length < 2 || url.hash === '#top') return;
-            const target = document.getElementById(url.hash.slice(1));
-            if (target) map.set(target, a);
-        });
-        if (!map.size || !('IntersectionObserver' in window)) return;
-
-        const homeLink = links.find((a) => a.classList.contains('is-active'));
-        const setActive = (link) => {
-            links.forEach((a) => {
-                const on = a === link;
-                a.classList.toggle('is-active', on);
-                on ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current');
-            });
-        };
-        const visible = new Set();
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => (entry.isIntersecting ? visible.add(entry.target) : visible.delete(entry.target)));
-            const first = Array.from(map.keys())
-                .filter((el) => visible.has(el))
-                .sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top)[0];
-            setActive(first ? map.get(first) : homeLink || null);
-        }, { rootMargin: '-35% 0px -55% 0px' });
-        map.forEach((_, el) => observer.observe(el));
     }
 
     /* ================================================================ */

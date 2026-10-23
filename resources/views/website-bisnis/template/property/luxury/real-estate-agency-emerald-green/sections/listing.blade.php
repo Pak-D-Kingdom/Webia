@@ -20,20 +20,20 @@
             @foreach ($items as $item)
                 <li class="rea-listing">
                     <span class="rea-listing__badge">{{ $item['badge'] }}</span>
-                    <a class="rea-listing__media" href="{{ $route('specification') }}" tabindex="-1" aria-hidden="true">
-                        <img src="{{ $item['src'] }}" alt="{{ $item['alt'] }}" loading="lazy">
+                    <a class="rea-listing__media" href="{{ $route('property.show', '', ['slug' => $item['slug']]) }}" tabindex="-1" aria-hidden="true">
+                        <img src="{{ $item['src'] }}" alt="{{ $item['card_alt'] }}" loading="lazy">
                     </a>
                     <div class="rea-listing__body">
                         <p class="rea-listing__place">{{ $icon('pin') }}<span>{{ $item['place'] }}</span></p>
-                        <h3><a href="{{ $route('specification') }}">{{ $item['title'] }}</a></h3>
+                        <h3><a href="{{ $route('property.show', '', ['slug' => $item['slug']]) }}">{{ $item['title'] }}</a></h3>
                         <ul class="rea-listing__meta">
                             @foreach ($item['highlights'] as $h)
                                 <li>{{ $icon($h['icon']) }}<span>{{ $h['label'] }}</span></li>
                             @endforeach
                         </ul>
                         <div class="rea-listing__foot">
-                            <p class="rea-listing__price"><small>{{ $property['price_cur'] }}</small> {{ $item['price'] }}</p>
-                            <a class="rea-btn rea-btn--dark rea-btn--sm" href="{{ $route('specification') }}">View Details {{ $icon('arrow') }}</a>
+                            <p class="rea-listing__price"><small>{{ $item['price_cur'] }}</small> {{ $item['price'] }}</p>
+                            <a class="rea-btn rea-btn--dark rea-btn--sm" href="{{ $route('property.show', '', ['slug' => $item['slug']]) }}">View Details {{ $icon('arrow') }}</a>
                         </div>
                     </div>
                 </li>

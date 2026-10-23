@@ -7,6 +7,9 @@
             <span class="nl-member__ic"><svg class="ic"><use href="#i-user"/></svg></span>
             <h2 id="member-title">{{ $m['title'] }}</h2>
             <p>{{ $m['text'] }}</p>
+            <ul class="nl-member__list">
+                @foreach($m['items'] as $it)<li><svg class="ic"><use href="#i-{{ $it['icon'] }}"/></svg>{{ $it['title'] }}</li>@endforeach
+            </ul>
             <a class="nl-btn nl-btn--outline nl-btn--block" href="{{ route($r.'member-area') }}">{{ $m['cta'] }} <svg class="ic"><use href="#i-arrow"/></svg></a>
         </div>
     @else

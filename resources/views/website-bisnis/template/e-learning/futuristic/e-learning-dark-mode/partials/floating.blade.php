@@ -17,7 +17,7 @@
 
     {{-- AI FAQ · panel chat --}}
     <section class="nl-ai" id="nl-ai" role="dialog" aria-label="{{ $ai['name'] }}" aria-modal="false" hidden
-             data-ai data-faq='@json($faq, JSON_HEX_APOS | JSON_HEX_QUOT)' data-fallback="{{ $ai['fallback'] }}">
+             data-ai data-wa-url="{{ $wa }}" data-faq='@json($faq, JSON_HEX_APOS | JSON_HEX_QUOT)' data-fallback="{{ $ai['fallback'] }}">
         <header class="nl-ai__head">
             <img src="{{ asset($e['img'].'/ai-bot.png') }}" alt="" width="40" height="40">
             <div><h2>{{ $ai['name'] }}</h2><p><i aria-hidden="true"></i> Online</p></div>
@@ -32,6 +32,7 @@
             @foreach(array_slice($ai['faq'], 0, $ai['quick']) as $f)
                 <button type="button" data-q="{{ $f['q'] }}">{{ $f['q'] }}</button>
             @endforeach
+            <a class="nl-ai__wa" href="{{ $wa }}" target="_blank" rel="noopener"><svg class="ic"><use href="#i-whatsapp"/></svg>Pertanyaan lainnya via WhatsApp</a>
         </div>
 
         <form class="nl-ai__form" data-ai-form autocomplete="off">

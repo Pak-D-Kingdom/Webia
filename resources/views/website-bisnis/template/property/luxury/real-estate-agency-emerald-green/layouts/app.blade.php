@@ -2,9 +2,10 @@
 |--------------------------------------------------------------------------
 | Layout utama template GreenHaven (HTML shell + persiapan data & helper)
 |--------------------------------------------------------------------------
-| Tiap halaman (index, property, specification, ...) hanya perlu mengisi:
+| Tiap halaman (index, property, property-detail, about, ...) hanya perlu mengisi:
 |   $page   = nama halaman (sama dengan nama route, mis. 'property')
 |   $blocks = daftar bagian yang ditampilkan: [nama-view, [opsi]]
+|   $detail = true (hanya halaman detail properti)
 | lalu memakai layout ini lewat extends. Semua data (dari config) dan helper
 | ($img, $route, $icon) disiapkan SEKALI di blok PHP di bawah, lalu otomatis
 | tersedia di partials dan sections.
@@ -17,35 +18,34 @@
     $v = 'website-bisnis.template.property.luxury.real-estate-agency-emerald-green';
 
     // Data halaman dari config
-    $cfg       = config('template.property.luxury.real-estate-agency-emerald-green.real-estate-agency');
-    $paths     = $cfg['paths'];
-    $site      = $cfg['site'];
-    $navItems  = $cfg['nav'];
-    $footerNav = $cfg['footer_nav'];
-    $searchMap = $cfg['search'];
-    $pages     = $cfg['pages'];
-    $property  = $cfg['property'];
-    $listings  = $cfg['listings'];
-    $features  = $cfg['features'];
-    $about     = $cfg['about'];
-    $priceInfo = $cfg['price_info'];
-    $blogPosts = $cfg['blog'];
-    $inquiry   = $cfg['inquiry'];
-    $whatsapp  = $cfg['whatsapp'];
-    $timeSlots = $cfg['time_slots'];
-    $assistant = $cfg['assistant'];
+    $cfg        = config('template.property.luxury.real-estate-agency-emerald-green.real-estate-agency');
+    $paths      = $cfg['paths'];
+    $site       = $cfg['site'];
+    $navItems   = $cfg['nav'];
+    $footerNav  = $cfg['footer_nav'];
+    $searchMap  = $cfg['search'];
+    $pages      = $cfg['pages'];
+    $properties = $cfg['properties'];
+    $features   = $cfg['features'];
+    $about      = $cfg['about'];
+    $payments   = $cfg['payments'];
+    $blogPosts  = $cfg['blog'];
+    $inquiry    = $cfg['inquiry'];
+    $whatsapp   = $cfg['whatsapp'];
+    $timeSlots  = $cfg['time_slots'];
+    $assistant  = $cfg['assistant'];
+
+    // Properti yang sedang ditampilkan:
+    // halaman detail (/property/{slug}) memakai $slug dari URL, halaman lain memakai properti utama.
+    $slug = $slug ?? array_key_first($properties);
+    abort_unless(array_key_exists($slug, $properties), 404);
+    $property = $properties[$slug];
 
     // Helper
     $img   = fn (string $file): string => asset($paths['images'] . '/' . $file);
-    $route = fn (string $name = 'index', string $hash = ''): string => route($v . '.' . $name) . $hash;
+    $route = fn (string $name = 'index', string $hash = '', array $params = []): string => route($v . '.' . $name, $params) . $hash;
     $icon  = fn (string $name, string $class = ''): \Illuminate\Support\HtmlString => new \Illuminate\Support\HtmlString(
         '<svg class="rea-icon ' . e($class) . '" aria-hidden="true" focusable="false"><use href="#i-' . e($name) . '"></use></svg>'
-    );
-
-    // Tandai item navbar aktif (dropdown aktif jika salah satu anaknya = halaman ini)
-    $navItems = array_map(
-        fn (array $i): array => $i + ['active' => $i['key'] === $page || in_array($page, array_map(fn (array $c): string => $c['key'], $i['children'] ?? []))],
-        $navItems
     );
 
     // Target pencarian navbar (kata kunci => URL)
@@ -55,17 +55,32 @@
     );
 
     // Lengkapi URL gambar
-    $property['slides']  = array_map(fn (array $s): array => $s + ['src' => $img($s['file'])], $property['slides']);
+    $property['slides']  = array_map(fn (array $s): array => $s + ['src' => $img($s['file'])], $property['slides'] ?? []);
     $property['gallery'] = array_map(fn (array $g): array => $g + ['src' => $img($g['file'])], $property['gallery']);
-    $listings            = array_map(fn (array $l): array => $l + ['src' => $img($l['file'])], $listings);
+    $listings            = array_map(fn (array $p): array => $p + ['src' => $img($p['card_file'])], array_values($properties));
     $blogPosts           = array_map(fn (array $p): array => $p + ['src' => $img($p['file'])], $blogPosts);
     $about['src']        = $img($about['file']);
 
-    // Link WhatsApp
-    $waUrl = 'https://wa.me/' . $whatsapp['number'] . '?text=' . rawurlencode($whatsapp['message']);
+    // Jawaban FAQ AI mengikuti properti yang sedang dilihat
+    $faqVars = [
+        '{title}'       => $property['title'],
+        '{price}'       => $property['price_cur'] . ' ' . $property['price'] . ' ' . $property['price_note'],
+        '{address}'     => $property['address'],
+        '{land}'        => $property['facts']['land'],
+        '{building}'    => $property['facts']['building'],
+        '{bedrooms}'    => $property['facts']['bedrooms'],
+        '{bathrooms}'   => $property['facts']['bathrooms'],
+        '{carport}'     => $property['facts']['carport'],
+        '{year}'        => $property['facts']['year'],
+        '{certificate}' => $property['facts']['certificate'],
+    ];
+    $assistant['faq'] = array_map(fn (array $f): array => ['a' => strtr($f['a'], $faqVars)] + $f, $assistant['faq']);
+
+    // Link WhatsApp (pesan otomatis menyebut properti yang sedang dilihat)
+    $waUrl = 'https://wa.me/' . $whatsapp['number'] . '?text=' . rawurlencode(sprintf($whatsapp['message'], $property['title'], $property['place']));
 
     // Judul tab browser
-    $pageTitle = $page === 'index' ? $property['title'] . ' · ' . $property['place'] : $pages[$page]['title'];
+    $pageTitle = ($detail ?? false) ? $property['title'] : ($page === 'index' ? $property['title'] . ' · ' . $property['place'] : $pages[$page]['title']);
 @endphp
 <!DOCTYPE html>
 <html lang="en">

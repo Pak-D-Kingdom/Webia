@@ -12,7 +12,7 @@
     <ul class="el-teacher-grid">
         @foreach ($e['teachers'] as $t)
             <li class="el-teacher">
-                <img class="el-teacher__photo" src="{{ $img($t['photo']) }}" alt="Foto {{ $t['name'] }}" width="{{ $full ? 120 : 68 }}" height="{{ $full ? 120 : 68 }}" loading="lazy">
+                <img class="el-teacher__photo" src="{{ $img($t['photo']) }}" alt="Foto {{ $t['name'] }}" width="{{ $full ? 120 : 92 }}" height="{{ $full ? 120 : 92 }}" loading="lazy">
                 <h3>{{ $t['name'] }}</h3>
                 <p class="el-teacher__role">{{ $t['role'] }}</p>
                 @if ($full)

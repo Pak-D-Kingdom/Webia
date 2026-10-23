@@ -21,12 +21,23 @@
                         <img src="{{ $photo['src'] }}" alt="" loading="lazy">
                         @if ($i === 0)
                             <span class="rea-photo__expand">{{ $icon('expand') }}</span>
-                            <span class="rea-photo__more">+{{ $property['more_photos'] }} More Photos</span>
+                            @if ($property['more_photos'] > 0)
+                                <span class="rea-photo__more">+{{ $property['more_photos'] }} More Photos</span>
+                            @endif
                         @endif
                     </button>
                 @endforeach
             </div>
         @else
+            @if ($head ?? false)
+                <header class="rea-sec-head">
+                    <div class="rea-section-head">
+                        <p class="rea-eyebrow rea-eyebrow--dark">PHOTOS</p>
+                        <h2>{{ $pages['gallery']['title'] }}</h2>
+                        <p>{{ $pages['gallery']['subtitle'] }}</p>
+                    </div>
+                </header>
+            @endif
             <div class="rea-gallerygrid">
                 @foreach ($photos as $i => $photo)
                     <button class="rea-photo" type="button" data-gallery-open="{{ $i }}" aria-label="Open photo: {{ $photo['alt'] }}">

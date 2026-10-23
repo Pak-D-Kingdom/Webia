@@ -19,9 +19,9 @@ return [
     'js'    => 'js/website-bisnis/template/e-learning/futuristic/e-learning-dark-mode',
     'img'   => 'images/website-bisnis/template/e-learning/futuristic/e-learning-dark-mode',
 
-    // Form registrasi/login: '#' = mode statis (ditangani JS). Isi URL backend bila sudah siap.
-    'registration_action' => '#',
-    'login_action'        => '#',
+    // Form login: '#' = mode statis (ditangani JS). Isi URL backend bila sudah siap.
+    // Form registrasi & newsletter TIDAK memakai backend: dikirim ke WhatsApp (lihat 'whatsapp').
+    'login_action' => '#',
 
     'brand' => [
         'name'    => 'NovaLearn',
@@ -45,8 +45,11 @@ return [
         ['icon' => 'x',         'label' => 'X (Twitter)', 'url' => '#'],
     ],
 
+    // Nomor tujuan tombol WhatsApp melayang + semua pengiriman form (kecuali login).
+    // Format wa.me: kode negara tanpa '+' dan tanpa 0 di depan.
     'whatsapp' => [
-        'number'  => '6281234567890',
+        'number'  => '62895630300345',
+        'display' => '0895630300345',
         'message' => 'Halo NovaLearn, saya ingin bertanya tentang kursus.',
     ],
 
@@ -58,6 +61,7 @@ return [
         ['label' => 'Teachers',       'route' => 'teachers'],
         ['label' => 'Pricing',        'route' => 'pricing'],
         ['label' => 'Course Content', 'route' => 'course-content'],
+        ['label' => 'AI FAQ',         'action' => 'ai'],
     ],
 
     'footer' => [
@@ -72,6 +76,7 @@ return [
             ['label' => 'Registration',   'route' => 'registration'],
             ['label' => 'Course Content', 'route' => 'course-content'],
             ['label' => 'Member Area',    'route' => 'member-area'],
+            ['label' => 'AI FAQ',         'action' => 'ai'],
         ],
     ],
 
@@ -82,6 +87,7 @@ return [
         'title_2'  => 'Start Here',
         'text'     => 'Tingkatkan skill, raih karier impian! NovaLearn hadir dengan kursus online berkualitas, mentor profesional, dan materi interaktif yang siap membantumu berkembang.',
         'search'   => 'Cari kursus yang kamu inginkan...',
+        'popular'  => ['Web Development', 'UI/UX Design', 'Python', 'Digital Marketing'],
         'features' => [
             ['icon' => 'building', 'value' => '100+',        'label' => 'Kursus Pilihan'],
             ['icon' => 'user',     'value' => 'Expert',      'label' => 'Pengajar Profesional'],
@@ -111,10 +117,22 @@ return [
 
     // ---- Teachers ----------------------------------------------------
     'teachers' => [
-        'rizky' => ['name' => 'Rizky Pratama', 'role' => 'Web Developer',    'rating' => '4.9', 'reviews' => '1.2k', 'img' => 'teacher-rizky.png'],
-        'sinta' => ['name' => 'Sinta Dewi',    'role' => 'UI/UX Designer',   'rating' => '4.8', 'reviews' => '980',  'img' => 'teacher-sinta.png'],
-        'andi'  => ['name' => 'Andi Saputra',  'role' => 'Digital Marketer', 'rating' => '4.8', 'reviews' => '756',  'img' => 'teacher-andi.png'],
-        'dewi'  => ['name' => 'Dewi Lestari',  'role' => 'Data Scientist',   'rating' => '4.9', 'reviews' => '1.1k', 'img' => 'teacher-dewi.png'],
+        'rizky' => ['name' => 'Rizky Pratama', 'role' => 'Web Developer',    'rating' => '4.9', 'reviews' => '1.2k', 'img' => 'teacher-rizky.png',
+                    'bio' => 'Web developer yang berfokus pada front-end modern dan website responsif. Mengajar dari dasar dengan proyek nyata di setiap modul.',
+                    'experience' => '8 tahun', 'students' => '12,4k', 'classes' => 6,
+                    'skills' => ['HTML & CSS', 'JavaScript', 'Laravel'], 'programs' => ['web-development-fundamentals'], 'next' => 'Hari ini · 08:00'],
+        'sinta' => ['name' => 'Sinta Dewi',    'role' => 'UI/UX Designer',   'rating' => '4.8', 'reviews' => '980',  'img' => 'teacher-sinta.png',
+                    'bio' => 'Desainer produk digital yang terbiasa membangun design system dan riset pengguna. Gaya mengajarnya praktis dan penuh studi kasus.',
+                    'experience' => '6 tahun', 'students' => '9,8k', 'classes' => 5,
+                    'skills' => ['Figma', 'Design System', 'User Research'], 'programs' => ['ui-ux-design-professional'], 'next' => 'Hari ini · 10:30'],
+        'andi'  => ['name' => 'Andi Saputra',  'role' => 'Digital Marketer', 'rating' => '4.8', 'reviews' => '756',  'img' => 'teacher-andi.png',
+                    'bio' => 'Praktisi pemasaran digital yang menangani kampanye berbagai skala. Mengajarkan strategi yang bisa langsung dipraktikkan dan diukur.',
+                    'experience' => '7 tahun', 'students' => '7,6k', 'classes' => 4,
+                    'skills' => ['SEO', 'Social Media Ads', 'Analytics'], 'programs' => ['digital-marketing-strategy'], 'next' => 'Hari ini · 14:00'],
+        'dewi'  => ['name' => 'Dewi Lestari',  'role' => 'Data Scientist',   'rating' => '4.9', 'reviews' => '1.1k', 'img' => 'teacher-dewi.png',
+                    'bio' => 'Data scientist yang menjelaskan konsep analisis data dengan bahasa sederhana, cocok untuk pemula yang ingin mulai dari nol.',
+                    'experience' => '9 tahun', 'students' => '11,2k', 'classes' => 5,
+                    'skills' => ['Python', 'Pandas', 'Visualisasi Data'], 'programs' => ['data-analysis-with-python'], 'next' => 'Hari ini · 19:00'],
     ],
 
     // ---- Schedules ---------------------------------------------------
@@ -231,7 +249,7 @@ return [
              'route' => 'pricing'],
             ['q' => 'Bagaimana cara mendaftar?',
              'keywords' => ['daftar', 'registrasi', 'registration', 'gabung', 'akun'],
-             'a' => 'Klik Get Started, isi formulir registrasi, lalu pilih program dan paket yang kamu inginkan.',
+             'a' => 'Klik Get Started, isi formulir registrasi, lalu data pendaftaranmu dikirim ke WhatsApp admin NovaLearn untuk diproses.',
              'route' => 'registration'],
         ],
         // 4 pertanyaan pertama ditampilkan sebagai tombol cepat

@@ -47,10 +47,14 @@ return [
         ['label' => 'Schedules',      'route' => 'elearning.schedules'],
         ['label' => 'Teachers',       'route' => 'elearning.teachers'],
         ['label' => 'Pricing',        'route' => 'elearning.pricing'],
-        ['label' => 'Registration',   'route' => 'elearning.registration'],
         ['label' => 'Course Content', 'route' => 'elearning.course-content'],
-        ['label' => 'Member Area',    'route' => 'elearning.member-area'],
         ['label' => 'FAQ',            'route' => null, 'action' => 'chat'],
+    ],
+
+    // Tombol di kanan navbar (mengikuti referensi): Login -> halaman Member Area, Get Started -> halaman Registration
+    'nav_actions' => [
+        ['label' => 'Login',       'route' => 'elearning.member-area',  'style' => 'outline'],
+        ['label' => 'Get Started', 'route' => 'elearning.registration', 'style' => 'primary', 'arrow' => true],
     ],
 
     'footer' => [
@@ -85,9 +89,9 @@ return [
         'schedules'      => ['title' => 'Upcoming Schedules', 'sub' => 'Jadwal kelas terbaru untuk kamu.'],
         'teachers'       => ['title' => 'Our Teachers',   'sub' => 'Belajar dari para ahli di bidangnya.'],
         'pricing'        => ['title' => 'Pricing Plan',   'sub' => 'Pilih paket terbaik sesuai kebutuhanmu.'],
-        'registration'   => ['title' => 'Registration',   'sub' => 'Daftar sekarang dan mulai perjalanan belajarmu.'],
+        'registration'   => ['title' => 'Registration',   'sub' => 'Daftar sekarang dan dapatkan akses ke semua kursus premium kami.'],
         'course-content' => ['title' => 'Course Content', 'sub' => 'Lihat materi dan kurikulum yang akan kamu pelajari.'],
-        'member-area'    => ['title' => 'Member Area',    'sub' => 'Pantau progres belajar, jadwal, dan sertifikatmu.'],
+        'member-area'    => ['title' => 'Member Area',    'sub' => 'Akses materi kursus, sertifikat, dan fitur eksklusif lainnya.'],
     ],
 
     'programs' => [
@@ -145,15 +149,13 @@ return [
     ],
 
     'registration' => [
-        'action' => null, // isi dengan URL endpoint backend, mis. route('registration.store')
-        'cta'    => ['title' => 'Siap memulai perjalanan belajarmu?', 'text' => 'Daftar sekarang dan dapatkan akses ke ribuan materi pembelajaran berkualitas.', 'button' => 'Daftar Sekarang'],
-        'steps'  => [
-            ['title' => 'Isi formulir',          'text' => 'Lengkapi data diri dan pilih program yang kamu minati.'],
-            ['title' => 'Pilih paket & jadwal',  'text' => 'Tentukan paket belajar dan kelas live yang cocok.'],
-            ['title' => 'Konfirmasi & belajar',  'text' => 'Tim kami menghubungi kamu via WhatsApp untuk aktivasi akun.'],
-        ],
-        'levels' => ['Pemula (belum pernah belajar)', 'Menengah (pernah belajar dasar)', 'Lanjutan (sudah berpengalaman)'],
-        'perks'  => ['Akses materi seumur masa paket', 'Sertifikat digital setelah lulus', 'Komunitas & mentor aktif'],
+        // Semua pengiriman formulir pendaftaran diarahkan ke WhatsApp ini (format internasional, tanpa + / spasi).
+        'whatsapp' => '62895630300345',
+        'whatsapp_display' => '0895630300345', // hanya untuk teks di halaman
+        'cta'      => ['title' => 'Siap memulai perjalanan belajarmu?', 'text' => 'Daftar sekarang dan dapatkan akses ke ribuan materi pembelajaran berkualitas.', 'button' => 'Daftar Sekarang'],
+        'form'     => ['title' => 'Formulir Pendaftaran'],
+        'aside'    => ['title' => 'Mulai Perjalanan Belajarmu Sekarang!', 'text' => 'Daftar sekarang dan dapatkan akses ke ribuan materi pembelajaran berkualitas.'],
+        'perks'    => ['Akses ke kelas live & rekaman', 'Mentor profesional di setiap kelas', 'Sertifikat digital setelah lulus'],
     ],
 
     'courses' => [
@@ -192,6 +194,13 @@ return [
     ],
 
     'member' => [
+        // Kartu "Yang kamu dapatkan sebagai member" (halaman Member Area)
+        'perks' => [
+            ['icon' => 'i-play',    'tone' => 'blue',  'title' => 'Materi Kursus',   'text' => 'Lanjutkan video dan modul kapan saja, di perangkat apa saja.'],
+            ['icon' => 'i-award',   'tone' => 'green', 'title' => 'Sertifikat',      'text' => 'Unduh sertifikat kelulusan setelah menyelesaikan kursus.'],
+            ['icon' => 'i-sparkle', 'tone' => 'gold',  'title' => 'Fitur Eksklusif', 'text' => 'Kelas live, review proyek, dan komunitas belajar khusus member.'],
+        ],
+        // Dipakai preview di beranda
         'benefits' => ['Dashboard progres belajar real-time', 'Riwayat kelas & jadwal live', 'Sertifikat digital yang bisa diunduh', 'Akses forum komunitas & mentor'],
         'demo' => [
             'name' => 'Rina Putri', 'plan' => 'Professional',
@@ -217,7 +226,7 @@ return [
             ['id' => 'jadwal',   'q' => 'Kapan jadwal kelas terdekat?', 'keywords' => ['jadwal', 'kapan', 'mulai', 'tanggal', 'live'],
              'a' => 'Kelas terdekat: Web Development Fundamentals pada 25 Okt pukul 10.00 - 12.00 WIB. Semua kelas live berlangsung online, beberapa workshop hybrid.', 'route' => 'elearning.schedules', 'link' => 'Lihat jadwal lengkap'],
             ['id' => 'daftar',   'q' => 'Bagaimana cara mendaftar?', 'keywords' => ['daftar', 'registrasi', 'cara', 'gabung', 'ikut'],
-             'a' => 'Isi formulir pendaftaran, pilih program, paket, dan jadwal. Tim kami akan menghubungi kamu lewat WhatsApp untuk aktivasi akun.', 'route' => 'elearning.registration', 'link' => 'Buka formulir pendaftaran'],
+             'a' => 'Klik Get Started, isi formulir pendaftaran, lalu pilih program, paket, dan jadwal. Pesan pendaftaranmu otomatis disiapkan di WhatsApp untuk dikirim ke tim kami.', 'route' => 'elearning.registration', 'link' => 'Buka formulir pendaftaran'],
             ['id' => 'harga',    'q' => 'Berapa biaya paket belajar?', 'keywords' => ['harga', 'biaya', 'paket', 'bayar', 'tarif', 'diskon', 'tahunan'],
              'a' => 'Basic Rp 99.000/bulan, Professional Rp 149.000/bulan, dan Premium Rp 249.000/bulan. Pilih paket tahunan dan hemat 20%.', 'route' => 'elearning.pricing', 'link' => 'Bandingkan paket'],
             ['id' => 'pengajar', 'q' => 'Siapa saja pengajarnya?', 'keywords' => ['guru', 'pengajar', 'mentor', 'teacher', 'instruktur'],
@@ -227,7 +236,7 @@ return [
             ['id' => 'sertifikat', 'q' => 'Apakah ada sertifikat?', 'keywords' => ['sertifikat', 'certificate', 'lulus'],
              'a' => 'Ya. Setelah menyelesaikan kursus, kamu mendapat sertifikat digital yang bisa diunduh dari Member Area.', 'route' => 'elearning.member-area', 'link' => 'Buka Member Area'],
             ['id' => 'member',   'q' => 'Bagaimana cara masuk Member Area?', 'keywords' => ['login', 'masuk', 'akun', 'member', 'password', 'lupa'],
-             'a' => 'Klik tombol Login / Register di navbar, lalu masuk dengan email dan password. Lupa password? Gunakan tautan pemulihan di halaman login.', 'route' => 'elearning.member-area', 'link' => 'Ke Member Area'],
+             'a' => 'Klik tombol Login di navbar, lalu masuk dengan email dan kata sandi. Belum punya akun? Klik Get Started untuk mendaftar.', 'route' => 'elearning.member-area', 'link' => 'Ke Member Area'],
         ],
     ],
 ];

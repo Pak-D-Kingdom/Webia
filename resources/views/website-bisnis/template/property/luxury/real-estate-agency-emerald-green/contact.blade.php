@@ -1,11 +1,10 @@
-{{-- Halaman Specification (spesifikasi + lokasi) --}}
+{{-- Halaman Contact (inquiry + location) --}}
 @php
-    $page   = 'specification';
+    $page   = 'contact';
     $blocks = [
         ['partials.page-header'],
-        ['sections.specification'],
-        ['sections.location'],
         ['sections.inquiry'],
+        ['sections.location'],
     ];
 @endphp
 

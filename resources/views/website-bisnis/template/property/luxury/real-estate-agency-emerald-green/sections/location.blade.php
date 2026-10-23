@@ -21,7 +21,7 @@
         <div class="rea-map">
             <img class="rea-map__img" src="{{ $img($property['map_image']) }}" alt="Map showing {{ $property['place_name'] }}, {{ $property['place_city'] }}" loading="lazy">
             <div class="rea-map__card">
-                <img src="{{ $img('gallery-1.jpg') }}" alt="" loading="lazy">
+                <img src="{{ $property['gallery'][0]['src'] }}" alt="" loading="lazy">
                 <p><strong>{{ $property['place_name'] }}</strong><span>{{ $property['place_city'] }}</span></p>
             </div>
             <svg class="rea-map__pin" aria-hidden="true" focusable="false"><use href="#i-pin-solid"></use></svg>

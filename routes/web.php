@@ -261,6 +261,7 @@ Route::prefix('webia/template')->group(function () {
         'website-bisnis.templates.wedding-event.catering-wedding-cake.ruby-luxe.catering-detail-ruby-luxe'
     )->name('webia.template.catering-wedding-cake.ruby-luxe.detail');
 });
+
 // ==== Template klasik full-family (digabung dari nabiila-fe) ====
 $minimalis = function (string $page) {
     return function () use ($page) {
@@ -340,14 +341,16 @@ Route::prefix('webia/template/property/luxury/real-estate-agency-emerald-green')
     ->group(function () {
         $view = 'website-bisnis.template.property.luxury.real-estate-agency-emerald-green';
 
-        Route::view('/',               $view . '.index')->name('index');          // Beranda (preview semua halaman)
-        Route::view('/property',       $view . '.property')->name('property');    // Property listing
-        Route::view('/specification',  $view . '.specification')->name('specification');
-        Route::view('/price',          $view . '.price')->name('price');
-        Route::view('/about',          $view . '.about')->name('about');          // About us
-        Route::view('/gallery',        $view . '.gallery')->name('gallery');
-        Route::view('/booking',        $view . '.booking')->name('booking');      // Booking / viewing
-        Route::view('/blog',           $view . '.blog')->name('blog');
+        Route::view('/',                $view . '.index')->name('index');            // Beranda (preview)
+        Route::view('/property',        $view . '.property')->name('property');      // Property listing
+        // Detail properti: spesifikasi, harga, booking/viewing, galeri, lokasi.
+        // {slug} diteruskan ke view dan divalidasi di layouts/app.blade.php (404 jika tidak ada).
+        Route::view('/property/{slug}', $view . '.property-detail')->name('property.show');
+        Route::view('/about',           $view . '.about')->name('about');
+        Route::view('/gallery',         $view . '.gallery')->name('gallery');
+        Route::view('/booking',         $view . '.booking')->name('booking');
+        Route::view('/blog',            $view . '.blog')->name('blog');
+        Route::view('/contact',         $view . '.contact')->name('contact');        // Inquiry + location
     });
 
 Route::prefix('webia/template/property/premium-minimal/real-estate-agency-nature-green')

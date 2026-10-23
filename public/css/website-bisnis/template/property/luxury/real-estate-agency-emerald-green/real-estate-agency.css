@@ -315,35 +315,6 @@ html.rea-lock { overflow: hidden; }
 .rea-search__form input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; padding: .5rem 0; }
 .rea-search__hint { min-height: 1.2rem; margin-top: .5rem; padding-left: 1rem; font-size: .8rem; color: var(--rea-muted); }
 
-/* Dropdown navbar ---------------------------------------------------------- */
-.rea-nav__item { position: relative; }
-.rea-nav__trigger { display: inline-flex; align-items: center; gap: .35rem; cursor: pointer; }
-.rea-nav__trigger .rea-icon { width: .95rem; height: .95rem; transition: transform .25s var(--rea-ease); }
-.rea-nav__item--sub.is-open .rea-nav__trigger .rea-icon { transform: rotate(180deg); }
-.rea-nav__sub {
-    position: absolute; top: 100%; left: 50%; z-index: 5;
-    min-width: 230px; margin-top: .7rem; padding: .5rem;
-    background: #fff; border: 1px solid var(--rea-line); border-radius: 14px;
-    box-shadow: var(--rea-shadow);
-    opacity: 0; visibility: hidden; transform: translate(-50%, 8px);
-    transition: opacity .22s, transform .22s var(--rea-ease), visibility .22s;
-}
-.rea-nav__sub::before { content: ""; position: absolute; left: 0; right: 0; top: -.8rem; height: .8rem; }
-.rea-nav__item--sub.is-open > .rea-nav__sub { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
-.rea-nav__sublink {
-    display: flex; align-items: center; gap: .7rem;
-    padding: .7rem .95rem; font-size: .88rem; color: var(--rea-ink);
-    border-radius: 10px; transition: background-color .2s, color .2s;
-}
-.rea-nav__sublink::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--rea-gold-400); opacity: 0; transition: opacity .2s; }
-.rea-nav__sublink:hover { background: var(--rea-cream-200); color: var(--rea-emerald-700); }
-.rea-nav__sublink:hover::before, .rea-nav__sublink.is-active::before { opacity: 1; }
-.rea-nav__sublink.is-active { font-weight: 500; color: var(--rea-gold-700); background: var(--rea-cream-100); }
-@media (min-width: 1024px) and (hover: hover) {
-    .rea-nav__item--sub:hover > .rea-nav__sub, .rea-nav__item--sub:focus-within > .rea-nav__sub { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
-    .rea-nav__item--sub:hover .rea-nav__trigger .rea-icon { transform: rotate(180deg); }
-}
-
 /* 07 · HERO (PROPERTY LISTING) ------------------------------------------ */
 .rea-hero {
     position: relative;
@@ -749,7 +720,7 @@ html.rea-lock { overflow: hidden; }
     .rea-booking__form .rea-btn { grid-column: 1 / -1; justify-self: start; }
 }
 @container rea-main (min-width: 880px) {
-    .rea-booking { grid-template-columns: 24% 31% minmax(0, 1fr); }
+    .rea-booking { grid-template-columns: 21% 28% minmax(0, 1fr); }
     .rea-booking__media { grid-row: auto; }
     .rea-booking__intro {
         position: relative; z-index: 1;
@@ -1170,17 +1141,6 @@ html.rea-lock { overflow: hidden; }
     .rea-nav__link { display: block; padding: .9rem 0; font-size: 1rem; }
     .rea-nav__link::after { display: none; }
     .rea-nav__link.is-active { color: var(--rea-gold-700); }
-    .rea-nav__item--sub { border-top: 0; }
-    .rea-nav__trigger { display: flex; justify-content: space-between; width: 100%; text-align: left; }
-    .rea-nav__trigger.is-active { color: var(--rea-gold-700); }
-    .rea-nav__sub {
-        position: static; display: none; min-width: 0; margin: 0; padding: 0 0 .6rem .75rem;
-        background: transparent; border: 0; border-radius: 0; box-shadow: none;
-        opacity: 1; visibility: visible; transform: none;
-    }
-    .rea-nav__sub::before { display: none; }
-    .rea-nav__item--sub.is-open > .rea-nav__sub { display: block; transform: none; }
-    .rea-nav__sublink { padding: .75rem .5rem; font-size: .95rem; }
     .rea-nav__cta--mobile { align-self: stretch; }
     .rea-nav__actions { margin-left: auto; }
     .rea-nav__inner { gap: .5rem; }

@@ -15,7 +15,14 @@
 
         <nav aria-label="Akses cepat">
             <h3>Akses Cepat</h3>
-            <ul>@foreach($e['footer']['akses'] as $l)<li><a href="{{ route($r.$l['route']) }}">{{ $l['label'] }}</a></li>@endforeach</ul>
+            <ul>
+                @foreach($e['footer']['akses'] as $l)
+                    <li>
+                        @if(($l['action'] ?? null) === 'ai')<button type="button" class="nl-footer__btn" data-ai-open aria-haspopup="dialog" aria-controls="nl-ai" aria-expanded="false">{{ $l['label'] }}</button>
+                        @else<a href="{{ route($r.$l['route']) }}">{{ $l['label'] }}</a>@endif
+                    </li>
+                @endforeach
+            </ul>
         </nav>
 
         <div>
@@ -36,9 +43,9 @@
 
         <div class="nl-footer__news">
             <h3>Dapatkan Update Terbaru</h3>
-            <form class="nl-news" data-newsletter novalidate>
+            <form class="nl-news" data-wa-form data-wa="{{ $e['whatsapp']['number'] }}" data-wa-title="Berlangganan Update" data-msg="[data-news-msg]" novalidate>
                 <label class="nl-sr" for="nl-news-email">Alamat email</label>
-                <input id="nl-news-email" type="email" name="email" placeholder="Masukkan email kamu..." autocomplete="email" required>
+                <input id="nl-news-email" type="email" name="email" data-label="Email" placeholder="Masukkan email kamu..." autocomplete="email" required>
                 <button type="submit" aria-label="Kirim"><svg class="ic"><use href="#i-send"/></svg></button>
             </form>
             <p class="nl-form-msg" data-news-msg role="status" aria-live="polite"></p>
