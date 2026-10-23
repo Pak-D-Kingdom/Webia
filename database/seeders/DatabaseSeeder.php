@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
+            WebiaTemplateSeeder::class,
             WebiaPackageSeeder::class,
             WebiaAddonSeeder::class,
             WebiaTemplateSeeder::class,

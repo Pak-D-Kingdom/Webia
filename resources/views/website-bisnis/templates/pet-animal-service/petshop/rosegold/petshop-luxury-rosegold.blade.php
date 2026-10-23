@@ -31,6 +31,7 @@
             <a href="#home">Home</a>
             <a href="#collections">Collections</a>
             <a href="#bestsellers">Our Edit</a>
+            <a href="#faq">FAQ</a>
             <button type="button" class="fck-cart-trigger" data-cart-open aria-label="Buka keranjang belanja">
                 <span aria-hidden="true">♡</span>
                 <span>Bag</span>
@@ -309,6 +310,102 @@
             </div>
             <button class="fc-btn fc-btn-light" id="fcContactButton">Speak to Our Team ↗</button>
         </section>
+        {{-- FAQ — Furry & Co. --}}
+        <section class="fc-faq" id="faq">
+            <div class="fc-faq-inner">
+                <div class="fc-faq-heading">
+                    <span class="fc-eyebrow">A FEW THINGS TO KNOW</span>
+                    <h2>Questions, answered.<br><em>With a little care.</em></h2>
+                    <p>
+                        Everything you need to know before choosing
+                        something lovely for your beloved companion.
+                    </p>
+                </div>
+
+                <div class="fc-faq-list">
+                    <details class="fc-faq-item">
+                        <summary>
+                            <span>How do I place an order?</span>
+                            <span class="fc-faq-icon" aria-hidden="true">+</span>
+                        </summary>
+                        <div class="fc-faq-answer">
+                            Add your favourite products to your shopping bag.
+                            Open your bag and select Pesan via WhatsApp.
+                            Your selected products and quantities will be sent
+                            to our team in one message for confirmation.
+                        </div>
+                    </details>
+
+                    <details class="fc-faq-item">
+                        <summary>
+                            <span>Can I order several products at once?</span>
+                            <span class="fc-faq-icon" aria-hidden="true">+</span>
+                        </summary>
+                        <div class="fc-faq-answer">
+                            Absolutely! Add different products to your bag,
+                            adjust their quantities, and send your entire
+                            shopping list through a single WhatsApp message.
+                        </div>
+                    </details>
+
+                    <details class="fc-faq-item">
+                        <summary>
+                            <span>Are all products currently in stock?</span>
+                            <span class="fc-faq-icon" aria-hidden="true">+</span>
+                        </summary>
+                        <div class="fc-faq-answer">
+                            Product availability may change. Our team will
+                            confirm the latest stock information before
+                            your order is finalised.
+                        </div>
+                    </details>
+
+                    <details class="fc-faq-item">
+                        <summary>
+                            <span>Are the displayed prices final?</span>
+                            <span class="fc-faq-icon" aria-hidden="true">+</span>
+                        </summary>
+                        <div class="fc-faq-answer">
+                            Displayed prices and the shopping bag subtotal
+                            are for reference. Our team will confirm current
+                            prices, delivery charges, and the final amount
+                            through WhatsApp.
+                        </div>
+                    </details>
+
+                    <details class="fc-faq-item">
+                        <summary>
+                            <span>Can I ask for product recommendations?</span>
+                            <span class="fc-faq-icon" aria-hidden="true">+</span>
+                        </summary>
+                        <div class="fc-faq-answer">
+                            Of course. Contact our concierge for help choosing
+                            food, treats, accessories, and everyday essentials
+                            for your pet.
+                        </div>
+                    </details>
+
+                    <details class="fc-faq-item">
+                        <summary>
+                            <span>How do I confirm payment and delivery?</span>
+                            <span class="fc-faq-icon" aria-hidden="true">+</span>
+                        </summary>
+                        <div class="fc-faq-answer">
+                            Our team will explain the available payment and
+                            delivery options after receiving your enquiry.
+                            Please wait for confirmation before making payment.
+                        </div>
+                    </details>
+                </div>
+
+                <div class="fc-faq-bottom">
+                    <span>STILL HAVE A QUESTION?</span>
+                    <button type="button" id="fcFaqContact">
+                        Ask Our Concierge ↗
+                    </button>
+                </div>
+            </div>
+        </section>
     </main>
 
     <footer class="fc-footer">
@@ -323,7 +420,7 @@
             <a href="{{ url('/webia/template/petshop-luxury-rosegold/katalog') }}">Boutique</a>
             <a href="#contact">Concierge</a>
         </div>
-        <small>© {{ date('Y') }} Furry & Co. — Pet Boutique Demo.</small>
+        <small>© {{ date('Y') }} Made with care ♡ · Website template by WEBIA</small>
     </footer>
 
     <button class="fc-chat-button" id="fcChatButton" aria-label="Hubungi Furry & Co.">✳</button>

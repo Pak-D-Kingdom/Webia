@@ -33,6 +33,7 @@
             <a href="{{ url('/webia/template/petshop-luxury-rosegold') }}">Home</a>
             <a href="{{ url('/webia/template/petshop-luxury-rosegold/katalog') }}">The Collection</a>
             <a href="{{ url('/webia/template/petshop-luxury-rosegold#about') }}">Our Story</a>
+            <a href="{{ url('/webia/template/petshop-luxury-rosegold') }}#faq">FAQ</a>
             <button type="button" class="fck-cart-trigger" data-cart-open aria-label="Buka keranjang belanja">
                 <span aria-hidden="true">♡</span>
                 <span>Bag</span>
@@ -159,7 +160,7 @@
             <a href="{{ url('/webia/template/petshop-luxury-rosegold/katalog') }}">The Collection</a>
             <a href="#" id="fcpFooterContact">Concierge</a>
         </div>
-        <small>© {{ date('Y') }} Furry & Co. — Pet Boutique Demo.</small>
+        <small>© {{ date('Y') }} Made with care ♡ · Website template by WEBIA</small>
     </footer>
 
     <script>
