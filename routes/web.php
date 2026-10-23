@@ -68,6 +68,7 @@ Route::view(
     '/webia/template/vallaco-catering',
     'website-bisnis.templates.fnb.vallaco-catering'
 )->name('webia.template.vallaco-catering');
+Route::view(
     '/webia/template/fnb-bakery-playful-colorful',
     'website-bisnis.templates.fnb.bakery.bakery-playful-colorful'
 )->name('webia.template.fnb.bakery.playful.colorful');

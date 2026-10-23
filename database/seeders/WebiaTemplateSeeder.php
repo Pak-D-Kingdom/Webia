@@ -480,6 +480,7 @@ class WebiaTemplateSeeder extends Seeder
                 'is_active' => true,
                 'sort_order' => 25,
             ],
+[
                 'name' => 'Valla & Co. — Nordic Botanical Catering',
                 'slug' => 'vallaco-catering',
                 'category_slug' => 'fnb',
@@ -497,6 +498,7 @@ class WebiaTemplateSeeder extends Seeder
                 'is_active' => true,
                 'sort_order' => 23,
             ],
+[
                 'name' => 'Laut Biru Seafood',
                 'slug' => 'laut-biru-seafood',
                 'category_slug' => 'fnb',
