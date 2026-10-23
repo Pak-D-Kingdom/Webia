@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 
 // WEBIA — Homepage utama
 Route::view('/', 'website-bisnis.index')->name('home');
+Route::redirect('/webia', '/');
 
 // Webhook & callback Midtrans — diluar middleware auth (dipanggil server Midtrans / redirect publik).
 Route::post('/payments/midtrans/notify', [MidtransController::class, 'notify'])->middleware('throttle:60,1')->name('payments.midtrans.notify');
@@ -79,14 +80,12 @@ Route::view(
 )->name('webia.template.beauty.nailart.professional-softpink');
 Route::view('/webia/template/nail-art-professional-soft-pink/gallery', 'website-bisnis.templates.beauty.nailart.nailart-professional-softpink-gallery')->name('webia.template.beauty.nailart.professional-softpink.gallery');
 
-
 // WEBIA Template 02 — Nail Art Minimalist Sage Green
 Route::view(
     '/webia/template/nail-art-minimalist-sage-green',
     'website-bisnis.templates.beauty.nailart.nailart-minimalist-sagegreen'
 )->name('webia.template.beauty.nailart.minimalist-sagegreen');
 Route::view('/webia/template/nail-art-minimalist-sage-green/gallery', 'website-bisnis.templates.beauty.nailart.nailart-minimalist-sagegreen-gallery')->name('webia.template.beauty.nailart.minimalist-sagegreen.gallery');
-
 
 // WEBIA Template 03 — Luxury Yellow Sunshine
 Route::view(
@@ -113,13 +112,10 @@ Route::view(
     'website-bisnis.templates.automotive.dealer.automotive-dealer-vintage-collection'
 )->name('webia.template.automotive.dealer.vintage.collection');
 
-
-
 Route::view(
     '/webia/template/healthcare-dental-mint',
     'website-bisnis.templates.healthcare.dental.mint-dental-house'
 )->name('webia.template.healthcare-dental-mint');
-
 
 Route::view(
     '/webia/template/healthcare-dental-azure',
@@ -173,6 +169,41 @@ Route::view(
     'website-bisnis.templates.pet-animal-service.petshop.rosegold.petshop-produk-luxury-rosegold'
 )->name('webia.template.petshop-luxury-rosegold.produk');
 
+// =====================================================
+// WEBIA - TECHNOLOGY & IT (SOFTWARE HOUSE)
+// =====================================================
+Route::view(
+    '/webia/template/technology-softwarehouse-professional',
+    'website-bisnis.templates.technology.softwarehouse.technology-softwarehouse-modern'
+)->name('webia.template.technology-softwarehouse-professional');
+Route::view(
+    '/webia/template/technology-softwarehouse-modern',
+    'website-bisnis.templates.technology.softwarehouse.technology-softwarehouse-modern'
+)->name('webia.template.technology-softwarehouse-modern');
+
+// =====================================================
+// WEBIA - SPORTS & FITNESS (GYM & FITNESS)
+// =====================================================
+Route::view(
+    '/webia/template/sports-gym-bold',
+    'website-bisnis.templates.sports-fitness.gym.sports-gym-bold'
+)->name('webia.template.sports-gym-bold');
+
+// =====================================================
+// WEBIA - EDUCATION (ONLINE COURSE)
+// =====================================================
+Route::view(
+    '/webia/template/education-onlinecourse-modern',
+    'website-bisnis.templates.education.online-course.education-onlinecourse-modern'
+)->name('webia.template.education-onlinecourse-modern');
+
+// =====================================================
+// WEBIA - WEDDING & EVENT (WEDDING ORGANIZER)
+// =====================================================
+Route::view(
+    '/webia/template/wedding-organizer-elegant',
+    'website-bisnis.templates.wedding-event.wedding-organizer.wedding-organizer-elegant'
+)->name('webia.template.wedding-organizer-elegant');
 
 // =====================================================
 // WEBIA - PET SHOP CORPORATE PLUM VELVET
