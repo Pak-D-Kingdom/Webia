@@ -59,6 +59,14 @@ Route::get(
 )->name('collections');
 
 Route::view(
+    '/webia/template/aurumco-catering',
+    'website-bisnis.templates.fnb.aurumco-catering'
+)->name('webia.template.aurumco-catering');
+
+Route::view(
+    '/webia/template/vallaco-catering',
+    'website-bisnis.templates.fnb.vallaco-catering'
+)->name('webia.template.vallaco-catering');
     '/webia/template/fnb-bakery-playful-colorful',
     'website-bisnis.templates.fnb.bakery.bakery-playful-colorful'
 )->name('webia.template.fnb.bakery.playful.colorful');
@@ -124,6 +132,7 @@ Route::view(
     '/webia/template/healthcare-dental-sunset',
     'website-bisnis.templates.healthcare.dental.sunset-dental-care'
 )->name('webia.template.healthcare-dental-sunset');
+
 
 
 // =====================================================

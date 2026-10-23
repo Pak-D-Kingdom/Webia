@@ -11,6 +11,13 @@ class DatabaseSeederTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_database_seeder_creates_the_webia_catalog(): void
+    {
+        Artisan::call('db:seed', ['--no-interaction' => true]);
+
+        $this->assertDatabaseHas('webia_packages', ['slug' => 'pixel']);
+        $this->assertDatabaseHas('webia_addons', ['name' => 'SEO Optimization']);
+        $this->assertDatabaseHas('webia_templates', ['slug' => 'little-corner']);
     public function test_default_database_seeder_displays_templates_in_collection(): void
     {
         Artisan::call('db:seed', [

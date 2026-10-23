@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             WebiaTemplateSeeder::class,
             WebiaPackageSeeder::class,
             WebiaAddonSeeder::class,
+            WebiaTemplateSeeder::class,
             AdminUserSeeder::class,
         ]);
     }
