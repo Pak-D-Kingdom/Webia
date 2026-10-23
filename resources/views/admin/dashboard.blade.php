@@ -7,7 +7,9 @@
         <p class="account-label">Admin WEBIA</p>
         <h1 id="admin-title">Panel pengelolaan</h1>
 
-        @if (session('status')) <p role="status">{{ session('status') }}</p> @endif
+        @if (session('status'))
+    <p role="status">{{ session('status') }}</p>
+@endif
 
         <div class="dashboard-grid admin-grid-wide">
             <div class="dashboard-empty dashboard-card-active">

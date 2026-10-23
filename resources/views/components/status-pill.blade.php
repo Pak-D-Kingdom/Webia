@@ -9,4 +9,4 @@
         default => 'muted',
     };
 @endphp
-<span class="status-pill status-pill--{{ $tone ?? $resolvedTone }}">{{ $resolvedLabel }}</span>
+<span class="status-pill {{ $tone ?? $resolvedTone === 'muted' ? 'status-pill-muted' : 'status-pill--' . ($tone ?? $resolvedTone) }}">{{ $resolvedLabel }}</span>
