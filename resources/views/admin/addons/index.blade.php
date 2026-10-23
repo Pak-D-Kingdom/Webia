@@ -5,7 +5,9 @@
     <section class="dashboard-panel" aria-labelledby="addons-title">
         <p class="account-label">Master data</p>
         <h1 id="addons-title">Add-on WEBIA</h1>
-        @if (session('status')) <p role="status">{{ session('status') }}</p> @endif
+        @if (session('status'))
+    <p role="status">{{ session('status') }}</p>
+@endif
         <a class="account-submit" href="{{ route('admin.addons.create') }}">Tambah add-on</a>
         <div class="admin-list">
             @forelse ($addons as $addon)
@@ -15,7 +17,7 @@
                         <span class="status-pill {{ $addon->is_active ? 'status-pill--success' : 'status-pill-muted' }}">{{ $addon->is_active ? 'Aktif' : 'Nonaktif' }}</span>
                         <div class="admin-actions">
                             <a href="{{ route('admin.addons.edit', $addon) }}">Ubah</a>
-                            <form method="POST" action="{{ route('admin.addons.destroy', $addon) }}">@csrf @method('DELETE')<button type="submit">Hapus</button></form>
+                            <form method="POST" action="{{ route('admin.addons.destroy', $addon) }}">@csrf @method('DELETE')<button type="submit" class="account-submit">Hapus</button></form>
                         </div>
                     </div>
                 </article>

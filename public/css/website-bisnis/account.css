@@ -1,6 +1,7 @@
 :root {
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap');
+:root {
     --account-ink: #29233b;
-    --account-muted: #625d70;
     --account-line: #e6e1ed;
     --account-line-strong: #c9c0d8;
     --account-control-line: #766e83;
@@ -8,7 +9,7 @@
     --account-page: #faf9fc;
     --account-lavender: #f4f0fb;
     --account-lavender-strong: #e9e1f7;
-    --account-action: #5a3f9f;
+    --account-action: #5A3F9F;
     --account-action-hover: #432b80;
     --account-action-soft: #eee8f8;
     --account-error: #a51d32;
@@ -83,11 +84,11 @@ a {
     align-items: center;
     justify-content: space-between;
     gap: 1.5rem;
-    min-height: 4.5rem;
+    min-height: var(--account-header-height);
     padding: 0.75rem clamp(1rem, 4vw, 4rem);
-    background: rgba(255, 255, 255, 0.94);
+    background: var(--account-surface);
     border-bottom: 1px solid var(--account-line);
-    backdrop-filter: blur(12px);
+    backdrop-filter: none;
 }
 
 .account-brand {
@@ -177,7 +178,7 @@ a {
     grid-template-columns: minmax(0, 0.85fr) minmax(19rem, 1fr);
     gap: clamp(2rem, 7vw, 6rem);
     align-items: center;
-    min-height: calc(100dvh - 12rem);
+    min-height: calc(100dvh - var(--account-header-height) - 2rem);
 }
 
 .account-copy {
@@ -394,6 +395,259 @@ a {
 }
 
 /* ---------- GRID DASHBOARD ---------- */
+
+/* Admin sidebar ... */
+
+/* Updated grid layout for dashboard panels */
+.dashboard-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(19rem, 1fr);
+    gap: clamp(2rem, 7vw, 6rem);
+    align-items: start;
+    min-height: calc(100dvh - var(--account-header-height, 92px) - 2rem);
+}
+
+.admin-grid-wide {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(16rem, 1fr);
+    gap: 1.25rem;
+    align-items: start;
+}
+
+@media (max-width: 44rem) {
+    .account-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.35rem 0.75rem;
+        padding-inline: 0.75rem;
+    }
+
+    .customer-nav {
+        order: 3;
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .customer-nav a,
+    .customer-nav button {
+        white-space: nowrap;
+    }
+
+    .account-main,
+    .admin-main {
+        width: min(100% - 1.5rem, 34rem);
+        padding: 1.75rem 0 3rem;
+    }
+
+    .account-panel {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        min-height: 0;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-list-item {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .admin-table-wrap {
+        overflow: visible;
+        background: transparent;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    .admin-table,
+    .admin-table tbody,
+    .admin-table tr,
+    .admin-table th,
+    .admin-table td {
+        display: block;
+        width: 100%;
+        min-width: 0;
+    }
+
+    .admin-table thead {
+        display: none;
+    }
+
+    .admin-table tbody {
+        display: grid;
+        gap: 1rem;
+    }
+
+    .admin-table tbody tr {
+        padding: 1rem;
+        background: var(--account-surface);
+        border: 1px solid var(--account-line);
+        border-radius: var(--account-radius-lg);
+        box-shadow: var(--account-shadow);
+    }
+
+    .admin-table th,
+    .admin-table td {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0.55rem 0;
+        border: 0;
+        text-align: right;
+    }
+
+    .admin-table tbody th {
+        display: block;
+        padding-top: 0;
+        text-align: left;
+    }
+
+    .admin-table td[data-label]::before {
+        color: var(--account-muted);
+        content: attr(data-label);
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-align: left;
+    }
+
+    .admin-table-action {
+        justify-content: stretch;
+        padding-bottom: 0;
+    }
+
+    .admin-table-action a {
+        width: 100%;
+    }
+
+    .admin-list-item > a,
+    .list-item-meta > a {
+        width: 100%;
+    }
+
+    .list-item-meta {
+        align-items: stretch;
+        justify-content: flex-start;
+    }
+
+    .admin-actions {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .admin-actions a,
+    .admin-actions button,
+    .admin-actions form,
+    .admin-actions form button,
+    .account-submit {
+        width: 100%;
+    }
+}
+@media (max-width: 60rem) {
+    .admin-sidebar { display: none; }
+    .admin-workspace { margin-left: 0; }
+    .admin-topbar { flex-wrap: wrap; }
+    .admin-mobile-brand,
+    .admin-mobile-nav { display: flex; }
+    .admin-main { width: min(100% - 2rem, 72rem); }
+}
+
+
+/* Admin sidebar new elements */
+.sidebar-brand-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.sidebar-close {
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.sidebar-scrim {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 7;
+}
+
+/* Show scrim when sidebar open via JS (adds .open class) */
+.admin-shell .admin-sidebar.open + .sidebar-scrim {
+    display: block;
+}
+
+/* Sidebar toggle button */
+.sidebar-toggle {
+    background: transparent;
+    border: none;
+    color: var(--account-ink);
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* Mobile sidebar sliding */
+.admin-sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: 16rem;
+    background: var(--account-sidebar);
+    transform: translateX(-100%);
+    transition: transform 0.14s ease;
+    z-index: 8;
+}
+
+.admin-sidebar.open {
+    transform: translateX(0);
+}
+
+
+/* Admin sidebar new elements */
+.sidebar-brand-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.sidebar-close {
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.sidebar-scrim {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 7;
+}
+
+/* Show scrim when sidebar open via JS (adds .open class) */
+.admin-shell .admin-sidebar.open + .sidebar-scrim {
+    display: block;
+}
+
+/* Sidebar toggle button */
+.sidebar-toggle {
+    background: transparent;
+    border: none;
+    color: var(--account-ink);
+    font-weight: 700;
+    cursor: pointer;
+}
+
 
 .dashboard-grid {
     display: grid;
