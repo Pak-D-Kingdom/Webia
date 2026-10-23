@@ -1,0 +1,40 @@
+<?php
+
+namespace Tests\Feature;
+
+use Database\Seeders\DatabaseSeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Artisan;
+use Tests\TestCase;
+
+class DatabaseSeederTest extends TestCase
+{
+    use RefreshDatabase;
+
+    public function test_default_database_seeder_displays_templates_in_collection(): void
+    {
+        Artisan::call('db:seed', [
+            '--class' => DatabaseSeeder::class,
+            '--force' => true,
+        ]);
+
+        $this->get(route('collections'))
+            ->assertOk()
+            ->assertSee('Blush Nail Studio')
+            ->assertSee('Sage Nail Atelier')
+            ->assertSee('Maison Soleil')
+            ->assertSee('Sweet Crumb Bakery');
+    }
+
+    public function test_sweet_crumb_demo_renders_bakery_sections_and_contact_buttons(): void
+    {
+        $this->get(route('webia.template.fnb.bakery.playful.colorful'))
+            ->assertOk()
+            ->assertSee('Katalog Roti & Pastry', false)
+            ->assertSee('Paket Promo & Event', false)
+            ->assertSee('Pertanyaan Umum (FAQ)')
+            ->assertSee('Apakah tersedia layanan pengiriman?')
+            ->assertSee('wa.me/6281234567890')
+            ->assertSee('webia-ai-launcher');
+    }
+}

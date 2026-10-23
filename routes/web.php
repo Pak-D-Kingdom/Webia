@@ -58,6 +58,11 @@ Route::get(
     [TemplateCollectionController::class, 'index']
 )->name('collections');
 
+Route::view(
+    '/webia/template/fnb-bakery-playful-colorful',
+    'website-bisnis.templates.fnb.bakery.bakery-playful-colorful'
+)->name('webia.template.fnb.bakery.playful.colorful');
+
 // WEBIA — Template Nail Art Professional Soft Pink
 // URL lama dipertahankan agar konsisten; view mengikuti struktur folder baru.
 Route::view(
@@ -106,6 +111,7 @@ Route::view(
     '/webia/template/healthcare-dental-azure',
     'website-bisnis.templates.healthcare.dental.azure-smile-clinic'
 )->name('webia.template.healthcare-dental-azure');
+
 
 // Sunset Dental Care Template
 Route::view(
