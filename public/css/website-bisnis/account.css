@@ -1853,6 +1853,60 @@ a {
     text-decoration: underline;
 }
 
+.order-detail-split {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.9rem;
+    margin-top: 1.25rem;
+}
+
+@media (min-width: 1000px) {
+    .order-detail-split {
+        grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+        align-items: start;
+    }
+}
+
+.order-detail-main,
+.order-detail-aside {
+    display: grid;
+    gap: 0.9rem;
+}
+
+.order-detail-main h3 {
+    margin: 0.8rem 0 0;
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--account-action);
+}
+
+.order-detail-list {
+    margin: 0.4rem 0 0;
+    padding-left: 1.1rem;
+    color: var(--account-muted);
+    font-size: 0.88rem;
+}
+
+.order-detail-list li + li {
+    margin-top: 0.25rem;
+}
+
+.order-payment-duplicate {
+    color: var(--account-error);
+    font-weight: 600;
+}
+
+.order-detail-receipt {
+    margin: 0.75rem 0 0;
+    font-size: 0.85rem;
+}
+
+.order-verify-form {
+    margin-top: 0.9rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--account-line);
+}
+
 @media (max-width: 700px) {
     .dash-reject-form input {
         width: 7rem;
