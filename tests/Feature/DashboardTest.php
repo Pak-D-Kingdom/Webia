@@ -67,6 +67,27 @@ class DashboardTest extends TestCase
             ]);
     }
 
+    public function test_admin_dashboard_sums_verified_revenue_within_last_30_days(): void
+    {
+        $admin = User::factory()->admin()->create();
+        WebiaOrder::factory()->create([
+            'status' => 'paid',
+            'total_price' => 150000,
+            'paid_at' => now()->subDays(2),
+        ]);
+        WebiaOrder::factory()->create([
+            'status' => 'paid',
+            'total_price' => 250000,
+            'paid_at' => now()->subDays(40),
+        ]);
+
+        $this->actingAs($admin)
+            ->get(route('admin.dashboard'))
+            ->assertOk()
+            ->assertSee('Pendapatan 30 hari')
+            ->assertSee('Rp 150.000');
+    }
+
     public function test_order_progress_index_tracks_payment_and_delivery_status(): void
     {
         $order = WebiaOrder::factory()->make([
