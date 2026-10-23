@@ -17,7 +17,9 @@ class DatabaseSeederTest extends TestCase
 
         $this->assertDatabaseHas('webia_packages', ['slug' => 'pixel']);
         $this->assertDatabaseHas('webia_addons', ['name' => 'SEO Optimization']);
-        $this->assertDatabaseHas('webia_templates', ['slug' => 'little-corner']);
+        $this->assertDatabaseHas('webia_templates', ['slug' => 'kusuma-ningrat-royal-heritage']);
+    }
+
     public function test_default_database_seeder_displays_templates_in_collection(): void
     {
         Artisan::call('db:seed', [
@@ -30,7 +32,9 @@ class DatabaseSeederTest extends TestCase
             ->assertSee('Blush Nail Studio')
             ->assertSee('Sage Nail Atelier')
             ->assertSee('Maison Soleil')
-            ->assertSee('Sweet Crumb Bakery');
+            ->assertSee('Sweet Crumb Bakery')
+            ->assertSee('Kusuma Ningrat — Royal Heritage Catering')
+            ->assertSee('NUVIA Skin Tech Clinic — Graphite & Lilac');
     }
 
     public function test_sweet_crumb_demo_renders_bakery_sections_and_contact_buttons(): void
