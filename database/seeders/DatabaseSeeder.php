@@ -16,9 +16,9 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             WebiaTemplateSeeder::class,
+            WebiaTemplateNabiilaSeeder::class,
             WebiaPackageSeeder::class,
             WebiaAddonSeeder::class,
-            WebiaTemplateSeeder::class,
             AdminUserSeeder::class,
         ]);
     }
