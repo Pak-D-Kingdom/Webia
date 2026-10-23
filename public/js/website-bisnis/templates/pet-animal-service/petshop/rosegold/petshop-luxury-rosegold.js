@@ -36,6 +36,27 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    document.getElementById('fcFaqContact')
+        ?.addEventListener('click', () => {
+            const config = window.FURRY_CONFIG || {};
+            const phone = config.whatsappNumber || '6285850180285';
+
+            const message = [
+                'Hello Furry & Co. 💗',
+                '',
+                'I have a question about your pet boutique collection.',
+                'Could your team please help me?',
+                '',
+                'Thank you!'
+            ].join('\n');
+
+            window.open(
+                `https://wa.me/${phone}?text=${encodeURIComponent(message)}`,
+                '_blank',
+                'noopener,noreferrer'
+            );
+        });
+
     // Product ordering buttons
     document.querySelectorAll('.fc-add-button').forEach(button => {
         button.addEventListener('click', () => {

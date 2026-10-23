@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'dkreasi_url' => env('DKREASI_URL'),
+
     /*
     | Rekening transfer manual yang tampil pada instruksi pembayaran customer di halaman order.
     | Dummy awal: ganti dengan rekening aktif WEBIA sebelum production.
