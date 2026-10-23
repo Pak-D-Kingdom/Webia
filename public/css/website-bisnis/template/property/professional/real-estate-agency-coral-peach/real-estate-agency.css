@@ -205,22 +205,15 @@ main:focus { outline: none; }
   .navbar__cta { display: inline-flex; }
   .navbar__cta--mobile { display: none; }
   .navbar__menu { position: static; visibility: visible; opacity: 1; transform: none; background: transparent; border: 0; box-shadow: none; padding: 0; margin-inline: auto; }
-<<<<<<< HEAD
   .navbar__links { display: flex; align-items: center; gap: clamp(14px, 2.1vw, 40px); }
-=======
-  .navbar__links { display: flex; align-items: center; gap: clamp(20px, 2.6vw, 40px); }
->>>>>>> webia/nabiila-fe
   .navbar__links a { position: relative; padding: 24px 2px; border: 0; font-size: 13.5px; transition: color .2s; }
   .navbar__links a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 14px; height: 2px; background: var(--coral); transform: scaleX(0); transform-origin: left; transition: transform .25s var(--ease); }
   .navbar__links a:hover { color: var(--coral); }
   .navbar__links a:hover::after, .navbar__links a.is-active::after { transform: scaleX(1); }
 }
 
-<<<<<<< HEAD
 @media (min-width: 992px) and (max-width: 1199px) { .navbar__links a { font-size: 13px; } .navbar__cta { padding: 11px 16px; } .logo__text strong { font-size: 17px; } }
 
-=======
->>>>>>> webia/nabiila-fe
 /* 06 · HERO & SEARCH ----------------------------------------------------- */
 .hero { position: relative; overflow: hidden; background: linear-gradient(120deg, #FFE7DC 0%, #FFF3EC 42%, #FFF9F6 100%); }
 .hero__leaf { position: absolute; left: -26px; bottom: -10px; width: 110px; opacity: .85; pointer-events: none; z-index: 1; }
@@ -464,7 +457,6 @@ main:focus { outline: none; }
 .b-card__title a:hover { color: var(--coral); }
 .b-card__excerpt, .b-card__more { margin-top: 8px; color: var(--ink-2); font-size: 12.5px; }
 .b-card__more { padding: 10px 12px; border-left: 3px solid var(--coral); background: var(--peach-50); border-radius: 0 8px 8px 0; }
-<<<<<<< HEAD
 .b-card { position: relative; cursor: pointer; }
 .b-card__body { display: flex; flex-direction: column; flex: 1; }
 .b-card__title a::after { content: ""; position: absolute; inset: 0; z-index: 1; border-radius: inherit; }
@@ -518,9 +510,6 @@ main:focus { outline: none; }
   .article-layout { grid-template-columns: minmax(0, 1fr) 340px; gap: 28px; }
   .article-side { position: sticky; top: calc(var(--nav-h) + 20px); }
 }
-=======
-.b-card:target { box-shadow: 0 0 0 2px var(--coral), var(--shadow); }
->>>>>>> webia/nabiila-fe
 
 /* 13 · HALAMAN DALAM ----------------------------------------------------- */
 .page-hero { position: relative; overflow: hidden; background: linear-gradient(120deg, #FFE7DC 0%, #FFF3EC 50%, #FFF9F6 100%); border-bottom: 1px solid var(--line); }

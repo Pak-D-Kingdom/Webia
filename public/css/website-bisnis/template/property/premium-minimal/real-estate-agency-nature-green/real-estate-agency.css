@@ -254,11 +254,7 @@ h1, h2, h3, p { margin: 0; }
 .home { display: grid; grid-template-columns: minmax(0, 1fr) 272px; gap: 26px; align-items: start; padding-block: 30px 24px; }
 .home__main, .home__side { display: grid; gap: 20px; min-width: 0; }
 .home__row { display: grid; gap: 20px; min-width: 0; }
-<<<<<<< HEAD
 .home__row--a { grid-template-columns: minmax(0, 1fr); }
-=======
-.home__row--a { grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); }
->>>>>>> webia/nabiila-fe
 .home__row--b { grid-template-columns: minmax(0, 1fr); }
 .home__row--b .map { aspect-ratio: 21 / 8; }
 .home__row > .panel { align-self: stretch; }
@@ -370,11 +366,7 @@ h1, h2, h3, p { margin: 0; }
 .detail { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 24px; align-items: start; }
 .detail__main { display: grid; gap: 20px; min-width: 0; }
 .detail__side { display: grid; gap: 18px; position: sticky; top: calc(var(--nav-h) + 16px); }
-<<<<<<< HEAD
 .contact { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 24px; align-items: start; }
-=======
-.contact { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 24px; align-items: start; }
->>>>>>> webia/nabiila-fe
 .contact .map { aspect-ratio: 16 / 11; }
 .form-grid--stack { grid-template-columns: minmax(0, 1fr); }
 
@@ -465,7 +457,6 @@ h1, h2, h3, p { margin: 0; }
     .map, .home__row--b .map, .contact .map { aspect-ratio: 16 / 11; }
 }
 @media (max-width: 700px) { .detail__side { grid-template-columns: minmax(0, 1fr); } }
-<<<<<<< HEAD
 
 /* 6c. TAMBAHAN: blog, artikel, inquiry, booking ---------------------------- */
 .card--link { position: relative; }
@@ -548,9 +539,7 @@ h1, h2, h3, p { margin: 0; }
     .gal--preview .gal__cell--main { aspect-ratio: 4 / 3; }
     .bk-grid { grid-template-columns: minmax(0, 1fr); }
     .article { padding: 22px 18px; }
-    .booking, }
-=======
->>>>>>> webia/nabiila-fe
+    .booking { padding: 20px 18px; }
 @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }

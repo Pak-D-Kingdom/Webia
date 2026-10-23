@@ -833,10 +833,7 @@ html {
 /* Tampilan setelah terkirim */
 .cp-quote__success { display: grid; justify-items: center; gap: .7rem; padding: 1.75rem .5rem 1rem; text-align: center; }
 .cp-quote__success:focus { outline: none; }
-<<<<<<< HEAD
 .cp-quote__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: .6rem; margin-top: .3rem; }
-=======
->>>>>>> webia/nabiila-fe
 .cp-quote__success p { max-width: 28rem; font-size: .875rem; color: var(--cp-c-muted); }
 .cp-quote__check {
     display: grid;

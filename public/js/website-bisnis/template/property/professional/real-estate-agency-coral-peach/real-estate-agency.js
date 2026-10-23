@@ -526,19 +526,6 @@
       });
     });
     if (search) search.addEventListener('input', debounce(apply, 150));
-<<<<<<< HEAD
-=======
-
-    $$('[data-post-toggle]', grid).forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var more = $('[data-post-more]', btn.closest('.b-card'));
-        var open = more.hidden;
-        more.hidden = !open;
-        btn.setAttribute('aria-expanded', String(open));
-        btn.firstChild.textContent = open ? 'Tutup ' : 'Baca selengkapnya ';
-      });
-    });
->>>>>>> webia/nabiila-fe
   }
 
   /* ---------- 12. Dropdown kustom (progressive enhancement dari <select>) ---------- */
@@ -661,7 +648,6 @@
     window.addEventListener('resize', debounce(function () { closeAll(null); }, 100));
   }
 
-<<<<<<< HEAD
   /* ---------- 13. Salin tautan artikel ---------- */
   function initCopyLink() {
     $$('[data-copy-link]').forEach(function (btn) {
@@ -684,16 +670,11 @@
     });
   }
 
-=======
->>>>>>> webia/nabiila-fe
   /* ---------- Init ---------- */
   function init() {
     initNavbar(); initReveal(); initSearchForm(); initPropertyFilter(); initFavorites();
     initLightbox(); initGalleryFilter(); initForms(); initChatbot(); initToTop(); initBlog();
-<<<<<<< HEAD
     initCopyLink();
-=======
->>>>>>> webia/nabiila-fe
     initSelects(); // terakhir: membaca nilai <select> yang sudah diisi filter/prefill
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();

@@ -1,9 +1,5 @@
 {{-- AI COMPANY FAQ + TOMBOL MELAYANG. Jawaban dibaca dari <script id="cp-faq-data"> di layout. --}}
-<<<<<<< HEAD
 <aside class="cp-ai" data-cp-ai data-autoopen="desktop" data-wa="{{ $waBase }}" aria-label="Bantuan cepat">
-=======
-<aside class="cp-ai" data-cp-ai data-autoopen="desktop" aria-label="Bantuan cepat">
->>>>>>> webia/nabiila-fe
     <div class="cp-ai__panel" id="cp-ai-panel" role="dialog" aria-modal="false" aria-labelledby="cp-ai-title" data-cp-ai-panel hidden>
         <header class="cp-ai__head">
             <img class="cp-ai__avatar" src="{{ $img('ai-avatar.png') }}" alt="" width="198" height="234" loading="lazy">
