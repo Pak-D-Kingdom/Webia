@@ -628,6 +628,25 @@ textarea.kl-input { resize: vertical; min-height: 5rem; }
     border: 1px solid #98b79f; border-radius: 5px; background: #e6f0e4; color: #1d4a2a; font-size: .86rem;
 }
 .kl-reserve__success .kl-icon { margin-top: .2rem; font-size: 1.1rem; }
+.kl-reserve__link { display: inline-block; margin-top: .5rem; font-weight: 700; font-size: .84rem; color: var(--kl-wa); text-decoration: underline; text-underline-offset: 3px; }
+.kl-reserve__link:hover { color: #1d5a31; }
+
+/* Penegasan halus panel form, jam operasional, dan lokasi (warna & model tetap sama).
+   Berlaku di halaman reservasi (.kl-reserve-grid) dan beranda (.kl-info). */
+:is(.kl-reserve-grid, .kl-info) .kl-panel {
+    border-color: #cfc2a8;
+    box-shadow: 0 12px 24px -20px rgba(60, 40, 10, .6);
+}
+.kl-reserve-grid .kl-reserve { padding: 1.7rem 1.8rem 1.9rem; }
+:is(.kl-reserve-grid, .kl-info) .kl-panel__title { font-size: 1.2rem; }
+.kl-reserve-grid .kl-reserve .kl-panel__title { font-size: 1.45rem; }
+.kl-reserve-grid .kl-field label { font-size: .86rem; }
+.kl-reserve-grid .kl-input { min-height: 2.8rem; border-color: #cfc2a8; }
+:is(.kl-reserve-grid, .kl-info) .kl-hours__list { gap: .75rem; }
+:is(.kl-reserve-grid, .kl-info) .kl-hours__row { font-size: .88rem; }
+:is(.kl-reserve-grid, .kl-info) .kl-hours__row dd { color: var(--kl-ink); font-weight: 600; }
+:is(.kl-reserve-grid, .kl-info) .kl-location .kl-panel__title { font-size: 1.3rem; }
+:is(.kl-reserve-grid, .kl-info) .kl-location__addr { font-size: .98rem; }
 
 /* 15. RESPONSIVE ----------------------------------------------------------- */
 @media (max-width: 1279px) {

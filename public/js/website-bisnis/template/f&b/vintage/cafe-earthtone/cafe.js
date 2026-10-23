@@ -199,6 +199,8 @@
         if (!form) return;
 
         const success = $('[data-kl-success]');
+        const successLink = $('[data-kl-success-link]');
+        const waUrl = form.dataset.klWa || '';
         const timeMin = form.dataset.timeMin || '00:00';
         const timeMax = form.dataset.timeMax || '23:59';
         const maxGuests = parseInt(form.dataset.maxGuests, 10) || 20;
@@ -252,6 +254,34 @@
             });
         });
 
+        const buildMessage = () => {
+            const f = form.elements;
+            const [y, m, d] = f.tanggal.value.split('-').map(Number);
+            const date = new Intl.DateTimeFormat('id-ID', { dateStyle: 'full' }).format(new Date(y, m - 1, d));
+            const lines = [
+                form.dataset.klWaTitle || 'Halo, saya ingin reservasi meja:',
+                '',
+                `Nama: ${f.nama.value.trim()}`,
+                `No. WhatsApp: ${f.telepon.value.trim()}`,
+                `Tanggal: ${date}`,
+                `Jam: ${f.jam.value.replace(':', '.')}`,
+                `Jumlah tamu: ${parseInt(f.tamu.value, 10)} orang`,
+            ];
+            const note = f.catatan.value.trim();
+            if (note) lines.push(`Catatan: ${note}`);
+            return lines.join('\n');
+        };
+
+        const showSuccess = () => {
+            form.reset();
+            form.hidden = true;
+            if (success) {
+                success.hidden = false;
+                success.focus();
+                success.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+            }
+        };
+
         form.addEventListener('submit', (event) => {
             const invalid = Object.keys(validators).filter((name) => !check(name));
             if (invalid.length) {
@@ -260,16 +290,25 @@
                 return;
             }
 
+            // Mode WhatsApp: data form dikirim sebagai pesan ke nomor di config (contact.wa_number)
+            if (waUrl) {
+                event.preventDefault();
+                const link = `${waUrl}?text=${encodeURIComponent(buildMessage())}`;
+                const opened = window.open(link, '_blank', 'noopener');
+                if (successLink) {
+                    successLink.href = link;
+                    successLink.hidden = false;
+                }
+                // Jika pop-up diblokir browser, arahkan di tab yang sama agar pesan tetap terkirim
+                if (!opened) window.location.href = link;
+                showSuccess();
+                return;
+            }
+
             // action="#" = mode demo (frontend statis): tidak ada data yang dikirim.
             if ((form.getAttribute('action') || '#') === '#') {
                 event.preventDefault();
-                form.reset();
-                form.hidden = true;
-                if (success) {
-                    success.hidden = false;
-                    success.focus();
-                    success.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
-                }
+                showSuccess();
             }
         });
     }
