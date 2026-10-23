@@ -1,19 +1,22 @@
 :root {
-@import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
 :root {
-    --account-ink: #29233b;
-    --account-line: #e6e1ed;
-    --account-line-strong: #c9c0d8;
-    --account-control-line: #766e83;
+    --account-ink: #191c1e;
+    --account-muted: #474651;
+    --account-line: #e0e3e5;
+    --account-line-strong: #c8c5d3;
+    --account-control-line: #777682;
     --account-surface: #ffffff;
-    --account-page: #faf9fc;
-    --account-lavender: #f4f0fb;
-    --account-lavender-strong: #e9e1f7;
-    --account-action: #5A3F9F;
-    --account-action-hover: #432b80;
-    --account-action-soft: #eee8f8;
-    --account-error: #a51d32;
-    --account-sidebar: #241b3d;
+    --account-page: #f7f9fb;
+    --account-lavender: #e2dfff;
+    --account-lavender-strong: #c3c0ff;
+    --account-action: #1a146b;
+    --account-action-hover: #2913b3;
+    --account-action-soft: #e2dfff;
+    --account-mint: #89f5e7;
+    --account-teal: #006a61;
+    --account-error: #ba1a1a;
+    --account-sidebar: #1a146b;
     --account-shadow: 0 14px 38px rgba(47, 35, 78, 0.09);
     --account-radius: 0.65rem;
     --account-radius-lg: 0.9rem;
@@ -31,7 +34,7 @@ body {
     margin: 0;
     color: var(--account-ink);
     background: var(--account-page);
-    font-family: Inter, "Segoe UI", system-ui, Arial, sans-serif;
+    font-family: "Plus Jakarta Sans", Inter, "Segoe UI", system-ui, Arial, sans-serif;
     line-height: 1.55;
     -webkit-font-smoothing: antialiased;
 }
@@ -1165,8 +1168,8 @@ a {
 
 .sidebar-nav a:hover,
 .sidebar-nav a[aria-current='page'] {
-    color: #ffffff;
-    background: #5a3f9f;
+    color: #89f5e7;
+    background: rgba(137, 245, 231, 0.12);
 }
 
 .sidebar-account {
