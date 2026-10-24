@@ -10,8 +10,7 @@ class WebiaTemplateSeeder extends Seeder
     public function run(): void
     {
         $templates = [
-           
-            [
+  [
                 'name' => 'Blush Nail Studio',
                 'slug' => 'nailart-professional-softpink',
                 'category_slug' => 'beauty',
@@ -27,7 +26,7 @@ class WebiaTemplateSeeder extends Seeder
                 'preview_folder' => null,
                 'template_url' => '/webia/template/nail-art-professional-soft-pink',
                 'is_active' => true,
-                'sort_order' => 13,
+                'sort_order' => 1,
             ],
             [
                 'name' => 'Sage Nail Atelier',
@@ -45,7 +44,7 @@ class WebiaTemplateSeeder extends Seeder
                 'preview_folder' => null,
                 'template_url' => '/webia/template/nail-art-minimalist-sage-green',
                 'is_active' => true,
-                'sort_order' => 14,
+                'sort_order' => 2,
             ],
             [
                 'name' => 'Maison Soleil',
@@ -63,14 +62,14 @@ class WebiaTemplateSeeder extends Seeder
                 'preview_folder' => null,
                 'template_url' => '/webia/template/nail-art-luxury-yellow-sunshine',
                 'is_active' => true,
-                'sort_order' => 15,
+                'sort_order' => 3,
             ],
             [
                 'name' => 'Heritage Motors',
                 'slug' => 'automotive-dealer-vintage',
                 'category_slug' => 'automotive',
                 'category_label' => 'Automotive',
-                'business_types' => ['Dealer & Showroom Kendaraan',],
+                'business_types' => ['Dealer & Showroom Kendaraan'],
                 'design_style' => 'Vintage',
                 'color_theme' => 'Forest Green, Cream & Burgundy',
                 'description' => 'Website dealer dan showroom kendaraan dengan katalog mobil, detail kendaraan, booking test drive, dan konsultasi melalui WhatsApp.',
@@ -81,7 +80,7 @@ class WebiaTemplateSeeder extends Seeder
                 'preview_folder' => 'automotive/dealer',
                 'template_url' => '/webia/template/automotive-dealer-vintage',
                 'is_active' => true,
-                'sort_order' => 16,
+                'sort_order' => 4,
             ],
 
             [
@@ -100,7 +99,7 @@ class WebiaTemplateSeeder extends Seeder
                 'preview_folder' => 'healthcare/dental',
                 'template_url' => '/webia/template/healthcare-dental-mint',
                 'is_active' => true,
-                'sort_order' => 17,
+                'sort_order' => 5,
             ],
 
             [
@@ -119,7 +118,7 @@ class WebiaTemplateSeeder extends Seeder
                 'preview_folder' => 'healthcare/dental',
                 'template_url' => '/webia/template/healthcare-dental-azure',
                 'is_active' => true,
-                'sort_order' => 18,
+                'sort_order' => 6,
             ],
 
             [
@@ -138,7 +137,7 @@ class WebiaTemplateSeeder extends Seeder
                 'preview_folder' => 'healthcare/dental',
                 'template_url' => '/webia/template/healthcare-dental-sunset',
                 'is_active' => true,
-                'sort_order' => 19,
+                'sort_order' => 7,
             ],
 
             [
@@ -157,7 +156,7 @@ class WebiaTemplateSeeder extends Seeder
                 'preview_folder' => 'pet-animal-service/petshop/glacierblue',
                 'template_url' => '/webia/template/petshop-minimalist-glacierblue',
                 'is_active' => true,
-                'sort_order' => 20,
+                'sort_order' => 8,
             ],
             [
                 'name' => 'Furry & Co. — Pet Shop Luxury Rose Gold',
@@ -175,9 +174,6 @@ class WebiaTemplateSeeder extends Seeder
                 'preview_folder' => 'pet-animal-service/petshop/rosegold',
                 'template_url' => '/webia/template/petshop-luxury-rosegold',
                 'is_active' => true,
-<<<<<<< Updated upstream
-                'sort_order' => 21,
-=======
                 'sort_order' => 9,
             ],
             [
@@ -270,7 +266,7 @@ class WebiaTemplateSeeder extends Seeder
                 'is_active' => true,
                 'sort_order' => 14,
             ],
-            [
+[
                 'name' => 'Valla & Co. — Nordic Botanical Catering',
                 'slug' => 'vallaco-catering',
                 'category_slug' => 'fnb',
@@ -288,7 +284,7 @@ class WebiaTemplateSeeder extends Seeder
                 'is_active' => true,
                 'sort_order' => 15,
             ],
-            [
+[
                 'name' => 'Laut Biru Seafood',
                 'slug' => 'laut-biru-seafood',
                 'category_slug' => 'fnb',
@@ -305,7 +301,6 @@ class WebiaTemplateSeeder extends Seeder
                 'template_url' => '/webia/template/laut-biru-seafood',
                 'is_active' => true,
                 'sort_order' => 16,
->>>>>>> Stashed changes
             ],
 
 
@@ -325,7 +320,7 @@ class WebiaTemplateSeeder extends Seeder
                 'preview_folder' => 'pet-animal-service/petshop/plumvelvet',
                 'template_url' => '/webia/template/petshop-corporate-plumvelvet',
                 'is_active' => true,
-                'sort_order' => 22,
+                'sort_order' => 17,
             ],
 
             [
@@ -344,7 +339,7 @@ class WebiaTemplateSeeder extends Seeder
                 'preview_folder' => 'wedding-event/event-organizer/burgundy-wine',
                 'template_url' => '/webia/template/event-organizer-modern-burgundy-wine',
                 'is_active' => true,
-                'sort_order' => 23,
+                'sort_order' => 18,
             ],
 
             [
@@ -363,7 +358,7 @@ class WebiaTemplateSeeder extends Seeder
                 'preview_folder' => 'wedding-event/catering-wedding-cake/ruby-luxe',
                 'template_url' => '/webia/template/catering-wedding-cake-ruby-luxe',
                 'is_active' => true,
-                'sort_order' => 24,
+                'sort_order' => 19,
             ],
             [
                 'name' => 'Jelly Pop — Personal Trainer Playful & Colorful',
@@ -403,8 +398,42 @@ class WebiaTemplateSeeder extends Seeder
                 'is_active' => true,
                 'sort_order' => 21,
             ],
-
-
+            [
+                'name' => 'Artistic Terracotta — Interior Design Studio',
+                'slug' => 'interior-design-studio-artistic-terracotta',
+                'category_slug' => 'interior-architecture',
+                'category_label' => 'Interior & Architecture',
+                'business_types' => ['Interior Design Studio',],
+                'design_style' => 'Artistic',
+                'color_theme' => 'Terracotta',
+                'description' => 'Website interior design studio dengan showcase gaya desain, portfolio proyek, galeri before-after, kategori residential dan commercial, paket layanan, harga konsultasi, proses desain, pilihan material, profil desainer, testimoni, formulir konsultasi, project inquiry, area layanan, FAQ, floating WhatsApp, dan AI chatbot.',
+                'preview_style' => 'preview-interior-design-studio-artistic-terracotta',
+                'eyebrow' => 'CRAFTING EARTH-INSPIRED ARCHITECTURAL MASTERY',
+                'headline' => 'Sculpting Warmth & Timeless Atmosphere',
+                'tag' => 'Interior & Architecture · Interior Design Studio · Artistic · Terracotta',
+                'preview_folder' => 'interior-architecture/interior-design-studio/artistic-terracotta',
+                'template_url' => '/webia/template/interior-design-studio-artistic-terracotta',
+                'is_active' => true,
+                'sort_order' => 27,
+            ],
+            [
+                'name' => 'Aethel Moss',
+                'slug' => 'aethel-moss-architectural-studio',
+                'category_slug' => 'interior-architecture',
+                'category_label' => 'Interior & Architecture',
+                'business_types' => ['Architecture & Building Design'],
+                'design_style' => 'Modern',
+                'color_theme' => 'Forest Moss',
+                'description' => 'Studio arsitektur modern dengan desain bangunan residential dan commercial, galeri denah, visualisasi 3D, kalkulator estimasi, serta konsultasi proyek.',
+                'preview_style' => 'preview-glow',
+                'eyebrow' => 'BIOPHILIC & ORGANIC LUXURY ARCHITECTURE',
+                'headline' => 'Architectural Sanctuaries Designed for Generations.',
+                'tag' => 'Architecture & Building Design · Modern Forest Moss',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/aethel-moss-architectural-studio',
+                'is_active' => true,
+                'sort_order' => 28,
+            ],
         ];
 
         foreach ($templates as $template) {
