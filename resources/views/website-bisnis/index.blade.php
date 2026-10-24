@@ -760,7 +760,6 @@
 
 
 @push('scripts')
-    <script src="{{ asset('js/website-bisnis/website-bisnis.js') }}" defer></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const dialog = document.getElementById('websitePackageDialog');

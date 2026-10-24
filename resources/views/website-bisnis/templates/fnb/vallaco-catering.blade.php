@@ -1,0 +1,1110 @@
+@verbatim
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VALLA & CO. | Nordic Botanical Catering & Gathering Studio</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Google Fonts: Cormorant Garamond & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            linen: '#F8F6F0',
+            chalk: '#F2EFEB',
+            sand: '#E7E2D8',
+            moss: '#243329',
+            'moss-light': '#36493D',
+            sage: '#7C8C7D',
+            ochre: '#B98A44',
+            charcoal: '#181C19',
+            muted: '#636A64'
+          },
+          fontFamily: {
+            serif: ['"Cormorant Garamond"', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom refined scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #F8F6F0;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #D5CEBF;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #7C8C7D;
+    }
+    .editorial-border {
+      border-color: rgba(36, 51, 41, 0.12);
+    }
+    .badge-botanical {
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-size: 0.68rem;
+    }
+  </style>
+</head>
+
+<body class="bg-linen text-charcoal font-sans antialiased selection:bg-sage selection:text-white">
+
+  <!-- TOPBAR -->
+  <aside aria-label="Announcement" class="bg-moss text-linen text-xs py-2.5 px-4 tracking-widest border-b border-moss/20">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+      <div class="flex items-center gap-2 text-center sm:text-left">
+        <span class="inline-block w-1.5 h-1.5 rounded-full bg-ochre animate-ping"></span>
+        <span class="font-light">Now Curating Seasonal Gathering Menus for Intimate Weddings & Retreats (2026/2027)</span>
+      </div>
+      <div class="flex items-center gap-6 font-medium text-[11px] text-sand/90">
+        <span>KITCHEN ATELIER: OPEN FOR PRIVATE TASTINGS</span>
+        <span class="hidden md:inline-block">HACCP & HALAL CERTIFIED KITCHEN</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- NAVIGATION -->
+  <header class="sticky top-0 z-40 bg-linen/90 backdrop-blur-md border-b editorial-border transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
+      <!-- Logo -->
+      <a href="#" class="group flex flex-col">
+        <span class="font-serif text-2xl tracking-[0.25em] font-medium text-moss group-hover:text-ochre transition-colors">VALLA & CO.</span>
+        <span class="text-[9px] uppercase tracking-[0.35em] text-muted -mt-1 font-semibold">Nordic Botanical Atelier</span>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden lg:flex items-center space-x-10 text-[13px] tracking-[0.14em] uppercase font-medium text-charcoal/80">
+        <a href="#philosophy" class="hover:text-moss transition-colors">Philosophy</a>
+        <a href="#menu" class="hover:text-moss transition-colors">Curated Menus</a>
+        <a href="#estimator" class="hover:text-moss transition-colors">Estimator</a>
+        <a href="#gallery" class="hover:text-moss transition-colors">Visual Archive</a>
+        <a href="#tasting" class="hover:text-moss transition-colors">Tasting Room</a>
+        <a href="#faq" class="hover:text-moss transition-colors">Inquiries</a>
+      </nav>
+
+      <!-- Right Action -->
+      <div class="flex items-center gap-4">
+        <a href="#tasting" class="hidden sm:inline-flex items-center justify-center text-xs tracking-[0.18em] uppercase px-5 py-3 border border-moss text-moss hover:bg-moss hover:text-linen transition-all duration-300">
+          Book Private Tasting
+        </a>
+        <button id="mobile-menu-toggle" class="p-2 lg:hidden text-moss focus:outline-none" aria-label="Toggle menu">
+          <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Nav Menu -->
+    <div id="mobile-menu" class="hidden lg:hidden bg-chalk border-b editorial-border px-6 py-8 space-y-4">
+      <a href="#philosophy" class="block text-sm tracking-widest uppercase hover:text-ochre">Philosophy</a>
+      <a href="#menu" class="block text-sm tracking-widest uppercase hover:text-ochre">Curated Menus</a>
+      <a href="#estimator" class="block text-sm tracking-widest uppercase hover:text-ochre">Estimator</a>
+      <a href="#gallery" class="block text-sm tracking-widest uppercase hover:text-ochre">Visual Archive</a>
+      <a href="#tasting" class="block text-sm tracking-widest uppercase hover:text-ochre">Tasting Room</a>
+      <a href="#faq" class="block text-sm tracking-widest uppercase hover:text-ochre">Inquiries</a>
+      <a href="#tasting" class="inline-block mt-4 text-xs tracking-widest uppercase px-6 py-3 bg-moss text-linen">Reserve Date</a>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="relative overflow-hidden pt-12 pb-24 md:pt-20 md:pb-32">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+        <!-- Hero Text -->
+        <div class="lg:col-span-7 space-y-8">
+          <div class="inline-flex items-center gap-3 px-3 py-1.5 border editorial-border rounded-full bg-chalk/60">
+            <span class="w-2 h-2 rounded-full bg-sage"></span>
+            <span class="badge-botanical text-moss font-semibold">Slow Living • Foraged Ingredients • Bespoke Feasts</span>
+          </div>
+          
+          <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl font-light text-moss leading-[1.08] tracking-tight">
+            Quiet luxury, <br>
+            <span class="italic font-normal">organic stillness</span> <br>
+            on your table.
+          </h1>
+
+          <p class="text-base md:text-lg text-muted font-light max-w-xl leading-relaxed">
+            We sculpt culinary encounters grounded in Scandinavian minimalism and pure botanical provenance. Crafted for micro-weddings, architectural launches, and intimate private table banquets of 20 to 300 guests.
+          </p>
+
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-4">
+            <a href="#estimator" class="inline-flex items-center justify-center gap-3 px-8 py-4 bg-moss text-linen text-xs uppercase tracking-[0.2em] hover:bg-moss-light transition-all shadow-sm">
+              <span>Calculate Gathering</span>
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </a>
+            <a href="#menu" class="inline-flex items-center justify-center gap-2 px-8 py-4 border editorial-border text-xs uppercase tracking-[0.2em] text-moss hover:bg-chalk transition-all">
+              Explore Seasonal Menu
+            </a>
+          </div>
+
+          <!-- Proof Metrics -->
+          <div class="pt-8 grid grid-cols-3 gap-6 border-t editorial-border max-w-lg">
+            <div>
+              <p class="font-serif text-3xl font-normal text-moss">100%</p>
+              <p class="text-[11px] uppercase tracking-wider text-muted mt-1">Farm Traceable</p>
+            </div>
+            <div>
+              <p class="font-serif text-3xl font-normal text-moss">1 : 6</p>
+              <p class="text-[11px] uppercase tracking-wider text-muted mt-1">Butler-Guest Ratio</p>
+            </div>
+            <div>
+              <p class="font-serif text-3xl font-normal text-moss">Zero</p>
+              <p class="text-[11px] uppercase tracking-wider text-muted mt-1">Single-Use Plastic</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Visual Frame (Editorial Asymmetry) -->
+        <div class="lg:col-span-5 relative">
+          <div class="relative mx-auto max-w-md lg:max-w-none">
+            <!-- Background Accent Frame -->
+            <div class="absolute -inset-4 bg-sand/40 border editorial-border -rotate-1 rounded-sm -z-10"></div>
+            
+            <!-- Main Imagery -->
+            <div class="relative overflow-hidden shadow-2xl rounded-sm aspect-[4/5] bg-chalk">
+              <img 
+                src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1200&q=80" 
+                alt="Minimalist Nordic Plating with Foraged Herbs" 
+                class="w-full h-full object-cover object-center filter grayscale-[20%] hover:scale-105 transition-transform duration-700 ease-out"
+              >
+            </div>
+
+            <!-- Floating Editorial Tag -->
+            <div class="absolute -bottom-6 -left-6 bg-linen p-5 border editorial-border shadow-lg max-w-[220px]">
+              <p class="text-[9px] uppercase tracking-[0.2em] text-ochre font-bold mb-1">DISH PROVENANCE</p>
+              <p class="font-serif text-base italic text-moss">Cold-Smoked Arctic Trout, Dill Pollen & Buttermilk Emulsion</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHILOSOPHY / ESSENCE -->
+  <section id="philosophy" class="py-24 bg-chalk/60 border-y editorial-border">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12">
+      <div class="max-w-2xl mx-auto text-center space-y-4 mb-20">
+        <span class="badge-botanical text-ochre font-semibold">The Nordic Doctrine</span>
+        <h2 class="font-serif text-4xl md:text-5xl font-light text-moss">Rooted in raw botanical purity.</h2>
+        <p class="text-sm md:text-base text-muted font-light leading-relaxed">
+          We reject culinary excess. Every dish is a dialogue between ethical regenerative farmers, foraged wild herbs, and handmade stoneware tableware.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16">
+        <!-- Pillar 1 -->
+        <div class="space-y-4 relative border-l-2 border-sage/40 pl-6">
+          <span class="font-serif text-3xl text-ochre">01</span>
+          <h3 class="font-serif text-2xl text-moss">Wild Flora & Cold Infusion</h3>
+          <p class="text-sm text-muted leading-relaxed font-light">
+            Pine oil extractions, wood sorrel, juniper berries, and dried marigold. We compose nuanced aromatics through ancient fermentation and gentle smoking methods.
+          </p>
+        </div>
+
+        <!-- Pillar 2 -->
+        <div class="space-y-4 relative border-l-2 border-sage/40 pl-6">
+          <span class="font-serif text-3xl text-ochre">02</span>
+          <h3 class="font-serif text-2xl text-moss">Micro-Batch Provenance</h3>
+          <p class="text-sm text-muted leading-relaxed font-light">
+            We partner with 8 small ecological farms. Our dairy, free-range poultry, and seasonal roots arrive within 24 hours of soil extraction to ensure absolute vitality.
+          </p>
+        </div>
+
+        <!-- Pillar 3 -->
+        <div class="space-y-4 relative border-l-2 border-sage/40 pl-6">
+          <span class="font-serif text-3xl text-ochre">03</span>
+          <h3 class="font-serif text-2xl text-moss">Tactile Tabletop Styling</h3>
+          <p class="text-sm text-muted leading-relaxed font-light">
+            Catering extends beyond the palate. We accompany every event with washed organic linen runners, raw beeswax candles, and custom stoneware ceramics.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CURATED MENU SECTION (INTERACTIVE TABS) -->
+  <section id="menu" class="py-24 lg:py-32">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12">
+      <!-- Section Header -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+        <div>
+          <span class="badge-botanical text-ochre font-semibold">Seasonal Archive</span>
+          <h2 class="font-serif text-4xl md:text-6xl font-light text-moss mt-2">Curated Menus</h2>
+        </div>
+        <p class="text-sm text-muted max-w-md font-light">
+          Each menu can be adapted for seated service, communal grazing monoliths, or private executive bento sets. Halal-certified ingredients with full allergen transparency.
+        </p>
+      </div>
+
+      <!-- Category Filter Tabs -->
+      <div class="flex flex-wrap gap-2 md:gap-4 mb-12 border-b editorial-border pb-4">
+        <button onclick="filterMenu('all', this)" class="menu-tab-btn active px-5 py-2.5 text-xs uppercase tracking-widest border border-moss bg-moss text-linen transition-all">All Collections</button>
+        <button onclick="filterMenu('seated', this)" class="menu-tab-btn px-5 py-2.5 text-xs uppercase tracking-widest border editorial-border text-moss hover:bg-sand/40 transition-all">Seated Degustation</button>
+        <button onclick="filterMenu('grazing', this)" class="menu-tab-btn px-5 py-2.5 text-xs uppercase tracking-widest border editorial-border text-moss hover:bg-sand/40 transition-all">Botanical Grazing Table</button>
+        <button onclick="filterMenu('canapes', this)" class="menu-tab-btn px-5 py-2.5 text-xs uppercase tracking-widest border editorial-border text-moss hover:bg-sand/40 transition-all">Artisan Canapés</button>
+        <button onclick="filterMenu('elixirs', this)" class="menu-tab-btn px-5 py-2.5 text-xs uppercase tracking-widest border editorial-border text-moss hover:bg-sand/40 transition-all">Botanical Mocktails</button>
+      </div>
+
+      <!-- Menu Grid -->
+      <div id="menu-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        
+        <!-- Dish Item 1 -->
+        <article class="menu-card bg-chalk/40 border editorial-border p-6 flex flex-col justify-between hover:border-moss transition-all group" data-category="seated">
+          <div>
+            <div class="overflow-hidden aspect-[4/3] mb-6 bg-sand">
+              <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80" alt="Smoked Salmon Gravlax" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            </div>
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <span class="badge-botanical text-sage font-bold">SEATED COURSE</span>
+              <span class="text-xs text-ochre font-medium">Gluten-Free</span>
+            </div>
+            <h3 class="font-serif text-2xl text-moss mb-2">Cold-Smoked Gravlax & Sea Buckthorn</h3>
+            <p class="text-xs text-muted leading-relaxed font-light mb-4">
+              Cured wild salmon with crushed dill seeds, pickled mustard seeds, sea buckthorn berry reduction, and crisp rye tuile.
+            </p>
+          </div>
+          <div class="pt-4 border-t editorial-border flex items-center justify-between text-xs">
+            <span class="text-muted">Serving temp: 8°C</span>
+            <button onclick="openDishModal('Cold-Smoked Gravlax & Sea Buckthorn', 'Cured wild salmon with crushed dill seeds, pickled mustard seeds, sea buckthorn berry reduction, and crisp rye tuile.', 'Wild Salmon, Sea Buckthorn, Dill Seed, Rye Flour, Juniper Berries', 'Halal, Pescatarian, Gluten-Free Option')" class="text-moss font-semibold hover:text-ochre uppercase tracking-wider">Details +</button>
+          </div>
+        </article>
+
+        <!-- Dish Item 2 -->
+        <article class="menu-card bg-chalk/40 border editorial-border p-6 flex flex-col justify-between hover:border-moss transition-all group" data-category="grazing">
+          <div>
+            <div class="overflow-hidden aspect-[4/3] mb-6 bg-sand">
+              <img src="https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=800&q=80" alt="Nordic Botanical Grazing" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            </div>
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <span class="badge-botanical text-sage font-bold">GRAZING MONOLITH</span>
+              <span class="text-xs text-ochre font-medium">Vegetarian Friendly</span>
+            </div>
+            <h3 class="font-serif text-2xl text-moss mb-2">The Forager's Harvest Board</h3>
+            <p class="text-xs text-muted leading-relaxed font-light mb-4">
+              Artisan farmhouse cheeses, honeycomb chunk, roasted heirloom beets in walnut crumb, whipped salted butter, and sourdough loaves.
+            </p>
+          </div>
+          <div class="pt-4 border-t editorial-border flex items-center justify-between text-xs">
+            <span class="text-muted">Setup: Stoneware Platters</span>
+            <button onclick="openDishModal('The Forager\'s Harvest Board', 'Artisan farmhouse cheeses, honeycomb chunk, roasted heirloom beets in walnut crumb, whipped salted butter, and sourdough loaves.', 'Raw Cow Milk Cheese, Wild Honeycomb, Golden Beets, Crushed Walnuts, Cultured Butter', 'Vegetarian, Halal')" class="text-moss font-semibold hover:text-ochre uppercase tracking-wider">Details +</button>
+          </div>
+        </article>
+
+        <!-- Dish Item 3 -->
+        <article class="menu-card bg-chalk/40 border editorial-border p-6 flex flex-col justify-between hover:border-moss transition-all group" data-category="seated">
+          <div>
+            <div class="overflow-hidden aspect-[4/3] mb-6 bg-sand">
+              <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80" alt="Slow Braised Wagyu" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            </div>
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <span class="badge-botanical text-sage font-bold">SEATED MAIN</span>
+              <span class="text-xs text-ochre font-medium">100% Halal</span>
+            </div>
+            <h3 class="font-serif text-2xl text-moss mb-2">36-Hour Braised Short Rib & Truffle Celeriac</h3>
+            <p class="text-xs text-muted leading-relaxed font-light mb-4">
+              Tender beef glazed in roasted lingonberry jus, velvety celeriac-potato mousseline, and crispy smoked parsnip chips.
+            </p>
+          </div>
+          <div class="pt-4 border-t editorial-border flex items-center justify-between text-xs">
+            <span class="text-muted">Serving temp: 68°C</span>
+            <button onclick="openDishModal('36-Hour Braised Short Rib & Truffle Celeriac', 'Tender beef glazed in roasted lingonberry jus, velvety celeriac-potato mousseline, and crispy smoked parsnip chips.', 'Certified Halal Wagyu, Celeriac Root, Lingonberry, Truffle Butter, Thyme', 'Halal Certified, Nut-Free')" class="text-moss font-semibold hover:text-ochre uppercase tracking-wider">Details +</button>
+          </div>
+        </article>
+
+        <!-- Dish Item 4 -->
+        <article class="menu-card bg-chalk/40 border editorial-border p-6 flex flex-col justify-between hover:border-moss transition-all group" data-category="canapes">
+          <div>
+            <div class="overflow-hidden aspect-[4/3] mb-6 bg-sand">
+              <img src="https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=800&q=80" alt="Canapes with Caviar and Quail Egg" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            </div>
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <span class="badge-botanical text-sage font-bold">PASSED CANAPÉ</span>
+              <span class="text-xs text-ochre font-medium">Bite-sized</span>
+            </div>
+            <h3 class="font-serif text-2xl text-moss mb-2">Soft Quail Egg, Kaluga Caviar & Brioche</h3>
+            <p class="text-xs text-muted leading-relaxed font-light mb-4">
+              Toasted butter brioche disc, runny warm quail yolk, crème fraîche, Kaluga hybrid sturgeon caviar, and micro chervil sprig.
+            </p>
+          </div>
+          <div class="pt-4 border-t editorial-border flex items-center justify-between text-xs">
+            <span class="text-muted">Butler Passed</span>
+            <button onclick="openDishModal('Soft Quail Egg, Kaluga Caviar & Brioche', 'Toasted butter brioche disc, runny warm quail yolk, crème fraîche, Kaluga hybrid sturgeon caviar, and micro chervil sprig.', 'Quail Egg, Kaluga Caviar, French Brioche, Crème Fraîche, Chervil', 'Halal Friendly, Pescatarian')" class="text-moss font-semibold hover:text-ochre uppercase tracking-wider">Details +</button>
+          </div>
+        </article>
+
+        <!-- Dish Item 5 -->
+        <article class="menu-card bg-chalk/40 border editorial-border p-6 flex flex-col justify-between hover:border-moss transition-all group" data-category="canapes">
+          <div>
+            <div class="overflow-hidden aspect-[4/3] mb-6 bg-sand">
+              <img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80" alt="Botanical Tartlet" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            </div>
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <span class="badge-botanical text-sage font-bold">PASSED CANAPÉ</span>
+              <span class="text-xs text-ochre font-medium">Vegan</span>
+            </div>
+            <h3 class="font-serif text-2xl text-moss mb-2">Heirloom Pea & Mint Emulsion Tartlet</h3>
+            <p class="text-xs text-muted leading-relaxed font-light mb-4">
+              Crisp malted barley shell, sweet pea purée, pickled white asparagus tips, and edible blue cornflowers.
+            </p>
+          </div>
+          <div class="pt-4 border-t editorial-border flex items-center justify-between text-xs">
+            <span class="text-muted">Butler Passed</span>
+            <button onclick="openDishModal('Heirloom Pea & Mint Emulsion Tartlet', 'Crisp malted barley shell, sweet pea purée, pickled white asparagus tips, and edible blue cornflowers.', 'Sweet Green Peas, Malt Shell, Fresh Mint, Asparagus, Edible Petals', 'Vegan, Dairy-Free')" class="text-moss font-semibold hover:text-ochre uppercase tracking-wider">Details +</button>
+          </div>
+        </article>
+
+        <!-- Dish Item 6 -->
+        <article class="menu-card bg-chalk/40 border editorial-border p-6 flex flex-col justify-between hover:border-moss transition-all group" data-category="elixirs">
+          <div>
+            <div class="overflow-hidden aspect-[4/3] mb-6 bg-sand">
+              <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=800&q=80" alt="Smoked Pine & Juniper Mocktail" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            </div>
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <span class="badge-botanical text-sage font-bold">BOTANICAL SIP</span>
+              <span class="text-xs text-ochre font-medium">0.0% Non-Alcohol</span>
+            </div>
+            <h3 class="font-serif text-2xl text-moss mb-2">Smoked Pine Needle & Juniper Tonic</h3>
+            <p class="text-xs text-muted leading-relaxed font-light mb-4">
+              Distilled juniper hydrosol, smoked mountain pine syrup, tonic essence, and clarified fresh green apple nectar.
+            </p>
+          </div>
+          <div class="pt-4 border-t editorial-border flex items-center justify-between text-xs">
+            <span class="text-muted">Glassware: Hand-blown Crystal</span>
+            <button onclick="openDishModal('Smoked Pine Needle & Juniper Tonic', 'Distilled juniper hydrosol, smoked mountain pine syrup, tonic essence, and clarified fresh green apple nectar.', 'Wild Pine Syrup, Green Apple, Juniper Distillate, Fever-Tree Tonic', 'Halal, 100% Non-Alcoholic, Vegan')" class="text-moss font-semibold hover:text-ochre uppercase tracking-wider">Details +</button>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE BUDGET & GATHERING ESTIMATOR (SPEKTAKULER FEATURE) -->
+  <section id="estimator" class="py-24 bg-moss text-linen relative overflow-hidden">
+    <!-- Subtle Background Pattern -->
+    <div class="absolute inset-0 opacity-5 pointer-events-none bg-[radial-gradient(#F8F6F0_1px,transparent_1px)] [background-size:24px_24px]"></div>
+
+    <div class="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+        
+        <!-- Left Column: Controls -->
+        <div class="lg:col-span-7 space-y-8">
+          <div>
+            <span class="badge-botanical text-ochre font-semibold">Live Proposal Architect</span>
+            <h2 class="font-serif text-4xl md:text-5xl font-light text-linen mt-2">Estimate Your Gathering</h2>
+            <p class="text-sand/80 text-sm font-light mt-2">
+              Adjust guest volume, banquet concept, and tactile tabletop enhancements for transparent investment projections.
+            </p>
+          </div>
+
+          <!-- Slider: Guests -->
+          <div class="space-y-4 bg-moss-light/40 p-6 border border-linen/10 rounded-sm">
+            <div class="flex justify-between items-end">
+              <label for="guestRange" class="text-xs uppercase tracking-widest text-sand">Guest Attendance</label>
+              <div class="font-serif text-3xl text-ochre font-light">
+                <span id="guestCountDisplay">60</span> <span class="text-sm font-sans text-sand">Guests</span>
+              </div>
+            </div>
+            <input 
+              type="range" 
+              id="guestRange" 
+              min="20" 
+              max="250" 
+              step="5" 
+              value="60" 
+              class="w-full h-1.5 bg-sand/20 rounded-lg appearance-none cursor-pointer accent-ochre"
+              oninput="calculateTotal()"
+            >
+            <div class="flex justify-between text-[11px] text-sand/60">
+              <span>Intimate (20)</span>
+              <span>Medium Salon (120)</span>
+              <span>Grand Gala (250)</span>
+            </div>
+          </div>
+
+          <!-- Banquet Format -->
+          <div class="space-y-3">
+            <label class="text-xs uppercase tracking-widest text-sand">Select Service Format</label>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <label class="cursor-pointer">
+                <input type="radio" name="serviceFormat" value="canapes" class="hidden peer" onchange="calculateTotal()">
+                <div class="p-4 border border-linen/20 peer-checked:border-ochre peer-checked:bg-moss-light/70 transition-all text-center">
+                  <p class="font-serif text-lg text-linen">Nordic Canapés</p>
+                  <p class="text-[11px] text-sand/70 mt-1">Rp 380k / pax</p>
+                </div>
+              </label>
+
+              <label class="cursor-pointer">
+                <input type="radio" name="serviceFormat" value="grazing" checked class="hidden peer" onchange="calculateTotal()">
+                <div class="p-4 border border-linen/20 peer-checked:border-ochre peer-checked:bg-moss-light/70 transition-all text-center">
+                  <p class="font-serif text-lg text-linen">Harvest Grazing</p>
+                  <p class="text-[11px] text-sand/70 mt-1">Rp 520k / pax</p>
+                </div>
+              </label>
+
+              <label class="cursor-pointer">
+                <input type="radio" name="serviceFormat" value="seated" class="hidden peer" onchange="calculateTotal()">
+                <div class="p-4 border border-linen/20 peer-checked:border-ochre peer-checked:bg-moss-light/70 transition-all text-center">
+                  <p class="font-serif text-lg text-linen">5-Course Seated</p>
+                  <p class="text-[11px] text-sand/70 mt-1">Rp 780k / pax</p>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Addon Toggles -->
+          <div class="space-y-3">
+            <label class="text-xs uppercase tracking-widest text-sand">Curated Additions</label>
+            <div class="space-y-2">
+              <label class="flex items-center justify-between p-3.5 border border-linen/10 bg-moss-light/20 cursor-pointer hover:border-linen/30 transition-all">
+                <div class="flex items-center gap-3">
+                  <input type="checkbox" id="addonCeramics" checked class="rounded border-sand/40 text-ochre focus:ring-0 w-4 h-4" onchange="calculateTotal()">
+                  <span class="text-xs text-sand">Nordic Stoneware Ceramic & Washed Linen Styling</span>
+                </div>
+                <span class="text-xs text-ochre font-medium">+Rp 2.500.000 (Flat)</span>
+              </label>
+
+              <label class="flex items-center justify-between p-3.5 border border-linen/10 bg-moss-light/20 cursor-pointer hover:border-linen/30 transition-all">
+                <div class="flex items-center gap-3">
+                  <input type="checkbox" id="addonElixirs" class="rounded border-sand/40 text-ochre focus:ring-0 w-4 h-4" onchange="calculateTotal()">
+                  <span class="text-xs text-sand">Live Botanical Cold-Pressed Mocktail Bar</span>
+                </div>
+                <span class="text-xs text-ochre font-medium">+Rp 85.000 / pax</span>
+              </label>
+
+              <label class="flex items-center justify-between p-3.5 border border-linen/10 bg-moss-light/20 cursor-pointer hover:border-linen/30 transition-all">
+                <div class="flex items-center gap-3">
+                  <input type="checkbox" id="addonChef" class="rounded border-sand/40 text-ochre focus:ring-0 w-4 h-4" onchange="calculateTotal()">
+                  <span class="text-xs text-sand">Executive Chef On-Site Plating Master</span>
+                </div>
+                <span class="text-xs text-ochre font-medium">+Rp 3.500.000 (Flat)</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Live Proposal Card -->
+        <div class="lg:col-span-5">
+          <div class="bg-linen text-charcoal p-8 md:p-10 border border-sand shadow-2xl relative">
+            <div class="text-center pb-6 border-b editorial-border">
+              <p class="text-[10px] uppercase tracking-[0.25em] text-ochre font-bold">PRELIMINARY DOSSIER</p>
+              <h3 class="font-serif text-3xl text-moss mt-1">Valla Gathering Summary</h3>
+              <p class="text-xs text-muted mt-1" id="summaryEventTitle">Harvest Grazing Experience</p>
+            </div>
+
+            <div class="py-6 space-y-4 text-xs">
+              <div class="flex justify-between py-1 border-b editorial-border/60">
+                <span class="text-muted">Total Guests</span>
+                <span class="font-semibold text-moss" id="summaryGuests">60 Pax</span>
+              </div>
+              <div class="flex justify-between py-1 border-b editorial-border/60">
+                <span class="text-muted">Dedicated Butler Team</span>
+                <span class="font-semibold text-moss" id="summaryStaff">10 Professional Staff</span>
+              </div>
+              <div class="flex justify-between py-1 border-b editorial-border/60">
+                <span class="text-muted">Culinary Experience Subtotal</span>
+                <span class="font-semibold text-moss" id="summaryBasePrice">Rp 31.200.000</span>
+              </div>
+              <div class="flex justify-between py-1 border-b editorial-border/60">
+                <span class="text-muted">Styling & Additions</span>
+                <span class="font-semibold text-moss" id="summaryAddons">Rp 2.500.000</span>
+              </div>
+              <div class="flex justify-between py-1 border-b editorial-border/60">
+                <span class="text-muted">Logistics & Sustainable Cleanup</span>
+                <span class="font-semibold text-moss">Included (Zero Plastic)</span>
+              </div>
+            </div>
+
+            <!-- Grand Total -->
+            <div class="pt-2 pb-6">
+              <span class="text-[10px] uppercase tracking-widest text-muted block">Estimated Investment</span>
+              <div class="font-serif text-3xl md:text-4xl text-moss font-normal mt-1" id="summaryGrandTotal">
+                Rp 33.700.000
+              </div>
+              <p class="text-[11px] text-muted font-light mt-1">*Excluding destination surcharge for events outside Greater Area.</p>
+            </div>
+
+            <!-- WhatsApp Direct Button -->
+            <button onclick="sendToWhatsApp()" class="w-full py-4 bg-moss text-linen text-xs uppercase tracking-[0.2em] hover:bg-moss-light transition-all flex items-center justify-center gap-2 group">
+              <i data-lucide="message-square" class="w-4 h-4 text-ochre"></i>
+              <span>Transfer Dossier to WhatsApp</span>
+            </button>
+            <p class="text-center text-[10px] text-muted mt-3">Direct connect to Head of Culinary Relations</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CERTIFICATIONS & HYGIENE STANDARD -->
+  <section class="py-20 bg-sand/30 border-b editorial-border">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <div class="p-4 space-y-2">
+          <div class="w-12 h-12 mx-auto rounded-full bg-chalk flex items-center justify-center text-moss border editorial-border">
+            <i data-lucide="shield-check" class="w-6 h-6"></i>
+          </div>
+          <h3 class="font-serif text-lg text-moss">Halal Integrity</h3>
+          <p class="text-[11px] text-muted leading-relaxed">All meat cuts and pantry ingredients verified 100% Halal Certified.</p>
+        </div>
+
+        <div class="p-4 space-y-2">
+          <div class="w-12 h-12 mx-auto rounded-full bg-chalk flex items-center justify-center text-moss border editorial-border">
+            <i data-lucide="check-circle-2" class="w-6 h-6"></i>
+          </div>
+          <h3 class="font-serif text-lg text-moss">HACCP & Hygiene</h3>
+          <p class="text-[11px] text-muted leading-relaxed">Rigorous cold-chain tracking and zero-tolerance culinary sterilization.</p>
+        </div>
+
+        <div class="p-4 space-y-2">
+          <div class="w-12 h-12 mx-auto rounded-full bg-chalk flex items-center justify-center text-moss border editorial-border">
+            <i data-lucide="sprout" class="w-6 h-6"></i>
+          </div>
+          <h3 class="font-serif text-lg text-moss">Zero Food Waste</h3>
+          <p class="text-[11px] text-muted leading-relaxed">Organic organic prep scraps converted to community garden compost.</p>
+        </div>
+
+        <div class="p-4 space-y-2">
+          <div class="w-12 h-12 mx-auto rounded-full bg-chalk flex items-center justify-center text-moss border editorial-border">
+            <i data-lucide="sparkles" class="w-6 h-6"></i>
+          </div>
+          <h3 class="font-serif text-lg text-moss">Artisan Curated</h3>
+          <p class="text-[11px] text-muted leading-relaxed">Tabletop decor crafted in limited series by local ceramic artists.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDITORIAL VISUAL ARCHIVE / GALLERY -->
+  <section id="gallery" class="py-24 lg:py-32">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12">
+      <div class="max-w-xl mb-16">
+        <span class="badge-botanical text-ochre font-semibold">Visual Documentation</span>
+        <h2 class="font-serif text-4xl md:text-6xl font-light text-moss mt-2">Moments of Stillness</h2>
+        <p class="text-sm text-muted mt-4 font-light">
+          An intimate glimpse into our private table setups, botanical tablescapes, and slow dining atmospheres.
+        </p>
+      </div>
+
+      <!-- Masonry-style Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+        <div class="md:col-span-5 space-y-6">
+          <div class="relative overflow-hidden aspect-[3/4] bg-sand border editorial-border group">
+            <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=80" alt="Intimate Wedding Table Setup" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+            <div class="absolute inset-0 bg-moss/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+              <span class="text-xs uppercase tracking-widest text-linen">Nordic Greenhouse Wedding (120 Pax)</span>
+            </div>
+          </div>
+          <div class="relative overflow-hidden aspect-[4/3] bg-sand border editorial-border group">
+            <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80" alt="Chef Preparing Dish" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+            <div class="absolute inset-0 bg-moss/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+              <span class="text-xs uppercase tracking-widest text-linen">Live Garnishing • Micro Sorrel</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="md:col-span-7 space-y-6">
+          <div class="relative overflow-hidden aspect-[16/10] bg-sand border editorial-border group">
+            <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=1200&q=80" alt="Outdoor Table Feast" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+            <div class="absolute inset-0 bg-moss/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+              <span class="text-xs uppercase tracking-widest text-linen">Twilight Botanical Gathering in Orchard</span>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-6">
+            <div class="relative overflow-hidden aspect-square bg-sand border editorial-border group">
+              <img src="https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=600&q=80" alt="Canapé Platter" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+              <div class="absolute inset-0 bg-moss/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                <span class="text-[10px] uppercase tracking-widest text-linen">Artisan Canape Board</span>
+              </div>
+            </div>
+            <div class="relative overflow-hidden aspect-square bg-sand border editorial-border group">
+              <img src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=600&q=80" alt="Ceramic Plate Styling" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+              <div class="absolute inset-0 bg-moss/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                <span class="text-[10px] uppercase tracking-widest text-linen">Bespoke Table Stoneware</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TASTING ROOM RESERVATION FORM -->
+  <section id="tasting" class="py-24 bg-chalk/60 border-t editorial-border">
+    <div class="max-w-4xl mx-auto px-6 lg:px-12">
+      <div class="text-center space-y-3 mb-12">
+        <span class="badge-botanical text-ochre font-semibold">The Atelier Experience</span>
+        <h2 class="font-serif text-4xl md:text-5xl font-light text-moss">Book a Private Tasting</h2>
+        <p class="text-sm text-muted font-light max-w-md mx-auto">
+          We invite couples and corporate curators to our kitchen atelier to experience sample courses, inspect stoneware ceramics, and meet the chef.
+        </p>
+      </div>
+
+      <form id="tastingForm" onsubmit="handleTastingSubmit(event)" class="bg-linen p-8 md:p-12 border editorial-border space-y-6 shadow-sm">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="space-y-2">
+            <label class="text-xs uppercase tracking-widest text-muted">Client / Host Full Name</label>
+            <input type="text" id="tastingName" required class="w-full bg-chalk/50 border editorial-border px-4 py-3 text-sm focus:border-moss focus:outline-none" placeholder="Eleanor Vance">
+          </div>
+          <div class="space-y-2">
+            <label class="text-xs uppercase tracking-widest text-muted">WhatsApp / Phone Number</label>
+            <input type="tel" id="tastingPhone" required class="w-full bg-chalk/50 border editorial-border px-4 py-3 text-sm focus:border-moss focus:outline-none" placeholder="+62 812 xxxx xxxx">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="space-y-2">
+            <label class="text-xs uppercase tracking-widest text-muted">Occasion Type</label>
+            <select id="tastingType" class="w-full bg-chalk/50 border editorial-border px-4 py-3 text-sm focus:border-moss focus:outline-none">
+              <option>Intimate Wedding</option>
+              <option>Private Birthday Soirée</option>
+              <option>Corporate Gala / Launch</option>
+              <option>Wellness / Yoga Retreat</option>
+            </select>
+          </div>
+          <div class="space-y-2">
+            <label class="text-xs uppercase tracking-widest text-muted">Estimated Event Date</label>
+            <input type="date" id="tastingDate" required class="w-full bg-chalk/50 border editorial-border px-4 py-3 text-sm focus:border-moss focus:outline-none">
+          </div>
+          <div class="space-y-2">
+            <label class="text-xs uppercase tracking-widest text-muted">Expected Pax</label>
+            <input type="number" id="tastingPax" min="20" max="400" value="80" class="w-full bg-chalk/50 border editorial-border px-4 py-3 text-sm focus:border-moss focus:outline-none">
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <label class="text-xs uppercase tracking-widest text-muted">Special Dietary Requirements or Allergen Notes</label>
+          <textarea id="tastingNotes" rows="3" class="w-full bg-chalk/50 border editorial-border px-4 py-3 text-sm focus:border-moss focus:outline-none" placeholder="E.g., 6 guests gluten-free, strictly non-shellfish, halal required..."></textarea>
+        </div>
+
+        <button type="submit" class="w-full py-4 bg-moss text-linen text-xs uppercase tracking-[0.2em] hover:bg-moss-light transition-all flex items-center justify-center gap-2">
+          <i data-lucide="calendar" class="w-4 h-4 text-ochre"></i>
+          <span>Send Tasting Invitation Request via WhatsApp</span>
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS & PRESS -->
+  <section class="py-24 border-t editorial-border">
+    <div class="max-w-5xl mx-auto px-6 text-center space-y-12">
+      <span class="badge-botanical text-ochre font-semibold">Voices of Hosts</span>
+      
+      <div class="space-y-6">
+        <p class="font-serif text-2xl md:text-4xl text-moss font-light italic leading-snug">
+          "Valla & Co. redefined what event dining could feel like. It wasn't just catering; it was a serene, beautifully sequenced culinary ritual. The wild mushroom broth and ceramics still linger in our guests' memories."
+        </p>
+        <div>
+          <p class="text-xs uppercase tracking-[0.2em] font-semibold text-charcoal">Astrid & Julian Lindqvist</p>
+          <p class="text-[11px] text-muted">Private Estate Ceremony, 90 Guests</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ SECTION -->
+  <section id="faq" class="py-24 bg-chalk/40 border-t editorial-border">
+    <div class="max-w-4xl mx-auto px-6 lg:px-12">
+      <div class="text-center space-y-3 mb-16">
+        <span class="badge-botanical text-ochre font-semibold">Answers & Transparency</span>
+        <h2 class="font-serif text-4xl font-light text-moss">Frequently Asked Questions</h2>
+      </div>
+
+      <div class="space-y-4">
+        <!-- FAQ 1 -->
+        <details class="group bg-linen border editorial-border p-6 [&_summary::-webkit-details-marker]:hidden cursor-pointer">
+          <summary class="flex justify-between items-center text-sm font-medium text-moss">
+            <span>What is the minimum and maximum guest capacity for Valla & Co.?</span>
+            <span class="text-ochre group-open:rotate-180 transition-transform duration-300">
+              <i data-lucide="chevron-down" class="w-4 h-4"></i>
+            </span>
+          </summary>
+          <p class="text-xs text-muted leading-relaxed font-light mt-4 pt-4 border-t editorial-border">
+            We specialize in intimate and medium-scale gatherings. Our minimum threshold is 20 guests for private seated degustations or grazing tables, with an optimal ceiling of 250–300 guests to preserve our strict artisanal plating standards.
+          </p>
+        </details>
+
+        <!-- FAQ 2 -->
+        <details class="group bg-linen border editorial-border p-6 [&_summary::-webkit-details-marker]:hidden cursor-pointer">
+          <summary class="flex justify-between items-center text-sm font-medium text-moss">
+            <span>Are all ingredients certified Halal and allergy-conscious?</span>
+            <span class="text-ochre group-open:rotate-180 transition-transform duration-300">
+              <i data-lucide="chevron-down" class="w-4 h-4"></i>
+            </span>
+          </summary>
+          <p class="text-xs text-muted leading-relaxed font-light mt-4 pt-4 border-t editorial-border">
+            Yes. All proteins and culinary ingredients used in our prep kitchen are 100% Halal certified, and we do not use pork products or cooking spirits. We accommodate gluten-free, vegan, diabetic, and nut-allergy requirements with individualized courses.
+          </p>
+        </details>
+
+        <!-- FAQ 3 -->
+        <details class="group bg-linen border editorial-border p-6 [&_summary::-webkit-details-marker]:hidden cursor-pointer">
+          <summary class="flex justify-between items-center text-sm font-medium text-moss">
+            <span>Do you provide staff, cutlery, and tabletop setup?</span>
+            <span class="text-ochre group-open:rotate-180 transition-transform duration-300">
+              <i data-lucide="chevron-down" class="w-4 h-4"></i>
+            </span>
+          </summary>
+          <p class="text-xs text-muted leading-relaxed font-light mt-4 pt-4 border-t editorial-border">
+            Every booking includes our complete signature service: trained event butlers in minimal linen aprons, handmade ceramic tableware, cutlery, glassware, and complete zero-waste post-event cleanup.
+          </p>
+        </details>
+
+        <!-- FAQ 4 -->
+        <details class="group bg-linen border editorial-border p-6 [&_summary::-webkit-details-marker]:hidden cursor-pointer">
+          <summary class="flex justify-between items-center text-sm font-medium text-moss">
+            <span>How far in advance should we secure our date?</span>
+            <span class="text-ochre group-open:rotate-180 transition-transform duration-300">
+              <i data-lucide="chevron-down" class="w-4 h-4"></i>
+            </span>
+          </summary>
+          <p class="text-xs text-muted leading-relaxed font-light mt-4 pt-4 border-t editorial-border">
+            To ensure farm-fresh ingredient procurement and meticulous tabletop curation, we recommend booking 2 to 6 months prior to your event. A 30% retainer locks your date in our calendar.
+          </p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-moss text-linen pt-20 pb-12 border-t border-linen/10">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-12 pb-16 border-b border-linen/10">
+        <!-- Col 1 -->
+        <div class="md:col-span-5 space-y-4">
+          <span class="font-serif text-3xl tracking-[0.2em] font-light text-sand">VALLA & CO.</span>
+          <p class="text-xs text-sand/70 max-w-sm leading-relaxed font-light">
+            Nordic Botanical Catering & Tactile Tabletop Design. Crafting honest culinary encounters rooted in Scandinavian serenity.
+          </p>
+          <div class="pt-2 text-xs text-sand/90 space-y-1">
+            <p>Atelier: Jl. Botanical Studio No. 18, Jawa Timur</p>
+            <p>Service Coverage: Surabaya, Malang, Sidoarjo, & Bali by Appointment</p>
+          </div>
+        </div>
+
+        <!-- Col 2 -->
+        <div class="md:col-span-3 space-y-3">
+          <p class="text-xs uppercase tracking-widest text-ochre font-bold">Curations</p>
+          <ul class="text-xs text-sand/80 space-y-2 font-light">
+            <li><a href="#menu" class="hover:text-linen">Communal Harvest Boards</a></li>
+            <li><a href="#menu" class="hover:text-linen">Fine Seated Degustations</a></li>
+            <li><a href="#menu" class="hover:text-linen">Botanical Cocktail Canapés</a></li>
+            <li><a href="#menu" class="hover:text-linen">Cold-Pressed Elixirs</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3 -->
+        <div class="md:col-span-4 space-y-4">
+          <p class="text-xs uppercase tracking-widest text-ochre font-bold">Direct Communication</p>
+          <p class="text-xs text-sand/80 font-light">
+            Have a custom date or architectural venue in mind? Message our concierge team directly.
+          </p>
+          <a href="https://wa.me/6281234567890?text=Hello%20Valla%20%26%20Co.%20I%20would%20like%20to%20inquire%20about%20catering%20services." target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-xs uppercase tracking-widest px-5 py-3 border border-sand/40 text-sand hover:bg-sand hover:text-moss transition-all">
+            <i data-lucide="message-circle" class="w-4 h-4"></i>
+            <span>WhatsApp Concierge</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="pt-8 flex flex-col sm:flex-row justify-between items-center text-[11px] text-sand/60 gap-4">
+        <p>© 2026 VALLA & CO. Nordic Botanical Feast. All Rights Reserved.</p>
+        <div class="flex gap-6">
+          <a href="#" class="hover:text-sand">Privacy Notice</a>
+          <a href="#" class="hover:text-sand">HACCP Guarantee</a>
+          <a href="#" class="hover:text-sand">Terms of Feast</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- FLOATING BUTTONS: WHATSAPP & OPTIONAL AI FAQ CONCIERGE -->
+  <div class="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
+    
+    <!-- AI Concierge Toggle Button -->
+    <button 
+      id="chatToggleBtn" 
+      onclick="toggleChat()" 
+      class="flex items-center gap-2 px-4 py-2.5 bg-chalk text-moss border editorial-border shadow-xl rounded-full hover:bg-linen hover:border-moss transition-all text-xs uppercase tracking-widest font-medium"
+      title="Open Botanical AI Concierge"
+    >
+      <i data-lucide="bot" class="w-4 h-4 text-ochre"></i>
+      <span class="hidden sm:inline">AI Concierge</span>
+    </button>
+
+    <!-- Direct WhatsApp Float Button -->
+    <a 
+      href="https://wa.me/6281234567890?text=Halo%20Valla%20%26%20Co.,%20saya%20ingin%20berkonsultasi%20mengenai%20layanan%20katering%20botanical." 
+      target="_blank"
+      rel="noopener noreferrer"
+      class="flex items-center gap-2 px-5 py-3.5 bg-moss text-linen shadow-2xl rounded-full hover:bg-moss-light transition-all border border-linen/20 group"
+    >
+      <i data-lucide="message-square" class="w-5 h-5 text-ochre group-hover:scale-110 transition-transform"></i>
+      <span class="text-xs uppercase tracking-widest font-semibold">Consult via WhatsApp</span>
+    </a>
+  </div>
+
+  <!-- AI FAQ CHATBOT DRAWER (OPTIONAL & DISCRETE) -->
+  <div id="aiChatDrawer" class="fixed bottom-24 right-6 z-50 w-80 sm:w-96 bg-linen border editorial-border shadow-2xl rounded-lg hidden flex-col overflow-hidden transition-all duration-300">
+    <div class="bg-moss p-4 text-linen flex justify-between items-center">
+      <div class="flex items-center gap-2">
+        <div class="w-2 h-2 rounded-full bg-ochre animate-pulse"></div>
+        <div>
+          <p class="text-xs font-serif tracking-wider">VALLA BOTANICAL AI</p>
+          <p class="text-[9px] text-sand/70 uppercase">Menu & Gathering Guidance</p>
+        </div>
+      </div>
+      <button onclick="toggleChat()" class="text-sand hover:text-linen">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+    </div>
+
+    <!-- Chat Messages Window -->
+    <div id="chatMessages" class="p-4 h-72 overflow-y-auto space-y-3 text-xs">
+      <div class="bg-chalk p-3 rounded-sm border editorial-border text-charcoal">
+        Greetings. I am Valla's Botanical Concierge. You can ask about our dietary certifications, guest minimums, pricing per guest, or tasting appointments.
+      </div>
+    </div>
+
+    <!-- Quick Question Chips -->
+    <div class="px-3 py-2 bg-sand/20 border-t editorial-border flex gap-1.5 overflow-x-auto text-[10px]">
+      <button onclick="quickAsk('Is everything 100% Halal?')" class="whitespace-nowrap px-2.5 py-1 bg-linen border editorial-border rounded hover:border-moss">Halal check?</button>
+      <button onclick="quickAsk('What is the minimum pax?')" class="whitespace-nowrap px-2.5 py-1 bg-linen border editorial-border rounded hover:border-moss">Minimum guests?</button>
+      <button onclick="quickAsk('How to book food tasting?')" class="whitespace-nowrap px-2.5 py-1 bg-linen border editorial-border rounded hover:border-moss">Food tasting?</button>
+    </div>
+
+    <!-- Chat Input -->
+    <form onsubmit="handleUserChat(event)" class="p-3 border-t editorial-border flex gap-2 bg-chalk/60">
+      <input type="text" id="chatInput" placeholder="Ask a question..." class="flex-1 bg-linen border editorial-border px-3 py-2 text-xs focus:outline-none focus:border-moss">
+      <button type="submit" class="px-3 bg-moss text-linen hover:bg-moss-light">
+        <i data-lucide="send" class="w-3.5 h-3.5"></i>
+      </button>
+    </form>
+  </div>
+
+  <!-- DISH DETAILS MODAL -->
+  <div id="dishModal" class="fixed inset-0 z-50 bg-charcoal/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-linen max-w-lg w-full p-8 border editorial-border shadow-2xl relative space-y-6">
+      <button onclick="closeDishModal()" class="absolute top-6 right-6 text-muted hover:text-charcoal">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div>
+        <span id="modalDiet" class="badge-botanical text-ochre font-bold">VEGAN / HALAL</span>
+        <h3 id="modalTitle" class="font-serif text-3xl text-moss mt-1">Dish Name</h3>
+      </div>
+
+      <p id="modalDesc" class="text-xs text-muted leading-relaxed font-light">Description</p>
+
+      <div class="pt-4 border-t editorial-border space-y-3">
+        <div>
+          <span class="text-[10px] uppercase tracking-widest text-muted block">Provenance & Key Elements:</span>
+          <p id="modalIngredients" class="text-xs font-serif text-moss italic">Ingredients</p>
+        </div>
+      </div>
+
+      <button onclick="closeDishModal()" class="w-full py-3 border border-moss text-moss text-xs uppercase tracking-widest hover:bg-moss hover:text-linen transition-all">
+        Back to Curations
+      </button>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // Mobile Menu Toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    // Menu Category Filtering
+    function filterMenu(category, activeButton) {
+      const cards = document.querySelectorAll('.menu-card');
+      const buttons = document.querySelectorAll('.menu-tab-btn');
+
+      // Update button styling
+      buttons.forEach(btn => {
+        btn.classList.remove('bg-moss', 'text-linen');
+        btn.classList.add('text-moss');
+      });
+      activeButton.classList.add('bg-moss', 'text-linen');
+      activeButton.classList.remove('text-moss');
+
+      // Filter cards
+      cards.forEach(card => {
+        if (category === 'all' || card.getAttribute('data-category') === category) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // Modal Handlers
+    function openDishModal(title, desc, ingredients, diet) {
+      document.getElementById('modalTitle').innerText = title;
+      document.getElementById('modalDesc').innerText = desc;
+      document.getElementById('modalIngredients').innerText = ingredients;
+      document.getElementById('modalDiet').innerText = diet;
+      
+      const modal = document.getElementById('dishModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeDishModal() {
+      const modal = document.getElementById('dishModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    // Interactive Proposal Calculator
+    function calculateTotal() {
+      const guests = parseInt(document.getElementById('guestRange').value);
+      document.getElementById('guestCountDisplay').innerText = guests;
+      document.getElementById('summaryGuests').innerText = guests + ' Pax';
+
+      // Staff calculation: 1 staff per 6 guests
+      const staffCount = Math.max(4, Math.ceil(guests / 6));
+      document.getElementById('summaryStaff').innerText = staffCount + ' Professional Staff';
+
+      // Selected Format
+      const selectedRadio = document.querySelector('input[name="serviceFormat"]:checked').value;
+      let pricePerPax = 520000;
+      let formatName = 'Harvest Grazing Experience';
+
+      if (selectedRadio === 'canapes') {
+        pricePerPax = 380000;
+        formatName = 'Nordic Canapé Soirée';
+      } else if (selectedRadio === 'seated') {
+        pricePerPax = 780000;
+        formatName = '5-Course Seated Degustation';
+      }
+
+      document.getElementById('summaryEventTitle').innerText = formatName;
+
+      // Base subtotal
+      const baseSubtotal = guests * pricePerPax;
+      document.getElementById('summaryBasePrice').innerText = 'Rp ' + baseSubtotal.toLocaleString('id-ID');
+
+      // Addons
+      let addonTotal = 0;
+      if (document.getElementById('addonCeramics').checked) addonTotal += 2500000;
+      if (document.getElementById('addonElixirs').checked) addonTotal += (guests * 85000);
+      if (document.getElementById('addonChef').checked) addonTotal += 3500000;
+
+      document.getElementById('summaryAddons').innerText = 'Rp ' + addonTotal.toLocaleString('id-ID');
+
+      const grandTotal = baseSubtotal + addonTotal;
+      document.getElementById('summaryGrandTotal').innerText = 'Rp ' + grandTotal.toLocaleString('id-ID');
+    }
+
+    // Direct WhatsApp Export
+    function sendToWhatsApp() {
+      const guests = document.getElementById('guestRange').value;
+      const format = document.getElementById('summaryEventTitle').innerText;
+      const total = document.getElementById('summaryGrandTotal').innerText;
+      const ceramics = document.getElementById('addonCeramics').checked ? 'Yes' : 'No';
+      const elixirs = document.getElementById('addonElixirs').checked ? 'Yes' : 'No';
+      const chef = document.getElementById('addonChef').checked ? 'Yes' : 'No';
+
+      const text = `Halo Valla & Co. Atelier,\n\nSaya telah menyusun perkiraan acara melalui Interactive Proposal Builder:\n- Format Jamuan: ${format}\n- Jumlah Tamu: ${guests} Pax\n- Tableware Ceramic Styling: ${ceramics}\n- Botanical Mocktail Bar: ${elixirs}\n- Executive Chef On-site: ${chef}\n- Estimasi Investasi: ${total}\n\nMohon informasi ketersediaan tanggal dan jadwal sesi private tasting. Terima kasih.`;
+
+      const encoded = encodeURIComponent(text);
+      window.open(`https://wa.me/6281234567890?text=${encoded}`, '_blank', 'noopener,noreferrer');
+    }
+
+    // Tasting Form Submit
+    function handleTastingSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('tastingName').value;
+      const phone = document.getElementById('tastingPhone').value;
+      const type = document.getElementById('tastingType').value;
+      const date = document.getElementById('tastingDate').value;
+      const pax = document.getElementById('tastingPax').value;
+      const notes = document.getElementById('tastingNotes').value || 'None';
+
+      const text = `Halo Valla & Co. Atelier,\n\nSaya ingin mengajukan reservasi Private Tasting Table:\n- Nama: ${name}\n- WhatsApp: ${phone}\n- Tipe Acara: ${type}\n- Perkiraan Tanggal Acara: ${date}\n- Rencana Tamu: ${pax} Pax\n- Catatan Diet/Alergen: ${notes}\n\nMohon konfirmasi slot jadwal tasting di kitchen studio.`;
+
+      const encoded = encodeURIComponent(text);
+      window.open(`https://wa.me/6281234567890?text=${encoded}`, '_blank', 'noopener,noreferrer');
+    }
+
+    // Optional AI Concierge Logic
+    function toggleChat() {
+      const drawer = document.getElementById('aiChatDrawer');
+      drawer.classList.toggle('hidden');
+      drawer.classList.toggle('flex');
+    }
+
+    function appendMessage(sender, text) {
+      const box = document.getElementById('chatMessages');
+      const msg = document.createElement('div');
+      msg.className = sender === 'user' 
+        ? 'bg-moss text-linen p-3 rounded-sm ml-6 text-xs' 
+        : 'bg-chalk p-3 rounded-sm border editorial-border text-charcoal mr-6 text-xs';
+      msg.innerText = text;
+      box.appendChild(msg);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function quickAsk(q) {
+      appendMessage('user', q);
+      generateBotResponse(q);
+    }
+
+    function handleUserChat(e) {
+      e.preventDefault();
+      const input = document.getElementById('chatInput');
+      const val = input.value.trim();
+      if (!val) return;
+      appendMessage('user', val);
+      input.value = '';
+      generateBotResponse(val);
+    }
+
+    function generateBotResponse(query) {
+      const q = query.toLowerCase();
+      setTimeout(() => {
+        let reply = "Our concierge team can tailor this specifically for your date. Feel free to use the WhatsApp button below to discuss customized arrangements.";
+        if (q.includes('halal')) {
+          reply = "Yes, all poultry, beef, and seasonings in our preparation kitchen are 100% Halal certified. We never cook with alcohol or pork.";
+        } else if (q.includes('pax') || q.includes('minimum') || q.includes('guest')) {
+          reply = "Our minimum gathering size is 20 guests for private seated degustations or grazing monoliths, scaling smoothly up to 250 guests.";
+        } else if (q.includes('tasting') || q.includes('sample') || q.includes('test')) {
+          reply = "Private tasting sessions can be scheduled Tuesday through Sunday at our kitchen atelier. Fill out the 'Tasting Room' form on this page to secure your slot.";
+        } else if (q.includes('price') || q.includes('cost') || q.includes('harga')) {
+          reply = "Curated packages range from Rp 380.000/pax (Canapés), Rp 520.000/pax (Harvest Grazing), to Rp 780.000/pax (5-Course Seated). You can use our live slider above to calculate.";
+        }
+        appendMessage('bot', reply);
+      }, 400);
+    }
+
+    // Run initial calculation
+    calculateTotal();
+  </script>
+</body>
+</html>
+@endverbatim

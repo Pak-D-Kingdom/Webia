@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::table('webia_orders', function (Blueprint $table) {
             $table->json('package_snapshot')->nullable()->after('webia_package_id');
-            $table->json('addon_snapshot')->default('[]')->after('addon_ids');
+            $table->json('addon_snapshot')->nullable()->after('addon_ids');
         });
     }
 

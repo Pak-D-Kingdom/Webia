@@ -15,7 +15,7 @@ return new class extends Migration
             $table->foreignId('webia_package_id')->constrained()->restrictOnDelete();
             $table->foreignId('webia_template_id')->nullable()->constrained()->nullOnDelete();
             $table->string('category_slug', 80)->nullable();
-            $table->json('addon_ids')->default('[]');
+            $table->json('addon_ids')->nullable();
             $table->string('status', 40)->default('awaiting_payment')->index();
             $table->unsignedBigInteger('total_price');
             $table->string('payment_receipt_path')->nullable();

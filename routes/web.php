@@ -113,7 +113,6 @@ Route::view(
     'website-bisnis.templates.automotive.dealer.automotive-dealer-vintage-collection'
 )->name('webia.template.automotive.dealer.vintage.collection');
 
-
 Route::view(
     '/webia/template/healthcare-dental-mint',
     'website-bisnis.templates.healthcare.dental.mint-dental-house'
