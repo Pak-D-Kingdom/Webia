@@ -14,56 +14,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/website-bisnis/auth.css') }}">
 @elseif ($isAdmin)
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        'primary-container': '#312e81', 'on-secondary-container': '#006f66', 'error-container': '#ffdad6', 'background': '#f7f9fb',
-                        'on-error': '#ffffff', 'on-error-container': '#93000a', 'on-primary-fixed': '#100563', 'inverse-primary': '#c3c0ff',
-                        'surface-dim': '#d8dadc', 'primary-fixed-dim': '#c3c0ff', 'outline': '#777682', 'on-secondary': '#ffffff',
-                        'secondary-fixed-dim': '#6bd8cb', 'error': '#ba1a1a', 'on-tertiary-container': '#9c98ff', 'surface-container-lowest': '#ffffff',
-                        'primary': '#1a146b', 'tertiary': '#160082', 'surface-tint': '#5654a8', 'surface': '#f7f9fb',
-                        'tertiary-fixed': '#e3dfff', 'on-surface': '#191c1e', 'surface-variant': '#e0e3e5', 'surface-container-low': '#f2f4f6',
-                        'tertiary-container': '#2913b3', 'on-primary-container': '#9c9af4', 'secondary-fixed': '#89f5e7', 'on-secondary-fixed': '#00201d',
-                        'on-tertiary-fixed': '#100069', 'on-surface-variant': '#474651', 'on-secondary-fixed-variant': '#005049', 'on-background': '#191c1e',
-                        'on-tertiary-fixed-variant': '#372abf', 'secondary-container': '#86f2e4', 'surface-container-high': '#e6e8ea', 'inverse-surface': '#2d3133',
-                        'on-primary-fixed-variant': '#3e3c8f', 'secondary': '#006a61', 'surface-container': '#eceef0', 'on-tertiary': '#ffffff',
-                        'surface-container-highest': '#e0e3e5', 'tertiary-fixed-dim': '#c3c0ff', 'primary-fixed': '#e2dfff', 'outline-variant': '#c8c5d3',
-                        'inverse-on-surface': '#eff1f3', 'on-primary': '#ffffff', 'surface-bright': '#f7f9fb'
-                    },
-                    borderRadius: { DEFAULT: '0.125rem', lg: '0.25rem', xl: '0.5rem', full: '0.75rem' },
-                    spacing: { 'margin-md': '1.5rem', 'gutter-lg': '1.5rem', 'space-xs': '0.25rem', 'margin': '1rem', 'space-xl': '1.75rem', 'space-md': '0.75rem', 'margin-lg': '2rem', 'gutter': '1rem', 'space-lg': '1.25rem', 'space-sm': '0.5rem' },
-                    fontFamily: {
-                        label-lg: ['Plus Jakarta Sans'], display: ['Plus Jakarta Sans'], 'headline-sm': ['Plus Jakarta Sans'], 'label-md': ['Plus Jakarta Sans'],
-                        'body-lg': ['Plus Jakarta Sans'], 'headline-lg': ['Plus Jakarta Sans'], caption: ['Plus Jakarta Sans'], 'body-md': ['Plus Jakarta Sans'],
-                        'body-sm': ['Plus Jakarta Sans'], 'headline-lg-mobile': ['Plus Jakarta Sans'], 'headline-md': ['Plus Jakarta Sans'], 'label-sm': ['Plus Jakarta Sans']
-                    },
-                    fontSize: {
-                        'label-lg': ['13px', { lineHeight: '18px', letterSpacing: '0.01em', fontWeight: '600' }],
-                        display: ['36px', { lineHeight: '44px', letterSpacing: '-0.03em', fontWeight: '800' }],
-                        'headline-sm': ['18px', { lineHeight: '24px', letterSpacing: '-0.015em', fontWeight: '600' }],
-                        'label-md': ['12px', { lineHeight: '16px', letterSpacing: '0.015em', fontWeight: '600' }],
-                        'body-lg': ['15px', { lineHeight: '22px', letterSpacing: '-0.01em', fontWeight: '400' }],
-                        'headline-lg': ['28px', { lineHeight: '36px', letterSpacing: '-0.025em', fontWeight: '700' }],
-                        caption: ['10px', { lineHeight: '14px', letterSpacing: '0.04em', fontWeight: '600' }],
-                        'body-md': ['13px', { lineHeight: '18px', letterSpacing: '0em', fontWeight: '400' }],
-                        'body-sm': ['12px', { lineHeight: '16px', letterSpacing: '0em', fontWeight: '400' }],
-                        'headline-lg-mobile': ['24px', { lineHeight: '32px', letterSpacing: '-0.02em', fontWeight: '700' }],
-                        'headline-md': ['22px', { lineHeight: '28px', letterSpacing: '-0.02em', fontWeight: '700' }],
-                        'label-sm': ['11px', { lineHeight: '14px', letterSpacing: '0.025em', fontWeight: '700' }]
-                    }
-                }
-            }
-        };
-    </script>
+    <style>
+        @layer theme, base, legacy, components, utilities;
+        @import url('{{ asset('css/website-bisnis/account.css') }}') layer(legacy);
+    </style>
+    @vite('resources/css/admin.css')
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/website-bisnis/account.css') }}">
     <script src="{{ asset('js/website-bisnis/account.js') }}" defer></script>
     <script src="{{ asset('js/website-bisnis/admin-dashboard.js') }}" defer></script>
 @else
@@ -95,7 +54,9 @@
                         <span class="font-caption text-caption text-on-surface-variant">Template Marketplace</span>
                     </div>
                 </a>
-                <button aria-label="Tutup navigasi" class="material-symbols-outlined p-space-xs text-on-surface-variant md:hidden" data-sidebar-close type="button">close</button>
+                <button aria-label="Tutup navigasi" class="p-space-xs text-on-surface-variant md:hidden" data-sidebar-close type="button">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
             </div>
             <nav class="flex flex-col gap-1 px-space-sm pt-space-md" aria-label="Navigasi admin">
                 <a class="flex items-center justify-between rounded-lg px-space-sm py-space-sm transition-all hover:bg-surface-container-low hover:text-on-surface {{ request()->routeIs('admin.dashboard') ? 'border-l-4 border-secondary bg-surface-container-low font-bold text-primary' : 'text-on-surface-variant' }}" href="{{ route('admin.dashboard') }}">
@@ -154,7 +115,9 @@
     <div class="min-h-screen flex flex-col md:pl-60">
         <header class="fixed left-60 right-0 top-0 z-40 flex h-16 items-center justify-between border-b border-surface-container bg-surface-container-lowest/90 px-margin-md shadow-[0_1px_8px_rgba(0,0,0,0.04)] backdrop-blur-md max-md:left-0">
             <div class="flex items-center gap-space-sm text-on-surface-variant">
-                <button aria-label="Buka navigasi" aria-controls="admin-sidebar" aria-expanded="false" class="material-symbols-outlined rounded-lg p-space-xs text-on-surface-variant hover:bg-surface-container-low md:hidden" data-sidebar-toggle type="button">menu</button>
+                <button aria-label="Buka navigasi" aria-controls="admin-sidebar" aria-expanded="false" class="rounded-lg p-space-xs text-on-surface-variant hover:bg-surface-container-low md:hidden" data-sidebar-toggle type="button">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
                 <span class="font-label-md text-label-md">Admin</span>
                 <span class="text-xs text-outline">/</span>
                 <span class="font-label-lg text-label-lg font-semibold text-on-surface">@yield('title')</span>

@@ -250,7 +250,7 @@
                     <circle cx="700" cy="{{ round($yOf($last['count'], $maxVol), 1) }}" fill="#006f66" r="4.5"></circle>
                 </svg>
                 @if ($peak['total'] > 0)
-                    <div class="absolute left-{{ '['.$peakLeftPct.'%]' }} top-2 -translate-x-1/2 rounded-xl bg-primary-container px-3 py-2 shadow-lg pointer-events-none flex flex-col gap-0.5 text-on-primary">
+                    <div class="absolute top-2 -translate-x-1/2 rounded-xl bg-primary-container px-3 py-2 shadow-lg pointer-events-none flex flex-col gap-0.5 text-on-primary" style="left: {{ $peakLeftPct }}%">
                         <div class="flex items-center justify-between gap-3">
                             <span class="font-caption text-caption uppercase text-on-primary-container">Puncak: {{ $peak['date']->isoFormat('D MMM') }}</span>
                             <span class="h-1.5 w-1.5 rounded-full bg-secondary-fixed"></span>
