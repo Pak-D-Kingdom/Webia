@@ -69,6 +69,15 @@ Route::view(
     'website-bisnis.templates.fnb.vallaco-catering'
 )->name('webia.template.vallaco-catering');
 Route::view(
+    '/webia/template/kusuma-ningrat-royal-heritage',
+    'website-bisnis.templates.fnb.kusuma-ningrat-royal-heritage'
+)->name('webia.template.kusuma-ningrat-royal-heritage');
+
+Route::view(
+    '/webia/template/nuvia-skin-tech-clinic',
+    'website-bisnis.templates.beauty.nuvia-skin-tech-clinic'
+)->name('webia.template.beauty.nuvia-skin-tech-clinic');
+Route::view(
     '/webia/template/fnb-bakery-playful-colorful',
     'website-bisnis.templates.fnb.bakery.bakery-playful-colorful'
 )->name('webia.template.fnb.bakery.playful.colorful');
