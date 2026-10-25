@@ -118,6 +118,7 @@ Route::view(
     'website-bisnis.templates.healthcare.dental.mint-dental-house'
 )->name('webia.template.healthcare-dental-mint');
 
+
 Route::view(
     '/webia/template/healthcare-dental-azure',
     'website-bisnis.templates.healthcare.dental.azure-smile-clinic'
@@ -261,6 +262,7 @@ Route::prefix('webia/template')->group(function () {
         'website-bisnis.templates.wedding-event.catering-wedding-cake.ruby-luxe.catering-detail-ruby-luxe'
     )->name('webia.template.catering-wedding-cake.ruby-luxe.detail');
 });
+
 // ==== Template klasik full-family (digabung dari nabiila-fe) ====
 $minimalis = function (string $page) {
     return function () use ($page) {
@@ -455,3 +457,49 @@ Route::prefix('webia/template/e-learning/futuristic/e-learning-dark-mode')
         Route::view('/course-content', $ns.'.course-content')->name('course-content');
         Route::view('/member-area', $ns.'.member-area')->name('member-area');
     });
+
+Route::prefix('webia/template')->group(function () {
+    Route::view(
+        '/personal-trainer-jelly-pop',
+        'website-bisnis.templates.sports-fitness.personal-trainer.jelly-pop.personal-trainer-jelly-pop'
+    )->name('webia.template.personal-trainer.jelly-pop');
+
+    Route::view(
+        '/personal-trainer-jelly-pop/detail',
+        'website-bisnis.templates.sports-fitness.personal-trainer.jelly-pop.personal-trainer-detail-jelly-pop'
+    )->name('webia.template.personal-trainer.jelly-pop.detail');
+});
+
+
+Route::prefix('webia/template')->group(function () {
+    Route::view(
+        '/pilates-studio-strawberry-fizz',
+        'website-bisnis.templates.sports-fitness.pilates-studio.strawberry-fizz.pilates-strawberry-fizz'
+    )->name('webia.template.pilates-studio.strawberry-fizz');
+
+    Route::view(
+        '/pilates-studio-strawberry-fizz/classes',
+        'website-bisnis.templates.sports-fitness.pilates-studio.strawberry-fizz.pilates-classes-strawberry-fizz'
+    )->name('webia.template.pilates-studio.strawberry-fizz.classes');
+
+    Route::view(
+        '/pilates-studio-strawberry-fizz/class-detail',
+        'website-bisnis.templates.sports-fitness.pilates-studio.strawberry-fizz.pilates-class-detail-strawberry-fizz'
+    )->name('webia.template.pilates-studio.strawberry-fizz.detail');
+});
+
+// interior-design template
+Route::prefix('webia/template')->group(function () {
+    Route::view(
+        '/interior-design-studio-artistic-terracotta',
+        'website-bisnis.templates.interior-architecture.interior-design-studio.artistic-terracotta.artistic-terracotta'
+    )->name('webia.template.interior-design-studio.artistic-terracotta');
+});
+
+
+Route::prefix('webia/template')->group(function () {
+    Route::view(
+        '/aethel-moss-architectural-studio',
+        'website-bisnis.templates.interior-architecture.architecture-building-design.aethel-moss.aethel-moss'
+    )->name('webia.template.aethel-moss-architectural-studio');
+});

@@ -1,0 +1,243 @@
+body {
+            background-color: #1C0A08;
+            color: #E8D5C4;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        /* Custom Moody Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1C0A08;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #7C2D12;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #C2410C;
+        }
+
+        /* Metallic borders & Warm glassmorphism */
+        .glass-terra {
+            background: rgba(41, 15, 11, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(194, 65, 12, 0.25);
+        }
+        .glass-card {
+            background: linear-gradient(135deg, rgba(69, 26, 3, 0.6) 0%, rgba(28, 10, 8, 0.85) 100%);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(224, 169, 109, 0.18);
+        }
+        .copper-border {
+            border: 1px solid rgba(200, 125, 85, 0.3);
+        }
+        .copper-glow {
+            box-shadow: 0 0 25px rgba(194, 65, 12, 0.25);
+        }
+        .copper-gradient-text {
+            background: linear-gradient(135deg, #F5E6D3 0%, #E0A96D 50%, #C2410C 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .text-glow {
+            text-shadow: 0 0 20px rgba(194, 65, 12, 0.4);
+        }
+
+        /* Image comparison slider styling */
+        .ba-slider-container {
+            position: relative;
+            user-select: none;
+            overflow: hidden;
+        }
+        .ba-slider-img-after {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .ba-slider-img-before {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            clip-path: polygon(0 0, var(--slider-pos, 50%) 0, var(--slider-pos, 50%) 100%, 0 100%);
+        }
+        .ba-handle {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: var(--slider-pos, 50%);
+            width: 2px;
+            background: #E0A96D;
+            transform: translateX(-50%);
+            cursor: ew-resize;
+            box-shadow: 0 0 10px #C2410C;
+        }
+        .ba-handle-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #7C2D12;
+            border: 2px solid #E0A96D;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #F5E6D3;
+            box-shadow: 0 0 15px rgba(0,0,0,0.8);
+        }
+    
+/* WEBIA package integration helpers */
+html { scroll-behavior: smooth; }
+section[id], #booking { scroll-margin-top: 5.5rem; }
+#booking-form input, #booking-form select, #booking-form textarea { color-scheme: dark; }
+#booking-form input:focus, #booking-form select:focus, #booking-form textarea:focus { outline: 1px solid rgba(224,169,109,.55); }
+#ai-chat-modal { max-height: calc(100vh - 7rem); }
+@media (max-width: 420px) {
+  #ai-chat-modal { right: .75rem; width: calc(100vw - 1.5rem); }
+  .fixed.bottom-6.right-6 { right: .75rem; bottom: .75rem; }
+}
+
+
+/* =========================================
+   ARTISTIC TERRACOTTA - PACKAGE TOGGLE
+========================================= */
+
+.artistic-package-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding-top: 24px;
+}
+
+.artistic-toggle-label {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    line-height: 1.5;
+    transition: color 0.25s ease;
+}
+
+.artistic-toggle-label--left {
+    color: #E0A96D;
+}
+
+.artistic-toggle-label--right {
+    color: #F5E6D3;
+}
+
+.artistic-toggle {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    width: 70px;
+    height: 40px;
+    padding: 4px;
+    border: 1px solid #A84B16;
+    border-radius: 999px;
+    background: #351407;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    transition: background 0.25s ease, border-color 0.25s ease;
+}
+
+.artistic-toggle__knob {
+    display: block;
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #E8B078;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+    transform: translateX(0);
+    transition: transform 0.25s ease;
+}
+
+.artistic-toggle[aria-checked="true"] {
+    background: #8F330D;
+    border-color: #E0A96D;
+}
+
+.artistic-toggle[aria-checked="true"] .artistic-toggle__knob {
+    transform: translateX(28px);
+}
+
+.artistic-toggle:focus-visible {
+    outline: 2px solid #E0A96D;
+    outline-offset: 4px;
+}
+
+/* =========================================
+   ARTISTIC TERRACOTTA - AI ROBOT BUTTON
+========================================= */
+
+.artistic-ai-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 58px;
+    height: 58px;
+    flex-shrink: 0;
+    padding: 8px;
+    border: 1px solid #E0A96D;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #7C2D12, #C2410C);
+    box-shadow: 0 0 25px rgba(194, 65, 12, 0.3);
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.artistic-ai-button__robot {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.artistic-ai-button:hover {
+    transform: translateY(-3px) scale(1.06);
+    box-shadow: 0 8px 24px rgba(194, 65, 12, 0.4);
+}
+
+.artistic-ai-button:focus-visible {
+    outline: 2px solid #E0A96D;
+    outline-offset: 4px;
+}
+
+@media (max-width: 480px) {
+    .artistic-package-toggle {
+        gap: 10px;
+    }
+
+    .artistic-toggle-label {
+        font-size: 10px;
+    }
+
+    .artistic-toggle {
+        width: 62px;
+        height: 36px;
+    }
+
+    .artistic-toggle__knob {
+        width: 26px;
+        height: 26px;
+    }
+
+    .artistic-toggle[aria-checked="true"] .artistic-toggle__knob {
+        transform: translateX(26px);
+    }
+}
