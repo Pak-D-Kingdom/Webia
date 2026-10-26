@@ -86,9 +86,9 @@
                 $statusLabels = ['awaiting_payment' => 'Belum Bayar', 'payment_uploaded' => 'Menunggu Verifikasi', 'paid' => 'Lunas', 'rejected' => 'Ditolak'];
                 $deliveryLabels = ['not_started' => 'Belum Mulai', 'in_progress' => 'Dikerjakan', 'delivered' => 'Selesai'];
             @endphp
-            <a class="rounded-lg px-space-md py-2 font-label-md text-label-md transition-all {{ $activeStatus === '' ? 'bg-primary-container font-bold text-on-primary shadow-sm' : 'text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface' }}" href="{{ route('admin.orders.index', array_filter(['delivery' => $activeDelivery], fn ($v) => $v !== '')) }}" @if ($activeStatus === '') aria-current="page" @endif>Semua</a>
+            <a class="rounded-lg px-space-md py-2 font-label-md text-label-md transition-all {{ $activeStatus === '' ? 'bg-primary-container font-bold text-on-primary shadow-sm' : 'text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface' }}" data-filter-type="status" data-filter-value="" href="{{ route('admin.orders.index', array_filter(['delivery' => $activeDelivery], fn ($v) => $v !== '')) }}" @if ($activeStatus === '') aria-current="page" @endif>Semua</a>
             @foreach ($statuses as $statusName)
-                <a class="flex items-center gap-1.5 whitespace-nowrap rounded-lg px-space-md py-2 font-label-md text-label-md transition-all {{ $activeStatus === $statusName ? 'bg-primary-container font-bold text-on-primary shadow-sm' : 'text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface' }}" href="{{ route('admin.orders.index', array_filter(['status' => $statusName, 'delivery' => $activeDelivery], fn ($v) => $v !== '')) }}" @if ($activeStatus === $statusName) aria-current="page" @endif>{{ $statusLabels[$statusName] }}
+                <a class="flex items-center gap-1.5 whitespace-nowrap rounded-lg px-space-md py-2 font-label-md text-label-md transition-all {{ $activeStatus === $statusName ? 'bg-primary-container font-bold text-on-primary shadow-sm' : 'text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface' }}" data-filter-type="status" data-filter-value="{{ $statusName }}" href="{{ route('admin.orders.index', array_filter(['status' => $statusName, 'delivery' => $activeDelivery], fn ($v) => $v !== '')) }}" @if ($activeStatus === $statusName) aria-current="page" @endif>{{ $statusLabels[$statusName] }}
                     @if (($statusCounts[$statusName] ?? 0) > 0)
                         <span class="rounded-full bg-surface-container-high px-1.5 py-0.2 font-caption text-caption text-on-surface-variant">{{ $statusCounts[$statusName] }}</span>
                     @endif
@@ -105,15 +105,15 @@
         </div>
         <nav aria-label="Filter status pengerjaan" class="flex flex-wrap items-center gap-space-xs">
             <span class="font-caption text-caption uppercase tracking-wider text-outline">Pengerjaan:</span>
-            <a class="rounded-lg px-2.5 py-1.5 font-label-sm text-label-sm transition-all {{ $activeDelivery === '' ? 'bg-primary-container font-bold text-on-primary shadow-sm' : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface' }}" href="{{ route('admin.orders.index', array_filter(['status' => $activeStatus], fn ($v) => $v !== '')) }}" @if ($activeDelivery === '') aria-current="page" @endif>Semua</a>
+            <a class="rounded-lg px-2.5 py-1.5 font-label-sm text-label-sm transition-all {{ $activeDelivery === '' ? 'bg-primary-container font-bold text-on-primary shadow-sm' : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface' }}" data-filter-type="delivery" data-filter-value="" href="{{ route('admin.orders.index', array_filter(['status' => $activeStatus], fn ($v) => $v !== '')) }}" @if ($activeDelivery === '') aria-current="page" @endif>Semua</a>
             @foreach ($deliveries as $deliveryName)
-                <a class="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 font-label-sm text-label-sm transition-all {{ $activeDelivery === $deliveryName ? 'bg-primary-container font-bold text-on-primary shadow-sm' : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface' }}" href="{{ route('admin.orders.index', array_filter(['status' => $activeStatus, 'delivery' => $deliveryName], fn ($v) => $v !== '')) }}" @if ($activeDelivery === $deliveryName) aria-current="page" @endif>{{ $deliveryLabels[$deliveryName] }}
+                <a class="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 font-label-sm text-label-sm transition-all {{ $activeDelivery === $deliveryName ? 'bg-primary-container font-bold text-on-primary shadow-sm' : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface' }}" data-filter-type="delivery" data-filter-value="{{ $deliveryName }}" href="{{ route('admin.orders.index', array_filter(['status' => $activeStatus, 'delivery' => $deliveryName], fn ($v) => $v !== '')) }}" @if ($activeDelivery === $deliveryName) aria-current="page" @endif>{{ $deliveryLabels[$deliveryName] }}
                     @if (($deliveryCounts[$deliveryName] ?? 0) > 0)
                         <span class="rounded-full px-1.5 py-0.2 font-caption text-caption {{ $activeDelivery === $deliveryName ? 'bg-white/25 text-on-primary' : 'bg-surface-container-high text-on-surface-variant' }}">{{ $deliveryCounts[$deliveryName] }}</span>
                     @endif
                 </a>
             @endforeach
-            <a aria-label="Reset Filter" class="flex h-9 w-9 items-center justify-center rounded-lg bg-surface-container-low text-on-surface-variant transition-all hover:bg-error-container hover:text-on-error-container" href="{{ route('admin.orders.index') }}" title="Reset Filter"><span class="material-symbols-outlined text-lg">filter_alt_off</span></a>
+            <a aria-label="Reset Filter" class="flex h-9 w-9 items-center justify-center rounded-lg bg-surface-container-low text-on-surface-variant transition-all hover:bg-error-container hover:text-on-error-container" data-filter-reset href="{{ route('admin.orders.index') }}" title="Reset Filter"><span class="material-symbols-outlined text-lg">filter_alt_off</span></a>
         </nav>
     </div>
 </div>
@@ -136,7 +136,7 @@
             </thead>
             <tbody class="divide-y divide-surface-container font-body-sm text-body-sm text-on-surface">
                 @forelse ($orders as $order)
-                    <tr class="transition-colors hover:bg-surface-container-low/60">
+                    <tr class="transition-colors hover:bg-surface-container-low/60" data-status="{{ $order->status }}" data-delivery="{{ $order->delivery_status }}">
                         <td class="px-3 py-3.5 md:px-4">
                             <span class="whitespace-nowrap font-label-md text-label-md font-bold text-primary">{{ $order->order_number }}</span>
                         </td>
@@ -216,6 +216,17 @@
                         </td>
                     </tr>
                 @endforelse
+                <tr class="hidden" id="tableEmptyState">
+                    <td colspan="8">
+                        <div class="flex flex-col items-center justify-center px-4 py-12 text-center" role="status">
+                            <div class="mb-space-sm flex h-16 w-16 items-center justify-center rounded-full bg-surface-container-low text-outline">
+                                <span class="material-symbols-outlined text-3xl">receipt_long_off</span>
+                            </div>
+                            <h2 class="font-headline-sm text-headline-sm font-bold text-primary">Belum ada pesanan</h2>
+                            <p class="mt-1 max-w-sm font-body-sm text-body-sm text-on-surface-variant">Pesanan customer akan muncul di sini, sesuaikan juga kombinasi filter status.</p>
+                        </div>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>

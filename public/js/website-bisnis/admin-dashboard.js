@@ -357,10 +357,11 @@ function initializeAdminPage() {
   // Filter & pencarian tabel.
   const searchInput = document.getElementById('tableSearch');
   const filterButtons = document.querySelectorAll('.filter-tab');
-  const tableRows = document.querySelectorAll('#ordersTable tbody tr, .order-row');
+  const tableRows = document.querySelectorAll('#ordersTable tbody tr:not(#tableEmptyState), .order-row');
   const emptyState = document.getElementById('tableEmptyState');
   const visibleCounter = document.getElementById('visibleRowCount');
   let currentFilter = 'all';
+  let currentDeliveryFilter = '';
 
   // Saat filter aktif, baris bisa disembunyikan.
   function filterTable() {
@@ -369,16 +370,20 @@ function initializeAdminPage() {
 
     tableRows.forEach((row) => {
       const matchesQuery = !query || row.innerText.toLowerCase().includes(query);
-      const matchesFilter = currentFilter === 'all' || row.getAttribute('data-status') === currentFilter;
-      row.style.display = matchesQuery && matchesFilter ? '' : 'none';
-      if (matchesQuery && matchesFilter) matchCount++;
+      const matchesStatus = currentFilter === 'all' || row.getAttribute('data-status') === currentFilter;
+      const matchesDelivery = currentDeliveryFilter === '' || row.getAttribute('data-delivery') === currentDeliveryFilter;
+      const visible = matchesQuery && matchesStatus && matchesDelivery;
+      row.style.display = visible ? '' : 'none';
+      if (visible) matchCount++;
     });
 
     if (visibleCounter) visibleCounter.innerText = matchCount;
 
     if (emptyState) {
+      emptyState.style.display = matchCount === 0 ? '' : 'none';
       emptyState.classList.toggle('hidden', matchCount !== 0);
-      emptyState.classList.toggle('flex', matchCount === 0);
+      // flex hanya untuk div kosong dashboard; tr kosong cukup via style display.
+      if (emptyState.tagName !== 'TR') emptyState.classList.toggle('flex', matchCount === 0);
     }
   }
 
@@ -403,6 +408,51 @@ function initializeAdminPage() {
     });
     filterButtons[0]?.click();
   }, listenerOptions);
+
+  // Filter instan pesanan (status & pengerjaan): klik tab langsung menyaring baris
+  // tanpa berpindah halaman; URL di-replaceState agar refresh/deep-link konsisten.
+  const ordersFilterNavs = document.querySelectorAll('nav[aria-label="Filter status pembayaran"], nav[aria-label="Filter status pengerjaan"]');
+
+  function setOrdersTabState(tab, on) {
+    tab.classList.toggle('bg-primary-container', on);
+    tab.classList.toggle('font-bold', on);
+    tab.classList.toggle('text-on-primary', on);
+    tab.classList.toggle('shadow-sm', on);
+    tab.classList.toggle('bg-surface-container-low', !on);
+    tab.classList.toggle('text-on-surface-variant', !on);
+    tab.classList.toggle('hover:bg-surface-container-high', !on);
+    tab.classList.toggle('hover:text-on-surface', !on);
+    if (on) tab.setAttribute('aria-current', 'page');
+    else tab.removeAttribute('aria-current');
+  }
+
+  if (ordersFilterNavs.length) {
+    ordersFilterNavs.forEach((nav, index) => {
+      const type = index === 0 ? 'status' : 'delivery';
+      nav.addEventListener('click', (event) => {
+        const tab = event.target instanceof Element && event.target.closest('a[data-filter-type]');
+        if (!tab) return;
+        event.preventDefault();
+        if (type === 'status') currentFilter = tab.dataset.filterValue || '';
+        else currentDeliveryFilter = tab.dataset.filterValue || '';
+        nav.querySelectorAll('[data-filter-type]').forEach((t) => setOrdersTabState(t, t === tab));
+        filterTable();
+        history.replaceState({}, '', tab.href);
+      }, listenerOptions);
+    });
+
+    document.querySelector('[data-filter-reset]')?.addEventListener('click', (event) => {
+      event.preventDefault();
+      currentFilter = 'all';
+      currentDeliveryFilter = '';
+      ordersFilterNavs.forEach((nav) => {
+        nav.querySelectorAll('[data-filter-type]').forEach((t) => setOrdersTabState(t, (t.dataset.filterValue || '') === ''));
+      });
+      if (searchInput) searchInput.value = '';
+      filterTable();
+      history.replaceState({}, '', event.currentTarget.href);
+    }, listenerOptions);
+  }
 
   // Search topbar: hanya memfilter tabel pesanan bila tersedia.
   document.getElementById('adminTopbarSearch')?.addEventListener('input', function () {
