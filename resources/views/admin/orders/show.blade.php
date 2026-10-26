@@ -52,7 +52,7 @@
                         <span class="material-symbols-outlined text-base">content_copy</span>
                     </button>
                     @php [$pillBg, $pillText, $dotColor, $pulse] = $paymentPills[$order->status] ?? $paymentPills['rejected'] @endphp
-                    <span class="inline-flex items-center gap-1.5 rounded-full px-3 py-1 font-label-md text-label-md {{ $pillBg.' '.$pillText }}">
+                    <span class="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1 font-label-md text-label-md {{ $pillBg.' '.$pillText }}">
                         <span class="h-2 w-2 rounded-full {{ $dotColor }} {{ $pulse ? 'animate-pulse' : '' }}"></span>{{ $paymentLabels[$order->status] ?? $order->status }}
                     </span>
                 </div>
@@ -84,7 +84,7 @@
                             <p class="font-body-sm text-body-sm text-on-surface-variant">Cek catatan &amp; bukti transfer sebelum memproses pesanan</p>
                         </div>
                     </div>
-                            <span class="rounded px-2.5 py-1 font-label-sm font-bold text-label-sm tracking-wide uppercase {{ $order->status === 'paid' ? 'bg-secondary-fixed text-on-secondary-fixed' : ($order->status === 'rejected' ? 'bg-error-container text-on-error-container' : 'bg-amber-100 text-amber-900') }}">{{ $paymentLabels[$order->status] }}</span>
+                            <span class="shrink-0 whitespace-nowrap rounded px-2.5 py-1 font-label-sm font-bold text-label-sm tracking-wide uppercase {{ $order->status === 'paid' ? 'bg-secondary-fixed text-on-secondary-fixed' : ($order->status === 'rejected' ? 'bg-error-container text-on-error-container' : 'bg-amber-100 text-amber-900') }}">{{ $paymentLabels[$order->status] }}</span>
                 </div>
 
                 <div class="flex flex-col gap-space-md">
@@ -314,7 +314,7 @@
                     <div class="mt-space-xs flex flex-col gap-1 rounded-xl bg-surface-container p-space-md">
                         <div class="flex items-center justify-between">
                             <span class="font-label-md text-label-md font-bold uppercase text-on-surface-variant">Total pembayaran</span>
-                            <span class="rounded-full px-2 py-0.5 font-label-sm text-label-sm font-bold {{ $order->status === 'paid' ? 'bg-secondary-fixed text-on-secondary-fixed' : ($order->status === 'rejected' ? 'bg-error-container text-on-error-container' : 'bg-amber-100 text-amber-900') }}">
+                            <span class="whitespace-nowrap rounded-full px-2 py-0.5 font-label-sm text-label-sm font-bold {{ $order->status === 'paid' ? 'bg-secondary-fixed text-on-secondary-fixed' : ($order->status === 'rejected' ? 'bg-error-container text-on-error-container' : 'bg-amber-100 text-amber-900') }}">
                                 {{ $paymentLabels[$order->status] ?? '—' }}
                             </span>
                         </div>

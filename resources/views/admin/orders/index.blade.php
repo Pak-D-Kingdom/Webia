@@ -131,7 +131,7 @@
                     <th class="px-3 py-space-sm text-right font-label-sm text-label-sm font-bold md:px-4">Total</th>
                     <th class="px-3 py-space-sm text-center font-label-sm text-label-sm font-bold md:px-4">Pembayaran</th>
                     <th class="px-3 py-space-sm text-center font-label-sm text-label-sm font-bold md:px-4">Pengerjaan</th>
-                    <th class="px-3 py-space-sm text-right font-label-sm text-label-sm font-bold md:px-4">Aksi</th>
+                    <th class="px-3 py-space-sm text-center font-label-sm text-label-sm font-bold md:px-4">Aksi</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-surface-container font-body-sm text-body-sm text-on-surface">
@@ -192,7 +192,7 @@
                                     <span class="inline-flex items-center gap-1.5 rounded-full bg-surface-container-high px-2.5 py-0.5 font-label-sm text-label-sm font-bold text-on-surface-variant"><span class="h-1.5 w-1.5 rounded-full bg-outline"></span>Belum Mulai</span>
                             @endswitch
                         </td>
-                        <td class="px-3 py-3.5 text-right md:px-4">
+                        <td class="px-3 py-3.5 text-center md:px-4">
                             <a class="relative inline-flex items-center gap-1.5 rounded-lg bg-surface-container px-2.5 py-1.5 font-label-sm text-label-sm font-semibold text-on-surface shadow-sm transition-all hover:bg-primary hover:text-on-primary active:scale-[0.98]" data-order-detail href="{{ route('admin.orders.show', $order) }}" @if ($order->status === 'payment_uploaded') title="Butuh review bukti transfer" @endif>
                                 @if ($order->status === 'payment_uploaded')
                                     <span aria-hidden="true" class="absolute -right-1 -top-1 h-2.5 w-2.5 animate-pulse rounded-full border-2 border-surface-container-lowest bg-error"></span>
