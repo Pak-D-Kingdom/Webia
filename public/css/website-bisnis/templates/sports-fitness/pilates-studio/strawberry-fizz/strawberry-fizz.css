@@ -1,0 +1,54 @@
+/* Styles extracted from the supplied Rustic Strawberry Fizz HTML reference. */
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #FFF9FA;
+            color: #2D151E;
+            overflow-x: hidden;
+        }
+        .font-serif-title {
+            font-family: 'Playfair Display', serif;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FFE4E1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #E63956;
+            border-radius: 99px;
+        }
+        /* Glassmorphism */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 183, 197, 0.4);
+        }
+        .glass-dark {
+            background: rgba(92, 0, 28, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 183, 197, 0.2);
+        }
+        /* Continuous Marquee Animation */
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            display: flex;
+            width: 200%;
+            animation: marquee 22s linear infinite;
+        }
+        /* Floating Animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(2deg); }
+        }
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+    
+html{scroll-behavior:smooth;scroll-padding-top:100px}body{min-width:320px}img{max-width:100%}#booking-modal,#class-detail-modal,#lightbox-modal{overflow-y:auto}#booking-modal>div{max-height:calc(100vh - 2rem);overflow-y:auto}#ai-chatbot-window{max-height:calc(100vh - 8rem)}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}

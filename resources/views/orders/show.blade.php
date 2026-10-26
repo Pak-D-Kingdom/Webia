@@ -11,27 +11,10 @@
         <h1 id="order-title">{{ $order->package->name }}</h1>
         @if (session('status')) <p role="status">{{ session('status') }}</p> @endif
         <div class="order-summary">
-            <dl><div><dt>Status</dt><dd>{{ str_replace('_', ' ', ucfirst($order->status)) }}</dd></div><div><dt>Total</dt><dd>Rp{{ number_format($order->total_price, 0, ',', '.') }}</dd></div></dl>
+            <dl><div><dt>Status</dt><dd><x-status-pill :status="$order->status" :label="ucfirst(str_replace('_', ' ', $order->status))" /></dd></div><div><dt>Total</dt><dd>Rp{{ number_format($order->total_price, 0, ',', '.') }}</dd></div></dl>
         </div>
 
-        @php
-            $progressSteps = ['Menunggu pembayaran', 'Diperiksa admin', 'Dibayar', 'Dikerjakan', 'Selesai'];
-            $progressIndex = match (true) {
-                $order->delivery_status === 'delivered' => 4,
-                $order->delivery_status === 'in_progress' => 3,
-                $order->status === 'paid' => 2,
-                $order->status === 'payment_uploaded' => 1,
-                default => 0,
-            };
-        @endphp
-        <ol class="order-steps" aria-label="Progres pesanan">
-            @foreach ($progressSteps as $index => $step)
-                <li @if ($index === $progressIndex) aria-current="step" @endif>
-                    <span class="order-step-state" aria-hidden="true">{{ $index < $progressIndex ? '✓' : $index + 1 }}</span>
-                    {{ $step }}
-                </li>
-            @endforeach
-        </ol>
+        <x-order-timeline :order="$order" />
 
         @if (in_array($order->status, ['awaiting_payment', 'rejected']))
             <div class="dashboard-empty">
