@@ -79,6 +79,17 @@ Route::view(
     '/webia/template/nuvia-skin-tech-clinic',
     'website-bisnis.templates.beauty.nuvia-skin-tech-clinic'
 )->name('webia.template.beauty.nuvia-skin-tech-clinic');
+
+Route::view(
+    '/webia/template/glow-lab-creative-beauty-clinic',
+    'website-bisnis.templates.beauty.glow-lab-creative-beauty-clinic'
+)->name('webia.template.beauty.glow-lab-creative-beauty-clinic');
+
+Route::view(
+    '/webia/template/atelier-kulit-creative-beauty-clinic',
+    'website-bisnis.templates.beauty.atelier-kulit-creative-beauty-clinic'
+)->name('webia.template.beauty.atelier-kulit-creative-beauty-clinic');
+
 Route::view(
     '/webia/template/fnb-bakery-playful-colorful',
     'website-bisnis.templates.fnb.bakery.bakery-playful-colorful'
