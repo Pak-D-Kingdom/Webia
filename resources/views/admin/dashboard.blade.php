@@ -86,7 +86,7 @@
                 <select class="cursor-pointer appearance-none rounded-lg bg-surface-container-low py-1.5 pl-3 pr-8 font-label-md text-label-md text-on-surface focus:outline-none focus:ring-1 focus:ring-primary">
                     <option selected>30 Hari Terakhir</option>
                 </select>
-                <span class="material-symbols-outlined pointer-events-none absolute right-2 top-2 text-sm text-outline">expand_more</span>
+                <span class="material-symbols-outlined pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-base leading-none text-outline">expand_more</span>
             </div>
         </div>
         <button class="flex w-full items-center justify-center gap-1.5 rounded-lg bg-primary px-3.5 py-2 font-label-md text-label-md text-on-primary shadow-sm transition-all hover:bg-primary-container active:scale-95" id="btnProsesSemua" type="button">
