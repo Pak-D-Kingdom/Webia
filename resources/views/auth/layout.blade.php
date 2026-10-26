@@ -22,7 +22,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,500,0,0&display=block" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0,0&display=block" rel="stylesheet">
     <script src="{{ asset('js/website-bisnis/admin-dashboard.js') }}" defer></script>
     <script src="{{ asset('js/website-bisnis/admin-navigation.js') }}" defer></script>
 @else
@@ -41,112 +41,114 @@
 @elseif ($isAdmin)
 <body class="bg-background font-body-md text-on-surface antialiased">
     <a class="sr-only focus:not-sr-only" href="#main-content">Lewati ke konten</a>
-    <aside class="fixed left-0 top-0 z-50 flex h-screen w-60 -translate-x-full select-none flex-col justify-between border-r border-surface-container bg-surface-container-lowest shadow-[8px_0_30px_rgba(26,20,107,0.04)] transition-transform duration-200 md:translate-x-0" data-admin-sidebar id="admin-sidebar">
-        <div class="flex flex-col">
-            <div class="flex h-16 items-center justify-between px-space-md md:justify-start">
-                <a class="flex items-center gap-space-sm rounded-xl transition-opacity hover:opacity-80" href="{{ route('admin.dashboard') }}">
-                    <div class="grid h-9 w-9 flex-shrink-0 place-items-center rounded-xl bg-primary text-white font-headline-sm font-black shadow-sm">W</div>
+    <aside class="fixed left-0 top-0 z-50 flex h-screen w-64 -translate-x-full select-none flex-col justify-between bg-primary shadow-sm transition-transform duration-200 md:translate-x-0" data-admin-sidebar id="admin-sidebar">
+        <div class="flex flex-col overflow-hidden">
+            <div class="flex h-16 items-center justify-between border-b border-white/10 px-space-md md:justify-start">
+                <a class="flex items-center gap-2.5 rounded-xl transition-opacity hover:opacity-80" href="{{ route('admin.dashboard') }}">
+                    <div class="grid h-9 w-9 flex-shrink-0 place-items-center rounded-xl border border-white/20 bg-gradient-to-br from-primary-container to-tertiary-container shadow-inner">
+                        <span aria-hidden="true" class="material-symbols-outlined text-secondary-fixed">dashboard</span>
+                    </div>
                     <div class="flex flex-col">
-                        <div class="flex items-center gap-space-xs">
-                            <span class="font-headline-sm text-headline-sm text-primary font-bold tracking-tight">WEBIA</span>
-                            <span class="rounded bg-primary-container px-space-xs py-0.5 font-caption text-caption text-on-primary-container">ADMIN</span>
-                        </div>
-                        <span class="font-caption text-caption text-on-surface-variant">Template Marketplace</span>
+                        <span class="font-headline-sm text-headline-sm font-bold tracking-tight text-on-primary">WEBIA Admin</span>
+                        <span class="font-caption text-caption uppercase tracking-wider text-primary-fixed-dim/70">Template Marketplace</span>
                     </div>
                 </a>
-                <button aria-label="Tutup navigasi" class="p-space-xs text-on-surface-variant md:hidden" data-sidebar-close type="button">
+                <button aria-label="Tutup navigasi" class="p-space-xs text-primary-fixed-dim/70 hover:text-on-primary md:hidden" data-sidebar-close type="button">
                     <span class="material-symbols-outlined">close</span>
                 </button>
             </div>
-            <nav class="flex flex-col gap-1.5 px-space-sm pt-space-lg" aria-label="Navigasi admin">
-                <span class="mb-space-xs px-space-sm font-caption text-caption uppercase tracking-[0.12em] text-outline">Menu utama</span>
-                <a class="group flex min-h-11 items-center justify-between rounded-xl px-space-sm py-2 transition-all hover:bg-surface-container-low {{ request()->routeIs('admin.dashboard') ? 'bg-primary-fixed font-semibold text-primary shadow-sm' : 'text-on-surface-variant hover:text-on-surface' }}" href="{{ route('admin.dashboard') }}" @if (request()->routeIs('admin.dashboard')) aria-current="page" @endif>
-                    <div class="flex items-center gap-space-sm">
-                        <span class="material-symbols-outlined grid h-8 w-8 place-items-center rounded-lg text-lg transition-colors {{ request()->routeIs('admin.dashboard') ? 'bg-surface-container-lowest text-primary' : 'bg-surface-container-low text-primary group-hover:bg-surface-container' }}">grid_view</span>
-                        <span class="font-label-lg text-label-lg">Dashboard</span>
-                    </div>
-                </a>
-                <a class="group flex min-h-11 items-center justify-between rounded-xl px-space-sm py-2 transition-all hover:bg-surface-container-low {{ request()->routeIs('admin.orders.*') ? 'bg-primary-fixed font-semibold text-primary shadow-sm' : 'text-on-surface-variant hover:text-on-surface' }}" href="{{ route('admin.orders.index') }}" @if (request()->routeIs('admin.orders.*')) aria-current="page" @endif>
-                    <div class="flex items-center gap-space-sm">
-                        <span class="material-symbols-outlined grid h-8 w-8 place-items-center rounded-lg text-lg transition-colors {{ request()->routeIs('admin.orders.*') ? 'bg-surface-container-lowest text-primary' : 'bg-surface-container-low text-primary group-hover:bg-surface-container' }}">shopping_bag</span>
-                        <span class="font-label-lg text-label-lg">Pesanan</span>
-                    </div>
-                    @if ($verificationBadge = \App\Models\WebiaOrder::where('status', 'payment_uploaded')->count())
-                        <span class="rounded-full bg-secondary-container px-space-xs py-0.5 font-label-sm text-label-sm text-secondary">{{ $verificationBadge }} Baru</span>
-                    @endif
-                </a>
-                <a class="group flex min-h-11 items-center justify-between rounded-xl px-space-sm py-2 transition-all hover:bg-surface-container-low {{ request()->routeIs('admin.packages.*') ? 'bg-primary-fixed font-semibold text-primary shadow-sm' : 'text-on-surface-variant hover:text-on-surface' }}" href="{{ route('admin.packages.index') }}" @if (request()->routeIs('admin.packages.*')) aria-current="page" @endif>
-                    <div class="flex items-center gap-space-sm">
-                        <span class="material-symbols-outlined grid h-8 w-8 place-items-center rounded-lg text-lg transition-colors {{ request()->routeIs('admin.packages.*') ? 'bg-surface-container-lowest text-primary' : 'bg-surface-container-low text-primary group-hover:bg-surface-container' }}">inventory_2</span>
-                        <span class="font-label-lg text-label-lg">Paket</span>
-                    </div>
-                </a>
-                <a class="group flex min-h-11 items-center justify-between rounded-xl px-space-sm py-2 transition-all hover:bg-surface-container-low {{ request()->routeIs('admin.addons.*') ? 'bg-primary-fixed font-semibold text-primary shadow-sm' : 'text-on-surface-variant hover:text-on-surface' }}" href="{{ route('admin.addons.index') }}" @if (request()->routeIs('admin.addons.*')) aria-current="page" @endif>
-                    <div class="flex items-center gap-space-sm">
-                        <span class="material-symbols-outlined grid h-8 w-8 place-items-center rounded-lg text-lg transition-colors {{ request()->routeIs('admin.addons.*') ? 'bg-surface-container-lowest text-primary' : 'bg-surface-container-low text-primary group-hover:bg-surface-container' }}">extension</span>
-                        <span class="font-label-lg text-label-lg">Add-on</span>
-                    </div>
-                </a>
-            </nav>
-        </div>
-        <div class="flex flex-col gap-space-sm border-t border-surface-container p-space-sm">
-            <div class="flex items-center justify-between rounded-xl bg-surface-container-low p-space-sm">
-                <div class="flex min-w-0 items-center gap-space-sm overflow-hidden">
-                    <div class="relative flex-shrink-0">
-                        <div class="grid h-9 w-9 place-items-center rounded-full bg-surface-container-lowest font-label-md font-bold text-primary shadow-sm">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</div>
-                        <span class="absolute bottom-0 right-0 h-2 w-2 rounded-full bg-secondary ring-2 ring-surface-container-lowest"></span>
-                    </div>
-                    <div class="flex min-w-0 flex-col">
-                        <span class="truncate font-label-md text-label-md text-on-surface">{{ auth()->user()->name }}</span>
-                        <span class="font-caption text-caption uppercase tracking-wider text-on-surface-variant">Administrator</span>
+            <nav aria-label="Navigasi admin" class="flex-1 space-y-4 overflow-y-auto px-space-sm py-space-md">
+                <div>
+                    <div class="px-space-sm pb-1 font-caption text-caption uppercase tracking-wider text-primary-fixed-dim/50">Utama</div>
+                    <div class="space-y-0.5">
+                        <a class="flex min-h-11 items-center gap-space-sm rounded-lg border-l-4 px-space-sm py-2 font-label-md text-label-md transition-colors {{ request()->routeIs('admin.dashboard') ? 'border-secondary-fixed bg-surface-container-lowest/10 text-on-primary' : 'border-transparent text-primary-fixed-dim/70 hover:bg-surface-container-lowest/5 hover:text-on-primary' }}" href="{{ route('admin.dashboard') }}" @if (request()->routeIs('admin.dashboard')) aria-current="page" @endif>
+                            <span aria-hidden="true" class="material-symbols-outlined {{ request()->routeIs('admin.dashboard') ? 'text-secondary-fixed' : '' }}">grid_view</span>
+                            Dashboard
+                        </a>
+                        <a class="flex min-h-11 items-center justify-between rounded-lg border-l-4 px-space-sm py-2 font-label-md text-label-md transition-colors {{ request()->routeIs('admin.orders.*') ? 'border-secondary-fixed bg-surface-container-lowest/10 text-on-primary' : 'border-transparent text-primary-fixed-dim/70 hover:bg-surface-container-lowest/5 hover:text-on-primary' }}" href="{{ route('admin.orders.index') }}" @if (request()->routeIs('admin.orders.*')) aria-current="page" @endif>
+                            <span class="flex min-w-0 items-center gap-space-sm">
+                                <span aria-hidden="true" class="material-symbols-outlined">shopping_bag</span>
+                                <span class="truncate">Pesanan</span>
+                            </span>
+                            @if ($verificationBadge = \App\Models\WebiaOrder::where('status', 'payment_uploaded')->count())
+                                <span class="rounded border border-secondary-fixed/30 bg-secondary-fixed/20 px-1.5 py-0.5 text-[10px] font-bold text-secondary-fixed">{{ $verificationBadge }} Baru</span>
+                            @endif
+                        </a>
                     </div>
                 </div>
-                <span class="material-symbols-outlined text-base text-outline">expand_more</span>
+                <div>
+                    <div class="px-space-sm pb-1 font-caption text-caption uppercase tracking-wider text-primary-fixed-dim/50">Katalog produk</div>
+                    <div class="space-y-0.5">
+                        <a class="flex min-h-11 items-center gap-space-sm rounded-lg border-l-4 px-space-sm py-2 font-label-md text-label-md transition-colors {{ request()->routeIs('admin.packages.*') ? 'border-secondary-fixed bg-surface-container-lowest/10 text-on-primary' : 'border-transparent text-primary-fixed-dim/70 hover:bg-surface-container-lowest/5 hover:text-on-primary' }}" href="{{ route('admin.packages.index') }}" @if (request()->routeIs('admin.packages.*')) aria-current="page" @endif>
+                            <span aria-hidden="true" class="material-symbols-outlined">inventory_2</span>
+                            Paket
+                        </a>
+                        <a class="flex min-h-11 items-center gap-space-sm rounded-lg border-l-4 px-space-sm py-2 font-label-md text-label-md transition-colors {{ request()->routeIs('admin.addons.*') ? 'border-secondary-fixed bg-surface-container-lowest/10 text-on-primary' : 'border-transparent text-primary-fixed-dim/70 hover:bg-surface-container-lowest/5 hover:text-on-primary' }}" href="{{ route('admin.addons.index') }}" @if (request()->routeIs('admin.addons.*')) aria-current="page" @endif>
+                            <span aria-hidden="true" class="material-symbols-outlined">extension</span>
+                            Add-on
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div class="flex flex-col border-t border-white/10 p-space-sm">
+            <div class="flex items-center justify-between rounded-lg border border-white/5 bg-surface-container-lowest/5 p-2 transition-colors hover:bg-surface-container-lowest/10">
+                <div class="flex min-w-0 items-center gap-2.5 overflow-hidden">
+                    <div class="grid h-9 w-9 flex-shrink-0 place-items-center rounded-full border border-secondary-fixed/50 bg-surface-container-lowest/10 font-label-sm text-label-sm font-bold text-on-primary">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</div>
+                    <div class="flex min-w-0 flex-col">
+                        <span class="truncate font-label-sm text-label-sm font-bold text-on-primary">{{ auth()->user()->name }}</span>
+                        <span class="font-caption text-caption uppercase tracking-wider text-primary-fixed-dim/70">Administrator</span>
+                    </div>
+                </div>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button aria-label="Keluar" class="rounded p-1 text-primary-fixed-dim/70 transition-colors hover:bg-rose-500/20 hover:text-rose-300" title="Keluar" type="submit">
+                        <span aria-hidden="true" class="material-symbols-outlined text-[18px]">logout</span>
+                    </button>
+                </form>
             </div>
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button class="flex min-h-11 w-full items-center gap-space-sm rounded-xl px-space-sm py-space-sm font-label-md text-label-md text-error transition-all hover:bg-error-container hover:text-on-error-container" type="submit">
-                    <span class="material-symbols-outlined grid h-8 w-8 place-items-center rounded-lg bg-error-container text-lg">logout</span>
-                    Keluar
-                </button>
-            </form>
         </div>
     </aside>
     <div class="pointer-events-none fixed inset-0 z-40 bg-inverse-surface/40 opacity-0 transition-opacity md:hidden" data-sidebar-scrim style="display:none"></div>
-    <div class="min-h-screen flex flex-col md:pl-60">
-        <header class="fixed left-60 right-0 top-0 z-40 flex h-16 items-center justify-between border-b border-surface-container/70 bg-surface-container-lowest/90 px-margin-md shadow-[0_6px_24px_rgba(26,20,107,0.035)] backdrop-blur-md max-md:left-0">
-            <div class="flex min-w-0 items-center gap-space-sm text-on-surface-variant">
-                <button aria-label="Buka navigasi" aria-controls="admin-sidebar" aria-expanded="false" class="grid h-10 w-10 flex-shrink-0 place-items-center rounded-xl text-on-surface-variant transition-colors hover:bg-surface-container-low md:hidden" data-sidebar-toggle type="button">
+    <div class="min-h-screen flex flex-col md:pl-64">
+        <header class="fixed left-64 right-0 top-0 z-40 flex h-14 items-center justify-between border-b border-surface-container-high bg-surface-container-lowest/90 px-margin-md shadow-sm backdrop-blur-md max-md:left-0">
+            <div class="flex min-w-0 items-center gap-6 text-on-surface-variant">
+                <button aria-label="Buka navigasi" aria-controls="admin-sidebar" aria-expanded="false" class="grid h-10 w-10 flex-shrink-0 place-items-center rounded-lg text-on-surface-variant transition-colors hover:bg-surface-container-high md:hidden" data-sidebar-toggle type="button">
                     <span class="material-symbols-outlined">menu</span>
                 </button>
-                <div class="flex min-w-0 items-center gap-space-sm">
-                    <span class="font-caption text-caption uppercase tracking-[0.12em] text-outline max-sm:hidden">Admin</span>
-                    <span class="text-xs text-outline max-sm:hidden">/</span>
-                    <span class="truncate font-label-lg text-label-lg font-semibold text-on-surface" id="admin-page-title">@yield('title')</span>
-                </div>
+                <nav aria-label="Breadcrumb" class="hidden min-w-0 items-center gap-1.5 sm:flex">
+                    <a aria-label="Kembali ke Dashboard" class="flex items-center" href="{{ route('admin.dashboard') }}">
+                        <span aria-hidden="true" class="material-symbols-outlined text-[18px] text-outline transition-colors hover:text-primary">home</span>
+                    </a>
+                    <span class="text-xs text-outline-variant">/</span>
+                    <span class="truncate font-label-md text-label-md font-semibold text-primary" id="admin-page-title">@yield('title')</span>
+                </nav>
+                <span class="truncate font-label-md text-label-md font-semibold text-primary sm:hidden" id="admin-page-title-mobile">@yield('title')</span>
             </div>
-            <div class="flex items-center gap-space-sm">
-                <div class="relative hidden items-center sm:flex">
-                    <span class="material-symbols-outlined pointer-events-none absolute left-3.5 text-lg text-outline">search</span>
-                    <input aria-keyshortcuts="Control+K Meta+K" class="h-10 w-56 rounded-full border border-transparent bg-surface-container pl-10 pr-16 font-body-sm text-body-sm text-on-surface transition-all placeholder:text-outline hover:bg-surface-container-high focus:border-primary/20 focus:bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary/20 lg:w-80" placeholder="Cari pesanan, invoice, atau pelanggan..." type="search" id="adminTopbarSearch" />
-                    <kbd aria-hidden="true" class="pointer-events-none absolute right-2.5 rounded-lg bg-surface-container-lowest px-2 py-1 font-caption text-caption text-on-surface-variant shadow-sm">Ctrl K</kbd>
+            <div class="flex items-center gap-3">
+                <div class="relative hidden items-center lg:flex">
+                    <span class="material-symbols-outlined pointer-events-none absolute left-2.5 text-[18px] text-outline">search</span>
+                    <input aria-keyshortcuts="Control+K Meta+K" class="h-9 w-80 rounded-lg border border-outline-variant bg-surface pl-8 pr-12 font-body-sm text-body-sm text-on-surface transition-all placeholder:text-outline/70 focus:border-primary-container focus:outline-none focus:ring-1 focus:ring-primary-container" placeholder="Cari pesanan, invoice, atau pelanggan..." type="search" id="adminTopbarSearch" />
+                    <kbd aria-hidden="true" class="pointer-events-none absolute right-2 rounded border border-outline-variant bg-surface-container px-1.5 py-0.5 font-caption text-caption font-bold text-on-surface-variant shadow-sm">Ctrl K</kbd>
                 </div>
-                <div class="flex items-center gap-1 max-lg:hidden">
-                    <button aria-label="Bantuan" class="grid h-10 w-10 place-items-center rounded-full text-on-surface-variant transition-colors hover:bg-surface-container-low hover:text-primary" data-toast="Pusat bantuan belum tersedia" type="button">
+                <div class="flex items-center gap-1">
+                    <button aria-label="Bantuan" class="grid h-10 w-10 place-items-center rounded-lg text-on-surface-variant transition-colors hover:bg-surface-container-high hover:text-primary" data-toast="Pusat bantuan belum tersedia" type="button">
                         <span class="material-symbols-outlined text-xl">help</span>
                     </button>
-                    <button aria-label="Notifikasi" class="relative grid h-10 w-10 place-items-center rounded-full text-on-surface-variant transition-colors hover:bg-surface-container-low hover:text-primary" data-toast="Belum ada notifikasi baru" type="button">
+                    <button aria-label="Dokumentasi" class="hidden h-10 w-10 place-items-center rounded-lg text-on-surface-variant transition-colors hover:bg-surface-container-high hover:text-primary lg:grid" data-toast="Dokumentasi API belum tersedia" type="button">
+                        <span class="material-symbols-outlined text-xl">description</span>
+                    </button>
+                    <button aria-label="Notifikasi" class="grid h-10 w-10 place-items-center rounded-lg text-on-surface-variant transition-colors hover:bg-surface-container-high hover:text-primary" data-toast="Belum ada notifikasi baru" type="button">
                         <span class="material-symbols-outlined text-xl">notifications</span>
-                        <span aria-hidden="true" class="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-secondary ring-2 ring-surface-container-lowest"></span>
                     </button>
                 </div>
-                <div class="mx-space-xs h-5 w-px bg-surface-container max-md:hidden"></div>
+                <div class="mx-space-xs h-5 w-px bg-surface-container-high max-md:hidden"></div>
                 <div class="flex items-center px-1.5 py-1" aria-label="Akun {{ auth()->user()->name }}">
-                    <span class="grid h-9 w-9 place-items-center rounded-full bg-primary-fixed font-label-md font-bold text-primary ring-1 ring-primary/10">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
+                    <span class="grid h-9 w-9 place-items-center rounded-full border border-outline-variant bg-primary-fixed font-label-md text-label-md font-bold text-primary transition-colors hover:border-primary">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
                 </div>
             </div>
         </header>
-        <main aria-labelledby="admin-page-title" class="relative w-full flex-1 px-margin-md py-margin-md pt-16 transition-opacity" id="main-content" tabindex="-1">
+        <main aria-labelledby="admin-page-title" class="relative w-full flex-1 px-margin-md py-margin-md pt-14 transition-opacity" id="main-content" tabindex="-1">
             <div class="flex w-full flex-col">
                 @yield('content')
             </div>
