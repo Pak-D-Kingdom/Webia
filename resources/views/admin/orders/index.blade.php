@@ -5,13 +5,13 @@
 @section('content')
 <div class="mb-space-md flex flex-col gap-space-md">
     <!-- Header -->
-    <div class="mb-space-xl flex flex-col justify-between gap-space-md lg:flex-row xl:items-end">
+    <div class="mb-space-xl mt-space-lg flex flex-col justify-between gap-space-md lg:flex-row xl:items-end">
         <div class="flex flex-col">
             <h1 class="font-headline-lg font-extrabold text-headline-lg text-primary tracking-tight" id="admin-orders-title">Daftar Pesanan</h1>
             <p class="mt-0.5 font-body-md text-body-md text-on-surface-variant">Pantau transaksi lisensi template, status pembayaran &amp; transfer manual, serta progres pengerjaan custom.</p>
         </div>
         @if ($orders->count() > 0)
-            <button class="flex h-9 items-center gap-1.5 self-start rounded-lg border border-primary/20 bg-surface-container-low px-3 font-label-md text-label-md text-primary transition-all hover:bg-surface-container-high md:self-auto" id="btnExportCsv" type="button">
+            <button class="flex h-9 items-center gap-1.5 self-start rounded-lg border-2 border-outline-variant bg-surface-container-lowest px-3 font-label-md text-label-md text-primary transition-all hover:border-primary/40 hover:bg-surface-container-low md:self-auto" id="btnExportCsv" type="button">
                 <span class="material-symbols-outlined text-lg text-on-surface-variant">file_download</span>
                 Export CSV
             </button>
@@ -24,7 +24,7 @@
             <div class="absolute left-0 top-0 h-full w-1.5 bg-secondary"></div>
             <div class="flex items-start justify-between">
                 <span class="font-label-md text-label-md tracking-wide text-on-surface-variant">Total Pesanan</span>
-                <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-surface-container-low text-primary">
+                <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-fixed text-primary">
                     <span class="material-symbols-outlined text-lg">shopping_bag</span>
                 </div>
             </div>
@@ -76,7 +76,7 @@
             <div class="absolute left-0 top-0 h-full w-1.5 bg-secondary"></div>
             <div class="flex items-start justify-between">
                 <span class="font-label-md text-label-md tracking-wide text-on-surface-variant">Selesai Bulan Ini</span>
-                <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-surface-container-low text-secondary">
+                <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-secondary-fixed/40 text-secondary">
                     <span class="material-symbols-outlined text-lg">verified</span>
                 </div>
             </div>
@@ -204,7 +204,7 @@
                             @endswitch
                         </td>
                         <td class="px-3 py-3.5 text-center md:px-4">
-                            <a class="relative inline-flex items-center gap-1.5 rounded-lg bg-surface-container px-2.5 py-1.5 font-label-sm text-label-sm font-semibold text-on-surface shadow-sm transition-all hover:bg-primary hover:text-on-primary active:scale-[0.98]" data-order-detail href="{{ route('admin.orders.show', $order) }}" @if ($order->status === 'payment_uploaded') title="Butuh review bukti transfer" @endif>
+                            <a class="relative inline-flex items-center gap-1.5 rounded-lg border-2 border-outline-variant bg-surface-container-lowest px-2.5 py-1.5 font-label-sm text-label-sm font-semibold text-primary transition-all hover:border-primary/40 hover:bg-surface-container-low hover:text-primary active:scale-[0.98]" data-order-detail href="{{ route('admin.orders.show', $order) }}" @if ($order->status === 'payment_uploaded') title="Butuh review bukti transfer" @endif>
                                 @if ($order->status === 'payment_uploaded')
                                     <span aria-hidden="true" class="absolute -right-1 -top-1 h-2.5 w-2.5 animate-pulse rounded-full border-2 border-surface-container-lowest bg-error"></span>
                                     <span class="sr-only">Butuh review bukti transfer.</span>
