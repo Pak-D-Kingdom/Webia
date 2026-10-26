@@ -17,6 +17,7 @@ class DatabaseSeederTest extends TestCase
 
         $this->assertDatabaseHas('webia_packages', ['slug' => 'pixel']);
         $this->assertDatabaseHas('webia_addons', ['name' => 'SEO Optimization']);
+        $this->assertDatabaseHas('webia_templates', ['slug' => 'company-terracotta']);
         $this->assertDatabaseHas('webia_templates', ['slug' => 'kusuma-ningrat-royal-heritage']);
     }
 

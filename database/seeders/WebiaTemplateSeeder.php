@@ -10,7 +10,7 @@ class WebiaTemplateSeeder extends Seeder
     public function run(): void
     {
         $templates = [
-  [
+            [
                 'name' => 'Blush Nail Studio',
                 'slug' => 'nailart-professional-softpink',
                 'category_slug' => 'beauty',
@@ -266,7 +266,7 @@ class WebiaTemplateSeeder extends Seeder
                 'is_active' => true,
                 'sort_order' => 14,
             ],
-[
+            [
                 'name' => 'Valla & Co. — Nordic Botanical Catering',
                 'slug' => 'vallaco-catering',
                 'category_slug' => 'fnb',
@@ -284,7 +284,7 @@ class WebiaTemplateSeeder extends Seeder
                 'is_active' => true,
                 'sort_order' => 15,
             ],
-[
+            [
                 'name' => 'Laut Biru Seafood',
                 'slug' => 'laut-biru-seafood',
                 'category_slug' => 'fnb',
@@ -302,7 +302,6 @@ class WebiaTemplateSeeder extends Seeder
                 'is_active' => true,
                 'sort_order' => 16,
             ],
-
 
             [
                 'name' => 'PetBase — Pet Shop Corporate Plum Velvet',
@@ -379,7 +378,6 @@ class WebiaTemplateSeeder extends Seeder
                 'sort_order' => 20,
             ],
 
-
             [
                 'name' => 'Strawberry Fizz — Pilates Studio',
                 'slug' => 'pilates-studio-strawberry-fizz',
@@ -403,7 +401,7 @@ class WebiaTemplateSeeder extends Seeder
                 'slug' => 'interior-design-studio-artistic-terracotta',
                 'category_slug' => 'interior-architecture',
                 'category_label' => 'Interior & Architecture',
-                'business_types' => ['Interior Design Studio',],
+                'business_types' => ['Interior Design Studio'],
                 'design_style' => 'Artistic',
                 'color_theme' => 'Terracotta',
                 'description' => 'Website interior design studio dengan showcase gaya desain, portfolio proyek, galeri before-after, kategori residential dan commercial, paket layanan, harga konsultasi, proses desain, pilihan material, profil desainer, testimoni, formulir konsultasi, project inquiry, area layanan, FAQ, floating WhatsApp, dan AI chatbot.',

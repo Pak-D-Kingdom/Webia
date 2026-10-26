@@ -1,13 +1,20 @@
 @extends('auth.layout')
 
 @section('title', $addon->exists ? 'Ubah add-on' : 'Tambah add-on')
-@section('header-action')
-    <a class="account-header-link" href="{{ route('admin.addons.index') }}">Kembali</a>
-@endsection
 
 @section('content')
-    <section class="dashboard-panel" aria-labelledby="addon-form-title">
-        <h1 id="addon-form-title">{{ $addon->exists ? 'Ubah add-on' : 'Tambah add-on' }}</h1>
+    <header class="ops-header">
+        <div class="ops-header-copy">
+            <span class="ops-pill"><span aria-hidden="true"></span> Master data</span>
+            <h1 id="addon-form-title">{{ $addon->exists ? 'Ubah add-on' : 'Tambah add-on' }}</h1>
+            <p>Atur nama, deskripsi, dan harga add-on; kosongkan harga untuk konsultasi.</p>
+        </div>
+        <div class="ops-actionbar">
+            <a class="ops-refresh" href="{{ route('admin.addons.index') }}"><span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>Kembali</a>
+        </div>
+    </header>
+
+    <section class="dashboard-panel">
         <form class="account-form admin-form" method="POST" action="{{ $addon->exists ? route('admin.addons.update', $addon) : route('admin.addons.store') }}">
             @csrf
             @if ($addon->exists) @method('PUT') @endif

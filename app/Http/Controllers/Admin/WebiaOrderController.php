@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\WebiaOrder;
 use App\Models\WebiaOrderLog;
 use App\Services\OrderMail;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -99,7 +100,7 @@ class WebiaOrderController extends Controller
         return Storage::disk('local')->download($order->payment_receipt_path);
     }
 
-    public function verify(Request $request, WebiaOrder $order): RedirectResponse
+    public function verify(Request $request, WebiaOrder $order): RedirectResponse|JsonResponse
     {
         $validated = $request->validate([
             'action' => ['required', Rule::in(['approve', 'reject'])],
@@ -128,6 +129,10 @@ class WebiaOrderController extends Controller
 
         $newStatus = $validated['action'] === 'approve' ? 'paid' : 'rejected';
         $this->orderMail->notifyCustomer($order, $newStatus);
+
+        if ($request->expectsJson()) {
+            return response()->json(['status' => 'ok', 'order_status' => $newStatus]);
+        }
 
         return redirect()->route('admin.orders.show', $order)->with('status', 'Status pembayaran berhasil diperbarui.');
     }

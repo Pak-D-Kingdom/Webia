@@ -6,6 +6,7 @@ use App\Models\WebiaAddon;
 use App\Models\WebiaOrder;
 use App\Models\WebiaOrderLog;
 use App\Models\WebiaPackage;
+use App\Models\WebiaPayment;
 use App\Models\WebiaTemplate;
 use App\Services\Midtrans;
 use App\Services\OrderMail;
@@ -120,24 +121,30 @@ class WebiaOrderController extends Controller
         abort_unless(in_array($order->status, ['awaiting_payment', 'rejected'], true), 422);
 
         try {
-            $payment = null;
+            $payment = DB::transaction(function () use ($order): WebiaPayment {
+                $lockedOrder = WebiaOrder::whereKey($order->id)->lockForUpdate()->firstOrFail();
+                abort_unless(in_array($lockedOrder->status, ['awaiting_payment', 'rejected'], true), 422);
 
-            // Selama satu order hanya boleh punya satu sesi bayar hidup — saat kedaluwarsa, buat sesi baru.
-            foreach ($order->payments()->where('status', 'created')->latest()->get() as $created) {
-                if ($created->expires_at === null || $created->expires_at->isFuture()) {
-                    $payment = $created;
-                    break;
+                // Kunci order membuat klik bersamaan memakai satu sesi; sesi baru menggantikan sesi yang kedaluwarsa.
+                foreach ($lockedOrder->payments()->where('status', 'created')->latest()->get() as $created) {
+                    if ($created->snap_redirect_url !== null && ($created->expires_at === null || $created->expires_at->isFuture())) {
+                        return $created;
+                    }
                 }
-            }
 
-            $payment ??= $this->midtrans->createTransaction($order, $this->nextMidtransOrderId($order));
+                return $this->midtrans->createTransaction($lockedOrder, $this->nextMidtransOrderId($lockedOrder));
+            });
         } catch (RuntimeException $exception) {
             report($exception);
 
             return redirect()->route('orders.show', $order)->with('status', 'Pembayaran Midtrans gagal dibuat. Coba lagi sebentar.');
         }
 
-        return redirect()->away($payment->snap_redirect_url ?? route('orders.show', $order));
+        if ($payment->snap_redirect_url === null) {
+            return redirect()->route('orders.show', $order)->with('status', 'Pembayaran Midtrans gagal dibuat. Coba lagi sebentar.');
+        }
+
+        return redirect()->away($payment->snap_redirect_url);
     }
 
     public function checkStatus(Request $request, WebiaOrder $order): RedirectResponse
