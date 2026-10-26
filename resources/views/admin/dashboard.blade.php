@@ -63,7 +63,7 @@
 <section class="mb-space-xl flex flex-col justify-between gap-space-md lg:flex-row lg:items-end">
     <div class="flex max-w-3xl flex-col">
         <h1 class="font-headline-lg text-headline-lg text-primary font-extrabold tracking-tight" id="admin-title">Dashboard Operasional</h1>
-        <p class="mt-1 font-body-md text-body-md text-on-surface-variant">Pantau antrean pesanan aktif, verifikasi transfer manual, dan progres pengerjaan template hari ini.</p>
+        <p class="mt-0.5 font-body-md text-body-md text-on-surface-variant">Pantau antrean pesanan aktif, verifikasi transfer manual, dan progres pengerjaan template hari ini.</p>
     </div>
     <!-- Action Bar -->
     <div class="flex flex-col gap-1.5 rounded-xl border border-primary/20 bg-surface-container-lowest p-1.5 shadow-sm">
