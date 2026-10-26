@@ -1,7 +1,19 @@
 // Dashboard admin (design Stitch): jam sinkron, refresh, tab chart, antrean verifikasi,
 // modal slip, filter/pencarian tabel, export CSV, toast.
 
-document.addEventListener('DOMContentLoaded', function () {
+let adminClockTimer;
+let adminShellInitialized = false;
+let adminToastTimer;
+let adminPageController;
+
+function initializeAdminPage() {
+  const page = document.querySelector('#main-content > div');
+  if (!page || page.dataset.adminInitialized === 'true') return;
+  page.dataset.adminInitialized = 'true';
+  adminPageController?.abort();
+  adminPageController = new AbortController();
+  const listenerOptions = { signal: adminPageController.signal };
+
   // Jam sinkron real-time (WIB asumsi jam klien sesuai).
   const clockEl = document.getElementById('syncTimestamp');
 
@@ -13,28 +25,27 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   updateClock();
-  setInterval(updateClock, 1000);
+  clearInterval(adminClockTimer);
+  if (clockEl) adminClockTimer = setInterval(updateClock, 1000);
 
   // Toast.
   const toast = document.getElementById('toastNotification');
   const toastMsg = document.getElementById('toastMessage');
   const toastIcon = document.getElementById('toastIcon');
-  let toastTimer;
-
   function showToast(message) {
     if (!toast || !toastMsg) return;
     toastMsg.innerText = message;
     toast.classList.remove('hidden');
     toast.classList.add('flex');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => {
+    clearTimeout(adminToastTimer);
+    adminToastTimer = setTimeout(() => {
       toast.classList.add('hidden');
       toast.classList.remove('flex');
     }, 3200);
   }
 
   document.querySelectorAll('[data-toast]').forEach((btn) => {
-    btn.addEventListener('click', () => showToast(btn.dataset.toast));
+    btn.addEventListener('click', () => showToast(btn.dataset.toast), listenerOptions);
   });
 
   // Refresh data.
@@ -42,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const icon = this.querySelector('.material-symbols-outlined');
     if (icon) icon.classList.add('animate-spin');
     setTimeout(() => location.reload(), 500);
-  });
+  }, listenerOptions);
 
   // Mobile drawer sidebar.
   const sidebar = document.querySelector('[data-admin-sidebar]');
@@ -61,10 +72,13 @@ document.addEventListener('DOMContentLoaded', function () {
     if (toggle) toggle.setAttribute('aria-expanded', String(open));
   }
 
-  toggle?.addEventListener('click', () => setSidebar(!sidebar.classList.contains('translate-x-0')));
-  sidebar?.querySelector('[data-sidebar-close]')?.addEventListener('click', () => setSidebar(false));
-  window.matchMedia('(min-width: 768px)').addEventListener('change', () => setSidebar(false));
-  scrim?.addEventListener('click', () => setSidebar(false));
+  if (!adminShellInitialized) {
+    toggle?.addEventListener('click', () => setSidebar(!sidebar.classList.contains('translate-x-0')));
+    sidebar?.querySelector('[data-sidebar-close]')?.addEventListener('click', () => setSidebar(false));
+    window.matchMedia('(min-width: 768px)').addEventListener('change', () => setSidebar(false));
+    scrim?.addEventListener('click', () => setSidebar(false));
+    adminShellInitialized = true;
+  }
 
   // Tab chart Pendapatan / Volume.
   const tabRevenue = document.getElementById('tabRevenue');
@@ -79,13 +93,13 @@ document.addEventListener('DOMContentLoaded', function () {
     tabRevenue.className = 'rounded px-3 py-1 font-label-sm text-label-sm font-bold bg-surface-container-lowest text-primary shadow-sm transition-all';
     tabVolume.className = 'rounded px-3 py-1 font-label-sm text-label-sm transition-all text-on-surface-variant hover:text-on-surface';
     showChart('revenue');
-  });
+  }, listenerOptions);
 
   tabVolume?.addEventListener('click', () => {
     tabVolume.className = 'rounded px-3 py-1 font-label-sm text-label-sm font-bold bg-surface-container-lowest text-primary shadow-sm transition-all';
     tabRevenue.className = 'rounded px-3 py-1 font-label-sm text-label-sm transition-all text-on-surface-variant hover:text-on-surface';
     showChart('volume');
-  });
+  }, listenerOptions);
 
   // Verifikasi: helper fetch POST (CSRF dari form antrean).
   async function postVerify(url, action, note) {
@@ -120,7 +134,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (icon) icon.classList.remove('animate-spin');
     showToast(ok + ' pembayaran diverifikasi & lisensi dirilis');
     setTimeout(() => location.reload(), 900);
-  });
+  }, listenerOptions);
 
   // Tolak single: minta alasan (wajib backend), lalu submit form.
   document.querySelectorAll('[data-reject]').forEach((btn) => {
@@ -135,7 +149,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const form = this.closest('form');
       form.querySelector('input[name="note"]').value = note.trim();
       form.submit();
-    });
+    }, listenerOptions);
   });
 
   // Modal slip.
@@ -169,17 +183,17 @@ document.addEventListener('DOMContentLoaded', function () {
       document.getElementById('modalAmount').innerText = this.dataset.slipAmount;
       modal.classList.remove('hidden');
       modal.classList.add('flex');
-    });
+    }, listenerOptions);
   });
 
-  document.querySelectorAll('[data-modal-close]').forEach((btn) => btn.addEventListener('click', closeSlipModal));
+  document.querySelectorAll('[data-modal-close]').forEach((btn) => btn.addEventListener('click', closeSlipModal, listenerOptions));
 
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       closeSlipModal();
       if (sidebar?.classList.contains('translate-x-0')) setSidebar(false);
     }
-  });
+  }, listenerOptions);
 
   // Konfirmasi / tolak dari modal (fetch, tanpa reload).
   document.getElementById('btnModalApprove')?.addEventListener('click', async function () {
@@ -190,7 +204,7 @@ document.addEventListener('DOMContentLoaded', function () {
     closeSlipModal();
     showToast(ok ? 'Bukti transfer disetujui. Lisensi aktif!' : 'Gagal memverifikasi, coba dari antrean.');
     if (ok) setTimeout(() => location.reload(), 900);
-  });
+  }, listenerOptions);
 
   document.getElementById('btnModalReject')?.addEventListener('click', async function () {
     if (!currentSlip?.approveUrl) return closeSlipModal();
@@ -206,7 +220,7 @@ document.addEventListener('DOMContentLoaded', function () {
     closeSlipModal();
     showToast(ok ? 'Bukti transfer ditolak.' : 'Gagal menolak, coba dari antrean.');
     if (ok) setTimeout(() => location.reload(), 900);
-  });
+  }, listenerOptions);
 
   // Filter & pencarian tabel.
   const searchInput = document.getElementById('tableSearch');
@@ -235,7 +249,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  searchInput?.addEventListener('input', filterTable);
+  searchInput?.addEventListener('input', filterTable, listenerOptions);
 
   filterButtons.forEach((btn) => {
     btn.addEventListener('click', () => {
@@ -245,7 +259,7 @@ document.addEventListener('DOMContentLoaded', function () {
       btn.className = 'filter-tab rounded px-2.5 py-1 font-label-sm text-label-sm font-bold bg-surface-container-lowest text-primary shadow-sm';
       currentFilter = btn.getAttribute('data-filter') || 'all';
       filterTable();
-    });
+    }, listenerOptions);
   });
 
   document.getElementById('btnResetFilter')?.addEventListener('click', () => {
@@ -255,7 +269,7 @@ document.addEventListener('DOMContentLoaded', function () {
       b.className = 'filter-tab rounded px-2.5 py-1 font-label-sm text-label-sm transition-all text-on-surface-variant hover:text-on-surface';
     });
     filterButtons[0]?.click();
-  });
+  }, listenerOptions);
 
   // Search topbar: hanya memfilter tabel pesanan bila tersedia.
   document.getElementById('adminTopbarSearch')?.addEventListener('input', function () {
@@ -264,7 +278,7 @@ document.addEventListener('DOMContentLoaded', function () {
       t.value = this.value;
       filterTable();
     }
-  });
+  }, listenerOptions);
 
   // Export CSV dari tabel (client-side).
   document.getElementById('btnExportCsv')?.addEventListener('click', () => {
@@ -282,5 +296,8 @@ document.addEventListener('DOMContentLoaded', function () {
     a.click();
     URL.revokeObjectURL(a.href);
     showToast('CSV pesanan terkini diunduh');
-  });
-});
+  }, listenerOptions);
+}
+
+document.addEventListener('DOMContentLoaded', initializeAdminPage);
+document.addEventListener('admin:navigated', initializeAdminPage);

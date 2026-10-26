@@ -3,6 +3,7 @@
 @source '../views/auth/layout.blade.php';
 @source '../views/admin/**/*.blade.php';
 @source '../../public/js/website-bisnis/admin-dashboard.js';
+@source '../../public/js/website-bisnis/admin-navigation.js';
 
 @theme {
     --font-label-lg: 'Plus Jakarta Sans', sans-serif;

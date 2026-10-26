@@ -23,8 +23,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
-    <script src="{{ asset('js/website-bisnis/account.js') }}" defer></script>
     <script src="{{ asset('js/website-bisnis/admin-dashboard.js') }}" defer></script>
+    <script src="{{ asset('js/website-bisnis/admin-navigation.js') }}" defer></script>
 @else
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -59,13 +59,13 @@
                 </button>
             </div>
             <nav class="flex flex-col gap-1 px-space-sm pt-space-md" aria-label="Navigasi admin">
-                <a class="flex items-center justify-between rounded-lg px-space-sm py-space-sm transition-all hover:bg-surface-container-low hover:text-on-surface {{ request()->routeIs('admin.dashboard') ? 'border-l-4 border-secondary bg-surface-container-low font-bold text-primary' : 'text-on-surface-variant' }}" href="{{ route('admin.dashboard') }}">
+                <a class="flex items-center justify-between rounded-lg px-space-sm py-space-sm transition-all hover:bg-surface-container-low hover:text-on-surface {{ request()->routeIs('admin.dashboard') ? 'border-l-4 border-secondary bg-surface-container-low font-bold text-primary' : 'text-on-surface-variant' }}" href="{{ route('admin.dashboard') }}" @if (request()->routeIs('admin.dashboard')) aria-current="page" @endif>
                     <div class="flex items-center gap-space-sm">
                         <span class="material-symbols-outlined text-xl {{ request()->routeIs('admin.dashboard') ? '' : 'text-primary' }}">grid_view</span>
                         <span class="font-label-lg text-label-lg">Dashboard</span>
                     </div>
                 </a>
-                <a class="flex items-center justify-between rounded-lg px-space-sm py-space-sm transition-all hover:bg-surface-container-low hover:text-on-surface {{ request()->routeIs('admin.orders.*') ? 'border-l-4 border-secondary bg-surface-container-low font-bold text-primary' : 'text-on-surface-variant' }}" href="{{ route('admin.orders.index') }}">
+                <a class="flex items-center justify-between rounded-lg px-space-sm py-space-sm transition-all hover:bg-surface-container-low hover:text-on-surface {{ request()->routeIs('admin.orders.*') ? 'border-l-4 border-secondary bg-surface-container-low font-bold text-primary' : 'text-on-surface-variant' }}" href="{{ route('admin.orders.index') }}" @if (request()->routeIs('admin.orders.*')) aria-current="page" @endif>
                     <div class="flex items-center gap-space-sm">
                         <span class="material-symbols-outlined text-xl {{ request()->routeIs('admin.orders.*') ? '' : 'text-primary' }}">shopping_bag</span>
                         <span class="font-label-lg text-label-lg">Pesanan</span>
@@ -74,13 +74,13 @@
                         <span class="rounded-full bg-secondary-container px-space-xs py-0.5 font-label-sm text-label-sm text-secondary">{{ $verificationBadge }} Baru</span>
                     @endif
                 </a>
-                <a class="flex items-center justify-between rounded-lg px-space-sm py-space-sm transition-all hover:bg-surface-container-low hover:text-on-surface {{ request()->routeIs('admin.packages.*') ? 'border-l-4 border-secondary bg-surface-container-low font-bold text-primary' : 'text-on-surface-variant' }}" href="{{ route('admin.packages.index') }}">
+                <a class="flex items-center justify-between rounded-lg px-space-sm py-space-sm transition-all hover:bg-surface-container-low hover:text-on-surface {{ request()->routeIs('admin.packages.*') ? 'border-l-4 border-secondary bg-surface-container-low font-bold text-primary' : 'text-on-surface-variant' }}" href="{{ route('admin.packages.index') }}" @if (request()->routeIs('admin.packages.*')) aria-current="page" @endif>
                     <div class="flex items-center gap-space-sm">
                         <span class="material-symbols-outlined text-xl {{ request()->routeIs('admin.packages.*') ? '' : 'text-primary' }}">inventory_2</span>
                         <span class="font-label-lg text-label-lg">Paket</span>
                     </div>
                 </a>
-                <a class="flex items-center justify-between rounded-lg px-space-sm py-space-sm transition-all hover:bg-surface-container-low hover:text-on-surface {{ request()->routeIs('admin.addons.*') ? 'border-l-4 border-secondary bg-surface-container-low font-bold text-primary' : 'text-on-surface-variant' }}" href="{{ route('admin.addons.index') }}">
+                <a class="flex items-center justify-between rounded-lg px-space-sm py-space-sm transition-all hover:bg-surface-container-low hover:text-on-surface {{ request()->routeIs('admin.addons.*') ? 'border-l-4 border-secondary bg-surface-container-low font-bold text-primary' : 'text-on-surface-variant' }}" href="{{ route('admin.addons.index') }}" @if (request()->routeIs('admin.addons.*')) aria-current="page" @endif>
                     <div class="flex items-center gap-space-sm">
                         <span class="material-symbols-outlined text-xl {{ request()->routeIs('admin.addons.*') ? '' : 'text-primary' }}">extension</span>
                         <span class="font-label-lg text-label-lg">Add-on</span>
@@ -120,7 +120,7 @@
                 </button>
                 <span class="font-label-md text-label-md">Admin</span>
                 <span class="text-xs text-outline">/</span>
-                <span class="font-label-lg text-label-lg font-semibold text-on-surface">@yield('title')</span>
+                <span class="font-label-lg text-label-lg font-semibold text-on-surface" id="admin-page-title">@yield('title')</span>
             </div>
             <div class="flex items-center gap-space-md">
                 <div class="relative flex items-center">
@@ -143,7 +143,7 @@
                 </div>
             </div>
         </header>
-        <main class="relative w-full flex-1 px-margin-md py-margin-md pt-16" id="main-content">
+        <main aria-labelledby="admin-page-title" class="relative w-full flex-1 px-margin-md py-margin-md pt-16 transition-opacity" id="main-content" tabindex="-1">
             <div class="flex w-full flex-col">
                 @yield('content')
             </div>
