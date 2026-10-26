@@ -357,11 +357,12 @@ function initializeAdminPage() {
   // Filter & pencarian tabel.
   const searchInput = document.getElementById('tableSearch');
   const filterButtons = document.querySelectorAll('.filter-tab');
-  const tableRows = document.querySelectorAll('.order-row');
+  const tableRows = document.querySelectorAll('#ordersTable tbody tr, .order-row');
   const emptyState = document.getElementById('tableEmptyState');
   const visibleCounter = document.getElementById('visibleRowCount');
   let currentFilter = 'all';
 
+  // Saat filter aktif, baris bisa disembunyikan.
   function filterTable() {
     const query = (searchInput?.value || '').toLowerCase().trim();
     let matchCount = 0;
@@ -412,22 +413,34 @@ function initializeAdminPage() {
     }
   }, listenerOptions);
 
-  // Export CSV dari tabel (client-side).
+  // Export CSV dari tabel (client-side, generik utk dashboard & daftar pesanan).
   document.getElementById('btnExportCsv')?.addEventListener('click', () => {
-    const rows = [['ID Pesanan', 'Konsumen & Brand', 'Template', 'Paket', 'Total', 'Status', 'Waktu']];
-    document.querySelectorAll('#ordersTable .order-row').forEach((tr) => {
-      if (tr.style.display === 'none') return;
-      const tds = tr.querySelectorAll('td');
-      rows.push(Array.from(tds).map((td) => td.innerText.replace(/\s+/g, ' ').trim()));
+    // Teks cell bersih: buang glyph material icon lalu padatkan whitespace.
+    const cellText = (td) => {
+      const clone = td.cloneNode(true);
+      clone.querySelectorAll('.material-symbols-outlined').forEach((el) => el.remove());
+      return clone.innerText.split('\n').map((s) => s.trim()).filter(Boolean).join(' - ');
+    };
+    const heads = Array.from(document.querySelectorAll('#ordersTable thead th')).slice(0, -1);
+    const rows = Array.from(document.querySelectorAll('#ordersTable tbody tr')).filter((tr) => tr.style.display !== 'none');
+    const lines = [heads.map((th) => th.innerText.trim())];
+    rows.forEach((tr) => {
+      lines.push(heads.map((_, i) => {
+        const td = tr.querySelectorAll('td')[i];
+        if (!td) return '';
+        const text = cellText(td);
+        // Nominal "Rp 499.000" → "499000" supaya bisa dijumlahkan di Excel.
+        return /^Rp /i.test(text) ? text.replace(/\D/g, '') : text;
+      }));
     });
-    const csv = rows.map((r) => r.map((c) => '"' + String(c).replaceAll('"', '""') + '"').join(';')).join('\r\n');
+    const csv = lines.map((r) => r.map((c) => '"' + String(c).replaceAll('"', '""') + '"').join(';')).join('\r\n');
     const blob = new Blob(["\uFEFF" + csv], { type: 'text/csv;charset=utf-8' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = 'pesanan-terkini.csv';
+    a.download = 'daftar-pesanan.csv';
     a.click();
     URL.revokeObjectURL(a.href);
-    showToast('CSV pesanan terkini diunduh');
+    showToast(lines.length - 1 + ' pesanan diekspor ke CSV');
   }, listenerOptions);
 }
 
