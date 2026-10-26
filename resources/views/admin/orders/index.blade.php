@@ -5,7 +5,7 @@
 @section('content')
 <div class="mb-space-md flex flex-col gap-space-md">
     <!-- Header -->
-    <div class="mb-space-xl mt-space-lg flex flex-col justify-between gap-space-md lg:flex-row xl:items-end">
+    <div class="mb-space-xl flex flex-col justify-between gap-space-md lg:flex-row xl:items-end">
         <div class="flex flex-col">
             <h1 class="font-headline-lg font-extrabold text-headline-lg text-primary tracking-tight" id="admin-orders-title">Daftar Pesanan</h1>
             <p class="mt-0.5 font-body-md text-body-md text-on-surface-variant">Pantau transaksi lisensi template, status pembayaran &amp; transfer manual, serta progres pengerjaan custom.</p>
