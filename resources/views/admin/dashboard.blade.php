@@ -72,22 +72,24 @@
         <p class="mt-1 font-body-md text-body-md text-on-surface-variant">Pantau antrean pesanan aktif, verifikasi transfer manual, dan progres pengerjaan template hari ini.</p>
     </div>
     <!-- Action Bar -->
-    <div class="flex flex-wrap items-center gap-space-sm rounded-xl bg-surface-container-lowest p-1.5 shadow-sm">
-        <div class="flex items-center gap-2 rounded-lg bg-surface-container-low px-3 py-1.5 text-on-surface-variant">
-            <span class="material-symbols-outlined text-base text-secondary">schedule</span>
-            <span class="font-label-md text-label-md" id="syncTimestamp">Sinkron: {{ now()->isoFormat('D MMM Y, HH:mm:ss') }} WIB</span>
+    <div class="flex flex-col gap-1.5 rounded-xl bg-surface-container-lowest p-1.5 shadow-sm">
+        <div class="flex flex-wrap items-center gap-1.5">
+            <div class="flex items-center gap-2 rounded-lg bg-surface-container-low px-3 py-1.5 text-on-surface-variant">
+                <span class="material-symbols-outlined text-base text-secondary">schedule</span>
+                <span class="font-label-md text-label-md" id="syncTimestamp">Sinkron: {{ now()->isoFormat('D MMM Y, HH:mm:ss') }} WIB</span>
+            </div>
+            <button class="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-primary transition-all hover:bg-surface-container active:scale-95" id="btnRefreshData" title="Muat ulang data" type="button">
+                <span class="material-symbols-outlined text-base">refresh</span>
+                <span class="font-label-md text-label-md">Refresh Data</span>
+            </button>
+            <div class="relative">
+                <select class="cursor-pointer appearance-none rounded-lg bg-surface-container-low py-1.5 pl-3 pr-8 font-label-md text-label-md text-on-surface focus:outline-none focus:ring-1 focus:ring-primary">
+                    <option selected>30 Hari Terakhir</option>
+                </select>
+                <span class="material-symbols-outlined pointer-events-none absolute right-2 top-2 text-sm text-outline">expand_more</span>
+            </div>
         </div>
-        <button class="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-primary transition-all hover:bg-surface-container active:scale-95" id="btnRefreshData" title="Muat ulang data" type="button">
-            <span class="material-symbols-outlined text-base">refresh</span>
-            <span class="font-label-md text-label-md">Refresh Data</span>
-        </button>
-        <div class="relative">
-            <select class="cursor-pointer appearance-none rounded-lg bg-surface-container-low py-1.5 pl-3 pr-8 font-label-md text-label-md text-on-surface focus:outline-none focus:ring-1 focus:ring-primary">
-                <option selected>30 Hari Terakhir</option>
-            </select>
-            <span class="material-symbols-outlined pointer-events-none absolute right-2 top-2 text-sm text-outline">expand_more</span>
-        </div>
-        <button class="flex items-center gap-1.5 rounded-lg bg-primary px-3.5 py-1.5 font-label-md text-label-md text-on-primary shadow-sm transition-all hover:bg-primary-container active:scale-95" id="btnProsesSemua" type="button">
+        <button class="flex w-full items-center justify-center gap-1.5 rounded-lg bg-primary px-3.5 py-2 font-label-md text-label-md text-on-primary shadow-sm transition-all hover:bg-primary-container active:scale-95" id="btnProsesSemua" type="button">
             <span class="material-symbols-outlined text-base text-secondary-fixed">bolt</span>
             <span>Proses Semua Verifikasi</span>
         </button>
@@ -175,17 +177,19 @@
         <div class="absolute left-0 top-0 h-full w-1.5 bg-secondary"></div>
         <div class="flex items-start justify-between">
             <span class="font-label-md text-label-md tracking-wide text-on-surface-variant">Pendapatan Bulan Ini</span>
-            @if ($revenueDelta !== null)
-                <span class="inline-flex items-center gap-1 font-label-sm text-label-sm font-bold {{ $revenueDelta >= 0 ? 'text-secondary' : 'text-error' }}">
-                    <span class="material-symbols-outlined text-sm">{{ $revenueDelta >= 0 ? 'north_east' : 'south_east' }}</span> {{ ($revenueDelta >= 0 ? '+' : '').$revenueDelta }}%
-                </span>
-            @endif
+            <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-secondary-fixed/40 text-secondary">
+                <span class="material-symbols-outlined text-lg">payments</span>
+            </div>
         </div>
         <div class="mt-space-sm flex items-baseline justify-between">
             <span class="font-headline-lg text-headline-lg tabular-nums text-primary font-extrabold tracking-tight">Rp {{ number_format($revenueMonth, 0, ',', '.') }}</span>
         </div>
-        <div class="mt-1 flex items-center justify-between">
-            <span class="font-caption text-caption text-on-surface-variant">{{ $paidCount30 }} lunas (30 hari)</span>
+        <div class="mt-1 flex items-center justify-between gap-space-sm">
+            <span class="font-caption text-caption text-on-surface-variant">{{ $paidCount30 }} lunas (30 hari)
+                @if ($revenueDelta !== null)
+                    <span class="ml-1 inline-flex items-center gap-0.5 font-label-sm font-bold {{ $revenueDelta >= 0 ? 'text-secondary' : 'text-error' }}"><span class="material-symbols-outlined text-sm">{{ $revenueDelta >= 0 ? 'north_east' : 'south_east' }}</span>{{ ($revenueDelta >= 0 ? '+' : '').$revenueDelta }}%</span>
+                @endif
+            </span>
             <div class="h-6 w-24">
                 <svg class="h-full w-full text-secondary" fill="none" viewBox="0 0 100 28" aria-hidden="true">
                     <path d="{{ $sparkLine }}" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2.2"></path>
