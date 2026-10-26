@@ -8,13 +8,13 @@
     <div class="flex flex-col justify-between gap-space-md md:flex-row md:items-center">
         <div class="flex flex-col">
             <div class="flex items-center gap-space-sm">
-                <h1 class="font-headline-lg text-headline-lg font-extrabold tracking-tight text-on-surface" id="admin-orders-title">Daftar Pesanan</h1>
-                <span class="rounded-full bg-primary-container/10 px-space-sm py-0.5 font-label-sm text-label-sm font-bold text-primary-container">{{ $orders->total() }} Total Pesanan</span>
+                <h1 class="font-headline-lg font-extrabold text-headline-lg text-primary tracking-tight" id="admin-orders-title">Daftar Pesanan</h1>
+                <span class="rounded-full bg-secondary-container px-2.5 py-0.5 font-label-sm text-label-sm tracking-wide text-secondary">{{ $orders->total() }} Total Pesanan</span>
             </div>
             <p class="mt-0.5 font-body-md text-body-md text-on-surface-variant">Pantau transaksi lisensi template, status pembayaran &amp; transfer manual, serta progres pengerjaan custom.</p>
         </div>
         @if ($orders->count() > 0)
-            <button class="flex h-9 items-center gap-space-xs self-start rounded-lg bg-surface-container-lowest px-space-md font-label-md text-label-md text-on-surface shadow-sm transition-all hover:bg-surface-container-low active:scale-[0.98] md:self-auto" id="btnExportCsv" type="button">
+            <button class="flex h-9 items-center gap-1.5 self-start rounded-lg bg-surface-container-low px-3 font-label-md text-label-md text-on-surface transition-all hover:bg-surface-container md:self-auto" id="btnExportCsv" type="button">
                 <span class="material-symbols-outlined text-lg text-on-surface-variant">file_download</span>
                 Export CSV
             </button>
@@ -23,58 +23,72 @@
 
     <!-- Stat cards -->
     <div class="grid grid-cols-1 gap-space-md sm:grid-cols-2 xl:grid-cols-4">
-        <div class="flex items-center justify-between rounded-xl bg-surface-container-lowest p-space-md shadow-sm transition-shadow hover:shadow-md">
-            <div class="flex flex-col">
-                <span class="font-caption text-caption font-semibold uppercase tracking-wider text-on-surface-variant">Total Pesanan</span>
-                <div class="mt-1 flex items-baseline gap-space-xs">
-                    <span class="font-headline-md text-headline-md font-bold text-on-surface">{{ $stats['total'] }}</span>
-                    <span class="font-caption text-caption tabular-nums text-on-surface-variant">(Rp {{ number_format($stats['totalValue'], 0, ',', '.') }})</span>
+        <div class="group relative overflow-hidden rounded-xl bg-surface-container-lowest p-space-md shadow-sm transition-all hover:shadow-md">
+            <div class="absolute left-0 top-0 h-full w-1.5 bg-secondary"></div>
+            <div class="flex items-start justify-between">
+                <span class="font-label-md text-label-md tracking-wide text-on-surface-variant">Total Pesanan</span>
+                <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-surface-container-low text-primary">
+                    <span class="material-symbols-outlined text-lg">shopping_bag</span>
                 </div>
-                <span class="mt-1 font-label-sm text-label-sm text-on-surface-variant">segala status</span>
             </div>
-            <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-surface-container-low text-primary">
-                <span class="material-symbols-outlined text-xl">shopping_bag</span>
+            <div class="mt-space-sm flex items-baseline gap-space-sm">
+                <span class="font-display font-extrabold text-primary text-display tracking-tight">{{ $stats['total'] }}</span>
+                <span class="font-label-md text-label-md text-on-surface-variant">Pesanan</span>
+            </div>
+            <div class="mt-space-xs flex items-center justify-between">
+                <span class="tabular-nums font-caption text-caption text-on-surface-variant">Rp {{ number_format($stats['totalValue'], 0, ',', '.') }}</span>
+                <span class="rounded bg-surface-container-low px-2 py-0.5 font-caption text-caption text-on-surface-variant">segala status</span>
             </div>
         </div>
-        <div class="flex items-center justify-between rounded-xl bg-surface-container-lowest p-space-md shadow-sm transition-shadow hover:shadow-md">
-            <div class="flex flex-col">
-                <div class="flex items-center gap-1.5">
-                    <span class="font-caption text-caption font-semibold uppercase tracking-wider text-on-surface-variant">Menunggu Verifikasi</span>
-                    <span class="h-2 w-2 animate-pulse rounded-full bg-error"></span>
+        <div class="group relative overflow-hidden rounded-xl bg-surface-container-lowest p-space-md shadow-sm transition-all hover:shadow-md">
+            <div class="absolute left-0 top-0 h-full w-1.5 bg-amber-500"></div>
+            <div class="flex items-start justify-between">
+                <span class="font-label-md text-label-md tracking-wide text-on-surface-variant">Menunggu Verifikasi</span>
+                <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-50 text-amber-700">
+                    <span class="material-symbols-outlined text-lg">hourglass_top</span>
                 </div>
-                <div class="mt-1 flex items-baseline gap-space-xs">
-                    <span class="font-headline-md text-headline-md font-bold text-on-surface">{{ $stats['verifyingCount'] }}</span>
-                </div>
-                <span class="mt-1 font-label-sm text-label-sm text-on-surface-variant">Rp {{ number_format($stats['verifyingValue'], 0, ',', '.') }} bukti manual</span>
             </div>
-            <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-error-container/30 text-error">
-                <span class="material-symbols-outlined text-xl">receipt_long</span>
+            <div class="mt-space-sm flex items-baseline gap-space-sm">
+                <span class="font-display font-extrabold text-on-surface text-display tracking-tight">{{ $stats['verifyingCount'] }}</span>
+                <span class="font-label-md text-label-md text-on-surface-variant">Pesanan</span>
+            </div>
+            <div class="mt-space-xs flex items-center justify-between">
+                <span class="inline-flex items-center gap-1.5 rounded bg-amber-100 px-2 py-0.5 font-label-sm font-bold text-label-sm text-amber-900">
+                    <span class="h-1.5 w-1.5 animate-pulse rounded-full bg-amber-600"></span>Bukti manual
+                </span>
+                <span class="tabular-nums font-caption text-caption text-on-surface-variant">Rp {{ number_format($stats['verifyingValue'], 0, ',', '.') }}</span>
             </div>
         </div>
-        <div class="flex items-center justify-between rounded-xl bg-surface-container-lowest p-space-md shadow-sm transition-shadow hover:shadow-md">
-            <div class="flex flex-col">
-                <span class="font-caption text-caption font-semibold uppercase tracking-wider text-on-surface-variant">Sedang Dikerjakan</span>
-                <div class="mt-1 flex items-baseline gap-space-xs">
-                    <span class="font-headline-md text-headline-md font-bold text-on-surface">{{ $stats['workingCount'] }}</span>
-                    <span class="font-caption text-caption text-on-surface-variant">proyek aktif</span>
+        <div class="group relative overflow-hidden rounded-xl bg-surface-container-lowest p-space-md shadow-sm transition-all hover:shadow-md">
+            <div class="absolute left-0 top-0 h-full w-1.5 bg-primary-container"></div>
+            <div class="flex items-start justify-between">
+                <span class="font-label-md text-label-md tracking-wide text-on-surface-variant">Sedang Dikerjakan</span>
+                <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-fixed text-primary">
+                    <span class="material-symbols-outlined text-lg">design_services</span>
                 </div>
-                <span class="mt-1 font-label-sm text-label-sm text-on-surface-variant">status pengerjaan</span>
             </div>
-            <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-secondary-container/40 text-secondary">
-                <span class="material-symbols-outlined text-xl">engineering</span>
+            <div class="mt-space-sm flex items-baseline gap-space-sm">
+                <span class="font-display font-extrabold text-primary text-display tracking-tight">{{ $stats['workingCount'] }}</span>
+                <span class="font-label-md text-label-md text-on-surface-variant">Proyek</span>
+            </div>
+            <div class="mt-space-xs flex items-center justify-between">
+                <span class="rounded bg-surface-container-low px-2 py-0.5 font-caption text-caption text-on-surface-variant">status pengerjaan</span>
             </div>
         </div>
-        <div class="flex items-center justify-between rounded-xl bg-surface-container-lowest p-space-md shadow-sm transition-shadow hover:shadow-md">
-            <div class="flex flex-col">
-                <span class="font-caption text-caption font-semibold uppercase tracking-wider text-on-surface-variant">Selesai Bulan Ini</span>
-                <div class="mt-1 flex items-baseline gap-space-xs">
-                    <span class="font-headline-md text-headline-md font-bold text-on-surface">{{ $stats['deliveredMonth'] }}</span>
-                    <span class="font-caption text-caption text-on-surface-variant">pesanan</span>
+        <div class="group relative overflow-hidden rounded-xl bg-surface-container-lowest p-space-md shadow-sm transition-all hover:shadow-md">
+            <div class="absolute left-0 top-0 h-full w-1.5 bg-secondary"></div>
+            <div class="flex items-start justify-between">
+                <span class="font-label-md text-label-md tracking-wide text-on-surface-variant">Selesai Bulan Ini</span>
+                <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-surface-container-low text-secondary">
+                    <span class="material-symbols-outlined text-lg">verified</span>
                 </div>
-                <span class="mt-1 font-label-sm text-label-sm text-on-surface-variant">{{ now()->locale('id')->translatedFormat('F Y') }}</span>
             </div>
-            <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-surface-container-low text-secondary">
-                <span class="material-symbols-outlined text-xl">verified</span>
+            <div class="mt-space-sm flex items-baseline gap-space-sm">
+                <span class="font-display font-extrabold text-on-surface text-display tracking-tight">{{ $stats['deliveredMonth'] }}</span>
+                <span class="font-label-md text-label-md text-on-surface-variant">Pesanan</span>
+            </div>
+            <div class="mt-space-xs flex items-center justify-between">
+                <span class="rounded bg-surface-container-low px-2 py-0.5 font-caption text-caption text-on-surface-variant">{{ now()->locale('id')->translatedFormat('F Y') }}</span>
             </div>
         </div>
     </div>
