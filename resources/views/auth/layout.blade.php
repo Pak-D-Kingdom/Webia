@@ -118,12 +118,12 @@
                 </button>
                 <nav aria-label="Breadcrumb" class="hidden min-w-0 items-center gap-1.5 sm:flex">
                     <a aria-label="Kembali ke Dashboard" class="flex items-center" href="{{ route('admin.dashboard') }}">
-                        <span aria-hidden="true" class="material-symbols-outlined text-[18px] text-outline transition-colors hover:text-primary">home</span>
+                        <span aria-hidden="true" class="material-symbols-outlined text-[18px] leading-none text-outline transition-colors hover:text-primary">home</span>
                     </a>
                     <span class="text-xs text-outline-variant">/</span>
-                    <span class="truncate font-label-md text-label-md font-semibold text-primary" id="admin-page-title">@yield('title')</span>
+                    <span class="truncate font-label-md text-label-md font-semibold leading-none text-primary" id="admin-page-title">@yield('title')</span>
                 </nav>
-                <span class="truncate font-label-md text-label-md font-semibold text-primary sm:hidden" id="admin-page-title-mobile">@yield('title')</span>
+                <span class="truncate font-label-md text-label-md font-semibold leading-none text-primary sm:hidden" id="admin-page-title-mobile">@yield('title')</span>
             </div>
             <div class="flex items-center gap-3">
                 <div class="relative hidden items-center lg:flex">

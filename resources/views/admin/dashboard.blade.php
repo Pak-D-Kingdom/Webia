@@ -1,6 +1,6 @@
 @extends('auth.layout')
 
-@section('title', 'Panel Kontrol')
+@section('title', 'Dashboard')
 
 @section('content')
 @php
