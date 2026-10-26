@@ -297,17 +297,26 @@ function initializeAdminPage() {
   const orderModalBody = document.getElementById('orderModalBody');
   const orderModalTitle = document.getElementById('orderModalTitle');
   let orderModalReturnFocus = null;
+  let orderModalCloseTimer;
 
   function setOrderModal(open) {
     if (!orderModal) return;
-    orderModal.classList.toggle('hidden', !open);
-    orderModal.classList.toggle('flex', open);
-    document.body.classList.toggle('overflow-hidden', open);
+    clearTimeout(orderModalCloseTimer);
     if (open) {
+      orderModal.classList.remove('hidden', 'modal-exit');
+      orderModal.classList.add('flex');
+      document.body.classList.toggle('overflow-hidden', true);
       orderModal.querySelector('[data-order-modal-close]')?.focus();
     } else {
+      // Tahan hidden selama animasi keluar (160ms) supaya tutup ikut beranimasi.
+      orderModal.classList.add('modal-exit');
+      document.body.classList.remove('overflow-hidden');
       orderModalReturnFocus?.focus();
       orderModalReturnFocus = null;
+      orderModalCloseTimer = setTimeout(() => {
+        orderModal.classList.add('hidden');
+        orderModal.classList.remove('flex', 'modal-exit');
+      }, 160);
     }
   }
 

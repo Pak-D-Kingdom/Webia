@@ -193,15 +193,14 @@
                             @endswitch
                         </td>
                         <td class="px-3 py-3.5 text-right md:px-4">
-                            <div class="flex items-center justify-end gap-1">
+                            <a class="relative inline-flex items-center gap-1.5 rounded-lg bg-surface-container px-2.5 py-1.5 font-label-sm text-label-sm font-semibold text-on-surface shadow-sm transition-all hover:bg-primary hover:text-on-primary active:scale-[0.98]" data-order-detail href="{{ route('admin.orders.show', $order) }}" @if ($order->status === 'payment_uploaded') title="Butuh review bukti transfer" @endif>
                                 @if ($order->status === 'payment_uploaded')
-                                    <a class="rounded bg-primary px-2 py-1 font-label-sm text-label-sm text-on-primary transition-all hover:bg-primary-container" data-order-detail href="{{ route('admin.orders.show', $order) }}">Review Bukti</a>
+                                    <span aria-hidden="true" class="absolute -right-1 -top-1 h-2.5 w-2.5 animate-pulse rounded-full border-2 border-surface-container-lowest bg-error"></span>
+                                    <span class="sr-only">Butuh review bukti transfer.</span>
                                 @endif
-                                <a class="flex items-center gap-0.5 rounded bg-surface-container px-2 py-1 font-label-sm text-label-sm text-on-surface transition-all hover:bg-surface-container-high" data-order-detail href="{{ route('admin.orders.show', $order) }}">
-                                    Detail
-                                    <span class="material-symbols-outlined text-xs">chevron_right</span>
-                                </a>
-                            </div>
+                                <span aria-hidden="true" class="material-symbols-outlined text-base">visibility</span>
+                                Detail
+                            </a>
                         </td>
                     </tr>
                 @empty
