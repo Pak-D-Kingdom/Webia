@@ -12,7 +12,7 @@
         </div>
         @if ($orders->count() > 0)
             <button class="flex h-9 items-center gap-1.5 self-start rounded-lg border-2 border-outline-variant bg-surface-container-lowest px-3 font-label-md text-label-md text-primary transition-all hover:border-primary hover:bg-primary hover:text-on-primary md:self-auto" id="btnExportCsv" type="button">
-                <span class="material-symbols-outlined text-lg text-on-surface-variant">file_download</span>
+                <span class="material-symbols-outlined text-lg">file_download</span>
                 Export CSV
             </button>
         @endif
