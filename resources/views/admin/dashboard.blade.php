@@ -62,12 +62,6 @@
 <!-- Header -->
 <section class="mb-space-xl flex flex-col justify-between gap-space-md lg:flex-row lg:items-end">
     <div class="flex max-w-3xl flex-col">
-        <div class="mb-space-xs flex items-center gap-space-sm">
-            <span class="inline-flex items-center gap-1.5 rounded-full bg-secondary-container px-2.5 py-0.5 font-label-sm text-label-sm tracking-wide text-secondary">
-                <span class="h-2 w-2 animate-pulse rounded-full bg-secondary"></span>
-                Real-time Ops
-            </span>
-        </div>
         <h1 class="font-headline-lg text-headline-lg text-primary font-extrabold tracking-tight" id="admin-title">Dashboard Operasional</h1>
         <p class="mt-1 font-body-md text-body-md text-on-surface-variant">Pantau antrean pesanan aktif, verifikasi transfer manual, dan progres pengerjaan template hari ini.</p>
     </div>

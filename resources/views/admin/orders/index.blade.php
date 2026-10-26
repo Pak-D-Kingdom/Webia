@@ -5,16 +5,13 @@
 @section('content')
 <div class="mb-space-md flex flex-col gap-space-md">
     <!-- Header -->
-    <div class="flex flex-col justify-between gap-space-md md:flex-row md:items-center">
+    <div class="mb-space-xl flex flex-col justify-between gap-space-md lg:flex-row xl:items-end">
         <div class="flex flex-col">
-            <div class="flex items-center gap-space-sm">
-                <h1 class="font-headline-lg font-extrabold text-headline-lg text-primary tracking-tight" id="admin-orders-title">Daftar Pesanan</h1>
-                <span class="rounded-full bg-secondary-container px-2.5 py-0.5 font-label-sm text-label-sm tracking-wide text-secondary">{{ $orders->total() }} Total Pesanan</span>
-            </div>
+            <h1 class="font-headline-lg font-extrabold text-headline-lg text-primary tracking-tight" id="admin-orders-title">Daftar Pesanan</h1>
             <p class="mt-0.5 font-body-md text-body-md text-on-surface-variant">Pantau transaksi lisensi template, status pembayaran &amp; transfer manual, serta progres pengerjaan custom.</p>
         </div>
         @if ($orders->count() > 0)
-            <button class="flex h-9 items-center gap-1.5 self-start rounded-lg bg-surface-container-low px-3 font-label-md text-label-md text-on-surface transition-all hover:bg-surface-container md:self-auto" id="btnExportCsv" type="button">
+            <button class="flex h-9 items-center gap-1.5 self-start rounded-lg border border-primary/20 bg-surface-container-low px-3 font-label-md text-label-md text-primary transition-all hover:bg-surface-container-high md:self-auto" id="btnExportCsv" type="button">
                 <span class="material-symbols-outlined text-lg text-on-surface-variant">file_download</span>
                 Export CSV
             </button>
