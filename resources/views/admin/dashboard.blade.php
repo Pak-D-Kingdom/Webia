@@ -72,7 +72,7 @@
         <p class="mt-1 font-body-md text-body-md text-on-surface-variant">Pantau antrean pesanan aktif, verifikasi transfer manual, dan progres pengerjaan template hari ini.</p>
     </div>
     <!-- Action Bar -->
-    <div class="flex flex-col gap-1.5 rounded-xl bg-surface-container-lowest p-1.5 shadow-sm">
+    <div class="flex flex-col gap-1.5 rounded-xl border border-primary/20 bg-surface-container-lowest p-1.5 shadow-sm">
         <div class="flex flex-wrap items-center gap-1.5">
             <div class="flex items-center gap-2 rounded-lg bg-surface-container-low px-3 py-1.5 text-on-surface-variant">
                 <span class="material-symbols-outlined text-base text-secondary">schedule</span>
