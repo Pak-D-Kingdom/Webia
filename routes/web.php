@@ -91,6 +91,18 @@ Route::view(
     '/webia/template/midnightbaker-futuristic',
     'website-bisnis.templates.fnb.bakery.midnightbaker-futuristic'
 )->name('webia.template.fnb.bakery.midnightbaker');
+Route::view(
+    '/webia/template/paws-clever-creative',
+    'website-bisnis.templates.pet-animal-service.paws-clever-creative'
+)->name('webia.template.pet-animal-service.paws-clever-creative');
+Route::view(
+    '/webia/template/paws-joy-jellypop',
+    'website-bisnis.templates.pet-animal-service.paws-joy-jellypop'
+)->name('webia.template.pet-animal-service.paws-joy-jellypop');
+Route::view(
+    '/webia/template/paws-canine-terra-earth-tone',
+    'website-bisnis.templates.pet-animal-service.paws-canine-terra-earth-tone'
+)->name('webia.template.pet-animal-service.paws-canine-terra-earth-tone');
 
 // WEBIA — Template Nail Art Professional Soft Pink
 // URL lama dipertahankan agar konsisten; view mengikuti struktur folder baru.

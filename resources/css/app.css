@@ -3,10 +3,142 @@
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 @source '../views/website-bisnis/templates/fnb/bakery/*.blade.php';
+@source '../views/website-bisnis/templates/pet-animal-service/paws-clever-creative.blade.php';
+@source '../views/website-bisnis/templates/pet-animal-service/paws-joy-jellypop.blade.php';
+@source '../views/website-bisnis/templates/pet-animal-service/paws-canine-terra-earth-tone.blade.php';
 
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-paws-sans: 'Plus Jakarta Sans', sans-serif;
+    --font-paws-display: 'Fredoka', cursive, sans-serif;
+    --radius-paws-organic: 2rem 1rem 2.5rem 1rem;
+    --radius-paws-organic-alt: 1.25rem 2.5rem 1rem 2rem;
+    --color-paws-amber-400: #f59e0b;
+    --color-paws-amber-500: #d97706;
+    --color-paws-amber-600: #b45309;
+    --color-paws-teal-50: #f0f9fa;
+    --color-paws-teal-100: #d7eff2;
+    --color-paws-teal-700: #156073;
+    --color-paws-teal-800: #0f4c5c;
+    --color-paws-teal-900: #0a323d;
+    --color-paws-sand-50: #fdfbf7;
+    --color-paws-sand-100: #f8f4eb;
+    --color-paws-sand-200: #ede4d1;
+    --color-paws-sand-50: #fdfbf7;
+    --color-paws-sand-100: #f8f4eb;
+    --color-paws-sand-200: #ede4d1;
+
+    --font-joy-display: 'Fredoka', cursive, sans-serif;
+    --font-joy-body: 'Outfit', sans-serif;
+    --color-joy-grape: #5e2750;
+    --color-joy-grape-deep: #4a154b;
+    --color-joy-grape-vibrant: #6b21a8;
+    --color-joy-grape-hover: #7e22ce;
+    --color-joy-lilac: #a855f7;
+    --color-joy-lilac-bright: #c084fc;
+    --color-joy-lilac-soft: #f3e8ff;
+    --color-joy-lilac-mist: #faf5ff;
+    --color-joy-cotton: #ec4899;
+    --color-joy-cotton-vibrant: #f43f5e;
+    --color-joy-cotton-soft: #fdf2f8;
+    --color-joy-cotton-blush: #ffe4e6;
+    --color-joy-powder: #0ea5e9;
+    --color-joy-powder-light: #38bdf8;
+    --color-joy-powder-soft: #f0f9ff;
+    --color-joy-powder-ice: #e0f2fe;
+    --color-joy-iris: #faf8ff;
+    --color-joy-iris-mist: #f5f3ff;
+    --shadow-joy-jelly-sm: 0 8px 20px -4px rgba(168, 85, 247, 0.18), 0 3px 0 #e9d5ff;
+    --shadow-joy-jelly-pink: 0 10px 25px -4px rgba(236, 72, 153, 0.35), 0 4px 0 #be185d;
+    --shadow-joy-jelly-purple: 0 10px 25px -4px rgba(107, 33, 168, 0.35), 0 4px 0 #4a154b;
+    --shadow-joy-jelly-blue: 0 10px 25px -4px rgba(14, 165, 233, 0.3), 0 4px 0 #0284c7;
+    --shadow-joy-glass-card: 0 20px 40px -15px rgba(94, 39, 80, 0.08), 0 0 0 1.5px rgba(255, 255, 255, 0.8) inset;
+    --shadow-joy-floating-pill: 0 12px 30px -6px rgba(107, 33, 168, 0.15), 0 2px 8px rgba(0, 0, 0, 0.04);
+    --animate-joy-float: joy-float 4s ease-in-out infinite;
+    --animate-joy-float-delayed: joy-float 5s ease-in-out 2s infinite;
+    --animate-joy-float-slow: joy-float-slow 7s ease-in-out infinite;
+    --animate-joy-jelly: joy-jelly-wiggle 0.6s ease-in-out;
+
+    --font-canine-display: 'Fraunces', serif;
+    --font-canine-body: 'Plus Jakarta Sans', sans-serif;
+    --color-canine-forest: #1b3b2b;
+    --color-canine-forest-dark: #12281d;
+    --color-canine-forest-deep: #0b1a13;
+    --color-canine-forest-medium: #244c38;
+    --color-canine-forest-light: #31634b;
+    --color-canine-forest-soft: #eaf2ed;
+    --color-canine-forest-tint: #f1f7f3;
+    --color-canine-oak: #3d2619;
+    --color-canine-oak-dark: #2b1a11;
+    --color-canine-oak-soil: #4a3324;
+    --color-canine-oak-warm: #614431;
+    --color-canine-oak-sand: #e6dccf;
+    --color-canine-terra: #c85a32;
+    --color-canine-terra-dark: #a6431e;
+    --color-canine-terra-burnt: #883313;
+    --color-canine-terra-light: #df754f;
+    --color-canine-terra-soft: #fbf0eb;
+    --color-canine-amber-ochre: #d9982f;
+    --color-canine-amber-ochre-light: #f2b44c;
+    --color-canine-amber-ochre-soft: #fdf7eb;
+    --color-canine-amber-ochre-deep: #b3781a;
+    --color-canine-linen-50: #faf8f4;
+    --color-canine-linen-100: #f6f3ec;
+    --color-canine-linen-200: #efe8da;
+    --color-canine-linen-300: #e4dac6;
+    --color-canine-linen-400: #d5c7ae;
+    --color-canine-bark: #231812;
+    --shadow-canine-elevation-1: 0 4px 20px -2px rgba(27, 59, 43, 0.08), 0 2px 6px -1px rgba(27, 59, 43, 0.04);
+    --shadow-canine-elevation-2: 0 12px 35px -5px rgba(27, 59, 43, 0.12), 0 4px 12px -2px rgba(27, 59, 43, 0.06);
+    --shadow-canine-elevation-3: 0 24px 60px -12px rgba(18, 40, 29, 0.22), 0 8px 24px -4px rgba(61, 38, 25, 0.12);
+    --shadow-canine-glow-terra: 0 12px 30px -5px rgba(200, 90, 50, 0.35);
+    --shadow-canine-glow-ochre: 0 12px 30px -5px rgba(217, 152, 47, 0.3);
+    --shadow-canine-inner-subtle: inset 0 1px 2px 0 rgba(255, 255, 255, 0.25);
+    --shadow-canine-stamp: 4px 4px 0 #12281d;
+    --background-image-canine-gradient-forest-soil: linear-gradient(135deg, #1b3b2b 0%, #2b1a11 100%);
+    --background-image-canine-gradient-terra-amber: linear-gradient(135deg, #c85a32 0%, #d9982f 100%);
+    --background-image-canine-gradient-deep-moss: linear-gradient(145deg, #12281d 0%, #1e382a 50%, #2a1f17 100%);
+    --background-image-canine-gradient-card-glow: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(246, 243, 236, 0.92) 100%);
+
+    @keyframes joy-float {
+        0%, 100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-8px);
+        }
+    }
+
+    @keyframes joy-float-slow {
+        0%, 100% {
+            transform: translateY(0) rotate(0);
+        }
+
+        50% {
+            transform: translateY(-12px) rotate(2deg);
+        }
+    }
+
+    @keyframes joy-jelly-wiggle {
+        0%, 100% {
+            transform: scale(1);
+        }
+
+        25% {
+            transform: scale(0.97, 1.03);
+        }
+
+        50% {
+            transform: scale(1.03, 0.97);
+        }
+
+        75% {
+            transform: scale(0.99, 1.01);
+        }
+    }
+
     --font-heading: 'Fredoka', sans-serif;
     --font-body: 'Poppins', sans-serif;
     --color-pastelPink: #FFB7B2;
@@ -16,4 +148,20 @@
     --color-pastelPurple: #C7CEEA;
     --color-bakeryDark: #3D3130;
     --color-bakeryAccent: #E05353;
+}
+
+.bg-canine-gradient-forest-soil {
+    background-image: var(--background-image-canine-gradient-forest-soil);
+}
+
+.bg-canine-gradient-terra-amber {
+    background-image: var(--background-image-canine-gradient-terra-amber);
+}
+
+.bg-canine-gradient-deep-moss {
+    background-image: var(--background-image-canine-gradient-deep-moss);
+}
+
+.bg-canine-gradient-card-glow {
+    background-image: var(--background-image-canine-gradient-card-glow);
 }
