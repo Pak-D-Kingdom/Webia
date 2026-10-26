@@ -219,7 +219,7 @@
                 </div>
             </div>
             <div class="relative my-2 h-64 w-full select-none">
-                <svg class="w-full overflow-visible is-chart-svg" data-chart="revenue" preserveAspectRatio="none" viewBox="0 0 700 220" aria-label="Grafik pendapatan harian 30 hari terakhir, puncak {{ $peak['date']->isoFormat('D MMM') }} Rp {{ number_format($peak['total'], 0, ',', '.') }}">
+                <svg width="0" height="0" class="absolute" aria-hidden="true">
                     <defs>
                         <linearGradient id="areaGradient" x1="0" x2="0" y1="0" y2="1">
                             <stop offset="0%" stop-color="#1a146b" stop-opacity="0.28"></stop>
@@ -232,6 +232,8 @@
                             <stop offset="100%" stop-color="#006f66"></stop>
                         </linearGradient>
                     </defs>
+                </svg>
+                <svg class="w-full overflow-visible is-chart-svg" data-chart="revenue" preserveAspectRatio="none" viewBox="0 0 700 220" aria-label="Grafik pendapatan harian 30 hari terakhir, puncak {{ $peak['date']->isoFormat('D MMM') }} Rp {{ number_format($peak['total'], 0, ',', '.') }}">
                     <line stroke="#eceef0" stroke-dasharray="4 4" stroke-width="1" x1="0" x2="700" y1="30" y2="30"></line>
                     <line stroke="#eceef0" stroke-dasharray="4 4" stroke-width="1" x1="0" x2="700" y1="85" y2="85"></line>
                     <line stroke="#eceef0" stroke-dasharray="4 4" stroke-width="1" x1="0" x2="700" y1="140" y2="140"></line>
