@@ -10,27 +10,47 @@ class seedersputri extends Seeder
     public function run(): void
     {
         $templates = [
-            // Template 1 — Technology & IT · Software House · Professional · Sage Green
+            // Template 1 — Technology & IT · Software House · Elegant · Baby Blue
             [
-                'name' => 'PutraTech Studio — Software House Professional Sage Green',
-                'slug' => 'technology-softwarehouse-professional-sagegreen-putri',
+                'name' => 'AzuraCraft Studio — Software House Elegant Baby Blue',
+                'slug' => 'technology-softwarehouse-elegant-babyblue-putri',
                 'category_slug' => 'technology-it',
                 'category_label' => 'Technology & IT',
                 'business_types' => ['Software House'],
-                'design_style' => 'Professional',
-                'color_theme' => 'Sage Green',
-                'description' => 'Website software house profesional berlatar Sage Green untuk PutraTech Studio. Menampilkan layanan pengembangan aplikasi, portofolio proyek, estimasi biaya, FAQ interaktif, floating WhatsApp, dan AI assistant.',
+                'design_style' => 'Elegant',
+                'color_theme' => 'Baby Blue',
+                'description' => 'Website software house elegan bernuansa Baby Blue untuk AzuraCraft Studio. Desain premium dengan showcase layanan aplikasi, portofolio, estimasi biaya, FAQ interaktif, WhatsApp, dan AI assistant.',
                 'preview_style' => 'preview-company',
-                'eyebrow' => 'BUILDING DIGITAL SOLUTIONS',
-                'headline' => 'Software Handal,<br>Masa Depan Bisnis Anda.',
-                'tag' => 'Technology & IT · Software House · Professional · Sage Green',
+                'eyebrow' => 'CRAFTING ELEGANT DIGITAL EXPERIENCES',
+                'headline' => 'Teknologi Elegan,<br>Solusi Tak Terbatas.',
+                'tag' => 'Technology & IT · Software House · Elegant · Baby Blue',
                 'preview_folder' => null,
-                'template_url' => '/webia/template/technology-softwarehouse-professional-sagegreen-putri',
+                'template_url' => '/webia/template/technology-softwarehouse-elegant-babyblue-putri',
                 'is_active' => true,
                 'sort_order' => 50,
             ],
 
-            // Template 2 — Technology & IT · Software House · Elegant · Baby Blue
+            // Template 2 — Technology & IT · Software House · Minimalist · Soft Pink (Sesuai Screenshot)
+            [
+                'name' => 'RoseCode Studio — Software House Minimalist Soft Pink',
+                'slug' => 'technology-softwarehouse-minimalist-softpink-putri',
+                'category_slug' => 'technology-it',
+                'category_label' => 'Technology & IT',
+                'business_types' => ['Software House'],
+                'design_style' => 'Minimalist',
+                'color_theme' => 'Soft Pink',
+                'description' => 'Website software house bergaya minimalis bertema Soft Pink untuk RoseCode Studio. Desain bersih, arsitektur presisi, layanan aplikasi web & mobile, portofolio terukur, FAQ interaktif, floating WhatsApp, dan RoseCode AI.',
+                'preview_style' => 'preview-company',
+                'eyebrow' => 'MINIMALIST DIGITAL ENGINEERING',
+                'headline' => 'Software Bersih,<br>Arsitektur Presisi.',
+                'tag' => 'Technology & IT · Software House · Minimalist · Soft Pink',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/technology-softwarehouse-minimalist-softpink-putri',
+                'is_active' => true,
+                'sort_order' => 52,
+            ],
+
+            // Template Default — Technology & IT · Software House · Professional
             [
                 'name' => 'Nexora Digital — Software House',
                 'slug' => 'technology-softwarehouse-professional',
