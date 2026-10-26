@@ -60,7 +60,7 @@
 </div>
 
 <!-- Header -->
-<section class="mb-space-xl flex flex-col justify-between gap-space-md lg:flex-row lg:items-end">
+<section class="mb-space-xl flex flex-col justify-between gap-space-md lg:flex-row lg:items-start">
     <div class="flex max-w-3xl flex-col">
         <h1 class="font-headline-lg text-headline-lg text-primary font-extrabold tracking-tight" id="admin-title">Dashboard Operasional</h1>
         <p class="mt-0.5 font-body-md text-body-md text-on-surface-variant">Pantau antrean pesanan aktif, verifikasi transfer manual, dan progres pengerjaan template hari ini.</p>
