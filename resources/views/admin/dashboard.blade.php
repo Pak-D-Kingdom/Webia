@@ -72,18 +72,18 @@
         <p class="mt-1 font-body-md text-body-md text-on-surface-variant">Pantau antrean pesanan aktif, verifikasi transfer manual, dan progres pengerjaan template hari ini.</p>
     </div>
     <!-- Action Bar -->
-    <div class="flex flex-col gap-2 lg:items-end">
-        <div class="flex flex-wrap items-center gap-2">
-            <div class="flex items-center gap-2 rounded-lg bg-surface-container-low px-3 py-1.5 text-on-surface-variant">
+    <div class="flex flex-col gap-1.5 rounded-xl border border-primary/20 bg-surface-container-lowest p-1.5 shadow-sm">
+        <div class="flex flex-wrap items-center gap-1.5">
+            <div class="flex items-center gap-2 rounded-lg border border-primary/20 bg-surface-container-low px-3 py-1.5 text-on-surface-variant">
                 <span class="material-symbols-outlined text-base text-secondary">schedule</span>
                 <span class="font-label-md text-label-md" id="syncTimestamp">Sinkron: {{ now()->isoFormat('D MMM Y, HH:mm:ss') }} WIB</span>
             </div>
-            <button class="flex items-center gap-1.5 rounded-lg border border-outline-variant/60 bg-surface-container-lowest px-3 py-1.5 text-primary transition-colors hover:bg-surface-container-low active:scale-95" id="btnRefreshData" title="Muat ulang data" type="button">
+            <button class="flex items-center gap-1.5 rounded-lg border border-primary/20 bg-surface-container-lowest px-3 py-1.5 text-primary transition-colors hover:bg-surface-container-low active:scale-95" id="btnRefreshData" title="Muat ulang data" type="button">
                 <span class="material-symbols-outlined text-base">refresh</span>
                 <span class="font-label-md text-label-md">Refresh Data</span>
             </button>
             <div class="relative" data-range-dropdown>
-                <button aria-expanded="false" aria-haspopup="listbox" class="flex items-center gap-1.5 rounded-lg border border-outline-variant/60 bg-surface-container-low py-1.5 pl-3 pr-2.5 font-label-md text-label-md text-on-surface transition-colors hover:bg-surface-container-high" data-range-toggle title="Rentang waktu data" type="button">
+                <button aria-expanded="false" aria-haspopup="listbox" class="flex items-center gap-1.5 rounded-lg border border-primary/20 bg-surface-container-low py-1.5 pl-3 pr-2.5 font-label-md text-label-md text-on-surface transition-colors hover:bg-surface-container-high" data-range-toggle title="Rentang waktu data" type="button">
                     <span data-range-label>30 Hari Terakhir</span>
                     <span aria-hidden="true" class="material-symbols-outlined text-base leading-none text-outline transition-transform duration-200" data-range-chevron>expand_more</span>
                 </button>
@@ -95,7 +95,7 @@
                 </div>
             </div>
         </div>
-        <button class="flex items-center justify-center gap-1.5 w-full rounded-lg bg-primary px-3.5 py-2 font-label-md text-label-md text-on-primary shadow-sm transition-all hover:bg-primary-container active:scale-95 lg:w-auto" id="btnProsesSemua" type="button">
+        <button class="flex w-full items-center justify-center gap-1.5 rounded-lg bg-primary px-3.5 py-2 font-label-md text-label-md text-on-primary shadow-sm transition-all hover:bg-primary-container active:scale-95" id="btnProsesSemua" type="button">
             <span class="material-symbols-outlined text-base text-secondary-fixed">bolt</span>
             <span>Proses Semua Verifikasi</span>
         </button>
