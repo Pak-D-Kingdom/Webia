@@ -37,7 +37,10 @@ class DatabaseSeederTest extends TestCase
             ->assertSee('Kusuma Ningrat — Royal Heritage Catering')
             ->assertSee('NUVIA Skin Tech Clinic — Graphite & Lilac')
             ->assertSee('GLOW LAB — Creative Beauty Clinic')
-            ->assertSee('Atelier Kulit — Creative Beauty Clinic');
+            ->assertSee('Atelier Kulit — Creative Beauty Clinic')
+            ->assertSee('VOLTRIX Garage — Futuristic Automotive')
+            ->assertSee('NIGHTSHIFT Auto — Dark Mode Automotive')
+            ->assertSee('ARVO Motor Studio — Modern Automotive');
     }
 
     public function test_sweet_crumb_demo_renders_bakery_sections_and_contact_buttons(): void

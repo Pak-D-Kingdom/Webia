@@ -91,6 +91,21 @@ Route::view(
 )->name('webia.template.beauty.atelier-kulit-creative-beauty-clinic');
 
 Route::view(
+    '/webia/template/voltrix-futuristic-automotive',
+    'website-bisnis.templates.automotive.voltrix-futuristic-automotive'
+)->name('webia.template.automotive.voltrix-futuristic-automotive');
+
+Route::view(
+    '/webia/template/nightshift-dark-mode-automotive',
+    'website-bisnis.templates.automotive.nightshift-dark-mode-automotive'
+)->name('webia.template.automotive.nightshift-dark-mode-automotive');
+
+Route::view(
+    '/webia/template/arvo-modern-automotive',
+    'website-bisnis.templates.automotive.arvo-modern-automotive'
+)->name('webia.template.automotive.arvo-modern-automotive');
+
+Route::view(
     '/webia/template/fnb-bakery-playful-colorful',
     'website-bisnis.templates.fnb.bakery.bakery-playful-colorful'
 )->name('webia.template.fnb.bakery.playful.colorful');
