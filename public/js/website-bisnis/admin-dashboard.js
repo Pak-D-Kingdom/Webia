@@ -55,6 +55,69 @@ function initializeAdminPage() {
     setTimeout(() => location.reload(), 500);
   }, listenerOptions);
 
+  // Dropdown rentang waktu custom (listbox).
+  const rangeRoot = document.querySelector('[data-range-dropdown]');
+  if (rangeRoot) {
+    const rangeToggle = rangeRoot.querySelector('[data-range-toggle]');
+    const rangeMenu = rangeRoot.querySelector('[data-range-menu]');
+    const rangeLabel = rangeRoot.querySelector('[data-range-label]');
+    const rangeChevron = rangeRoot.querySelector('[data-range-chevron]');
+
+    function setRange(open) {
+      rangeMenu.classList.toggle('hidden', !open);
+      rangeChevron.classList.toggle('rotate-180', open);
+      rangeToggle.setAttribute('aria-expanded', String(open));
+      if (open) rangeMenu.querySelector('[data-range-option]:not([disabled])')?.focus();
+    }
+
+    function selectRange(option) {
+      rangeMenu.querySelectorAll('[data-range-option]').forEach((opt) => {
+        const selected = opt === option;
+        opt.setAttribute('aria-selected', String(selected));
+        opt.classList.toggle('font-bold', selected);
+        opt.classList.toggle('text-primary', selected);
+        opt.classList.toggle('text-on-surface', !selected);
+        opt.querySelector('.material-symbols-outlined')?.classList.toggle('invisible', !selected);
+      });
+      rangeLabel.innerText = option.querySelector('[data-range-text]').innerText;
+      setRange(false);
+    }
+
+    // Opsi awal (satu-satunya) diberi state terpilih sesuai label default.
+    const initial = rangeMenu.querySelector('[data-range-option]');
+    initial.classList.add('font-bold', 'text-primary');
+
+    rangeToggle.addEventListener('click', () => setRange(rangeMenu.classList.contains('hidden')), listenerOptions);
+    rangeMenu.querySelectorAll('[data-range-option]').forEach((option, index) => {
+      option.addEventListener('click', () => selectRange(option), listenerOptions);
+      option.addEventListener('keydown', (event) => {
+        const options = Array.from(rangeMenu.querySelectorAll('[data-range-option]'));
+        if (event.key === 'ArrowDown') {
+          event.preventDefault();
+          options[(index + 1) % options.length].focus();
+        } else if (event.key === 'ArrowUp') {
+          event.preventDefault();
+          options[(index - 1 + options.length) % options.length].focus();
+        }
+      }, listenerOptions);
+    });
+    rangeToggle.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+        event.preventDefault();
+        setRange(true);
+      }
+    }, listenerOptions);
+    document.addEventListener('click', (event) => {
+      if (!rangeMenu.classList.contains('hidden') && !rangeRoot.contains(event.target)) setRange(false);
+    }, listenerOptions);
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !rangeMenu.classList.contains('hidden')) {
+        setRange(false);
+        rangeToggle.focus();
+      }
+    }, listenerOptions);
+  }
+
   // Mobile drawer sidebar.
   const sidebar = document.querySelector('[data-admin-sidebar]');
   const toggle = document.querySelector('[data-sidebar-toggle]');
