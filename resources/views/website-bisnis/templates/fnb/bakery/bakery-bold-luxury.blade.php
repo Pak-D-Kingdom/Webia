@@ -130,7 +130,7 @@
                 <!-- Item 1 -->
                 <div class="menu-item croissant bg-espresso border border-ochre/20 group hover:border-ochre transition-all">
                     <div class="overflow-hidden h-64 relative">
-                        <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&amp;fit=crop&amp;q=80&amp;w=800" alt="Butter Croissant" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&amp;fit=crop&amp;q=80&amp;w=800" alt="Butter Croissant" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                         <span class="absolute top-4 left-4 bg-ochre text-espresso text-[10px] font-bold px-2 py-1 uppercase tracking-widest">Best Seller</span>
                     </div>
                     <div class="p-6">
@@ -148,7 +148,7 @@
                 <!-- Item 2 -->
                 <div class="menu-item bread bg-espresso border border-ochre/20 group hover:border-ochre transition-all">
                     <div class="overflow-hidden h-64 relative">
-                        <img src="https://images.unsplash.com/photo-1586444248902-2f64eddc13df?auto=format&amp;fit=crop&amp;q=80&amp;w=800" alt="Country Sourdough" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <img src="https://images.unsplash.com/photo-1586444248902-2f64eddc13df?auto=format&amp;fit=crop&amp;q=80&amp;w=800" alt="Country Sourdough" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                         <span class="absolute top-4 left-4 bg-ochre text-espresso text-[10px] font-bold px-2 py-1 uppercase tracking-widest">Signature</span>
                     </div>
                     <div class="p-6">
@@ -166,7 +166,7 @@
                 <!-- Item 3 -->
                 <div class="menu-item croissant pastry bg-espresso border border-ochre/20 group hover:border-ochre transition-all">
                     <div class="overflow-hidden h-64 relative">
-                        <img src="https://images.unsplash.com/photo-1608198093002-ad4e005484ec?auto=format&amp;fit=crop&amp;q=80&amp;w=800" alt="Pain Au Chocolat" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <img src="https://images.unsplash.com/photo-1608198093002-ad4e005484ec?auto=format&amp;fit=crop&amp;q=80&amp;w=800" alt="Pain Au Chocolat" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                     </div>
                     <div class="p-6">
                         <h3 class="font-cinzel text-xl font-bold text-oat mb-2">Pain Au Chocolat</h3>
@@ -183,7 +183,7 @@
                 <!-- Item 4 -->
                 <div class="menu-item bread bg-espresso border border-ochre/20 group hover:border-ochre transition-all">
                     <div class="overflow-hidden h-64 relative">
-                        <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&amp;fit=crop&amp;q=80&amp;w=800" alt="Focaccia" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&amp;fit=crop&amp;q=80&amp;w=800" alt="Focaccia" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                     </div>
                     <div class="p-6">
                         <h3 class="font-cinzel text-xl font-bold text-oat mb-2">Rosemary &amp; Olive Focaccia</h3>
@@ -200,7 +200,7 @@
                 <!-- Item 5 -->
                 <div class="menu-item pastry bg-espresso border border-ochre/20 group hover:border-ochre transition-all">
                     <div class="overflow-hidden h-64 relative">
-                        <img src="https://images.unsplash.com/photo-1530610476181-d83430b64dcd?auto=format&amp;fit=crop&amp;q=80&amp;w=800" alt="Cinnamon Roll" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <img src="https://images.unsplash.com/photo-1530610476181-d83430b64dcd?auto=format&amp;fit=crop&amp;q=80&amp;w=800" alt="Cinnamon Roll" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                     </div>
                     <div class="p-6">
                         <h3 class="font-cinzel text-xl font-bold text-oat mb-2">Artisan Cinnamon Brioche</h3>
@@ -217,7 +217,7 @@
                 <!-- Item 6 -->
                 <div class="menu-item croissant pastry bg-espresso border border-ochre/20 group hover:border-ochre transition-all">
                     <div class="overflow-hidden h-64 relative">
-                        <img src="https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?auto=format&amp;fit=crop&amp;q=80&amp;w=800" alt="Almond Croissant" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <img src="https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?auto=format&amp;fit=crop&amp;q=80&amp;w=800" alt="Almond Croissant" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                     </div>
                     <div class="p-6">
                         <h3 class="font-cinzel text-xl font-bold text-oat mb-2">Double Baked Almond Croissant</h3>

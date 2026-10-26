@@ -78,7 +78,7 @@
             <article class="catalog-product" data-name="Royal Canin Kitten" data-category="makanan" data-price="185000" data-order="1">
                 <a class="catalog-product-image bg-blue" href="{{ url('/webia/template/petshop-minimalist-glacierblue/produk/royal-canin-kitten') }}">
                     <span class="catalog-badge">BEST SELLER</span>
-                    <img src="https://images.unsplash.com/photo-1589924691995-400dc9ecc119?auto=format&fit=crop&w=600&q=80" alt="Makanan kucing">
+                    <img src="https://images.unsplash.com/photo-1589924691995-400dc9ecc119?auto=format&fit=crop&w=600&q=80" alt="Makanan kucing" loading="lazy" decoding="async">
                 </a>
                 <div class="catalog-product-info">
                     <small>MAKANAN HEWAN</small>
@@ -91,7 +91,7 @@
             <article class="catalog-product" data-name="Happy Bites Treats" data-category="camilan" data-price="45000" data-order="2">
                 <a class="catalog-product-image bg-peach" href="{{ url('/webia/template/petshop-minimalist-glacierblue/produk/dog-treats') }}">
                     <span class="catalog-badge badge-warm">FAVORIT</span>
-                    <img src="https://images.unsplash.com/photo-1582798358481-d199fb7347bb?auto=format&fit=crop&w=600&q=80" alt="Camilan hewan">
+                    <img src="https://images.unsplash.com/photo-1582798358481-d199fb7347bb?auto=format&fit=crop&w=600&q=80" alt="Camilan hewan" loading="lazy" decoding="async">
                 </a>
                 <div class="catalog-product-info">
                     <small>CAMILAN</small>
@@ -103,7 +103,7 @@
 
             <article class="catalog-product" data-name="Cloudy Pet Bed" data-category="perlengkapan" data-price="220000" data-order="3">
                 <a class="catalog-product-image bg-green" href="{{ url('/webia/template/petshop-minimalist-glacierblue/produk/soft-pet-bed') }}">
-                    <img src="https://images.unsplash.com/photo-1541599540903-216a46ca1dc0?auto=format&fit=crop&w=600&q=80" alt="Tempat tidur hewan">
+                    <img src="https://images.unsplash.com/photo-1541599540903-216a46ca1dc0?auto=format&fit=crop&w=600&q=80" alt="Tempat tidur hewan" loading="lazy" decoding="async">
                 </a>
                 <div class="catalog-product-info">
                     <small>PERLENGKAPAN</small>
@@ -115,7 +115,7 @@
 
             <article class="catalog-product" data-name="Gentle Grooming Kit" data-category="perawatan" data-price="89000" data-order="4">
                 <a class="catalog-product-image bg-lilac" href="{{ url('/webia/template/petshop-minimalist-glacierblue/produk/pet-grooming-kit') }}">
-                    <img src="https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?auto=format&fit=crop&w=600&q=80" alt="Perawatan hewan">
+                    <img src="https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?auto=format&fit=crop&w=600&q=80" alt="Perawatan hewan" loading="lazy" decoding="async">
                 </a>
                 <div class="catalog-product-info">
                     <small>PERAWATAN</small>
@@ -127,7 +127,7 @@
 
             <article class="catalog-product" data-name="Playful Rope Toy" data-category="aksesoris" data-price="35000" data-order="5">
                 <a class="catalog-product-image bg-blue" href="{{ url('/webia/template/petshop-minimalist-glacierblue/produk/playful-rope-toy') }}">
-                    <img src="https://images.unsplash.com/photo-1535294435445-d7249524ef2e?auto=format&fit=crop&w=600&q=80" alt="Mainan hewan">
+                    <img src="https://images.unsplash.com/photo-1535294435445-d7249524ef2e?auto=format&fit=crop&w=600&q=80" alt="Mainan hewan" loading="lazy" decoding="async">
                 </a>
                 <div class="catalog-product-info">
                     <small>AKSESORI & MAINAN</small>
@@ -139,7 +139,7 @@
 
             <article class="catalog-product" data-name="Cozy Pet Bowl" data-category="aksesoris" data-price="55000" data-order="6">
                 <a class="catalog-product-image bg-peach" href="{{ url('/webia/template/petshop-minimalist-glacierblue/produk/cozy-pet-bowl') }}">
-                    <img src="https://images.unsplash.com/photo-1585837575652-267c041d77d4?auto=format&fit=crop&w=600&q=80" alt="Tempat makan hewan">
+                    <img src="https://images.unsplash.com/photo-1585837575652-267c041d77d4?auto=format&fit=crop&w=600&q=80" alt="Tempat makan hewan" loading="lazy" decoding="async">
                 </a>
                 <div class="catalog-product-info">
                     <small>AKSESORI</small>

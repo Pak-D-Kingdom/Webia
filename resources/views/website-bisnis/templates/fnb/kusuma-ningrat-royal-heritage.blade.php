@@ -385,6 +385,7 @@
           <div class="relative h-64 overflow-hidden">
             <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80" 
                  alt="Gereh Penyu & Bistik Lidah Keraton" 
+                 loading="lazy" decoding="async"
                  class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
             <div class="absolute top-4 left-4 bg-emerald-950/90 border border-royalGold-400/50 px-3 py-1 text-[10px] font-regal uppercase tracking-widest text-royalGold-300">
               Prasmanan Utama
@@ -417,6 +418,7 @@
           <div class="relative h-64 overflow-hidden">
             <img src="https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=800&q=80" 
                  alt="Tumpeng Robyong Mahkota Emas" 
+                 loading="lazy" decoding="async"
                  class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
             <div class="absolute top-4 left-4 bg-emerald-950/90 border border-royalGold-400/50 px-3 py-1 text-[10px] font-regal uppercase tracking-widest text-royalGold-300">
               Rijsttafel Agung
@@ -449,6 +451,7 @@
           <div class="relative h-64 overflow-hidden">
             <img src="https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=800&q=80" 
                  alt="Semar Mendem Foie Gras & Jamur Hutan" 
+                 loading="lazy" decoding="async"
                  class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
             <div class="absolute top-4 left-4 bg-emerald-950/90 border border-royalGold-400/50 px-3 py-1 text-[10px] font-regal uppercase tracking-widest text-royalGold-300">
               Kudapan Bangsawan
@@ -481,6 +484,7 @@
           <div class="relative h-64 overflow-hidden">
             <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=800&q=80" 
                  alt="Bir Pletok Emas & Wedang Secang" 
+                 loading="lazy" decoding="async"
                  class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
             <div class="absolute top-4 left-4 bg-emerald-950/90 border border-royalGold-400/50 px-3 py-1 text-[10px] font-regal uppercase tracking-widest text-royalGold-300">
               Minuman Para Raja
@@ -706,6 +710,7 @@
       <div class="group relative h-96 overflow-hidden ornate-border cursor-pointer">
         <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=80" 
              alt="Tata Meja Pernikahan Keraton" 
+             loading="lazy" decoding="async"
              class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
         <div class="absolute inset-0 bg-gradient-to-t from-emerald-950 via-emerald-950/40 to-transparent flex flex-col justify-end p-6">
           <span class="text-[10px] font-regal uppercase tracking-widest text-royalGold-300">Pernikahan Dalem Ageng</span>
@@ -718,6 +723,7 @@
       <div class="group relative h-96 overflow-hidden ornate-border cursor-pointer">
         <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=900&q=80" 
              alt="Pondokan Pemanas Tembaga" 
+             loading="lazy" decoding="async"
              class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
         <div class="absolute inset-0 bg-gradient-to-t from-emerald-950 via-emerald-950/40 to-transparent flex flex-col justify-end p-6">
           <span class="text-[10px] font-regal uppercase tracking-widest text-royalGold-300">Pondokan Klangenan</span>
@@ -730,6 +736,7 @@
       <div class="group relative h-96 overflow-hidden ornate-border cursor-pointer">
         <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=900&q=80" 
              alt="Perjamuan Diplomatik Kenegaraan" 
+             loading="lazy" decoding="async"
              class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
         <div class="absolute inset-0 bg-gradient-to-t from-emerald-950 via-emerald-950/40 to-transparent flex flex-col justify-end p-6">
           <span class="text-[10px] font-regal uppercase tracking-widest text-royalGold-300">Resepsi Kenegaraan</span>

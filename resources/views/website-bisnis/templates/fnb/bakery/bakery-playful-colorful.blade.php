@@ -96,7 +96,7 @@
             <div class="bg-white rounded-xl p-4 border border-gray-200/80 shadow-xs hover:shadow-md transition-all duration-200 flex flex-col justify-between">
                 <div>
                     <div class="relative overflow-hidden rounded-lg h-48 mb-4">
-                        <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&q=80&w=400" alt="Butter Croissant" class="w-full h-full object-cover">
+                        <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&q=80&w=400" alt="Butter Croissant" loading="lazy" decoding="async" class="w-full h-full object-cover">
                         <span class="absolute top-2 right-2 bg-white/90 text-bakeryDark text-xs font-semibold px-2.5 py-1 rounded-md shadow-xs">Best Seller</span>
                     </div>
                     <h3 class="font-bold text-lg text-bakeryDark mb-1">Butter Croissant</h3>
@@ -114,7 +114,7 @@
             <div class="bg-white rounded-xl p-4 border border-gray-200/80 shadow-xs hover:shadow-md transition-all duration-200 flex flex-col justify-between">
                 <div>
                     <div class="relative overflow-hidden rounded-lg h-48 mb-4">
-                        <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=400" alt="Strawberry Shortcake" class="w-full h-full object-cover">
+                        <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=400" alt="Strawberry Shortcake" loading="lazy" decoding="async" class="w-full h-full object-cover">
                     </div>
                     <h3 class="font-bold text-lg text-bakeryDark mb-1">Strawberry Shortcake</h3>
                     <p class="text-gray-500 text-xs mb-4">Spons lembut dengan krim segar dan buah stroberi asli.</p>
@@ -131,7 +131,7 @@
             <div class="bg-white rounded-xl p-4 border border-gray-200/80 shadow-xs hover:shadow-md transition-all duration-200 flex flex-col justify-between">
                 <div>
                     <div class="relative overflow-hidden rounded-lg h-48 mb-4">
-                        <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&q=80&w=400" alt="Sourdough Bread" class="w-full h-full object-cover">
+                        <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&q=80&w=400" alt="Sourdough Bread" loading="lazy" decoding="async" class="w-full h-full object-cover">
                         <span class="absolute top-2 right-2 bg-white/90 text-bakeryDark text-xs font-semibold px-2.5 py-1 rounded-md shadow-xs">Artisan</span>
                     </div>
                     <h3 class="font-bold text-lg text-bakeryDark mb-1">Artisan Sourdough</h3>
@@ -149,7 +149,7 @@
             <div class="bg-white rounded-xl p-4 border border-gray-200/80 shadow-xs hover:shadow-md transition-all duration-200 flex flex-col justify-between">
                 <div>
                     <div class="relative overflow-hidden rounded-lg h-48 mb-4">
-                        <img src="https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?auto=format&fit=crop&q=80&w=400" alt="Chocolate Donut" class="w-full h-full object-cover">
+                        <img src="https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?auto=format&fit=crop&q=80&w=400" alt="Chocolate Donut" loading="lazy" decoding="async" class="w-full h-full object-cover">
                     </div>
                     <h3 class="font-bold text-lg text-bakeryDark mb-1">Choco Glaze Donut</h3>
                     <p class="text-gray-500 text-xs mb-4">Donat empuk dengan baluran cokelat leleh Belgian.</p>

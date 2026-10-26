@@ -75,7 +75,7 @@
         <section class="mdh-section mdh-about" id="about">
             <div class="mdh-about-visual">
                 <img src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=900&q=85"
-                     alt="Ruang konsultasi klinik gigi">
+                     alt="Ruang konsultasi klinik gigi" loading="lazy" decoding="async">
                 <div class="mdh-image-caption">A calmer kind of dental care.</div>
             </div>
             <div class="mdh-about-copy">
@@ -156,15 +156,15 @@
             </div>
             <div class="mdh-doctor-grid">
                 <article class="mdh-doctor-card">
-                    <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=650&q=85" alt="Foto dokter gigi">
+                    <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=650&q=85" alt="Foto dokter gigi" loading="lazy" decoding="async">
                     <div><h3>Drg. [Nama Dokter]</h3><p>Dokter Gigi Umum</p><span>Preventive & Restorative Care</span></div>
                 </article>
                 <article class="mdh-doctor-card">
-                    <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=650&q=85" alt="Foto dokter gigi">
+                    <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=650&q=85" alt="Foto dokter gigi" loading="lazy" decoding="async">
                     <div><h3>Drg. [Nama Dokter]</h3><p>Dokter Gigi</p><span>Dental Consultation</span></div>
                 </article>
                 <article class="mdh-doctor-card">
-                    <img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=650&q=85" alt="Foto tenaga medis klinik">
+                    <img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=650&q=85" alt="Foto tenaga medis klinik" loading="lazy" decoding="async">
                     <div><h3>Dental Care Team</h3><p>Tim Pendukung</p><span>Patient Care & Assistance</span></div>
                 </article>
             </div>

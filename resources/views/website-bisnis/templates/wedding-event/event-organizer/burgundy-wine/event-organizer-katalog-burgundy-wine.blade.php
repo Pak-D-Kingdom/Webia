@@ -72,7 +72,7 @@
             <div class="bm-catalog-grid">
                 <article class="bm-catalog-card" data-category="wedding">
                     <div class="bm-catalog-image">
-                        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=85" alt="Wedding dengan dekorasi bunga">
+                        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=85" alt="Wedding dengan dekorasi bunga" loading="lazy" decoding="async">
                         <span class="bm-catalog-tag">WEDDING</span>
                     </div>
                     <div class="bm-catalog-card-body">
@@ -93,7 +93,7 @@
 
                 <article class="bm-catalog-card" data-category="wedding">
                     <div class="bm-catalog-image">
-                        <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=900&q=85" alt="Wedding dengan penataan meja">
+                        <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=900&q=85" alt="Wedding dengan penataan meja" loading="lazy" decoding="async">
                         <span class="bm-catalog-tag">WEDDING</span>
                     </div>
                     <div class="bm-catalog-card-body">
@@ -114,7 +114,7 @@
 
                 <article class="bm-catalog-card" data-category="corporate">
                     <div class="bm-catalog-image">
-                        <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=900&q=85" alt="Acara perusahaan">
+                        <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=900&q=85" alt="Acara perusahaan" loading="lazy" decoding="async">
                         <span class="bm-catalog-tag">CORPORATE</span>
                     </div>
                     <div class="bm-catalog-card-body">
@@ -135,7 +135,7 @@
 
                 <article class="bm-catalog-card" data-category="private">
                     <div class="bm-catalog-image">
-                        <img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=900&q=85" alt="Private celebration dengan dekorasi">
+                        <img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=900&q=85" alt="Private celebration dengan dekorasi" loading="lazy" decoding="async">
                         <span class="bm-catalog-tag">PRIVATE EVENTS</span>
                     </div>
                     <div class="bm-catalog-card-body">
@@ -156,7 +156,7 @@
 
                 <article class="bm-catalog-card" data-category="corporate">
                     <div class="bm-catalog-image">
-                        <img src="https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=900&q=85" alt="Konferensi dan event profesional">
+                        <img src="https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=900&q=85" alt="Konferensi dan event profesional" loading="lazy" decoding="async">
                         <span class="bm-catalog-tag">CORPORATE</span>
                     </div>
                     <div class="bm-catalog-card-body">
@@ -177,7 +177,7 @@
 
                 <article class="bm-catalog-card" data-category="private">
                     <div class="bm-catalog-image">
-                        <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=900&q=85" alt="Perayaan dengan tamu undangan">
+                        <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=900&q=85" alt="Perayaan dengan tamu undangan" loading="lazy" decoding="async">
                         <span class="bm-catalog-tag">CUSTOM</span>
                     </div>
                     <div class="bm-catalog-card-body">

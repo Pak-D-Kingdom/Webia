@@ -51,7 +51,7 @@
             <div class="rl-catalog-grid">
                 <article class="rl-catalog-card" data-category="catering">
                     <a class="rl-catalog-image" href="{{ url('/webia/template/catering-wedding-cake-ruby-luxe/detail') }}?product=signature-buffet">
-                        <img src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=850&q=85" alt="Menu catering buffet">
+                        <img src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=850&q=85" alt="Menu catering buffet" loading="lazy" decoding="async">
                         <span>SIGNATURE MENU</span>
                     </a>
                     <div class="rl-catalog-card-body">
@@ -63,7 +63,7 @@
 
                 <article class="rl-catalog-card" data-category="catering">
                     <a class="rl-catalog-image" href="{{ url('/webia/template/catering-wedding-cake-ruby-luxe/detail') }}?product=intimate-dining">
-                        <img src="https://images.unsplash.com/photo-1515003197210-e0cd7184f8b5?auto=format&fit=crop&w=850&q=85" alt="Sajian makanan untuk private dining">
+                        <img src="https://images.unsplash.com/photo-1515003197210-e0cd7184f8b5?auto=format&fit=crop&w=850&q=85" alt="Sajian makanan untuk private dining" loading="lazy" decoding="async">
                         <span>INTIMATE COLLECTION</span>
                     </a>
                     <div class="rl-catalog-card-body">
@@ -75,7 +75,7 @@
 
                 <article class="rl-catalog-card" data-category="dessert">
                     <a class="rl-catalog-image" href="{{ url('/webia/template/catering-wedding-cake-ruby-luxe/detail') }}?product=dessert-table">
-                        <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=850&q=85" alt="Dessert dan pastry">
+                        <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=850&q=85" alt="Dessert dan pastry" loading="lazy" decoding="async">
                         <span>SWEET COLLECTION</span>
                     </a>
                     <div class="rl-catalog-card-body">
@@ -87,7 +87,7 @@
 
                 <article class="rl-catalog-card" data-category="cake">
                     <a class="rl-catalog-image" href="{{ url('/webia/template/catering-wedding-cake-ruby-luxe/detail') }}?product=classic-ivory">
-                        <img src="https://images.unsplash.com/photo-1535254973040-607b474cb50d?auto=format&fit=crop&w=850&q=85" alt="Classic ivory wedding cake">
+                        <img src="https://images.unsplash.com/photo-1535254973040-607b474cb50d?auto=format&fit=crop&w=850&q=85" alt="Classic ivory wedding cake" loading="lazy" decoding="async">
                         <span>TIMELESS DESIGN</span>
                     </a>
                     <div class="rl-catalog-card-body">
@@ -99,7 +99,7 @@
 
                 <article class="rl-catalog-card" data-category="cake">
                     <a class="rl-catalog-image" href="{{ url('/webia/template/catering-wedding-cake-ruby-luxe/detail') }}?product=romantic-bloom">
-                        <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=850&q=85" alt="Romantic wedding cake">
+                        <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=850&q=85" alt="Romantic wedding cake" loading="lazy" decoding="async">
                         <span>ROMANTIC DESIGN</span>
                     </a>
                     <div class="rl-catalog-card-body">
@@ -111,7 +111,7 @@
 
                 <article class="rl-catalog-card" data-category="cake">
                     <a class="rl-catalog-image" href="{{ url('/webia/template/catering-wedding-cake-ruby-luxe/detail') }}?product=modern-minimal">
-                        <img src="https://images.unsplash.com/photo-1557979619-445218f326b9?auto=format&fit=crop&w=850&q=85" alt="Modern minimalist cake">
+                        <img src="https://images.unsplash.com/photo-1557979619-445218f326b9?auto=format&fit=crop&w=850&q=85" alt="Modern minimalist cake" loading="lazy" decoding="async">
                         <span>MODERN DESIGN</span>
                     </a>
                     <div class="rl-catalog-card-body">

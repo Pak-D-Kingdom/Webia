@@ -262,6 +262,7 @@
           <div class="h-64 sm:h-80 rounded-2xl overflow-hidden relative border border-editorial group">
             <img src="https://images.unsplash.com/photo-1551218808-94e220e084d2?q=80&w=800&auto=format&fit=crop" 
                  alt="Chef finishing dish" 
+                 loading="lazy" decoding="async"
                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
             <div class="absolute inset-0 bg-gradient-to-t from-obsidian/90 via-transparent to-transparent flex items-end p-6">
               <span class="text-xs uppercase tracking-widest font-mono text-gold-400">Micro-Plating Craft</span>
@@ -280,6 +281,7 @@
           <div class="h-64 sm:h-80 rounded-2xl overflow-hidden relative border border-editorial group">
             <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=800&auto=format&fit=crop" 
                  alt="Sommelier and Wine pairing" 
+                 loading="lazy" decoding="async"
                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
             <div class="absolute inset-0 bg-gradient-to-t from-obsidian/90 via-transparent to-transparent flex items-end p-6">
               <span class="text-xs uppercase tracking-widest font-mono text-gold-400">Sommelier Harmonization</span>
@@ -331,6 +333,7 @@
           <div class="relative h-60 overflow-hidden">
             <img src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=800&auto=format&fit=crop" 
                  alt="The Monolith Tasting" 
+                 loading="lazy" decoding="async"
                  class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
             <div class="absolute top-4 left-4 bg-obsidian/80 backdrop-blur-md px-3 py-1 rounded-full border border-gold-500/30 text-[10px] uppercase tracking-widest text-gold-400">
               7-Course Plated
@@ -364,6 +367,7 @@
           <div class="relative h-60 overflow-hidden">
             <img src="https://images.unsplash.com/photo-1555244162-803834f70033?q=80&w=800&auto=format&fit=crop" 
                  alt="Buffet Haute Couture" 
+                 loading="lazy" decoding="async"
                  class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
             <div class="absolute top-4 left-4 bg-obsidian/80 backdrop-blur-md px-3 py-1 rounded-full border border-gold-500/30 text-[10px] uppercase tracking-widest text-gold-400">
               Live Artisanal Island
@@ -397,6 +401,7 @@
           <div class="relative h-60 overflow-hidden">
             <img src="https://images.unsplash.com/photo-1541544741938-0af808871cc0?q=80&w=800&auto=format&fit=crop" 
                  alt="Nocturne Canapes" 
+                 loading="lazy" decoding="async"
                  class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
             <div class="absolute top-4 left-4 bg-obsidian/80 backdrop-blur-md px-3 py-1 rounded-full border border-gold-500/30 text-[10px] uppercase tracking-widest text-gold-400">
               Cocktail &amp; Passes
@@ -430,6 +435,7 @@
           <div class="relative h-60 overflow-hidden">
             <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop" 
                  alt="Imperial Rijsttafel" 
+                 loading="lazy" decoding="async"
                  class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
             <div class="absolute top-4 left-4 bg-obsidian/80 backdrop-blur-md px-3 py-1 rounded-full border border-gold-500/30 text-[10px] uppercase tracking-widest text-gold-400">
               Heritage Modernist
@@ -478,6 +484,7 @@
         <div onclick="openDishModal(0)" class="cursor-pointer group relative rounded-2xl overflow-hidden border border-editorial h-96">
           <img src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=800&auto=format&fit=crop" 
                alt="A5 Wagyu Glaze" 
+               loading="lazy" decoding="async"
                class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
           <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/40 to-transparent flex flex-col justify-end p-6">
             <span class="text-[10px] uppercase font-mono tracking-widest text-gold-400 mb-1">Entrée Signature</span>
@@ -494,6 +501,7 @@
         <div onclick="openDishModal(1)" class="cursor-pointer group relative rounded-2xl overflow-hidden border border-editorial h-96">
           <img src="https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?q=80&w=800&auto=format&fit=crop" 
                alt="Hokkaido Scallop" 
+               loading="lazy" decoding="async"
                class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
           <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/40 to-transparent flex flex-col justify-end p-6">
             <span class="text-[10px] uppercase font-mono tracking-widest text-gold-400 mb-1">Cold Amuse</span>
@@ -510,6 +518,7 @@
         <div onclick="openDishModal(2)" class="cursor-pointer group relative rounded-2xl overflow-hidden border border-editorial h-96">
           <img src="https://images.unsplash.com/photo-1587314168485-3236d6710814?q=80&w=800&auto=format&fit=crop" 
                alt="Golden Valrhona Sphere" 
+               loading="lazy" decoding="async"
                class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
           <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/40 to-transparent flex flex-col justify-end p-6">
             <span class="text-[10px] uppercase font-mono tracking-widest text-gold-400 mb-1">Sensory Climax</span>

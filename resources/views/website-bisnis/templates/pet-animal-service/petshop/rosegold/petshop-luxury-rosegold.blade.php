@@ -115,7 +115,7 @@
                 <a class="fc-collection-card fc-collection-large"
                     href="{{ url('/webia/template/petshop-luxury-rosegold/katalog') }}?kategori=makanan">
                     <img src="https://images.unsplash.com/photo-1589924691995-400dc9ecc119?auto=format&fit=crop&w=900&q=85"
-                        alt="Pilihan makanan hewan">
+                        alt="Pilihan makanan hewan" loading="lazy" decoding="async">
                     <div class="fc-collection-overlay">
                         <span>01 — NOURISH</span>
                         <h3>Daily<br>Nutrition</h3>
@@ -126,7 +126,7 @@
                 <a class="fc-collection-card fc-collection-middle"
                     href="{{ url('/webia/template/petshop-luxury-rosegold/katalog') }}?kategori=aksesoris">
                     <img src="https://images.unsplash.com/photo-1601758228041-f3b2795255f1?auto=format&fit=crop&w=800&q=85"
-                        alt="Aksesori hewan">
+                        alt="Aksesori hewan" loading="lazy" decoding="async">
                     <div class="fc-collection-overlay">
                         <span>02 — PLAY</span>
                         <h3>Playful<br>Essentials</h3>
@@ -137,7 +137,7 @@
                 <a class="fc-collection-card fc-collection-small"
                     href="{{ url('/webia/template/petshop-luxury-rosegold/katalog') }}?kategori=perawatan">
                     <img src="https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?auto=format&fit=crop&w=800&q=85"
-                        alt="Perawatan hewan">
+                        alt="Perawatan hewan" loading="lazy" decoding="async">
                     <div class="fc-collection-overlay">
                         <span>03 — CARE</span>
                         <h3>Grooming<br>& Wellness</h3>
@@ -163,7 +163,7 @@
                         href="{{ url('/webia/template/petshop-luxury-rosegold/produk/royal-canin-kitten') }}">
                         <span class="fc-product-label">THE FAVOURITE</span>
                         <img src="https://images.unsplash.com/photo-1589924691995-400dc9ecc119?auto=format&fit=crop&w=700&q=85"
-                            alt="Makanan kucing">
+                            alt="Makanan kucing" loading="lazy" decoding="async">
                     </a>
                     <div class="fc-product-details">
                         <span>01 / NOURISH</span>
@@ -184,7 +184,7 @@
                     <a class="fc-product-photo fc-product-cream"
                         href="{{ url('/webia/template/petshop-luxury-rosegold/produk/dog-treats') }}">
                         <img src="https://images.unsplash.com/photo-1582798358481-d199fb7347bb?auto=format&fit=crop&w=700&q=85"
-                            alt="Camilan hewan">
+                            alt="Camilan hewan" loading="lazy" decoding="async">
                     </a>
                     <div class="fc-product-details">
                         <span>02 / LITTLE TREATS</span>
@@ -205,7 +205,7 @@
                     <a class="fc-product-photo fc-product-sand"
                         href="{{ url('/webia/template/petshop-luxury-rosegold/produk/soft-pet-bed') }}">
                         <img src="https://images.unsplash.com/photo-1541599540903-216a46ca1dc0?auto=format&fit=crop&w=700&q=85"
-                            alt="Tempat tidur hewan">
+                            alt="Tempat tidur hewan" loading="lazy" decoding="async">
                     </a>
                     <div class="fc-product-details">
                         <span>03 / COMFORT</span>
@@ -226,7 +226,7 @@
                     <a class="fc-product-photo fc-product-lilac"
                         href="{{ url('/webia/template/petshop-luxury-rosegold/produk/pet-grooming-kit') }}">
                         <img src="https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?auto=format&fit=crop&w=700&q=85"
-                            alt="Perlengkapan grooming">
+                            alt="Perlengkapan grooming" loading="lazy" decoding="async">
                     </a>
                     <div class="fc-product-details">
                         <span>04 / WELLNESS</span>
@@ -248,7 +248,7 @@
         <section class="fc-editorial">
             <div class="fc-editorial-photo">
                 <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=1000&q=85"
-                    alt="Anjing kesayangan">
+                    alt="Anjing kesayangan" loading="lazy" decoding="async">
                 <span class="fc-editorial-photo-caption">A LIFE FULL OF LITTLE MOMENTS</span>
             </div>
             <div class="fc-editorial-copy">
@@ -283,7 +283,7 @@
         <section class="fc-promo">
             <div class="fc-promo-art">
                 <img src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=800&q=85"
-                    alt="Dua anjing bermain">
+                    alt="Dua anjing bermain" loading="lazy" decoding="async">
                 <span class="fc-promo-seal">A LITTLE<br>EXTRA LOVE<br>✦</span>
             </div>
             <div class="fc-promo-copy">

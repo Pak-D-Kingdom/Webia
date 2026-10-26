@@ -9,7 +9,7 @@
                 <a class="ot-btn ot-btn--primary" href="{{ $url('home', 'layanan') }}">Lihat Layanan Kami<svg class="ot-ic" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
             </div>
             <figure class="ot-about__media">
-                <img src="{{ $img($a['image']) }}" alt="{{ $a['image_alt'] }}" width="861" height="510">
+                <img src="{{ $img($a['image']) }}" alt="{{ $a['image_alt'] }}" width="861" height="510" loading="lazy" decoding="async">
                 <button class="ot-play" type="button" data-open="video" data-video="{{ $a['video_url'] }}" aria-label="{{ $a['video_caption'][0] }}">
                     <svg class="ot-ic" aria-hidden="true"><use href="#i-play"/></svg>
                 </button>

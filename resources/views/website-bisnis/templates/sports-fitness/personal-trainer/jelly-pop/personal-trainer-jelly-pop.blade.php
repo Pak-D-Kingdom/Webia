@@ -131,7 +131,7 @@
         <section class="jp-trainer jp-section" id="trainer">
             <div class="jp-trainer-image"><img
                     src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=1000&q=85"
-                    alt="Personal trainer coaching a client"><span class="jp-sticker jp-sticker-purple">YOU'VE<br>GOT
+                    alt="Personal trainer coaching a client" loading="lazy" decoding="async"><span class="jp-sticker jp-sticker-purple">YOU'VE<br>GOT
                     THIS!</span></div>
             <div class="jp-trainer-copy"><span class="jp-kicker">YOUR COACH, IN YOUR CORNER</span>
                 <h2>Meet the person<br>in your <em>corner.</em></h2>
@@ -184,7 +184,7 @@
             <div class="jp-result-grid">
                 <article><img
                         src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=850&q=85"
-                        alt="Athlete training in a gym">
+                        alt="Athlete training in a gym" loading="lazy" decoding="async">
                     <div><span>STRENGTH</span>
                         <h3>Show up. Get stronger.</h3>
                         <p>Celebrate your personal milestones—not someone else's timeline.</p>
@@ -192,7 +192,7 @@
                 </article>
                 <article><img
                         src="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=850&q=85"
-                        alt="Person stretching after a workout">
+                        alt="Person stretching after a workout" loading="lazy" decoding="async">
                     <div><span>CONSISTENCY</span>
                         <h3>Progress that fits real life.</h3>
                         <p>Build routines that can flex with your schedule and energy.</p>
@@ -200,7 +200,7 @@
                 </article>
                 <article><img
                         src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=850&q=85"
-                        alt="Fitness studio with workout equipment">
+                        alt="Fitness studio with workout equipment" loading="lazy" decoding="async">
                     <div><span>CONFIDENCE</span>
                         <h3>Your wins count.</h3>
                         <p>Track how you feel, what you learn, and what you can do today.</p>
@@ -230,7 +230,7 @@
             </div>
             <div class="jp-options-image"><img
                     src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=1100&q=85"
-                    alt="Personal fitness training session"><span class="jp-sticker jp-sticker-pink">ONE DAY<br>OR DAY
+                    alt="Personal fitness training session" loading="lazy" decoding="async"><span class="jp-sticker jp-sticker-pink">ONE DAY<br>OR DAY
                     ONE?</span></div>
         </section>
         <section class="jp-schedule jp-section" id="schedule">
