@@ -167,7 +167,7 @@ class AdminOrderTest extends TestCase
             ->get(route('admin.orders.index', ['status' => 'paid']))
             ->assertOk()
             ->assertSee($paid->order_number)
-            ->assertSee('>Paid</a>', false)
+            ->assertSee('>Lunas', false)
             ->assertSee('aria-current="page"', false)
             ->assertViewHas('activeStatus', 'paid');
     }
