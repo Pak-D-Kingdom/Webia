@@ -109,7 +109,7 @@
             @foreach ($deliveries as $deliveryName)
                 <a class="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 font-label-sm text-label-sm transition-all {{ $activeDelivery === $deliveryName ? 'bg-primary-container font-bold text-on-primary shadow-sm' : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface' }}" href="{{ route('admin.orders.index', array_filter(['status' => $activeStatus, 'delivery' => $deliveryName], fn ($v) => $v !== '')) }}" @if ($activeDelivery === $deliveryName) aria-current="page" @endif>{{ $deliveryLabels[$deliveryName] }}
                     @if (($deliveryCounts[$deliveryName] ?? 0) > 0)
-                        <span class="rounded-full bg-surface-container-high px-1.5 py-0.2 font-caption text-caption text-on-surface-variant {{ $activeDelivery === $deliveryName ? 'text-primary-fixed' : '' }}">{{ $deliveryCounts[$deliveryName] }}</span>
+                        <span class="rounded-full px-1.5 py-0.2 font-caption text-caption {{ $activeDelivery === $deliveryName ? 'bg-white/25 text-on-primary' : 'bg-surface-container-high text-on-surface-variant' }}">{{ $deliveryCounts[$deliveryName] }}</span>
                     @endif
                 </a>
             @endforeach
