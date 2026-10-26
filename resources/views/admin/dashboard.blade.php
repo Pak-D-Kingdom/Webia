@@ -54,7 +54,7 @@
     $axisIdx = [0, 6, 12, 18, $peakIdx, 29];
 @endphp
 <!-- Glow -->
-<div class="relative w-full overflow-hidden pointer-events-none">
+<div class="relative mb-space-lg w-full overflow-hidden pointer-events-none">
     <div class="absolute -left-20 -top-24 h-96 w-96 rounded-full bg-primary-container/10 blur-3xl"></div>
     <div class="absolute -top-28 right-12 h-80 w-80 rounded-full bg-secondary-container/20 blur-3xl"></div>
 </div>
