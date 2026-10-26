@@ -11,7 +11,7 @@
             <p class="mt-0.5 font-body-md text-body-md text-on-surface-variant">Pantau transaksi lisensi template, status pembayaran &amp; transfer manual, serta progres pengerjaan custom.</p>
         </div>
         @if ($orders->count() > 0)
-            <button class="flex h-9 items-center gap-1.5 self-start rounded-lg border-2 border-outline-variant bg-surface-container-lowest px-3 font-label-md text-label-md text-primary transition-all hover:border-primary/40 hover:bg-surface-container-low md:self-auto" id="btnExportCsv" type="button">
+            <button class="flex h-9 items-center gap-1.5 self-start rounded-lg border-2 border-outline-variant bg-surface-container-lowest px-3 font-label-md text-label-md text-primary transition-all hover:border-primary hover:bg-primary hover:text-on-primary md:self-auto" id="btnExportCsv" type="button">
                 <span class="material-symbols-outlined text-lg text-on-surface-variant">file_download</span>
                 Export CSV
             </button>
@@ -21,7 +21,7 @@
     <!-- Stat cards -->
     <div class="grid grid-cols-1 gap-space-md sm:grid-cols-2 xl:grid-cols-4">
         <div class="group relative overflow-hidden rounded-xl bg-surface-container-lowest p-space-md shadow-sm transition-all hover:shadow-md">
-            <div class="absolute left-0 top-0 h-full w-1.5 bg-secondary"></div>
+            <div class="absolute left-0 top-0 h-full w-1.5 bg-primary"></div>
             <div class="flex items-start justify-between">
                 <span class="font-label-md text-label-md tracking-wide text-on-surface-variant">Total Pesanan</span>
                 <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-fixed text-primary">
@@ -57,10 +57,10 @@
             </div>
         </div>
         <div class="group relative overflow-hidden rounded-xl bg-surface-container-lowest p-space-md shadow-sm transition-all hover:shadow-md">
-            <div class="absolute left-0 top-0 h-full w-1.5 bg-primary-container"></div>
+            <div class="absolute left-0 top-0 h-full w-1.5 bg-secondary"></div>
             <div class="flex items-start justify-between">
                 <span class="font-label-md text-label-md tracking-wide text-on-surface-variant">Sedang Dikerjakan</span>
-                <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-fixed text-primary">
+                <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-secondary-fixed/40 text-secondary">
                     <span class="material-symbols-outlined text-lg">design_services</span>
                 </div>
             </div>
@@ -73,10 +73,10 @@
             </div>
         </div>
         <div class="group relative overflow-hidden rounded-xl bg-surface-container-lowest p-space-md shadow-sm transition-all hover:shadow-md">
-            <div class="absolute left-0 top-0 h-full w-1.5 bg-secondary"></div>
+            <div class="absolute left-0 top-0 h-full w-1.5 bg-green-600"></div>
             <div class="flex items-start justify-between">
                 <span class="font-label-md text-label-md tracking-wide text-on-surface-variant">Selesai Bulan Ini</span>
-                <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-secondary-fixed/40 text-secondary">
+                <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-green-50 text-green-700">
                     <span class="material-symbols-outlined text-lg">verified</span>
                 </div>
             </div>
@@ -204,7 +204,7 @@
                             @endswitch
                         </td>
                         <td class="px-3 py-3.5 text-center md:px-4">
-                            <a class="relative inline-flex items-center gap-1.5 rounded-lg border-2 border-outline-variant bg-surface-container-lowest px-2.5 py-1.5 font-label-sm text-label-sm font-semibold text-primary transition-all hover:border-primary/40 hover:bg-surface-container-low hover:text-primary active:scale-[0.98]" data-order-detail href="{{ route('admin.orders.show', $order) }}" @if ($order->status === 'payment_uploaded') title="Butuh review bukti transfer" @endif>
+                            <a class="relative inline-flex items-center gap-1.5 rounded-lg border-2 border-outline-variant bg-surface-container-lowest px-2.5 py-1.5 font-label-sm text-label-sm font-semibold text-primary transition-all hover:border-primary hover:bg-primary hover:text-on-primary active:scale-[0.98]" data-order-detail href="{{ route('admin.orders.show', $order) }}" @if ($order->status === 'payment_uploaded') title="Butuh review bukti transfer" @endif>
                                 @if ($order->status === 'payment_uploaded')
                                     <span aria-hidden="true" class="absolute -right-1 -top-1 h-2.5 w-2.5 animate-pulse rounded-full border-2 border-surface-container-lowest bg-error"></span>
                                     <span class="sr-only">Butuh review bukti transfer.</span>
