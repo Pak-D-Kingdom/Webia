@@ -77,6 +77,12 @@ function initializeAdminPage() {
     sidebar?.querySelector('[data-sidebar-close]')?.addEventListener('click', () => setSidebar(false));
     window.matchMedia('(min-width: 768px)').addEventListener('change', () => setSidebar(false));
     scrim?.addEventListener('click', () => setSidebar(false));
+    document.addEventListener('keydown', (event) => {
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
+        event.preventDefault();
+        document.getElementById('adminTopbarSearch')?.focus();
+      }
+    });
     adminShellInitialized = true;
   }
 

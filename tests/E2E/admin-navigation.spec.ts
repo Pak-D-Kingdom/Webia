@@ -14,6 +14,10 @@ test('admin menu changes content without a full page reload and supports browser
     await page.getByRole('button', { name: 'Masuk' }).click();
     await page.goto('/admin');
 
+    await expect(page.getByText('Ctrl K', { exact: true })).toBeVisible();
+    await page.keyboard.press('Control+K');
+    await expect(page.getByPlaceholder('Cari pesanan, invoice, atau pelanggan...')).toBeFocused();
+
     await page.evaluate(() => {
         window.name = 'admin-ajax-navigation';
         document.documentElement.dataset.navigationSentinel = 'alive';
