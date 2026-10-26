@@ -195,9 +195,9 @@
                         <td class="px-3 py-3.5 text-right md:px-4">
                             <div class="flex items-center justify-end gap-1">
                                 @if ($order->status === 'payment_uploaded')
-                                    <a class="rounded bg-primary px-2 py-1 font-label-sm text-label-sm text-on-primary transition-all hover:bg-primary-container" href="{{ route('admin.orders.show', $order) }}">Review Bukti</a>
+                                    <a class="rounded bg-primary px-2 py-1 font-label-sm text-label-sm text-on-primary transition-all hover:bg-primary-container" data-order-detail href="{{ route('admin.orders.show', $order) }}">Review Bukti</a>
                                 @endif
-                                <a class="flex items-center gap-0.5 rounded bg-surface-container px-2 py-1 font-label-sm text-label-sm text-on-surface transition-all hover:bg-surface-container-high" href="{{ route('admin.orders.show', $order) }}">
+                                <a class="flex items-center gap-0.5 rounded bg-surface-container px-2 py-1 font-label-sm text-label-sm text-on-surface transition-all hover:bg-surface-container-high" data-order-detail href="{{ route('admin.orders.show', $order) }}">
                                     Detail
                                     <span class="material-symbols-outlined text-xs">chevron_right</span>
                                 </a>

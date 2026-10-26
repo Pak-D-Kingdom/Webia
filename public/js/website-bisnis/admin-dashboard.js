@@ -260,6 +260,7 @@ function initializeAdminPage() {
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       closeSlipModal();
+      setOrderModal(false);
       if (sidebar?.classList.contains('translate-x-0')) setSidebar(false);
     }
   }, listenerOptions);
@@ -289,6 +290,59 @@ function initializeAdminPage() {
     closeSlipModal();
     showToast(ok ? 'Bukti transfer ditolak.' : 'Gagal menolak, coba dari antrean.');
     if (ok) setTimeout(() => location.reload(), 900);
+  }, listenerOptions);
+
+  // Modal detail pesanan: fetch halaman show lalu inject konten #orderDetailContent.
+  const orderModal = document.querySelector('[data-order-modal]');
+  const orderModalBody = document.getElementById('orderModalBody');
+  const orderModalTitle = document.getElementById('orderModalTitle');
+  let orderModalReturnFocus = null;
+
+  function setOrderModal(open) {
+    if (!orderModal) return;
+    orderModal.classList.toggle('hidden', !open);
+    orderModal.classList.toggle('flex', open);
+    document.body.classList.toggle('overflow-hidden', open);
+    if (open) {
+      orderModal.querySelector('[data-order-modal-close]')?.focus();
+    } else {
+      orderModalReturnFocus?.focus();
+      orderModalReturnFocus = null;
+    }
+  }
+
+  async function openOrderModal(link) {
+    orderModalReturnFocus = link;
+    orderModalBody.innerHTML = '<div class="grid place-items-center p-gutter text-on-surface-variant"><span class="material-symbols-outlined animate-spin text-3xl">progress_activity</span></div>';
+    setOrderModal(true);
+    try {
+      const res = await fetch(link.href, { headers: { Accept: 'text/html' } });
+      const doc = new DOMParser().parseFromString(await res.text(), 'text/html');
+      const content = doc.getElementById('orderDetailContent');
+      if (!content) throw new Error('detail tidak ditemukan');
+      orderModalBody.innerHTML = content.innerHTML;
+      orderModalTitle.innerText = 'Detail ' + (doc.getElementById('admin-order-number')?.innerText.trim() || 'Pesanan');
+    } catch {
+      setOrderModal(false);
+      showToast('Gagal memuat detail pesanan');
+    }
+  }
+
+  document.querySelectorAll('[data-order-detail]').forEach((link) => {
+    link.addEventListener('click', function (e) {
+      e.preventDefault();
+      openOrderModal(this);
+    }, listenerOptions);
+  });
+
+  orderModal?.querySelector('[data-order-modal-close]')?.addEventListener('click', () => setOrderModal(false), listenerOptions);
+  orderModal?.querySelector('[data-order-modal-scrim]')?.addEventListener('click', () => setOrderModal(false), listenerOptions);
+
+  // Tombol salin (di halaman & di dalam modal).
+  document.addEventListener('click', (e) => {
+    const btn = e.target instanceof Element && e.target.closest('[data-copy-text]');
+    if (!btn) return;
+    navigator.clipboard?.writeText(btn.dataset.copyText).then(() => showToast(btn.dataset.copyMessage || 'Disalin ke clipboard'));
   }, listenerOptions);
 
   // Filter & pencarian tabel.

@@ -441,7 +441,7 @@
                         </td>
                         <td class="px-4 py-3.5 tabular-nums font-body-sm text-body-sm text-on-surface-variant">{{ $order->created_at->format('d M Y, H:i').' WIB' }}</td>
                         <td class="px-4 py-3.5 text-right">
-                            <a class="rounded px-2.5 py-1 font-label-sm text-label-sm font-semibold text-primary transition-all hover:bg-surface-container" href="{{ route('admin.orders.show', $order) }}">Detail →</a>
+                            <a class="rounded px-2.5 py-1 font-label-sm text-label-sm font-semibold text-primary transition-all hover:bg-surface-container" data-order-detail href="{{ route('admin.orders.show', $order) }}">Detail →</a>
                         </td>
                     </tr>
                 @endforeach

@@ -154,7 +154,22 @@
             </div>
         </main>
     </div>
-    <div class="fixed bottom-6 right-6 z-50 hidden items-center gap-2 rounded-xl bg-primary px-4 py-2.5 font-body-sm text-body-sm text-on-primary shadow-xl" id="toastNotification">
+    <div aria-hidden="true" class="fixed inset-0 z-[60] hidden items-center justify-center p-4 md:p-8" data-order-modal>
+        <div class="fixed inset-0 bg-inverse-surface/50" data-order-modal-scrim></div>
+        <div aria-labelledby="orderModalTitle" aria-modal="true" class="relative flex max-h-[90vh] w-full max-w-5xl flex-col overflow-hidden rounded-xl bg-background shadow-xl" role="dialog">
+            <div class="flex items-center justify-between border-b border-surface-container bg-surface-container-lowest px-margin-md py-space-sm">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-xl text-primary">receipt_long</span>
+                    <span class="font-label-md text-label-md font-bold text-on-surface" id="orderModalTitle">Detail Pesanan</span>
+                </div>
+                <button aria-label="Tutup detail pesanan" class="grid h-8 w-8 place-items-center rounded-lg bg-surface-container text-on-surface-variant transition-colors hover:bg-error-container hover:text-on-error-container" data-order-modal-close type="button">
+                    <span class="material-symbols-outlined text-base">close</span>
+                </button>
+            </div>
+            <div class="overflow-y-auto px-margin-md py-4" id="orderModalBody"></div>
+        </div>
+    </div>
+    <div class="fixed bottom-6 right-6 z-[70] hidden items-center gap-2 rounded-xl bg-primary px-4 py-2.5 font-body-sm text-body-sm text-on-primary shadow-xl" id="toastNotification">
         <span class="material-symbols-outlined text-lg text-secondary-fixed" id="toastIcon">check_circle</span>
         <span id="toastMessage">Operasi berhasil dijalankan</span>
     </div>
