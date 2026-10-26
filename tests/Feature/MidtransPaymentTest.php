@@ -80,7 +80,7 @@ class MidtransPaymentTest extends TestCase
         ]);
 
         $order = WebiaOrder::factory()->create(['status' => 'awaiting_payment']);
-        WebiaPayment::factory()->create([
+        $expiredPayment = WebiaPayment::factory()->create([
             'webia_order_id' => $order->id,
             'midtrans_order_id' => 'WEB-'.$order->id.'-01',
             'expires_at' => now()->subMinute(),
@@ -90,8 +90,95 @@ class MidtransPaymentTest extends TestCase
             ->post(route('orders.pay', $order))
             ->assertRedirect('https://sandbox.midtrans.com/pay/new');
 
+        $this->assertSame('superseded', $expiredPayment->fresh()->status);
         $this->assertSame('WEB-'.$order->id.'-02', $order->payments()->latest('id')->first()->midtrans_order_id);
         $this->assertSame(2, $order->payments()->count());
+    }
+
+    public function test_superseded_payment_can_settle_then_repeated_notification_is_idempotent(): void
+    {
+        Http::fake([
+            'api.sandbox.midtrans.com/snap/v1/transactions' => Http::response(['token' => 'snap-token-2', 'redirect_url' => 'https://sandbox.midtrans.com/pay/new'], 200),
+        ]);
+
+        $order = WebiaOrder::factory()->create(['status' => 'awaiting_payment']);
+        $oldPayment = WebiaPayment::factory()->create([
+            'webia_order_id' => $order->id,
+            'midtrans_order_id' => 'WEB-'.$order->id.'-01',
+            'expires_at' => now()->subMinute(),
+        ]);
+
+        $this->actingAs($order->user)->post(route('orders.pay', $order));
+        $newPayment = $order->payments()->latest('id')->firstOrFail();
+
+        $oldPayload = ['order_id' => $oldPayment->midtrans_order_id, 'status_code' => '200', 'gross_amount' => '499000', 'transaction_status' => 'settlement'];
+        $this->postJson(route('payments.midtrans.notify'), $oldPayload + ['signature_key' => $this->signature($oldPayload)])->assertOk();
+        $this->postJson(route('payments.midtrans.notify'), $oldPayload + ['signature_key' => $this->signature($oldPayload)])->assertOk();
+
+        $this->assertSame('paid', $oldPayment->fresh()->status);
+        $this->assertSame('paid', $order->fresh()->status);
+        $this->assertSame(1, $order->logs()->where('to_status', 'paid')->count());
+
+        $newPayload = ['order_id' => $newPayment->midtrans_order_id, 'status_code' => '200', 'gross_amount' => '499000', 'transaction_status' => 'settlement'];
+        $this->postJson(route('payments.midtrans.notify'), $newPayload + ['signature_key' => $this->signature($newPayload)])->assertOk();
+        $this->postJson(route('payments.midtrans.notify'), $newPayload + ['signature_key' => $this->signature($newPayload)])->assertOk();
+
+        $this->assertSame('duplicate', $newPayment->fresh()->status);
+        $this->assertSame(1, $order->logs()->where('note', 'like', 'Dibayar via Midtrans%')->count());
+        $this->assertSame(1, $order->logs()->where('note', 'like', 'Pembayaran ganda%')->count());
+    }
+
+    public function test_failed_replacement_keeps_unknown_transaction_for_late_settlement(): void
+    {
+        Http::fake([
+            'api.sandbox.midtrans.com/snap/v1/transactions' => Http::failedConnection(),
+        ]);
+        config(['webia.midtrans.server_key' => 'SB-Mid-server-test-key']);
+
+        $order = WebiaOrder::factory()->create(['status' => 'awaiting_payment']);
+        $oldPayment = WebiaPayment::factory()->create([
+            'webia_order_id' => $order->id,
+            'midtrans_order_id' => 'WEB-'.$order->id.'-01',
+            'expires_at' => now()->subMinute(),
+        ]);
+
+        $this->actingAs($order->user)
+            ->post(route('orders.pay', $order))
+            ->assertSessionHas('status', 'Pembayaran Midtrans gagal dibuat. Coba lagi sebentar.');
+
+        $unknownPayment = $order->payments()->latest('id')->firstOrFail();
+        $this->assertSame('created', $oldPayment->fresh()->status);
+        $this->assertNull($unknownPayment->snap_token);
+        $this->assertNull($unknownPayment->snap_redirect_url);
+        $this->assertSame(2, $order->payments()->count());
+
+        $payload = ['order_id' => $unknownPayment->midtrans_order_id, 'status_code' => '200', 'gross_amount' => '499000', 'transaction_status' => 'settlement'];
+        $this->postJson(route('payments.midtrans.notify'), $payload + ['signature_key' => $this->signature($payload)])->assertOk();
+
+        $this->assertSame('paid', $unknownPayment->fresh()->status);
+        $this->assertSame('paid', $order->fresh()->status);
+    }
+
+    public function test_payment_without_redirect_url_is_not_reused(): void
+    {
+        Http::fake([
+            'api.sandbox.midtrans.com/snap/v1/transactions' => Http::response(['token' => 'snap-token-3', 'redirect_url' => 'https://sandbox.midtrans.com/pay/retry'], 200),
+        ]);
+
+        $order = WebiaOrder::factory()->create(['status' => 'awaiting_payment']);
+        WebiaPayment::factory()->create([
+            'webia_order_id' => $order->id,
+            'midtrans_order_id' => 'WEB-'.$order->id.'-01',
+            'snap_token' => null,
+            'snap_redirect_url' => null,
+        ]);
+
+        $this->actingAs($order->user)
+            ->post(route('orders.pay', $order))
+            ->assertRedirect('https://sandbox.midtrans.com/pay/retry');
+
+        $this->assertSame(2, $order->payments()->count());
+        $this->assertSame('WEB-'.$order->id.'-02', $order->payments()->latest('id')->firstOrFail()->midtrans_order_id);
     }
 
     public function test_pay_requires_ownership(): void

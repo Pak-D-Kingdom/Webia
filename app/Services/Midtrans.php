@@ -17,6 +17,8 @@ class Midtrans
 
     public function createTransaction(WebiaOrder $order, string $midtransOrderId): WebiaPayment
     {
+        $previousPaymentIds = $order->payments()->where('status', 'created')->pluck('id');
+
         $payment = WebiaPayment::create([
             'webia_order_id' => $order->id,
             'midtrans_order_id' => $midtransOrderId,
@@ -27,36 +29,51 @@ class Midtrans
         if (! $this->configured()) {
             // shortcut: tanpa server key Midtrans (dev/E2E), sesi bayar disimulasikan lokal hingga key asli dipasang
             $payment->update(['snap_token' => 'fake-'.Str::random(10), 'snap_redirect_url' => route('payments.midtrans.simulate', $payment)]);
+            $order->payments()->whereKey($previousPaymentIds)->update(['status' => 'superseded']);
 
             return $payment;
         }
 
-        $response = Http::baseUrl($this->baseUrl())
-            ->withBasicAuth($this->serverKey(), '')
-            ->post('/snap/v1/transactions', [
-                'transaction_details' => [
-                    'order_id' => $midtransOrderId,
-                    'gross_amount' => (int) $order->total_price,
-                ],
-                'expiry' => [
-                    'duration' => 1440,
-                    'unit' => 'minutes',
-                ],
-                'callbacks' => [
-                    'finish' => route('payments.midtrans.callback'),
-                    'unfinish' => route('payments.midtrans.callback'),
-                    'error' => route('payments.midtrans.callback'),
-                ],
-            ]);
+        try {
+            $response = Http::baseUrl($this->baseUrl())
+                ->connectTimeout(5)
+                ->timeout(15)
+                ->withBasicAuth($this->serverKey(), '')
+                ->post('/snap/v1/transactions', [
+                    'transaction_details' => [
+                        'order_id' => $midtransOrderId,
+                        'gross_amount' => (int) $order->total_price,
+                    ],
+                    'expiry' => [
+                        'duration' => 1440,
+                        'unit' => 'minutes',
+                    ],
+                    'callbacks' => [
+                        'finish' => route('payments.midtrans.callback'),
+                        'unfinish' => route('payments.midtrans.callback'),
+                        'error' => route('payments.midtrans.callback'),
+                    ],
+                ]);
+        } catch (Throwable $exception) {
+            report($exception);
 
-        if (! $response->successful()) {
-            throw new RuntimeException('Midtrans menolak transaksi (HTTP '.$response->status().').');
+            return $payment;
+        }
+
+        $snapToken = (string) $response->json('token');
+        $redirectUrl = (string) $response->json('redirect_url');
+
+        if (! $response->successful() || $snapToken === '' || $redirectUrl === '') {
+            report(new RuntimeException('Midtrans menolak transaksi (HTTP '.$response->status().').'));
+
+            return $payment;
         }
 
         $payment->update([
-            'snap_token' => (string) $response->json('token'),
-            'snap_redirect_url' => (string) $response->json('redirect_url'),
+            'snap_token' => $snapToken,
+            'snap_redirect_url' => $redirectUrl,
         ]);
+        $order->payments()->whereKey($previousPaymentIds)->update(['status' => 'superseded']);
 
         return $payment;
     }
@@ -70,6 +87,8 @@ class Midtrans
 
         try {
             $response = Http::baseUrl($this->baseUrl())
+                ->connectTimeout(5)
+                ->timeout(15)
                 ->withBasicAuth($this->serverKey(), '')
                 ->get('/v2/'.$midtransOrderId.'/status');
 
@@ -94,10 +113,17 @@ class Midtrans
     public function applyNotification(WebiaPayment $payment, array $payload): void
     {
         DB::transaction(function () use ($payment, $payload): void {
+            $order = WebiaOrder::whereKey($payment->webia_order_id)->lockForUpdate()->firstOrFail();
             $locked = WebiaPayment::whereKey($payment->id)->lockForUpdate()->firstOrFail();
             $newStatus = $this->mapTransactionStatus((string) data_get($payload, 'transaction_status'));
 
-            if ($newStatus === 'paid' && $locked->status !== 'paid' && $this->orderAlreadyPaid($locked)) {
+            if ($newStatus === 'paid' && $locked->status === 'duplicate') {
+                $locked->update(['payload' => $payload]);
+
+                return;
+            }
+
+            if ($newStatus === 'paid' && $locked->status !== 'paid' && $this->orderAlreadyPaid($locked, $order)) {
                 // Customer terlanjur bayar dua kali (dua sesi / Midtrans + transfer manual) — dana ganda harus di-refund admin.
                 $locked->update(['status' => 'duplicate', 'payload' => $payload, 'paid_at' => now()]);
                 WebiaOrderLog::create([
@@ -117,19 +143,13 @@ class Midtrans
             ]);
 
             if ($newStatus === 'paid') {
-                $this->markOrderPaid($locked);
+                $this->markOrderPaid($locked, $order);
             }
         });
     }
 
-    private function orderAlreadyPaid(WebiaPayment $payment): bool
+    private function orderAlreadyPaid(WebiaPayment $payment, WebiaOrder $order): bool
     {
-        $order = WebiaOrder::find($payment->webia_order_id);
-
-        if ($order === null) {
-            return false;
-        }
-
         return $order->status === 'paid'
             || $order->payments()->where('status', 'paid')->whereKeyNot($payment->id)->exists();
     }
@@ -145,10 +165,8 @@ class Midtrans
         };
     }
 
-    private function markOrderPaid(WebiaPayment $payment): void
+    private function markOrderPaid(WebiaPayment $payment, WebiaOrder $order): void
     {
-        $order = WebiaOrder::whereKey($payment->webia_order_id)->lockForUpdate()->firstOrFail();
-
         if (! in_array($order->status, ['awaiting_payment', 'rejected'], true)) {
             return;
         }

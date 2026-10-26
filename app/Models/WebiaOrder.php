@@ -44,6 +44,17 @@ class WebiaOrder extends Model
         return $this->hasMany(WebiaPayment::class);
     }
 
+    public function getProgressIndexAttribute(): int
+    {
+        return match (true) {
+            $this->delivery_status === 'delivered' => 4,
+            $this->delivery_status === 'in_progress' => 3,
+            $this->status === 'paid' => 2,
+            $this->status === 'payment_uploaded' => 1,
+            default => 0,
+        };
+    }
+
     protected function casts(): array
     {
         return [
