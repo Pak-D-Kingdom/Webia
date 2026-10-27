@@ -52,12 +52,18 @@
             }
         }
         $d = 'M '.$p[0]['x'].' '.$p[0]['y'];
+        $f = 1 / 6; // offset kontrol: kecil = tikungan lebih rapat/membulat
         for ($i = 0; $i < $n - 1; $i++) {
             $h = $p[$i + 1]['x'] - $p[$i]['x'];
-            $c1x = $p[$i]['x'] + $h / 3;
-            $c1y = $p[$i]['y'] + $slope[$i] * $h / 3;
-            $c2x = $p[$i + 1]['x'] - $h / 3;
-            $c2y = $p[$i + 1]['y'] - $slope[$i + 1] * $h / 3;
+            $c1x = $p[$i]['x'] + $h * $f;
+            $c1y = $p[$i]['y'] + $slope[$i] * $h * $f;
+            $c2x = $p[$i + 1]['x'] - $h * $f;
+            $c2y = $p[$i + 1]['y'] - $slope[$i + 1] * $h * $f;
+            // Jaga-jaga: kontrol y di dalam rentang segmen = tidak ada overshoot
+            $minY = min($p[$i]['y'], $p[$i + 1]['y']);
+            $maxY = max($p[$i]['y'], $p[$i + 1]['y']);
+            $c1y = max($minY, min($maxY, $c1y));
+            $c2y = max($minY, min($maxY, $c2y));
             $d .= sprintf(' C %.1f %.1f %.1f %.1f %s %s', $c1x, $c1y, $c2x, $c2y, $p[$i + 1]['x'], $p[$i + 1]['y']);
         }
 
