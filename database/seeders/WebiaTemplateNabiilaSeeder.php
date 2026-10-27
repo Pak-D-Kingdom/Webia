@@ -270,6 +270,7 @@ class WebiaTemplateNabiilaSeeder extends Seeder
                 'business_types' => ['Klinik Kecantikan'],
                 'design_style' => 'Luxury',
                 'color_theme' => 'Champagne Glow',
+                'description' => 'Website klinik kecantikan luxury champagne glow dengan layanan estetika premium, fasilitas spa, testimoni klien, jadwal praktik, lokasi, booking appointment, FAQ, dan asisten AI.',
                 'preview_style' => 'preview-glow',
                 'eyebrow' => 'PREMIUM AESTHETIC CLINIC',
                 'headline' => 'Perjalanan kecantikanmu,<br>dimulai dari sini.',

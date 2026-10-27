@@ -35,7 +35,7 @@ class BakeryBoldLuxuryTemplateTest extends TestCase
             '--no-interaction' => true,
         ]);
 
-        $this->assertDatabaseCount('webia_templates', 2);
+        $this->assertDatabaseCount('webia_templates', 5);
         $this->assertDatabaseHas('webia_templates', [
             'slug' => 'bakery-bold-luxury',
             'sort_order' => 33,
