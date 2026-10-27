@@ -417,7 +417,7 @@ function initializeAdminPage() {
 
     tableRows.forEach((row) => {
       const matchesQuery = !query || row.innerText.toLowerCase().includes(query);
-      const matchesStatus = currentFilter === 'all' || row.getAttribute('data-status') === currentFilter;
+      const matchesStatus = currentFilter === 'all' || currentFilter === '' || row.getAttribute('data-status') === currentFilter;
       const matchesDelivery = currentDeliveryFilter === '' || row.getAttribute('data-delivery') === currentDeliveryFilter;
       const visible = matchesQuery && matchesStatus && matchesDelivery;
       row.style.display = visible ? '' : 'none';
