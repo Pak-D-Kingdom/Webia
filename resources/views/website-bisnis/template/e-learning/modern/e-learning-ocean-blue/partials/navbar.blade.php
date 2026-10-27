@@ -20,9 +20,9 @@
                     </li>
                 @endforeach
             </ul>
-            <a class="el-btn el-btn--primary el-nav__login el-nav__login--mobile" href="{{ route('elearning.member-area') }}">
-                <svg class="el-ico" aria-hidden="true"><use href="#i-user"/></svg>Login / Register
-            </a>
+            <div class="el-nav__cta el-nav__cta--mobile">
+                @include($ns.'.partials.nav-actions')
+            </div>
         </nav>
 
         <div class="el-navbar__actions">
@@ -36,9 +36,9 @@
                     <button type="submit" class="el-btn el-btn--primary el-btn--sm">Cari</button>
                 </form>
             </div>
-            <a class="el-btn el-btn--primary el-nav__login el-nav__login--desktop" href="{{ route('elearning.member-area') }}">
-                <svg class="el-ico" aria-hidden="true"><use href="#i-user"/></svg>Login / Register
-            </a>
+            <div class="el-nav__cta el-nav__cta--desktop">
+                @include($ns.'.partials.nav-actions')
+            </div>
             <button type="button" class="el-icon-btn el-burger" aria-label="Buka menu" aria-expanded="false" aria-controls="elNav" data-nav-toggle>
                 <svg class="el-ico" aria-hidden="true"><use href="#i-menu"/></svg>
             </button>

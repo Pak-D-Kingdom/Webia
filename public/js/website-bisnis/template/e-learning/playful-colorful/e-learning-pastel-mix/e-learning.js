@@ -28,7 +28,6 @@
     const burger = $('[data-menu-toggle]', bar);
     const searchBtn = $('[data-search-toggle]', bar);
     const searchPanel = $('[data-search-panel]', bar);
-    const searchClose = $('[data-search-close]', bar);
 
     const onScroll = () => bar.classList.toggle('is-stuck', window.scrollY > 8);
     onScroll();
@@ -47,7 +46,6 @@
 
     burger.addEventListener('click', () => { setSearch(false); setMenu(!menu.classList.contains('is-open')); });
     searchBtn.addEventListener('click', () => { setMenu(false); setSearch(searchPanel.hidden); });
-    if (searchClose) searchClose.addEventListener('click', () => { setSearch(false); searchBtn.focus(); });
     menu.addEventListener('click', (e) => { if (e.target.closest('a')) setMenu(false); });
     document.addEventListener('click', (e) => { if (!bar.contains(e.target)) { setMenu(false); setSearch(false); } });
     document.addEventListener('keydown', (e) => {
@@ -91,8 +89,6 @@
     const cards = $$('.pcard', root);
     const empty = $('[data-filter-empty]', root);
     const search = $('[data-filter-search]', root);
-    const count = $('[data-filter-count]', root);
-    const clear = $('[data-filter-clear]', root);
     const catBtns = $$('[data-filter]', root);
     const lvBtns = $$('[data-level-filter]', root);
     const params = new URLSearchParams(window.location.search);
@@ -114,11 +110,6 @@
         if (ok) shown++;
       });
       if (empty) empty.hidden = shown !== 0;
-      if (count) {
-        const all = shown === cards.length && !state.q && state.cat === 'all' && state.level === 'all';
-        count.textContent = all ? `Menampilkan semua ${shown} program` : `${shown} program ditemukan`;
-      }
-      if (clear && search) clear.hidden = !search.value;
       markActive(catBtns, 'filter', state.cat);
       markActive(lvBtns, 'levelFilter', state.level);
     };
@@ -126,7 +117,6 @@
     catBtns.forEach((b) => b.addEventListener('click', () => { state.cat = b.dataset.filter; apply(); }));
     lvBtns.forEach((b) => b.addEventListener('click', () => { state.level = b.dataset.levelFilter; apply(); }));
     if (search) search.addEventListener('input', () => { state.q = search.value.trim().toLowerCase(); apply(); });
-    if (clear && search) clear.addEventListener('click', () => { search.value = ''; state.q = ''; apply(); search.focus(); });
     apply();
   }
 
@@ -224,93 +214,6 @@
       btn.setAttribute('aria-label', show ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi');
       $('i', btn).className = show ? 'bi bi-eye-slash-fill' : 'bi bi-eye-fill';
     }));
-  }
-
-  /* ------------------------------------------- PENCARIAN + SARAN (AUTOCOMPLETE) */
-  const rupiah = (n) => `Rp ${Number(n).toLocaleString('id-ID')}`;
-  const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text) n.textContent = text; return n; };
-
-  function highlight(text, q) {
-    const frag = document.createDocumentFragment();
-    const i = q ? text.toLowerCase().indexOf(q.toLowerCase()) : -1;
-    if (i < 0) { frag.append(text); return frag; }
-    const m = el('mark', '', text.slice(i, i + q.length));
-    frag.append(text.slice(0, i), m, text.slice(i + q.length));
-    return frag;
-  }
-
-  function initSuggest() {
-    const S = cfg.search;
-    if (!S) return;
-    let uid = 0;
-    $$('[data-suggest]').forEach((input) => {
-      const wrap = input.closest('.search');
-      if (!wrap) return;
-      const list = el('ul', 'suggest');
-      list.id = `suggest-${++uid}`; list.setAttribute('role', 'listbox'); list.hidden = true;
-      wrap.appendChild(list);
-      input.setAttribute('role', 'combobox');
-      input.setAttribute('aria-autocomplete', 'list');
-      input.setAttribute('aria-controls', list.id);
-      input.setAttribute('aria-expanded', 'false');
-
-      let items = []; let active = -1;
-      const urlFor = (params) => `${S.url}?${new URLSearchParams(params)}`;
-      const setOpen = (v) => { list.hidden = !v; input.setAttribute('aria-expanded', String(v)); if (!v) setActive(-1); };
-      const setActive = (i) => {
-        active = i;
-        items.forEach((li, k) => { li.classList.toggle('is-active', k === i); li.setAttribute('aria-selected', String(k === i)); });
-        if (i >= 0) { input.setAttribute('aria-activedescendant', items[i].id); items[i].scrollIntoView({ block: 'nearest' }); }
-        else input.removeAttribute('aria-activedescendant');
-      };
-      const addItem = (href, icon, build) => {
-        const li = el('li', 'suggest__item'); li.id = `${list.id}-o${items.length}`; li.setAttribute('role', 'option');
-        const a = el('a'); a.href = href; a.tabIndex = -1;
-        a.appendChild(el('i', `bi ${icon} suggest__ico`)); build(a);
-        li.appendChild(a); list.appendChild(li); items.push(li);
-      };
-      const heading = (t) => { const h = el('li', 'suggest__head', t); h.setAttribute('role', 'presentation'); list.appendChild(h); };
-
-      const render = () => {
-        const q = input.value.trim();
-        list.textContent = ''; items = []; active = -1;
-        if (!q) {
-          heading('Kategori populer');
-          S.popular.forEach((c) => addItem(urlFor({ cat: c.category }), 'bi-lightning-charge-fill', (a) => a.appendChild(el('span', 'suggest__txt', c.title))));
-          return;
-        }
-        const tokens = norm(q).split(' ').filter(Boolean);
-        const hits = S.programs.filter((p) => { const hay = norm(`${p.title} ${p.category} ${p.level}`); return tokens.every((t) => hay.includes(t)); }).slice(0, 5);
-        if (hits.length) {
-          heading('Program yang cocok');
-          hits.forEach((p) => addItem(urlFor({ q: p.title }), 'bi-mortarboard-fill', (a) => {
-            const txt = el('span', 'suggest__txt'); txt.appendChild(highlight(p.title, q));
-            txt.appendChild(el('small', '', `${p.level} · ${rupiah(p.price)}`));
-            a.appendChild(txt);
-          }));
-        } else {
-          list.appendChild(el('li', 'suggest__empty', 'Belum ada program yang cocok dengan kata kunci itu.'));
-        }
-        addItem(hits.length ? urlFor({ q }) : S.url, 'bi-search', (a) => a.appendChild(el('span', 'suggest__txt suggest__all', hits.length ? `Lihat semua hasil untuk “${q}”` : 'Lihat semua program')));
-      };
-
-      input.addEventListener('focus', () => { render(); setOpen(true); });
-      input.addEventListener('input', () => { render(); setOpen(true); });
-      input.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-          if (list.hidden) { render(); setOpen(true); }
-          if (!items.length) return;
-          e.preventDefault();
-          setActive(e.key === 'ArrowDown' ? (active + 1) % items.length : (active - 1 + items.length) % items.length);
-        } else if (e.key === 'Enter' && active >= 0) {
-          e.preventDefault();
-          window.location.href = $('a', items[active]).href;
-        } else if (e.key === 'Escape' && !list.hidden) {
-          e.stopPropagation(); setOpen(false);
-        }
-      });
-      document.addEventListener('click', (e) => { if (!wrap.contains(e.target)) setOpen(false); });
-    });
   }
 
   /* ------------------------------------------------------------ AI CHATBOT */
@@ -426,7 +329,6 @@
   initNavbar();
   initTabs();
   initFilter();
-  initSuggest();
   initForms();
   $$('[data-chat]').forEach(initChat);
   initChatLauncher();

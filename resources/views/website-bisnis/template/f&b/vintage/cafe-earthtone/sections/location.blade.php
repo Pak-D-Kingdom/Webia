@@ -14,7 +14,7 @@
             <address class="kl-location__addr">{{ $c['address'] }}</address>
 
             <ul class="kl-location__meta">
-                <li><svg class="kl-icon" aria-hidden="true"><use href="#kl-i-phone"/></svg><a href="tel:+{{ $c['wa_number'] }}">{{ $c['phone'] }}</a></li>
+                <li><svg class="kl-icon" aria-hidden="true"><use href="#kl-i-phone"/></svg><a href="tel:+{{ preg_replace('/\D/', '', $c['phone']) }}">{{ $c['phone'] }}</a></li>
                 <li><svg class="kl-icon" aria-hidden="true"><use href="#kl-i-clock"/></svg><span>{{ $cafe['topbar']['hours'] }}</span></li>
             </ul>
 

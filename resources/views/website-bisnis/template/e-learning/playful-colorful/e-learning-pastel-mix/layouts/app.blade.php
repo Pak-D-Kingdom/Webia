@@ -11,11 +11,6 @@
         'whatsapp'   => 'https://wa.me/'.$t['contact']['whatsapp'].'?text='.rawurlencode($t['contact']['whatsapp_text']),
         'ai'         => ['intro' => $t['ai']['intro'], 'fallback' => $t['ai']['fallback'], 'faq' => $t['ai']['faq']],
         'formWhatsapp' => $t['contact']['form_whatsapp'],
-        'search'     => [
-            'url'      => route($rp.'programs'),
-            'programs' => array_map(fn ($p) => ['title' => $p['title'], 'level' => $p['level'], 'category' => $p['category'], 'price' => $p['price']], $t['programs']),
-            'popular'  => array_map(fn ($c) => ['title' => $c['title'], 'category' => $c['category']], $t['popular']),
-        ],
     ];
 @endphp
 <!DOCTYPE html>

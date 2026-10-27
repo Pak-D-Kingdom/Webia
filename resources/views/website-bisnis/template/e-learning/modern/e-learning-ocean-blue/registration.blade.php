@@ -9,6 +9,6 @@
 @section('page', 'registration')
 
 @section('content')
-    @include($ns.'.partials.page-header', ['key' => 'registration'])
+    @include($ns.'.partials.page-header', ['key' => 'registration', 'art' => 'register-photo.jpg'])
     @include($ns.'.sections.registration', ['mode' => 'full'])
 @endsection

@@ -17,7 +17,7 @@
             @if ($isPreview)
                 <a class="rea-link" href="{{ $route('about') }}">Learn More About Us {{ $icon('arrow') }}</a>
             @else
-                <a class="rea-btn rea-btn--dark" href="{{ $route('index', '#inquiry') }}">Get In Touch {{ $icon('arrow') }}</a>
+                <a class="rea-btn rea-btn--dark" href="{{ $route('contact', '#inquiry') }}">Get In Touch {{ $icon('arrow') }}</a>
             @endif
         </div>
     </div>

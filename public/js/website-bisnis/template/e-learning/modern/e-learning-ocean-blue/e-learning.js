@@ -181,7 +181,7 @@
     if (preset && $('[data-course="' + preset + '"]', tabs)) show(preset);
   }
 
-  /* 5 · FORM (registrasi + auth) ---------------------------------------- */
+  /* 5 · FORM (registrasi -> WhatsApp, login) ---------------------------------------- */
   var MSG = {
     required: 'Kolom ini wajib diisi.',
     email: 'Format email belum benar, contoh: nama@email.com.',
@@ -212,15 +212,48 @@
       if (msg) el.setAttribute('aria-describedby', out.id); else el.removeAttribute('aria-describedby');
     }
   }
-  function status(form, text, isError) {
+  function status(form, text, isError, link) {
     var s = $('[data-form-status]', form);
     if (!s) return;
     s.textContent = text;
+    if (link) {
+      var a = document.createElement('a');
+      a.href = link; a.target = '_blank'; a.rel = 'noopener noreferrer';
+      a.textContent = 'Buka WhatsApp';
+      s.appendChild(document.createTextNode(' '));
+      s.appendChild(a);
+    }
     s.classList.toggle('is-error', !!isError);
     s.hidden = false;
   }
 
-  function bindForm(form, successText) {
+  /* Kirim isi formulir ke WhatsApp (nomor dari atribut data-wa) */
+  function sendToWhatsApp(form) {
+    var number = (form.getAttribute('data-wa') || '').replace(/\D/g, '');
+    var el = function (n) { return form.elements.namedItem(n); };
+    var val = function (n) { var c = el(n); return c && c.value ? String(c.value).trim() : ''; };
+    var opt = function (n) { var c = el(n); return c && c.selectedIndex > 0 ? c.options[c.selectedIndex].text.trim() : ''; };
+    var planInput = form.querySelector('input[name="plan"]:checked');
+    var plan = planInput ? planInput.closest('label').textContent.replace(/\s+/g, ' ').trim() : '';
+
+    var lines = [
+      '*Pendaftaran Baru - E-learna*', '',
+      'Nama: ' + val('name'),
+      'Email: ' + val('email'),
+      'No. WhatsApp: ' + val('phone'),
+      'Program: ' + opt('program'),
+      'Jadwal: ' + (opt('schedule') || 'Belum menentukan'),
+      'Paket: ' + plan
+    ];
+    if (val('note')) lines.push('Catatan: ' + val('note'));
+
+    var url = 'https://wa.me/' + number + '?text=' + encodeURIComponent(lines.join('\n'));
+    var win = window.open(url, '_blank');
+    if (win) { win.opener = null; } else { window.location.href = url; }
+    status(form, 'Mengarahkan ke WhatsApp untuk mengirim pendaftaranmu.', false, url);
+  }
+
+  function bindForm(form, successText, onValid) {
     var fields = $$('input, select, textarea', form).filter(function (f) { return f.name && f.type !== 'hidden'; });
     fields.forEach(function (f) {
       f.addEventListener('blur', function () { if (f.value || f.type === 'checkbox') showError(f); });
@@ -239,6 +272,11 @@
         status(form, 'Periksa kembali isian yang ditandai.', true);
         return;
       }
+      if (onValid) {
+        e.preventDefault();
+        onValid(form);
+        return;
+      }
       if (form.hasAttribute('data-demo')) {
         e.preventDefault();
         status(form, successText + ' (mode demo: form belum terhubung ke backend.)', false);
@@ -249,7 +287,7 @@
   function initForms() {
     var reg = $('[data-reg-form]');
     if (reg) {
-      bindForm(reg, 'Terima kasih! Pendaftaranmu sudah kami catat.');
+      bindForm(reg, '', sendToWhatsApp);
       ['program', 'schedule'].forEach(function (k) {
         var sel = reg.elements[k], val = params.get(k);
         if (sel && val) {
@@ -263,30 +301,15 @@
         if (r) r.checked = true;
       }
     }
+    // Login tetap memakai alur sendiri (backend), tidak dikirim ke WhatsApp
     $$('[data-auth-form]').forEach(function (f) { bindForm(f, 'Berhasil! Kamu akan diarahkan ke dashboard member.'); });
 
-    var auth = $('[data-auth]');
-    if (auth) {
-      var tabs = $$('[data-auth-tab]', auth);
-      tabs.forEach(function (t) {
-        t.addEventListener('click', function () {
-          tabs.forEach(function (o) {
-            var on = o === t;
-            o.classList.toggle('is-active', on);
-            o.setAttribute('aria-selected', String(on));
-            var pane = document.getElementById(o.getAttribute('aria-controls'));
-            if (pane) pane.hidden = !on;
-          });
-        });
-      });
-      if (window.location.hash === '#register') { var rt = $('[data-auth-tab="register"]', auth); if (rt) rt.click(); }
-    }
     $$('[data-pass-toggle]').forEach(function (btn) {
       btn.addEventListener('click', function () {
         var input = $('input', btn.parentNode);
         var show = input.type === 'password';
         input.type = show ? 'text' : 'password';
-        btn.setAttribute('aria-label', show ? 'Sembunyikan password' : 'Tampilkan password');
+        btn.setAttribute('aria-label', show ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi');
       });
     });
   }

@@ -1,4 +1,7 @@
-@php $r = $cafe['reservation']; @endphp
+@php
+    $r     = $cafe['reservation'];
+    $viaWa = ($r['send_to'] ?? 'whatsapp') === 'whatsapp';
+@endphp
 <section class="kl-panel kl-reserve" id="form-reservasi" aria-labelledby="kl-reserve-title">
     <h2 class="kl-panel__title kl-panel__title--icon" id="kl-reserve-title">
         <svg class="kl-icon" aria-hidden="true"><use href="#kl-i-calendar"/></svg>
@@ -8,11 +11,18 @@
 
     <div class="kl-reserve__success" data-kl-success role="status" tabindex="-1" hidden>
         <svg class="kl-icon" aria-hidden="true"><use href="#kl-i-check"/></svg>
-        <p>{{ $r['success'] }}</p>
+        <div>
+            <p>{{ $r['success'] }}</p>
+            <a class="kl-reserve__link" data-kl-success-link href="#" target="_blank" rel="noopener" hidden>{{ $r['success_link'] }}</a>
+        </div>
     </div>
 
     <form class="kl-form" action="{{ $r['action'] }}" method="{{ $r['method'] }}" novalidate
-          data-kl-reservation data-time-min="{{ $r['time_min'] }}" data-time-max="{{ $r['time_max'] }}" data-max-guests="{{ $r['max_guests'] }}">
+          data-kl-reservation data-time-min="{{ $r['time_min'] }}" data-time-max="{{ $r['time_max'] }}" data-max-guests="{{ $r['max_guests'] }}"
+          @if ($viaWa)
+              data-kl-wa="https://wa.me/{{ $cafe['contact']['wa_number'] }}"
+              data-kl-wa-title="{{ $r['wa_title'] }}"
+          @endif>
         @csrf
 
         <div class="kl-field">

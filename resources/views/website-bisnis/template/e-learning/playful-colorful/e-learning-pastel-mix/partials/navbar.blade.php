@@ -34,15 +34,9 @@
 
     <form class="navsearch" id="nav-search" action="{{ route($rp.'programs') }}" method="get" role="search" data-search-panel hidden>
         <div class="container navsearch__in">
-            <div class="search search--nav">
-                <div class="search__box">
-                    <span class="search__ico" aria-hidden="true"><i class="bi bi-search"></i></span>
-                    <label class="sr-only" for="nav-q">Cari kursus</label>
-                    <input id="nav-q" class="search__input" type="search" name="q" placeholder="{{ $t['hero']['search_placeholder'] }}" autocomplete="off" data-suggest>
-                    <button class="search__btn" type="submit"><span>Cari</span><i class="bi bi-arrow-right" aria-hidden="true"></i></button>
-                </div>
-            </div>
-            <button class="icon-btn" type="button" data-search-close aria-label="Tutup pencarian"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
+            <i class="bi bi-search" aria-hidden="true"></i>
+            <input type="search" name="q" placeholder="{{ $t['hero']['search_placeholder'] }}" aria-label="Cari kursus" autocomplete="off">
+            <button class="btn btn--primary btn--sm" type="submit">Cari</button>
         </div>
     </form>
 </header>

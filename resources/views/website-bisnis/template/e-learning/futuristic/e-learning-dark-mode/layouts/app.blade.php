@@ -31,6 +31,7 @@
     </main>
 
     @include($v.'.partials.footer')
+    @include($v.'.partials.search')
     @include($v.'.partials.floating')
 
     <script src="{{ asset($e['js'].'/e-learning.js') }}" defer></script>

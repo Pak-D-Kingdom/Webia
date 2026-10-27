@@ -24,8 +24,10 @@
                     <span class="nl-sched__time">
                         @if($full)<em>{{ $row['day'] }}</em>@endif{{ $row['time'] }}
                     </span>
-                    <img src="{{ asset($e['img'].'/'.$t['img']) }}" alt="" width="40" height="40" loading="lazy">
-                    <span class="nl-sched__what"><strong>{{ $row['title'] }}</strong><small>{{ $t['name'] }}</small></span>
+                    <span class="nl-sched__who">
+                        <img src="{{ asset($e['img'].'/'.$t['img']) }}" alt="" width="44" height="44" loading="lazy">
+                        <span class="nl-sched__what"><strong>{{ $row['title'] }}</strong><small>{{ $t['name'] }}</small></span>
+                    </span>
                     <span class="nl-status">{{ $row['status'] }}</span>
                 </li>
             @endforeach

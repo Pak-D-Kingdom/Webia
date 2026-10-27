@@ -16,12 +16,20 @@
                 @endforeach
             </ul>
 
-            <form class="nl-search" action="{{ route($r.'programs') }}" method="get" role="search">
-                <svg class="ic"><use href="#i-search"/></svg>
-                <label class="nl-sr" for="hero-q">Cari kursus</label>
-                <input id="hero-q" type="search" name="q" placeholder="{{ $h['search'] }}" autocomplete="off">
-                <button type="submit" aria-label="Cari"><svg class="ic"><use href="#i-arrow"/></svg></button>
-            </form>
+            <div class="nl-hero__search">
+                <form class="nl-search" action="{{ route($r.'programs') }}" method="get" role="search" data-hero-search>
+                    <svg class="ic"><use href="#i-search"/></svg>
+                    <label class="nl-sr" for="hero-q">Cari kursus</label>
+                    <input id="hero-q" type="search" name="q" placeholder="{{ $h['search'] }}" autocomplete="off"
+                           role="combobox" aria-expanded="false" aria-controls="hero-suggest" aria-autocomplete="list" data-suggest-input>
+                    <button type="button" class="nl-search__clear" data-clear hidden aria-label="Hapus pencarian"><svg class="ic"><use href="#i-close"/></svg></button>
+                    <button type="submit" class="nl-search__go" aria-label="Cari"><svg class="ic"><use href="#i-arrow"/></svg></button>
+                </form>
+                <ul class="nl-suggest" id="hero-suggest" role="listbox" aria-label="Saran pencarian" hidden data-suggest-list></ul>
+                <p class="nl-popular"><span>Populer:</span>
+                    @foreach($h['popular'] as $term)<a href="{{ route($r.'programs', ['q' => $term]) }}">{{ $term }}</a>@endforeach
+                </p>
+            </div>
         </div>
 
         <div class="nl-hero__art" aria-hidden="true">

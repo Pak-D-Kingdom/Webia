@@ -15,7 +15,7 @@
 
         <p class="kl-topbar__item kl-topbar__phone">
             <svg class="kl-icon" aria-hidden="true"><use href="#kl-i-phone"/></svg>
-            <a href="tel:+{{ $cafe['contact']['wa_number'] }}">{{ $cafe['contact']['phone'] }}</a>
+            <a href="tel:+{{ preg_replace('/\D/', '', $cafe['contact']['phone']) }}">{{ $cafe['contact']['phone'] }}</a>
         </p>
 
         <div class="kl-topbar__right">

@@ -543,6 +543,101 @@ Route::prefix('webia/template/e-learning/futuristic/e-learning-dark-mode')
         Route::view('/member-area', $ns . '.member-area')->name('member-area');
     });
 
+Route::prefix('webia/template/healthcare/professional/klinik-kecantikan-clean-white')
+    ->name('klinik-kecantikan.')
+    ->group(function () {
+        $view = 'website-bisnis.template.healthcare.professional.klinik-kecantikan-clean-white.';
+
+        Route::view('/',            $view . 'index')->name('home');
+        Route::view('/layanan',     $view . 'services')->name('services');
+        Route::view('/dokter-staff', $view . 'doctors')->name('doctors');
+        Route::view('/jadwal',      $view . 'schedule')->name('schedule');
+        Route::view('/appointment', $view . 'appointment')->name('appointment');
+        Route::view('/faq',         $view . 'faq')->name('faq');
+        Route::view('/kebijakan',   $view . 'policy')->name('policy');
+    });
+
+Route::prefix('webia/template/healthcare/luxury/klinik-kecantikan-champagne-glow')
+    ->name('glow.')
+    ->group(function () {
+
+        $view   = 'website-bisnis.template.healthcare.luxury.klinik-kecantikan-champagne-glow';
+        $config = 'template.healthcare.luxury.klinik-kecantikan-champagne-glow.klinik-kecantikan';
+
+        // Helper kecil: render view + kirim data config (`$c`), prefix view (`$v`),
+        // dan URL dasar gambar template (`$img`).
+        $page = fn (string $name) => fn () => view("{$view}.{$name}", [
+            'c'   => config($config),
+            'v'   => $view,
+            'img' => asset('images/website-bisnis/template/healthcare/luxury/klinik-kecantikan-champagne-glow'),
+        ]);
+
+        Route::get('/',            $page('index'))->name('home');
+        Route::get('/services',    $page('services'))->name('services');
+        Route::get('/doctors',     $page('doctors'))->name('doctors');
+        Route::get('/schedule',    $page('schedule'))->name('schedule');
+        Route::get('/appointment', $page('appointment'))->name('appointment');
+        Route::get('/faq',         $page('faq'))->name('faq');
+        Route::get('/policy',      $page('policy'))->name('policy');
+    });
+
+Route::prefix('webia/template/retail/luxury/skincare-soft-pink')
+    ->name('website-bisnis.template.retail.luxury.skincare-soft-pink.')
+    ->group(function () {
+        $ns  = 'website-bisnis.template.retail.luxury.skincare-soft-pink'; // namespace view
+        $rp  = $ns . '.';                                                  // prefix nama route
+        $cfg = 'template.retail.luxury.skincare-soft-pink.skincare';       // config/template/.../skincare.php
+
+        $data = fn () => [
+            'ns'  => $ns,
+            'rp'  => $rp,
+            'cfg' => config($cfg),
+            'img' => asset('images/website-bisnis/template/retail/luxury/skincare-soft-pink'),
+            'css' => asset('css/website-bisnis/template/retail/luxury/skincare-soft-pink/skincare.css'),
+            'js'  => asset('js/website-bisnis/template/retail/luxury/skincare-soft-pink/skincare.js'),
+        ];
+
+        Route::get('/',        fn () => view($ns . '.index',   $data()))->name('index');
+        Route::get('/catalog', fn () => view($ns . '.catalog', $data()))->name('catalog');
+        Route::get('/price',   fn () => view($ns . '.price',   $data()))->name('price');
+        Route::get('/stock',   fn () => view($ns . '.stock',   $data()))->name('stock');
+        Route::get('/inquiry', fn () => view($ns . '.inquiry', $data()))->name('inquiry');
+        Route::get('/shop',    fn () => view($ns . '.shop',    $data()))->name('shop');
+    });
+
+$ns   = 'website-bisnis.template.retail.premium-minimal.skincare-warm-neutral';
+$data = [
+    'ns'   => $ns,
+    'skin' => config('template.retail.premium-minimal.skincare-warm-neutral.skincare'),
+];
+
+Route::prefix('webia/template/retail/premium-minimal/skincare-warm-neutral')
+    ->name('skincare-warm-neutral.')
+    ->group(function () use ($ns, $data) {
+        Route::view('/',               $ns . '.index',         $data)->name('home');
+        Route::view('/katalog',        $ns . '.katalog',       $data)->name('catalog');
+        Route::view('/harga',          $ns . '.harga',         $data)->name('price');
+        Route::view('/ketersediaan',   $ns . '.ketersediaan',  $data)->name('stock');
+        Route::view('/inquiry',        $ns . '.inquiry',       $data)->name('inquiry');
+        Route::view('/keranjang',      $ns . '.keranjang',     $data)->name('cart');
+    });
+
+Route::prefix('webia/template/retail/organic/skincare-sage-green')
+    ->name('skincare-sage-green.')
+    ->group(function () {
+        $view = 'website-bisnis.template.retail.organic.skincare-sage-green.';
+
+        Route::view('/',        $view . 'index')->name('home');      // Beranda + preview semua fitur
+        Route::view('/katalog', $view . 'catalog')->name('catalog'); // Product catalog
+        Route::view('/harga',   $view . 'price')->name('price');     // Price
+        Route::view('/stok',    $view . 'stock')->name('stock');     // Stock / availability
+        Route::view('/inquiry', $view . 'inquiry')->name('inquiry'); // Inquiry (kirim ke WhatsApp)
+        Route::view('/belanja', $view . 'shop')->name('shop');       // Optional e-commerce
+    });
+
+
+// ------------------------------------------------------------------------------------------------------------------//
+
 Route::prefix('webia/template')->group(function () {
     Route::view(
         '/personal-trainer-jelly-pop',

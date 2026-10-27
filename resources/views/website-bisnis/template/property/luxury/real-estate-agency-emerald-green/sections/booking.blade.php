@@ -37,7 +37,7 @@
     </section>
 @else
     {{-- Halaman Booking: info + form lengkap --}}
-    <section class="rea-section" id="booking" aria-label="{{ $pages['booking']['title'] }}">
+    <section class="rea-section rea-section--alt" id="booking" aria-label="{{ $pages['booking']['title'] }}">
         <div class="rea-container rea-bookpage">
             <div class="rea-bookinfo">
                 <p class="rea-eyebrow">BOOKING &amp; VIEWING</p>

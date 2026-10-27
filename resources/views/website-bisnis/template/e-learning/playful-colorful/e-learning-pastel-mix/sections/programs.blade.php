@@ -16,14 +16,10 @@
     @else
         <h2 id="programs-title" class="sr-only">Daftar program</h2>
         <div class="toolbar">
-            <div class="search search--page">
-                <div class="search__box">
-                    <span class="search__ico" aria-hidden="true"><i class="bi bi-search"></i></span>
-                    <label class="sr-only" for="program-q">Cari program</label>
-                    <input id="program-q" class="search__input" type="search" data-filter-search placeholder="Cari program, contoh: web, desain, marketing..." value="{{ request('q') }}" autocomplete="off">
-                    <button class="search__clear" type="button" data-filter-clear aria-label="Hapus pencarian" hidden><i class="bi bi-x-circle-fill" aria-hidden="true"></i></button>
-                </div>
-                <p class="search__count" data-filter-count role="status" aria-live="polite"></p>
+            <div class="searchbox">
+                <i class="bi bi-search" aria-hidden="true"></i>
+                <label class="sr-only" for="program-q">Cari program</label>
+                <input id="program-q" type="search" data-filter-search placeholder="Cari program..." value="{{ request('q') }}" autocomplete="off">
             </div>
             <div class="chips" role="group" aria-label="Filter kategori">
                 <button type="button" class="chip is-active" data-filter="all" aria-pressed="true">Semua</button>

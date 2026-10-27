@@ -38,7 +38,7 @@ return [
 
     'contact' => [
         'phone'     => '+62 812 3456 7890',
-        'wa_number' => '6281234567890', // format internasional tanpa + atau spasi
+        'wa_number' => '62895630300345', // WhatsApp tujuan semua pesan form (0895630300345). Format internasional tanpa + atau spasi
         'email'     => 'hello@kopilembang.id',
         'address'   => 'Jl. Kenangan No. 8, Lembang, Bandung, Jawa Barat 40391',
         'address_short' => 'Jl. Kenangan No. 8, Bandung',
@@ -258,14 +258,18 @@ return [
         'text'      => 'Pesan meja untuk pengalaman bersantap yang lebih nyaman.',
         'page_title' => 'Reservasi Meja',
         'page_text'  => 'Isi data di bawah ini. Tim kami akan mengonfirmasi reservasi Anda lewat WhatsApp.',
-        // Ganti ke URL/route backend, mis. route('...store'). '#' = mode demo (tanpa kirim data).
+        // 'whatsapp' = data form dikirim sebagai pesan ke contact.wa_number (WhatsApp terbuka otomatis).
+        // 'server'   = form dikirim ke 'action' di bawah (isi dengan route backend). '#' = mode demo.
+        'send_to'   => 'whatsapp',
+        'wa_title'  => 'Halo Kopi Lembang, saya ingin reservasi meja:',
         'action'    => '#',
         'method'    => 'POST',
         'max_guests' => 20,
         'time_min'  => '07:00',
         'time_max'  => '21:00',
         'submit'    => 'Kirim Reservasi',
-        'success'   => 'Terima kasih! Permintaan reservasi Anda sudah kami terima. Kami akan menghubungi Anda lewat WhatsApp untuk konfirmasi.',
+        'success'   => 'Terima kasih! WhatsApp akan terbuka dengan pesan reservasi Anda. Tekan tombol Kirim di WhatsApp untuk menyelesaikan reservasi.',
+        'success_link' => 'Buka WhatsApp lagi',
     ],
 
     'footer' => [

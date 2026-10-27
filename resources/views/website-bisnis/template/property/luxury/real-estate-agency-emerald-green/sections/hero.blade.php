@@ -11,7 +11,7 @@
 
         <div class="rea-container rea-hero__inner">
             <div class="rea-hero__content">
-                <p class="rea-hero__badge">{{ strtoupper($property['badge']) }}</p>
+                <p class="rea-hero__badge">{{ strtoupper($property['hero_badge']) }}</p>
                 <h1 class="rea-hero__title">{{ $property['title'] }}</h1>
                 <p class="rea-hero__place">{{ $icon('pin') }}<span>{{ $property['place'] }}</span></p>
 

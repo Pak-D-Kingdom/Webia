@@ -30,7 +30,7 @@
         <div class="kl-footer__col">
             <h2 class="kl-footer__title">Kontak Kami</h2>
             <ul class="kl-footer__contact">
-                <li><svg class="kl-icon" aria-hidden="true"><use href="#kl-i-phone"/></svg><a href="tel:+{{ $cafe['contact']['wa_number'] }}">{{ $cafe['contact']['phone'] }}</a></li>
+                <li><svg class="kl-icon" aria-hidden="true"><use href="#kl-i-phone"/></svg><a href="tel:+{{ preg_replace('/\D/', '', $cafe['contact']['phone']) }}">{{ $cafe['contact']['phone'] }}</a></li>
                 <li><svg class="kl-icon" aria-hidden="true"><use href="#kl-i-mail"/></svg><a href="mailto:{{ $cafe['contact']['email'] }}">{{ $cafe['contact']['email'] }}</a></li>
                 <li><svg class="kl-icon" aria-hidden="true"><use href="#kl-i-pin"/></svg><span>{{ $cafe['contact']['address'] }}</span></li>
             </ul>
