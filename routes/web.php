@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MidtransController;
 use App\Http\Controllers\WebiaOrderController;
+use App\Http\Controllers\RubyRegisterController;
 use App\Http\Controllers\WebsiteBisnis\TemplateCollectionController;
 use Illuminate\Support\Facades\Route;
 
@@ -186,7 +187,7 @@ Route::view(
     'website-bisnis.templates.pet-animal-service.petshop.rosegold.petshop-produk-luxury-rosegold'
 )->name('webia.template.petshop-luxury-rosegold.produk');
 
-// =====================================================
+// ==============================================
 // WEBIA - TECHNOLOGY & IT (SOFTWARE HOUSE)
 // =====================================================
 Route::view(
@@ -386,6 +387,16 @@ Route::prefix('webia/template/property/premium-minimal/real-estate-agency-nature
 
         Route::get('/', fn() => $page('index', 'home'))->name('home');
         Route::get('/properties', fn() => $page('properties', 'properties'))->name('properties');
+        $page = fn(string $view, string $active) => view($ns . $view, [
+            'ns'     => $ns,
+            'active' => $active,
+            't'      => config($cfg),
+            'r'      => fn(string $route, array $params = []) => route($name . $route, $params),
+            'img'    => fn(string $file) => asset(config($cfg . '.assets.images') . '/' . $file),
+        ]);
+
+        Route::get('/',           fn() => $page('index', 'home'))->name('home');
+        Route::get('/properties', fn() => $page('properties', 'properties'))->name('properties');
         Route::get('/properties/{slug}', function (string $slug) use ($page, $cfg) {
             $property = collect(config($cfg . '.properties'))->firstWhere('slug', $slug);
             abort_if($property === null, 404);
@@ -396,6 +407,10 @@ Route::prefix('webia/template/property/premium-minimal/real-estate-agency-nature
         Route::get('/gallery', fn() => $page('gallery', 'gallery'))->name('gallery');
         Route::get('/booking', fn() => $page('booking', 'booking'))->name('booking');
         Route::get('/blog', fn() => $page('blog', 'blog'))->name('blog');
+        Route::get('/about-us',   fn() => $page('about', 'about'))->name('about');
+        Route::get('/gallery',    fn() => $page('gallery', 'gallery'))->name('gallery');
+        Route::get('/booking',    fn() => $page('booking', 'booking'))->name('booking');
+        Route::get('/blog',       fn() => $page('blog', 'blog'))->name('blog');
         Route::get('/blog/{slug}', function (string $slug) use ($page, $cfg) {
             $post = collect(config($cfg . '.blog'))->firstWhere('slug', $slug);
             abort_if($post === null, 404);
@@ -403,6 +418,7 @@ Route::prefix('webia/template/property/premium-minimal/real-estate-agency-nature
             return $page('article', 'blog')->with('post', $post);
         })->name('blog.show');
         Route::get('/contact', fn() => $page('contact', 'contact'))->name('contact');
+        Route::get('/contact',    fn() => $page('contact', 'contact'))->name('contact');
     });
 
 Route::prefix('webia/template/property/professional/real-estate-agency-coral-peach')
@@ -419,6 +435,14 @@ Route::prefix('webia/template/property/professional/real-estate-agency-coral-pea
         Route::get('/gallery', fn() => view("$view.gallery", ['site' => $site()]))->name('gallery');
         Route::get('/booking', fn() => view("$view.booking", ['site' => $site()]))->name('booking');
         Route::get('/blog', fn() => view("$view.blog", ['site' => $site()]))->name('blog');
+        Route::get('/',              fn() => view("$view.index",         ['site' => $site()]))->name('home');
+        Route::get('/property',      fn() => view("$view.property",      ['site' => $site()]))->name('property');
+        Route::get('/specification', fn() => view("$view.specification", ['site' => $site()]))->name('specification');
+        Route::get('/price',         fn() => view("$view.price",         ['site' => $site()]))->name('price');
+        Route::get('/about-us',      fn() => view("$view.about",         ['site' => $site()]))->name('about');
+        Route::get('/gallery',       fn() => view("$view.gallery",       ['site' => $site()]))->name('gallery');
+        Route::get('/booking',       fn() => view("$view.booking",       ['site' => $site()]))->name('booking');
+        Route::get('/blog',          fn() => view("$view.blog",          ['site' => $site()]))->name('blog');
         Route::get('/blog/{slug}', function (string $slug) use ($view, $site) {
             $data = $site();
             $post = collect($data['blog']['posts'])->firstWhere('slug', $slug);
@@ -427,6 +451,7 @@ Route::prefix('webia/template/property/professional/real-estate-agency-coral-pea
             return view("$view.blog-show", ['site' => $data, 'post' => $post]);
         })->name('blog.show');
         Route::get('/contact', fn() => view("$view.contact", ['site' => $site()]))->name('contact');
+        Route::get('/contact',       fn() => view("$view.contact",       ['site' => $site()]))->name('contact');
     });
 
 $elNs = 'website-bisnis.template.e-learning.modern.e-learning-ocean-blue';
@@ -539,3 +564,97 @@ Route::prefix('webia/template')->group(function () {
 )->name('webia.template.aria-thorne-author-writer');
 });
 
+Route::view(
+    'webia/template/fnb/restaurant/little-corner',
+    'website-bisnis.templates.fnb.little-corner'
+)
+    ->name('webia.templates.little-corner');
+Route::view(
+    'webia/template/beauty/bold-pastel-beauty',
+    'website-bisnis.templates.beauty.bold-pastel-beauty'
+)
+    ->name('webia.templates.bold-pastel-beauty');
+
+Route::view(
+    'webia/template/beauty/icy-blue-tech',
+    'website-bisnis.templates.beauty.icy-blue-tech'
+)->name('webia.templates.icy-blue-tech');
+
+$viewBase = 'website-bisnis.templates.beauty.ruby-luxe';
+
+Route::prefix('templates/ruby-luxe')->name('ruby-luxe.')->group(function () use ($viewBase) {
+    Route::view('/', $viewBase . '.home')->name('home');
+
+    Route::view('/treatments', $viewBase . '.treatments.index')
+        ->name('treatments.index');
+
+    Route::view('/treatments/{slug}', $viewBase . '.treatments.show')
+        ->name('treatments.show');
+
+    Route::view('/products', $viewBase . '.products.index')
+        ->name('products.index');
+
+    Route::view('/products/{slug}', $viewBase . '.products.show')
+        ->name('products.show');
+
+    Route::view('/cart', $viewBase . '.products.cart')
+        ->name('cart');
+
+    Route::view('/booking', $viewBase . '.booking.create')
+        ->name('booking.create');
+
+    Route::view('/booking/confirmation', $viewBase . '.booking.confirmation')
+        ->name('booking.confirmation');
+
+    Route::view('/journal', $viewBase . '.journal.index')
+        ->name('journal.index');
+
+    Route::view('/journal/{slug}', $viewBase . '.journal.show')
+        ->name('journal.show');
+
+    Route::view('/about', $viewBase . '.pages.about')->name('about');
+    Route::view('/team', $viewBase . '.pages.team')->name('team');
+    Route::view('/contact', $viewBase . '.pages.contact')->name('contact');
+    Route::view('/faq', $viewBase . '.pages.faq')->name('faq');
+
+    Route::prefix('account')->name('account.')->group(function () use ($viewBase) {
+        Route::view('/', $viewBase . '.account.dashboard')->name('dashboard');
+        Route::view('/bookings', $viewBase . '.account.bookings')->name('bookings');
+        Route::view('/orders', $viewBase . '.account.orders')->name('orders');
+    });
+
+    Route::prefix('admin')->name('admin.')->group(function () use ($viewBase) {
+        Route::view('/', $viewBase . '.admin.dashboard')->name('dashboard');
+
+        Route::view('/treatments', $viewBase . '.admin.treatments.index')
+            ->name('treatments.index');
+
+        Route::view('/products', $viewBase . '.admin.products.index')
+            ->name('products.index');
+
+        Route::view('/bookings', $viewBase . '.admin.bookings.index')
+            ->name('bookings.index');
+
+        Route::view('/orders', $viewBase . '.admin.orders.index')
+            ->name('orders.index');
+
+        Route::view('/articles', $viewBase . '.admin.articles.index')
+            ->name('articles.index');
+    });
+
+    Route::get('/login', function () {
+        return view('website-bisnis.templates.beauty.ruby-luxe.login');
+    });
+
+    Route::get('/register', function () {
+        return view('website-bisnis.templates.beauty.ruby-luxe.register');
+    })->name('ruby-luxe.register');
+
+    Route::post('/register', [RubyRegisterController::class, 'store'])
+        ->name('register.submit');
+});
+
+Route::view(
+    'webia/template/property/coral-haven',
+    'website-bisnis.template.property.perumahan.coral-haven'
+)->name('webia.templates.coral-haven');

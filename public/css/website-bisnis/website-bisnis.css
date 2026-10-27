@@ -2146,6 +2146,21 @@ body.webia-body {
     background: radial-gradient(circle at 80% 70%, #c6a4ff 0 18%, transparent 19%), linear-gradient(135deg, #e3e4ff, #c7d4f1 52%, #e8cfe9);
 }
 
+.preview-bold-pastel::before {
+    background:
+        radial-gradient(
+            circle at 80% 70%,
+            #e89ab8 0 18%,
+            transparent 19%
+        ),
+        linear-gradient(
+            135deg,
+            #fff0f5,
+            #f7c6d9 52%,
+            #f4a9c8
+        );
+}
+
 .webia-preview-browser {
     display: flex;
     align-items: center;
@@ -3490,6 +3505,7 @@ html {
     padding: 8px 10px;
     font-size: 10px;
     border-radius: 10px;
+    text-decoration: none;
 }
 
 /* Informasi template */

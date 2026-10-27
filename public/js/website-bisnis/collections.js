@@ -133,18 +133,155 @@ document.addEventListener('DOMContentLoaded', () => {
         '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
     }[char]));
 
-    const themes = {
-        fnb: { label: 'Food & Beverage', accent: '#d98b62', accent2: '#f3c7a8', ink: '#443126', soft: '#fff3e9', eyebrow: 'MADE WITH LOVE, SERVED FRESH', headline: 'A little taste of something special.', intro: 'Cerita, menu, dan pengalaman yang membuat pelanggan ingin kembali.', nav: ['Home', 'Our Menu', 'Our Story', 'Contact'], sections: ['Menu favorit', 'Cerita dari dapur', 'Kata pelanggan'] },
-        beauty: { label: 'Beauty & Lifestyle', accent: '#d979a6', accent2: '#f2b9d1', ink: '#482c3c', soft: '#fff0f6', eyebrow: 'YOUR BEAUTY, YOUR MOMENT', headline: 'Feel beautiful in your own way.', intro: 'Ruang untuk merawat diri, menemukan gaya, dan merasa percaya diri.', nav: ['Home', 'Treatments', 'Our Studio', 'Booking'], sections: ['Signature treatments', 'Meet our experts', 'Beauty stories'] },
-        automotive: { label: 'Automotive', accent: '#f28a4b', accent2: '#ffc28e', ink: '#252a35', soft: '#fff1e7', eyebrow: 'BUILT FOR THE ROAD AHEAD', headline: 'Performance you can trust.', intro: 'Layanan profesional, pengerjaan presisi, dan perawatan kendaraan yang bisa diandalkan.', nav: ['Home', 'Services', 'Workshop', 'Book Service'], sections: ['Layanan unggulan', 'Workshop showcase', 'Customer reviews'] },
-        company: { label: 'Company & Services', accent: '#638bc4', accent2: '#b7d3f5', ink: '#24354d', soft: '#edf5ff', eyebrow: 'BUILT FOR WHAT COMES NEXT', headline: 'Turning vision into real impact.', intro: 'Partner profesional untuk membantu bisnis bergerak lebih jauh.', nav: ['Home', 'About Us', 'Solutions', 'Contact'], sections: ['Tentang perusahaan', 'Solusi dan layanan', 'Klien & partner'] },
-        property: { label: 'Property & Real Estate', accent: '#779d7e', accent2: '#c7e1c8', ink: '#2c4032', soft: '#f0f8ef', eyebrow: 'FIND A PLACE TO BELONG', headline: 'Spaces made for living.', intro: 'Jelajahi properti pilihan dan temukan ruang yang terasa seperti rumah.', nav: ['Home', 'Properties', 'Our Projects', 'Contact Agent'], sections: ['Properti unggulan', 'Proyek pilihan', 'Hubungi agen'] },
-        education: { label: 'Education', accent: '#6f83cf', accent2: '#c8d2ff', ink: '#29355c', soft: '#f0f2ff', eyebrow: 'LEARN WITHOUT LIMITS', headline: 'Grow your potential.', intro: 'Belajar dengan cara yang lebih terarah, fleksibel, dan menyenangkan.', nav: ['Home', 'Programs', 'Mentors', 'Register'], sections: ['Program belajar', 'Mentor pilihan', 'Cerita alumni'] },
-        'professional-service': { label: 'Professional Service', accent: '#7289a7', accent2: '#c9d7e8', ink: '#2d3c51', soft: '#f0f4f9', eyebrow: 'EXPERTISE YOU CAN TRUST', headline: 'Clarity for every next move.', intro: 'Pendampingan ahli dengan solusi yang dirancang untuk kebutuhanmu.', nav: ['Home', 'Expertise', 'Our Approach', 'Consult'], sections: ['Bidang layanan', 'Cara kami bekerja', 'Insight & artikel'] },
-        'personal-brand': { label: 'Personal Brand', accent: '#a27bc8', accent2: '#e1c9f6', ink: '#403052', soft: '#f8f0ff', eyebrow: 'MAKE YOUR MARK', headline: 'Your story. Your impact.', intro: 'Perkenalkan karya, pengalaman, dan karakter personal brand dalam satu tempat.', nav: ['Home', 'My Story', 'Selected Work', 'Contact'], sections: ['Tentang saya', 'Karya pilihan', 'Kolaborasi'] },
-        retail: { label: 'Retail', accent: '#c68c42', accent2: '#f5d7a6', ink: '#45331e', soft: '#fff8e9', eyebrow: 'DISCOVER SOMETHING NEW', headline: 'Your next favorite find.', intro: 'Jelajahi koleksi pilihan dan temukan produk yang cocok untukmu.', nav: ['Home', 'Shop', 'Best Sellers', 'Contact'], sections: ['Koleksi terbaru', 'Produk terlaris', 'Ulasan pelanggan'] },
-        healthcare: { label: 'Healthcare', accent: '#429c9a', accent2: '#b8e8df', ink: '#214344', soft: '#eafaf7', eyebrow: 'CARE THAT MATTERS', headline: 'Your health comes first.', intro: 'Informasi layanan kesehatan dan akses konsultasi yang lebih mudah.', nav: ['Home', 'Our Services', 'Our Doctors', 'Book a Visit'], sections: ['Layanan kesehatan', 'Tim profesional', 'Informasi & konsultasi'] }
-    };
+
+const themes = {
+    fnb: {
+        label: 'Food & Beverage',
+        accent: '#d98b62',
+        accent2: '#f3c7a8',
+        ink: '#443126',
+        soft: '#fff3e9',
+        eyebrow: 'MADE WITH LOVE, SERVED FRESH',
+        headline: 'A little taste of something special.',
+        intro: 'Cerita, menu, dan pengalaman yang membuat pelanggan ingin kembali.',
+        nav: ['Home', 'Our Menu', 'Our Story', 'Contact'],
+        sections: ['Menu favorit', 'Cerita dari dapur', 'Kata pelanggan']
+    },
+
+    beauty: {
+        label: 'Beauty & Lifestyle',
+        accent: '#d979a6',
+        accent2: '#f2b9d1',
+        ink: '#482c3c',
+        soft: '#fff0f6',
+        eyebrow: 'YOUR BEAUTY, YOUR MOMENT',
+        headline: 'Feel beautiful in your own way.',
+        intro: 'Ruang untuk merawat diri, menemukan gaya, dan merasa percaya diri.',
+        nav: ['Home', 'Treatments', 'Our Studio', 'Booking'],
+        sections: ['Signature treatments', 'Meet our experts', 'Beauty stories']
+    },
+
+    'bold-pastel-beauty': {
+        label: 'Skincare & Beauty Treatment',
+        accent: '#d979a6',
+        accent2: '#f7c8df',
+        ink: '#482c3c',
+        soft: '#fff0f6',
+        eyebrow: 'YOUR BEAUTY, YOUR POWER',
+        headline: 'Beauty is number one.',
+        intro: 'Discover your beauty with fresh, modern skincare and beauty treatments designed to make you feel confident.',
+        nav: ['Home', 'Treatments', 'Our Products', 'Book Now'],
+        sections: [
+            'Your Signature Beauty Treatments',
+            'Discover Your Skincare Essentials',
+            'Real Beauty, Real Stories'
+        ]
+    },
+
+    automotive: {
+        label: 'Automotive',
+        accent: '#f28a4b',
+        accent2: '#ffc28e',
+        ink: '#252a35',
+        soft: '#fff1e7',
+        eyebrow: 'BUILT FOR THE ROAD AHEAD',
+        headline: 'Performance you can trust.',
+        intro: 'Layanan profesional, pengerjaan presisi, dan perawatan kendaraan yang bisa diandalkan.',
+        nav: ['Home', 'Services', 'Workshop', 'Book Service'],
+        sections: ['Layanan unggulan', 'Workshop showcase', 'Customer reviews']
+    },
+
+    company: {
+        label: 'Company & Services',
+        accent: '#638bc4',
+        accent2: '#b7d3f5',
+        ink: '#24354d',
+        soft: '#edf5ff',
+        eyebrow: 'BUILT FOR WHAT COMES NEXT',
+        headline: 'Turning vision into real impact.',
+        intro: 'Partner profesional untuk membantu bisnis bergerak lebih jauh.',
+        nav: ['Home', 'About Us', 'Solutions', 'Contact'],
+        sections: ['Tentang perusahaan', 'Solusi dan layanan', 'Klien & partner']
+    },
+
+    property: {
+        label: 'Property & Real Estate',
+        accent: '#779d7e',
+        accent2: '#c7e1c8',
+        ink: '#2c4032',
+        soft: '#f0f8ef',
+        eyebrow: 'FIND A PLACE TO BELONG',
+        headline: 'Spaces made for living.',
+        intro: 'Jelajahi properti pilihan dan temukan ruang yang terasa seperti rumah.',
+        nav: ['Home', 'Properties', 'Our Projects', 'Contact Agent'],
+        sections: ['Properti unggulan', 'Proyek pilihan', 'Hubungi agen']
+    },
+
+    education: {
+        label: 'Education',
+        accent: '#6f83cf',
+        accent2: '#c8d2ff',
+        ink: '#29355c',
+        soft: '#f0f2ff',
+        eyebrow: 'LEARN WITHOUT LIMITS',
+        headline: 'Grow your potential.',
+        intro: 'Belajar dengan cara yang lebih terarah, fleksibel, dan menyenangkan.',
+        nav: ['Home', 'Programs', 'Mentors', 'Register'],
+        sections: ['Program belajar', 'Mentor pilihan', 'Cerita alumni']
+    },
+
+    'professional-service': {
+        label: 'Professional Service',
+        accent: '#7289a7',
+        accent2: '#c9d7e8',
+        ink: '#2d3c51',
+        soft: '#f0f4f9',
+        eyebrow: 'EXPERTISE YOU CAN TRUST',
+        headline: 'Clarity for every next move.',
+        intro: 'Pendampingan ahli dengan solusi yang dirancang untuk kebutuhanmu.',
+        nav: ['Home', 'Expertise', 'Our Approach', 'Consult'],
+        sections: ['Bidang layanan', 'Cara kami bekerja', 'Insight & artikel']
+    },
+
+    'personal-brand': {
+        label: 'Personal Brand',
+        accent: '#a27bc8',
+        accent2: '#e1c9f6',
+        ink: '#403052',
+        soft: '#f8f0ff',
+        eyebrow: 'MAKE YOUR MARK',
+        headline: 'Your story. Your impact.',
+        intro: 'Perkenalkan karya, pengalaman, dan karakter personal brand dalam satu tempat.',
+        nav: ['Home', 'My Story', 'Selected Work', 'Contact'],
+        sections: ['Tentang saya', 'Karya pilihan', 'Kolaborasi']
+    },
+
+    retail: {
+        label: 'Retail',
+        accent: '#c68c42',
+        accent2: '#f5d7a6',
+        ink: '#45331e',
+        soft: '#fff8e9',
+        eyebrow: 'DISCOVER SOMETHING NEW',
+        headline: 'Your next favorite find.',
+        intro: 'Jelajahi koleksi pilihan dan temukan produk yang cocok untukmu.',
+        nav: ['Home', 'Shop', 'Best Sellers', 'Contact'],
+        sections: ['Koleksi terbaru', 'Produk terlaris', 'Ulasan pelanggan']
+    },
+
+    healthcare: {
+        label: 'Healthcare',
+        accent: '#429c9a',
+        accent2: '#b8e8df',
+        ink: '#214344',
+        soft: '#eafaf7',
+        eyebrow: 'CARE THAT MATTERS',
+        headline: 'Your health comes first.',
+        intro: 'Informasi layanan kesehatan dan akses konsultasi yang lebih mudah.',
+        nav: ['Home', 'Our Services', 'Our Doctors', 'Book a Visit'],
+        sections: ['Layanan kesehatan', 'Tim profesional', 'Informasi & konsultasi']
+    }
+};
 
     const modal = document.createElement('div');
     modal.className = 'webia-explore-modal';
