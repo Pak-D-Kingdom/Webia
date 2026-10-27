@@ -72,6 +72,18 @@ Route::view(
     'website-bisnis.templates.fnb.vallaco-catering'
 )->name('webia.template.vallaco-catering');
 Route::view(
+    '/webia/template/rasa-rupa-artistik',
+    'website-bisnis.templates.fnb.rasa-rupa-artistik'
+)->name('webia.template.fnb.rasa-rupa-artistik');
+Route::view(
+    '/webia/template/tetangga-kenyang-friendly',
+    'website-bisnis.templates.fnb.tetangga-kenyang-friendly'
+)->name('webia.template.fnb.tetangga-kenyang-friendly');
+Route::view(
+    '/webia/template/hulu-pantry-asal-usul',
+    'website-bisnis.templates.fnb.hulu-pantry-asal-usul'
+)->name('webia.template.fnb.hulu-pantry-asal-usul');
+Route::view(
     '/webia/template/kusuma-ningrat-royal-heritage',
     'website-bisnis.templates.fnb.kusuma-ningrat-royal-heritage'
 )->name('webia.template.kusuma-ningrat-royal-heritage');
