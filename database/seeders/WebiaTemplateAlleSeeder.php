@@ -113,5 +113,47 @@ class WebiaTemplateAlleSeeder extends Seeder
                 'sort_order' => 37,
             ]
         );
+
+        WebiaTemplate::updateOrCreate(
+            ['slug' => 'apex-heritage-automotive-elegant'],
+            [
+                'name' => 'APEX Heritage — Elegant Automotive Collection',
+                'category_slug' => 'automotive',
+                'category_label' => 'Automotive',
+                'business_types' => ['Luxury Automotive Dealer'],
+                'design_style' => 'Elegant Luxury',
+                'color_theme' => 'Midnight Onyx & Heritage Gold',
+                'description' => 'Luxury automotive showroom with curated prestige vehicle inventory, vehicle categories and specifications, bespoke financing calculator, trade-in appraisal studio, private test-drive reservations, customer testimonials, FAQs, and AI concierge demo.',
+                'preview_style' => 'preview-apex-heritage-automotive-elegant',
+                'eyebrow' => 'THE PRIVATE AUTOMOTIVE COLLECTION',
+                'headline' => 'Curated Mastery on Wheels.',
+                'tag' => 'Automotive · Luxury Dealer · Elegant Heritage',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/apex-heritage-automotive-elegant',
+                'is_active' => true,
+                'sort_order' => 38,
+            ]
+        );
+
+        WebiaTemplate::updateOrCreate(
+            ['slug' => 'apex-scuderia-automotive-minimalist'],
+            [
+                'name' => 'APEX Scuderia — Minimalist Automotive Collection',
+                'category_slug' => 'automotive',
+                'category_label' => 'Automotive',
+                'business_types' => ['Luxury Sports Car Dealer'],
+                'design_style' => 'Minimalist Performance',
+                'color_theme' => 'Carbon Black & Racing Ruby',
+                'description' => 'Minimalist high-performance automotive showroom with a curated sports-car vault, vehicle specifications, Ferrari SF90 XX spotlight, portfolio gallery, structured financing calculator, trade-in appraisal, VIP viewing reservations, FAQs, and WhatsApp concierge.',
+                'preview_style' => 'preview-apex-scuderia-automotive-minimalist',
+                'eyebrow' => 'THE SCUDERIA PRIVATE MOTOR VAULT',
+                'headline' => 'Sculpted Velocity in Ruby & Carbon',
+                'tag' => 'Automotive · Luxury Sports Cars · Minimalist Performance',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/apex-scuderia-automotive-minimalist',
+                'is_active' => true,
+                'sort_order' => 39,
+            ]
+        );
     }
 }
