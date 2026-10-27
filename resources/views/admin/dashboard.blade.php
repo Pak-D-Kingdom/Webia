@@ -30,23 +30,35 @@
             return '';
         }
 
-        // Catmull-Rom -> cubic Bézier: lulus setiap anchor, tikungan mulus
+        // Fritsch-Carlson monotone cubic: satu tangen per anchor (dipakai 2 segmen agar tak ada sudut),
+        // dibatasi 3×delta supaya kurva tidak melewati nilai data.
+        $delta = [];
+        for ($i = 0; $i < $n - 1; $i++) {
+            $dx = $p[$i + 1]['x'] - $p[$i]['x'];
+            $delta[$i] = $dx === 0.0 ? 0.0 : ($p[$i + 1]['y'] - $p[$i]['y']) / $dx;
+        }
+        $slope = [];
+        for ($i = 0; $i < $n; $i++) {
+            if ($i === 0) {
+                $slope[$i] = $delta[0];
+            } elseif ($i === $n - 1) {
+                $slope[$i] = $delta[$n - 2];
+            } elseif ($delta[$i - 1] * $delta[$i] <= 0.0) {
+                $slope[$i] = 0.0;
+            } else {
+                $limit = 3.0 * min(abs($delta[$i - 1]), abs($delta[$i]));
+                $avg = ($delta[$i - 1] + $delta[$i]) / 2.0;
+                $slope[$i] = max(-$limit, min($limit, $avg));
+            }
+        }
         $d = 'M '.$p[0]['x'].' '.$p[0]['y'];
         for ($i = 0; $i < $n - 1; $i++) {
-            $p0 = $p[max($i - 1, 0)];
-            $p1 = $p[$i];
-            $p2 = $p[$i + 1];
-            $p3 = $p[min($i + 2, $n - 1)];
-            $c1x = $p1['x'] + ($p2['x'] - $p0['x']) / 6;
-            $c1y = $p1['y'] + ($p2['y'] - $p0['y']) / 6;
-            $c2x = $p2['x'] - ($p3['x'] - $p1['x']) / 6;
-            $c2y = $p2['y'] - ($p3['y'] - $p1['y']) / 6;
-            // Clamp kontrol y ke rentang segmen supaya kurva tidak melewati nilai data (no overshoot)
-            $minY = min($p1['y'], $p2['y']);
-            $maxY = max($p1['y'], $p2['y']);
-            $c1y = max($minY, min($maxY, $c1y));
-            $c2y = max($minY, min($maxY, $c2y));
-            $d .= sprintf(' C %.1f %.1f %.1f %.1f %s %s', $c1x, $c1y, $c2x, $c2y, $p2['x'], $p2['y']);
+            $h = $p[$i + 1]['x'] - $p[$i]['x'];
+            $c1x = $p[$i]['x'] + $h / 3;
+            $c1y = $p[$i]['y'] + $slope[$i] * $h / 3;
+            $c2x = $p[$i + 1]['x'] - $h / 3;
+            $c2y = $p[$i + 1]['y'] - $slope[$i + 1] * $h / 3;
+            $d .= sprintf(' C %.1f %.1f %.1f %.1f %s %s', $c1x, $c1y, $c2x, $c2y, $p[$i + 1]['x'], $p[$i + 1]['y']);
         }
 
         return $d;
