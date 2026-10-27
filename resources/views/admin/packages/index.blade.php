@@ -18,7 +18,7 @@
                 <h1 class="font-headline-lg font-extrabold text-headline-lg text-primary tracking-tight">Manajemen Paket &amp; Lisensi</h1>
                 <span class="inline-flex items-center gap-1.5 rounded-full bg-secondary-container px-2.5 py-1 font-label-sm font-bold text-label-sm text-on-secondary-container shadow-sm">
                     <span aria-hidden="true" class="h-1.5 w-1.5 animate-pulse rounded-full bg-secondary"></span>
-                    {{ $activePackages }} Paket Aktif
+                    <span id="packagesActiveBadge">{{ $activePackages }} Paket Aktif</span>
                 </span>
             </div>
             <p class="mt-0.5 max-w-2xl font-body-md text-body-md text-on-surface-variant">Kelola tier paket template website: kuota AI chatbot, fitur lisensi, harga katalog, ketersediaan CMS, dan status publikasi.</p>
@@ -73,11 +73,11 @@
                 </div>
             </div>
             <div class="mt-space-sm flex items-baseline gap-space-sm">
-                <span class="font-display font-extrabold text-display text-on-surface tracking-tight">{{ $activePackages }}</span>
+                <span class="font-display font-extrabold text-display text-on-surface tracking-tight"><span id="kpiActiveCount">{{ $activePackages }}</span></span>
                 <span class="font-label-md text-label-md text-on-surface-variant">Terkatalog</span>
             </div>
             <div class="mt-space-xs">
-                <span class="rounded bg-surface-container-low px-2 py-0.5 font-caption text-caption text-on-surface-variant">{{ $totalPackages - $activePackages }} nonaktif</span>
+                <span class="rounded bg-surface-container-low px-2 py-0.5 font-caption text-caption text-on-surface-variant"><span id="kpiInactiveCount">{{ $totalPackages - $activePackages }}</span> nonaktif</span>
             </div>
         </div>
         <div class="group relative overflow-hidden rounded-xl bg-surface-container-lowest p-space-md shadow-sm transition-all hover:shadow-md">
@@ -205,7 +205,7 @@
                                 @endif
                             </td>
                             <td class="px-3 py-3.5 text-center md:px-4">
-                                <form action="{{ route('admin.packages.toggle', $package) }}" method="POST">
+                                <form action="{{ route('admin.packages.toggle', $package) }}" data-package-toggle method="POST">
                                     @csrf
                                     <button class="inline-flex items-center gap-2 select-none" title="{{ $package->is_active ? 'Nonaktifkan paket' : 'Aktifkan paket' }}" type="submit">
                                         <span aria-hidden="true" class="relative h-5 w-9 rounded-full transition-colors {{ $package->is_active ? 'bg-secondary' : 'bg-surface-container-highest' }}">

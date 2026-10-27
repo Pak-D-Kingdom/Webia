@@ -595,6 +595,66 @@ function initializeAdminPage() {
       if (pkgEmpty) pkgTbody.appendChild(pkgEmpty);
     }, listenerOptions);
 
+    // Toggle aktif/nonaktif via fetch — update row & KPI tanpa reload.
+    document.querySelectorAll('form[data-package-toggle]').forEach((form) => {
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const button = form.querySelector('button[type="submit"]');
+        if (!button || button.disabled) return;
+        button.disabled = true;
+        try {
+          const res = await fetch(form.action, {
+            method: 'POST',
+            headers: { 'X-Requested-With': 'XMLHttpRequest', Accept: 'application/json' },
+            body: new FormData(form),
+          });
+          const json = await res.json();
+          if (!res.ok) throw new Error();
+          const row = form.closest('tr[data-package-id]');
+          const active = Boolean(json.is_active);
+          row.dataset.active = active ? '1' : '0';
+          const track = form.querySelector('span.relative');
+          const knob = track.querySelector('span');
+          const label = form.querySelector('span.font-label-sm');
+          track.classList.toggle('bg-secondary', active);
+          track.classList.toggle('bg-surface-container-highest', !active);
+          knob.classList.toggle('translate-x-4', active);
+          label.innerText = active ? 'Aktif' : 'Nonaktif';
+          label.classList.toggle('text-secondary', active);
+          label.classList.toggle('text-on-surface-variant', !active);
+          form.setAttribute('title', active ? 'Nonaktifkan paket' : 'Aktifkan paket');
+          const iconWrap = row.querySelector('td .h-9.w-9');
+          if (iconWrap) {
+            iconWrap.classList.toggle('bg-primary-fixed', active);
+            iconWrap.classList.toggle('text-primary', active);
+            iconWrap.classList.toggle('bg-surface-container', !active);
+            iconWrap.classList.toggle('text-outline', !active);
+          }
+          const nameSpan = row.querySelector('td span.font-label-lg');
+          if (nameSpan) {
+            nameSpan.classList.toggle('text-on-surface', active);
+            nameSpan.classList.toggle('text-on-surface-variant', !active);
+          }
+          const descSpan = row.querySelector('td span.font-caption');
+          if (descSpan) {
+            descSpan.classList.toggle('text-on-surface-variant', active);
+            descSpan.classList.toggle('text-outline', !active);
+          }
+          const packageRows = Array.from(document.querySelectorAll('#packagesTable tbody tr[data-package-id]'));
+          const activeCount = packageRows.filter((r) => r.dataset.active === '1').length;
+          document.getElementById('packagesActiveBadge').innerText = activeCount + ' Paket Aktif';
+          document.getElementById('kpiActiveCount').innerText = activeCount;
+          document.getElementById('kpiInactiveCount').innerText = packageRows.length - activeCount;
+          applyPackagesFilter();
+          showToast(json.message);
+        } catch {
+          showToast('Gagal mengubah status paket');
+        } finally {
+          button.disabled = false;
+        }
+      }, listenerOptions);
+    });
+
     // Drawer tambah/edit.
     function createFeatureInput(value = '') {
       const item = document.createElement('div');
