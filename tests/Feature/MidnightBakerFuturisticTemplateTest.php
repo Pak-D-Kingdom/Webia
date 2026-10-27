@@ -48,6 +48,7 @@ class MidnightBakerFuturisticTemplateTest extends TestCase
             'sort_order' => 34,
             'template_url' => '/webia/template/midnightbaker-futuristic',
             'is_active' => true,
+            'description' => 'Artisanal bread & pastry catalog with category filters, pre-order & reservation inquiries, bespoke cake & luxury hampers consultation, artisan craft showcase, flagship boutique location with map directions & operating-hours notice, product availability, delivery & allergen FAQs, WhatsApp contact prompt, and AI Concierge demo FAQ interface.',
         ]);
         $this->assertDatabaseHas('webia_templates', [
             'slug' => 'bakery-bold-luxury',
