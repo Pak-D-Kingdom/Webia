@@ -244,6 +244,22 @@ Route::view(
 )->name('webia.template.technology-softwarehouse-modern');
 
 // =====================================================
+// WEBIA - TECHNOLOGY & IT — PUTRI (Software House Elegant Baby Blue)
+// =====================================================
+Route::view(
+    '/webia/template/technology-softwarehouse-elegant-babyblue-putri',
+    'website-bisnis.templates.technology.softwarehouse.technology-softwarehouse-elegant-babyblue-putri'
+)->name('webia.template.technology-softwarehouse-elegant-babyblue-putri');
+
+// =====================================================
+// WEBIA - TECHNOLOGY & IT — PUTRI (Software House Minimalist Soft Pink)
+// =====================================================
+Route::view(
+    '/webia/template/technology-softwarehouse-minimalist-softpink-putri',
+    'website-bisnis.templates.technology.softwarehouse.technology-softwarehouse-minimalist-softpink-putri'
+)->name('webia.template.technology-softwarehouse-minimalist-softpink-putri');
+
+// =====================================================
 // WEBIA - SPORTS & FITNESS (GYM & FITNESS)
 // =====================================================
 Route::view(
