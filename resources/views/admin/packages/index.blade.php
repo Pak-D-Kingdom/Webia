@@ -151,7 +151,7 @@
                         <th class="px-3 py-space-sm text-center font-label-sm font-bold text-label-sm md:px-4">Fitur</th>
                         <th class="px-3 py-space-sm text-right font-label-sm font-bold text-label-sm md:px-4">Harga (IDR)</th>
                         <th class="px-3 py-space-sm text-center font-label-sm font-bold text-label-sm md:px-4">Status</th>
-                        <th class="px-3 py-space-sm text-right font-label-sm font-bold text-label-sm md:px-4">Aksi</th>
+                        <th class="px-3 py-space-sm text-center font-label-sm font-bold text-label-sm md:px-4">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-surface-container font-body-sm text-body-sm text-on-surface">
@@ -215,8 +215,8 @@
                                     </button>
                                 </form>
                             </td>
-                            <td class="px-3 py-3.5 md:px-4">
-                                <div class="flex items-center justify-end gap-1">
+                            <td class="px-3 py-3.5 text-center md:px-4">
+                                <div class="flex items-center justify-center gap-1">
                                     <button class="inline-flex items-center gap-1 rounded px-2 py-1 font-label-sm font-bold text-label-sm text-primary transition-colors hover:bg-surface-container" data-package-edit type="button">
                                         <span aria-hidden="true" class="material-symbols-outlined text-base">edit</span>Edit
                                     </button>
