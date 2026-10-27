@@ -51,6 +51,18 @@ class AdminMasterDataTest extends TestCase
         ]);
     }
 
+    public function test_admin_can_toggle_package_active_state(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $package = WebiaPackage::factory()->create(['is_active' => true]);
+
+        $this->actingAs($admin)
+            ->post(route('admin.packages.toggle', $package))
+            ->assertRedirect(route('admin.packages.index'));
+
+        $this->assertDatabaseHas('webia_packages', ['id' => $package->id, 'is_active' => false]);
+    }
+
     public function test_admin_cannot_delete_package_used_by_order(): void
     {
         $admin = User::factory()->admin()->create();

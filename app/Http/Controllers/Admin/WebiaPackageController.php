@@ -14,7 +14,14 @@ class WebiaPackageController extends Controller
 {
     public function index(): View
     {
-        return view('admin.packages.index', ['packages' => WebiaPackage::orderBy('sort_order')->get()]);
+        return view('admin.packages.index', ['packages' => WebiaPackage::query()->withCount('orders')->orderBy('sort_order')->get()]);
+    }
+
+    public function toggle(WebiaPackage $package): RedirectResponse
+    {
+        $package->update(['is_active' => ! $package->is_active]);
+
+        return redirect()->route('admin.packages.index')->with('status', $package->is_active ? 'Paket berhasil diaktifkan.' : 'Paket berhasil dinonaktifkan.');
     }
 
     public function create(): View

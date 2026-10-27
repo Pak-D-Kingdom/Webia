@@ -539,6 +539,268 @@ function initializeAdminPage() {
     URL.revokeObjectURL(a.href);
     showToast(lines.length - 1 + ' pesanan diekspor ke CSV');
   }, listenerOptions);
+
+  // ===== Halaman Paket & Lisensi =====
+  const packageTable = document.getElementById('packagesTable');
+  if (packageTable) {
+    const pkgTbody = packageTable.tBodies[0];
+    const pkgRows = Array.from(pkgTbody.querySelectorAll('tr[data-package-id]'));
+    const pkgSearch = document.getElementById('packageSearch');
+    const pkgFilterStatus = document.getElementById('packageFilterStatus');
+    const pkgSortBy = document.getElementById('packageSortBy');
+    const pkgCounter = document.getElementById('packagesVisibleCount');
+    const pkgTotal = document.getElementById('packagesTotalCount');
+    const pkgEmpty = document.getElementById('packagesEmptyState');
+    const pkgDrawerRoot = document.getElementById('packageDrawerRoot');
+    const pkgDrawer = document.getElementById('packageDrawer');
+    const pkgForm = document.getElementById('packageForm');
+    const pkgFormMethod = document.getElementById('packageFormMethod');
+    const pkgFeatureList = document.getElementById('packageFeatureList');
+    const pkgFeatureCount = document.getElementById('packageFeatureCount');
+    const pkgDeleteModal = document.getElementById('packageDeleteModal');
+    let pkgDrawerReturnFocus = null;
+    let pkgDeleteReturnFocus = null;
+
+    // Filter + pencarian instan.
+    function applyPackagesFilter() {
+      const query = (pkgSearch?.value || '').toLowerCase().trim();
+      const status = pkgFilterStatus?.value || 'all';
+      let visible = 0;
+      pkgRows.forEach((row) => {
+        const matchesQuery = !query || row.innerText.toLowerCase().includes(query);
+        const matchesStatus = status === 'all' || row.dataset.active === status;
+        const show = matchesQuery && matchesStatus;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (pkgCounter) pkgCounter.innerText = visible;
+      if (pkgEmpty) pkgEmpty.classList.toggle('hidden', visible !== 0);
+      if (pkgTotal) pkgTotal.classList.toggle('hidden', Boolean(query) || status !== 'all');
+    }
+    pkgSearch?.addEventListener('input', applyPackagesFilter, listenerOptions);
+    pkgFilterStatus?.addEventListener('change', applyPackagesFilter, listenerOptions);
+
+    // Urutkan ulang baris menurut kriteria terpilih.
+    const pkgSorters = {
+      order: (a, b) => a.dataset.sortOrder - b.dataset.sortOrder,
+      price_asc: (a, b) => a.dataset.price - b.dataset.price,
+      price_desc: (a, b) => b.dataset.price - a.dataset.price,
+      orders: (a, b) => b.dataset.orders - a.dataset.orders,
+    };
+    pkgSortBy?.addEventListener('change', () => {
+      const sorter = pkgSorters[pkgSortBy.value];
+      if (!sorter) return;
+      pkgEmpty?.remove();
+      pkgRows.sort(sorter).forEach((row) => pkgTbody.appendChild(row));
+      if (pkgEmpty) pkgTbody.appendChild(pkgEmpty);
+    }, listenerOptions);
+
+    // Drawer tambah/edit.
+    function createFeatureInput(value = '') {
+      const item = document.createElement('div');
+      item.className = 'flex items-center gap-2 rounded-lg bg-surface-container-low p-2 shadow-sm';
+      item.innerHTML =
+        '<span aria-hidden="true" class="material-symbols-outlined select-none text-lg text-outline">menu</span>' +
+        '<input type="text" data-feature-input aria-label="Isi fitur paket" placeholder="Tuliskan fitur yang diperoleh klien..." class="min-w-0 flex-1 bg-transparent font-body-sm text-body-sm text-on-surface focus:outline-none">' +
+        '<button type="button" aria-label="Hapus fitur" title="Hapus fitur" class="rounded p-1 text-outline transition-colors hover:text-error"><span class="material-symbols-outlined text-base">close</span></button>';
+      if (value) item.querySelector('input').value = value;
+      item.querySelector('input').addEventListener('input', updateFeatureCount, listenerOptions);
+      item.querySelector('button').addEventListener('click', () => {
+        item.remove();
+        updateFeatureCount();
+      }, listenerOptions);
+      return item;
+    }
+
+    function updateFeatureCount() {
+      if (!pkgFeatureCount || !pkgFeatureList) return;
+      pkgFeatureCount.innerText = pkgFeatureList.querySelectorAll('input[data-feature-input]').length + ' fitur terdaftar';
+    }
+
+    function openPackageDrawer(mode, row) {
+      const isEdit = mode === 'edit' && row;
+      pkgForm.action = isEdit ? row.dataset.updateUrl : pkgForm.dataset.storeUrl;
+      pkgFormMethod.value = isEdit ? 'PUT' : 'POST';
+      const title = document.getElementById('packageDrawerTitle');
+      const subtitle = document.getElementById('packageDrawerSubtitle');
+      if (title) title.innerText = isEdit ? 'Edit Paket: ' + row.dataset.name : 'Tambah Paket Baru';
+      if (subtitle) subtitle.innerText = isEdit
+        ? 'ID: #' + row.dataset.packageId + ' · digunakan di ' + row.dataset.orders + ' pesanan'
+        : 'Paket baru tersedia saat pemesanan';
+      if (isEdit) {
+        document.getElementById('packageName').value = row.dataset.name;
+        document.getElementById('packageSlug').value = row.dataset.slug;
+        document.getElementById('packageDescription').value = row.dataset.description;
+        document.getElementById('packagePrice').value = row.dataset.price;
+        document.getElementById('packageOldPrice').value = row.dataset.oldPrice;
+        document.getElementById('packageQuota').value = row.dataset.quota;
+        document.getElementById('packageSort').value = row.dataset.sortOrder;
+        document.getElementById('packageCmsEnabled').checked = row.dataset.cms === '1';
+        document.getElementById('packagePublishActive').checked = row.dataset.active === '1';
+        document.getElementById('packagePublishDraft').checked = row.dataset.active !== '1';
+      } else {
+        pkgForm.reset();
+        document.getElementById('packagePublishActive').checked = true;
+        document.getElementById('packageSort').value = String(pkgRows.reduce((max, r) => Math.max(max, Number(r.dataset.sortOrder)), 0) + 1);
+      }
+      pkgFeatureList.replaceChildren();
+      const features = isEdit ? row.dataset.features.split('\n').map((s) => s.trim()).filter(Boolean) : [''];
+      features.forEach((feature) => pkgFeatureList.appendChild(createFeatureInput(feature)));
+      document.getElementById('packageFormErrors').classList.add('hidden');
+      updateFeatureCount();
+      pkgDrawerReturnFocus = document.querySelector('[data-package-drawer-create]');
+      pkgDrawerRoot.classList.remove('hidden');
+      requestAnimationFrame(() => pkgDrawer.classList.remove('translate-x-full'));
+      document.getElementById('packageName').focus();
+    }
+
+    function closePackageDrawer() {
+      if (!pkgDrawerRoot || pkgDrawerRoot.classList.contains('hidden')) return;
+      if (document.activeElement && pkgDrawer.contains(document.activeElement)) pkgDrawerReturnFocus?.focus();
+      pkgDrawer.classList.add('translate-x-full');
+      setTimeout(() => pkgDrawerRoot.classList.add('hidden'), 300);
+    }
+
+    document.querySelector('[data-package-drawer-create]')?.addEventListener('click', () => openPackageDrawer('create'), listenerOptions);
+    document.querySelectorAll('[data-package-edit]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const row = btn.closest('tr[data-package-id]');
+        if (row) openPackageDrawer('edit', row);
+      }, listenerOptions);
+    });
+    pkgDrawerRoot?.querySelectorAll('[data-package-drawer-close]').forEach((el) => {
+      el.addEventListener('click', closePackageDrawer, listenerOptions);
+    });
+
+    document.getElementById('btnAddPackageFeature')?.addEventListener('click', () => {
+      const input = createFeatureInput();
+      pkgFeatureList.appendChild(input);
+      input.querySelector('input').focus();
+    }, listenerOptions);
+
+    // Simpan paket via fetch agar validasi tetap tampil di dalam drawer.
+    function showPackageFormErrors(errors) {
+      const box = document.getElementById('packageFormErrors');
+      if (!box) return;
+      box.replaceChildren();
+      const list = errors && typeof errors === 'object' && Object.keys(errors).length ? errors : { form: ['Gagal menyimpan paket, coba lagi.'] };
+      Object.entries(list).forEach(([field, messages]) => {
+        messages.forEach((message) => {
+          const p = document.createElement('p');
+          p.className = 'font-label-md font-semibold text-label-md';
+          p.innerText = field.charAt(0).toUpperCase() + field.slice(1) + ': ' + message;
+          box.appendChild(p);
+        });
+      });
+      box.classList.remove('hidden');
+      box.scrollIntoView({ block: 'nearest' });
+    }
+
+    pkgForm?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const featureValues = Array.from(pkgFeatureList.querySelectorAll('input[data-feature-input]')).map((i) => i.value.trim()).filter(Boolean);
+      if (featureValues.length === 0) {
+        showPackageFormErrors({ features: ['Isi minimal satu fitur paket.'] });
+        return;
+      }
+      document.getElementById('packageFeaturesValue').value = featureValues.join('\n');
+      const saveBtn = document.getElementById('btnSavePackage');
+      saveBtn.disabled = true;
+      try {
+        const res = await fetch(pkgForm.action, {
+          method: 'POST',
+          headers: { 'X-Requested-With': 'XMLHttpRequest', Accept: 'application/json' },
+          body: new FormData(pkgForm),
+        });
+        if (res.ok) {
+          showToast('Paket berhasil disimpan');
+          setTimeout(() => location.reload(), 700);
+          return;
+        }
+        let json = null;
+        try {
+          json = await res.json();
+        } catch {}
+        showPackageFormErrors(json?.errors);
+      } catch {
+        showPackageFormErrors(null);
+      } finally {
+        saveBtn.disabled = false;
+      }
+    }, listenerOptions);
+
+    // Modal konfirmasi hapus.
+    let pkgDeleteUrl = '';
+    function openPackageDelete(row) {
+      pkgDeleteUrl = row.dataset.deleteUrl;
+      document.getElementById('packageDeleteName').innerText = '"' + row.dataset.name + '"';
+      const count = Number(row.dataset.orders);
+      document.getElementById('packageDeleteImpact').innerText = count > 0
+        ? count + ' pesanan terkait menggunakan tier paket ini.'
+        : 'Belum ada pesanan yang memakai paket ini.';
+      pkgDeleteReturnFocus = row;
+      pkgDeleteModal.classList.remove('hidden');
+      pkgDeleteModal.classList.add('flex');
+      document.getElementById('btnCancelPackageDelete')?.focus();
+    }
+
+    function closePackageDelete() {
+      if (!pkgDeleteModal || pkgDeleteModal.classList.contains('hidden')) return;
+      pkgDeleteModal.classList.add('hidden');
+      pkgDeleteModal.classList.remove('flex');
+      pkgDeleteReturnFocus?.focus();
+      pkgDeleteReturnFocus = null;
+    }
+
+    document.querySelectorAll('[data-package-delete]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const row = btn.closest('tr[data-package-id]');
+        if (row) openPackageDelete(row);
+      }, listenerOptions);
+    });
+    pkgDeleteModal?.querySelectorAll('[data-package-delete-close]').forEach((el) => {
+      el.addEventListener('click', closePackageDelete, listenerOptions);
+    });
+
+    document.getElementById('packageDeleteForm')?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const confirmBtn = document.getElementById('btnConfirmPackageDelete');
+      confirmBtn.disabled = true;
+      try {
+        const res = await fetch(pkgDeleteUrl, {
+          method: 'POST',
+          headers: { 'X-Requested-With': 'XMLHttpRequest', Accept: 'application/json' },
+          body: new FormData(event.currentTarget),
+        });
+        if (res.ok) {
+          closePackageDelete();
+          showToast('Paket berhasil dihapus');
+          setTimeout(() => location.reload(), 700);
+          return;
+        }
+        let json = null;
+        try {
+          json = await res.json();
+        } catch {}
+        closePackageDelete();
+        showToast(json?.errors?.package?.[0] || json?.message || 'Paket tidak dapat dihapus.');
+      } catch {
+        showToast('Gagal menghapus paket, coba lagi.');
+      } finally {
+        confirmBtn.disabled = false;
+      }
+    }, listenerOptions);
+
+    // Escape menutup modal hapus lalu drawer (diutamakan modal di atas).
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape') return;
+      if (pkgDeleteModal && !pkgDeleteModal.classList.contains('hidden')) {
+        closePackageDelete();
+        return;
+      }
+      if (pkgDrawerRoot && !pkgDrawerRoot.classList.contains('hidden')) closePackageDrawer();
+    }, listenerOptions);
+  }
 }
 
 document.addEventListener('DOMContentLoaded', initializeAdminPage);
