@@ -809,7 +809,39 @@ Route::prefix('templates/ruby-luxe')->name('ruby-luxe.')->group(function () use 
         ->name('register.submit');
 });
 
+// Route::view(
+//     'webia/template/property/coral-haven',
+//     'website-bisnis.template.property.perumahan.coral-haven'
+// )->name('webia.templates.coral-haven');
+// Route::view('/template/salon-modern-sage', 'website-bisnis.templates.salon-modern-sage')
+//     ->name('template.salon-modern-sage');
+// Route::view(
+//     '/template/salon-classic-warm-neutral',
+//     'website-bisnis.templates.salon-classic-warm-neutral'
+// )->name('template.salon-classic-warm-neutral');
+
+// Route::view(
+//     '/template/salon-elegant-soft-pink',
+//     'website-bisnis.templates.salon-elegant-soft-pink'
+// )->name('template.salon-elegant-soft-pink');
+
 Route::view(
     'webia/template/property/coral-haven',
     'website-bisnis.template.property.perumahan.coral-haven'
 )->name('webia.templates.coral-haven');
+
+// Template Salon — Nina
+Route::view(
+    '/template/salon-modern-sage',
+    'website-bisnis.templates.salon-modern-sage'
+)->name('template.salon-modern-sage');
+
+Route::view(
+    '/template/salon-classic-warm-neutral',
+    'website-bisnis.templates.salon-classic-warm-neutral'
+)->name('template.salon-classic-warm-neutral');
+
+Route::view(
+    '/template/salon-elegant-soft-pink',
+    'website-bisnis.templates.salon-elegant-soft-pink'
+)->name('template.salon-elegant-soft-pink');
