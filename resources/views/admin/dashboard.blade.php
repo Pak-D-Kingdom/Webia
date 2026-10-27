@@ -70,11 +70,25 @@
         return $d;
     };
 
-    $revLine = $smoothPath($revPts);
+    $upSample = function (iterable $pts): array {
+        $pts = is_array($pts) ? $pts : collect($pts)->all();
+        $out = [];
+        $n = count($pts);
+        for ($i = 0; $i < $n; $i++) {
+            $out[] = $pts[$i];
+            if ($i < $n - 1) {
+                $out[] = ['x' => ($pts[$i]['x'] + $pts[$i + 1]['x']) / 2, 'y' => ($pts[$i]['y'] + $pts[$i + 1]['y']) / 2];
+            }
+        }
+
+        return $out;
+    };
+
+    $revLine = $smoothPath($upSample($revPts));
     $revArea = $revLine.' L 700,195 L 0,195 Z';
-    $volLine = $smoothPath($volPts);
+    $volLine = $smoothPath($upSample($volPts));
     $volArea = $volLine.' L 700,195 L 0,195 Z';
-    $prevLine = $smoothPath($prevPts);
+    $prevLine = $smoothPath($upSample($prevPts));
 
     $peakIdx = (int) $revSeq->search($revSeq->max());
     $peak = $chart[$peakIdx];
