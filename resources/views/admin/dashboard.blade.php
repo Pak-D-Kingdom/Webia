@@ -30,11 +30,11 @@
         $prev = $first;
         for ($i = 1; $i < $points->count(); $i++) {
             $p = $points[$i];
-            $d .= ' Q '.$prev['x'].' '.$prev['y'].' '.round(($prev['x'] + $p['x']) / 2, 1).' '.round(($prev['y'] + $p['y']) / 2, 1);
+            $d .= ' Q '.round(($prev['x'] + $p['x']) / 2, 1).' '.round(($prev['y'] + $p['y']) / 2, 1).' '.$p['x'].' '.$p['y'];
             $prev = $p;
         }
 
-        return $d.' L '.$prev['x'].' '.$prev['y'];
+        return $d;
     };
 
     $revLine = $smoothPath($revPts);
