@@ -542,6 +542,28 @@ Route::prefix('webia/template')->group(function () {
         'website-bisnis.templates.interior-architecture.architecture-building-design.aethel-moss.aethel-moss'
     )->name('webia.template.aethel-moss-architectural-studio');
 });
+
+Route::prefix('webia/template')->group(function () {
+    Route::view(
+        '/pebble-sprouts-baby-kids',
+        'website-bisnis.templates.retail.baby-kids-products.pebble-sprouts.pebble-sprouts'
+    )->name('webia.template.pebble-sprouts-baby-kids');
+});
+
+Route::prefix('webia/template')->group(function () {
+    Route::view(
+        '/vibesnatch-fashion-store',
+        'website-bisnis.templates.retail.fashion-clothing-store.vibesnatch.vibesnatch'
+    )->name('webia.template.vibesnatch-fashion-store');
+});
+
+Route::prefix('webia/template')->group(function () {
+   Route::view(
+    '/aria-thorne-author-writer',
+    'website-bisnis.templates.personal-brand.author-writer.aria-thorne.aria-thorne'
+)->name('webia.template.aria-thorne-author-writer');
+});
+
 Route::view(
     'webia/template/fnb/restaurant/little-corner',
     'website-bisnis.templates.fnb.little-corner'
