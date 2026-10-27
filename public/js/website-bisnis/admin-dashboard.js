@@ -861,6 +861,276 @@ function initializeAdminPage() {
       if (pkgDrawerRoot && !pkgDrawerRoot.classList.contains('hidden')) closePackageDrawer();
     }, listenerOptions);
   }
+
+  // ===== Halaman Add-on Layanan =====
+  const addonTable = document.getElementById('addonsTable');
+  if (addonTable) {
+    const addonTbody = addonTable.tBodies[0];
+    const addonRows = Array.from(addonTbody.querySelectorAll('tr[data-addon-id]'));
+    const addonSearch = document.getElementById('addonSearch');
+    const addonFilterStatus = document.getElementById('addonFilterStatus');
+    const addonSortBy = document.getElementById('addonSortBy');
+    const addonCounter = document.getElementById('addonsVisibleCount');
+    const addonEmpty = document.getElementById('addonsEmptyState');
+    const addonDrawerRoot = document.getElementById('addonDrawerRoot');
+    const addonDrawer = document.getElementById('addonDrawer');
+    const addonForm = document.getElementById('addonForm');
+    const addonFormMethod = document.getElementById('addonFormMethod');
+    const addonDeleteModal = document.getElementById('addonDeleteModal');
+    let addonDrawerReturnFocus = null;
+    let addonDeleteReturnFocus = null;
+
+    // Filter + pencarian instan.
+    function applyAddonsFilter() {
+      const query = (addonSearch?.value || '').toLowerCase().trim();
+      const status = addonFilterStatus?.value || 'all';
+      let visible = 0;
+      addonRows.forEach((row) => {
+        const matchesQuery = !query || row.innerText.toLowerCase().includes(query);
+        const matchesStatus = status === 'all' || row.dataset.active === status;
+        const show = matchesQuery && matchesStatus;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (addonCounter) addonCounter.innerText = visible;
+      if (addonEmpty) addonEmpty.classList.toggle('hidden', visible !== 0);
+    }
+    addonSearch?.addEventListener('input', applyAddonsFilter, listenerOptions);
+    addonFilterStatus?.addEventListener('change', applyAddonsFilter, listenerOptions);
+
+    // Urutkan ulang baris menurut kriteria terpilih.
+    const addonSorters = {
+      popular: (a, b) => b.dataset.orders - a.dataset.orders,
+      price_asc: (a, b) => (Number(a.dataset.price) || 0) - (Number(b.dataset.price) || 0),
+      price_desc: (a, b) => (Number(b.dataset.price) || 0) - (Number(a.dataset.price) || 0),
+      name: (a, b) => a.dataset.name.localeCompare(b.dataset.name, 'id'),
+    };
+    addonSortBy?.addEventListener('change', () => {
+      const sorter = addonSorters[addonSortBy.value];
+      if (!sorter) return;
+      addonEmpty?.remove();
+      addonRows.sort(sorter).forEach((row) => addonTbody.appendChild(row));
+      if (addonEmpty) addonTbody.appendChild(addonEmpty);
+    }, listenerOptions);
+
+    // Drawer tambah/edit.
+    function openAddonDrawer(mode, row) {
+      const isEdit = mode === 'edit' && row;
+      addonForm.action = isEdit ? row.dataset.updateUrl : addonForm.dataset.storeUrl;
+      addonFormMethod.value = isEdit ? 'PUT' : 'POST';
+      const title = document.getElementById('addonDrawerTitle');
+      const subtitle = document.getElementById('addonDrawerSubtitle');
+      if (title) title.innerText = isEdit ? 'Edit Add-on: ' + row.dataset.name : 'Tambah Add-on Baru';
+      if (subtitle) subtitle.innerText = isEdit
+        ? 'ID: #' + row.dataset.addonId + ' · digunakan di ' + row.dataset.orders + ' pesanan'
+        : 'Add-on baru langsung tersedia saat pemesanan';
+      if (isEdit) {
+        document.getElementById('addonName').value = row.dataset.name;
+        document.getElementById('addonDescription').value = row.dataset.description;
+        document.getElementById('addonPrice').value = row.dataset.price;
+        document.getElementById('addonPublishActive').checked = row.dataset.active === '1';
+        document.getElementById('addonPublishDraft').checked = row.dataset.active !== '1';
+      } else {
+        addonForm.reset();
+        document.getElementById('addonPublishActive').checked = true;
+      }
+      document.getElementById('addonFormErrors').classList.add('hidden');
+      addonDrawerReturnFocus = document.querySelector('[data-addon-drawer-create]');
+      addonDrawerRoot.classList.remove('hidden');
+      requestAnimationFrame(() => addonDrawer.classList.remove('translate-x-full'));
+      document.getElementById('addonName').focus();
+    }
+
+    function closeAddonDrawer() {
+      if (!addonDrawerRoot || addonDrawerRoot.classList.contains('hidden')) return;
+      if (document.activeElement && addonDrawer.contains(document.activeElement)) addonDrawerReturnFocus?.focus();
+      addonDrawer.classList.add('translate-x-full');
+      setTimeout(() => addonDrawerRoot.classList.add('hidden'), 300);
+    }
+
+    document.querySelector('[data-addon-drawer-create]')?.addEventListener('click', () => openAddonDrawer('create'), listenerOptions);
+    document.querySelectorAll('[data-addon-edit]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const row = btn.closest('tr[data-addon-id]');
+        if (row) openAddonDrawer('edit', row);
+      }, listenerOptions);
+    });
+    addonDrawerRoot?.querySelectorAll('[data-addon-drawer-close]').forEach((el) => {
+      el.addEventListener('click', closeAddonDrawer, listenerOptions);
+    });
+
+    // Simpan add-on via fetch agar validasi tetap tampil di dalam drawer.
+    function showAddonFormErrors(errors) {
+      const box = document.getElementById('addonFormErrors');
+      if (!box) return;
+      box.replaceChildren();
+      const list = errors && typeof errors === 'object' && Object.keys(errors).length ? errors : { form: ['Gagal menyimpan add-on, coba lagi.'] };
+      Object.entries(list).forEach(([field, messages]) => {
+        messages.forEach((message) => {
+          const p = document.createElement('p');
+          p.className = 'font-label-md font-semibold text-label-md';
+          p.innerText = field.charAt(0).toUpperCase() + field.slice(1) + ': ' + message;
+          box.appendChild(p);
+        });
+      });
+      box.classList.remove('hidden');
+      box.scrollIntoView({ block: 'nearest' });
+    }
+
+    addonForm?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const saveBtn = document.getElementById('btnSaveAddon');
+      saveBtn.disabled = true;
+      try {
+        const res = await fetch(addonForm.action, {
+          method: 'POST',
+          headers: { 'X-Requested-With': 'XMLHttpRequest', Accept: 'application/json' },
+          body: new FormData(addonForm),
+        });
+        if (res.ok) {
+          showToast('Add-on berhasil disimpan');
+          setTimeout(() => location.reload(), 700);
+          return;
+        }
+        let json = null;
+        try {
+          json = await res.json();
+        } catch {}
+        showAddonFormErrors(json?.errors);
+      } catch {
+        showAddonFormErrors(null);
+      } finally {
+        saveBtn.disabled = false;
+      }
+    }, listenerOptions);
+
+    // Toggle aktif/nonaktif via fetch — update row & KPI tanpa reload.
+    document.querySelectorAll('form[data-addon-toggle]').forEach((form) => {
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const button = form.querySelector('button[type="submit"]');
+        if (!button || button.disabled) return;
+        button.disabled = true;
+        try {
+          const res = await fetch(form.action, {
+            method: 'POST',
+            headers: { 'X-Requested-With': 'XMLHttpRequest', Accept: 'application/json' },
+            body: new FormData(form),
+          });
+          const json = await res.json();
+          if (!res.ok) throw new Error();
+          const row = form.closest('tr[data-addon-id]');
+          const active = Boolean(json.is_active);
+          row.dataset.active = active ? '1' : '0';
+          const track = form.querySelector('span.relative');
+          const knob = track.querySelector('span');
+          const label = form.querySelector('span.font-label-sm');
+          track.classList.toggle('bg-secondary', active);
+          track.classList.toggle('bg-surface-container-highest', !active);
+          knob.classList.toggle('translate-x-4', active);
+          label.innerText = active ? 'Aktif' : 'Nonaktif';
+          label.classList.toggle('text-secondary', active);
+          label.classList.toggle('text-on-surface-variant', !active);
+          form.setAttribute('title', active ? 'Nonaktifkan add-on' : 'Aktifkan add-on');
+          const nameSpan = row.querySelector('td span.font-label-lg');
+          if (nameSpan) {
+            nameSpan.classList.toggle('text-on-surface', active);
+            nameSpan.classList.toggle('text-on-surface-variant', !active);
+          }
+          const descSpan = row.querySelector('td span.line-clamp-1');
+          const priceCell = row.querySelector('td .font-mono');
+          [descSpan, priceCell].forEach((el) => {
+            if (!el) return;
+            el.classList.toggle('text-on-surface-variant', active);
+            el.classList.toggle('text-outline', !active);
+          });
+          const tableRows = Array.from(document.querySelectorAll('#addonsTable tbody tr[data-addon-id]'));
+          const activeCount = tableRows.filter((r) => r.dataset.active === '1').length;
+          document.getElementById('addonsActiveBadge').innerText = activeCount + ' Add-on Aktif';
+          document.getElementById('addonsActiveCount').innerText = activeCount;
+          document.getElementById('addonsInactiveCount').innerText = tableRows.length - activeCount;
+          applyAddonsFilter();
+          showToast(json.message);
+        } catch {
+          showToast('Gagal mengubah status add-on');
+        } finally {
+          button.disabled = false;
+        }
+      }, listenerOptions);
+    });
+
+    // Modal konfirmasi hapus.
+    let addonDeleteUrl = '';
+    function openAddonDelete(row) {
+      addonDeleteUrl = row.dataset.deleteUrl;
+      document.getElementById('addonDeleteName').innerText = '"' + row.dataset.name + '"';
+      const count = Number(row.dataset.orders);
+      document.getElementById('addonDeleteImpact').innerText = count > 0
+        ? count + ' pesanan terkait menggunakan add-on ini.'
+        : 'Belum ada pesanan yang memakai add-on ini.';
+      addonDeleteReturnFocus = row;
+      addonDeleteModal.classList.remove('hidden');
+      addonDeleteModal.classList.add('flex');
+      document.getElementById('btnCancelAddonDelete')?.focus();
+    }
+
+    function closeAddonDelete() {
+      if (!addonDeleteModal || addonDeleteModal.classList.contains('hidden')) return;
+      addonDeleteModal.classList.add('hidden');
+      addonDeleteModal.classList.remove('flex');
+      addonDeleteReturnFocus?.focus();
+      addonDeleteReturnFocus = null;
+    }
+
+    document.querySelectorAll('[data-addon-delete]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const row = btn.closest('tr[data-addon-id]');
+        if (row) openAddonDelete(row);
+      }, listenerOptions);
+    });
+    addonDeleteModal?.querySelectorAll('[data-addon-delete-close]').forEach((el) => {
+      el.addEventListener('click', closeAddonDelete, listenerOptions);
+    });
+
+    document.getElementById('addonDeleteForm')?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const confirmBtn = document.getElementById('btnConfirmAddonDelete');
+      confirmBtn.disabled = true;
+      try {
+        const res = await fetch(addonDeleteUrl, {
+          method: 'POST',
+          headers: { 'X-Requested-With': 'XMLHttpRequest', Accept: 'application/json' },
+          body: new FormData(event.currentTarget),
+        });
+        if (res.ok) {
+          closeAddonDelete();
+          showToast('Add-on berhasil dihapus');
+          setTimeout(() => location.reload(), 700);
+          return;
+        }
+        let json = null;
+        try {
+          json = await res.json();
+        } catch {}
+        closeAddonDelete();
+        showToast(json?.errors?.addon?.[0] || json?.message || 'Add-on tidak dapat dihapus.');
+      } catch {
+        showToast('Gagal menghapus add-on, coba lagi.');
+      } finally {
+        confirmBtn.disabled = false;
+      }
+    }, listenerOptions);
+
+    // Escape menutup modal hapus lalu drawer.
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape') return;
+      if (addonDeleteModal && !addonDeleteModal.classList.contains('hidden')) {
+        closeAddonDelete();
+        return;
+      }
+      if (addonDrawerRoot && !addonDrawerRoot.classList.contains('hidden')) closeAddonDrawer();
+    }, listenerOptions);
+  }
 }
 
 document.addEventListener('DOMContentLoaded', initializeAdminPage);

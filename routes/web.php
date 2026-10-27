@@ -47,6 +47,7 @@ Route::middleware('auth')->group(function (): void {
         Route::resource('packages', WebiaPackageController::class)->except('show');
         Route::post('packages/{package}/toggle', [WebiaPackageController::class, 'toggle'])->name('packages.toggle');
         Route::resource('addons', WebiaAddonController::class)->except('show');
+        Route::post('addons/{addon}/toggle', [WebiaAddonController::class, 'toggle'])->name('addons.toggle');
         Route::get('orders', [AdminWebiaOrderController::class, 'index'])->name('orders.index');
         Route::get('orders/{order}', [AdminWebiaOrderController::class, 'show'])->name('orders.show');
         Route::get('orders/{order}/receipt', [AdminWebiaOrderController::class, 'receipt'])->name('orders.receipt');

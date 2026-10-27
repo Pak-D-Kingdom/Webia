@@ -51,6 +51,18 @@ class AdminMasterDataTest extends TestCase
         ]);
     }
 
+    public function test_admin_can_toggle_addon_active_state(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $addon = WebiaAddon::factory()->create(['is_active' => true]);
+
+        $this->actingAs($admin)
+            ->post(route('admin.addons.toggle', $addon))
+            ->assertRedirect(route('admin.addons.index'));
+
+        $this->assertDatabaseHas('webia_addons', ['id' => $addon->id, 'is_active' => false]);
+    }
+
     public function test_admin_can_toggle_package_active_state(): void
     {
         $admin = User::factory()->admin()->create();
