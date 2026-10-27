@@ -24,14 +24,29 @@
     $prevPts = $prevChart->map(fn ($v, $i) => ['x' => $xs($i), 'y' => $yOf($v, $maxRev)]);
 
     $smoothPath = function (iterable $points): string {
-        $points = collect($points)->map(fn ($p) => ['x' => round($p['x'], 1), 'y' => round($p['y'], 1)]);
-        $first = $points->first();
-        $d = 'M '.$first['x'].' '.$first['y'];
-        $prev = $first;
-        for ($i = 1; $i < $points->count(); $i++) {
-            $p = $points[$i];
-            $d .= ' Q '.round(($prev['x'] + $p['x']) / 2, 1).' '.round(($prev['y'] + $p['y']) / 2, 1).' '.$p['x'].' '.$p['y'];
-            $prev = $p;
+        $p = collect($points)->map(fn ($pt) => ['x' => round($pt['x'], 1), 'y' => round($pt['y'], 1)])->all();
+        $n = count($p);
+        if ($n < 2) {
+            return '';
+        }
+
+        // Catmull-Rom -> cubic Bézier: lulus setiap anchor, tikungan mulus
+        $d = 'M '.$p[0]['x'].' '.$p[0]['y'];
+        for ($i = 0; $i < $n - 1; $i++) {
+            $p0 = $p[max($i - 1, 0)];
+            $p1 = $p[$i];
+            $p2 = $p[$i + 1];
+            $p3 = $p[min($i + 2, $n - 1)];
+            $c1x = $p1['x'] + ($p2['x'] - $p0['x']) / 6;
+            $c1y = $p1['y'] + ($p2['y'] - $p0['y']) / 6;
+            $c2x = $p2['x'] - ($p3['x'] - $p1['x']) / 6;
+            $c2y = $p2['y'] - ($p3['y'] - $p1['y']) / 6;
+            // Clamp kontrol y ke rentang segmen supaya kurva tidak melewati nilai data (no overshoot)
+            $minY = min($p1['y'], $p2['y']);
+            $maxY = max($p1['y'], $p2['y']);
+            $c1y = max($minY, min($maxY, $c1y));
+            $c2y = max($minY, min($maxY, $c2y));
+            $d .= sprintf(' C %.1f %.1f %.1f %.1f %s %s', $c1x, $c1y, $c2x, $c2y, $p2['x'], $p2['y']);
         }
 
         return $d;
