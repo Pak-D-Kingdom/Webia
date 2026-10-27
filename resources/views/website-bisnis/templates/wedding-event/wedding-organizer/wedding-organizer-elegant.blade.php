@@ -283,16 +283,16 @@
 
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div class="aspect-[3/4] rounded-2xl overflow-hidden group">
-                        <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=600&q=80" alt="Moment 1" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=600&q=80" alt="Moment 1" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy" decoding="async">
                     </div>
                     <div class="aspect-[3/4] rounded-2xl overflow-hidden group">
-                        <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600&q=80" alt="Moment 2" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600&q=80" alt="Moment 2" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy" decoding="async">
                     </div>
                     <div class="aspect-[3/4] rounded-2xl overflow-hidden group">
-                        <img src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=600&q=80" alt="Moment 3" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <img src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=600&q=80" alt="Moment 3" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy" decoding="async">
                     </div>
                     <div class="aspect-[3/4] rounded-2xl overflow-hidden group">
-                        <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=600&q=80" alt="Moment 4" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=600&q=80" alt="Moment 4" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy" decoding="async">
                     </div>
                 </div>
             </div>

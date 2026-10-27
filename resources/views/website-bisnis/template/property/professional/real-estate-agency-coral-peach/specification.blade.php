@@ -21,7 +21,7 @@
   <div class="container section">
     @if ($unit)
       <div class="unit-banner panel">
-        <img src="{{ asset($img.'/'.$unit['image']) }}" alt="{{ $unit['name'] }}" width="465" height="294">
+        <img src="{{ asset($img.'/'.$unit['image']) }}" alt="{{ $unit['name'] }}" width="465" height="294" loading="lazy" decoding="async">
         <div>
           <span class="tag">{{ $unit['status'] }}</span>
           <h2>{{ $unit['name'] }}</h2>

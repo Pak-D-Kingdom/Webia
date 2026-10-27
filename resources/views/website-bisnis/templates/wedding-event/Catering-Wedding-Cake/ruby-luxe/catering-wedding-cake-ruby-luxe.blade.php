@@ -99,7 +99,7 @@
             <div class="rl-food-grid">
                 <article class="rl-food-card">
                     <div class="rl-food-image">
-                        <img src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=850&q=85" alt="Hidangan prasmanan dan sajian makanan">
+                        <img src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=850&q=85" alt="Hidangan prasmanan dan sajian makanan" loading="lazy" decoding="async">
                         <span>01 / SIGNATURE</span>
                     </div>
                     <div class="rl-food-copy">
@@ -111,7 +111,7 @@
 
                 <article class="rl-food-card">
                     <div class="rl-food-image">
-                        <img src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=850&q=85" alt="Sajian makanan untuk acara keluarga">
+                        <img src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=850&q=85" alt="Sajian makanan untuk acara keluarga" loading="lazy" decoding="async">
                         <span>02 / INTIMATE</span>
                     </div>
                     <div class="rl-food-copy">
@@ -123,7 +123,7 @@
 
                 <article class="rl-food-card">
                     <div class="rl-food-image">
-                        <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=850&q=85" alt="Pastry dan dessert untuk acara">
+                        <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=850&q=85" alt="Pastry dan dessert untuk acara" loading="lazy" decoding="async">
                         <span>03 / DESSERTS</span>
                     </div>
                     <div class="rl-food-copy">
@@ -150,7 +150,7 @@
 
             <div class="rl-cake-grid">
                 <article class="rl-cake-card rl-cake-large">
-                    <img src="https://images.unsplash.com/photo-1535254973040-607b474cb50d?auto=format&fit=crop&w=1000&q=85" alt="Wedding cake putih bertingkat">
+                    <img src="https://images.unsplash.com/photo-1535254973040-607b474cb50d?auto=format&fit=crop&w=1000&q=85" alt="Wedding cake putih bertingkat" loading="lazy" decoding="async">
                     <div class="rl-cake-overlay">
                         <span>01 / TIMELESS</span>
                         <h3>Classic Ivory</h3>
@@ -159,7 +159,7 @@
                 </article>
 
                 <article class="rl-cake-card">
-                    <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=800&q=85" alt="Kue bertingkat dengan hiasan bunga">
+                    <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=800&q=85" alt="Kue bertingkat dengan hiasan bunga" loading="lazy" decoding="async">
                     <div class="rl-cake-overlay">
                         <span>02 / ROMANTIC</span>
                         <h3>Romantic Bloom</h3>
@@ -168,7 +168,7 @@
                 </article>
 
                 <article class="rl-cake-card">
-                    <img src="https://images.unsplash.com/photo-1557979619-445218f326b9?auto=format&fit=crop&w=800&q=85" alt="Kue perayaan dengan desain modern">
+                    <img src="https://images.unsplash.com/photo-1557979619-445218f326b9?auto=format&fit=crop&w=800&q=85" alt="Kue perayaan dengan desain modern" loading="lazy" decoding="async">
                     <div class="rl-cake-overlay">
                         <span>03 / CONTEMPORARY</span>
                         <h3>Modern Minimal</h3>
@@ -287,7 +287,7 @@
                 <!-- CAKE OPTIONS -->
         <section class="rl-options">
             <div class="rl-options-image">
-                <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1000&q=85" alt="Wedding cake dengan dekorasi elegan">
+                <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1000&q=85" alt="Wedding cake dengan dekorasi elegan" loading="lazy" decoding="async">
             </div>
             <div class="rl-options-copy">
                 <span class="rl-eyebrow">MADE TO YOUR TASTE</span>
@@ -335,7 +335,7 @@
                 <a href="#inquiry" class="rl-button rl-button-light">Ask About Food Tasting ↗</a>
             </div>
             <div class="rl-tasting-image">
-                <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=950&q=85" alt="Pastry dan hidangan penutup">
+                <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=950&q=85" alt="Pastry dan hidangan penutup" loading="lazy" decoding="async">
             </div>
         </section>
 

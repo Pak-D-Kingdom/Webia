@@ -37,12 +37,27 @@ class WebiaOrderController extends Controller
             ->paginate(20)
             ->withQueryString();
 
+        $verifying = WebiaOrder::where('status', 'payment_uploaded');
+
         return view('admin.orders.index', [
             'orders' => $orders,
             'activeStatus' => $status,
             'statuses' => self::STATUSES,
             'activeDelivery' => $delivery,
             'deliveries' => self::DELIVERY_STATUSES,
+            'statusCounts' => WebiaOrder::selectRaw('status, count(*) as aggregate')->groupBy('status')->pluck('aggregate', 'status'),
+            'deliveryCounts' => WebiaOrder::selectRaw('delivery_status, count(*) as aggregate')->groupBy('delivery_status')->pluck('aggregate', 'delivery_status'),
+            'stats' => [
+                'total' => WebiaOrder::count(),
+                'totalValue' => WebiaOrder::sum('total_price'),
+                'verifyingCount' => (clone $verifying)->count(),
+                'verifyingValue' => (clone $verifying)->sum('total_price'),
+                'workingCount' => WebiaOrder::where('delivery_status', 'in_progress')->count(),
+                'deliveredMonth' => WebiaOrder::where('delivery_status', 'delivered')
+                    ->whereMonth('paid_at', now()->month)
+                    ->whereYear('paid_at', now()->year)
+                    ->count(),
+            ],
         ]);
     }
 

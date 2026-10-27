@@ -80,7 +80,7 @@
         <section class="asc-section asc-about" id="about">
             <div class="asc-about-visual">
                 <img src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=1000&q=85"
-                     alt="Interior ruang klinik gigi">
+                     alt="Interior ruang klinik gigi" loading="lazy" decoding="async">
                 <div class="asc-about-caption">
                     <span>THE AZURE EXPERIENCE</span>
                     <strong>Care that feels different.</strong>
@@ -116,7 +116,7 @@
 
             <div class="asc-signature-grid">
                 <article class="asc-signature-card asc-signature-featured">
-                    <img src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&w=900&q=85" alt="Ilustrasi konsultasi estetika gigi">
+                    <img src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&w=900&q=85" alt="Ilustrasi konsultasi estetika gigi" loading="lazy" decoding="async">
                     <div class="asc-signature-overlay">
                         <span>01 / AESTHETIC DENTISTRY</span>
                         <h3>Smile Design Consultation</h3>
@@ -125,7 +125,7 @@
                     </div>
                 </article>
                 <article class="asc-signature-card">
-                    <img src="https://images.unsplash.com/photo-1609840114035-3c981b782dfe?auto=format&fit=crop&w=900&q=85" alt="Perawatan kesehatan gigi">
+                    <img src="https://images.unsplash.com/photo-1609840114035-3c981b782dfe?auto=format&fit=crop&w=900&q=85" alt="Perawatan kesehatan gigi" loading="lazy" decoding="async">
                     <div class="asc-signature-overlay">
                         <span>02 / PREVENTIVE CARE</span>
                         <h3>Advanced Dental Care</h3>
@@ -163,21 +163,21 @@
             <div class="asc-doctor-grid">
                 <article class="asc-doctor-card">
                     <div class="asc-doctor-image">
-                        <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=750&q=85" alt="Foto profil dokter gigi">
+                        <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=750&q=85" alt="Foto profil dokter gigi" loading="lazy" decoding="async">
                         <span>01</span>
                     </div>
                     <div class="asc-doctor-info"><small>GENERAL DENTISTRY</small><h3>Drg. [Nama Dokter]</h3><p>Dokter Gigi Umum</p><div class="asc-qualification">Kualifikasi: [Isi pendidikan dan gelar resmi]</div><a href="#booking">Book a consultation ↗</a></div>
                 </article>
                 <article class="asc-doctor-card">
                     <div class="asc-doctor-image">
-                        <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=750&q=85" alt="Foto profil dokter gigi">
+                        <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=750&q=85" alt="Foto profil dokter gigi" loading="lazy" decoding="async">
                         <span>02</span>
                     </div>
                     <div class="asc-doctor-info"><small>AESTHETIC DENTISTRY</small><h3>Drg. [Nama Dokter]</h3><p>Dokter Gigi</p><div class="asc-qualification">Kualifikasi: [Isi pendidikan dan gelar resmi]</div><a href="#booking">Book a consultation ↗</a></div>
                 </article>
                 <article class="asc-doctor-card">
                     <div class="asc-doctor-image">
-                        <img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=750&q=85" alt="Foto tenaga medis">
+                        <img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=750&q=85" alt="Foto tenaga medis" loading="lazy" decoding="async">
                         <span>03</span>
                     </div>
                     <div class="asc-doctor-info"><small>ORTHODONTIC CARE</small><h3>Drg. [Nama Dokter]</h3><p>[Spesialisasi terverifikasi]</p><div class="asc-qualification">Kualifikasi: [Isi pendidikan dan gelar resmi]</div><a href="#booking">Book a consultation ↗</a></div>
@@ -227,15 +227,15 @@
             </div>
             <div class="asc-gallery-grid">
                 <figure class="asc-gallery-large">
-                    <img src="https://images.unsplash.com/photo-1606811971618-4486d14f3f99?auto=format&fit=crop&w=1000&q=85" alt="Visual ilustratif perawatan gigi, bukan foto hasil pasien">
+                    <img src="https://images.unsplash.com/photo-1606811971618-4486d14f3f99?auto=format&fit=crop&w=1000&q=85" alt="Visual ilustratif perawatan gigi, bukan foto hasil pasien" loading="lazy" decoding="async">
                     <figcaption><span>SMILE JOURNEY 01</span><strong>Personalized Dental Care</strong></figcaption>
                 </figure>
                 <figure>
-                    <img src="https://images.unsplash.com/photo-1609840114035-3c981b782dfe?auto=format&fit=crop&w=800&q=85" alt="Visual ilustratif alat dan perawatan dental">
+                    <img src="https://images.unsplash.com/photo-1609840114035-3c981b782dfe?auto=format&fit=crop&w=800&q=85" alt="Visual ilustratif alat dan perawatan dental" loading="lazy" decoding="async">
                     <figcaption><span>SMILE JOURNEY 02</span><strong>Thoughtful Treatment</strong></figcaption>
                 </figure>
                 <figure>
-                    <img src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&w=800&q=85" alt="Visual ilustratif konsultasi dental">
+                    <img src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&w=800&q=85" alt="Visual ilustratif konsultasi dental" loading="lazy" decoding="async">
                     <figcaption><span>SMILE JOURNEY 03</span><strong>Care with Confidence</strong></figcaption>
                 </figure>
             </div>

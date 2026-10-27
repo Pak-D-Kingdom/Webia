@@ -162,7 +162,7 @@
             <article class="paw-product-card">
                 <a href="{{ url('/webia/template/petshop-minimalist-glacierblue/produk/royal-canin-kitten') }}" class="paw-product-image product-bg-blue">
                     <span class="paw-product-badge">BEST SELLER</span>
-                    <img src="https://images.unsplash.com/photo-1589924691995-400dc9ecc119?auto=format&fit=crop&w=600&q=80" alt="Makanan kucing">
+                    <img src="https://images.unsplash.com/photo-1589924691995-400dc9ecc119?auto=format&fit=crop&w=600&q=80" alt="Makanan kucing" loading="lazy" decoding="async">
                 </a>
                 <div class="paw-product-info">
                     <small>CAT FOOD</small>
@@ -178,7 +178,7 @@
             <article class="paw-product-card">
                 <a href="{{ url('/webia/template/petshop-minimalist-glacierblue/produk/dog-treats') }}" class="paw-product-image product-bg-peach">
                     <span class="paw-product-badge badge-new">PET FAVORITE</span>
-                    <img src="https://images.unsplash.com/photo-1582798358481-d199fb7347bb?auto=format&fit=crop&w=600&q=80" alt="Camilan anjing">
+                    <img src="https://images.unsplash.com/photo-1582798358481-d199fb7347bb?auto=format&fit=crop&w=600&q=80" alt="Camilan anjing" loading="lazy" decoding="async">
                 </a>
                 <div class="paw-product-info">
                     <small>DOG TREATS</small>
@@ -193,7 +193,7 @@
 
             <article class="paw-product-card">
                 <a href="{{ url('/webia/template/petshop-minimalist-glacierblue/produk/soft-pet-bed') }}" class="paw-product-image product-bg-green">
-                    <img src="https://images.unsplash.com/photo-1541599540903-216a46ca1dc0?auto=format&fit=crop&w=600&q=80" alt="Tempat tidur hewan">
+                    <img src="https://images.unsplash.com/photo-1541599540903-216a46ca1dc0?auto=format&fit=crop&w=600&q=80" alt="Tempat tidur hewan" loading="lazy" decoding="async">
                 </a>
                 <div class="paw-product-info">
                     <small>PET COMFORT</small>
@@ -208,7 +208,7 @@
 
             <article class="paw-product-card">
                 <a href="{{ url('/webia/template/petshop-minimalist-glacierblue/produk/pet-grooming-kit') }}" class="paw-product-image product-bg-lilac">
-                    <img src="https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?auto=format&fit=crop&w=600&q=80" alt="Perawatan hewan">
+                    <img src="https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?auto=format&fit=crop&w=600&q=80" alt="Perawatan hewan" loading="lazy" decoding="async">
                 </a>
                 <div class="paw-product-info">
                     <small>GROOMING</small>
@@ -241,7 +241,7 @@
     <section class="paw-about" id="about">
         <div class="paw-about-art">
             <div class="paw-about-circle"></div>
-            <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=900&q=85" alt="Anjing peliharaan">
+            <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=900&q=85" alt="Anjing peliharaan" loading="lazy" decoding="async">
             <span class="paw-about-note">Pets are family. Always. 💙</span>
         </div>
         <div class="paw-about-content">

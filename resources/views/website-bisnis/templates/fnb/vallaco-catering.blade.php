@@ -271,7 +271,7 @@
         <article class="menu-card bg-chalk/40 border editorial-border p-6 flex flex-col justify-between hover:border-moss transition-all group" data-category="seated">
           <div>
             <div class="overflow-hidden aspect-[4/3] mb-6 bg-sand">
-              <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80" alt="Smoked Salmon Gravlax" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80" alt="Smoked Salmon Gravlax" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
             </div>
             <div class="flex items-center justify-between gap-2 mb-2">
               <span class="badge-botanical text-sage font-bold">SEATED COURSE</span>
@@ -292,7 +292,7 @@
         <article class="menu-card bg-chalk/40 border editorial-border p-6 flex flex-col justify-between hover:border-moss transition-all group" data-category="grazing">
           <div>
             <div class="overflow-hidden aspect-[4/3] mb-6 bg-sand">
-              <img src="https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=800&q=80" alt="Nordic Botanical Grazing" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <img src="https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=800&q=80" alt="Nordic Botanical Grazing" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
             </div>
             <div class="flex items-center justify-between gap-2 mb-2">
               <span class="badge-botanical text-sage font-bold">GRAZING MONOLITH</span>
@@ -313,7 +313,7 @@
         <article class="menu-card bg-chalk/40 border editorial-border p-6 flex flex-col justify-between hover:border-moss transition-all group" data-category="seated">
           <div>
             <div class="overflow-hidden aspect-[4/3] mb-6 bg-sand">
-              <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80" alt="Slow Braised Wagyu" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80" alt="Slow Braised Wagyu" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
             </div>
             <div class="flex items-center justify-between gap-2 mb-2">
               <span class="badge-botanical text-sage font-bold">SEATED MAIN</span>
@@ -334,7 +334,7 @@
         <article class="menu-card bg-chalk/40 border editorial-border p-6 flex flex-col justify-between hover:border-moss transition-all group" data-category="canapes">
           <div>
             <div class="overflow-hidden aspect-[4/3] mb-6 bg-sand">
-              <img src="https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=800&q=80" alt="Canapes with Caviar and Quail Egg" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <img src="https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=800&q=80" alt="Canapes with Caviar and Quail Egg" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
             </div>
             <div class="flex items-center justify-between gap-2 mb-2">
               <span class="badge-botanical text-sage font-bold">PASSED CANAPÉ</span>
@@ -355,7 +355,7 @@
         <article class="menu-card bg-chalk/40 border editorial-border p-6 flex flex-col justify-between hover:border-moss transition-all group" data-category="canapes">
           <div>
             <div class="overflow-hidden aspect-[4/3] mb-6 bg-sand">
-              <img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80" alt="Botanical Tartlet" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80" alt="Botanical Tartlet" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
             </div>
             <div class="flex items-center justify-between gap-2 mb-2">
               <span class="badge-botanical text-sage font-bold">PASSED CANAPÉ</span>
@@ -376,7 +376,7 @@
         <article class="menu-card bg-chalk/40 border editorial-border p-6 flex flex-col justify-between hover:border-moss transition-all group" data-category="elixirs">
           <div>
             <div class="overflow-hidden aspect-[4/3] mb-6 bg-sand">
-              <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=800&q=80" alt="Smoked Pine & Juniper Mocktail" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=800&q=80" alt="Smoked Pine & Juniper Mocktail" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
             </div>
             <div class="flex items-center justify-between gap-2 mb-2">
               <span class="badge-botanical text-sage font-bold">BOTANICAL SIP</span>
@@ -609,13 +609,13 @@
       <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
         <div class="md:col-span-5 space-y-6">
           <div class="relative overflow-hidden aspect-[3/4] bg-sand border editorial-border group">
-            <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=80" alt="Intimate Wedding Table Setup" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+            <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=80" alt="Intimate Wedding Table Setup" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
             <div class="absolute inset-0 bg-moss/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
               <span class="text-xs uppercase tracking-widest text-linen">Nordic Greenhouse Wedding (120 Pax)</span>
             </div>
           </div>
           <div class="relative overflow-hidden aspect-[4/3] bg-sand border editorial-border group">
-            <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80" alt="Chef Preparing Dish" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+            <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80" alt="Chef Preparing Dish" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
             <div class="absolute inset-0 bg-moss/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
               <span class="text-xs uppercase tracking-widest text-linen">Live Garnishing • Micro Sorrel</span>
             </div>
@@ -624,20 +624,20 @@
 
         <div class="md:col-span-7 space-y-6">
           <div class="relative overflow-hidden aspect-[16/10] bg-sand border editorial-border group">
-            <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=1200&q=80" alt="Outdoor Table Feast" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+            <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=1200&q=80" alt="Outdoor Table Feast" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
             <div class="absolute inset-0 bg-moss/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
               <span class="text-xs uppercase tracking-widest text-linen">Twilight Botanical Gathering in Orchard</span>
             </div>
           </div>
           <div class="grid grid-cols-2 gap-6">
             <div class="relative overflow-hidden aspect-square bg-sand border editorial-border group">
-              <img src="https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=600&q=80" alt="Canapé Platter" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+              <img src="https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=600&q=80" alt="Canapé Platter" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
               <div class="absolute inset-0 bg-moss/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
                 <span class="text-[10px] uppercase tracking-widest text-linen">Artisan Canape Board</span>
               </div>
             </div>
             <div class="relative overflow-hidden aspect-square bg-sand border editorial-border group">
-              <img src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=600&q=80" alt="Ceramic Plate Styling" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+              <img src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=600&q=80" alt="Ceramic Plate Styling" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
               <div class="absolute inset-0 bg-moss/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
                 <span class="text-[10px] uppercase tracking-widest text-linen">Bespoke Table Stoneware</span>
               </div>

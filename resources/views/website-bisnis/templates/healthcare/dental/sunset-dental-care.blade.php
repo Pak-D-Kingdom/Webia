@@ -392,7 +392,7 @@
                         </div>
                     </div>
                     <div class="lg:col-span-5">
-                        <img src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&q=80&w=600" alt="Invisalign Detail" class="rounded-2xl w-full h-64 object-cover shadow-md">
+                        <img src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&q=80&w=600" alt="Invisalign Detail" loading="lazy" decoding="async" class="rounded-2xl w-full h-64 object-cover shadow-md">
                     </div>
                 </div>
 
@@ -432,7 +432,7 @@
                         </div>
                     </div>
                     <div class="lg:col-span-5">
-                        <img src="https://images.unsplash.com/photo-1598256989800-fe5f95da9787?auto=format&fit=crop&q=80&w=600" alt="Whitening Detail" class="rounded-2xl w-full h-64 object-cover shadow-md">
+                        <img src="https://images.unsplash.com/photo-1598256989800-fe5f95da9787?auto=format&fit=crop&q=80&w=600" alt="Whitening Detail" loading="lazy" decoding="async" class="rounded-2xl w-full h-64 object-cover shadow-md">
                     </div>
                 </div>
 
@@ -463,7 +463,7 @@
                         </div>
                     </div>
                     <div class="lg:col-span-5">
-                        <img src="https://images.unsplash.com/photo-1571772996211-2f02c9727629?auto=format&fit=crop&q=80&w=600" alt="Veneer Detail" class="rounded-2xl w-full h-64 object-cover shadow-md">
+                        <img src="https://images.unsplash.com/photo-1571772996211-2f02c9727629?auto=format&fit=crop&q=80&w=600" alt="Veneer Detail" loading="lazy" decoding="async" class="rounded-2xl w-full h-64 object-cover shadow-md">
                     </div>
                 </div>
 
@@ -494,7 +494,7 @@
                         </div>
                     </div>
                     <div class="lg:col-span-5">
-                        <img src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&q=80&w=600" alt="Scaling Detail" class="rounded-2xl w-full h-64 object-cover shadow-md">
+                        <img src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&q=80&w=600" alt="Scaling Detail" loading="lazy" decoding="async" class="rounded-2xl w-full h-64 object-cover shadow-md">
                     </div>
                 </div>
 
@@ -516,7 +516,7 @@
                 <!-- Dentist Card 1 -->
                 <div class="bg-slate-50 rounded-3xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 group">
                     <div class="relative h-72 overflow-hidden bg-slate-200">
-                        <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=600" alt="drg. Valery" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=600" alt="drg. Valery" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                         <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold text-pink-600">
                             Head Orthodontist
                         </div>
@@ -541,7 +541,7 @@
                 <!-- Dentist Card 2 -->
                 <div class="bg-slate-50 rounded-3xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 group">
                     <div class="relative h-72 overflow-hidden bg-slate-200">
-                        <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=600" alt="drg. Julian" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=600" alt="drg. Julian" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                         <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold text-purple-600">
                             Aesthetic Dentist
                         </div>
@@ -566,7 +566,7 @@
                 <!-- Dentist Card 3 -->
                 <div class="bg-slate-50 rounded-3xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 group">
                     <div class="relative h-72 overflow-hidden bg-slate-200">
-                        <img src="https://images.unsplash.com/photo-1594824813566-888242274b8a?auto=format&fit=crop&q=80&w=600" alt="drg. Nadine" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <img src="https://images.unsplash.com/photo-1594824813566-888242274b8a?auto=format&fit=crop&q=80&w=600" alt="drg. Nadine" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                         <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold text-orange-600">
                             Pediatric & General Care
                         </div>
@@ -691,28 +691,28 @@
                 
                 <!-- Facility 1 -->
                 <div class="bg-slate-50 rounded-2xl p-5 border border-slate-100 space-y-3 hover:shadow-md transition">
-                    <img src="https://images.unsplash.com/photo-1629909615184-74f495363b67?auto=format&fit=crop&q=80&w=500" alt="iTero Scanner" class="w-full h-40 object-cover rounded-xl">
+                    <img src="https://images.unsplash.com/photo-1629909615184-74f495363b67?auto=format&fit=crop&q=80&w=500" alt="iTero Scanner" loading="lazy" decoding="async" class="w-full h-40 object-cover rounded-xl">
                     <h3 class="font-bold text-slate-800 text-base">iTero 3D Intraoral Scanner</h3>
                     <p class="text-xs text-slate-500">Pemindaian gigi digital presisi tinggi tanpa perlu cetakan pasta yang membuat mual.</p>
                 </div>
 
                 <!-- Facility 2 -->
                 <div class="bg-slate-50 rounded-2xl p-5 border border-slate-100 space-y-3 hover:shadow-md transition">
-                    <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=500" alt="Comfort Lounge" class="w-full h-40 object-cover rounded-xl">
+                    <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=500" alt="Comfort Lounge" loading="lazy" decoding="async" class="w-full h-40 object-cover rounded-xl">
                     <h3 class="font-bold text-slate-800 text-base">Comfort Dental Lounge</h3>
                     <p class="text-xs text-slate-500">Ruang tunggu bergaya cafe modern dengan complimentary artisan coffee, tea, & Wi-Fi kencang.</p>
                 </div>
 
                 <!-- Facility 3 -->
                 <div class="bg-slate-50 rounded-2xl p-5 border border-slate-100 space-y-3 hover:shadow-md transition">
-                    <img src="https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&q=80&w=500" alt="Sterilization Lab" class="w-full h-40 object-cover rounded-xl">
+                    <img src="https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&q=80&w=500" alt="Sterilization Lab" loading="lazy" decoding="async" class="w-full h-40 object-cover rounded-xl">
                     <h3 class="font-bold text-slate-800 text-base">Autoclave Steril Room</h3>
                     <p class="text-xs text-slate-500">Sistem sterilisasi 4-tahap standar rumah sakit internasional jaminan 100% higienis.</p>
                 </div>
 
                 <!-- Facility 4 -->
                 <div class="bg-slate-50 rounded-2xl p-5 border border-slate-100 space-y-3 hover:shadow-md transition">
-                    <img src="https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&q=80&w=500" alt="Entertainment Room" class="w-full h-40 object-cover rounded-xl">
+                    <img src="https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&q=80&w=500" alt="Entertainment Room" loading="lazy" decoding="async" class="w-full h-40 object-cover rounded-xl">
                     <h3 class="font-bold text-slate-800 text-base">Netflix & Spotify Ceiling Screens</h3>
                     <p class="text-xs text-slate-500">Tonton film atau dengarkan musik favorit di langit-langit plafon selama perawatan berlangsung.</p>
                 </div>
@@ -953,7 +953,7 @@
 
                 <!-- Mock Map visual -->
                 <div class="lg:col-span-6 bg-slate-100 rounded-3xl h-80 relative overflow-hidden border border-slate-200 flex items-center justify-center shadow-inner">
-                    <img src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&q=80&w=800" alt="Map View" class="w-full h-full object-cover opacity-60">
+                    <img src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&q=80&w=800" alt="Map View" loading="lazy" decoding="async" class="w-full h-full object-cover opacity-60">
                     <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent"></div>
                     <div class="absolute bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-xl text-center space-y-2 border border-slate-100 max-w-xs">
                         <i data-lucide="map-pin" class="w-8 h-8 text-pink-600 mx-auto animate-bounce"></i>

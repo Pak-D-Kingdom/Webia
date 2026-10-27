@@ -120,7 +120,7 @@
 
             <div class="bm-service-grid">
                 <article class="bm-service-card">
-                    <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=800&q=80" alt="Dekorasi pernikahan">
+                    <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=800&q=80" alt="Dekorasi pernikahan" loading="lazy" decoding="async">
                     <div class="bm-service-overlay">
                         <span>01 / WEDDING</span>
                         <h3>Your love story,<br>beautifully celebrated.</h3>
@@ -128,7 +128,7 @@
                     </div>
                 </article>
                 <article class="bm-service-card">
-                    <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80" alt="Acara perusahaan">
+                    <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80" alt="Acara perusahaan" loading="lazy" decoding="async">
                     <div class="bm-service-overlay">
                         <span>02 / CORPORATE</span>
                         <h3>Professional events<br>with a personal touch.</h3>
@@ -136,7 +136,7 @@
                     </div>
                 </article>
                 <article class="bm-service-card">
-                    <img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=800&q=80" alt="Perayaan pribadi">
+                    <img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=800&q=80" alt="Perayaan pribadi" loading="lazy" decoding="async">
                     <div class="bm-service-overlay">
                         <span>03 / PRIVATE EVENTS</span>
                         <h3>Little details.<br>Big memories.</h3>
@@ -234,15 +234,15 @@
 
             <div class="bm-portfolio-grid">
                 <figure class="bm-portfolio-item bm-portfolio-tall">
-                    <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=85" alt="Dekorasi wedding romantis">
+                    <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=85" alt="Dekorasi wedding romantis" loading="lazy" decoding="async">
                     <figcaption><span>WEDDING</span><strong>An evening in bloom</strong></figcaption>
                 </figure>
                 <figure class="bm-portfolio-item">
-                    <img src="https://images.unsplash.com/photo-1507504031003-b417219a0fde?auto=format&fit=crop&w=800&q=80" alt="Meja makan acara spesial">
+                    <img src="https://images.unsplash.com/photo-1507504031003-b417219a0fde?auto=format&fit=crop&w=800&q=80" alt="Meja makan acara spesial" loading="lazy" decoding="async">
                     <figcaption><span>PRIVATE CELEBRATION</span><strong>Gathered with love</strong></figcaption>
                 </figure>
                 <figure class="bm-portfolio-item">
-                    <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80" alt="Persiapan acara profesional">
+                    <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80" alt="Persiapan acara profesional" loading="lazy" decoding="async">
                     <figcaption><span>CORPORATE</span><strong>Ideas into experiences</strong></figcaption>
                 </figure>
             </div>
@@ -252,7 +252,7 @@
         <!-- EVENT HIGHLIGHTS -->
         <section class="bm-highlight">
             <div class="bm-highlight-image">
-                <img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=1100&q=85" alt="Meja perayaan dengan dekorasi elegan">
+                <img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=1100&q=85" alt="Meja perayaan dengan dekorasi elegan" loading="lazy" decoding="async">
             </div>
             <div class="bm-highlight-content">
                 <span class="bm-eyebrow">THE LITTLE THINGS</span>
@@ -281,15 +281,15 @@
             </div>
             <div class="bm-venue-grid">
                 <article class="bm-venue-card">
-                    <img src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=900&q=80" alt="Venue indoor elegan">
+                    <img src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=900&q=80" alt="Venue indoor elegan" loading="lazy" decoding="async">
                     <div><span>01</span><h3>Elegant Indoor</h3><p>Timeless settings with a polished atmosphere.</p></div>
                 </article>
                 <article class="bm-venue-card">
-                    <img src="https://images.unsplash.com/photo-1465495976277-4387d4b0e4a6?auto=format&fit=crop&w=900&q=80" alt="Venue outdoor garden">
+                    <img src="https://images.unsplash.com/photo-1465495976277-4387d4b0e4a6?auto=format&fit=crop&w=900&q=80" alt="Venue outdoor garden" loading="lazy" decoding="async">
                     <div><span>02</span><h3>Garden & Outdoor</h3><p>Natural scenery for a relaxed celebration.</p></div>
                 </article>
                 <article class="bm-venue-card">
-                    <img src="https://images.unsplash.com/photo-1507504031003-b417219a0fde?auto=format&fit=crop&w=900&q=80" alt="Dekorasi meja dan bunga">
+                    <img src="https://images.unsplash.com/photo-1507504031003-b417219a0fde?auto=format&fit=crop&w=900&q=80" alt="Dekorasi meja dan bunga" loading="lazy" decoding="async">
                     <div><span>03</span><h3>Custom Decoration</h3><p>Finishing touches inspired by your vision.</p></div>
                 </article>
             </div>

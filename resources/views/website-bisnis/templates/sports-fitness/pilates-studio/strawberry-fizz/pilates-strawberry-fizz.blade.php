@@ -203,7 +203,7 @@
 <!-- Card 1 -->
 <div class="class-card class-reformer glass-card rounded-3xl overflow-hidden shadow-soft hover:shadow-glow transition-all duration-300 flex flex-col group border border-berry-200/60">
 <div class="relative h-56 overflow-hidden">
-<img alt="Reformer" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&amp;fit=crop&amp;w=600&amp;q=80"/>
+<img alt="Reformer" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&amp;fit=crop&amp;w=600&amp;q=80"/>
 <span class="absolute top-4 left-4 bg-berry-500 text-white text-[11px] font-bold px-3 py-1 rounded-full shadow">🍓 Signature Reformer</span>
 <span class="absolute top-4 right-4 bg-white/90 backdrop-blur-md text-berry-900 text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
 <i class="w-3.5 h-3.5 text-berry-500" data-lucide="clock"></i> 50 Mins
@@ -230,7 +230,7 @@
 <!-- Card 2 -->
 <div class="class-card class-mat glass-card rounded-3xl overflow-hidden shadow-soft hover:shadow-glow transition-all duration-300 flex flex-col group border border-berry-200/60">
 <div class="relative h-56 overflow-hidden">
-<img alt="Mat Sculpt" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&amp;fit=crop&amp;w=600&amp;q=80"/>
+<img alt="Mat Sculpt" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&amp;fit=crop&amp;w=600&amp;q=80"/>
 <span class="absolute top-4 left-4 bg-berry-600 text-white text-[11px] font-bold px-3 py-1 rounded-full shadow">🧘‍♀️ Mat &amp; Ankle Weights</span>
 <span class="absolute top-4 right-4 bg-white/90 backdrop-blur-md text-berry-900 text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
 <i class="w-3.5 h-3.5 text-berry-500" data-lucide="clock"></i> 45 Mins
@@ -257,7 +257,7 @@
 <!-- Card 3 -->
 <div class="class-card class-hot glass-card rounded-3xl overflow-hidden shadow-soft hover:shadow-glow transition-all duration-300 flex flex-col group border border-berry-200/60">
 <div class="relative h-56 overflow-hidden">
-<img alt="Hot Infrared Pilates" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1599447421416-3414500d18a5?auto=format&amp;fit=crop&amp;w=600&amp;q=80"/>
+<img alt="Hot Infrared Pilates" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1599447421416-3414500d18a5?auto=format&amp;fit=crop&amp;w=600&amp;q=80"/>
 <span class="absolute top-4 left-4 bg-berry-800 text-white text-[11px] font-bold px-3 py-1 rounded-full shadow">🔥 Hot Infrared Detox</span>
 <span class="absolute top-4 right-4 bg-white/90 backdrop-blur-md text-berry-900 text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
 <i class="w-3.5 h-3.5 text-berry-500" data-lucide="clock"></i> 50 Mins
@@ -284,7 +284,7 @@
 <!-- Card 4 -->
 <div class="class-card class-chair glass-card rounded-3xl overflow-hidden shadow-soft hover:shadow-glow transition-all duration-300 flex flex-col group border border-berry-200/60">
 <div class="relative h-56 overflow-hidden">
-<img alt="Cadillac Chair" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1575052814086-f385e2e2ad1b?auto=format&amp;fit=crop&amp;w=600&amp;q=80"/>
+<img alt="Cadillac Chair" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1575052814086-f385e2e2ad1b?auto=format&amp;fit=crop&amp;w=600&amp;q=80"/>
 <span class="absolute top-4 left-4 bg-berry-500 text-white text-[11px] font-bold px-3 py-1 rounded-full shadow">👑 Cadillac &amp; Wunda Chair</span>
 <span class="absolute top-4 right-4 bg-white/90 backdrop-blur-md text-berry-900 text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
 <i class="w-3.5 h-3.5 text-berry-500" data-lucide="clock"></i> 55 Mins
@@ -311,7 +311,7 @@
 <!-- Card 5 -->
 <div class="class-card class-mat glass-card rounded-3xl overflow-hidden shadow-soft hover:shadow-glow transition-all duration-300 flex flex-col group border border-berry-200/60">
 <div class="relative h-56 overflow-hidden">
-<img alt="Prenatal Gentle" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1518310383802-640c2de311b2?auto=format&amp;fit=crop&amp;w=600&amp;q=80"/>
+<img alt="Prenatal Gentle" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1518310383802-640c2de311b2?auto=format&amp;fit=crop&amp;w=600&amp;q=80"/>
 <span class="absolute top-4 left-4 bg-pink-500 text-white text-[11px] font-bold px-3 py-1 rounded-full shadow">🌸 Mama-To-Be</span>
 <span class="absolute top-4 right-4 bg-white/90 backdrop-blur-md text-berry-900 text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
 <i class="w-3.5 h-3.5 text-berry-500" data-lucide="clock"></i> 45 Mins
@@ -338,7 +338,7 @@
 <!-- Card 6 -->
 <div class="class-card class-reformer glass-card rounded-3xl overflow-hidden shadow-soft hover:shadow-glow transition-all duration-300 flex flex-col group border border-berry-200/60">
 <div class="relative h-56 overflow-hidden">
-<img alt="Jumpboard Reformer" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?auto=format&amp;fit=crop&amp;w=600&amp;q=80"/>
+<img alt="Jumpboard Reformer" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?auto=format&amp;fit=crop&amp;w=600&amp;q=80"/>
 <span class="absolute top-4 left-4 bg-berry-600 text-white text-[11px] font-bold px-3 py-1 rounded-full shadow">🍓 Jumpboard Cardio</span>
 <span class="absolute top-4 right-4 bg-white/90 backdrop-blur-md text-berry-900 text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
 <i class="w-3.5 h-3.5 text-berry-500" data-lucide="clock"></i> 50 Mins
@@ -545,7 +545,7 @@
 <!-- Instructor 1 -->
 <div class="glass-card rounded-3xl p-6 shadow-soft hover:shadow-glow transition-all border border-berry-200/70 group text-center flex flex-col items-center">
 <div class="relative w-36 h-36 rounded-full overflow-hidden border-4 border-white shadow-md mb-4 group-hover:scale-105 transition-transform duration-300">
-<img alt="Instructor" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&amp;fit=crop&amp;w=400&amp;q=80"/>
+<img alt="Instructor" loading="lazy" decoding="async" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&amp;fit=crop&amp;w=400&amp;q=80"/>
 </div>
 <span class="text-[10px] font-extrabold text-berry-800 bg-berry-200 px-3 py-0.5 rounded-full tracking-wider uppercase mb-2">Lead Reformer Coach</span>
 <h3 class="font-serif-title text-2xl font-bold text-berry-900">Giselle Anindya</h3>
@@ -560,7 +560,7 @@
 <!-- Instructor 2 -->
 <div class="glass-card rounded-3xl p-6 shadow-soft hover:shadow-glow transition-all border border-berry-200/70 group text-center flex flex-col items-center">
 <div class="relative w-36 h-36 rounded-full overflow-hidden border-4 border-white shadow-md mb-4 group-hover:scale-105 transition-transform duration-300">
-<img alt="Instructor" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&amp;fit=crop&amp;w=400&amp;q=80"/>
+<img alt="Instructor" loading="lazy" decoding="async" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&amp;fit=crop&amp;w=400&amp;q=80"/>
 </div>
 <span class="text-[10px] font-extrabold text-berry-800 bg-berry-200 px-3 py-0.5 rounded-full tracking-wider uppercase mb-2">Sculpt &amp; Hot Specialist</span>
 <h3 class="font-serif-title text-2xl font-bold text-berry-900">Valerie Claris</h3>
@@ -575,7 +575,7 @@
 <!-- Instructor 3 -->
 <div class="glass-card rounded-3xl p-6 shadow-soft hover:shadow-glow transition-all border border-berry-200/70 group text-center flex flex-col items-center">
 <div class="relative w-36 h-36 rounded-full overflow-hidden border-4 border-white shadow-md mb-4 group-hover:scale-105 transition-transform duration-300">
-<img alt="Instructor" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&amp;fit=crop&amp;w=400&amp;q=80"/>
+<img alt="Instructor" loading="lazy" decoding="async" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&amp;fit=crop&amp;w=400&amp;q=80"/>
 </div>
 <span class="text-[10px] font-extrabold text-berry-800 bg-berry-200 px-3 py-0.5 rounded-full tracking-wider uppercase mb-2">Prenatal &amp; Cadillac Queen</span>
 <h3 class="font-serif-title text-2xl font-bold text-berry-900">Dr. Alyssa Chloe</h3>
@@ -603,28 +603,28 @@
 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
 <!-- Photo 1 -->
 <div class="relative h-64 md:h-80 rounded-3xl overflow-hidden cursor-pointer group border border-berry-200 shadow-soft" onclick="openLightbox('https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&amp;fit=crop&amp;w=1200&amp;q=80', 'Pink Aesthetic Reformer Suite')">
-<img alt="Reformer Suite" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&amp;fit=crop&amp;w=600&amp;q=80"/>
+<img alt="Reformer Suite" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&amp;fit=crop&amp;w=600&amp;q=80"/>
 <div class="absolute inset-0 bg-gradient-to-t from-berry-900/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
 <span class="text-white text-xs font-bold">🍓 Pink Aesthetic Reformer Suite</span>
 </div>
 </div>
 <!-- Photo 2 -->
 <div class="relative h-64 md:h-80 rounded-3xl overflow-hidden cursor-pointer group border border-berry-200 shadow-soft" onclick="openLightbox('https://images.unsplash.com/photo-1545205597-3d9d02c29597?auto=format&amp;fit=crop&amp;w=1200&amp;q=80', 'Complimentary Iced Matcha Bar')">
-<img alt="Matcha Bar" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="https://images.unsplash.com/photo-1545205597-3d9d02c29597?auto=format&amp;fit=crop&amp;w=600&amp;q=80"/>
+<img alt="Matcha Bar" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="https://images.unsplash.com/photo-1545205597-3d9d02c29597?auto=format&amp;fit=crop&amp;w=600&amp;q=80"/>
 <div class="absolute inset-0 bg-gradient-to-t from-berry-900/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
 <span class="text-white text-xs font-bold">🍵 Post-Workout Iced Matcha Bar</span>
 </div>
 </div>
 <!-- Photo 3 -->
 <div class="relative h-64 md:h-80 rounded-3xl overflow-hidden cursor-pointer group border border-berry-200 shadow-soft" onclick="openLightbox('https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&amp;fit=crop&amp;w=1200&amp;q=80', 'Luxury Dyson Shower Room')">
-<img alt="Luxury Vanity" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&amp;fit=crop&amp;w=600&amp;q=80"/>
+<img alt="Luxury Vanity" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&amp;fit=crop&amp;w=600&amp;q=80"/>
 <div class="absolute inset-0 bg-gradient-to-t from-berry-900/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
 <span class="text-white text-xs font-bold">✨ Dyson Vanity &amp; Shower Lounge</span>
 </div>
 </div>
 <!-- Photo 4 -->
 <div class="relative h-64 md:h-80 rounded-3xl overflow-hidden cursor-pointer group border border-berry-200 shadow-soft" onclick="openLightbox('https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&amp;fit=crop&amp;w=1200&amp;q=80', 'OOTD Selfie Mirror Area')">
-<img alt="Selfie Mirror" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&amp;fit=crop&amp;w=600&amp;q=80"/>
+<img alt="Selfie Mirror" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&amp;fit=crop&amp;w=600&amp;q=80"/>
 <div class="absolute inset-0 bg-gradient-to-t from-berry-900/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
 <span class="text-white text-xs font-bold">🪞 Gen-Z OOTD Selfie Mirror Spot</span>
 </div>

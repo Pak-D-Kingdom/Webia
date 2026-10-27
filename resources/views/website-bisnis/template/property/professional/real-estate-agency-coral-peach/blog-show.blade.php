@@ -25,7 +25,7 @@
 
   <div class="container section article-layout">
     <article class="panel article">
-      <div class="article__cover"><img src="{{ asset($img.'/'.$post['cover']) }}" alt="{{ $post['title'] }}" width="1200" height="600"></div>
+      <div class="article__cover"><img src="{{ asset($img.'/'.$post['cover']) }}" alt="{{ $post['title'] }}" width="1200" height="600" loading="lazy" decoding="async"></div>
       <div class="article__body">
         <p class="article__meta">
           <span class="tag">{{ $post['cat_label'] }}</span>

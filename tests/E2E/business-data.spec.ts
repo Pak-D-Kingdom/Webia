@@ -65,6 +65,6 @@ test('paid order collects business data and tracks delivery progress', async ({ 
     await expect(page.getByRole('button', { name: 'Tandai selesai' })).toBeVisible();
     await page.getByRole('button', { name: 'Tandai selesai' }).click();
     await expect(page.getByText('Progres pengerjaan berhasil diperbarui.')).toBeVisible();
-    await expect(page.locator('p:has-text("Status pengerjaan:")')).toContainText('Delivered');
+    await expect(page.locator('p:has-text("Status pengerjaan:")')).toContainText('Selesai');
     await expect(page.getByRole('button', { name: 'Tandai selesai' })).toBeHidden();
 });

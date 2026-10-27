@@ -241,7 +241,7 @@
 
                 <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     <div class="bg-[#121215] border border-zinc-800 rounded-2xl overflow-hidden group">
-                        <img src="https://images.unsplash.com/photo-1567013127542-490d757e51fc?auto=format&fit=crop&w=600&q=80" alt="Trainer 1" class="w-full h-64 object-cover object-top group-hover:scale-105 transition duration-500">
+                        <img src="https://images.unsplash.com/photo-1567013127542-490d757e51fc?auto=format&fit=crop&w=600&q=80" alt="Trainer 1" loading="lazy" decoding="async" class="w-full h-64 object-cover object-top group-hover:scale-105 transition duration-500">
                         <div class="p-6 space-y-2">
                             <span class="text-xs text-[#ccff00] font-bold font-mono">HEAD COACH · CSCS</span>
                             <h4 class="text-xl font-bold text-white font-heading uppercase">Rendra Pratama</h4>
@@ -250,7 +250,7 @@
                     </div>
 
                     <div class="bg-[#121215] border border-zinc-800 rounded-2xl overflow-hidden group">
-                        <img src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=600&q=80" alt="Trainer 2" class="w-full h-64 object-cover object-top group-hover:scale-105 transition duration-500">
+                        <img src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=600&q=80" alt="Trainer 2" loading="lazy" decoding="async" class="w-full h-64 object-cover object-top group-hover:scale-105 transition duration-500">
                         <div class="p-6 space-y-2">
                             <span class="text-xs text-[#ff1e42] font-bold font-mono">FUNCTIONAL COACH · NASM-CPT</span>
                             <h4 class="text-xl font-bold text-white font-heading uppercase">Maya Salsabila</h4>
@@ -259,7 +259,7 @@
                     </div>
 
                     <div class="bg-[#121215] border border-zinc-800 rounded-2xl overflow-hidden group">
-                        <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=600&q=80" alt="Trainer 3" class="w-full h-64 object-cover object-top group-hover:scale-105 transition duration-500">
+                        <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=600&q=80" alt="Trainer 3" loading="lazy" decoding="async" class="w-full h-64 object-cover object-top group-hover:scale-105 transition duration-500">
                         <div class="p-6 space-y-2">
                             <span class="text-xs text-cyan-400 font-bold font-mono">CALISTHENICS & MOBILITY</span>
                             <h4 class="text-xl font-bold text-white font-heading uppercase">David Santoso</h4>

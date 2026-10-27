@@ -115,7 +115,7 @@
                         href="{{ url('/webia/template/petshop-luxury-rosegold/produk/royal-canin-kitten') }}">
                         <span class="fck-product-badge">THE FAVOURITE</span>
                         <img src="https://images.unsplash.com/photo-1589924691995-400dc9ecc119?auto=format&fit=crop&w=700&q=85"
-                            alt="Makanan kucing">
+                            alt="Makanan kucing" loading="lazy" decoding="async">
                     </a>
                     <div class="fck-product-info">
                         <span class="fck-product-category">01 / NOURISH</span>
@@ -136,7 +136,7 @@
                         href="{{ url('/webia/template/petshop-luxury-rosegold/produk/dog-treats') }}">
                         <span class="fck-product-badge fck-badge-rose">A LITTLE TREAT</span>
                         <img src="https://images.unsplash.com/photo-1582798358481-d199fb7347bb?auto=format&fit=crop&w=700&q=85"
-                            alt="Camilan hewan">
+                            alt="Camilan hewan" loading="lazy" decoding="async">
                     </a>
                     <div class="fck-product-info">
                         <span class="fck-product-category">02 / LITTLE TREATS</span>
@@ -156,7 +156,7 @@
                     <a class="fck-product-image fck-bg-sand"
                         href="{{ url('/webia/template/petshop-luxury-rosegold/produk/soft-pet-bed') }}">
                         <img src="https://images.unsplash.com/photo-1541599540903-216a46ca1dc0?auto=format&fit=crop&w=700&q=85"
-                            alt="Tempat tidur hewan">
+                            alt="Tempat tidur hewan" loading="lazy" decoding="async">
                     </a>
                     <div class="fck-product-info">
                         <span class="fck-product-category">03 / COMFORT</span>
@@ -176,7 +176,7 @@
                     <a class="fck-product-image fck-bg-lilac"
                         href="{{ url('/webia/template/petshop-luxury-rosegold/produk/pet-grooming-kit') }}">
                         <img src="https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?auto=format&fit=crop&w=700&q=85"
-                            alt="Perlengkapan grooming">
+                            alt="Perlengkapan grooming" loading="lazy" decoding="async">
                     </a>
                     <div class="fck-product-info">
                         <span class="fck-product-category">04 / WELLNESS</span>
@@ -196,7 +196,7 @@
                     <a class="fck-product-image fck-bg-rose"
                         href="{{ url('/webia/template/petshop-luxury-rosegold/produk/playful-rope-toy') }}">
                         <img src="https://images.unsplash.com/photo-1535294435445-d7249524ef2e?auto=format&fit=crop&w=700&q=85"
-                            alt="Mainan hewan">
+                            alt="Mainan hewan" loading="lazy" decoding="async">
                     </a>
                     <div class="fck-product-info">
                         <span class="fck-product-category">05 / PLAY</span>
@@ -216,7 +216,7 @@
                     <a class="fck-product-image fck-bg-cream"
                         href="{{ url('/webia/template/petshop-luxury-rosegold/produk/cozy-pet-bowl') }}">
                         <img src="https://images.unsplash.com/photo-1585837575652-267c041d77d4?auto=format&fit=crop&w=700&q=85"
-                            alt="Mangkuk makan hewan">
+                            alt="Mangkuk makan hewan" loading="lazy" decoding="async">
                     </a>
                     <div class="fck-product-info">
                         <span class="fck-product-category">06 / DAILY RITUALS</span>

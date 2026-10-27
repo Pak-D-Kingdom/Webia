@@ -395,7 +395,7 @@
                         </div>
                     </div>
                     <div class="relative h-80 sm:h-96 rounded-2xl overflow-hidden border border-copper-light/30">
-                        <img alt="Terracotta Japandi Style"
+                        <img alt="Terracotta Japandi Style" loading="lazy" decoding="async"
                             class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700"
                             id="style-img"
                             onerror="this.src='https://placehold.co/800x600/451A03/F5E6D3?text=Japandi+Style'"
@@ -434,7 +434,7 @@
             <div
                 class="port-item residential villa group glass-card rounded-2xl overflow-hidden border border-copper-light/20">
                 <div class="relative h-72 overflow-hidden">
-                    <img alt="Villa Terracotta Bali"
+                    <img alt="Villa Terracotta Bali" loading="lazy" decoding="async"
                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                         src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&amp;w=1000&amp;auto=format&amp;fit=crop" />
                     <div
@@ -456,7 +456,7 @@
             <div
                 class="port-item commercial group glass-card rounded-2xl overflow-hidden border border-copper-light/20">
                 <div class="relative h-72 overflow-hidden">
-                    <img alt="Terracotta Lounge Jakarta"
+                    <img alt="Terracotta Lounge Jakarta" loading="lazy" decoding="async"
                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                         src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&amp;w=1000&amp;auto=format&amp;fit=crop" />
                     <div
@@ -477,7 +477,7 @@
             <div
                 class="port-item residential group glass-card rounded-2xl overflow-hidden border border-copper-light/20">
                 <div class="relative h-72 overflow-hidden">
-                    <img alt="Penthouse Residence"
+                    <img alt="Penthouse Residence" loading="lazy" decoding="async"
                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                         src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&amp;w=1000&amp;auto=format&amp;fit=crop" />
                     <div
@@ -497,7 +497,7 @@
             <!-- Project 4 -->
             <div class="port-item villa group glass-card rounded-2xl overflow-hidden border border-copper-light/20">
                 <div class="relative h-72 overflow-hidden">
-                    <img alt="Mediterranean Terracotta Villa"
+                    <img alt="Mediterranean Terracotta Villa" loading="lazy" decoding="async"
                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                         src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?q=80&amp;w=1000&amp;auto=format&amp;fit=crop" />
                     <div
@@ -519,7 +519,7 @@
             <div
                 class="port-item commercial group glass-card rounded-2xl overflow-hidden border border-copper-light/20">
                 <div class="relative h-72 overflow-hidden">
-                    <img alt="Terracotta Boutique Store"
+                    <img alt="Terracotta Boutique Store" loading="lazy" decoding="async"
                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                         src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&amp;w=1000&amp;auto=format&amp;fit=crop" />
                     <div
@@ -540,7 +540,7 @@
             <div
                 class="port-item residential group glass-card rounded-2xl overflow-hidden border border-copper-light/20">
                 <div class="relative h-72 overflow-hidden">
-                    <img alt="Urban Apartment Renovation"
+                    <img alt="Urban Apartment Renovation" loading="lazy" decoding="async"
                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                         src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&amp;w=1000&amp;auto=format&amp;fit=crop" />
                     <div
@@ -575,10 +575,10 @@
                 <div class="ba-slider-container h-[350px] sm:h-[500px] rounded-2xl border border-terra-700/50"
                     id="ba-slider" style="--slider-pos: 50%;">
                     <!-- After Image (Deep Terracotta Interior) -->
-                    <img alt="After Transformation Terracotta Interior" class="ba-slider-img-after"
+                    <img alt="After Transformation Terracotta Interior" loading="lazy" decoding="async" class="ba-slider-img-after"
                         src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&amp;w=1600&amp;auto=format&amp;fit=crop" />
                     <!-- Before Image (Stark White Dull Room) -->
-                    <img alt="Before Plain Room" class="ba-slider-img-before"
+                    <img alt="Before Plain Room" loading="lazy" decoding="async" class="ba-slider-img-before"
                         src="https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&amp;w=1600&amp;auto=format&amp;fit=crop" />
                     <!-- Handle & Badges -->
                     <div class="ba-handle" id="ba-handle">
@@ -907,7 +907,7 @@
             <!-- Designer 1 -->
             <div class="glass-card rounded-3xl overflow-hidden border border-copper-light/20 group">
                 <div class="h-80 overflow-hidden relative">
-                    <img alt="Principal Architect"
+                    <img alt="Principal Architect" loading="lazy" decoding="async"
                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                         src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&amp;w=800&amp;auto=format&amp;fit=crop" />
                     <div class="absolute inset-0 bg-gradient-to-t from-terra-950 via-transparent to-transparent"></div>
@@ -922,7 +922,7 @@
             <!-- Designer 2 -->
             <div class="glass-card rounded-3xl overflow-hidden border border-copper-light/20 group">
                 <div class="h-80 overflow-hidden relative">
-                    <img alt="Lead Interior Designer"
+                    <img alt="Lead Interior Designer" loading="lazy" decoding="async"
                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                         src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&amp;w=800&amp;auto=format&amp;fit=crop" />
                     <div class="absolute inset-0 bg-gradient-to-t from-terra-950 via-transparent to-transparent"></div>
@@ -937,7 +937,7 @@
             <!-- Designer 3 -->
             <div class="glass-card rounded-3xl overflow-hidden border border-copper-light/20 group">
                 <div class="h-80 overflow-hidden relative">
-                    <img alt="Lighting Director"
+                    <img alt="Lighting Director" loading="lazy" decoding="async"
                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                         src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&amp;w=800&amp;auto=format&amp;fit=crop" />
                     <div class="absolute inset-0 bg-gradient-to-t from-terra-950 via-transparent to-transparent"></div>

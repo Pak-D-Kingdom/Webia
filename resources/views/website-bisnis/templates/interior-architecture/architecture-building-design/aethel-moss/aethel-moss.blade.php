@@ -297,7 +297,7 @@
             <!-- Project Card 1 -->
             <div class="port-item residential glass-panel rounded-3xl overflow-hidden border border-forest-700 group hover:border-champagne-500/50 transition-all-custom cursor-pointer" onclick="openProjectModal('The Emerald Horizon Villa', 'Residential', '1,250 SQM', 'Nusa Dua, Bali', 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=800&q=80', 'A cliffside biophilic sanctuary featuring cantilevered infinity pools and automated louver facades.')">
                 <div class="relative h-72 overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Villa">
+                    <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Villa" loading="lazy" decoding="async">
                     <div class="absolute inset-0 bg-gradient-to-t from-forest-900 via-transparent to-transparent opacity-80"></div>
                     <span class="absolute top-4 left-4 bg-forest-900/80 text-champagne-400 text-[10px] font-mono px-3 py-1 rounded-full border border-champagne-500/30">RESIDENTIAL</span>
                 </div>
@@ -314,7 +314,7 @@
             <!-- Project Card 2 -->
             <div class="port-item commercial glass-panel rounded-3xl overflow-hidden border border-forest-700 group hover:border-champagne-500/50 transition-all-custom cursor-pointer" onclick="openProjectModal('Vertex Moss HQ Tower', 'Commercial', '18,500 SQM', 'Jakarta, CBD', 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80', 'High-rise sustainable tower integrated with vertical preserved moss gardens and solar skin.')">
                 <div class="relative h-72 overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Tower">
+                    <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Tower" loading="lazy" decoding="async">
                     <div class="absolute inset-0 bg-gradient-to-t from-forest-900 via-transparent to-transparent opacity-80"></div>
                     <span class="absolute top-4 left-4 bg-forest-900/80 text-champagne-400 text-[10px] font-mono px-3 py-1 rounded-full border border-champagne-500/30">COMMERCIAL</span>
                 </div>
@@ -331,7 +331,7 @@
             <!-- Project Card 3 -->
             <div class="port-item hospitality glass-panel rounded-3xl overflow-hidden border border-forest-700 group hover:border-champagne-500/50 transition-all-custom cursor-pointer" onclick="openProjectModal('AURA Forest Eco Retreat', 'Hospitality', '4,800 SQM', 'Kyoto, Japan', 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80', 'Ultra-luxury eco-resort pavilion designed with Japanese cedar, travertine walls, and passive thermal mass.')">
                 <div class="relative h-72 overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Resort">
+                    <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Resort" loading="lazy" decoding="async">
                     <div class="absolute inset-0 bg-gradient-to-t from-forest-900 via-transparent to-transparent opacity-80"></div>
                     <span class="absolute top-4 left-4 bg-forest-900/80 text-champagne-400 text-[10px] font-mono px-3 py-1 rounded-full border border-champagne-500/30">HOSPITALITY</span>
                 </div>
@@ -479,7 +479,7 @@
                 <div id="lighting-overlay" class="absolute inset-0 bg-amber-500/10 transition-all duration-700 pointer-events-none"></div>
 
                 <!-- Simulation Architecture Facade Image -->
-                <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1400&q=80" alt="Villa Simulation" class="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-90 transition-all duration-700">
+                <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1400&q=80" alt="Villa Simulation" loading="lazy" decoding="async" class="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-90 transition-all duration-700">
 
                 <!-- Lighting Spec Overlay Box -->
                 <div class="relative z-10 glass-panel p-6 rounded-2xl border border-champagne-500/30 max-w-md backdrop-blur-md">
@@ -760,7 +760,7 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <!-- Profile 1 -->
             <div class="glass-panel rounded-3xl overflow-hidden border border-forest-700 group hover:border-champagne-500/50 transition-all">
-                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80" alt="Architect" class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-500">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80" alt="Architect" loading="lazy" decoding="async" class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-500">
                 <div class="p-6">
                     <h3 class="font-playfair text-xl font-bold text-linen">Eleanor Vance, AIA</h3>
                     <p class="text-xs text-champagne-400 font-mono mt-1">Principal & Founder</p>
@@ -770,7 +770,7 @@
 
             <!-- Profile 2 -->
             <div class="glass-panel rounded-3xl overflow-hidden border border-forest-700 group hover:border-champagne-500/50 transition-all">
-                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80" alt="Architect" class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-500">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80" alt="Architect" loading="lazy" decoding="async" class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-500">
                 <div class="p-6">
                     <h3 class="font-playfair text-xl font-bold text-linen">Julian K. Thorne, RIBA</h3>
                     <p class="text-xs text-champagne-400 font-mono mt-1">Head of BIM & Engineering</p>
@@ -780,7 +780,7 @@
 
             <!-- Profile 3 -->
             <div class="glass-panel rounded-3xl overflow-hidden border border-forest-700 group hover:border-champagne-500/50 transition-all">
-                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80" alt="Architect" class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-500">
+                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80" alt="Architect" loading="lazy" decoding="async" class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-500">
                 <div class="p-6">
                     <h3 class="font-playfair text-xl font-bold text-linen">Aria Kusuma, IAI</h3>
                     <p class="text-xs text-champagne-400 font-mono mt-1">Director of Sustainable Interior</p>
