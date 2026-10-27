@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             seedersputri::class,
             WebiaTemplateSeederAthiya::class,
             WebiaTemplateAlleSeeder::class,
+            WebiaTemplateSeederIndra::class,
             WebiaPackageSeeder::class,
             WebiaAddonSeeder::class,
             AdminUserSeeder::class,

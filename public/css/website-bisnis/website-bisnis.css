@@ -2126,6 +2126,18 @@ body.webia-body {
     background: radial-gradient(circle at 80% 70%, #f5b86c 0 16%, transparent 17%), linear-gradient(135deg, #202642, #3a4568 55%, #65768d);
 }
 
+.preview-auto-artistic::before {
+    background: radial-gradient(circle at 82% 68%, #49d3dc 0 16%, transparent 17%), linear-gradient(135deg, #075985, #0e7490 52%, #164e63);
+}
+
+.preview-auto-luxury::before {
+    background: radial-gradient(circle at 82% 68%, #c49a62 0 15%, transparent 16%), linear-gradient(135deg, #111315, #292b2c 55%, #4b4032);
+}
+
+.preview-auto-minimal::before {
+    background: radial-gradient(circle at 82% 68%, #d6a64f 0 14%, transparent 15%), linear-gradient(135deg, #171717, #292929 52%, #5b4630);
+}
+
 .preview-creative::before {
     background: radial-gradient(circle at 80% 70%, #c0a1f7 0 18%, transparent 19%), linear-gradient(135deg, #f0e8ff, #d7c5ff 55%, #c6f0ed);
 }

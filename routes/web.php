@@ -813,3 +813,19 @@ Route::view(
     'webia/template/property/coral-haven',
     'website-bisnis.template.property.perumahan.coral-haven'
 )->name('webia.templates.coral-haven');
+
+// WEBIA — Indra Automotive templates.
+Route::view(
+    '/webia/template/tidal-detail-artistic-automotive',
+    'website-bisnis.templates.automotive.artistic'
+)->name('webia.template.automotive.tidal-detail-artistic');
+
+Route::view(
+    '/webia/template/noir-atelier-luxury-automotive',
+    'website-bisnis.templates.automotive.luxury'
+)->name('webia.template.automotive.noir-atelier-luxury');
+
+Route::view(
+    '/webia/template/form-auto-care-minimal-automotive',
+    'website-bisnis.templates.automotive.minimal'
+)->name('webia.template.automotive.form-auto-care-minimal');
