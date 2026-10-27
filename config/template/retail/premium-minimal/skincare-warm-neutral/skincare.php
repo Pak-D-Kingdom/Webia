@@ -97,6 +97,19 @@ return [
         'hours'   => '08.00 - 22.00 WIB',
     ],
 
+    // Inquiry & Konsultasi (dipakai preview beranda dan halaman Inquiry)
+    'inquiry' => [
+        'title' => 'Bingung Memilih Produk? Konsultasikan Dulu',
+        'text'  => 'Ceritakan jenis kulit dan kebutuhanmu. Tim GlowEra siap membantu memilihkan produk yang paling sesuai.',
+        'perks' => [
+            ['icon' => 'bi-person-heart', 'title' => 'Konsultasi Jenis Kulit',  'text' => 'Cocokkan produk dengan kebutuhan kulitmu'],
+            ['icon' => 'bi-bag-heart',    'title' => 'Rekomendasi Produk',      'text' => 'Pilihan produk sesuai tujuan perawatanmu'],
+            ['icon' => 'bi-tags',         'title' => 'Info Harga & Promo',      'text' => 'Harga terbaru dan diskon yang berlaku'],
+            ['icon' => 'bi-box-seam',     'title' => 'Cek Stok & Pengiriman',   'text' => 'Pastikan produk ready sebelum memesan'],
+        ],
+        'steps' => ['Isi formulir inquiry', 'Kirim ke WhatsApp admin', 'Tim kami membalas & membantu kamu'],
+    ],
+
     // AI Product FAQ (dipakai chat di beranda & tombol AI melayang)
     'ai' => [
         'name'     => 'AI Beauty Assistant',

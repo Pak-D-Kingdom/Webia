@@ -42,8 +42,8 @@
                         @if ($p['status'] === 'out')
                             <a class="btn btn--ghost btn--sm" href="{{ route($rp . 'inquiry', ['topic' => 'stok', 'product' => $p['slug']]) }}"><i class="bi bi-bell" aria-hidden="true"></i> Tanya restock</a>
                         @else
-                            <button class="btn btn--rose btn--sm" type="button" data-add="{{ $p['id'] }}"><i class="bi bi-plus-lg" aria-hidden="true"></i> Keranjang</button>
-                            <a class="btn btn--ghost btn--sm" href="{{ route($rp . 'inquiry', ['topic' => 'stok', 'product' => $p['slug']]) }}">Cek stok</a>
+                            @include($ns . '.partials.add-control', ['p' => $p, 'mode' => 'sm'])
+                            <a class="btn btn--ghost btn--sm" href="{{ route($rp . 'inquiry', ['topic' => 'stok', 'product' => $p['slug']]) }}"><i class="bi bi-chat-dots" aria-hidden="true"></i> Cek stok</a>
                         @endif
                     </div>
                 </div>

@@ -1,7 +1,7 @@
 {{-- ===================== BLOG (preview di beranda & halaman Blog) ===================== --}}
 @php
     $isPreview = $preview ?? false;
-    $posts     = $isPreview ? array_slice($blogPosts, 0, $limit ?? 3) : $blogPosts;
+    $posts     = $isPreview ? array_slice(array_values($blogPosts), 0, $limit ?? 3) : array_values($blogPosts);
 @endphp
 <section class="rea-section {{ $isPreview ? 'rea-section--alt' : '' }}" id="blog" aria-label="{{ $pages['blog']['title'] }}">
     <div class="rea-container">
@@ -17,17 +17,17 @@
         @endif
 
         <div class="rea-blog">
-            @foreach ($posts as $post)
+            @foreach ($posts as $item)
                 <article class="rea-post">
-                    <a class="rea-post__media" href="#" tabindex="-1" aria-hidden="true">
-                        <img src="{{ $post['src'] }}" alt="{{ $post['alt'] }}" loading="lazy">
-                        <span class="rea-post__tag">{{ $post['tag'] }}</span>
+                    <a class="rea-post__media" href="{{ $route('blog.show', '', ['post' => $item['slug']]) }}" tabindex="-1" aria-hidden="true">
+                        <img src="{{ $item['src'] }}" alt="{{ $item['alt'] }}" loading="lazy">
+                        <span class="rea-post__tag">{{ $item['tag'] }}</span>
                     </a>
                     <div class="rea-post__body">
-                        <p class="rea-post__meta"><span>{{ $post['date'] }}</span><span aria-hidden="true">·</span><span>{{ $post['read'] }}</span></p>
-                        <h3><a href="#">{{ $post['title'] }}</a></h3>
-                        <p>{{ $post['excerpt'] }}</p>
-                        <a class="rea-link" href="#">Read More {{ $icon('arrow') }}</a>
+                        <p class="rea-post__meta"><span>{{ $item['date'] }}</span><span aria-hidden="true">·</span><span>{{ $item['read'] }}</span></p>
+                        <h3><a href="{{ $route('blog.show', '', ['post' => $item['slug']]) }}">{{ $item['title'] }}</a></h3>
+                        <p>{{ $item['excerpt'] }}</p>
+                        <a class="rea-link" href="{{ $route('blog.show', '', ['post' => $item['slug']]) }}">Read More {{ $icon('arrow') }}</a>
                     </div>
                 </article>
             @endforeach

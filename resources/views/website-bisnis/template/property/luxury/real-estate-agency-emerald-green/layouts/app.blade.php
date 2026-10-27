@@ -5,7 +5,7 @@
 | Tiap halaman (index, property, property-detail, about, ...) hanya perlu mengisi:
 |   $page   = nama halaman (sama dengan nama route, mis. 'property')
 |   $blocks = daftar bagian yang ditampilkan: [nama-view, [opsi]]
-|   $detail = true (hanya halaman detail properti)
+|   $detail = true (hanya halaman detail properti), $articleView = true (hanya halaman artikel blog)
 | lalu memakai layout ini lewat extends. Semua data (dari config) dan helper
 | ($img, $route, $icon) disiapkan SEKALI di blok PHP di bawah, lalu otomatis
 | tersedia di partials dan sections.
@@ -34,6 +34,7 @@
     $whatsapp   = $cfg['whatsapp'];
     $timeSlots  = $cfg['time_slots'];
     $assistant  = $cfg['assistant'];
+    $headerImages = $cfg['header_images'];
 
     // Properti yang sedang ditampilkan:
     // halaman detail (/property/{slug}) memakai $slug dari URL, halaman lain memakai properti utama.
@@ -61,6 +62,16 @@
     $blogPosts           = array_map(fn (array $p): array => $p + ['src' => $img($p['file'])], $blogPosts);
     $about['src']        = $img($about['file']);
 
+    // Artikel blog yang sedang dibuka (halaman /blog/{post}); halaman lain tidak memakainya
+    $postSlug = $post ?? array_key_first($blogPosts);
+    abort_unless(array_key_exists($postSlug, $blogPosts), 404);
+    $currentPost = $blogPosts[$postSlug];
+
+    // Gambar latar header halaman dalam
+    $headImage = ($detail ?? false)
+        ? $property['gallery'][0]['src']
+        : (($articleView ?? false) ? $currentPost['src'] : $img($headerImages[$page] ?? 'header-property.jpg'));
+
     // Jawaban FAQ AI mengikuti properti yang sedang dilihat
     $faqVars = [
         '{title}'       => $property['title'],
@@ -80,7 +91,7 @@
     $waUrl = 'https://wa.me/' . $whatsapp['number'] . '?text=' . rawurlencode(sprintf($whatsapp['message'], $property['title'], $property['place']));
 
     // Judul tab browser
-    $pageTitle = ($detail ?? false) ? $property['title'] : ($page === 'index' ? $property['title'] . ' · ' . $property['place'] : $pages[$page]['title']);
+    $pageTitle = ($detail ?? false) ? $property['title'] : (($articleView ?? false) ? $currentPost['title'] : ($page === 'index' ? $property['title'] . ' · ' . $property['place'] : $pages[$page]['title']));
 @endphp
 <!DOCTYPE html>
 <html lang="en">

@@ -1,6 +1,13 @@
 @php
     $is = fn (string $n) => request()->routeIs($rp . $n);
-    $shopActive = $is('catalog') || $is('price') || $is('stock') || $is('shop');
+    $links = [
+        'index'   => 'Home',
+        'catalog' => 'Katalog',
+        'price'   => 'Harga',
+        'stock'   => 'Stok',
+        'shop'    => 'Toko Online',
+        'inquiry' => 'Inquiry',
+    ];
 @endphp
 <header class="nav" data-nav>
     <div class="container nav__inner">
@@ -10,21 +17,9 @@
         </a>
 
         <nav class="nav__menu" id="primary-nav" aria-label="Navigasi utama" data-nav-menu>
-            <a class="nav__link {{ $is('index') ? 'is-active' : '' }}" href="{{ route($rp . 'index') }}" @if($is('index')) aria-current="page" @endif>Home</a>
-
-            <div class="nav__dd" data-dd>
-                <button class="nav__link {{ $shopActive ? 'is-active' : '' }}" type="button" aria-haspopup="true" aria-expanded="false" data-dd-toggle>
-                    Shop <i class="bi bi-chevron-down" aria-hidden="true"></i>
-                </button>
-                <div class="nav__dd-menu">
-                    <a href="{{ route($rp . 'catalog') }}" @if($is('catalog')) aria-current="page" @endif><i class="bi bi-grid" aria-hidden="true"></i> Katalog Produk</a>
-                    <a href="{{ route($rp . 'price') }}" @if($is('price')) aria-current="page" @endif><i class="bi bi-tag" aria-hidden="true"></i> Daftar Harga</a>
-                    <a href="{{ route($rp . 'stock') }}" @if($is('stock')) aria-current="page" @endif><i class="bi bi-box-seam" aria-hidden="true"></i> Stok &amp; Ketersediaan</a>
-                    <a href="{{ route($rp . 'shop') }}" @if($is('shop')) aria-current="page" @endif><i class="bi bi-bag-heart" aria-hidden="true"></i> Toko Online</a>
-                </div>
-            </div>
-
-            <a class="nav__link {{ $is('inquiry') ? 'is-active' : '' }}" href="{{ route($rp . 'inquiry') }}" @if($is('inquiry')) aria-current="page" @endif>Inquiry</a>
+            @foreach ($links as $name => $label)
+                <a class="nav__link {{ $is($name) ? 'is-active' : '' }}" href="{{ route($rp . $name) }}" @if ($is($name)) aria-current="page" @endif>{{ $label }}</a>
+            @endforeach
             <button class="nav__link" type="button" data-open-chat>AI FAQ</button>
         </nav>
 
