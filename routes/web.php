@@ -165,6 +165,23 @@ Route::view(
     'website-bisnis.templates.fnb.restaurant.restoran-azura'
 )->name('webia.template.fnb.restaurant.restoran-azura');
 
+// WEBIA — NOIR Restaurant & Dining
+Route::view(
+    '/webia/template/noir-restaurant',
+    'website-bisnis.templates.fnb.restaurant.noir-restaurant'
+)->name('webia.template.fnb.restaurant.noir-restaurant');
+
+// WEBIA — Tunas Cendekia Preschool & Daycare
+Route::view(
+    '/webia/template/tunas-cendekia-preschool-daycare',
+    'website-bisnis.templates.education.preschool.tunas-cendekia-preschool-daycare'
+)->name('webia.template.education.tunas-cendekia-preschool-daycare');
+
+Route::view(
+    '/webia/template/rumah-latte-preschool-daycare',
+    'website-bisnis.templates.education.preschool.rumah-latte-preschool-daycare'
+)->name('webia.template.education.rumah-latte-preschool-daycare');
+
 // WEBIA template 4 — Automotive Dealer Vintage (Heritage Motors)
 Route::view(
     '/webia/template/automotive-dealer-vintage',
@@ -421,12 +438,15 @@ Route::prefix('webia/template/property/luxury/real-estate-agency-emerald-green')
 
         Route::view('/', $view . '.index')->name('index');          // Beranda (preview semua halaman)
         Route::view('/property', $view . '.property')->name('property');    // Property listing
+        Route::view('/property/{slug}', $view . '.property-detail')
+            ->name('property.show');
         Route::view('/specification', $view . '.specification')->name('specification');
         Route::view('/price', $view . '.price')->name('price');
         Route::view('/about', $view . '.about')->name('about');          // About us
         Route::view('/gallery', $view . '.gallery')->name('gallery');
         Route::view('/booking', $view . '.booking')->name('booking');      // Booking / viewing
         Route::view('/blog', $view . '.blog')->name('blog');
+        Route::view('/contact', $view . '.contact')->name('contact');
     });
 
 Route::prefix('webia/template/property/premium-minimal/real-estate-agency-nature-green')
