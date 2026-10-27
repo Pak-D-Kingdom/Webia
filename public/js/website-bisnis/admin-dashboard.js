@@ -153,8 +153,10 @@ function initializeAdminPage() {
   const tabRevenue = document.getElementById('tabRevenue');
   const tabVolume = document.getElementById('tabVolume');
   const svgs = document.querySelectorAll('.is-chart-svg');
+  let chartMode = 'revenue';
 
   function showChart(name) {
+    chartMode = name;
     svgs.forEach((svg) => svg.classList.toggle('hidden', svg.dataset.chart !== name));
   }
 
@@ -169,6 +171,51 @@ function initializeAdminPage() {
     tabRevenue.className = 'rounded px-3 py-1 font-label-sm text-label-sm transition-all text-on-surface-variant hover:text-on-surface';
     showChart('volume');
   }, listenerOptions);
+
+  // Hover riwayat harian: tooltip + garis panduan mengikuti titik data terdekat.
+  const chartArea = document.querySelector('.is-chart-svg')?.parentElement;
+  if (chartArea && Array.isArray(window.__adminChart) && window.__adminChart.length === 30) {
+    const hoverTip = document.getElementById('chartHoverTip');
+    const hoverLine = document.getElementById('chartHoverLine');
+    const hoverDate = document.getElementById('chartHoverDate');
+    const hoverValue = document.getElementById('chartHoverValue');
+    const hoverCount = document.getElementById('chartHoverCount');
+    const peakTip = document.getElementById('peakTip');
+
+    const hideChartHover = () => {
+      hoverTip?.classList.add('hidden');
+      hoverTip?.classList.remove('flex');
+      hoverLine?.classList.add('hidden');
+      peakTip?.classList.remove('hidden');
+    };
+
+    chartArea.addEventListener('mousemove', (event) => {
+      if (!hoverTip || !hoverLine || !hoverDate || !hoverValue || !hoverCount) return;
+      const rect = chartArea.getBoundingClientRect();
+      const idx = Math.min(29, Math.max(0, Math.round(((event.clientX - rect.left) / rect.width) * 29)));
+      const point = window.__adminChart[idx];
+      const leftPct = (idx * 100) / 29;
+      peakTip?.classList.add('hidden');
+      hoverTip.classList.remove('hidden');
+      hoverTip.classList.add('flex');
+      hoverTip.style.left = `${Math.min(92, Math.max(8, leftPct))}%`;
+      hoverLine.classList.remove('hidden');
+      hoverLine.style.left = `${leftPct}%`;
+      hoverDate.textContent = point.d;
+      if (point.count === 0) {
+        hoverValue.textContent = '—';
+        hoverCount.textContent = 'Tidak ada transaksi';
+        return;
+      }
+      hoverValue.textContent = chartMode === 'revenue'
+        ? `Rp ${point.total.toLocaleString('id-ID')}`
+        : `${point.count} Pesanan`;
+      hoverCount.textContent = chartMode === 'revenue'
+        ? `${point.count} Pesanan Lunas`
+        : `Rp ${point.total.toLocaleString('id-ID')}`;
+    }, listenerOptions);
+    chartArea.addEventListener('mouseleave', hideChartHover, listenerOptions);
+  }
 
   // Verifikasi: helper fetch POST (CSRF dari form antrean).
   async function postVerify(url, action, note) {

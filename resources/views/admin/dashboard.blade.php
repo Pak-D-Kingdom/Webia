@@ -231,6 +231,14 @@
                             <stop offset="70%" stop-color="#006a61"></stop>
                             <stop offset="100%" stop-color="#006f66"></stop>
                         </linearGradient>
+                        <linearGradient id="areaGradientVol" x1="0" x2="0" y1="0" y2="1">
+                            <stop offset="0%" stop-color="#006a61" stop-opacity="0.30"></stop>
+                            <stop offset="100%" stop-color="#86f2e4" stop-opacity="0.0"></stop>
+                        </linearGradient>
+                        <linearGradient id="lineGradVol" x1="0" x2="1" y1="0" y2="0">
+                            <stop offset="0%" stop-color="#0d9488"></stop>
+                            <stop offset="100%" stop-color="#0f766e"></stop>
+                        </linearGradient>
                     </defs>
                 </svg>
                 <svg class="w-full overflow-visible is-chart-svg" data-chart="revenue" preserveAspectRatio="none" viewBox="0 0 700 220" aria-label="Grafik pendapatan harian 30 hari terakhir, puncak {{ $peak['date']->isoFormat('D MMM') }} Rp {{ number_format($peak['total'], 0, ',', '.') }}">
@@ -251,12 +259,18 @@
                     <line stroke="#eceef0" stroke-dasharray="4 4" stroke-width="1" x1="0" x2="700" y1="85" y2="85"></line>
                     <line stroke="#eceef0" stroke-dasharray="4 4" stroke-width="1" x1="0" x2="700" y1="140" y2="140"></line>
                     <line stroke="#eceef0" stroke-width="1" x1="0" x2="700" y1="195" y2="195"></line>
-                    <path d="{{ $volArea }}" fill="url(#areaGradient)"></path>
-                    <path d="{{ $volLine }}" fill="none" stroke="url(#lineGrad)" stroke-linecap="round" stroke-width="3.2"></path>
-                    <circle cx="700" cy="{{ round($yOf($last['count'], $maxVol), 1) }}" fill="#006f66" r="4.5"></circle>
+                    <path d="{{ $volArea }}" fill="url(#areaGradientVol)"></path>
+                    <path d="{{ $volLine }}" fill="none" stroke="url(#lineGradVol)" stroke-linecap="round" stroke-width="3.2"></path>
+                    <circle cx="700" cy="{{ round($yOf($last['count'], $maxVol), 1) }}" fill="#0d9488" r="4.5"></circle>
                 </svg>
+                <div id="chartHoverLine" class="pointer-events-none absolute inset-y-2 hidden w-px bg-primary-container/60"></div>
+                <div id="chartHoverTip" class="pointer-events-none absolute top-2 z-10 hidden -translate-x-1/2 rounded-xl bg-primary-container px-3 py-2 shadow-lg flex-col gap-0.5 text-on-primary" style="left: 50%">
+                    <span id="chartHoverDate" class="font-caption text-caption uppercase text-on-primary-container">1 Okt</span>
+                    <span id="chartHoverValue" class="whitespace-nowrap font-label-lg text-label-lg font-bold tabular-nums text-surface-container-lowest">Rp 0</span>
+                    <span id="chartHoverCount" class="whitespace-nowrap font-caption text-caption text-on-primary-container">0 Pesanan Lunas</span>
+                </div>
                 @if ($peak['total'] > 0)
-                    <div class="absolute top-2 -translate-x-1/2 rounded-xl bg-primary-container px-3 py-2 shadow-lg pointer-events-none flex flex-col gap-0.5 text-on-primary" style="left: {{ $peakLeftPct }}%">
+                    <div id="peakTip" class="absolute top-2 -translate-x-1/2 rounded-xl bg-primary-container px-3 py-2 shadow-lg pointer-events-none flex flex-col gap-0.5 text-on-primary" style="left: {{ $peakLeftPct }}%">
                         <div class="flex items-center justify-between gap-3">
                             <span class="font-caption text-caption uppercase text-on-primary-container">Puncak: {{ $peak['date']->isoFormat('D MMM') }}</span>
                             <span class="h-1.5 w-1.5 rounded-full bg-secondary-fixed"></span>
@@ -272,6 +286,7 @@
                 @endforeach
             </div>
         </div>
+        <script>window.__adminChart = @json($chart->map(fn ($p) => ['d' => $p['date']->isoFormat('DD MMM'), 'total' => (int) $p['total'], 'count' => $p['count']]));</script>
         <!-- Mini Summary -->
         <div class="mt-space-md grid grid-cols-1 gap-space-sm rounded-lg bg-surface-container-low p-space-sm text-center sm:grid-cols-3">
             <div class="flex flex-col items-center">
