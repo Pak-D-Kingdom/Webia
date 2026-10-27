@@ -133,6 +133,12 @@ Route::view(
     'website-bisnis.templates.fnb.restaurant.laut-biru-seafood'
 )->name('webia.template.fnb.restaurant.laut-biru-seafood');
 
+// WEBIA — Restoran Azura
+Route::view(
+    '/webia/template/restoran-azura',
+    'website-bisnis.templates.fnb.restaurant.restoran-azura'
+)->name('webia.template.fnb.restaurant.restoran-azura');
+
 // WEBIA template 4 — Automotive Dealer Vintage (Heritage Motors)
 Route::view(
     '/webia/template/automotive-dealer-vintage',
