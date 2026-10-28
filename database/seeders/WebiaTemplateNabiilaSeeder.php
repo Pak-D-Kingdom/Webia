@@ -304,6 +304,7 @@ class WebiaTemplateNabiilaSeeder extends Seeder
                 'business_types' => ['Skincare & Beauty Store'],
                 'design_style' => 'Luxury',
                 'color_theme' => 'Soft Pink',
+                'description' => 'Luxury skincare store website with a soft pink theme, featured products, product categories, customer testimonials, and WhatsApp ordering.',
                 'preview_style' => 'preview-glow',
                 'template_url' => '/webia/template/retail/luxury/skincare-soft-pink',
                 'is_active' => true,

@@ -318,6 +318,16 @@ Route::view(
     'website-bisnis.templates.education.online-course.education-onlinecourse-modern'
 )->name('webia.template.education-onlinecourse-modern');
 
+Route::view(
+    '/webia/template/education/preschool-daycare-jeli-kecil',
+    'website-bisnis.template.education.preschool-daycare-jeli-kecil.index'
+)->name('webia.template.education.jeli-kecil');
+
+Route::view(
+    '/webia/template/healthcare/psychology/ruang-tenang',
+    'website-bisnis.template.healthcare.psychology.ruang-tenang.index'
+)->name('webia.template.healthcare.psychology.ruang-tenang');
+
 // =====================================================
 // WEBIA - WEDDING & EVENT (WEDDING ORGANIZER)
 // =====================================================
@@ -472,6 +482,11 @@ Route::prefix('webia/template/property/luxury/real-estate-agency-emerald-green')
         Route::view('/gallery', $view . '.gallery')->name('gallery');
         Route::view('/booking', $view . '.booking')->name('booking');      // Booking / viewing
         Route::view('/blog', $view . '.blog')->name('blog');
+        Route::get('/blog/{post}', function (string $post) use ($view) {
+            return view($view . '.article', [
+                'post' => $post,
+            ]);
+        })->name('blog.show');
         Route::view('/contact', $view . '.contact')->name('contact');
     });
 
@@ -654,7 +669,7 @@ Route::prefix('webia/template/healthcare/elegan/klinik-kecantikan-rose-gold')
         // Variabel ditulis eksplisit: arrow function hanya menangkap variabel yang
         // disebut langsung di badannya (compact('tpl') TIDAK menangkapnya).
         $data = fn (string $page) => ['tpl' => $tpl, 'cfg' => $cfg, 'rp' => $rp, 'page' => $page];
- 
+
         Route::view('/',            "$tpl.index",       $data('home'))->name('index');
         Route::view('/layanan',     "$tpl.services",    $data('services'))->name('services');
         Route::view('/dokter',      "$tpl.doctors",     $data('doctors'))->name('doctors');
