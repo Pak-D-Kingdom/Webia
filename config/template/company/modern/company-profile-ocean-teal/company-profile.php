@@ -12,36 +12,36 @@
 return [
 
     'meta' => [
-        'title'       => 'Inovatek - Solusi Teknologi untuk Masa Depan yang Lebih Baik',
+        'title' => 'Inovatek - Solusi Teknologi untuk Masa Depan yang Lebih Baik',
         'description' => 'Inovatek menghadirkan solusi digital inovatif yang membantu bisnis Anda berkembang lebih cepat, efisien, dan berkelanjutan.',
     ],
 
     // Path relatif terhadap folder /public
     'paths' => [
-        'css'    => 'css/website-bisnis/template/company/modern/company-profile-ocean-teal',
-        'js'     => 'js/website-bisnis/template/company/modern/company-profile-ocean-teal',
+        'css' => 'css/website-bisnis/template/company/modern/company-profile-ocean-teal',
+        'js' => 'js/website-bisnis/template/company/modern/company-profile-ocean-teal',
         'images' => 'images/website-bisnis/template/company/modern/company-profile-ocean-teal',
     ],
 
     // Nama route (didaftarkan di routes/web.php)
     'routes' => [
-        'home'      => 'company-profile-ocean-teal.home',
-        'about'     => 'company-profile-ocean-teal.about',
+        'home' => 'company-profile-ocean-teal.home',
+        'about' => 'company-profile-ocean-teal.about',
         'portfolio' => 'company-profile-ocean-teal.portfolio',
     ],
 
     'brand' => [
-        'name'      => 'Inovatek',
-        'tagline'   => 'Build Better Tomorrow',
-        'logo'      => 'logo-mark.png',
+        'name' => 'Inovatek',
+        'tagline' => 'Build Better Tomorrow',
+        'logo' => 'logo-mark.png',
         'logo_dark' => 'logo-mark-dark.png',
     ],
 
     'topbar' => [
-        'address'    => 'Jl. Teknologi No. 88, Jakarta Selatan',
-        'email'      => 'info@inovatek.com',
-        'hours'      => 'Sen - Jum 08:00 - 17:00',
-        'phone'      => '+62 812 3456 7890',
+        'address' => 'Jl. Teknologi No. 88, Jakarta Selatan',
+        'email' => 'info@inovatek.com',
+        'hours' => 'Sen - Jum 08:00 - 17:00',
+        'phone' => '+62 812 3456 7890',
         'phone_href' => '+6281234567890',
     ],
 
@@ -75,22 +75,22 @@ return [
 
     // Floating WhatsApp (nomor format internasional tanpa + / spasi)
     'whatsapp' => [
-        'number'  => '62895630300345', // 0895630300345 (format internasional, tanpa + / spasi)
+        'number' => '62895630300345', // 0895630300345 (format internasional, tanpa + / spasi)
         'message' => 'Halo Inovatek, saya ingin berkonsultasi mengenai kebutuhan teknologi bisnis saya.',
-        'label'   => 'Chat WhatsApp',
+        'label' => 'Chat WhatsApp',
     ],
     'nav_cta' => ['label' => 'Hubungi Kami', 'route' => 'home', 'anchor' => 'kontak'],
 
     'hero' => [
         'eyebrow' => 'Transforming Ideas into Digital Solutions',
-        'title'   => ['Solusi Teknologi untuk', 'Masa Depan yang Lebih Baik'],
-        'text'    => 'Kami menghadirkan solusi digital inovatif yang membantu bisnis Anda berkembang lebih cepat, efisien, dan berkelanjutan.',
+        'title' => ['Solusi Teknologi untuk', 'Masa Depan yang Lebih Baik'],
+        'text' => 'Kami menghadirkan solusi digital inovatif yang membantu bisnis Anda berkembang lebih cepat, efisien, dan berkelanjutan.',
         'primary' => ['label' => 'Jelajahi Layanan', 'anchor' => 'layanan'],
         'secondary' => ['label' => 'Tentang Kami', 'route' => 'about'],
-        'image'   => 'hero-building.jpg',
+        'image' => 'hero-building.jpg',
         'image_alt' => 'Gedung kantor Inovatek',
         'tagline' => 'Your Technology Partner',
-        'stats'   => [
+        'stats' => [
             ['icon' => 'clock',     'value' => '5+',   'label' => 'Tahun Pengalaman'],
             ['icon' => 'briefcase', 'value' => '100+', 'label' => 'Proyek Selesai'],
             ['icon' => 'heart',     'value' => '50+',  'label' => 'Klien Puas'],
@@ -100,16 +100,16 @@ return [
 
     'about' => [
         'label' => 'Tentang Kami',
-        'name'  => 'Inovatek',
+        'name' => 'Inovatek',
         'paragraphs' => [
             'Inovatek adalah perusahaan teknologi yang berfokus pada pengembangan solusi digital untuk membantu bisnis di berbagai industri mencapai tujuan mereka melalui inovasi, kualitas, dan komitmen yang tinggi.',
             'Dengan tim yang berpengalaman di bidang pengembangan perangkat lunak, desain, dan infrastruktur, kami mendampingi klien dari tahap perencanaan hingga layanan purna jual yang responsif.',
         ],
-        'image'      => 'about-video.jpg',
-        'image_alt'  => 'Tim Inovatek bekerja di kantor',
-        'video_url'  => 'https://www.youtube.com/embed/ScMzIvxBSi4', // ganti dengan video profil perusahaan
+        'image' => 'about-video.jpg',
+        'image_alt' => 'Tim Inovatek bekerja di kantor',
+        'video_url' => 'https://www.youtube.com/embed/ScMzIvxBSi4', // ganti dengan video profil perusahaan
         'video_caption' => ['Tonton Video Profil Perusahaan', '2:45'],
-        'vision'  => 'Menjadi mitra teknologi tepercaya yang mendorong pertumbuhan bisnis di Indonesia.',
+        'vision' => 'Menjadi mitra teknologi tepercaya yang mendorong pertumbuhan bisnis di Indonesia.',
         'mission' => [
             'Menghadirkan solusi digital yang inovatif dan terukur.',
             'Menjaga kualitas dan keamanan di setiap tahap pengerjaan.',
@@ -187,8 +187,8 @@ return [
     ],
 
     'cta' => [
-        'title'  => 'Ingin Memulai Proyek Bersama Kami?',
-        'text'   => 'Konsultasikan kebutuhan Anda dengan tim ahli kami.',
+        'title' => 'Ingin Memulai Proyek Bersama Kami?',
+        'text' => 'Konsultasikan kebutuhan Anda dengan tim ahli kami.',
         'button' => 'Dapatkan Penawaran',
     ],
 
@@ -199,45 +199,45 @@ return [
     // Quotation lead. Pesan dikirim ke WhatsApp (nomor di 'whatsapp.number').
     // Opsional: isi 'action' dengan URL endpoint backend agar data juga dikirim via POST.
     'quotation' => [
-        'action'   => null,
-        'title'    => 'Dapatkan Penawaran',
-        'text'     => 'Isi formulir singkat ini. Pesan Anda akan dikirim ke tim kami melalui WhatsApp.',
-        'submit'   => 'Kirim via WhatsApp',
-        'success'  => 'WhatsApp terbuka dengan pesan Anda. Tekan kirim di WhatsApp untuk menyelesaikan.',
-        'error'    => 'Pesan belum terkirim. Periksa koneksi Anda lalu coba lagi.',
+        'action' => null,
+        'title' => 'Dapatkan Penawaran',
+        'text' => 'Isi formulir singkat ini. Pesan Anda akan dikirim ke tim kami melalui WhatsApp.',
+        'submit' => 'Kirim via WhatsApp',
+        'success' => 'WhatsApp terbuka dengan pesan Anda. Tekan kirim di WhatsApp untuk menyelesaikan.',
+        'error' => 'Pesan belum terkirim. Periksa koneksi Anda lalu coba lagi.',
         'wa_intro' => 'Halo Inovatek, saya ingin meminta penawaran.',
     ],
 
     'ai_faq' => [
-        'title'     => 'AI Company FAQ',
-        'tip'       => 'Ada pertanyaan? Tanya AI kami!',
-        'bubble'    => ['Ada pertanyaan tentang layanan kami?', 'Tanyakan apa saja, kami siap membantu!'],
-        'button'    => 'Mulai Chat',
-        'greeting'  => 'Halo! Saya asisten AI Inovatek. Pilih pertanyaan di bawah atau ketik pertanyaan Anda.',
-        'fallback'  => 'Maaf, saya belum menemukan jawabannya. Silakan lanjutkan pertanyaan Anda langsung ke tim kami melalui WhatsApp.',
+        'title' => 'AI Company FAQ',
+        'tip' => 'Ada pertanyaan? Tanya AI kami!',
+        'bubble' => ['Ada pertanyaan tentang layanan kami?', 'Tanyakan apa saja, kami siap membantu!'],
+        'button' => 'Mulai Chat',
+        'greeting' => 'Halo! Saya asisten AI Inovatek. Pilih pertanyaan di bawah atau ketik pertanyaan Anda.',
+        'fallback' => 'Maaf, saya belum menemukan jawabannya. Silakan lanjutkan pertanyaan Anda langsung ke tim kami melalui WhatsApp.',
         'wa_button' => 'Lanjutkan via WhatsApp',
         'placeholder' => 'Ketik pertanyaan Anda...',
         'items' => [
             ['q' => 'Layanan apa saja yang tersedia?',
-             'a' => 'Kami menyediakan pengembangan web & aplikasi, UI/UX design, IT consulting, cloud & infrastructure, digital marketing, serta maintenance & support.',
-             'k' => ['layanan', 'jasa', 'service', 'apa saja']],
+                'a' => 'Kami menyediakan pengembangan web & aplikasi, UI/UX design, IT consulting, cloud & infrastructure, digital marketing, serta maintenance & support.',
+                'k' => ['layanan', 'jasa', 'service', 'apa saja']],
             ['q' => 'Bagaimana cara meminta penawaran?',
-             'a' => 'Klik tombol "Dapatkan Penawaran", isi formulir singkat, dan tim kami akan menghubungi Anda dalam 1x24 jam kerja.',
-             'k' => ['penawaran', 'quotation', 'harga', 'biaya', 'tarif']],
+                'a' => 'Klik tombol "Dapatkan Penawaran", isi formulir singkat, dan tim kami akan menghubungi Anda dalam 1x24 jam kerja.',
+                'k' => ['penawaran', 'quotation', 'harga', 'biaya', 'tarif']],
             ['q' => 'Berapa lama pengerjaan proyek?',
-             'a' => 'Durasi bergantung pada skala dan kompleksitas proyek. Setelah konsultasi awal, kami akan memberikan estimasi jadwal yang jelas.',
-             'k' => ['lama', 'durasi', 'waktu', 'jadwal', 'estimasi']],
+                'a' => 'Durasi bergantung pada skala dan kompleksitas proyek. Setelah konsultasi awal, kami akan memberikan estimasi jadwal yang jelas.',
+                'k' => ['lama', 'durasi', 'waktu', 'jadwal', 'estimasi']],
             ['q' => 'Apakah ada dukungan setelah proyek selesai?',
-             'a' => 'Ya. Layanan maintenance & support kami siap membantu pemeliharaan, perbaikan, dan pengembangan lanjutan.',
-             'k' => ['support', 'dukungan', 'maintenance', 'garansi', 'purna']],
+                'a' => 'Ya. Layanan maintenance & support kami siap membantu pemeliharaan, perbaikan, dan pengembangan lanjutan.',
+                'k' => ['support', 'dukungan', 'maintenance', 'garansi', 'purna']],
             ['q' => 'Sertifikasi apa yang dimiliki Inovatek?',
-             'a' => 'Kami memiliki sertifikasi ISO 9001 (Quality Management), ISO 27001 (Information Security), dan berstatus Microsoft Partner.',
-             'k' => ['sertifikasi', 'iso', 'microsoft', 'partner', 'keamanan']],
+                'a' => 'Kami memiliki sertifikasi ISO 9001 (Quality Management), ISO 27001 (Information Security), dan berstatus Microsoft Partner.',
+                'k' => ['sertifikasi', 'iso', 'microsoft', 'partner', 'keamanan']],
         ],
     ],
 
     'footer' => [
         'copyright' => '© 2026 Inovatek. All rights reserved.',
-        'credit'    => '© 2026 WEBIA by D-KREASI. Seluruh hak cipta dilindungi.',
+        'credit' => '© 2026 WEBIA by D-KREASI. Seluruh hak cipta dilindungi.',
     ],
 ];

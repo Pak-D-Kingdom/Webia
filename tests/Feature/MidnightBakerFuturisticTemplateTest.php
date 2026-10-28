@@ -42,7 +42,7 @@ class MidnightBakerFuturisticTemplateTest extends TestCase
             '--no-interaction' => true,
         ]);
 
-        $this->assertDatabaseCount('webia_templates', 5);
+        $this->assertDatabaseCount('webia_templates', 7);
         $this->assertDatabaseHas('webia_templates', [
             'slug' => 'midnightbaker-futuristic',
             'sort_order' => 34,

@@ -111,28 +111,28 @@ foreach ($products as $i => $p) {
 return [
 
     'brand' => [
-        'name'    => 'PureGlow',
+        'name' => 'PureGlow',
         'tagline' => 'Natural Beauty, Real You',
-        'title'   => 'PureGlow — Natural Skincare & Beauty',
+        'title' => 'PureGlow — Natural Skincare & Beauty',
         'description' => 'PureGlow: skincare & beauty berbahan alami. Cek katalog, harga, stok, dan pesan langsung lewat WhatsApp.',
     ],
 
     // Satu nomor untuk semua tombol / form WhatsApp (format internasional tanpa +)
     'whatsapp' => [
-        'number'  => '62895630300345',
+        'number' => '62895630300345',
         'display' => '0895 6303 00345',
-        'hours'   => '08.00 - 22.00 WIB',
+        'hours' => '08.00 - 22.00 WIB',
         'greeting' => 'Halo PureGlow, saya ingin bertanya tentang produk.',
     ],
 
     'assets' => [
         'css' => 'css/website-bisnis/template/retail/organic/skincare-sage-green/skincare.css',
-        'js'  => 'js/website-bisnis/template/retail/organic/skincare-sage-green/skincare.js',
+        'js' => 'js/website-bisnis/template/retail/organic/skincare-sage-green/skincare.js',
         'img' => 'images/website-bisnis/template/retail/organic/skincare-sage-green',
     ],
 
     // Nama view & prefix route (dipakai @include & route())
-    'view'  => 'website-bisnis.template.retail.organic.skincare-sage-green.',
+    'view' => 'website-bisnis.template.retail.organic.skincare-sage-green.',
     'route' => 'skincare-sage-green.',
 
     'topbar' => [
@@ -159,9 +159,9 @@ return [
 
     'hero' => [
         'eyebrow' => 'Natural Skincare & Beauty',
-        'title'   => 'Cantik Alami, Dimulai dari Perawatan Terbaik',
-        'text'    => 'Rasakan kelembutan bahan alami pilihan untuk kulit yang lebih sehat, cerah dan bercahaya setiap hari.',
-        'cta'     => 'Jelajahi Produk',
+        'title' => 'Cantik Alami, Dimulai dari Perawatan Terbaik',
+        'text' => 'Rasakan kelembutan bahan alami pilihan untuk kulit yang lebih sehat, cerah dan bercahaya setiap hari.',
+        'cta' => 'Jelajahi Produk',
         'featured' => 'nature-glow-serum',
         'trust' => [
             ['icon' => 'leaf',         'title' => '100%',                   'text' => 'Bahan Alami'],
@@ -183,14 +183,14 @@ return [
     'banners' => [
         'collection' => [
             'title' => 'Kulit Sehat Berawal dari Bahan Alami',
-            'text'  => 'Pilihan terbaik untuk kecantikan alami Anda.',
-            'cta'   => 'Lihat Koleksi',
+            'text' => 'Pilihan terbaik untuk kecantikan alami Anda.',
+            'cta' => 'Lihat Koleksi',
             'image' => 'banner-collection.jpg',
         ],
         'care' => [
             'title' => 'Rawat Kulitmu Dengan Cinta',
-            'text'  => 'Karena kulit sehat adalah investasi jangka panjang.',
-            'cta'   => 'Shop Sekarang',
+            'text' => 'Karena kulit sehat adalah investasi jangka panjang.',
+            'cta' => 'Shop Sekarang',
             'image' => 'woman-care.jpg',
         ],
     ],
@@ -206,8 +206,8 @@ return [
 
     'stock' => [
         'low_threshold' => $lowStock,
-        'summary'       => $stockSummary,
-        'restock_note'  => 'Estimasi restock 7–10 hari. Pre-order dibuka lewat WhatsApp.',
+        'summary' => $stockSummary,
+        'restock_note' => 'Estimasi restock 7–10 hari. Pre-order dibuka lewat WhatsApp.',
     ],
 
     'price_notes' => [
@@ -228,7 +228,7 @@ return [
 
     'contact' => [
         'address' => 'Jl. Melati No. 12, Jakarta Selatan, DKI Jakarta 12345',
-        'email'   => 'info@pureglow.id',
+        'email' => 'info@pureglow.id',
     ],
 
     'footer' => [
@@ -237,7 +237,7 @@ return [
     ],
 
     'ai' => [
-        'name'    => 'AI Beauty Assistant',
+        'name' => 'AI Beauty Assistant',
         'greeting' => 'Halo! Aku siap membantu kamu seputar produk, skincare, dan perawatan kulit. Ada yang bisa aku bantu?',
         'placeholder' => 'Tulis pertanyaan kamu...',
         'chips' => [
@@ -249,25 +249,25 @@ return [
         'fallback' => 'Pertanyaan kamu belum ada di FAQ kami. Tim PureGlow siap bantu langsung lewat WhatsApp, ya!',
         'faq' => [
             ['keys' => ['sensitif', 'iritasi', 'kemerahan'],
-             'a' => 'Untuk kulit sensitif, kami sarankan Hydrating Gel Cream, Toner Essence, dan Calming Sheet Mask. Semuanya berformula lembut. Tetap lakukan patch test di area belakang telinga 24 jam sebelum pemakaian pertama.'],
+                'a' => 'Untuk kulit sensitif, kami sarankan Hydrating Gel Cream, Toner Essence, dan Calming Sheet Mask. Semuanya berformula lembut. Tetap lakukan patch test di area belakang telinga 24 jam sebelum pemakaian pertama.'],
             ['keys' => ['cara pakai', 'pakai serum', 'aplikasi', 'urutan'],
-             'a' => 'Urutan dasar: cleanser → toner → serum → moisturizer → sunscreen (pagi). Ambil 2–3 tetes serum, tepuk lembut ke wajah yang masih sedikit lembap, lalu tunggu 1 menit sebelum moisturizer.'],
+                'a' => 'Urutan dasar: cleanser → toner → serum → moisturizer → sunscreen (pagi). Ambil 2–3 tetes serum, tepuk lembut ke wajah yang masih sedikit lembap, lalu tunggu 1 menit sebelum moisturizer.'],
             ['keys' => ['hasil', 'kapan', 'berapa lama', 'terlihat'],
-             'a' => 'Kulit butuh sekitar 28 hari untuk regenerasi. Kebanyakan pelanggan mulai merasakan kulit lebih lembap dalam 1–2 minggu, dan hasil lebih terlihat setelah 4–8 minggu pemakaian rutin.'],
+                'a' => 'Kulit butuh sekitar 28 hari untuk regenerasi. Kebanyakan pelanggan mulai merasakan kulit lebih lembap dalam 1–2 minggu, dan hasil lebih terlihat setelah 4–8 minggu pemakaian rutin.'],
             ['keys' => ['hamil', 'menyusui', 'busui'],
-             'a' => 'Untuk ibu hamil atau menyusui, kami sarankan berkonsultasi dulu dengan dokter dan memeriksa daftar komposisi di kemasan sebelum memakai produk apa pun. Tim kami juga bisa membantu cek komposisi lewat WhatsApp.'],
+                'a' => 'Untuk ibu hamil atau menyusui, kami sarankan berkonsultasi dulu dengan dokter dan memeriksa daftar komposisi di kemasan sebelum memakai produk apa pun. Tim kami juga bisa membantu cek komposisi lewat WhatsApp.'],
             ['keys' => ['jerawat', 'acne', 'berminyak', 'komedo'],
-             'a' => 'Untuk kulit berjerawat atau berminyak, coba Acne Care Cleanser dipadukan dengan Toner Essence. Hindari memencet jerawat dan gunakan pelembap ringan seperti Hydrating Gel Cream.'],
+                'a' => 'Untuk kulit berjerawat atau berminyak, coba Acne Care Cleanser dipadukan dengan Toner Essence. Hindari memencet jerawat dan gunakan pelembap ringan seperti Hydrating Gel Cream.'],
             ['keys' => ['kering', 'lembap', 'dehidrasi'],
-             'a' => 'Untuk kulit kering, kombinasikan Radiant Face Serum, Hydrating Gel Cream, dan Night Repair Cream di malam hari agar kelembapan terkunci.'],
+                'a' => 'Untuk kulit kering, kombinasikan Radiant Face Serum, Hydrating Gel Cream, dan Night Repair Cream di malam hari agar kelembapan terkunci.'],
             ['keys' => ['ongkir', 'kirim', 'pengiriman', 'ekspedisi'],
-             'a' => 'Pengiriman ke seluruh Indonesia. Gratis ongkir untuk pembelian minimal Rp 250.000. Pesanan yang masuk sebelum pukul 15.00 WIB umumnya dikirim di hari yang sama.'],
+                'a' => 'Pengiriman ke seluruh Indonesia. Gratis ongkir untuk pembelian minimal Rp 250.000. Pesanan yang masuk sebelum pukul 15.00 WIB umumnya dikirim di hari yang sama.'],
             ['keys' => ['bayar', 'pembayaran', 'transfer', 'cod'],
-             'a' => 'Pembayaran dikonfirmasi lewat WhatsApp: transfer bank, e-wallet, atau virtual account. Pesanan diproses setelah pembayaran terkonfirmasi.'],
+                'a' => 'Pembayaran dikonfirmasi lewat WhatsApp: transfer bank, e-wallet, atau virtual account. Pesanan diproses setelah pembayaran terkonfirmasi.'],
             ['keys' => ['original', 'asli', 'palsu', 'aman'],
-             'a' => 'Semua produk PureGlow 100% original, berbahan alami, dan sudah melalui uji dermatologis. Cek detail komposisi di kemasan atau tanyakan tim kami.'],
+                'a' => 'Semua produk PureGlow 100% original, berbahan alami, dan sudah melalui uji dermatologis. Cek detail komposisi di kemasan atau tanyakan tim kami.'],
             ['keys' => ['retur', 'refund', 'tukar'],
-             'a' => 'Jika produk rusak atau salah kirim, hubungi kami lewat WhatsApp maksimal 2 hari setelah barang diterima dengan menyertakan video unboxing.'],
+                'a' => 'Jika produk rusak atau salah kirim, hubungi kami lewat WhatsApp maksimal 2 hari setelah barang diterima dengan menyertakan video unboxing.'],
         ],
     ],
 

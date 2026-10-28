@@ -462,17 +462,17 @@ Route::prefix('webia/template/property/luxury/real-estate-agency-emerald-green')
     ->group(function () {
         $view = 'website-bisnis.template.property.luxury.real-estate-agency-emerald-green';
 
-        Route::view('/', $view . '.index')->name('index');          // Beranda (preview semua halaman)
-        Route::view('/property', $view . '.property')->name('property');    // Property listing
-        Route::view('/property/{slug}', $view . '.property-detail')
+        Route::view('/', $view.'.index')->name('index');          // Beranda (preview semua halaman)
+        Route::view('/property', $view.'.property')->name('property');    // Property listing
+        Route::view('/property/{slug}', $view.'.property-detail')
             ->name('property.show');
-        Route::view('/specification', $view . '.specification')->name('specification');
-        Route::view('/price', $view . '.price')->name('price');
-        Route::view('/about', $view . '.about')->name('about');          // About us
-        Route::view('/gallery', $view . '.gallery')->name('gallery');
-        Route::view('/booking', $view . '.booking')->name('booking');      // Booking / viewing
-        Route::view('/blog', $view . '.blog')->name('blog');
-        Route::view('/contact', $view . '.contact')->name('contact');
+        Route::view('/specification', $view.'.specification')->name('specification');
+        Route::view('/price', $view.'.price')->name('price');
+        Route::view('/about', $view.'.about')->name('about');          // About us
+        Route::view('/gallery', $view.'.gallery')->name('gallery');
+        Route::view('/booking', $view.'.booking')->name('booking');      // Booking / viewing
+        Route::view('/blog', $view.'.blog')->name('blog');
+        Route::view('/contact', $view.'.contact')->name('contact');
     });
 
 Route::prefix('webia/template/property/premium-minimal/real-estate-agency-nature-green')
@@ -649,19 +649,19 @@ Route::prefix('webia/template/healthcare/elegan/klinik-kecantikan-rose-gold')
         // Namespace view, key config, dan prefix nama route — dibaca oleh seluruh blade.
         $tpl = 'website-bisnis.template.healthcare.elegan.klinik-kecantikan-rose-gold';
         $cfg = 'template.healthcare.elegan.klinik-kecantikan-rose-gold.klinik-kecantikan';
-        $rp  = 'webia.template.healthcare.elegan.klinik-kecantikan-rose-gold.';
- 
+        $rp = 'webia.template.healthcare.elegan.klinik-kecantikan-rose-gold.';
+
         // Variabel ditulis eksplisit: arrow function hanya menangkap variabel yang
         // disebut langsung di badannya (compact('tpl') TIDAK menangkapnya).
         $data = fn (string $page) => ['tpl' => $tpl, 'cfg' => $cfg, 'rp' => $rp, 'page' => $page];
- 
-        Route::view('/',            "$tpl.index",       $data('home'))->name('index');
-        Route::view('/layanan',     "$tpl.services",    $data('services'))->name('services');
-        Route::view('/dokter',      "$tpl.doctors",     $data('doctors'))->name('doctors');
-        Route::view('/jadwal',      "$tpl.schedule",    $data('schedule'))->name('schedule');
-        Route::view('/booking',     "$tpl.appointment", $data('appointment'))->name('appointment');
-        Route::view('/faq',         "$tpl.faq",         $data('faq'))->name('faq');
-        Route::view('/kebijakan',   "$tpl.policy",      $data('policy'))->name('policy');
+
+        Route::view('/', "$tpl.index", $data('home'))->name('index');
+        Route::view('/layanan', "$tpl.services", $data('services'))->name('services');
+        Route::view('/dokter', "$tpl.doctors", $data('doctors'))->name('doctors');
+        Route::view('/jadwal', "$tpl.schedule", $data('schedule'))->name('schedule');
+        Route::view('/booking', "$tpl.appointment", $data('appointment'))->name('appointment');
+        Route::view('/faq', "$tpl.faq", $data('faq'))->name('faq');
+        Route::view('/kebijakan', "$tpl.policy", $data('policy'))->name('policy');
     });
 
 Route::prefix('webia/template/retail/luxury/skincare-soft-pink')
