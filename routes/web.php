@@ -117,6 +117,14 @@ Route::view(
     '/webia/template/arvo-modern-automotive',
     'website-bisnis.templates.automotive.arvo-modern-automotive'
 )->name('webia.template.automotive.arvo-modern-automotive');
+Route::view(
+    '/webia/template/apex-heritage-automotive-elegant',
+    'website-bisnis.templates.automotive.apex-heritage-automotive-elegant'
+)->name('webia.template.automotive.apex-heritage-automotive-elegant');
+Route::view(
+    '/webia/template/apex-scuderia-automotive-minimalist',
+    'website-bisnis.templates.automotive.apex-scuderia-automotive-minimalist'
+)->name('webia.template.automotive.apex-scuderia-automotive-minimalist');
 
 Route::view(
     '/webia/template/fnb-bakery-playful-colorful',
