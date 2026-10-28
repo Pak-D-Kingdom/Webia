@@ -472,6 +472,7 @@ Route::prefix('webia/template/property/luxury/real-estate-agency-emerald-green')
         Route::view('/gallery', $view.'.gallery')->name('gallery');
         Route::view('/booking', $view.'.booking')->name('booking');      // Booking / viewing
         Route::view('/blog', $view.'.blog')->name('blog');
+        Route::view('/blog/{post}', $view.'.blog-detail')->name('blog.show');
         Route::view('/contact', $view.'.contact')->name('contact');
     });
 
