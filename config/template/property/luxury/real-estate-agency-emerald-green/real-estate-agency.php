@@ -57,15 +57,29 @@ $specs = fn (array $f): array => [
 ];
 
 $facilities = fn (array $f): array => [
-    ['icon' => 'bed',    'label' => $f['bedrooms'] . ' Bedrooms'],
-    ['icon' => 'bath',   'label' => $f['bathrooms'] . ' Bathrooms'],
-    ['icon' => 'car',    'label' => $f['carport'] . '-Car Carport'],
-    ['icon' => 'waves',  'label' => 'Swimming Pool'],
-    ['icon' => 'leaf',   'label' => 'Tropical Garden'],
-    ['icon' => 'sofa',   'label' => 'Open-Plan Living Area'],
-    ['icon' => 'sun',    'label' => $f['view']],
-    ['icon' => 'shield', 'label' => 'SHM Certificate'],
+    ['icon' => 'bed',    'group' => 'Indoor',           'label' => $f['bedrooms'] . ' Bedrooms'],
+    ['icon' => 'bath',   'group' => 'Indoor',           'label' => $f['bathrooms'] . ' Bathrooms'],
+    ['icon' => 'sofa',   'group' => 'Indoor',           'label' => 'Open-Plan Living Area'],
+    ['icon' => 'waves',  'group' => 'Outdoor',          'label' => 'Swimming Pool'],
+    ['icon' => 'leaf',   'group' => 'Outdoor',          'label' => 'Tropical Garden'],
+    ['icon' => 'car',    'group' => 'Outdoor',          'label' => $f['carport'] . '-Car Carport'],
+    ['icon' => 'sun',    'group' => 'Outdoor',          'label' => $f['view']],
+    ['icon' => 'shield', 'group' => 'Legal & Security', 'label' => 'SHM Certificate'],
 ];
+
+// Ringkasan angka di bagian "Key Information & Price"
+$tiles = fn (array $f): array => [
+    ['icon' => 'bed',      'value' => $f['bedrooms'],            'label' => 'Bedrooms'],
+    ['icon' => 'bath',     'value' => $f['bathrooms'],           'label' => 'Bathrooms'],
+    ['icon' => 'car',      'value' => $f['carport'],             'label' => 'Carport'],
+    ['icon' => 'land',     'value' => $f['land'] . ' m²',        'label' => 'Land Area'],
+    ['icon' => 'building', 'value' => $f['building'] . ' m²',    'label' => 'Building Area'],
+    ['icon' => 'calendar', 'value' => $f['year'],                'label' => 'Year Built'],
+];
+
+// Paragraf deskripsi yang sama untuk semua properti (token {..} diganti otomatis)
+$story2 = 'With {bedrooms} bedrooms, {bathrooms} bathrooms and a {carport}-car carport across {building} m² of building area on a {land} m² plot, the property balances generous space with calm, private living. Warm timber, natural stone and soft lighting create the relaxed luxury that suits family life and hosting guests alike.';
+$story3 = 'Completed in {year} and held under {certificate}, the property is offered at {price}. Book a private viewing to experience the {view} for yourself.';
 
 $priceRows = fn (array $f): array => [
     ['label' => 'Asking Price',            'value' => 'IDR ' . number_format($f['price'], 0, ',', '.')],
@@ -85,6 +99,10 @@ $build = fn (array $p): array => $p + [
     'price_rows' => $priceRows($p['facts']),
     'map_image'  => 'map-bali.jpg',
     'maps_url'   => 'https://www.google.com/maps/search/?api=1&query=' . urlencode($p['place_name'] . ' ' . $p['address']),
+    'directions_url' => 'https://www.google.com/maps/dir/?api=1&destination=' . urlencode($p['place_name'] . ' ' . $p['address']),
+    'embed_url'  => 'https://www.google.com/maps?q=' . urlencode($p['place_name'] . ' ' . $p['address']) . '&output=embed',
+    'tiles'      => $tiles($p['facts']),
+    'video_url'  => '',   // opsional: URL embed video (mis. https://www.youtube.com/embed/xxxx). Kosong = blok video tidak tampil
 ];
 
 $properties = [
@@ -107,6 +125,11 @@ $properties = [
             'certificate' => 'SHM (Sertifikat Hak Milik)', 'year' => 2022,
             'price' => 12500000000, 'price_status' => 'Negotiable', 'view' => 'Panoramic Sunset View',
         ],
+        'description' => [
+            'Set within {place_name}, {title} pairs architecture-led design with a breathtaking view. Floor-to-ceiling glazing opens the open-plan living area to the private pool and tropical garden, so every room feels connected to the landscape.',
+            $story2, $story3,
+        ],
+        'story_points' => ['Private swimming pool and tropical garden', 'Open-plan living with floor-to-ceiling glazing', 'Panoramic sunset view', 'SHM certificate, completed in {year}'],
         // Slider hero beranda (counter "01 / 04" dihitung otomatis)
         'slides' => [
             ['file' => 'hero-villa.jpg',     'alt' => 'Modern luxury villa with swimming pool at sunset'],
@@ -141,6 +164,11 @@ $properties = [
             'certificate' => 'SHM (Sertifikat Hak Milik)', 'year' => 2021,
             'price' => 8900000000, 'price_status' => 'Negotiable', 'view' => 'Garden & Sea View',
         ],
+        'description' => [
+            '{title} is a tranquil retreat in Jimbaran where the pool, lawn and surrounding greenery flow into the living spaces. It is designed for slow, sunlit days and easy evenings outdoors.',
+            $story2, $story3,
+        ],
+        'story_points' => ['Pool and lawn that flow into the living area', 'Garden and sea views', 'Compact, low-maintenance plot', 'SHM certificate, completed in {year}'],
         'gallery' => [
             ['file' => 'gallery-4.jpg',      'alt' => 'Pool and garden with sea view'],
             ['file' => 'gallery-2.jpg',      'alt' => 'Living room with natural light'],
@@ -166,6 +194,11 @@ $properties = [
             'certificate' => 'SHM (Sertifikat Hak Milik)', 'year' => 2023,
             'price' => 15750000000, 'price_status' => 'Negotiable', 'view' => 'Sunset Ocean View',
         ],
+        'description' => [
+            '{title} sits on the hillside in Uluwatu, framing the horizon from nearly every room. Its generous plot and layered terraces make the most of the afternoon light and the sunset.',
+            $story2, $story3,
+        ],
+        'story_points' => ['Hillside position with ocean views', 'Spacious plot with layered terraces', 'Five bedrooms for family or guests', 'SHM certificate, completed in {year}'],
         'gallery' => [
             ['file' => 'gallery-5.jpg',  'alt' => 'Sunset view over the coast'],
             ['file' => 'gallery-4.jpg',  'alt' => 'Pool and garden with sea view'],
@@ -230,6 +263,31 @@ return [
     ],
 
     'properties' => $properties,
+
+    // Halaman detail properti: menu cepat, judul bagian, dan kelompok fasilitas
+    'detail' => [
+        'nav' => [
+            ['id' => 'gallery',       'label' => 'Gallery'],
+            ['id' => 'overview',      'label' => 'Overview'],
+            ['id' => 'specification', 'label' => 'Specifications'],
+            ['id' => 'facilities',    'label' => 'Facilities'],
+            ['id' => 'description',   'label' => 'Description'],
+            ['id' => 'location',      'label' => 'Location'],
+        ],
+        'titles' => [
+            'gallery'       => ['title' => 'Gallery & Visual Media',        'text' => 'Browse every angle of the property.'],
+            'overview'      => ['title' => 'Key Information & Price',       'text' => 'The essentials and the investment at a glance.'],
+            'specification' => ['title' => 'Technical Specifications',      'text' => 'Land, building and legal details.'],
+            'facilities'    => ['title' => 'Facilities & Amenities',        'text' => 'Everything that comes with the property.'],
+            'description'   => ['title' => 'Description & Story',           'text' => 'About this property.'],
+            'location'      => ['title' => 'Location & Interactive Map',    'text' => 'Explore the surroundings and get directions.'],
+        ],
+        'facility_groups' => [
+            ['key' => 'Indoor',           'title' => 'Indoor Living',     'icon' => 'home'],
+            ['key' => 'Outdoor',          'title' => 'Outdoor & Leisure', 'icon' => 'leaf'],
+            ['key' => 'Legal & Security', 'title' => 'Legal & Security',  'icon' => 'shield'],
+        ],
+    ],
 
     'features' => [
         ['icon' => 'pin',      'title' => 'Prime Location',      'text' => 'Strategic and exclusive area'],
@@ -401,7 +459,7 @@ return [
              'a' => 'Properti ini memiliki {bedrooms} kamar tidur, {bathrooms} kamar mandi, carport untuk {carport} mobil, kolam renang, taman tropis, serta area living terbuka dengan pemandangan.'],
             ['q' => 'Bagaimana cara booking/viewing?', 'chip' => true,
              'keys' => ['booking', 'viewing', 'kunjungan', 'survei', 'survey', 'jadwal', 'lihat', 'datang', 'cara'],
-             'a' => 'Pilih tanggal dan jam kunjungan pada bagian Booking / Viewing, lalu kirim permintaan. Jam kunjungan: Senin - Minggu, 09:00 - 18:00.'],
+             'a' => 'Klik tombol "Book a Viewing", pilih tanggal dan jam kunjungan di halaman Booking, lalu kirim permintaan. Jam kunjungan: Senin - Minggu, 09:00 - 18:00.'],
             ['q' => 'Berapa harga terendah di area ini?', 'chip' => true,
              'keys' => ['harga', 'price', 'nego', 'negotiable', 'berapa', 'murah', 'terendah', 'cicilan', 'kpr'],
              'a' => 'Harga {title} adalah {price}. Untuk perbandingan properti lain di area ini, silakan hubungi tim kami di ' . $site['phone'] . '.'],

@@ -35,6 +35,7 @@
     $timeSlots  = $cfg['time_slots'];
     $assistant  = $cfg['assistant'];
     $headerImages = $cfg['header_images'];
+    $detailCfg    = $cfg['detail'];
 
     // Properti yang sedang ditampilkan:
     // halaman detail (/property/{slug}) memakai $slug dari URL, halaman lain memakai properti utama.
@@ -84,7 +85,11 @@
         '{carport}'     => $property['facts']['carport'],
         '{year}'        => $property['facts']['year'],
         '{certificate}' => $property['facts']['certificate'],
+        '{place_name}'  => $property['place_name'],
+        '{view}'        => $property['facts']['view'],
     ];
+    $property['description']  = array_map(fn (string $t): string => strtr($t, $faqVars), $property['description'] ?? []);
+    $property['story_points'] = array_map(fn (string $t): string => strtr($t, $faqVars), $property['story_points'] ?? []);
     $assistant['faq'] = array_map(fn (array $f): array => ['a' => strtr($f['a'], $faqVars)] + $f, $assistant['faq']);
 
     // Link WhatsApp (pesan otomatis menyebut properti yang sedang dilihat)

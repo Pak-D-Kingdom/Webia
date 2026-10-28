@@ -4,8 +4,8 @@
    Vanilla JS, tanpa dependensi. Setiap fitur berdiri sendiri (init*) dan
    aman dijalankan walau elemennya tidak ada di halaman.
 
-   Modul : Navbar · Search · Hero slider · Gallery + Lightbox
-           Forms (inquiry & booking) · AI Property Assistant (FAQ)
+   Modul : Navbar · Search · Hero slider · Gallery + Lightbox + Viewer detail
+           Menu cepat detail · Salin alamat · Forms (inquiry & booking) · AI Assistant (FAQ)
    Dipakai di semua halaman template (beranda, property, specification, price,
    about, gallery, booking, blog): tiap modul hanya aktif jika elemennya ada.
 
@@ -179,6 +179,50 @@
         const dataEl = $('[data-lightbox-data]', root);
         let photos = [];
         try { photos = JSON.parse(dataEl ? dataEl.textContent : '[]'); } catch (e) { photos = []; }
+        // Viewer halaman detail: foto besar + thumbnail + panah + geser (swipe)
+        const viewer = $('[data-viewer]', root) || (root.matches('[data-viewer]') ? root : null);
+        if (viewer && photos.length) {
+            const stage = $('.rea-viewer__stage', viewer);
+            const img   = $('[data-viewer-img]', viewer);
+            const cur   = $('[data-viewer-current]', viewer);
+            const thumbs = $$('[data-viewer-thumb]', viewer);
+            let idx = 0;
+            const show = (i) => {
+                idx = (i + photos.length) % photos.length;
+                img.classList.add('is-swapping');
+                window.setTimeout(() => {
+                    img.src = photos[idx].src; img.alt = photos[idx].alt;
+                    img.classList.remove('is-swapping');
+                }, reduceMotion ? 0 : 160);
+                cur && (cur.textContent = String(idx + 1));
+                stage.dataset.galleryOpen = String(idx);
+                thumbs.forEach((t, n) => {
+                    const on = n === idx;
+                    t.classList.toggle('is-active', on);
+                    on ? t.setAttribute('aria-current', 'true') : t.removeAttribute('aria-current');
+                });
+            };
+            thumbs.forEach((t) => t.addEventListener('click', () => show(Number(t.dataset.viewerThumb))));
+            const prev = $('[data-viewer-prev]', viewer), next = $('[data-viewer-next]', viewer);
+            prev && prev.addEventListener('click', () => show(idx - 1));
+            next && next.addEventListener('click', () => show(idx + 1));
+            viewer.addEventListener('keydown', (e) => {
+                if (e.target.closest('dialog')) return;
+                if (e.key === 'ArrowLeft') show(idx - 1);
+                if (e.key === 'ArrowRight') show(idx + 1);
+            });
+            let x0 = null;
+            stage.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+            stage.addEventListener('touchend', (e) => {
+                if (x0 === null) return;
+                const dx = e.changedTouches[0].clientX - x0;
+                if (Math.abs(dx) > 40) show(idx + (dx < 0 ? 1 : -1));
+                x0 = null;
+            }, { passive: true });
+            const fs = $('[data-viewer-fullscreen]', viewer);
+            fs && fs.addEventListener('click', () => { fs.dataset.galleryOpen = String(idx); });
+        }
+
         if (!box || typeof box.showModal !== 'function' || !photos.length) return;
 
         const img     = $('[data-lightbox-img]', box);
@@ -209,6 +253,56 @@
             if (e.key === 'ArrowLeft') render(current - 1);
             if (e.key === 'ArrowRight') render(current + 1);
         });
+    }
+
+    /* ================================================================ */
+    /* DETAIL PROPERTI: menu cepat (scroll-spy) & salin alamat          */
+    /* ================================================================ */
+    function initDetail() {
+        const nav = $('[data-detailnav]');
+        if (nav) {
+            const links = $$('a[href^="#"]', nav);
+            const map = new Map();
+            links.forEach((a) => { const el = document.getElementById(a.getAttribute('href').slice(1)); if (el) map.set(el, a); });
+            const setActive = (link) => {
+                links.forEach((a) => {
+                    const on = a === link;
+                    a.classList.toggle('is-active', on);
+                    on ? a.setAttribute('aria-current', 'true') : a.removeAttribute('aria-current');
+                });
+                // geser chip aktif ke tengah (layar kecil)
+                link && link.scrollIntoView && link.scrollIntoView({ inline: 'center', block: 'nearest', behavior: reduceMotion ? 'auto' : 'smooth' });
+            };
+            if ('IntersectionObserver' in window && map.size) {
+                const visible = new Set();
+                const io = new IntersectionObserver((entries) => {
+                    entries.forEach((en) => (en.isIntersecting ? visible.add(en.target) : visible.delete(en.target)));
+                    const first = Array.from(map.keys()).filter((el) => visible.has(el))
+                        .sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top)[0];
+                    setActive(first ? map.get(first) : null);
+                }, { rootMargin: '-25% 0px -65% 0px' });
+                map.forEach((_, el) => io.observe(el));
+            }
+        }
+
+        // Tombol "Copy address"
+        $$('[data-copy]').forEach((btn) => btn.addEventListener('click', async () => {
+            const text = btn.dataset.copy || '';
+            const label = $('span', btn);
+            try {
+                if (navigator.clipboard && window.isSecureContext) { await navigator.clipboard.writeText(text); }
+                else {
+                    const ta = document.createElement('textarea');
+                    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+                    document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove();
+                }
+                if (label) {
+                    const old = label.textContent;
+                    label.textContent = btn.dataset.copyDone || 'Copied!';
+                    window.setTimeout(() => { label.textContent = old; }, 2000);
+                }
+            } catch (e) { /* abaikan */ }
+        }));
     }
 
     /* ================================================================ */
@@ -461,6 +555,6 @@
     /* ================================================================ */
     /* BOOT                                                             */
     /* ================================================================ */
-    const boot = () => { initNav(); initSearch(); initHero(); initGallery(); initForms(); initAssistant(); };
+    const boot = () => { initNav(); initSearch(); initHero(); initGallery(); initDetail(); initForms(); initAssistant(); };
     if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', boot); } else { boot(); }
 })();
