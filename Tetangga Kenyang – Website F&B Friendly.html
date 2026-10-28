@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tetangga Kenyang – Makanan Rumahan yang Ramah</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;800&family=Nunito:wght@600;800&display=swap">
+<style>
+:root{--bg:#FFF1B8;--ink:#2B1442;--deep:#2B1442;--mint:#5FE3B0;--pink:#FF5D8F;--sky:#6CC4FF;--ora:#FF9B3D;--d:'Baloo 2','Trebuchet MS',sans-serif;--b:'Nunito','Segoe UI',Arial,sans-serif;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#2B1442;--ink:#FFF1B8}}
+:root[data-theme="dark"]{--bg:#2B1442;--ink:#FFF1B8}
+html{scroll-behavior:smooth}*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--ink);font:600 17px/1.6 var(--b);overflow-x:hidden;background-image:radial-gradient(color-mix(in srgb,var(--ink) 14%,transparent) 2px,transparent 2px);background-size:26px 26px}
+h1,h2,h3{font-family:var(--d);font-weight:800;line-height:1}
+nav{position:sticky;top:0;z-index:40;display:flex;justify-content:space-between;align-items:center;padding:calc(12px + env(safe-area-inset-top,0px)) 5vw 12px;background:var(--bg);border-bottom:4px solid var(--ink)}
+.logo{font:800 28px var(--d);text-decoration:none;color:var(--ink)}
+.pill{display:inline-flex;align-items:center;gap:8px;background:var(--pink);color:#fff;border:4px solid var(--deep);border-radius:50px;padding:8px 22px;font:800 17px var(--d);cursor:pointer;box-shadow:4px 4px 0 var(--deep);text-decoration:none;transition:transform .15s,box-shadow .15s}
+.pill:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--deep)}.pill:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--deep)}
+.pill.g{background:var(--mint);color:var(--deep)}.pill.y{background:#FFE066;color:var(--deep)}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:3vw;align-items:center;padding:60px 5vw 110px;max-width:1300px;margin:auto}
+.hero h1{font-size:clamp(50px,8.5vw,120px);letter-spacing:-.02em}
+.hero h1 span{display:inline-block;background:var(--pink);color:#fff;border:4px solid var(--deep);border-radius:24px;padding:0 .2em;transform:rotate(-3deg);box-shadow:6px 6px 0 var(--deep)}
+.hero p{margin:26px 0 30px;max-width:40ch;font-size:20px}
+.hero .row{display:flex;gap:14px;flex-wrap:wrap}
+.stage{position:relative;aspect-ratio:1;display:grid;place-items:center}
+.sun{position:absolute;inset:4%;background:var(--sky);border:4px solid var(--deep);border-radius:50%;box-shadow:10px 10px 0 var(--deep)}
+.mamo{position:relative;width:62%;aspect-ratio:1/.9;background:#FFFBEF;border:5px solid var(--deep);border-radius:50% 50% 46% 46%;animation:hop 2.2s ease-in-out infinite;box-shadow:inset -14px -12px 0 #FFE4B0}
+.mamo::before{content:"";position:absolute;top:-17%;left:28%;width:44%;height:26%;background:#FFFBEF;border:5px solid var(--deep);border-radius:50% 50% 20% 20%;border-bottom:0;box-shadow:0 0 0 0 #000}
+.mamo .e{position:absolute;top:34%;width:17%;aspect-ratio:1;background:#fff;border:4px solid var(--deep);border-radius:50%}
+.mamo .e:nth-of-type(1){left:22%}.mamo .e:nth-of-type(2){right:22%}
+.mamo .e i{position:absolute;width:48%;aspect-ratio:1;background:var(--deep);border-radius:50%;left:26%;top:26%}
+.mamo .c{position:absolute;top:56%;width:13%;height:9%;background:var(--pink);border-radius:50%;opacity:.7}
+.mamo .c:nth-of-type(3){left:10%}.mamo .c:nth-of-type(4){right:10%}
+.mamo .m{position:absolute;left:38%;top:58%;width:24%;height:15%;border:5px solid var(--deep);border-top:0;border-radius:0 0 60px 60px;background:#FF8FA3;transition:height .2s}
+.stage:hover .m{height:24%}
+@keyframes hop{50%{transform:translateY(-4%) rotate(2deg)}}
+.say{position:absolute;top:2%;right:-2%;max-width:48%;background:#fff;color:var(--deep);border:4px solid var(--deep);border-radius:24px 24px 24px 4px;padding:10px 16px;font:800 16px/1.2 var(--d);transform:rotate(5deg);box-shadow:5px 5px 0 var(--deep)}
+.stk{position:absolute;display:grid;place-items:center;width:84px;height:84px;font-size:44px;background:#fff;border:4px solid var(--deep);border-radius:50%;box-shadow:4px 4px 0 var(--deep);animation:flt 4s ease-in-out infinite}
+.stk:nth-of-type(1){left:0;top:28%}.stk:nth-of-type(2){left:6%;bottom:4%;animation-delay:-1s}.stk:nth-of-type(3){right:0;bottom:16%;animation-delay:-2s}
+@keyframes flt{50%{transform:translateY(-12px) rotate(8deg)}}
+.scal{height:30px;background:radial-gradient(circle at 20px 0,transparent 19px,#BFF3DD 20px) 0 0/40px 30px}
+.sec{padding:80px 5vw;color:var(--deep);position:relative}
+.sec h2{font-size:clamp(38px,6vw,78px);letter-spacing:-.01em;max-width:15ch}
+.prod{background:#BFF3DD}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:30px;margin-top:50px;max-width:1300px}
+.card{background:#fff;border:4px solid var(--deep);border-radius:32px;padding:24px;box-shadow:8px 8px 0 var(--deep);transition:transform .25s cubic-bezier(.3,1.6,.5,1)}
+.card:nth-child(odd){transform:rotate(-1.6deg)}.card:nth-child(even){transform:rotate(1.6deg)}
+.card:hover{transform:rotate(0) scale(1.04)}
+.pic{height:150px;border:4px solid var(--deep);border-radius:22px;display:grid;place-items:center;font-size:84px;margin-bottom:16px;background:var(--c)}
+.card:hover .pic span{animation:wig .5s}
+@keyframes wig{25%{transform:rotate(-14deg) scale(1.2)}75%{transform:rotate(14deg) scale(1.2)}}
+.card h3{font-size:27px}.card p{font-size:15px;margin:6px 0 14px}
+.tag{display:inline-block;background:var(--deep);color:#fff;border-radius:20px;padding:2px 12px;font-size:13px;margin-bottom:8px}
+.buy{display:flex;justify-content:space-between;align-items:center}
+.buy b{font:800 22px var(--d)}
+.qty{display:flex;align-items:center;gap:8px;background:#FFE066;border:3px solid var(--deep);border-radius:40px;padding:3px}
+.qty button{width:34px;height:34px;border:0;border-radius:50%;background:var(--deep);color:#fff;font:800 20px var(--d);cursor:pointer}
+.qty span{min-width:20px;text-align:center;font:800 18px var(--d)}
+.how{background:#FFC2D4}
+.steps{display:flex;flex-wrap:wrap;gap:26px;margin-top:50px;max-width:1300px}
+.steps div{flex:1 1 230px;background:#fff;border:4px solid var(--deep);border-radius:30px;padding:24px;position:relative;box-shadow:6px 6px 0 var(--deep)}
+.steps div:nth-child(2){margin-top:34px}.steps div:nth-child(3){margin-top:68px}
+.steps b{position:absolute;top:-22px;left:20px;font-size:40px;background:var(--ora);border:4px solid var(--deep);border-radius:50%;width:60px;height:60px;display:grid;place-items:center}
+.steps h3{font-size:24px;margin:20px 0 6px}
+.talk{background:var(--sky)}
+.bub{display:flex;flex-wrap:wrap;gap:24px;margin-top:50px;max-width:1300px}
+.bub q{flex:1 1 260px;quotes:none;background:#DCF8C6;border:4px solid var(--deep);border-radius:24px 24px 24px 4px;padding:18px 22px;box-shadow:5px 5px 0 var(--deep);font-size:17px}
+.bub q:nth-child(2){background:#fff;border-radius:24px 24px 4px 24px;transform:translateY(24px)}
+.bub q small{display:block;margin-top:8px;font-weight:800;opacity:.7}
+.cta{background:var(--ora);text-align:center;padding:90px 5vw 130px}
+.cta h2{margin:0 auto 30px}
+footer{text-align:center;padding:30px 5vw 110px;font-size:14px;background:var(--deep);color:#FFF1B8}
+/* drawer */
+#dr{position:fixed;inset:0;z-index:120;display:none;background:rgba(43,20,66,.6);align-items:flex-end;justify-content:center}
+#dr.on{display:flex}
+.sheet{background:#fff;color:var(--deep);width:min(520px,100%);max-height:85vh;overflow:auto;border:4px solid var(--deep);border-radius:32px 32px 0 0;padding:26px}
+.sheet h3{font-size:32px;margin-bottom:12px}
+.ln{display:flex;justify-content:space-between;padding:10px 0;border-bottom:3px dashed #ccc}
+.sheet input{width:100%;margin:14px 0;border:3px solid var(--deep);border-radius:16px;padding:12px;font:600 16px var(--b)}
+#bot{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:100}
+#fab{width:78px;height:78px;border:4px solid var(--deep);border-radius:50%;background:#FFFBEF;cursor:pointer;box-shadow:5px 5px 0 var(--deep);font-size:38px;animation:hop 2.2s ease-in-out infinite}
+#fab::after{content:"Tanya Mamo!";position:absolute;right:88px;top:18px;background:#fff;color:var(--deep);border:3px solid var(--deep);border-radius:16px;padding:2px 12px;font:800 15px var(--d);white-space:nowrap}
+#box{display:none;position:absolute;right:0;bottom:94px;width:min(370px,calc(100vw - 32px));height:min(540px,72vh);background:#fff;color:var(--deep);border:4px solid var(--deep);border-radius:28px;box-shadow:8px 8px 0 var(--deep);overflow:hidden;flex-direction:column}
+#box.on{display:flex}
+.hd{background:var(--mint);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:4px solid var(--deep)}
+.hd b{font:800 20px var(--d)}.hd a{background:#25D366;color:#053d1b;border:3px solid var(--deep);border-radius:30px;padding:3px 12px;font:800 14px var(--b);text-decoration:none}
+#log{flex:1;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
+.m{max-width:86%;padding:9px 14px;border-radius:18px 18px 18px 4px;background:#F1EAFB;font-size:15px;line-height:1.4;white-space:pre-line}
+.m.u{align-self:flex-end;background:#FFE066;border-radius:18px 18px 4px 18px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 14px 10px}
+.chips button{border:3px solid var(--deep);background:#fff;color:var(--deep);border-radius:20px;padding:3px 12px;font:800 13px var(--b);cursor:pointer}
+.chips button:hover{background:var(--pink);color:#fff}
+#f{display:flex;border-top:4px solid var(--deep)}
+#f input{flex:1;min-width:0;border:0;padding:14px;font:600 16px var(--b);color:var(--deep)}
+#f button{border:0;background:var(--pink);color:#fff;padding:0 18px;font:800 16px var(--d);cursor:pointer}
+:focus-visible{outline:4px solid var(--pink);outline-offset:3px}
+@media(max-width:800px){.hero{grid-template-columns:1fr;padding-top:30px}.steps div:nth-child(n){margin-top:0}.bub q:nth-child(2){transform:none}#fab::after{display:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<nav><a class="logo" href="#">Tetangga Kenyang 🏡</a><button class="pill y" id="cartBtn">Keranjang <span id="cnt">0</span></button></nav>
+
+<header class="hero">
+  <div>
+    <h1>Halo, <span>tetangga!</span> Udah makan belum?</h1>
+    <p>Dimsum, bakso aci, sambal, dan brownies buatan dapur rumahan. Dimasak seperti untuk keluarga sendiri, dikirim seramah tetangga sebelah.</p>
+    <div class="row"><a class="pill" href="#produk">Pilih jajanan</a><a class="pill g" href="#" data-wa="Halo Tetangga Kenyang, saya mau tanya-tanya dulu ya.">Ngobrol di WA</a></div>
+  </div>
+  <div class="stage" aria-hidden="true">
+    <div class="sun"></div>
+    <div class="mamo" id="mamo"><div class="e"><i></i></div><div class="e"><i></i></div><div class="c"></div><div class="c"></div><div class="m"></div></div>
+    <div class="say">Aku Mamo! Colek aku kalau lapar ya!</div>
+    <div class="stk">🥟</div><div class="stk">🌶️</div><div class="stk">🍫</div>
+  </div>
+</header>
+
+<div class="scal"></div>
+<section class="sec prod" id="produk">
+  <h2>Pilih yang bikin senyum.</h2>
+  <div class="grid" id="grid"></div>
+</section>
+
+<section class="sec how">
+  <h2>Pesannya gampang banget.</h2>
+  <div class="steps">
+    <div><b>👆</b><h3>Pilih dan tap</h3><p>Tambah jajanan favoritmu ke keranjang. Boleh banyak, boleh campur.</p></div>
+    <div><b>💬</b><h3>Kirim lewat WA</h3><p>Pesananmu otomatis tertulis rapi di WhatsApp. Tinggal kirim.</p></div>
+    <div><b>🛵</b><h3>Tunggu di rumah</h3><p>Kami masak, kemas, dan antar. Kamu cukup siapkan piring.</p></div>
+  </div>
+</section>
+
+<section class="sec talk">
+  <h2>Kata tetangga kami.</h2>
+  <div class="bub">
+    <q>Dimsumnya juicy banget, anak-anak sampai rebutan!<small>Bu Rini, Rungkut</small></q>
+    <q>Sambal bawangnya pedas yang bikin nambah nasi. Besok pesan lagi!<small>Dimas, Gubeng</small></q>
+    <q>Brownies kukusnya lembut, cocok buat hampers ulang tahun.<small>Kak Nadia, Wonokromo</small></q>
+  </div>
+</section>
+
+<section class="sec cta">
+  <h2>Perut keroncongan? Chat kami aja!</h2>
+  <a class="pill" href="#" data-wa="Halo Tetangga Kenyang, saya mau pesan.">Pesan lewat WhatsApp</a>
+</section>
+<footer>© 2026 Tetangga Kenyang. Dibuat dengan cinta di Surabaya. Ganti nomor WA dan produk di bagian CONFIG.</footer>
+
+<div id="dr"><div class="sheet"><h3>Keranjangmu 🛒</h3><div id="lines"></div><input id="nm" placeholder="Nama kamu" aria-label="Nama"><input id="ad" placeholder="Alamat pengiriman" aria-label="Alamat"><button class="pill g" id="go" style="width:100%;justify-content:center">Kirim pesanan ke WhatsApp</button><button class="pill y" id="cl" style="width:100%;justify-content:center;margin-top:14px">Tutup</button></div></div>
+
+<div id="bot">
+  <div id="box" role="dialog" aria-label="Chat Mamo">
+    <div class="hd"><b>Mamo si asisten 🥟</b><a href="#" id="toWA">Lanjut ke WA</a></div>
+    <div id="log"></div><div class="chips" id="chips"></div>
+    <form id="f"><input id="in" placeholder="Tanya atau bilang “mau dimsum”" autocomplete="off" aria-label="Pesan"><button>Kirim</button></form>
+  </div>
+  <button id="fab" aria-label="Buka chat Mamo">🥟</button>
+</div>
+
+<script>
+/* ===== CONFIG ===== */
+const WA="6281234567890"; // format 62..., tanpa + atau 0
+const P=[
+ {id:"dimsum",n:"Dimsum Ayam Udang",e:"🥟",d:"Isi 10 pcs, kulit tipis, isian juicy. Tinggal kukus 10 menit.",p:45000,c:"#FFE066",t:"Best seller"},
+ {id:"bakso",n:"Bakso Aci Pedas",e:"🍡",d:"Kenyal, kuah gurih dan pedas yang bisa diatur sendiri.",p:32000,c:"#FF9FBA",t:"Pedas"},
+ {id:"sambal",n:"Sambal Bawang Mama",e:"🌶️",d:"Sambal toples 200 gr, tahan 3 minggu, cocok untuk segalanya.",p:30000,c:"#FF8A70",t:"Wajib punya"},
+ {id:"brownies",n:"Brownies Kukus Lumer",e:"🍫",d:"Cokelat tebal, lembut, dikemas manis untuk hadiah.",p:48000,c:"#B99BFF",t:"Hampers"}];
+const rp=n=>"Rp"+n.toLocaleString("id-ID"),$=s=>document.querySelector(s);
+const wa=t=>"https://wa.me/"+WA+"?text="+encodeURIComponent(t);
+const cart={};
+const total=()=>P.reduce((s,x)=>s+(cart[x.id]||0)*x.p,0);
+function render(){
+ $("#cnt").textContent=Object.values(cart).reduce((a,b)=>a+b,0);
+ P.forEach(x=>{const q=$("#q-"+x.id);if(q)q.textContent=cart[x.id]||0});
+ const L=P.filter(x=>cart[x.id]);
+ $("#lines").innerHTML=L.length?L.map(x=>`<div class="ln"><span>${cart[x.id]}× ${x.n}</span><b>${rp(cart[x.id]*x.p)}</b></div>`).join("")+`<div class="ln"><b>Total</b><b>${rp(total())}</b></div>`:"<p>Keranjang masih kosong. Yuk pilih jajanan dulu!</p>"}
+function chg(id,d){cart[id]=Math.max(0,(cart[id]||0)+d);render()}
+$("#grid").innerHTML=P.map(x=>`<article class="card" style="--c:${x.c}"><div class="pic"><span>${x.e}</span></div><span class="tag">${x.t}</span><h3>${x.n}</h3><p>${x.d}</p><div class="buy"><b>${rp(x.p)}</b><div class="qty"><button aria-label="Kurangi ${x.n}" data-m="${x.id}">−</button><span id="q-${x.id}">0</span><button aria-label="Tambah ${x.n}" data-p="${x.id}">+</button></div></div></article>`).join("");
+document.addEventListener("click",e=>{
+ const t=e.target.closest("button,a");if(!t)return;
+ if(t.dataset.p)chg(t.dataset.p,1);if(t.dataset.m)chg(t.dataset.m,-1);
+ if(t.dataset.wa){e.preventDefault();open(wa(t.dataset.wa),"_blank")}});
+$("#cartBtn").onclick=()=>$("#dr").classList.add("on");$("#cl").onclick=()=>$("#dr").classList.remove("on");
+$("#dr").onclick=e=>{if(e.target.id=="dr")$("#dr").classList.remove("on")};
+$("#go").onclick=()=>{const L=P.filter(x=>cart[x.id]);if(!L.length){$("#lines").innerHTML="<p><b>Pilih minimal satu produk dulu ya.</b></p>";return}
+ open(wa("Halo Tetangga Kenyang! Saya mau pesan:\n"+L.map(x=>"- "+cart[x.id]+"x "+x.n+" ("+rp(cart[x.id]*x.p)+")").join("\n")+"\nTotal: "+rp(total())+"\nNama: "+($("#nm").value||"-")+"\nAlamat: "+($("#ad").value||"-")),"_blank")};
+/* mata maskot mengikuti kursor */
+addEventListener("pointermove",e=>{document.querySelectorAll("#mamo .e").forEach(el=>{const r=el.getBoundingClientRect(),a=Math.atan2(e.clientY-r.top-r.height/2,e.clientX-r.left-r.width/2);el.firstChild.style.transform=`translate(${Math.cos(a)*30}%,${Math.sin(a)*30}%)`})});
+/* ===== Chatbot Mamo ===== */
+const box=$("#box"),log=$("#log"),inp=$("#in"),hist=[];let hi=false;
+const KB=[
+ [/menu|produk|jual|katalog/,()=>"Ini jajanan kami:\n"+P.map(x=>x.e+" "+x.n+" "+rp(x.p)).join("\n")+"\nBilang aja “mau dimsum” untuk masuk keranjang!"],
+ [/harga|berapa/,()=>"Mulai "+rp(Math.min(...P.map(x=>x.p)))+" saja. "+P.map(x=>x.n+" "+rp(x.p)).join(", ")+"."],
+ [/kirim|ongkir|antar|delivery/,()=>"Kami antar lewat Gojek/Grab untuk Surabaya dan ekspedisi beku untuk luar kota. Ongkir dihitung saat konfirmasi di WA."],
+ [/halal|pengawet|bahan/,()=>"Semua halal, tanpa pengawet, bahan segar dari pasar langganan."],
+ [/simpan|tahan|awet|beku/,()=>"Dimsum dan bakso aci tahan 1 bulan di freezer. Sambal 3 minggu di kulkas. Brownies 3 hari suhu ruang."],
+ [/rekomen|saran|bingung|enak/,()=>"Pemula? Coba Dimsum Ayam Udang + Sambal Bawang Mama. Kombinasi juara!"],
+ [/reseller|grosir|hampers|partai/,()=>"Ada harga spesial untuk reseller dan hampers. Tekan “Lanjut ke WA” ya, tim kami kirim price list."],
+ [/halo|hai|hi\b|pagi|siang|malam/,()=>"Halo tetangga! Lagi pengen yang gurih, pedas, atau manis?"],
+ [/keranjang|checkout|bayar|selesai/,()=>{if(total()){$("#dr").classList.add("on");return"Keranjangmu sudah kubuka. Isi nama dan alamat, lalu kirim ke WA ya!"}return"Keranjang masih kosong. Mau mulai dari dimsum?"}]
+];
+function add(t,u){const d=document.createElement("div");d.className="m"+(u?" u":"");d.textContent=t;log.appendChild(d);log.scrollTop=log.scrollHeight}
+function ask(t){if(!t.trim())return;add(t,1);hist.push("Saya: "+t);const l=t.toLowerCase();let a;
+ const item=P.find(x=>l.includes(x.id)||l.includes(x.n.split(" ")[0].toLowerCase()));
+ if(item&&/mau|pesan|beli|tambah|order/.test(l)){chg(item.id,1);a="Siap! "+item.e+" "+item.n+" masuk keranjang ("+cart[item.id]+"). Total sekarang "+rp(total())+". Mau tambah lagi atau bilang “checkout”?"}
+ else if(item){a=item.e+" "+item.n+": "+item.d+" Harga "+rp(item.p)+". Bilang “mau "+item.id+"” kalau mau pesan."}
+ else{const k=KB.find(([r])=>r.test(l));a=k?k[1]():"Hmm, Mamo belum paham yang itu. Tim kami siap bantu langsung lewat WhatsApp, tekan “Lanjut ke WA” ya."}
+ setTimeout(()=>{add(a);hist.push("Mamo: "+a)},500)}
+$("#fab").onclick=()=>{if(box.classList.toggle("on")&&!hi){hi=true;add("Halo tetangga! Aku Mamo 🥟. Mau lihat menu, tanya harga, atau langsung pesan?");$("#chips").innerHTML=["Lihat menu","Rekomendasi","Pengiriman","Tahan berapa lama?","Checkout"].map(c=>`<button type="button">${c}</button>`).join("")}};
+$("#chips").onclick=e=>{if(e.target.tagName=="BUTTON")ask(e.target.textContent)};
+$("#f").onsubmit=e=>{e.preventDefault();ask(inp.value);inp.value=""};
+$("#toWA").onclick=e=>{e.preventDefault();const o=P.filter(x=>cart[x.id]).map(x=>cart[x.id]+"x "+x.n).join(", ");open(wa("Halo Tetangga Kenyang, saya lanjut dari chat website:\n"+hist.slice(-6).join("\n")+(o?"\nKeranjang: "+o+" (Total "+rp(total())+")":"")),"_blank")};
+render();
+</script>
+</body>
+</html>
