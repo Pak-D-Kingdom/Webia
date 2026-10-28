@@ -205,6 +205,8 @@ class WebiaOrderTest extends TestCase
             'tagline' => 'Rapi dalam 30 menit',
             'whatsapp' => '+62 812-0000-0000',
             'description' => 'Nail art home service.',
+            'address' => 'Jl. Melati No. 8',
+            'city' => 'Bandung',
             'address_url' => 'https://maps.google.com/?q=salon-ayu',
             'instagram' => '@salonayu',
         ])->assertRedirect(route('orders.show', $order));
@@ -212,6 +214,8 @@ class WebiaOrderTest extends TestCase
         $order->refresh();
         $this->assertSame('Salon Ayu', $order->business_data['business_name']);
         $this->assertSame('Nail art home service.', $order->business_data['description']);
+        $this->assertSame('Jl. Melati No. 8', $order->business_data['address']);
+        $this->assertSame('Bandung', $order->business_data['city']);
     }
 
     public function test_business_data_is_rejected_before_payment_verified(): void

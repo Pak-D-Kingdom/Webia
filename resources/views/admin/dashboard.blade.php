@@ -23,25 +23,71 @@
     $volPts = $chart->map(fn ($p, $i) => ['x' => $xs($i), 'y' => $yOf($p['count'], $maxVol)]);
     $prevPts = $prevChart->map(fn ($v, $i) => ['x' => $xs($i), 'y' => $yOf($v, $maxRev)]);
 
-    $smoothPath = function (iterable $points): string {
-        $points = collect($points)->map(fn ($p) => ['x' => round($p['x'], 1), 'y' => round($p['y'], 1)]);
-        $first = $points->first();
-        $d = 'M '.$first['x'].' '.$first['y'];
-        $prev = $first;
-        for ($i = 1; $i < $points->count(); $i++) {
-            $p = $points[$i];
-            $d .= ' Q '.$prev['x'].' '.$prev['y'].' '.round(($prev['x'] + $p['x']) / 2, 1).' '.round(($prev['y'] + $p['y']) / 2, 1);
-            $prev = $p;
+    $upSample = function (iterable $pts): array {
+        $pts = is_array($pts) ? $pts : collect($pts)->all();
+        $out = [];
+        $n = count($pts);
+        for ($i = 0; $i < $n; $i++) {
+            $out[] = $pts[$i];
+            if ($i < $n - 1) {
+                $out[] = ['x' => ($pts[$i]['x'] + $pts[$i + 1]['x']) / 2, 'y' => ($pts[$i]['y'] + $pts[$i + 1]['y']) / 2];
+            }
         }
 
-        return $d.' L '.$prev['x'].' '.$prev['y'];
+        return $out;
     };
 
-    $revLine = $smoothPath($revPts);
+    $smoothPath = function (iterable $points): string {
+        $p = collect($points)->map(fn ($pt) => ['x' => round($pt['x'], 1), 'y' => round($pt['y'], 1)])->all();
+        $n = count($p);
+        if ($n < 2) {
+            return '';
+        }
+
+        // Fritsch-Carlson monotone cubic: tangen bersama per anchor = tanpa sudut, dibatasi 3×delta = tanpa overshoot.
+        $delta = [];
+        for ($i = 0; $i < $n - 1; $i++) {
+            $dx = $p[$i + 1]['x'] - $p[$i]['x'];
+            $delta[$i] = $dx === 0.0 ? 0.0 : ($p[$i + 1]['y'] - $p[$i]['y']) / $dx;
+        }
+        $slope = [];
+        for ($i = 0; $i < $n; $i++) {
+            if ($i === 0) {
+                $slope[$i] = $delta[0];
+            } elseif ($i === $n - 1) {
+                $slope[$i] = $delta[$n - 2];
+            } elseif ($delta[$i - 1] * $delta[$i] <= 0.0) {
+                $slope[$i] = 0.0;
+            } else {
+                $limit = 3.0 * min(abs($delta[$i - 1]), abs($delta[$i]));
+                $avg = ($delta[$i - 1] + $delta[$i]) / 2.0;
+                $slope[$i] = max(-$limit, min($limit, $avg));
+            }
+        }
+        $d = 'M '.$p[0]['x'].' '.$p[0]['y'];
+        $f = 1 / 6; // offset kontrol: kecil = tikungan lebih rapat/membulat
+        for ($i = 0; $i < $n - 1; $i++) {
+            $h = $p[$i + 1]['x'] - $p[$i]['x'];
+            $c1x = $p[$i]['x'] + $h * $f;
+            $c1y = $p[$i]['y'] + $slope[$i] * $h * $f;
+            $c2x = $p[$i + 1]['x'] - $h * $f;
+            $c2y = $p[$i + 1]['y'] - $slope[$i + 1] * $h * $f;
+            // Kontrol y di dalam rentang segmen = tidak ada overshoot
+            $minY = min($p[$i]['y'], $p[$i + 1]['y']);
+            $maxY = max($p[$i]['y'], $p[$i + 1]['y']);
+            $c1y = max($minY, min($maxY, $c1y));
+            $c2y = max($minY, min($maxY, $c2y));
+            $d .= sprintf(' C %.1f %.1f %.1f %.1f %s %s', $c1x, $c1y, $c2x, $c2y, $p[$i + 1]['x'], $p[$i + 1]['y']);
+        }
+
+        return $d;
+    };
+
+    $revLine = $smoothPath($upSample($revPts));
     $revArea = $revLine.' L 700,195 L 0,195 Z';
-    $volLine = $smoothPath($volPts);
+    $volLine = $smoothPath($upSample($volPts));
     $volArea = $volLine.' L 700,195 L 0,195 Z';
-    $prevLine = $smoothPath($prevPts);
+    $prevLine = $smoothPath($upSample($prevPts));
 
     $peakIdx = (int) $revSeq->search($revSeq->max());
     $peak = $chart[$peakIdx];
@@ -231,6 +277,14 @@
                             <stop offset="70%" stop-color="#006a61"></stop>
                             <stop offset="100%" stop-color="#006f66"></stop>
                         </linearGradient>
+                        <linearGradient id="areaGradientVol" x1="0" x2="0" y1="0" y2="1">
+                            <stop offset="0%" stop-color="#006a61" stop-opacity="0.30"></stop>
+                            <stop offset="100%" stop-color="#86f2e4" stop-opacity="0.0"></stop>
+                        </linearGradient>
+                        <linearGradient id="lineGradVol" x1="0" x2="1" y1="0" y2="0">
+                            <stop offset="0%" stop-color="#0d9488"></stop>
+                            <stop offset="100%" stop-color="#0f766e"></stop>
+                        </linearGradient>
                     </defs>
                 </svg>
                 <svg class="w-full overflow-visible is-chart-svg" data-chart="revenue" preserveAspectRatio="none" viewBox="0 0 700 220" aria-label="Grafik pendapatan harian 30 hari terakhir, puncak {{ $peak['date']->isoFormat('D MMM') }} Rp {{ number_format($peak['total'], 0, ',', '.') }}">
@@ -251,12 +305,18 @@
                     <line stroke="#eceef0" stroke-dasharray="4 4" stroke-width="1" x1="0" x2="700" y1="85" y2="85"></line>
                     <line stroke="#eceef0" stroke-dasharray="4 4" stroke-width="1" x1="0" x2="700" y1="140" y2="140"></line>
                     <line stroke="#eceef0" stroke-width="1" x1="0" x2="700" y1="195" y2="195"></line>
-                    <path d="{{ $volArea }}" fill="url(#areaGradient)"></path>
-                    <path d="{{ $volLine }}" fill="none" stroke="url(#lineGrad)" stroke-linecap="round" stroke-width="3.2"></path>
-                    <circle cx="700" cy="{{ round($yOf($last['count'], $maxVol), 1) }}" fill="#006f66" r="4.5"></circle>
+                    <path d="{{ $volArea }}" fill="url(#areaGradientVol)"></path>
+                    <path d="{{ $volLine }}" fill="none" stroke="url(#lineGradVol)" stroke-linecap="round" stroke-width="3.2"></path>
+                    <circle cx="700" cy="{{ round($yOf($last['count'], $maxVol), 1) }}" fill="#0d9488" r="4.5"></circle>
                 </svg>
+                <div id="chartHoverLine" class="pointer-events-none absolute inset-y-2 hidden w-px bg-primary-container/60"></div>
+                <div id="chartHoverTip" class="pointer-events-none absolute top-2 z-10 hidden -translate-x-1/2 rounded-xl bg-primary-container px-3 py-2 shadow-lg flex-col gap-0.5 text-on-primary" style="left: 50%">
+                    <span id="chartHoverDate" class="font-caption text-caption uppercase text-on-primary-container">1 Okt</span>
+                    <span id="chartHoverValue" class="whitespace-nowrap font-label-lg text-label-lg font-bold tabular-nums text-surface-container-lowest">Rp 0</span>
+                    <span id="chartHoverCount" class="whitespace-nowrap font-caption text-caption text-on-primary-container">0 Pesanan Lunas</span>
+                </div>
                 @if ($peak['total'] > 0)
-                    <div class="absolute top-2 -translate-x-1/2 rounded-xl bg-primary-container px-3 py-2 shadow-lg pointer-events-none flex flex-col gap-0.5 text-on-primary" style="left: {{ $peakLeftPct }}%">
+                    <div id="peakTip" class="absolute top-2 -translate-x-1/2 rounded-xl bg-primary-container px-3 py-2 shadow-lg pointer-events-none flex flex-col gap-0.5 text-on-primary" style="left: {{ $peakLeftPct }}%">
                         <div class="flex items-center justify-between gap-3">
                             <span class="font-caption text-caption uppercase text-on-primary-container">Puncak: {{ $peak['date']->isoFormat('D MMM') }}</span>
                             <span class="h-1.5 w-1.5 rounded-full bg-secondary-fixed"></span>
@@ -272,6 +332,7 @@
                 @endforeach
             </div>
         </div>
+        <script>window.__adminChart = @json($chart->map(fn ($p) => ['d' => $p['date']->isoFormat('DD MMM'), 'total' => (int) $p['total'], 'count' => $p['count']]));</script>
         <!-- Mini Summary -->
         <div class="mt-space-md grid grid-cols-1 gap-space-sm rounded-lg bg-surface-container-low p-space-sm text-center sm:grid-cols-3">
             <div class="flex flex-col items-center">

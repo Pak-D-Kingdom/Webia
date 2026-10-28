@@ -184,11 +184,14 @@ class WebiaOrderController extends Controller
     {
         abort_unless($order->user_id === $request->user()->id, 404);
 
+        $requiredForSite = $order->supportsCustomerSite() ? 'required' : 'nullable';
         $validated = $request->validate([
             'business_name' => ['required', 'string', 'max:120'],
             'tagline' => ['nullable', 'string', 'max:150'],
-            'whatsapp' => ['nullable', 'string', 'regex:/^[0-9+\-\s]{6,20}$/'],
+            'whatsapp' => [$requiredForSite, 'string', 'regex:/^[0-9+\-\s]{6,20}$/'],
             'description' => ['nullable', 'string', 'max:1000'],
+            'address' => [$requiredForSite, 'string', 'max:255'],
+            'city' => [$requiredForSite, 'string', 'max:120'],
             'address_url' => ['nullable', 'url:http,https', 'max:500'],
             'instagram' => ['nullable', 'string', 'max:80'],
         ]);
@@ -217,7 +220,7 @@ class WebiaOrderController extends Controller
                         'webia_package_id' => $package->id,
                         'package_snapshot' => ['name' => $package->name, 'price' => $package->price],
                         'webia_template_id' => $template?->id,
-                        'template_snapshot' => $template ? ['name' => $template->name, 'category_slug' => $template->category_slug] : null,
+                        'template_snapshot' => $template ? ['name' => $template->name, 'slug' => $template->slug, 'category_slug' => $template->category_slug] : null,
                         'category_slug' => $template?->category_slug ?? $request->input('category_slug'),
                         'addon_ids' => $addons->modelKeys(),
                         'addon_snapshot' => $addons->map(fn (WebiaAddon $addon): array => [
