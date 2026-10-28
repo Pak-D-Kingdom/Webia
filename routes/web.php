@@ -879,3 +879,10 @@ Route::view(
     'webia/template/property/coral-haven',
     'website-bisnis.template.property.perumahan.coral-haven'
 )->name('webia.templates.coral-haven');
+
+Route::prefix('webia/template')->group(function () {
+    Route::view(
+        '/griya-etnik-nantara',
+        'website-bisnis.templates.interior-architecture.architecture-building-design.griya-etnik-nantara.griya-etnik-nantara'
+    )->name('webia.template.griya-etnik-nantara');
+});
