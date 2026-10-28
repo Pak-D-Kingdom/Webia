@@ -72,6 +72,18 @@ Route::view(
     'website-bisnis.templates.fnb.vallaco-catering'
 )->name('webia.template.vallaco-catering');
 Route::view(
+    '/webia/template/rasa-rupa-artistik',
+    'website-bisnis.templates.fnb.rasa-rupa-artistik'
+)->name('webia.template.fnb.rasa-rupa-artistik');
+Route::view(
+    '/webia/template/tetangga-kenyang-friendly',
+    'website-bisnis.templates.fnb.tetangga-kenyang-friendly'
+)->name('webia.template.fnb.tetangga-kenyang-friendly');
+Route::view(
+    '/webia/template/hulu-pantry-asal-usul',
+    'website-bisnis.templates.fnb.hulu-pantry-asal-usul'
+)->name('webia.template.fnb.hulu-pantry-asal-usul');
+Route::view(
     '/webia/template/kusuma-ningrat-royal-heritage',
     'website-bisnis.templates.fnb.kusuma-ningrat-royal-heritage'
 )->name('webia.template.kusuma-ningrat-royal-heritage');
@@ -105,6 +117,14 @@ Route::view(
     '/webia/template/arvo-modern-automotive',
     'website-bisnis.templates.automotive.arvo-modern-automotive'
 )->name('webia.template.automotive.arvo-modern-automotive');
+Route::view(
+    '/webia/template/apex-heritage-automotive-elegant',
+    'website-bisnis.templates.automotive.apex-heritage-automotive-elegant'
+)->name('webia.template.automotive.apex-heritage-automotive-elegant');
+Route::view(
+    '/webia/template/apex-scuderia-automotive-minimalist',
+    'website-bisnis.templates.automotive.apex-scuderia-automotive-minimalist'
+)->name('webia.template.automotive.apex-scuderia-automotive-minimalist');
 
 Route::view(
     '/webia/template/fnb-bakery-playful-colorful',
@@ -615,6 +635,27 @@ Route::prefix('webia/template/healthcare/luxury/klinik-kecantikan-champagne-glow
         Route::get('/appointment', $page('appointment'))->name('appointment');
         Route::get('/faq',         $page('faq'))->name('faq');
         Route::get('/policy',      $page('policy'))->name('policy');
+    });
+
+Route::prefix('webia/template/healthcare/elegan/klinik-kecantikan-rose-gold')
+    ->name('webia.template.healthcare.elegan.klinik-kecantikan-rose-gold.')
+    ->group(function () {
+        // Namespace view, key config, dan prefix nama route — dibaca oleh seluruh blade.
+        $tpl = 'website-bisnis.template.healthcare.elegan.klinik-kecantikan-rose-gold';
+        $cfg = 'template.healthcare.elegan.klinik-kecantikan-rose-gold.klinik-kecantikan';
+        $rp  = 'webia.template.healthcare.elegan.klinik-kecantikan-rose-gold.';
+ 
+        // Variabel ditulis eksplisit: arrow function hanya menangkap variabel yang
+        // disebut langsung di badannya (compact('tpl') TIDAK menangkapnya).
+        $data = fn (string $page) => ['tpl' => $tpl, 'cfg' => $cfg, 'rp' => $rp, 'page' => $page];
+ 
+        Route::view('/',            "$tpl.index",       $data('home'))->name('index');
+        Route::view('/layanan',     "$tpl.services",    $data('services'))->name('services');
+        Route::view('/dokter',      "$tpl.doctors",     $data('doctors'))->name('doctors');
+        Route::view('/jadwal',      "$tpl.schedule",    $data('schedule'))->name('schedule');
+        Route::view('/booking',     "$tpl.appointment", $data('appointment'))->name('appointment');
+        Route::view('/faq',         "$tpl.faq",         $data('faq'))->name('faq');
+        Route::view('/kebijakan',   "$tpl.policy",      $data('policy'))->name('policy');
     });
 
 Route::prefix('webia/template/retail/luxury/skincare-soft-pink')

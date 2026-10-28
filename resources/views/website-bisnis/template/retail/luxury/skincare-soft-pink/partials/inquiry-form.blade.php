@@ -1,6 +1,8 @@
-{{-- Form inquiry -> WhatsApp. Variabel: $compact (bool) --}}
+{{-- Form inquiry. Variabel: $compact (bool)
+     - compact (preview beranda): TIDAK mengirim ke WhatsApp, hanya membuka halaman Inquiry dengan data terisi (GET).
+     - penuh (halaman Inquiry): dikirim ke WhatsApp oleh skincare.js (data-inquiry-form). --}}
 @php $compact = $compact ?? false; @endphp
-<form class="iform" data-inquiry-form novalidate>
+<form class="iform" @if ($compact) action="{{ route($rp . 'inquiry') }}" method="get" @else data-inquiry-form novalidate @endif>
     <div class="iform__row">
         <label class="field">
             <span>Nama lengkap</span>
@@ -39,5 +41,9 @@
         <textarea name="message" rows="{{ $compact ? 3 : 5 }}" placeholder="Tulis pertanyaan atau kebutuhan Anda" required></textarea>
     </label>
     <p class="form-error" data-form-error hidden></p>
-    <button class="btn btn--rose btn--lg" type="submit"><i class="bi bi-whatsapp" aria-hidden="true"></i> Kirim via WhatsApp</button>
+    @if ($compact)
+        <button class="btn btn--rose btn--lg" type="submit">Lanjut ke Halaman Inquiry <i class="bi bi-arrow-right" aria-hidden="true"></i></button>
+    @else
+        <button class="btn btn--rose btn--lg" type="submit"><i class="bi bi-whatsapp" aria-hidden="true"></i> Kirim via WhatsApp</button>
+    @endif
 </form>
