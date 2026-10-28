@@ -19,6 +19,7 @@
     --account-shadow: 0 14px 38px rgba(47, 35, 78, 0.09);
     --account-radius: 0.65rem;
     --account-radius-lg: 0.9rem;
+    --account-header-height: 92px;
 }
 
 * {
