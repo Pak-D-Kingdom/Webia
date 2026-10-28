@@ -304,6 +304,7 @@ class WebiaTemplateNabiilaSeeder extends Seeder
                 'business_types' => ['Skincare & Beauty Store'],
                 'design_style' => 'Luxury',
                 'color_theme' => 'Soft Pink',
+                'description' => 'Template website retail skincare dengan desain luxury dan tema soft pink.',
                 'preview_style' => 'preview-glow',
                 'template_url' => '/webia/template/retail/luxury/skincare-soft-pink',
                 'is_active' => true,
