@@ -1,5 +1,5 @@
 {{-- ===================== PRICE (halaman detail properti) ===================== --}}
-<section class="rea-price-band" id="price" aria-labelledby="price-title">
+<section class="rea-price-band" id="price" aria-labelledby="price-title" style="--band-img: url('{{ $img('price-bg.jpg') }}')">
     <div class="rea-container rea-price-band__inner">
         <div class="rea-price-band__main">
             <p class="rea-eyebrow">ASKING PRICE</p>

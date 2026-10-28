@@ -256,26 +256,108 @@ return [
         ['icon' => 'calendar', 'title' => 'Installment Plan', 'text' => 'Payment schedules can be discussed directly with our team.'],
     ],
 
-    // Artikel blog: DATA CONTOH
+    // Artikel blog: DATA CONTOH (key array = slug untuk URL /blog/{slug}).
+    // 'body' = daftar blok: ['type' => 'h'|'p'|'img', 'text' => ...] (img: 'file' + 'alt').
     'blog' => [
-        ['file' => 'gallery-3.jpg',      'alt' => 'Bedroom interior', 'tag' => 'Buying Guide', 'date' => '12 Oct 2026', 'read' => '5 min read',
-         'title' => '5 Things to Check Before Buying a Villa in Bali',
-         'excerpt' => 'From land status to access roads, a simple checklist to review before you commit.'],
-        ['file' => 'gallery-5.jpg',      'alt' => 'Sunset coastline', 'tag' => 'Location', 'date' => '03 Oct 2026', 'read' => '4 min read',
-         'title' => 'Why Jimbaran Remains a Sought-After Address',
-         'excerpt' => 'Sunsets, beaches and easy access: what makes the area appealing for luxury living.'],
-        ['file' => 'hero-villa.jpg',     'alt' => 'Villa at sunset', 'tag' => 'Legal', 'date' => '25 Sep 2026', 'read' => '6 min read',
-         'title' => 'SHM and HGB: Understanding Property Certificates',
-         'excerpt' => 'A short guide to common land certificates and what they mean for buyers.'],
-        ['file' => 'gallery-2.jpg',      'alt' => 'Living room', 'tag' => 'Design', 'date' => '14 Sep 2026', 'read' => '4 min read',
-         'title' => 'Designing for Tropical Indoor-Outdoor Living',
-         'excerpt' => 'Open plans, natural materials and light: ideas that make a villa feel effortless.'],
-        ['file' => 'booking-living.jpg', 'alt' => 'Open living room', 'tag' => 'Tips', 'date' => '02 Sep 2026', 'read' => '3 min read',
-         'title' => 'How to Prepare for a Private Property Viewing',
-         'excerpt' => 'Questions to ask and details to notice when you visit a property in person.'],
-        ['file' => 'gallery-4.jpg',      'alt' => 'Pool and garden', 'tag' => 'Investment', 'date' => '20 Aug 2026', 'read' => '5 min read',
-         'title' => 'Villa Ownership: What to Know Before You Invest',
-         'excerpt' => 'Costs, upkeep and long-term considerations for first-time villa owners.'],
+        'checklist-membeli-villa-di-bali' => [
+            'slug' => 'checklist-membeli-villa-di-bali', 'file' => 'gallery-3.jpg', 'alt' => 'Bedroom interior',
+            'tag' => 'Buying Guide', 'date' => '12 Oct 2026', 'read' => '5 min read',
+            'title' => '5 Things to Check Before Buying a Villa in Bali',
+            'excerpt' => 'From land status to access roads, a simple checklist to review before you commit.',
+            'body' => [
+                ['type' => 'p', 'text' => 'Buying a villa is as much about due diligence as it is about design. A calm, methodical checklist helps you compare properties fairly and avoid surprises after the keys are handed over.'],
+                ['type' => 'h', 'text' => '1. Confirm the land status and certificate'],
+                ['type' => 'p', 'text' => 'Ask to see the certificate and make sure the name, land area and boundaries match what is being offered. A notary or legal adviser can verify the details before any payment is made.'],
+                ['type' => 'h', 'text' => '2. Check access, utilities and surroundings'],
+                ['type' => 'p', 'text' => 'Visit at different times of day. Look at the road access, water and power supply, drainage and the neighbouring plots, because these shape daily comfort as much as the villa itself.'],
+                ['type' => 'img', 'file' => 'gallery-2.jpg', 'alt' => 'Living room with natural light'],
+                ['type' => 'h', 'text' => '3. Review the building and its upkeep'],
+                ['type' => 'p', 'text' => 'Inspect the structure, roof, pool and fittings, and ask how the property has been maintained. Good records are a strong sign of a well-cared-for home.'],
+                ['type' => 'p', 'text' => 'Finally, agree on a clear timeline and payment schedule in writing. Our team is happy to walk you through each step.'],
+            ],
+        ],
+        'mengapa-jimbaran-tetap-diminati' => [
+            'slug' => 'mengapa-jimbaran-tetap-diminati', 'file' => 'gallery-5.jpg', 'alt' => 'Sunset coastline',
+            'tag' => 'Location', 'date' => '03 Oct 2026', 'read' => '4 min read',
+            'title' => 'Why Jimbaran Remains a Sought-After Address',
+            'excerpt' => 'Sunsets, beaches and easy access: what makes the area appealing for luxury living.',
+            'body' => [
+                ['type' => 'p', 'text' => 'Jimbaran has long been associated with calm beaches, warm evenings and some of the island\'s most memorable sunsets. For many owners, that combination is exactly what a second home should offer.'],
+                ['type' => 'h', 'text' => 'A coastline made for slow living'],
+                ['type' => 'p', 'text' => 'Wide bays, seaside dining and open skies create a relaxed rhythm that feels far from the city, while still being within reach of the services you need.'],
+                ['type' => 'img', 'file' => 'gallery-4.jpg', 'alt' => 'Pool and garden with sea view'],
+                ['type' => 'h', 'text' => 'Convenience without compromise'],
+                ['type' => 'p', 'text' => 'Good road connections and nearby amenities make everyday life easy, whether you are staying for a season or hosting guests throughout the year.'],
+                ['type' => 'p', 'text' => 'If you would like to see the area for yourself, book a private viewing and our team will arrange a visit.'],
+            ],
+        ],
+        'memahami-sertifikat-shm-dan-hgb' => [
+            'slug' => 'memahami-sertifikat-shm-dan-hgb', 'file' => 'hero-villa.jpg', 'alt' => 'Villa at sunset',
+            'tag' => 'Legal', 'date' => '25 Sep 2026', 'read' => '6 min read',
+            'title' => 'SHM and HGB: Understanding Property Certificates',
+            'excerpt' => 'A short guide to common land certificates and what they mean for buyers.',
+            'body' => [
+                ['type' => 'p', 'text' => 'Two certificate types come up most often when buying property in Indonesia: SHM and HGB. Knowing the difference helps you ask the right questions early.'],
+                ['type' => 'h', 'text' => 'SHM (Sertifikat Hak Milik)'],
+                ['type' => 'p', 'text' => 'SHM is the strongest form of land title, granting full ownership rights to the holder. It is the certificate attached to the villa featured on this website.'],
+                ['type' => 'h', 'text' => 'HGB (Hak Guna Bangunan)'],
+                ['type' => 'p', 'text' => 'HGB gives the right to build on and use a plot for a defined period, which can usually be extended under the applicable rules. It is common for developments and commercial plots.'],
+                ['type' => 'p', 'text' => 'This article is a general introduction only. For any purchase, please consult a notary or legal adviser to confirm the exact status of the property.'],
+            ],
+        ],
+        'desain-tropis-indoor-outdoor' => [
+            'slug' => 'desain-tropis-indoor-outdoor', 'file' => 'gallery-2.jpg', 'alt' => 'Living room',
+            'tag' => 'Design', 'date' => '14 Sep 2026', 'read' => '4 min read',
+            'title' => 'Designing for Tropical Indoor-Outdoor Living',
+            'excerpt' => 'Open plans, natural materials and light: ideas that make a villa feel effortless.',
+            'body' => [
+                ['type' => 'p', 'text' => 'In a tropical setting, the best homes dissolve the line between inside and outside. Large openings, shaded terraces and garden views make every room feel larger and calmer.'],
+                ['type' => 'h', 'text' => 'Let natural materials lead'],
+                ['type' => 'p', 'text' => 'Warm timber, stone and linen age gracefully and keep a space feeling grounded. Paired with soft lighting, they create the relaxed luxury that defines modern villas.'],
+                ['type' => 'img', 'file' => 'booking-living.jpg', 'alt' => 'Open-plan living room facing the garden'],
+                ['type' => 'h', 'text' => 'Plan for light and airflow'],
+                ['type' => 'p', 'text' => 'Cross-ventilation, deep overhangs and sliding glazing keep interiors comfortable while framing the landscape beyond.'],
+            ],
+        ],
+        'persiapan-private-viewing' => [
+            'slug' => 'persiapan-private-viewing', 'file' => 'booking-living.jpg', 'alt' => 'Open living room',
+            'tag' => 'Tips', 'date' => '02 Sep 2026', 'read' => '3 min read',
+            'title' => 'How to Prepare for a Private Property Viewing',
+            'excerpt' => 'Questions to ask and details to notice when you visit a property in person.',
+            'body' => [
+                ['type' => 'p', 'text' => 'A private viewing is your chance to feel the property beyond the photographs. A little preparation helps you make the most of every minute.'],
+                ['type' => 'h', 'text' => 'Bring a short list of questions'],
+                ['type' => 'p', 'text' => 'Think about maintenance history, running costs, neighbours, and what is included in the sale. Writing them down keeps the conversation focused.'],
+                ['type' => 'h', 'text' => 'Notice the small things'],
+                ['type' => 'p', 'text' => 'Pay attention to natural light, noise, water pressure and storage. Take photos and notes so you can compare properties later.'],
+                ['type' => 'p', 'text' => 'Ready to visit? Use the Booking / Viewing form and our team will confirm a time with you.'],
+            ],
+        ],
+        'hal-yang-perlu-diketahui-pemilik-villa' => [
+            'slug' => 'hal-yang-perlu-diketahui-pemilik-villa', 'file' => 'gallery-4.jpg', 'alt' => 'Pool and garden',
+            'tag' => 'Investment', 'date' => '20 Aug 2026', 'read' => '5 min read',
+            'title' => 'Villa Ownership: What to Know Before You Invest',
+            'excerpt' => 'Costs, upkeep and long-term considerations for first-time villa owners.',
+            'body' => [
+                ['type' => 'p', 'text' => 'Owning a villa is rewarding, and it helps to go in with realistic expectations about both the costs and the care involved.'],
+                ['type' => 'h', 'text' => 'Plan for upkeep'],
+                ['type' => 'p', 'text' => 'Pools, gardens and tropical weather all need regular attention. Budget for routine maintenance and consider a trusted property manager if you will not be on site.'],
+                ['type' => 'img', 'file' => 'gallery-3.jpg', 'alt' => 'Master bedroom'],
+                ['type' => 'h', 'text' => 'Think long term'],
+                ['type' => 'p', 'text' => 'Consider how you will use the property, how your needs may change, and what the exit options look like. Clear answers now make decisions easier later.'],
+                ['type' => 'p', 'text' => 'This article is general information, not financial or legal advice.'],
+            ],
+        ],
+    ],
+
+    // Gambar latar header tiap halaman (halaman detail memakai foto properti / artikel sendiri)
+    'header_images' => [
+        'property' => 'header-property.jpg',
+        'about'    => 'header-about.jpg',
+        'gallery'  => 'header-gallery.jpg',
+        'booking'  => 'header-booking.jpg',
+        'blog'     => 'header-blog.jpg',
+        'contact'  => 'header-contact.jpg',
     ],
 
     'inquiry' => [
@@ -284,12 +366,17 @@ return [
         'text'    => 'Get more information about this property. Our team is ready to assist you.',
     ],
 
-    // Floating WhatsApp (nomor format internasional tanpa + / spasi).
-    // %s pertama = judul properti, %s kedua = lokasi (otomatis mengikuti properti yang sedang dilihat).
+    // WhatsApp: tombol mengambang, form Inquiry, form Booking dan FAQ AI memakai nomor ini.
+    // Format internasional tanpa + / spasi (0895630300345 -> 62895630300345).
+    // Pesan tombol mengambang: %s pertama = judul properti, %s kedua = lokasi.
     'whatsapp' => [
-        'number'  => '6281234567890',
+        'number'  => '62895630300345',
         'label'   => 'Chat via WhatsApp',
         'message' => 'Halo GreenHaven, saya tertarik dengan %s di %s.',
+        // Kalimat pembuka pesan yang dikirim form ke WhatsApp
+        'inquiry_intro' => 'Halo GreenHaven, saya ingin bertanya tentang properti berikut:',
+        'booking_intro' => 'Halo GreenHaven, saya ingin menjadwalkan kunjungan (viewing) ke properti berikut:',
+        'ai_intro'      => 'Halo GreenHaven, saya punya pertanyaan:',
     ],
 
     // Jam kunjungan: 09:00 - 17:30, tiap 30 menit

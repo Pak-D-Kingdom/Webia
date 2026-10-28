@@ -1,6 +1,6 @@
 {{-- Bar filter bersama. Variabel opsional: $withStatus, $withSort (default true), $placeholder --}}
 @php $withSort = $withSort ?? true; $withStatus = $withStatus ?? false; @endphp
-<div class="fbar">
+<div class="fbar {{ $withSort ? '' : 'fbar--solo' }}">
     <label class="fbar__search">
         <i class="bi bi-search" aria-hidden="true"></i>
         <input type="search" data-q placeholder="{{ $placeholder ?? 'Cari produk...' }}" aria-label="Cari produk">

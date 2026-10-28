@@ -44,19 +44,6 @@
         back && back.addEventListener('click', function () { setDrawer(false); });
         nav.addEventListener('click', function (e) { if (e.target.closest('a[href]') || e.target.closest('[data-ai-open]')) setDrawer(false); });
 
-        $$('[data-dd]').forEach(function (dd) {
-            var btn = $('[data-dd-toggle]', dd);
-            btn.addEventListener('click', function (e) {
-                e.stopPropagation();
-                var open = !dd.classList.contains('is-open');
-                dd.classList.toggle('is-open', open);
-                btn.setAttribute('aria-expanded', open);
-            });
-        });
-        document.addEventListener('click', function (e) {
-            $$('[data-dd].is-open').forEach(function (dd) { if (!dd.contains(e.target)) { dd.classList.remove('is-open'); $('[data-dd-toggle]', dd).setAttribute('aria-expanded', 'false'); } });
-        });
-
         sBtn && sBtn.addEventListener('click', function () {
             var open = sForm.hidden;
             sForm.hidden = !open;
@@ -67,7 +54,6 @@
         document.addEventListener('keydown', function (e) {
             if (e.key !== 'Escape') return;
             setDrawer(false);
-            $$('[data-dd].is-open').forEach(function (dd) { dd.classList.remove('is-open'); });
             if (sForm && !sForm.hidden) { sForm.hidden = true; sBtn.setAttribute('aria-expanded', 'false'); }
         });
         window.addEventListener('resize', function () { if (window.innerWidth > 991) setDrawer(false); });
@@ -104,6 +90,7 @@
         totals: function () { var l = Cart.lines(); return { qty: l.reduce(function (a, x) { return a + x.qty; }, 0), sub: l.reduce(function (a, x) { return a + x.sum; }, 0) }; },
         render: function () {
             var t = Cart.totals(), lines = Cart.lines();
+            syncButtons();
             $$('[data-cart-count]').forEach(function (el) { el.textContent = t.qty; el.classList.add('is-bump'); setTimeout(function () { el.classList.remove('is-bump'); }, 250); });
 
             var mini = $('[data-cart-mini]');
@@ -138,12 +125,39 @@
                 var note = $('[data-cart-ship-note]', page);
                 $('p', note).textContent = empty ? 'Gratis ongkir untuk pembelian di atas ' + rp(free) + '.' : (ok ? 'Selamat! Pesananmu mendapat gratis ongkir.' : 'Belanja ' + rp(free - t.sub) + ' lagi untuk gratis ongkir.');
                 $('.bar i', note).style.width = Math.min(100, free ? (t.sub / free) * 100 : 0) + '%';
-                $('[data-cart-submit]', page).disabled = empty;
+                $$('[data-cart-submit]', page).forEach(function (b) { b.disabled = empty; });
             }
         }
     };
 
+    /* Tombol "+ Keranjang" berubah menjadi stepper (− jumlah +) setelah produk masuk keranjang */
+    function syncButtons() {
+        var qtyOf = {};
+        Cart.get().forEach(function (i) { qtyOf[String(i.id)] = i.qty; });
+        $$('[data-add-cart]').forEach(function (btn) {
+            var item = btn.closest('[data-item]'); if (!item) return;
+            var ctl = btn.nextElementSibling && btn.nextElementSibling.hasAttribute('data-qty-ctl') ? btn.nextElementSibling : null;
+            if (!ctl) {
+                ctl = document.createElement('div');
+                ctl.className = 'qty qty--inline'; ctl.setAttribute('data-qty-ctl', '');
+                ctl.innerHTML = '<button type="button" data-card-dec aria-label="Kurangi jumlah">−</button><span aria-live="polite">0</span><button type="button" data-card-inc aria-label="Tambah jumlah">+</button>';
+                btn.insertAdjacentElement('afterend', ctl);
+            }
+            var id = String(item.dataset.id), q = qtyOf[id] || 0, p = product(id);
+            btn.hidden = q > 0; ctl.hidden = q <= 0;
+            $('span', ctl).textContent = q;
+            $('[data-card-inc]', ctl).disabled = !!p && q >= p.stock;
+        });
+    }
+
     document.addEventListener('click', function (e) {
+        var step = e.target.closest('[data-card-inc], [data-card-dec]');
+        if (step) {
+            var holder = step.closest('[data-item]'); if (!holder) return;
+            var pid = holder.dataset.id, cur = (Cart.get().filter(function (i) { return String(i.id) === String(pid); })[0] || {}).qty || 0;
+            if (step.hasAttribute('data-card-inc')) Cart.add(pid); else Cart.setQty(pid, cur - 1);
+            return;
+        }
         var add = e.target.closest('[data-add-cart]');
         if (add) {
             var item = add.closest('[data-item]'); if (!item) return;
@@ -254,6 +268,21 @@
             formMsg(form, 'Membuka WhatsApp… Silakan tekan kirim di WhatsApp untuk menyelesaikan.', false);
             if (!form.hasAttribute('data-wa-cart')) form.reset();
         });
+    });
+
+    /* ---------- prefill formulir dari preview beranda (?nama=&produk=&pesan=) ---------- */
+    $$('[data-prefill]').forEach(function (form) {
+        var qs = new URLSearchParams(location.search), filled = false;
+        ['nama', 'produk', 'pesan'].forEach(function (k) {
+            var v = qs.get(k), el = v && form.elements[k]; if (!el) return;
+            if (el.tagName === 'SELECT') { var ok = Array.prototype.some.call(el.options, function (o) { return o.value === v || o.text === v; }); if (!ok) return; el.value = v; }
+            else el.value = v.slice(0, 500);
+            filled = true;
+        });
+        if (!filled) return;
+        var first = Array.prototype.filter.call(form.elements, function (el) { return el.required && !el.value; })[0];
+        var box = form.closest('#formulir') || form;
+        setTimeout(function () { box.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' }); first && first.focus({ preventScroll: true }); }, 250);
     });
 
     /* ---------- AI product FAQ ---------- */

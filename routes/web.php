@@ -78,6 +78,18 @@ Route::view(
     'website-bisnis.templates.fnb.vallaco-catering'
 )->name('webia.template.vallaco-catering');
 Route::view(
+    '/webia/template/rasa-rupa-artistik',
+    'website-bisnis.templates.fnb.rasa-rupa-artistik'
+)->name('webia.template.fnb.rasa-rupa-artistik');
+Route::view(
+    '/webia/template/tetangga-kenyang-friendly',
+    'website-bisnis.templates.fnb.tetangga-kenyang-friendly'
+)->name('webia.template.fnb.tetangga-kenyang-friendly');
+Route::view(
+    '/webia/template/hulu-pantry-asal-usul',
+    'website-bisnis.templates.fnb.hulu-pantry-asal-usul'
+)->name('webia.template.fnb.hulu-pantry-asal-usul');
+Route::view(
     '/webia/template/kusuma-ningrat-royal-heritage',
     'website-bisnis.templates.fnb.kusuma-ningrat-royal-heritage'
 )->name('webia.template.kusuma-ningrat-royal-heritage');
@@ -111,6 +123,14 @@ Route::view(
     '/webia/template/arvo-modern-automotive',
     'website-bisnis.templates.automotive.arvo-modern-automotive'
 )->name('webia.template.automotive.arvo-modern-automotive');
+Route::view(
+    '/webia/template/apex-heritage-automotive-elegant',
+    'website-bisnis.templates.automotive.apex-heritage-automotive-elegant'
+)->name('webia.template.automotive.apex-heritage-automotive-elegant');
+Route::view(
+    '/webia/template/apex-scuderia-automotive-minimalist',
+    'website-bisnis.templates.automotive.apex-scuderia-automotive-minimalist'
+)->name('webia.template.automotive.apex-scuderia-automotive-minimalist');
 
 Route::view(
     '/webia/template/fnb-bakery-playful-colorful',
@@ -170,6 +190,23 @@ Route::view(
     '/webia/template/restoran-azura',
     'website-bisnis.templates.fnb.restaurant.restoran-azura'
 )->name('webia.template.fnb.restaurant.restoran-azura');
+
+// WEBIA — NOIR Restaurant & Dining
+Route::view(
+    '/webia/template/noir-restaurant',
+    'website-bisnis.templates.fnb.restaurant.noir-restaurant'
+)->name('webia.template.fnb.restaurant.noir-restaurant');
+
+// WEBIA — Tunas Cendekia Preschool & Daycare
+Route::view(
+    '/webia/template/tunas-cendekia-preschool-daycare',
+    'website-bisnis.templates.education.preschool.tunas-cendekia-preschool-daycare'
+)->name('webia.template.education.tunas-cendekia-preschool-daycare');
+
+Route::view(
+    '/webia/template/rumah-latte-preschool-daycare',
+    'website-bisnis.templates.education.preschool.rumah-latte-preschool-daycare'
+)->name('webia.template.education.rumah-latte-preschool-daycare');
 
 // WEBIA template 4 — Automotive Dealer Vintage (Heritage Motors)
 Route::view(
@@ -425,14 +462,17 @@ Route::prefix('webia/template/property/luxury/real-estate-agency-emerald-green')
     ->group(function () {
         $view = 'website-bisnis.template.property.luxury.real-estate-agency-emerald-green';
 
-        Route::view('/', $view.'.index')->name('index');          // Beranda (preview semua halaman)
-        Route::view('/property', $view.'.property')->name('property');    // Property listing
-        Route::view('/specification', $view.'.specification')->name('specification');
-        Route::view('/price', $view.'.price')->name('price');
-        Route::view('/about', $view.'.about')->name('about');          // About us
-        Route::view('/gallery', $view.'.gallery')->name('gallery');
-        Route::view('/booking', $view.'.booking')->name('booking');      // Booking / viewing
-        Route::view('/blog', $view.'.blog')->name('blog');
+        Route::view('/', $view . '.index')->name('index');          // Beranda (preview semua halaman)
+        Route::view('/property', $view . '.property')->name('property');    // Property listing
+        Route::view('/property/{slug}', $view . '.property-detail')
+            ->name('property.show');
+        Route::view('/specification', $view . '.specification')->name('specification');
+        Route::view('/price', $view . '.price')->name('price');
+        Route::view('/about', $view . '.about')->name('about');          // About us
+        Route::view('/gallery', $view . '.gallery')->name('gallery');
+        Route::view('/booking', $view . '.booking')->name('booking');      // Booking / viewing
+        Route::view('/blog', $view . '.blog')->name('blog');
+        Route::view('/contact', $view . '.contact')->name('contact');
     });
 
 Route::prefix('webia/template/property/premium-minimal/real-estate-agency-nature-green')
@@ -601,6 +641,27 @@ Route::prefix('webia/template/healthcare/luxury/klinik-kecantikan-champagne-glow
         Route::get('/appointment', $page('appointment'))->name('appointment');
         Route::get('/faq', $page('faq'))->name('faq');
         Route::get('/policy', $page('policy'))->name('policy');
+    });
+
+Route::prefix('webia/template/healthcare/elegan/klinik-kecantikan-rose-gold')
+    ->name('webia.template.healthcare.elegan.klinik-kecantikan-rose-gold.')
+    ->group(function () {
+        // Namespace view, key config, dan prefix nama route — dibaca oleh seluruh blade.
+        $tpl = 'website-bisnis.template.healthcare.elegan.klinik-kecantikan-rose-gold';
+        $cfg = 'template.healthcare.elegan.klinik-kecantikan-rose-gold.klinik-kecantikan';
+        $rp  = 'webia.template.healthcare.elegan.klinik-kecantikan-rose-gold.';
+ 
+        // Variabel ditulis eksplisit: arrow function hanya menangkap variabel yang
+        // disebut langsung di badannya (compact('tpl') TIDAK menangkapnya).
+        $data = fn (string $page) => ['tpl' => $tpl, 'cfg' => $cfg, 'rp' => $rp, 'page' => $page];
+ 
+        Route::view('/',            "$tpl.index",       $data('home'))->name('index');
+        Route::view('/layanan',     "$tpl.services",    $data('services'))->name('services');
+        Route::view('/dokter',      "$tpl.doctors",     $data('doctors'))->name('doctors');
+        Route::view('/jadwal',      "$tpl.schedule",    $data('schedule'))->name('schedule');
+        Route::view('/booking',     "$tpl.appointment", $data('appointment'))->name('appointment');
+        Route::view('/faq',         "$tpl.faq",         $data('faq'))->name('faq');
+        Route::view('/kebijakan',   "$tpl.policy",      $data('policy'))->name('policy');
     });
 
 Route::prefix('webia/template/retail/luxury/skincare-soft-pink')

@@ -43,7 +43,7 @@
                             <span class="stock stock--{{ $fp['status'] }}"><i class="bi bi-circle-fill" aria-hidden="true"></i> {{ $fp['status_label'] }}</span>
                         </p>
                     </div>
-                    <button class="fav__cart" type="button" data-add="{{ $fp['id'] }}" aria-label="Tambah {{ $fp['name'] }} ke keranjang" @disabled($fp['status'] === 'out')><i class="bi bi-bag-plus" aria-hidden="true"></i></button>
+                    @include($ns . '.partials.add-control', ['p' => $fp, 'mode' => 'icon'])
                 </div>
             </aside>
         @endif

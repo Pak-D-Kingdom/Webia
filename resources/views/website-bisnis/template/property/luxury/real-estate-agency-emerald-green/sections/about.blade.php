@@ -21,4 +21,14 @@
             @endif
         </div>
     </div>
+
+    @if (! $isPreview)
+        <div class="rea-container">
+            <ul class="rea-about__strip">
+                <li><img src="{{ $img('gallery-2.jpg') }}" alt="Living space" loading="lazy"></li>
+                <li><img src="{{ $img('gallery-3.jpg') }}" alt="Bedroom" loading="lazy"></li>
+                <li><img src="{{ $img('gallery-4.jpg') }}" alt="Pool and garden" loading="lazy"></li>
+            </ul>
+        </div>
+    @endif
 </section>

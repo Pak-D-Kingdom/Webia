@@ -11,15 +11,7 @@
         <nav class="nav" id="primaryNav" aria-label="Navigasi utama" data-nav>
             <a class="nav__link {{ $is('home') }}" href="{{ route('skincare-warm-neutral.home') }}">Beranda</a>
 
-            <div class="nav__item has-dd" data-dd>
-                <a class="nav__link {{ $is('catalog') }}" href="{{ route('skincare-warm-neutral.catalog') }}">Katalog</a>
-                <button type="button" class="nav__caret" data-dd-toggle aria-expanded="false" aria-label="Buka submenu Katalog"><i class="bi bi-chevron-down"></i></button>
-                <ul class="dd">
-                    @foreach ($skin['categories'] as $c)
-                        <li><a href="{{ route('skincare-warm-neutral.catalog') }}{{ $c['slug'] === 'all' ? '' : '?kategori=' . $c['slug'] }}"><i class="bi {{ $c['icon'] }}"></i>{{ $c['label'] }}</a></li>
-                    @endforeach
-                </ul>
-            </div>
+            <a class="nav__link {{ $is('catalog') }}" href="{{ route('skincare-warm-neutral.catalog') }}">Katalog</a>
 
             <a class="nav__link {{ $is('price') }}" href="{{ route('skincare-warm-neutral.price') }}">Harga</a>
             <a class="nav__link {{ $is('stock') }}" href="{{ route('skincare-warm-neutral.stock') }}">Ketersediaan</a>
