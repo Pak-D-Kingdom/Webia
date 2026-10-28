@@ -216,8 +216,14 @@ return [
         'Pembelian grosir / reseller? Hubungi kami lewat WhatsApp untuk harga khusus.',
     ],
 
+    // Topik inquiry: label dipakai di <select> form & kartu topik beranda
     'inquiry_types' => [
-        'Tanya produk', 'Tanya harga', 'Cek ketersediaan stok', 'Pesan / pre-order', 'Reseller & kerja sama', 'Lainnya',
+        ['label' => 'Tanya produk',          'icon' => 'leaf',    'text' => 'Komposisi, cara pakai & rekomendasi'],
+        ['label' => 'Tanya harga',           'icon' => 'tag',     'text' => 'Harga promo & paket hemat'],
+        ['label' => 'Cek ketersediaan stok', 'icon' => 'package', 'text' => 'Pastikan produk masih ready'],
+        ['label' => 'Pesan / pre-order',     'icon' => 'bag',     'text' => 'Pesan sekarang atau pre-order'],
+        ['label' => 'Reseller & kerja sama', 'icon' => 'headset', 'text' => 'Harga khusus & kemitraan'],
+        ['label' => 'Lainnya',               'icon' => 'message', 'text' => 'Pertanyaan atau saran lain'],
     ],
 
     'contact' => [

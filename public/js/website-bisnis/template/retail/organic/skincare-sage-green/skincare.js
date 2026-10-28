@@ -108,7 +108,36 @@
         store.set('cart', cart);
         $$('[data-cart-count]').forEach((c) => { c.textContent = cartCount(); c.hidden = cartCount() === 0; });
         renderSummary();
+        syncAddButtons();
         if (drawerMode === 'cart') renderDrawer();
+    }
+    /* Tombol "+ Keranjang" berubah jadi stepper (− jumlah +) setelah produk ada di keranjang */
+    function syncAddButtons() {
+        $$('[data-add-cart]').forEach((btn) => {
+            if (btn.closest('[data-drawer], [data-qv], [data-chat]')) return;
+            const slug = btn.dataset.addCart, p = bySlug[slug];
+            if (!p) return;
+            let st = btn._stepper;
+            if (!st) {
+                st = document.createElement('div');
+                st.className = 'stepper'
+                    + (btn.classList.contains('btn--block') ? ' stepper--block' : '')
+                    + (btn.classList.contains('btn--sm') ? ' stepper--sm' : '')
+                    + (btn.classList.contains('round-btn') ? ' stepper--round' : '');
+                st.setAttribute('role', 'group');
+                st.setAttribute('aria-label', 'Jumlah ' + p.name);
+                st.innerHTML = `<button type="button" data-qty="${slug}:-1" aria-label="Kurangi jumlah ${esc(p.name)}">${icon('minus')}</button><span aria-live="polite"></span><button type="button" data-qty="${slug}:1" aria-label="Tambah jumlah ${esc(p.name)}">${icon('plus')}</button>`;
+                btn.insertAdjacentElement('afterend', st);
+                btn._stepper = st;
+            }
+            const q = cart[slug] || 0;
+            btn.hidden = q > 0;
+            st.hidden = q === 0;
+            if (q > 0) {
+                $('span', st).textContent = q;
+                $('[data-qty$=":1"]', st).disabled = q >= p.stock;
+            }
+        });
     }
     function addToCart(slug, qty = 1, silent = false) {
         const p = bySlug[slug];
@@ -351,9 +380,25 @@
         const errEl = $('[data-form-error]', form) || (form.parentElement && $('[data-form-error]', form.parentElement));
         const showError = (msg) => { if (errEl) { errEl.textContent = msg; errEl.hidden = !msg; } };
 
-        const pre = new URLSearchParams(window.location.search).get('produk');
+        const qs = new URLSearchParams(window.location.search);
+        const pre = qs.get('produk');
         const sel = $('[data-product-select]', form);
         if (sel && pre && bySlug[pre]) sel.value = bySlug[pre].name;
+
+        // topik cepat (chip) <-> select tersembunyi; bisa diisi dari ?jenis=
+        const topicSel = $('select[name="jenis"]', form);
+        const topicChips = $$('[data-topic]', form);
+        const syncTopic = () => topicChips.forEach((c) => {
+            const on = topicSel && c.dataset.topic === topicSel.value;
+            c.classList.toggle('is-active', on);
+            c.setAttribute('aria-pressed', String(on));
+        });
+        if (topicSel && topicChips.length) {
+            const want = qs.get('jenis');
+            if (want && Array.from(topicSel.options).some((o) => o.value === want)) topicSel.value = want;
+            topicChips.forEach((c) => c.addEventListener('click', () => { topicSel.value = c.dataset.topic; syncTopic(); }));
+            syncTopic();
+        }
 
         form.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -383,6 +428,7 @@
             openExternal(waLink(`${subject}\n\n${lines.join('\n')}`));
             toast('Membuka WhatsApp…');
             form.reset();
+            if (typeof syncTopic === 'function') syncTopic();
         });
         form.addEventListener('input', (e) => { if (e.target.classList) e.target.classList.remove('is-invalid'); });
     });
