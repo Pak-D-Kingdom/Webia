@@ -11,6 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
@@ -94,7 +95,18 @@ class WebiaOrderController extends Controller
             $transition = $transitions[$validated['action']];
             abort_unless($lockedOrder->status === 'paid' && $lockedOrder->delivery_status === $transition['from'], 422);
 
-            $lockedOrder->update(['delivery_status' => $transition['to']]);
+            $updates = ['delivery_status' => $transition['to']];
+            if ($validated['action'] === 'finish' && $lockedOrder->supportsCustomerSite()) {
+                abort_unless(
+                    filled($lockedOrder->business_data['whatsapp'] ?? null)
+                    && filled($lockedOrder->business_data['address'] ?? null)
+                    && filled($lockedOrder->business_data['city'] ?? null),
+                    422,
+                );
+                $updates['site_slug'] = Str::slug($lockedOrder->business_data['business_name']).'-'.$lockedOrder->id;
+            }
+
+            $lockedOrder->update($updates);
             WebiaOrderLog::create([
                 'webia_order_id' => $lockedOrder->id,
                 'actor_id' => $request->user()->id,

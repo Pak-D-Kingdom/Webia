@@ -207,6 +207,12 @@
                     <p class="font-body-sm text-body-sm text-on-surface-variant" role="status">Belum ada riwayat perubahan status pada pesanan ini.</p>
                 @endif
 
+                @if ($order->site_slug)
+                    <a class="flex h-10 w-full items-center justify-center gap-2 rounded-lg bg-primary font-label-md text-label-md text-on-primary shadow-sm transition-all hover:bg-primary-container" href="{{ route('sites.show', ['order' => $order->site_slug]) }}" rel="noopener" target="_blank">
+                        <span class="material-symbols-outlined text-lg">open_in_new</span>Buka situs konsumen
+                    </a>
+                @endif
+
                 @if ($order->status === 'paid' && $business && $order->delivery_status === 'not_started')
                     <form method="POST" action="{{ route('admin.orders.progress', $order) }}">
                         @csrf
@@ -274,9 +280,12 @@
                         @if ($business['instagram'] ?? null)
                             <div><span class="font-caption text-caption text-outline">Instagram</span><p class="font-body-md text-body-md text-on-surface">{{ $business['instagram'] }}</p></div>
                         @endif
+                        @if ($business['address'] ?? null)
+                            <div><span class="font-caption text-caption text-outline">Alamat</span><p class="font-body-md text-body-md text-on-surface">{{ $business['address'] }}@if ($business['city'] ?? null), {{ $business['city'] }}@endif</p></div>
+                        @endif
                         @if ($business['address_url'] ?? null)
                             <div>
-                                <span class="font-caption text-caption text-outline">Alamat</span>
+                                <span class="font-caption text-caption text-outline">Google Maps</span>
                                 <p class="break-all font-body-sm text-body-sm"><a class="text-primary underline underline-offset-4" href="{{ $business['address_url'] }}" rel="noopener">{{ $business['address_url'] }}</a></p>
                             </div>
                         @endif

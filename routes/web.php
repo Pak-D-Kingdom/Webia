@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\WebiaOrderController as AdminWebiaOrderController
 use App\Http\Controllers\Admin\WebiaPackageController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\CustomerSiteController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MidtransController;
 use App\Http\Controllers\RubyRegisterController;
@@ -20,6 +21,9 @@ Route::redirect('/webia', '/');
 // Webhook & callback Midtrans — diluar middleware auth (dipanggil server Midtrans / redirect publik).
 Route::post('/payments/midtrans/notify', [MidtransController::class, 'notify'])->middleware('throttle:60,1')->name('payments.midtrans.notify');
 Route::get('/payments/midtrans/callback', [MidtransController::class, 'callback'])->middleware('throttle:30,1')->name('payments.midtrans.callback');
+Route::get('/s/{order:site_slug}/{page?}', CustomerSiteController::class)
+    ->whereIn('page', ['menu', 'reservasi'])
+    ->name('sites.show');
 
 Route::middleware('guest')->group(function (): void {
     Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
@@ -348,7 +352,7 @@ $minimalis = function (string $page) {
 
         config(['cafe' => config('template.f&b.minimalis.cafe-earthtone.cafe')]);
 
-        return view("$v.$page", ['v' => $v, 'path' => $path]);
+        return view("$v.$page", ['v' => $v, 'path' => $path, 'pageUrl' => fn (string $name = 'home', string $hash = '') => route("webia.fnb.minimalis.{$name}").$hash]);
     };
 };
 

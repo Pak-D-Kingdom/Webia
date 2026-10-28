@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 #[Fillable([
     'user_id', 'order_number', 'webia_package_id', 'package_snapshot', 'webia_template_id', 'template_snapshot', 'category_slug',
     'addon_ids', 'addon_snapshot', 'status', 'total_price', 'payment_receipt_path', 'payment_note', 'paid_at',
-    'business_data', 'delivery_status',
+    'business_data', 'delivery_status', 'site_slug',
 ])]
 class WebiaOrder extends Model
 {
@@ -42,6 +42,11 @@ class WebiaOrder extends Model
     public function payments(): HasMany
     {
         return $this->hasMany(WebiaPayment::class);
+    }
+
+    public function supportsCustomerSite(): bool
+    {
+        return ($this->template_snapshot['slug'] ?? $this->template?->slug) === 'fnb-cafe-minimalis';
     }
 
     public function getProgressIndexAttribute(): int

@@ -74,11 +74,19 @@
                         @if ($order->business_data['tagline'] ?? null)<div><dt>Tagline</dt><dd>{{ $order->business_data['tagline'] }}</dd></div>@endif
                         @if ($order->business_data['whatsapp'] ?? null)<div><dt>WhatsApp</dt><dd>{{ $order->business_data['whatsapp'] }}</dd></div>@endif
                         @if ($order->business_data['description'] ?? null)<div><dt>Deskripsi</dt><dd>{{ $order->business_data['description'] }}</dd></div>@endif
-                        @if ($order->business_data['address_url'] ?? null)<div><dt>Alamat</dt><dd><a href="{{ $order->business_data['address_url'] }}" rel="noopener">Lihat lokasi</a></dd></div>@endif
+                        @if ($order->business_data['address'] ?? null)<div><dt>Alamat</dt><dd>{{ $order->business_data['address'] }}@if ($order->business_data['city'] ?? null), {{ $order->business_data['city'] }}@endif</dd></div>@endif
+                        @if ($order->business_data['address_url'] ?? null)<div><dt>Google Maps</dt><dd><a href="{{ $order->business_data['address_url'] }}" rel="noopener">Lihat lokasi</a></dd></div>@endif
                         @if ($order->business_data['instagram'] ?? null)<div><dt>Instagram</dt><dd>{{ $order->business_data['instagram'] }}</dd></div>@endif
                     </dl>
                 @endif
-                @if ($order->delivery_status === 'delivered')
+                @if ($order->delivery_status === 'delivered' && $order->site_slug)
+                    <div class="dashboard-empty">
+                        <h2>Website kamu siap</h2>
+                        <p>Data bisnismu sudah diterapkan ke template yang dipilih.</p>
+                        <a class="account-submit" href="{{ route('sites.show', ['order' => $order->site_slug]) }}" rel="noopener" target="_blank">Buka website</a>
+                    </div>
+                    <p>Hubungi tim WEBIA jika data website perlu diubah.</p>
+                @elseif ($order->delivery_status === 'delivered')
                     <p>Pesanan ini sudah selesai. Silakan hubungi tim WEBIA untuk perubahan data.</p>
                 @else
                     <p>Isi data bisnis di bawah agar tim WEBIA bisa mulai mengerjakan website. Data bisa diubah sampai pesanan selesai.</p>
@@ -92,9 +100,11 @@
                     @php $business = $order->business_data ?? []; @endphp
                     <div class="form-field"><label for="business_name">Nama usaha</label><input id="business_name" name="business_name" type="text" value="{{ old('business_name', $business['business_name'] ?? '') }}" required>@error('business_name') <p class="form-error">{{ $message }}</p> @enderror</div>
                     <div class="form-field"><label for="tagline">Tagline (opsional)</label><input id="tagline" name="tagline" type="text" value="{{ old('tagline', $business['tagline'] ?? '') }}">@error('tagline') <p class="form-error">{{ $message }}</p> @enderror</div>
-                    <div class="form-field"><label for="whatsapp">Nomor WhatsApp (opsional)</label><input id="whatsapp" name="whatsapp" type="text" inputmode="tel" value="{{ old('whatsapp', $business['whatsapp'] ?? '') }}">@error('whatsapp') <p class="form-error">{{ $message }}</p> @enderror</div>
+                    <div class="form-field"><label for="whatsapp">Nomor WhatsApp {{ $order->supportsCustomerSite() ? '' : '(opsional)' }}</label><input id="whatsapp" name="whatsapp" type="text" inputmode="tel" value="{{ old('whatsapp', $business['whatsapp'] ?? '') }}" @required($order->supportsCustomerSite())>@error('whatsapp') <p class="form-error">{{ $message }}</p> @enderror</div>
                     <div class="form-field"><label for="description">Deskripsi usaha (opsional)</label><textarea id="description" name="description" rows="3">{{ old('description', $business['description'] ?? '') }}</textarea>@error('description') <p class="form-error">{{ $message }}</p> @enderror</div>
-                    <div class="form-field"><label for="address_url">Link alamat Google Maps (opsional)</label><input id="address_url" name="address_url" type="url" value="{{ old('address_url', $business['address_url'] ?? '') }}">@error('address_url') <p class="form-error">{{ $message }}</p> @enderror</div>
+                    <div class="form-field"><label for="address">Alamat usaha {{ $order->supportsCustomerSite() ? '' : '(opsional)' }}</label><input id="address" name="address" type="text" value="{{ old('address', $business['address'] ?? '') }}" @required($order->supportsCustomerSite())>@error('address') <p class="form-error">{{ $message }}</p> @enderror</div>
+                    <div class="form-field"><label for="city">Kota {{ $order->supportsCustomerSite() ? '' : '(opsional)' }}</label><input id="city" name="city" type="text" value="{{ old('city', $business['city'] ?? '') }}" @required($order->supportsCustomerSite())>@error('city') <p class="form-error">{{ $message }}</p> @enderror</div>
+                    <div class="form-field"><label for="address_url">Link lokasi Google Maps (opsional)</label><input id="address_url" name="address_url" type="url" value="{{ old('address_url', $business['address_url'] ?? '') }}">@error('address_url') <p class="form-error">{{ $message }}</p> @enderror</div>
                     <div class="form-field"><label for="instagram">Instagram (opsional)</label><input id="instagram" name="instagram" type="text" value="{{ old('instagram', $business['instagram'] ?? '') }}">@error('instagram') <p class="form-error">{{ $message }}</p> @enderror</div>
                     <button class="account-submit" type="submit">Simpan data bisnis</button>
                 </form>

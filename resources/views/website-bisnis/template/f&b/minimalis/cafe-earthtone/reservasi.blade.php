@@ -3,7 +3,7 @@
 
 @section('content')
     <section class="page-hero"><div class="container">
-        <p class="crumbs"><a href="{{ route('webia.fnb.minimalis.home') }}">Beranda</a> / Reservasi</p>
+        <p class="crumbs"><a href="{{ $pageUrl('home') }}">Beranda</a> / Reservasi</p>
         <h1>Reservasi Meja</h1>
         <p>Isi data di bawah ini. Tim kami akan menghubungi Anda lewat WhatsApp untuk konfirmasi.</p>
     </div></section>
