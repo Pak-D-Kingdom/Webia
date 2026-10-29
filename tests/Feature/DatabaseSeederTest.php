@@ -38,6 +38,8 @@ class DatabaseSeederTest extends TestCase
             ->assertSee('NUVIA Skin Tech Clinic — Graphite & Lilac')
             ->assertSee('GLOW LAB — Creative Beauty Clinic')
             ->assertSee('Atelier Kulit — Creative Beauty Clinic')
+            ->assertSee('Tanah Warna — Makeup Artist Rustic')
+            ->assertSee('Rosalind & Co. — Salon de Maquillage Vintage')
             ->assertSee('VOLTRIX Garage — Futuristic Automotive')
             ->assertSee('NIGHTSHIFT Auto — Dark Mode Automotive')
             ->assertSee('ARVO Motor Studio — Modern Automotive')
