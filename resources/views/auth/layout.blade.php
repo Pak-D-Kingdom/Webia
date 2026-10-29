@@ -12,26 +12,26 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/website-bisnis/auth.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/website-bisnis/auth.css') }}?v={{ filemtime(public_path('css/website-bisnis/auth.css')) }}">
 @elseif ($isAdmin)
     <style>
         @layer theme, base, legacy, components, utilities;
-        @import url('{{ asset('css/website-bisnis/account.css') }}') layer(legacy);
+        @import url('{{ asset('css/website-bisnis/account.css') }}?v={{ filemtime(public_path('css/website-bisnis/account.css')) }}') layer(legacy);
     </style>
     @vite('resources/css/admin.css')
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0,0&display=block" rel="stylesheet">
-    <script src="{{ asset('js/website-bisnis/admin-dashboard.js') }}" defer></script>
-    <script src="{{ asset('js/website-bisnis/admin-navigation.js') }}" defer></script>
+    <script src="{{ asset('js/website-bisnis/admin-dashboard.js') }}?v={{ filemtime(public_path('js/website-bisnis/admin-dashboard.js')) }}" defer></script>
+    <script src="{{ asset('js/website-bisnis/admin-navigation.js') }}?v={{ filemtime(public_path('js/website-bisnis/admin-navigation.js')) }}" defer></script>
 @else
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0,0&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/website-bisnis/account.css') }}">
-    <script src="{{ asset('js/website-bisnis/account.js') }}" defer></script>
+    <link rel="stylesheet" href="{{ asset('css/website-bisnis/account.css') }}?v={{ filemtime(public_path('css/website-bisnis/account.css')) }}">
+    <script src="{{ asset('js/website-bisnis/account.js') }}?v={{ filemtime(public_path('js/website-bisnis/account.js')) }}" defer></script>
 @endif
 </head>
 @if ($isAuthPage)
