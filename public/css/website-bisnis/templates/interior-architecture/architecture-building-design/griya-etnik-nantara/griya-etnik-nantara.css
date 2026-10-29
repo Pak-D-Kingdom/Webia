@@ -1,0 +1,949 @@
+/* GRIYA ETNIK NANTARA — JAVANESE HERITAGE DESIGN SYSTEM */
+:root{--teak:#2c1a11;--teak-deep:#160b06;--parchment:#f8efdf;--gold:#d4a64a;--terracotta:#9d4028;--ink:#29170e;--muted:#9d8267;--line:#d8b98b; color-scheme:light}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:115px}
+body{margin:0;overflow-x:hidden;background:#24130b;color:var(--ink);font-family:'Plus Jakarta Sans',sans-serif}
+::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:#211006}::-webkit-scrollbar-thumb{background:#bd8b36;border-radius:8px}
+.bg-batik-parang{background-color:#241208!important;background-image:linear-gradient(90deg,rgba(26,12,5,.96) 0%,rgba(26,12,5,.82) 35%,rgba(26,12,5,.35) 72%,rgba(26,12,5,.68) 100%),url('/images/griya-etnik-nantara/joglo-hero.jpg')!important;background-size:cover!important;background-position:center!important}
+.bg-batik-kawung-light{background-color:#f8efdf!important;background-image:radial-gradient(ellipse at center,transparent 0 28%,rgba(137,83,35,.08) 29% 31%,transparent 32%),radial-gradient(ellipse at center,transparent 0 28%,rgba(137,83,35,.06) 29% 31%,transparent 32%)!important;background-size:44px 44px!important}
+.text-gold-gradient{background:linear-gradient(135deg,#fff0bc 0%,#d6a849 48%,#9b5a27 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+/* ornamental batik rails along page edges */
+body:before,body:after{content:"";position:fixed;top:0;bottom:0;width:34px;z-index:35;pointer-events:none;opacity:.72;background-color:#291308;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='120' viewBox='0 0 72 120'%3E%3Cg fill='none' stroke='%23c9953e' stroke-width='1.5' opacity='.8'%3E%3Cpath d='M36 2C10 20 10 42 36 60C62 78 62 100 36 118C10 100 10 78 36 60C62 42 62 20 36 2Z'/%3E%3Cpath d='M36 18C22 30 22 42 36 60C50 78 50 90 36 102C22 90 22 78 36 60C50 42 50 30 36 18Z'/%3E%3Ccircle cx='36' cy='60' r='8'/%3E%3C/g%3E%3C/svg%3E");background-size:34px 60px;border-inline:1px solid rgba(212,175,55,.45)}body:before{left:0}body:after{right:0;transform:scaleX(-1)}
+/* topbar and cream navigation */
+body>div:first-child{position:relative;z-index:1002;background:#211006!important;color:#e9d3a5!important;border-bottom:1px solid rgba(212,175,55,.35)!important}
+header.sticky{position:sticky!important;top:0!important;z-index:1001!important;isolation:isolate;background:#f8efdf!important;color:#2b190f!important;border-bottom:2px solid #c79a4a!important;box-shadow:0 8px 22px rgba(23,11,4,.18)!important}
+header.sticky nav{background:#f8efdf!important;color:#2b190f!important;min-height:76px}
+header.sticky nav a{color:#2b190f!important}
+header.sticky nav a:hover{color:#98621f!important}
+header.sticky nav .text-teak-300,header.sticky nav .text-teak-200{color:#74583e!important}
+header.sticky nav .text-gold-gradient{-webkit-text-fill-color:initial;background:none;color:#2a160d!important}
+header.sticky nav .bg-gradient-to-br{background:linear-gradient(135deg,#d9ad55,#8d401f)!important}
+header.sticky nav .bg-teak-800{background:#392116!important}
+header.sticky nav button{color:#d6aa4f}
+/* hero: dark, cinematic, legible */
+section.bg-batik-parang{position:relative;isolation:isolate;min-height:560px;padding-top:64px!important;padding-bottom:64px!important;background-color:#241208!important;border-bottom:5px solid #bd8b36!important}
+section.bg-batik-parang:before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill='none' stroke='%23d3a54c' stroke-width='1' opacity='.16'%3E%3Cpath d='M50 0L100 50 50 100 0 50Z M50 18L82 50 50 82 18 50Z M50 35L65 50 50 65 35 50Z'/%3E%3C/g%3E%3C/svg%3E");background-size:100px 100px;mask-image:linear-gradient(90deg,#000,transparent 55%)}
+section.bg-batik-parang h1{color:#fff8e9!important;text-shadow:0 2px 20px rgba(0,0,0,.4);font-size:clamp(2.65rem,5.3vw,5rem);line-height:.99;letter-spacing:-.035em}
+section.bg-batik-parang p{color:#f0dfc9!important;text-shadow:0 1px 8px rgba(0,0,0,.55)}
+section.bg-batik-parang .text-teak-200,section.bg-batik-parang .text-teak-300{color:#e3c9a8!important}
+section.bg-batik-parang .lg\:col-span-5>div{background:rgba(27,13,7,.88)!important;border:1px solid #c49a4a!important;box-shadow:0 18px 45px rgba(0,0,0,.45)!important}
+section.bg-batik-parang img{display:block;object-fit:cover}
+section.bg-batik-parang .aspect-\[4\/5\]{min-height:420px}
+/* heritage stats + cultural quote band */
+.griya-heritage-strip{position:relative;z-index:1;padding:0 5%;background:#f6e8d0;background-image:linear-gradient(90deg,rgba(255,250,237,.96),rgba(240,220,188,.94)),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%23a56a2a' stroke-opacity='.15'%3E%3Cellipse cx='40' cy='40' rx='14' ry='30'/%3E%3Cellipse cx='40' cy='40' rx='30' ry='14'/%3E%3Cpath d='M40 0Q80 40 40 80Q0 40 40 0Z'/%3E%3C/g%3E%3C/svg%3E");border-bottom:1px solid #d3b17b;border-top:1px solid #d3b17b}
+.griya-heritage-strip-inner{max-width:1400px;min-height:105px;margin:auto;display:grid;grid-template-columns:repeat(3,minmax(120px,1fr)) minmax(260px,1.5fr);align-items:center;gap:12px}
+.griya-heritage-stat{display:grid;grid-template-columns:42px auto;column-gap:10px;align-items:center;padding:15px 18px;border-right:1px solid #d3b17b;color:#8d4e19}
+.griya-stat-icon{grid-row:span 2;font-size:30px;color:#a96824}.griya-heritage-stat strong{font:700 28px 'Playfair Display',serif;color:#9b511b}.griya-heritage-stat small{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#8e7459}
+.griya-heritage-quote{position:relative;padding:18px 20px 18px 54px;color:#442719}.griya-quote-mark{position:absolute;left:14px;top:2px;font:700 64px Georgia;color:#a96b2b}.griya-heritage-quote p{font:italic 17px 'Playfair Display',serif;margin:0 0 7px}.griya-heritage-quote small{font-size:10px;color:#8e7459}
+/* category band framed in dark wood and batik */
+.griya-category-band{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:18px;padding:28px max(5%,calc((100% - 1400px)/2));background:#29150a;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'%3E%3Cg fill='none' stroke='%23c9953e' stroke-opacity='.22' stroke-width='1.2'%3E%3Cpath d='M36 2L70 36 36 70 2 36Z M36 15L57 36 36 57 15 36Z M36 27L45 36 36 45 27 36Z'/%3E%3C/g%3E%3C/svg%3E");border-bottom:4px solid #b98535}
+.griya-category-tile{display:grid;grid-template-columns:42px minmax(0,1fr) 25px;align-items:center;gap:10px;min-width:0;overflow:hidden;text-decoration:none!important;background:#f9f0e1;border:1px solid #d0a15a;border-radius:12px;padding:10px;color:#29170e!important;box-shadow:0 8px 18px rgba(0,0,0,.25);transition:transform .25s,box-shadow .25s}
+.griya-category-tile:hover{transform:translateY(-5px);box-shadow:0 15px 26px rgba(0,0,0,.35)}.griya-category-tile img{grid-column:1/-1;width:calc(100% + 20px);max-width:none;height:110px;object-fit:cover;margin:-10px -10px 0;border-bottom:2px solid #c3944d}.griya-tile-icon{display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;background:#4b260f;color:#f5d48a;font-size:24px}.griya-category-tile strong{display:block;font:700 14px 'Playfair Display',serif}.griya-category-tile small{display:block;margin-top:4px;font-size:10px;line-height:1.45;color:#7e6349}.griya-category-tile>b{display:flex;align-items:center;justify-content:center;width:25px;height:25px;border-radius:50%;background:#713714;color:#fff0cf;font-size:15px}
+/* section headings, cards and material panels */
+section.bg-batik-kawung-light{position:relative;background-color:#f8efdf!important;background-image:radial-gradient(ellipse at center,transparent 0 25%,rgba(128,74,27,.07) 26% 29%,transparent 30%)!important;background-size:42px 42px!important}
+section#styles,section#materials,section#process,section#consultation,section#faq{border-top:1px solid rgba(163,112,56,.2)}
+section#styles .bg-white,section#materials .bg-white,section#consultation .bg-white,section#process .bg-white,section#faq .bg-white{background:#fffaf1!important;border-color:#e2cba7!important;box-shadow:0 12px 28px rgba(75,43,20,.08)}
+section#gallery,section#calculator,section#about,footer{background-color:#251208!important;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%23d0a14a' stroke-opacity='.10'%3E%3Cpath d='M40 0L80 40 40 80 0 40Z M40 16L64 40 40 64 16 40Z'/%3E%3C/g%3E%3C/svg%3E")!important}
+section#gallery .text-white,section#calculator .text-white,section#about .text-white,footer .text-white{color:#fff5e5!important}
+section#gallery .text-teak-300,section#calculator .text-teak-300,section#about .text-teak-200,footer .text-teak-300{color:#d6bd9d!important}
+.griya-floating-actions{display:flex!important;flex-direction:row!important;align-items:center!important;gap:12px!important;z-index:1200!important}
+.griya-floating-actions>button{width:58px!important;height:58px!important;min-width:58px;min-height:58px;border-radius:50%;flex-shrink:0;position:relative;box-shadow:0 8px 20px rgba(0,0,0,.35)!important}
+.griya-wa-button{background:#078d68!important;border:2px solid #8bd5ad!important}.griya-ai-button{background:#241208!important;border:2px solid #d4af37!important;color:#f3ce6b!important}.griya-ai-mark{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;line-height:1}.griya-ai-mark i{font-size:21px}.griya-ai-mark span{font-size:9px;font-weight:900;letter-spacing:.12em}
+#wa-drawer,#ai-drawer{z-index:1201!important;max-width:calc(100vw - 24px);box-sizing:border-box;box-shadow:0 20px 50px rgba(0,0,0,.45)!important}#ai-drawer{width:min(24rem,calc(100vw - 24px))!important}#wa-drawer{width:min(20rem,calc(100vw - 24px))!important}#plan-modal{z-index:1300!important}#plan-modal>div{max-height:85vh;overflow:auto}
+.webia-credit{margin-top:12px;font-size:10px;letter-spacing:.04em;color:#a98d6d}
+button,a,input,select,textarea{-webkit-tap-highlight-color:transparent}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #d4af37;outline-offset:3px}
+#mobile-menu{position:relative;z-index:1003;background:#211006!important;border-top:1px solid #b98b3d!important}#mobile-menu a{display:block;padding:.35rem 0}#mobile-menu a[href="#consultation"]{padding:.85rem 1rem}
+@media(max-width:1100px){.griya-category-band{grid-template-columns:repeat(3,minmax(0,1fr))}.griya-heritage-strip-inner{grid-template-columns:repeat(3,minmax(0,1fr))}.griya-heritage-quote{grid-column:1/-1;border-top:1px solid #d3b17b}.griya-heritage-stat{padding:12px 8px}}
+@media(max-width:767px){body:before,body:after{width:9px;opacity:.4}header.sticky nav{padding-top:.7rem!important;padding-bottom:.7rem!important;gap:8px}header.sticky nav>a{min-width:0;max-width:calc(100% - 62px)}header.sticky nav>a span:first-of-type{font-size:.8rem;letter-spacing:.02em}header.sticky nav>a span:last-of-type{font-size:7px;letter-spacing:.04em}header.sticky nav>div{gap:.5rem}header.sticky nav>div>a{display:none!important}section.bg-batik-parang{padding-top:42px!important;padding-bottom:42px!important}section.bg-batik-parang h1{font-size:clamp(2.25rem,11vw,3.5rem)}section.bg-batik-parang .lg\:col-span-5>div{max-width:430px;margin-inline:auto}.griya-heritage-strip{padding:0 18px}.griya-heritage-strip-inner{grid-template-columns:1fr 1fr;gap:0}.griya-heritage-stat{grid-template-columns:32px auto;padding:12px 4px}.griya-heritage-stat strong{font-size:22px}.griya-heritage-stat small{font-size:8px}.griya-heritage-stat:nth-child(3){border-right:0}.griya-heritage-quote{grid-column:1/-1;padding:16px 10px 16px 42px}.griya-category-band{grid-template-columns:1fr 1fr;gap:10px;padding:18px 18px}.griya-category-tile{grid-template-columns:32px minmax(0,1fr) 22px;gap:7px;padding:8px}.griya-category-tile img{height:90px;margin:-8px -8px 0;width:calc(100% + 16px)}.griya-tile-icon{width:32px;height:32px;font-size:19px}.griya-category-tile strong{font-size:12px}.griya-category-tile small{font-size:9px}.griya-category-tile>b{width:22px;height:22px;font-size:12px}.griya-floating-actions{right:14px!important;bottom:14px!important;gap:9px!important}.griya-floating-actions>button{width:50px!important;height:50px!important;min-width:50px;min-height:50px}#wa-drawer,#ai-drawer{right:12px!important;bottom:76px!important}}
+@media(max-width:390px){.griya-category-band{grid-template-columns:1fr}.griya-category-tile img{height:120px}.griya-heritage-stat strong{font-size:20px}}
+
+
+
+/* =========================================================
+   GRIYA ETNIK NANTARA — LAYOUT OVERRIDE FIX
+   Tempel di PALING BAWAH griya-etnik-nantara.css
+   ========================================================= */
+
+/* 1. Pastikan ukuran elemen konsisten */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 130px;
+}
+
+body {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+/* 2. HERO: paksa layout dua kolom */
+section.bg-batik-parang {
+    width: 100% !important;
+    padding: 76px 24px !important;
+    background-color: #241208 !important;
+    background-image:
+        linear-gradient(
+            110deg,
+            rgba(31, 15, 7, .97),
+            rgba(48, 26, 13, .91)
+        ),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill='none' stroke='%23d4af37' stroke-opacity='.18' stroke-width='1.5'%3E%3Cpath d='M50 0L100 50 50 100 0 50Z M50 20L80 50 50 80 20 50Z M50 38L62 50 50 62 38 50Z'/%3E%3C/g%3E%3C/svg%3E") !important;
+    background-size: auto, 100px 100px !important;
+}
+
+section.bg-batik-parang > div.max-w-7xl {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1.15fr) minmax(320px, .85fr) !important;
+    align-items: center !important;
+    gap: 52px !important;
+    width: 100% !important;
+    max-width: 1320px !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+}
+
+section.bg-batik-parang > div > div {
+    min-width: 0;
+}
+
+section.bg-batik-parang h1 {
+    color: #fff5df !important;
+    font-family: 'Playfair Display', Georgia, serif !important;
+    font-size: clamp(38px, 4.4vw, 68px) !important;
+    line-height: 1.08 !important;
+    margin: 20px 0 !important;
+}
+
+section.bg-batik-parang p {
+    color: #ead7bc !important;
+    font-size: 15px !important;
+    line-height: 1.9 !important;
+}
+
+section.bg-batik-parang .lg\:col-span-5 {
+    width: 100% !important;
+    min-width: 0 !important;
+}
+
+section.bg-batik-parang .lg\:col-span-5 > div {
+    width: 100% !important;
+    max-width: 480px !important;
+    margin-left: auto !important;
+    padding: 12px !important;
+    background: #2d190f !important;
+    border: 2px solid #bd963d !important;
+    border-radius: 28px !important;
+}
+
+section.bg-batik-parang .aspect-\[4\/5\] {
+    position: relative !important;
+    width: 100% !important;
+    aspect-ratio: 4 / 4.6 !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+}
+
+section.bg-batik-parang .aspect-\[4\/5\] img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center !important;
+}
+
+/* 3. STATISTIK DAN KUTIPAN BUDAYA */
+.griya-heritage-strip {
+    display: block !important;
+    width: 100% !important;
+    padding: 22px 5% !important;
+    background-color: #f4e5ca !important;
+    background-image:
+        radial-gradient(ellipse at center, transparent 42%, rgba(130, 77, 32, .10) 44%, transparent 48%) !important;
+    background-size: 34px 34px !important;
+    border-top: 3px solid #c69b42 !important;
+    border-bottom: 1px solid #c69b42 !important;
+}
+
+.griya-heritage-strip-inner {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(260px, 1.4fr) !important;
+    align-items: center !important;
+    gap: 0 !important;
+    width: 100% !important;
+    max-width: 1320px !important;
+    min-height: 110px !important;
+    margin: 0 auto !important;
+}
+
+.griya-heritage-stat {
+    display: grid !important;
+    grid-template-columns: 36px minmax(0, 1fr) !important;
+    align-items: center !important;
+    gap: 2px 8px !important;
+    padding: 18px !important;
+    border-right: 1px solid #d3b17b !important;
+}
+
+.griya-heritage-stat strong {
+    color: #94501e !important;
+    font: 700 30px 'Playfair Display', Georgia, serif !important;
+}
+
+.griya-heritage-stat small {
+    color: #785b40 !important;
+    font-size: 10px !important;
+    line-height: 1.5 !important;
+}
+
+.griya-stat-icon {
+    grid-row: span 2 !important;
+    color: #9d6829 !important;
+    font-size: 26px !important;
+}
+
+.griya-heritage-quote {
+    position: relative !important;
+    padding: 18px 18px 18px 48px !important;
+}
+
+.griya-heritage-quote p {
+    margin: 0 0 8px !important;
+    color: #422719 !important;
+    font: italic 16px/1.7 'Playfair Display', Georgia, serif !important;
+}
+
+/* 4. KATEGORI: LIMA KARTU DALAM GRID */
+.griya-category-band {
+    display: grid !important;
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    align-items: stretch !important;
+    gap: 18px !important;
+    width: 100% !important;
+    padding: 30px max(24px, calc((100% - 1320px) / 2)) !important;
+    background-color: #2b170c !important;
+    background-image:
+        repeating-linear-gradient(
+            45deg,
+            rgba(212, 175, 55, .055) 0,
+            rgba(212, 175, 55, .055) 18px,
+            transparent 18px,
+            transparent 36px
+        ) !important;
+    border-bottom: 4px solid #bd8b36 !important;
+}
+
+.griya-category-tile {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    color: #2b190f !important;
+    text-decoration: none !important;
+    background: #fff7e9 !important;
+    border: 1px solid #c79b50 !important;
+    border-radius: 14px !important;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, .22) !important;
+    transition: transform .25s ease, box-shadow .25s ease !important;
+}
+
+.griya-category-tile:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: 0 15px 28px rgba(0, 0, 0, .3) !important;
+}
+
+.griya-category-tile img {
+    display: block !important;
+    width: 100% !important;
+    height: 175px !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    object-fit: cover !important;
+    border-bottom: 3px solid #c49a4a !important;
+}
+
+.griya-category-tile > span,
+.griya-category-tile > b {
+    margin-left: 14px !important;
+    margin-right: 14px !important;
+}
+
+.griya-category-tile .griya-tile-icon {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 38px !important;
+    height: 38px !important;
+    margin-top: 14px !important;
+    margin-bottom: 8px !important;
+    border-radius: 50% !important;
+    color: #f7d78b !important;
+    background: #4b260f !important;
+    font-size: 22px !important;
+}
+
+.griya-category-tile > span:not(.griya-tile-icon) {
+    display: block !important;
+    margin-bottom: 14px !important;
+}
+
+.griya-category-tile strong {
+    display: block !important;
+    color: #392113 !important;
+    font: 700 17px/1.4 'Playfair Display', Georgia, serif !important;
+}
+
+.griya-category-tile small {
+    display: block !important;
+    margin-top: 6px !important;
+    color: #80664b !important;
+    font-size: 11px !important;
+    line-height: 1.6 !important;
+}
+
+.griya-category-tile > b {
+    display: none !important;
+}
+
+/* 5. HEADING SECTION */
+section#styles {
+    width: 100% !important;
+    padding: 76px 24px !important;
+    background-color: #f8efdf !important;
+    background-image:
+        radial-gradient(ellipse at center, transparent 35%, rgba(128, 74, 27, .09) 37%, transparent 42%) !important;
+    background-size: 46px 46px !important;
+}
+
+section#styles > div.max-w-7xl {
+    width: 100% !important;
+    max-width: 1320px !important;
+    margin: 0 auto !important;
+}
+
+section#styles h2,
+section#gallery h2,
+section#materials h2,
+section#calculator h2 {
+    font-family: 'Playfair Display', Georgia, serif !important;
+    line-height: 1.2 !important;
+}
+
+/* 6. GAMBAR KONTEN LAIN JANGAN MELEBAR KELUAR KARTU */
+section#styles img,
+section#gallery img,
+section#materials img {
+    max-width: 100%;
+}
+
+section#styles .grid,
+section#gallery .grid,
+section#materials .grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 24px !important;
+}
+
+section#styles .grid > *,
+section#gallery .grid > *,
+section#materials .grid > * {
+    min-width: 0 !important;
+}
+
+/* 7. NAVBAR TETAP TERBACA DAN TIDAK MENUTUP JUDUL */
+header.sticky {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 1001 !important;
+    background: #2b1a12 !important;
+    color: #fff5e5 !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, .2) !important;
+}
+
+header.sticky nav {
+    width: 100% !important;
+    max-width: 1450px !important;
+    margin: 0 auto !important;
+}
+
+section[id] {
+    scroll-margin-top: 125px !important;
+}
+
+/* 8. RESPONSIVE TABLET */
+@media (max-width: 1100px) {
+    section.bg-batik-parang > div.max-w-7xl {
+        grid-template-columns: minmax(0, 1fr) minmax(280px, .8fr) !important;
+        gap: 28px !important;
+    }
+
+    .griya-heritage-strip-inner {
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    }
+
+    .griya-heritage-quote {
+        grid-column: 1 / -1 !important;
+        border-top: 1px solid #d3b17b !important;
+    }
+
+    .griya-category-band {
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    }
+}
+
+/* 9. RESPONSIVE HP */
+@media (max-width: 767px) {
+    section.bg-batik-parang {
+        padding: 44px 22px !important;
+    }
+
+    section.bg-batik-parang > div.max-w-7xl {
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 32px !important;
+    }
+
+    section.bg-batik-parang .lg\:col-span-5 > div {
+        max-width: 460px !important;
+        margin: 0 auto !important;
+    }
+
+    .griya-heritage-strip-inner {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+
+    .griya-heritage-stat {
+        padding: 14px 8px !important;
+    }
+
+    .griya-heritage-stat:nth-child(2) {
+        border-right: 0 !important;
+    }
+
+    .griya-category-band {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 12px !important;
+        padding: 20px 18px !important;
+    }
+
+    .griya-category-tile img {
+        height: 125px !important;
+    }
+
+    section#styles {
+        padding: 48px 18px !important;
+    }
+
+    section#styles .grid,
+    section#gallery .grid,
+    section#materials .grid {
+        grid-template-columns: minmax(0, 1fr) !important;
+    }
+}
+
+/* 10. HP KECIL */
+@media (max-width: 420px) {
+    .griya-category-band {
+        grid-template-columns: minmax(0, 1fr) !important;
+    }
+
+    .griya-category-tile img {
+        height: 190px !important;
+    }
+
+    .griya-heritage-stat strong {
+        font-size: 22px !important;
+    }
+}
+
+
+
+/* ==========================================
+   GRIYA ETNIK NANTARA
+   FIX STATISTIK & KUTIPAN BUDAYA JAWA
+========================================== */
+
+.griya-heritage-strip {
+    position: relative !important;
+    display: block !important;
+    width: 100% !important;
+    padding: 38px 24px !important;
+    overflow: hidden !important;
+
+    background-color: #f3e4c9 !important;
+    background-image:
+        repeating-linear-gradient(
+            45deg,
+            rgba(107, 57, 27, 0.06) 0px,
+            rgba(107, 57, 27, 0.06) 2px,
+            transparent 2px,
+            transparent 18px
+        ),
+        radial-gradient(
+            circle at center,
+            rgba(183, 132, 59, 0.10) 0 3px,
+            transparent 4px
+        ) !important;
+
+    background-size: auto, 24px 24px !important;
+    border-top: 4px solid #c9a13f !important;
+    border-bottom: 4px solid #c9a13f !important;
+}
+
+
+
+/* Masing-masing statistik */
+.griya-heritage-stat {
+    display: grid !important;
+    grid-template-columns: 42px minmax(0, 1fr) !important;
+    grid-template-rows: auto auto !important;
+    align-items: center !important;
+
+    min-width: 0 !important;
+    padding: 22px 20px !important;
+
+    border-right: 1px solid rgba(133, 83, 38, 0.28) !important;
+}
+
+/* Ikon statistik */
+.griya-heritage-stat .griya-stat-icon {
+    grid-column: 1 !important;
+    grid-row: 1 / 3 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: 36px !important;
+    height: 36px !important;
+
+    color: #f7e2a0 !important;
+    background: #57331e !important;
+    border: 1px solid #bd923c !important;
+    border-radius: 50% !important;
+
+    font-size: 23px !important;
+}
+
+/* Angka besar */
+.griya-heritage-stat strong {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+
+    display: block !important;
+    margin: 0 0 4px !important;
+
+    color: #845020 !important;
+    font-family: "Playfair Display", Georgia, serif !important;
+    font-size: clamp(25px, 2.2vw, 36px) !important;
+    font-weight: 700 !important;
+    line-height: 1.15 !important;
+}
+
+/* Keterangan statistik */
+.griya-heritage-stat small {
+    grid-column: 2 !important;
+    grid-row: 2 !important;
+
+    display: block !important;
+    margin: 0 !important;
+
+    color: #775b40 !important;
+    font-size: 11px !important;
+    line-height: 1.6 !important;
+    letter-spacing: 0.5px !important;
+    text-transform: uppercase !important;
+}
+
+/* Area kutipan */
+.griya-heritage-quote {
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+
+    min-width: 0 !important;
+    min-height: 120px !important;
+    padding: 22px 28px 22px 52px !important;
+}
+
+/* Tanda kutip dekoratif */
+.griya-heritage-quote .griya-quote-mark {
+    position: absolute !important;
+    top: 7px !important;
+    left: 12px !important;
+
+    color: #b78a3d !important;
+    font-family: Georgia, serif !important;
+    font-size: 54px !important;
+    line-height: 1 !important;
+}
+
+/* Isi kutipan */
+.griya-heritage-quote p {
+    display: block !important;
+    margin: 0 0 12px !important;
+
+    color: #452b19 !important;
+    font-family: "Playfair Display", Georgia, serif !important;
+    font-size: clamp(15px, 1.3vw, 19px) !important;
+    font-style: italic !important;
+    line-height: 1.7 !important;
+}
+
+/* Nama tim */
+.griya-heritage-quote small {
+    display: block !important;
+    margin: 0 !important;
+
+    color: #936b39 !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    letter-spacing: 1px !important;
+    text-transform: uppercase !important;
+}
+
+/* Tablet */
+@media (max-width: 1100px) {
+    .griya-heritage-strip-inner {
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    }
+
+    .griya-heritage-quote {
+        grid-column: 1 / -1 !important;
+        border-top: 1px solid rgba(133, 83, 38, 0.28) !important;
+    }
+
+    .griya-heritage-stat:nth-child(3) {
+        border-right: 0 !important;
+    }
+}
+
+/* HP */
+@media (max-width: 640px) {
+    .griya-heritage-strip {
+        padding: 24px 14px !important;
+    }
+
+    .griya-heritage-strip-inner {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+
+    .griya-heritage-stat {
+        grid-template-columns: 32px minmax(0, 1fr) !important;
+        padding: 18px 8px !important;
+        border-bottom: 1px solid rgba(133, 83, 38, 0.2) !important;
+    }
+
+    .griya-heritage-stat:nth-child(2) {
+        border-right: 0 !important;
+    }
+
+    .griya-heritage-stat .griya-stat-icon {
+        width: 28px !important;
+        height: 28px !important;
+        font-size: 18px !important;
+    }
+
+    .griya-heritage-stat strong {
+        font-size: 23px !important;
+    }
+
+    .griya-heritage-stat small {
+        font-size: 9px !important;
+    }
+
+    .griya-heritage-quote {
+        grid-column: 1 / -1 !important;
+        padding: 24px 12px 20px 40px !important;
+    }
+
+    .griya-heritage-quote .griya-quote-mark {
+        left: 4px !important;
+    }
+}
+
+/* =========================================================
+   FINAL CLEAN LAYOUT — GRIYA ETNIK NANTARA
+   Keep all section styling in the external stylesheet.
+   ========================================================= */
+.griya-heritage-strip,
+.griya-heritage-strip * {
+    box-sizing: border-box;
+}
+.griya-heritage-strip {
+    width: 100%;
+    padding: 28px 24px !important;
+}
+.griya-heritage-strip-inner {
+    width: 100%;
+    max-width: 1320px;
+    min-height: 120px !important;
+    margin-inline: auto;
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(280px, 1.45fr) !important;
+    align-items: center;
+    gap: 0 !important;
+}
+.griya-heritage-stat {
+    min-width: 0;
+    display: grid !important;
+    grid-template-columns: 38px minmax(0, 1fr) !important;
+    grid-template-rows: auto auto;
+    align-items: center;
+    gap: 3px 10px;
+    padding: 18px 16px !important;
+}
+.griya-heritage-stat .griya-stat-icon {
+    grid-column: 1;
+    grid-row: 1 / 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    font-size: 25px !important;
+}
+.griya-heritage-stat strong {
+    display: block;
+    margin: 0;
+    font-size: clamp(21px, 1.8vw, 29px) !important;
+    line-height: 1.15;
+    white-space: nowrap;
+}
+.griya-heritage-stat small {
+    display: block;
+    font-size: 10px !important;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+.griya-heritage-quote {
+    min-width: 0;
+    padding: 18px 18px 18px 48px !important;
+}
+.griya-heritage-quote p {
+    margin: 0 0 8px !important;
+    font-size: clamp(14px, 1.1vw, 17px) !important;
+    line-height: 1.65 !important;
+}
+.griya-heritage-quote small {
+    display: block;
+    line-height: 1.5;
+}
+.griya-category-band {
+    width: 100%;
+    display: grid !important;
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    gap: 16px !important;
+    padding: 28px max(24px, calc((100% - 1320px) / 2)) !important;
+    align-items: stretch;
+}
+.griya-category-tile {
+    min-width: 0;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch;
+    padding: 0 0 15px !important;
+    overflow: hidden;
+}
+.griya-category-tile > img {
+    display: block;
+    width: 100% !important;
+    height: 155px !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 0 12px !important;
+    object-fit: cover;
+}
+.griya-category-tile .griya-tile-icon {
+    margin: 0 14px 9px !important;
+    flex: 0 0 36px;
+}
+.griya-category-tile > span:not(.griya-tile-icon) {
+    display: block;
+    margin: 0 14px !important;
+}
+.griya-category-tile strong {
+    display: block;
+    font-size: 15px !important;
+    line-height: 1.4;
+}
+.griya-category-tile small {
+    display: block;
+    font-size: 11px !important;
+    line-height: 1.55;
+}
+.griya-category-tile > b {
+    display: none !important;
+}
+@media (max-width: 1100px) {
+    .griya-heritage-strip-inner {
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    }
+    .griya-heritage-quote {
+        grid-column: 1 / -1;
+        border-top: 1px solid #d3b17b;
+    }
+    .griya-category-band {
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    }
+}
+@media (max-width: 767px) {
+    .griya-heritage-strip {
+        padding: 22px 14px !important;
+    }
+    .griya-heritage-strip-inner {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+    .griya-heritage-stat {
+        padding: 14px 8px !important;
+    }
+    .griya-heritage-stat:nth-child(2) {
+        border-right: 0 !important;
+    }
+    .griya-heritage-quote {
+        grid-column: 1 / -1;
+        padding: 22px 10px 18px 40px !important;
+    }
+    .griya-category-band {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 12px !important;
+        padding: 20px 14px !important;
+    }
+    .griya-category-tile > img {
+        height: 125px !important;
+    }
+}
+@media (max-width: 420px) {
+    .griya-category-band {
+        grid-template-columns: minmax(0, 1fr) !important;
+    }
+    .griya-category-tile > img {
+        height: 180px !important;
+    }
+}
+
+/* FIX: LOGO FLOATING AI YANG KOSONG */
+.griya-ai-button {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #f5d477 !important;
+    font-size: 25px !important;
+    line-height: 1 !important;
+    overflow: visible !important;
+}
+
+.griya-ai-button .griya-ai-mark {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-direction: column !important;
+    gap: 3px !important;
+    width: 100% !important;
+    height: 100% !important;
+    color: #f5d477 !important;
+}
+
+.griya-ai-button .griya-ai-mark i {
+    display: inline-block !important;
+    font-family: "Font Awesome 6 Free" !important;
+    font-weight: 900 !important;
+    font-size: 23px !important;
+    color: #f5d477 !important;
+}
+
+.griya-ai-button .griya-ai-mark span {
+    display: block !important;
+    font-size: 8px !important;
+    font-weight: 800 !important;
+    letter-spacing: 1px !important;
+    color: #f5d477 !important;
+}
+
+
+/* Hilangkan ornamen batik vertikal di sisi halaman */
+html,
+body {
+    overflow-x: clip;
+}
+
+body::before,
+body::after {
+    display: none !important;
+    content: none !important;
+}
+
+/* Sembunyikan dekorasi samping jika dibuat dengan pseudo-element */
+.griya-page::before,
+.griya-page::after,
+.griya-wrapper::before,
+.griya-wrapper::after,
+.griya-border-left,
+.griya-border-right,
+.griya-side-ornament,
+.griya-vertical-ornament,
+.griya-batik-border {
+    display: none !important;
+    content: none !important;
+    background-image: none !important;
+    border: 0 !important;
+    box-shadow: none !important;
+}
+
+
+/* =========================================
+   FIX: HILANGKAN ORNAMEN PINGGIR TOPBAR & NAVBAR
+========================================= */
+
+/* Hilangkan border dan ornamen samping pada header */
+header,
+header::before,
+header::after,
+nav,
+nav::before,
+nav::after,
+.griya-header::before,
+.griya-header::after,
+.griya-navbar::before,
+.griya-navbar::after,
+.griya-topbar::before,
+.griya-topbar::after {
+    background-image: none !important;
+}
+
+/* Header dan navbar memenuhi lebar layar */
+header,
+.griya-header,
+.griya-navbar,
+.griya-topbar {
+    box-sizing: border-box !important;
+    max-width: 100% !important;
+}
+
+/* Hilangkan dekorasi vertikal yang berada di dalam header */
+header .griya-border-left,
+header .griya-border-right,
+header .griya-side-ornament,
+header .griya-vertical-ornament,
+header .griya-batik-border,
+nav .griya-border-left,
+nav .griya-border-right,
+nav .griya-side-ornament,
+nav .griya-vertical-ornament,
+nav .griya-batik-border {
+    display: none !important;
+}
+
+/* Hilangkan jarak samping luar header */
+html,
+body {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}

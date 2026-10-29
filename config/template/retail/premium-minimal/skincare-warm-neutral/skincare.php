@@ -13,11 +13,11 @@
 
 return [
 
-    'name'    => 'GlowEra',
+    'name' => 'GlowEra',
     'tagline' => 'Your Natural Beauty Partner',
 
     // Nomor WhatsApp tujuan semua form (format internasional tanpa + / 0 di depan)
-    'whatsapp'         => '62895630300345',
+    'whatsapp' => '62895630300345',
     'whatsapp_display' => '0895 6303 0034 5',
 
     'free_shipping_min' => 300000,
@@ -25,7 +25,7 @@ return [
     // Folder aset (relatif terhadap /public)
     'assets' => [
         'css' => 'css/website-bisnis/template/retail/premium-minimal/skincare-warm-neutral/skincare.css',
-        'js'  => 'js/website-bisnis/template/retail/premium-minimal/skincare-warm-neutral/skincare.js',
+        'js' => 'js/website-bisnis/template/retail/premium-minimal/skincare-warm-neutral/skincare.js',
     ],
     'img' => 'images/website-bisnis/template/retail/premium-minimal/skincare-warm-neutral',
 
@@ -46,9 +46,9 @@ return [
 
     'hero' => [
         'kicker' => 'SKINCARE & BEAUTY PRODUCTS',
-        'title'  => "Rawat Kulitmu,\nRaih Versi Terbaik Dirimu",
-        'text'   => 'Temukan rangkaian skincare dan beauty products berkualitas untuk kulit sehat, glowing, dan percaya diri setiap hari.',
-        'trust'  => [
+        'title' => "Rawat Kulitmu,\nRaih Versi Terbaik Dirimu",
+        'text' => 'Temukan rangkaian skincare dan beauty products berkualitas untuk kulit sehat, glowing, dan percaya diri setiap hari.',
+        'trust' => [
             ['icon' => 'bi-shield-check', 'line1' => '100%',          'line2' => 'Original'],
             ['icon' => 'bi-patch-check',  'line1' => 'BPOM',          'line2' => 'Certified'],
             ['icon' => 'bi-flower1',      'line1' => 'Dermatologically', 'line2' => 'Tested'],
@@ -92,15 +92,15 @@ return [
 
     'contact' => [
         'address' => 'Jl. Melati No. 12, Jakarta Selatan DKI Jakarta 12345',
-        'phone'   => '+62 812 3456 7890',
-        'email'   => 'info@glowera.id',
-        'hours'   => '08.00 - 22.00 WIB',
+        'phone' => '+62 812 3456 7890',
+        'email' => 'info@glowera.id',
+        'hours' => '08.00 - 22.00 WIB',
     ],
 
     // Inquiry & Konsultasi (dipakai preview beranda dan halaman Inquiry)
     'inquiry' => [
         'title' => 'Bingung Memilih Produk? Konsultasikan Dulu',
-        'text'  => 'Ceritakan jenis kulit dan kebutuhanmu. Tim GlowEra siap membantu memilihkan produk yang paling sesuai.',
+        'text' => 'Ceritakan jenis kulit dan kebutuhanmu. Tim GlowEra siap membantu memilihkan produk yang paling sesuai.',
         'perks' => [
             ['icon' => 'bi-person-heart', 'title' => 'Konsultasi Jenis Kulit',  'text' => 'Cocokkan produk dengan kebutuhan kulitmu'],
             ['icon' => 'bi-bag-heart',    'title' => 'Rekomendasi Produk',      'text' => 'Pilihan produk sesuai tujuan perawatanmu'],
@@ -112,7 +112,7 @@ return [
 
     // AI Product FAQ (dipakai chat di beranda & tombol AI melayang)
     'ai' => [
-        'name'     => 'AI Beauty Assistant',
+        'name' => 'AI Beauty Assistant',
         'greeting' => 'Hai! Aku siap membantu kamu seputar produk, skincare, dan kecantikan. Ada yang bisa aku bantu?',
         'fallback' => 'Maaf, aku belum punya jawaban pasti untuk itu. Kamu bisa tanya langsung ke admin kami lewat WhatsApp ya.',
         'suggestions' => [
@@ -123,39 +123,39 @@ return [
         ],
         'faq' => [
             ['keys' => ['jerawat', 'berjerawat', 'acne', 'rekomendasi'],
-             'a'    => 'Untuk kulit berjerawat, pilih produk yang ringan dan hindari pelembap yang terlalu berat. Gentle Facial Cleanser dan Brightening Serum bisa jadi langkah dasar. Lakukan patch test dulu, dan untuk jerawat meradang sebaiknya konsultasi ke dokter kulit.',
-             'link' => 'catalog'],
+                'a' => 'Untuk kulit berjerawat, pilih produk yang ringan dan hindari pelembap yang terlalu berat. Gentle Facial Cleanser dan Brightening Serum bisa jadi langkah dasar. Lakukan patch test dulu, dan untuk jerawat meradang sebaiknya konsultasi ke dokter kulit.',
+                'link' => 'catalog'],
             ['keys' => ['cara pakai', 'pakai serum', 'aplikasi', 'memakai'],
-             'a'    => 'Bersihkan wajah, tepuk toner bila ada, lalu teteskan 2-3 tetes serum dan tepuk lembut hingga meresap. Lanjutkan dengan pelembap, dan di pagi hari akhiri dengan sunscreen. Ikuti anjuran pada kemasan produk.'],
+                'a' => 'Bersihkan wajah, tepuk toner bila ada, lalu teteskan 2-3 tetes serum dan tepuk lembut hingga meresap. Lanjutkan dengan pelembap, dan di pagi hari akhiri dengan sunscreen. Ikuti anjuran pada kemasan produk.'],
             ['keys' => ['kapan hasil', 'hasil', 'terlihat', 'berapa lama'],
-             'a'    => 'Hasil tiap orang berbeda. Umumnya skincare perlu dipakai rutin sekitar 4-8 minggu sebelum perubahan terlihat. Konsisten dan jangan terlalu sering berganti produk.'],
+                'a' => 'Hasil tiap orang berbeda. Umumnya skincare perlu dipakai rutin sekitar 4-8 minggu sebelum perubahan terlihat. Konsisten dan jangan terlalu sering berganti produk.'],
             ['keys' => ['hamil', 'menyusui', 'busui', 'ibu hamil'],
-             'a'    => 'Untuk ibu hamil atau menyusui, sebaiknya konsultasikan komposisi produk dengan dokter kandungan atau dokter kulit sebelum memakai. Kamu juga bisa kirim nama produk ke admin kami lewat WhatsApp untuk melihat komposisinya.',
-             'wa'   => true],
+                'a' => 'Untuk ibu hamil atau menyusui, sebaiknya konsultasikan komposisi produk dengan dokter kandungan atau dokter kulit sebelum memakai. Kamu juga bisa kirim nama produk ke admin kami lewat WhatsApp untuk melihat komposisinya.',
+                'wa' => true],
             ['keys' => ['ongkir', 'pengiriman', 'kirim', 'ekspedisi'],
-             'a'    => 'Kami mengirim ke seluruh Indonesia. Gratis ongkir untuk pembelian di atas Rp 300.000; di bawah itu, ongkir dikonfirmasi admin saat checkout lewat WhatsApp.',
-             'link' => 'cart'],
+                'a' => 'Kami mengirim ke seluruh Indonesia. Gratis ongkir untuk pembelian di atas Rp 300.000; di bawah itu, ongkir dikonfirmasi admin saat checkout lewat WhatsApp.',
+                'link' => 'cart'],
             ['keys' => ['bayar', 'pembayaran', 'transfer', 'qris', 'cod'],
-             'a'    => 'Tersedia beberapa metode pembayaran seperti transfer bank, e-wallet, QRIS, dan COD (sesuai area). Metode dipilih saat checkout dan dikonfirmasi admin.',
-             'link' => 'cart'],
+                'a' => 'Tersedia beberapa metode pembayaran seperti transfer bank, e-wallet, QRIS, dan COD (sesuai area). Metode dipilih saat checkout dan dikonfirmasi admin.',
+                'link' => 'cart'],
             ['keys' => ['original', 'asli', 'bpom', 'aman', 'palsu'],
-             'a'    => 'Semua produk GlowEra 100% original, BPOM certified, dermatologically tested, dan aman untuk semua jenis kulit.'],
+                'a' => 'Semua produk GlowEra 100% original, BPOM certified, dermatologically tested, dan aman untuk semua jenis kulit.'],
             ['keys' => ['stok', 'tersedia', 'habis', 'ready'],
-             'a'    => 'Cek halaman Ketersediaan untuk melihat sisa stok tiap produk. Jika stok habis, kamu bisa minta diberi tahu lewat WhatsApp.',
-             'link' => 'stock'],
+                'a' => 'Cek halaman Ketersediaan untuk melihat sisa stok tiap produk. Jika stok habis, kamu bisa minta diberi tahu lewat WhatsApp.',
+                'link' => 'stock'],
             ['keys' => ['harga', 'diskon', 'promo', 'murah'],
-             'a'    => 'Daftar harga terbaru dan diskon hingga 50% ada di halaman Harga. Harga dan promo dapat berubah sewaktu-waktu.',
-             'link' => 'price'],
+                'a' => 'Daftar harga terbaru dan diskon hingga 50% ada di halaman Harga. Harga dan promo dapat berubah sewaktu-waktu.',
+                'link' => 'price'],
             ['keys' => ['cara pesan', 'cara order', 'beli', 'checkout', 'pesan'],
-             'a'    => 'Pilih produk, tambahkan ke Keranjang, isi data di halaman Keranjang, lalu tekan Checkout via WhatsApp. Admin akan mengonfirmasi pesanan dan pembayaran.',
-             'link' => 'cart'],
+                'a' => 'Pilih produk, tambahkan ke Keranjang, isi data di halaman Keranjang, lalu tekan Checkout via WhatsApp. Admin akan mengonfirmasi pesanan dan pembayaran.',
+                'link' => 'cart'],
             ['keys' => ['jam', 'buka', 'operasional', 'admin', 'customer'],
-             'a'    => 'Layanan pelanggan kami aktif setiap hari pukul 08.00 - 22.00 WIB lewat WhatsApp.',
-             'wa'   => true],
+                'a' => 'Layanan pelanggan kami aktif setiap hari pukul 08.00 - 22.00 WIB lewat WhatsApp.',
+                'wa' => true],
             ['keys' => ['sunscreen', 'spf', 'tabir surya'],
-             'a'    => 'Sunscreen dipakai sebagai langkah terakhir skincare pagi, kira-kira dua ruas jari untuk wajah dan leher, dan diulang tiap 2-3 jam bila terpapar matahari.'],
+                'a' => 'Sunscreen dipakai sebagai langkah terakhir skincare pagi, kira-kira dua ruas jari untuk wajah dan leher, dan diulang tiap 2-3 jam bila terpapar matahari.'],
             ['keys' => ['rambut', 'hair'],
-             'a'    => 'Hair Serum dioleskan secukupnya dari bagian tengah hingga ujung rambut, hindari kulit kepala. Ikuti anjuran pada kemasan.'],
+                'a' => 'Hair Serum dioleskan secukupnya dari bagian tengah hingga ujung rambut, hindari kulit kepala. Ikuti anjuran pada kemasan.'],
         ],
     ],
 

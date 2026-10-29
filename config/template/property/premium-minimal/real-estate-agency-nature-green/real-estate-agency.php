@@ -8,10 +8,10 @@
 | sehingga tim backend cukup mengganti sumber datanya (DB/API) nanti.
 */
 $address = 'Jl. Melati No. 12, Bandung, Jawa Barat';
-$base    = 'website-bisnis/template/property/premium-minimal/real-estate-agency-nature-green';
+$base = 'website-bisnis/template/property/premium-minimal/real-estate-agency-nature-green';
 
 // Peta tertanam (tanpa API key) & tautan Google Maps dari sebuah alamat
-$embed = fn (string $a) => 'https://maps.google.com/maps?q=' . rawurlencode($a) . '&hl=id&z=15&output=embed';
+$embed = fn (string $a) => 'https://maps.google.com/maps?q='.rawurlencode($a).'&hl=id&z=15&output=embed';
 $photo = fn (string $file, string $alt) => ['image' => $file, 'alt' => $alt];
 
 // Data contoh — ganti dengan data asli. Beranda menampilkan 3 properti pertama.
@@ -60,28 +60,28 @@ $properties = array_map(fn (array $p) => $p + ['maps_embed' => $embed($p['addres
 
 return [
     'assets' => [
-        'css'    => "css/{$base}/real-estate-agency.css",
-        'js'     => "js/{$base}/real-estate-agency.js",
+        'css' => "css/{$base}/real-estate-agency.css",
+        'js' => "js/{$base}/real-estate-agency.js",
         'images' => "images/{$base}",
     ],
 
     'meta' => [
-        'title'       => 'GreenEstate — Modern Home in Harmony with Nature',
+        'title' => 'GreenEstate — Modern Home in Harmony with Nature',
         'description' => 'Hunian modern dengan desain elegan, lingkungan asri, dan lokasi strategis.',
     ],
 
     'brand' => ['name' => 'GreenEstate', 'tagline' => 'Better Home, Brighter Future'],
 
     'contact' => [
-        'address'       => $address,
-        'email'         => 'hello@greenestate.id',
-        'hours'         => 'Mon - Sun 08.00 - 18.00',
-        'phone'         => '+62 812 3456 7890',
-        'phone_tel'     => '+6281234567890',
-        'whatsapp'      => '62895630300345', // 0895630300345 — tujuan semua form, tombol WhatsApp, & asisten AI
+        'address' => $address,
+        'email' => 'hello@greenestate.id',
+        'hours' => 'Mon - Sun 08.00 - 18.00',
+        'phone' => '+62 812 3456 7890',
+        'phone_tel' => '+6281234567890',
+        'whatsapp' => '62895630300345', // 0895630300345 — tujuan semua form, tombol WhatsApp, & asisten AI
         'whatsapp_text' => 'Halo GreenEstate, saya tertarik dengan properti Anda.',
-        'maps_embed'    => $embed($address),
-        'maps_url'      => 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode($address),
+        'maps_embed' => $embed($address),
+        'maps_url' => 'https://www.google.com/maps/search/?api=1&query='.rawurlencode($address),
     ],
 
     'socials' => [
@@ -91,19 +91,19 @@ return [
     ],
 
     // Gambar header tiap halaman (kunci = nama halaman aktif), banner CTA, & kartu booking beranda
-    'banner'        => 'banner.jpg',
+    'banner' => 'banner.jpg',
     'booking_image' => 'booking.jpg',
-    'page_images'   => [
+    'page_images' => [
         'properties' => 'page-properties.jpg',
-        'about'      => 'page-about.jpg',
-        'gallery'    => 'page-gallery.jpg',
-        'booking'    => 'page-booking.jpg',
-        'blog'       => 'page-blog.jpg',
-        'contact'    => 'page-contact.jpg',
+        'about' => 'page-about.jpg',
+        'gallery' => 'page-gallery.jpg',
+        'booking' => 'page-booking.jpg',
+        'blog' => 'page-blog.jpg',
+        'contact' => 'page-contact.jpg',
     ],
 
     'hero' => [
-        'desc'   => 'Hunian modern dengan desain elegan, lingkungan asri, dan lokasi strategis. Pilihan sempurna untuk keluarga yang menginginkan kenyamanan dan kualitas hidup yang lebih baik.',
+        'desc' => 'Hunian modern dengan desain elegan, lingkungan asri, dan lokasi strategis. Pilihan sempurna untuk keluarga yang menginginkan kenyamanan dan kualitas hidup yang lebih baik.',
         'script' => "Your Dream Home\nAwaits",
         'slides' => [
             ['image' => 'hero-1.jpg', 'property' => 'emerald-residence',  'title' => "Modern Home\nin Harmony with Nature"],
@@ -117,7 +117,7 @@ return [
     'properties' => $properties,
 
     'gallery' => [
-        'more'  => 12,
+        'more' => 12,
         'items' => [
             ['image' => 'gallery-1.jpg', 'alt' => 'Ruang keluarga dengan jendela besar'],
             ['image' => 'gallery-2.jpg', 'alt' => 'Tampak depan rumah dengan kolam renang'],
@@ -129,15 +129,15 @@ return [
     ],
 
     'price' => [
-        'start'    => 'Rp 2.450.000.000',
-        'sub'      => 'Investasi terbaik untuk masa depan',
+        'start' => 'Rp 2.450.000.000',
+        'sub' => 'Investasi terbaik untuk masa depan',
         'benefits' => ['Harga kompetitif', 'Sistem pembayaran fleksibel', 'Bebas biaya administrasi'],
     ],
 
     'about' => [
-        'title'  => 'Tentang GreenEstate',
-        'text'   => 'GreenEstate menghadirkan hunian modern yang menyatu dengan alam. Setiap properti kami pilih dengan teliti, mulai dari desain, lingkungan, hingga akses lokasi, agar keluarga Anda tinggal lebih nyaman.',
-        'image'  => 'about.jpg',
+        'title' => 'Tentang GreenEstate',
+        'text' => 'GreenEstate menghadirkan hunian modern yang menyatu dengan alam. Setiap properti kami pilih dengan teliti, mulai dari desain, lingkungan, hingga akses lokasi, agar keluarga Anda tinggal lebih nyaman.',
+        'image' => 'about.jpg',
         'points' => ['Desain elegan dan lingkungan asri', 'Lokasi strategis dengan akses mudah', 'Pendampingan dari viewing hingga serah terima'],
     ],
 
@@ -200,30 +200,29 @@ return [
 
     // Halaman Booking / Viewing
     'booking' => [
-        'slots'    => ['08.00', '09.00', '10.00', '11.00', '13.00', '14.00', '15.00', '16.00', '17.00'],
+        'slots' => ['08.00', '09.00', '10.00', '11.00', '13.00', '14.00', '15.00', '16.00', '17.00'],
         'visitors' => ['1 orang', '2 orang', '3 orang', '4 orang', '5 orang atau lebih'],
-        'steps'    => [
+        'steps' => [
             ['title' => 'Pilih properti dan jadwal', 'text' => 'Tentukan unit yang ingin dikunjungi serta tanggal dan jam yang nyaman bagi Anda.'],
             ['title' => 'Tunggu konfirmasi', 'text' => 'Tim kami menghubungi Anda untuk memastikan jadwal kunjungan.'],
             ['title' => 'Kunjungi dan rasakan langsung', 'text' => 'Lihat kondisi rumah, lingkungan, dan tanyakan apa pun kepada tim kami di lokasi.'],
         ],
     ],
 
-
     // Dipakai AI Property Assistant. `keywords` dicocokkan dengan pertanyaan pengunjung.
     'faq' => [
         ['q' => 'Apakah properti ini masih tersedia?',  'keywords' => ['tersedia', 'ready', 'stok', 'masih'],
-         'a' => 'Unit yang tampil di website ini berstatus For Sale. Untuk kepastian ketersediaan terbaru, silakan jadwalkan viewing atau hubungi tim kami.'],
+            'a' => 'Unit yang tampil di website ini berstatus For Sale. Untuk kepastian ketersediaan terbaru, silakan jadwalkan viewing atau hubungi tim kami.'],
         ['q' => 'Bagaimana cara booking/viewing?',      'keywords' => ['booking', 'viewing', 'jadwal', 'kunjungan', 'survey', 'lihat'],
-         'a' => 'Buka halaman detail properti, isi formulir Booking / Viewing, lalu tekan Booking Sekarang. Tim kami akan mengonfirmasi jadwal Anda.'],
+            'a' => 'Buka halaman detail properti, isi formulir Booking / Viewing, lalu tekan Booking Sekarang. Tim kami akan mengonfirmasi jadwal Anda.'],
         ['q' => 'Apa saja fasilitas yang tersedia?',    'keywords' => ['fasilitas', 'carport', 'garasi', 'kamar', 'listrik', 'taman'],
-         'a' => 'Setiap halaman detail properti memuat spesifikasi lengkap: kamar tidur, kamar mandi, carport, luas tanah dan bangunan, sertifikat, tahun dibangun, serta daya listrik.'],
+            'a' => 'Setiap halaman detail properti memuat spesifikasi lengkap: kamar tidur, kamar mandi, carport, luas tanah dan bangunan, sertifikat, tahun dibangun, serta daya listrik.'],
         ['q' => 'Berapa harga dan cara pembayarannya?', 'keywords' => ['harga', 'bayar', 'pembayaran', 'cicil', 'kpr', 'diskon', 'biaya'],
-         'a' => 'Harga mulai Rp 2.450.000.000 dengan sistem pembayaran fleksibel dan bebas biaya administrasi. Harga tiap unit ada di halaman detail properti.'],
+            'a' => 'Harga mulai Rp 2.450.000.000 dengan sistem pembayaran fleksibel dan bebas biaya administrasi. Harga tiap unit ada di halaman detail properti.'],
         ['q' => 'Di mana lokasinya?',                   'keywords' => ['lokasi', 'alamat', 'dimana', 'maps', 'peta'],
-         'a' => 'Kantor kami berada di Jl. Melati No. 12, Bandung, Jawa Barat. Peta lengkap ada di halaman Contact dan di setiap halaman detail properti.'],
+            'a' => 'Kantor kami berada di Jl. Melati No. 12, Bandung, Jawa Barat. Peta lengkap ada di halaman Contact dan di setiap halaman detail properti.'],
         ['q' => 'Apa jenis sertifikatnya?',             'keywords' => ['sertifikat', 'shm', 'hgb', 'legal', 'surat'],
-         'a' => 'Jenis sertifikat tiap unit tertera pada bagian Spesifikasi di halaman detail properti.'],
+            'a' => 'Jenis sertifikat tiap unit tertera pada bagian Spesifikasi di halaman detail properti.'],
     ],
     'faq_fallback' => 'Maaf, saya belum punya jawaban untuk itu. Tim kami siap membantu langsung lewat WhatsApp.',
 ];
