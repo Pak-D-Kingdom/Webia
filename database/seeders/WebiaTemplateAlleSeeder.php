@@ -155,5 +155,47 @@ class WebiaTemplateAlleSeeder extends Seeder
                 'sort_order' => 39,
             ]
         );
+
+        WebiaTemplate::updateOrCreate(
+            ['slug' => 'denim-horizon-property-minimalist'],
+            [
+                'name' => 'Denim Horizon — Modern Japanese Sanctuary',
+                'category_slug' => 'property',
+                'category_label' => 'Property',
+                'business_types' => ['Property Developer'],
+                'design_style' => 'Modern Minimalist',
+                'color_theme' => 'Denim Blue, Periwinkle & Soft White',
+                'description' => 'Modern Japanese-inspired property showcase with an architectural concept, masterplan, residence catalog, technical specifications, day-and-night render switch, KPR calculator, bank-rate options, private viewing reservations, FAQs, and WhatsApp concierge.',
+                'preview_style' => 'preview-denim-horizon-property-minimalist',
+                'eyebrow' => 'MODERN JAPANESE SANCTUARY',
+                'headline' => 'Pure Form, Effortless Living: The Minimalist Precinct',
+                'tag' => 'Property · Residential Developer · Modern Minimalist',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/denim-horizon-property-minimalist',
+                'is_active' => true,
+                'sort_order' => 40,
+            ]
+        );
+
+        WebiaTemplate::updateOrCreate(
+            ['slug' => 'pusaka-asri-property-traditional'],
+            [
+                'name' => 'Pusaka Asri Residence — Nusantara Heritage Living',
+                'category_slug' => 'property',
+                'category_label' => 'Property',
+                'business_types' => ['Property Developer'],
+                'design_style' => 'Traditional Tropical Luxury',
+                'color_theme' => 'Heritage Forest Green, Warm Ivory & Gold',
+                'description' => 'Nusantara heritage residence showcase with architectural philosophy, site masterplan, house-type catalog and floorplan modal, material specifications, KPR calculator, financing options, private tour bookings, FAQs, and WhatsApp concierge.',
+                'preview_style' => 'preview-pusaka-asri-property-traditional',
+                'eyebrow' => 'NUSANTARA HERITAGE LIVING',
+                'headline' => 'Harmoni Arsitektur Pusaka Nusantara dalam Kemewahan Tropis Modern',
+                'tag' => 'Property · Residential Developer · Traditional Tropical Luxury',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/pusaka-asri-property-traditional',
+                'is_active' => true,
+                'sort_order' => 41,
+            ]
+        );
     }
 }

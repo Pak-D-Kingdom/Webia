@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import './automotive-template-themes.css';
+@import './property-template-themes.css';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -9,6 +10,8 @@
 @source '../views/website-bisnis/templates/pet-animal-service/paws-canine-terra-earth-tone.blade.php';
 @source '../views/website-bisnis/templates/automotive/apex-heritage-automotive-elegant.blade.php';
 @source '../views/website-bisnis/templates/automotive/apex-scuderia-automotive-minimalist.blade.php';
+@source '../views/website-bisnis/templates/property/property-minimalist.blade.php';
+@source '../views/website-bisnis/templates/property/property-traditional.blade.php';
 
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',

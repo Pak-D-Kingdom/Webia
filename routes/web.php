@@ -148,6 +148,16 @@ Route::view(
 )->name('webia.template.automotive.apex-scuderia-automotive-minimalist');
 
 Route::view(
+    '/webia/template/denim-horizon-property-minimalist',
+    'website-bisnis.templates.property.property-minimalist'
+)->name('webia.template.property.denim-horizon-property-minimalist');
+
+Route::view(
+    '/webia/template/pusaka-asri-property-traditional',
+    'website-bisnis.templates.property.property-traditional'
+)->name('webia.template.property.pusaka-asri-property-traditional');
+
+Route::view(
     '/webia/template/fnb-bakery-playful-colorful',
     'website-bisnis.templates.fnb.bakery.bakery-playful-colorful'
 )->name('webia.template.fnb.bakery.playful.colorful');
