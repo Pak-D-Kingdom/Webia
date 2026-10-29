@@ -333,6 +333,16 @@ Route::view(
     'website-bisnis.templates.education.online-course.education-onlinecourse-modern'
 )->name('webia.template.education-onlinecourse-modern');
 
+Route::view(
+    '/webia/template/education/preschool-daycare-jeli-kecil',
+    'website-bisnis.template.education.preschool-daycare-jeli-kecil.index'
+)->name('webia.template.education.jeli-kecil');
+
+Route::view(
+    '/webia/template/healthcare/psychology/ruang-tenang',
+    'website-bisnis.template.healthcare.psychology.ruang-tenang.index'
+)->name('webia.template.healthcare.psychology.ruang-tenang');
+
 // =====================================================
 // WEBIA - WEDDING & EVENT (WEDDING ORGANIZER)
 // =====================================================
