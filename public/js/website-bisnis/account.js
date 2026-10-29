@@ -1,8 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
-  // Sidebar drawer (mobile): buka/tutup via tombol & tutupan scrim.
+  // Drawer sidebar: satu pasang toggle/scrim, id sidebar dari aria-controls toggle.
   const toggleBtn = document.querySelector('[data-sidebar-toggle]');
-  const sidebar = document.getElementById('admin-sidebar');
-  const scrim = document.querySelector('[data-sidebar-close]');
+  const sidebar = toggleBtn && document.getElementById(toggleBtn.getAttribute('aria-controls'));
+  const scrim = document.querySelector('[data-sidebar-scrim]');
+  const closeBtn = document.querySelector('[data-sidebar-close]');
 
   if (toggleBtn && sidebar) {
     const openSidebar = () => {
@@ -13,25 +14,42 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     const closeSidebar = () => {
+      if (!sidebar.classList.contains('open')) return;
       sidebar.classList.remove('open');
       toggleBtn.setAttribute('aria-expanded', 'false');
+      toggleBtn.focus();
     };
 
     toggleBtn.addEventListener('click', function () {
-      if (sidebar.classList.contains('open')) {
-        closeSidebar();
-      } else {
-        openSidebar();
-      }
+      sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
     });
 
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && sidebar.classList.contains('open')) {
-        closeSidebar();
-      }
+      if (e.key === 'Escape') closeSidebar();
     });
 
     if (scrim) scrim.addEventListener('click', closeSidebar);
+    if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
+  }
+
+  // Buat Pesanan: total = harga paket terpilih + add-on tercentang (data-price).
+  const totalEl = document.querySelector('[data-total]');
+  const priceInputs = document.querySelectorAll('[data-price]');
+
+  if (totalEl && priceInputs.length) {
+    const formatRupiah = (value) => 'Rp' + value.toLocaleString('id-ID');
+
+    const recalcTotal = function () {
+      let total = 0;
+      document.querySelectorAll('[data-price]').forEach(function (input) {
+        if (input.checked) total += Number(input.dataset.price) || 0;
+      });
+      totalEl.textContent = formatRupiah(total);
+    };
+
+    priceInputs.forEach(function (input) {
+      input.addEventListener('change', recalcTotal);
+    });
   }
 
   // Dashboard: tab switch grafik Pendapatan / Volume.

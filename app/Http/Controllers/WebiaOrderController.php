@@ -28,9 +28,24 @@ class WebiaOrderController extends Controller
 
     public function index(Request $request): View
     {
-        $orders = WebiaOrder::whereBelongsTo($request->user())->with('package')->latest()->get();
+        $filter = $request->string('filter')->toString();
+        $query = WebiaOrder::whereBelongsTo($request->user())->with('package')->latest();
 
-        return view('orders.index', compact('orders'));
+        if ($filter === 'menunggu_pembayaran') {
+            $query->whereIn('status', ['awaiting_payment', 'rejected']);
+        } elseif ($filter === 'menunggu_verifikasi') {
+            $query->where('status', 'payment_uploaded');
+        } elseif ($filter === 'dikerjakan') {
+            $query->where('status', 'paid')->where('delivery_status', '!=', 'delivered');
+        } elseif ($filter === 'selesai') {
+            $query->where('delivery_status', 'delivered');
+        } else {
+            $filter = null;
+        }
+
+        $orders = $query->get();
+
+        return view('orders.index', compact('orders', 'filter'));
     }
 
     public function create(Request $request): View
@@ -38,8 +53,10 @@ class WebiaOrderController extends Controller
         $packages = WebiaPackage::where('is_active', true)->orderBy('sort_order')->get();
         $addons = WebiaAddon::where('is_active', true)->orderBy('name')->get();
         $selectedPackage = $packages->firstWhere('slug', $request->string('package')->toString());
+        $selectedTemplate = WebiaTemplate::where('is_active', true)
+            ->find($request->string('template')->toInteger());
 
-        return view('orders.create', compact('packages', 'addons', 'selectedPackage'));
+        return view('orders.create', compact('packages', 'addons', 'selectedPackage', 'selectedTemplate'));
     }
 
     public function store(Request $request): RedirectResponse

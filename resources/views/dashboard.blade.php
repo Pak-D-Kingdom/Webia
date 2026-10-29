@@ -4,7 +4,7 @@
 
 @section('content')
     <section class="dashboard-panel" aria-labelledby="dashboard-title">
-        <p class="account-label">Dashboard customer</p>
+        <p class="account-label">Dashboard</p>
         <h1 id="dashboard-title">Halo, {{ auth()->user()->name }}</h1>
 
         @if (session('status')) <p role="status">{{ session('status') }}</p> @endif
@@ -15,7 +15,7 @@
                     <div class="order-heading">
                         <div>
                             <p class="account-label">Pesanan aktif</p>
-                            <h2>{{ $activeOrder->order_number }} · {{ $activeOrder->package->name }}</h2>
+                            <h2>{{ $activeOrder->order_number }} &middot; {{ $activeOrder->package->name }}</h2>
                         </div>
                         <div class="admin-actions">
                             <x-status-pill :status="$activeOrder->status" />
@@ -60,7 +60,7 @@
                     };
                 @endphp
                 <div class="dashboard-empty dashboard-card-side">
-                    <h2>Langkah selanjutnya</h2>
+                    <h2>Fokus tindakan</h2>
                     <p><strong>{{ $nextStep['heading'] }}</strong>: {{ $nextStep['copy'] }}</p>
                     <div class="admin-actions">
                         <a href="{{ route('orders.show', $activeOrder) }}">{{ $nextStep['action'] }}</a>
@@ -69,12 +69,24 @@
             </div>
         @endif
 
+        @if ($deliveredSite)
+            <div class="dashboard-empty dashboard-site-done">
+                <h2>Website selesai</h2>
+                <p><strong>{{ $deliveredSite->package->name }}</strong> sudah dipublikasi.</p>
+                <dl class="business-data-list">
+                    <div><dt>URL</dt><dd>{{ route('sites.show', ['order' => $deliveredSite->site_slug]) }}</dd></div>
+                </dl>
+                <div class="admin-actions">
+                    <a href="{{ route('sites.show', ['order' => $deliveredSite->site_slug]) }}" rel="noopener" target="_blank">Buka website</a>
+                </div>
+            </div>
+        @endif
+
         <div class="order-summary dashboard-history">
             <div class="order-heading">
-                <h2>Riwayat pesanan</h2>
+                <h2>Pesanan terbaru</h2>
                 <div class="list-item-meta">
-                    <a href="{{ route('orders.index') }}">Semua pesanan</a>
-                    <a href="{{ route('home') }}#paket-website">Pilih paket website</a>
+                    <a href="{{ route('orders.index') }}">Lihat semua pesanan</a>
                 </div>
             </div>
             <div class="admin-list dashboard-history-list">
@@ -90,7 +102,7 @@
                         </div>
                     </article>
                 @empty
-                    <div class="dashboard-empty" role="status"><h2>Belum ada pesanan</h2><p>Pilih paket dari halaman utama untuk memulai.</p><a class="account-submit" href="{{ route('home') }}#paket-website">Lihat paket</a></div>
+                    <div class="dashboard-empty" role="status"><h2>Belum ada pesanan</h2><p>Pilih template dari katalog WEBIA untuk memulai.</p><a class="account-submit" href="{{ route('collections') }}">Pilih template</a></div>
                 @endforelse
             </div>
         </div>

@@ -1,20 +1,37 @@
 @extends('auth.layout')
 
-@section('title', $order->order_number)
-@section('header-action')
-    <a class="account-header-link" href="{{ route('orders.index') }}">Pesanan saya</a>
-@endsection
+@section('title', 'Detail Pesanan')
 
 @section('content')
     <section class="dashboard-panel" aria-labelledby="order-title">
-        <p class="account-label">{{ $order->order_number }}</p>
-        <h1 id="order-title">{{ $order->package->name }}</h1>
-        @if (session('status')) <p role="status">{{ session('status') }}</p> @endif
-        <div class="order-summary">
-            <dl><div><dt>Status</dt><dd><x-status-pill :status="$order->status" :label="ucfirst(str_replace('_', ' ', $order->status))" /></dd></div><div><dt>Total</dt><dd>Rp{{ number_format($order->total_price, 0, ',', '.') }}</dd></div></dl>
+        <div class="order-heading">
+            <div>
+                <p class="account-label">{{ $order->order_number }}</p>
+                <h1 id="order-title">Detail Pesanan</h1>
+            </div>
+            <div class="admin-actions">
+                <x-status-pill :status="$order->status" />
+                <x-status-pill :status="$order->delivery_status" />
+            </div>
+        </div>
+
+        <div class="order-summary customer-order-summary">
+            <dl>
+                <div><dt>Paket</dt><dd>{{ $order->package->name }}</dd></div>
+                @if ($order->template)
+                    <div><dt>Template</dt><dd>{{ $order->template->name }}</dd></div>
+                @endif
+                @if ($order->addon_snapshot)
+                    <div><dt>Layanan tambahan</dt><dd>{{ collect($order->addon_snapshot)->pluck('name')->implode(', ') }}</dd></div>
+                @endif
+                <div><dt>Total</dt><dd>Rp{{ number_format($order->total_price, 0, ',', '.') }}</dd></div>
+                <div><dt>Dibuat</dt><dd>{{ $order->created_at->translatedFormat('d M Y') }}</dd></div>
+            </dl>
         </div>
 
         <x-order-timeline :order="$order" />
+
+        @if (session('status')) <p role="status">{{ session('status') }}</p> @endif
 
         @if (in_array($order->status, ['awaiting_payment', 'rejected']))
             <div class="dashboard-empty">
@@ -65,30 +82,36 @@
                 <div class="form-field"><label for="payment_note">Catatan (opsional)</label><textarea id="payment_note" name="payment_note" rows="3">{{ old('payment_note') }}</textarea>@error('payment_note') <p class="form-error">{{ $message }}</p> @enderror</div>
                 <button class="account-submit" type="submit">Kirim bukti</button>
             </form>
+        @elseif ($order->status === 'payment_uploaded')
+            <div class="dashboard-empty" role="status"><h2>Menunggu verifikasi</h2><p>Admin sedang memeriksa bukti pembayaranmu.</p></div>
         @elseif ($order->status === 'paid')
             <div class="dashboard-empty">
-                <h2>Data bisnis</h2>
-                @if ($order->business_data)
-                    <dl class="business-data-list">
-                        <div><dt>Nama usaha</dt><dd>{{ $order->business_data['business_name'] }}</dd></div>
-                        @if ($order->business_data['tagline'] ?? null)<div><dt>Tagline</dt><dd>{{ $order->business_data['tagline'] }}</dd></div>@endif
-                        @if ($order->business_data['whatsapp'] ?? null)<div><dt>WhatsApp</dt><dd>{{ $order->business_data['whatsapp'] }}</dd></div>@endif
-                        @if ($order->business_data['description'] ?? null)<div><dt>Deskripsi</dt><dd>{{ $order->business_data['description'] }}</dd></div>@endif
-                        @if ($order->business_data['address'] ?? null)<div><dt>Alamat</dt><dd>{{ $order->business_data['address'] }}@if ($order->business_data['city'] ?? null), {{ $order->business_data['city'] }}@endif</dd></div>@endif
-                        @if ($order->business_data['address_url'] ?? null)<div><dt>Google Maps</dt><dd><a href="{{ $order->business_data['address_url'] }}" rel="noopener">Lihat lokasi</a></dd></div>@endif
-                        @if ($order->business_data['instagram'] ?? null)<div><dt>Instagram</dt><dd>{{ $order->business_data['instagram'] }}</dd></div>@endif
-                    </dl>
-                @endif
                 @if ($order->delivery_status === 'delivered' && $order->site_slug)
-                    <div class="dashboard-empty">
-                        <h2>Website kamu siap</h2>
-                        <p>Data bisnismu sudah diterapkan ke template yang dipilih.</p>
+                    <h2>Website kamu siap</h2>
+                    <p>Data bisnismu sudah diterapkan ke template yang dipilih.</p>
+                    <dl class="business-data-list">
+                        <div><dt>URL</dt><dd>{{ route('sites.show', ['order' => $order->site_slug]) }}</dd></div>
+                    </dl>
+                    <div class="admin-actions">
                         <a class="account-submit" href="{{ route('sites.show', ['order' => $order->site_slug]) }}" rel="noopener" target="_blank">Buka website</a>
                     </div>
                     <p>Hubungi tim WEBIA jika data website perlu diubah.</p>
                 @elseif ($order->delivery_status === 'delivered')
+                    <h2>Pesanan selesai</h2>
                     <p>Pesanan ini sudah selesai. Silakan hubungi tim WEBIA untuk perubahan data.</p>
                 @else
+                    <h2>Data bisnis</h2>
+                    @if ($order->business_data)
+                        <dl class="business-data-list">
+                            <div><dt>Nama usaha</dt><dd>{{ $order->business_data['business_name'] }}</dd></div>
+                            @if ($order->business_data['tagline'] ?? null)<div><dt>Tagline</dt><dd>{{ $order->business_data['tagline'] }}</dd></div>@endif
+                            @if ($order->business_data['whatsapp'] ?? null)<div><dt>WhatsApp</dt><dd>{{ $order->business_data['whatsapp'] }}</dd></div>@endif
+                            @if ($order->business_data['description'] ?? null)<div><dt>Deskripsi</dt><dd>{{ $order->business_data['description'] }}</dd></div>@endif
+                            @if ($order->business_data['address'] ?? null)<div><dt>Alamat</dt><dd>{{ $order->business_data['address'] }}@if ($order->business_data['city'] ?? null), {{ $order->business_data['city'] }}@endif</dd></div>@endif
+                            @if ($order->business_data['address_url'] ?? null)<div><dt>Google Maps</dt><dd><a href="{{ $order->business_data['address_url'] }}" rel="noopener">Lihat lokasi</a></dd></div>@endif
+                            @if ($order->business_data['instagram'] ?? null)<div><dt>Instagram</dt><dd>{{ $order->business_data['instagram'] }}</dd></div>@endif
+                        </dl>
+                    @endif
                     <p>Isi data bisnis di bawah agar tim WEBIA bisa mulai mengerjakan website. Data bisa diubah sampai pesanan selesai.</p>
                 @endif
             </div>
@@ -109,8 +132,6 @@
                     <button class="account-submit" type="submit">Simpan data bisnis</button>
                 </form>
             @endif
-        @elseif ($order->status === 'payment_uploaded')
-            <div class="dashboard-empty" role="status"><h2>Menunggu verifikasi</h2><p>Admin sedang memeriksa bukti pembayaranmu.</p></div>
         @endif
     </section>
 @endsection

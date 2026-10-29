@@ -176,36 +176,81 @@
 @else
 <body class="account-body {{ auth()->check() ? 'customer-body' : 'guest-body' }}">
     <a class="skip-link" href="#main-content">Lewati ke konten</a>
-    <header class="account-header customer-header">
-        @guest
-            <a class="back-home" href="{{ route('home') }}" aria-label="Kembali ke beranda"><span aria-hidden="true">â†</span> Kembali ke Beranda</a>
-        @endguest
-        <a class="account-brand" href="{{ auth()->check() ? route('dashboard') : route('home') }}">
-            <span aria-hidden="true">W</span>
-            <strong>WEBIA</strong>
-            <span class="sr-only">{{ auth()->check() ? ' dashboard customer' : ' kembali ke beranda' }}</span>
-        </a>
-        @auth
-            <nav class="customer-nav" aria-label="Navigasi akun">
-                <a href="{{ route('dashboard') }}" @if (request()->routeIs('dashboard')) aria-current="page" @endif>Dashboard</a>
-                <a href="{{ route('orders.index') }}" @if (request()->routeIs('orders.*')) aria-current="page" @endif>Pesanan saya</a>
+    @auth
+        <aside class="customer-sidebar" id="customer-sidebar" aria-label="Navigasi portal konsumen">
+            <div class="customer-sidebar-head">
+                <a class="account-brand" href="{{ route('dashboard') }}">
+                    <span aria-hidden="true">W</span>
+                    <strong>WEBIA</strong>
+                    <span class="sr-only"> dashboard customer</span>
+                </a>
+                <button aria-label="Tutup navigasi" class="customer-sidebar-close" data-sidebar-close type="button">
+                    <span aria-hidden="true" class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <nav class="customer-sidebar-nav" aria-label="Navigasi portal">
+                <a href="{{ route('dashboard') }}" @if (request()->routeIs('dashboard')) aria-current="page" @endif>
+                    <span aria-hidden="true" class="material-symbols-outlined">grid_view</span> Dashboard
+                </a>
+                <a href="{{ route('orders.index') }}" @if (request()->routeIs('orders.*')) aria-current="page" @endif>
+                    <span aria-hidden="true" class="material-symbols-outlined">shopping_bag</span> Pesanan Saya
+                </a>
+                <a href="{{ route('collections') }}" @if (request()->routeIs('collections')) aria-current="page" @endif>
+                    <span aria-hidden="true" class="material-symbols-outlined">web</span> Pilih Template
+                </a>
             </nav>
-            <div class="customer-account">
+            <div class="customer-sidebar-account">
                 <span class="account-avatar" aria-hidden="true">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</span>
-                <strong>{{ auth()->user()->name }}</strong>
+                <div class="customer-sidebar-identity">
+                    <strong>{{ auth()->user()->name }}</strong>
+                    <span>Konsumen</span>
+                </div>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="submit">Keluar</button>
+                    <button aria-label="Keluar" title="Keluar" type="submit">
+                        <span aria-hidden="true" class="material-symbols-outlined">logout</span>
+                    </button>
                 </form>
             </div>
-        @else
+        </aside>
+        <div class="customer-scrim" data-sidebar-scrim></div>
+        <div class="customer-shell">
+            <header class="customer-topbar">
+                <div class="customer-topbar-left">
+                    <button aria-label="Buka navigasi" aria-controls="customer-sidebar" aria-expanded="false" class="customer-sidebar-toggle" data-sidebar-toggle type="button">
+                        <span aria-hidden="true" class="material-symbols-outlined">menu</span>
+                    </button>
+                    <nav aria-label="Breadcrumb" class="customer-breadcrumb">
+                        <a href="{{ route('dashboard') }}"><span aria-hidden="true" class="material-symbols-outlined">home</span><span class="sr-only">Kembali ke Dashboard</span></a>
+                        <span aria-hidden="true" class="customer-breadcrumb-sep">/</span>
+                        <span class="customer-breadcrumb-page">@yield('title')</span>
+                    </nav>
+                </div>
+                <div class="customer-topbar-account">
+                    <span class="account-avatar" aria-hidden="true">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</span>
+                </div>
+            </header>
+            <main id="main-content" class="account-main customer-main">
+                @yield('content')
+            </main>
+            <footer class="account-footer customer-footer"><strong>WEBIA</strong><span>&copy; {{ now()->year }} WEBIA Indonesia. Solusi digital untuk UMKM.</span></footer>
+        </div>
+    @endauth
+    @guest
+        <header class="account-header customer-header">
+            <a class="back-home" href="{{ route('home') }}" aria-label="Kembali ke beranda"><span aria-hidden="true">&larr;</span> Kembali ke Beranda</a>
+            <a class="account-brand" href="{{ route('home') }}">
+                <span aria-hidden="true">W</span>
+                <strong>WEBIA</strong>
+                <span class="sr-only"> kembali ke beranda</span>
+            </a>
             <div class="header-actions">@yield('header-action')</div>
-        @endauth
-    </header>
-    <main id="main-content" class="account-main">
-        @yield('content')
-    </main>
-    <footer class="account-footer"><strong>WEBIA</strong><span>&copy; {{ now()->year }} WEBIA Indonesia. Solusi digital untuk UMKM.</span></footer>
+        </header>
+        <main id="main-content" class="account-main">
+            @yield('content')
+        </main>
+        <footer class="account-footer"><strong>WEBIA</strong><span>&copy; {{ now()->year }} WEBIA Indonesia. Solusi digital untuk UMKM.</span></footer>
+    @endguest
 @endif
 </body>
 </html>

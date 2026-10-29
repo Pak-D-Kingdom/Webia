@@ -20,7 +20,13 @@ class DashboardController extends Controller
             ->with('package')
             ->latest()
             ->first();
+        $deliveredSite = WebiaOrder::whereBelongsTo($request->user())
+            ->where('delivery_status', 'delivered')
+            ->whereNotNull('site_slug')
+            ->with('package')
+            ->latest()
+            ->first();
 
-        return view('dashboard', compact('orders', 'activeOrder'));
+        return view('dashboard', compact('orders', 'activeOrder', 'deliveredSite'));
     }
 }
