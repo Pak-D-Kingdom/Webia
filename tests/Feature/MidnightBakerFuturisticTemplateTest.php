@@ -36,13 +36,15 @@ class MidnightBakerFuturisticTemplateTest extends TestCase
             '--force' => true,
             '--no-interaction' => true,
         ]);
+        $templateCount = WebiaTemplate::query()->count();
+
         Artisan::call('db:seed', [
             '--class' => WebiaTemplateAlleSeeder::class,
             '--force' => true,
             '--no-interaction' => true,
         ]);
 
-        $this->assertDatabaseCount('webia_templates', 7);
+        $this->assertDatabaseCount('webia_templates', $templateCount);
         $this->assertDatabaseHas('webia_templates', [
             'slug' => 'midnightbaker-futuristic',
             'sort_order' => 34,
