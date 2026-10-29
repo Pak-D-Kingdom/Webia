@@ -199,9 +199,6 @@
                 <a href="{{ route('orders.index') }}" @if (request()->routeIs('orders.*')) aria-current="page" @endif>
                     <span aria-hidden="true" class="material-symbols-outlined">shopping_bag</span> Pesanan Saya
                 </a>
-                <a href="{{ route('collections') }}" @if (request()->routeIs('collections')) aria-current="page" @endif>
-                    <span aria-hidden="true" class="material-symbols-outlined">web</span> Pilih Template
-                </a>
                 </nav>
             </div>
             <div class="customer-sidebar-foot">

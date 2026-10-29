@@ -63,8 +63,8 @@ class DashboardTest extends TestCase
             ->get(route('dashboard'))
             ->assertOk()
             ->assertSee('Pesanan Saya', false)
-            ->assertSee('Pilih Template', false)
-            ->assertSee('Keluar', false);
+            ->assertSee('Keluar', false)
+            ->assertDontSee('Pilih Template</a>', false);
     }
 
     public function test_admin_dashboard_shows_real_operational_counts_and_attention_queue(): void
