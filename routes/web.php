@@ -110,6 +110,21 @@ Route::view(
 )->name('webia.template.beauty.atelier-kulit-creative-beauty-clinic');
 
 Route::view(
+    '/webia/template/tanah-warna-rustic-makeup-artist',
+    'website-bisnis.templates.beauty.tanah-warna-rustic-makeup-artist'
+)->name('webia.template.beauty.tanah-warna-rustic-makeup-artist');
+
+Route::view(
+    '/webia/template/rosalind-vintage-makeup-artist',
+    'website-bisnis.templates.beauty.rosalind-vintage-makeup-artist'
+)->name('webia.template.beauty.rosalind-vintage-makeup-artist');
+
+Route::view(
+    '/webia/template/visage-editorial-makeup-artist',
+    'website-bisnis.templates.beauty.visage-editorial-makeup-artist'
+)->name('webia.template.beauty.visage-editorial-makeup-artist');
+
+Route::view(
     '/webia/template/voltrix-futuristic-automotive',
     'website-bisnis.templates.automotive.voltrix-futuristic-automotive'
 )->name('webia.template.automotive.voltrix-futuristic-automotive');
