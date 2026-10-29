@@ -136,17 +136,44 @@
                 </div>
             </div>
         @else
-            <section class="customer-empty" aria-labelledby="customer-empty-title">
-                <span class="customer-empty-icon" aria-hidden="true">
-                    <span class="material-symbols-outlined">shopping_bag</span>
-                </span>
-                <h2 id="customer-empty-title">Belum ada pesanan</h2>
-                <p>Pilih template website untuk membuat pesanan pertamamu.</p>
-                <a class="customer-empty-cta" href="{{ route('collections') }}">
-                    <span aria-hidden="true" class="material-symbols-outlined">web</span>
-                    Pilih template
-                </a>
-            </section>
+            <div class="dashboard-grid customer-dash-grid">
+                <div class="dashboard-empty customer-order-card">
+                    <div class="order-heading">
+                        <div>
+                            <p class="account-label">Pesanan pertamamu</p>
+                            <h2>Pilih template untuk mulai</h2>
+                        </div>
+                    </div>
+
+                    <div class="customer-steps-block">
+                        <p class="customer-steps-label">Tahap pengerjaan</p>
+                        <x-order-timeline :order="null" />
+                    </div>
+
+                    <div class="admin-actions dashboard-card-action">
+                        <a class="customer-detail-link" href="{{ route('collections') }}">
+                            Pilih template
+                            <span aria-hidden="true" class="material-symbols-outlined">arrow_forward</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="customer-focus-card">
+                    <div class="customer-focus-head">
+                        <span class="customer-focus-dot" aria-hidden="true"></span>
+                        <span class="customer-focus-label">Fokus tindakan</span>
+                    </div>
+                    <h2>Pilih template pertamamu</h2>
+                    <p>Jelajahi katalog template WEBIA, pilih yang cocok dengan bisnismu, lalu buat pesanan.</p>
+                    <div class="customer-focus-actions">
+                        <a class="account-submit customer-focus-btn" href="{{ route('collections') }}">
+                            Mulai sekarang
+                            <span aria-hidden="true" class="material-symbols-outlined">arrow_forward</span>
+                        </a>
+                        <p>Pesanan pertamamu menjadi awal semua tahap pengerjaan.</p>
+                    </div>
+                </div>
+            </div>
         @endif
     </section>
 @endsection

@@ -248,7 +248,6 @@
             <main id="main-content" class="account-main customer-main">
                 @yield('content')
             </main>
-            <footer class="account-footer customer-footer"><strong>WEBIA</strong><span>&copy; {{ now()->year }} WEBIA Indonesia. Solusi digital untuk UMKM.</span></footer>
         </div>
     @endauth
     @guest
