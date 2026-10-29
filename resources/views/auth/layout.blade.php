@@ -179,16 +179,20 @@
     @auth
         <aside class="customer-sidebar" id="customer-sidebar" aria-label="Navigasi portal konsumen">
             <div class="customer-sidebar-head">
-                <a class="account-brand" href="{{ route('dashboard') }}">
+                <a class="account-brand customer-brand" href="{{ route('dashboard') }}">
                     <span aria-hidden="true">W</span>
-                    <strong>WEBIA</strong>
-                    <span class="sr-only"> dashboard customer</span>
+                    <span class="customer-brand-copy">
+                        <strong>WEBIA</strong>
+                        <span>Portal Konsumen</span>
+                    </span>
                 </a>
                 <button aria-label="Tutup navigasi" class="customer-sidebar-close" data-sidebar-close type="button">
                     <span aria-hidden="true" class="material-symbols-outlined">close</span>
                 </button>
             </div>
-            <nav class="customer-sidebar-nav" aria-label="Navigasi portal">
+            <div class="customer-sidebar-body">
+                <p class="customer-sidebar-label">Utama</p>
+                <nav class="customer-sidebar-nav" aria-label="Navigasi portal">
                 <a href="{{ route('dashboard') }}" @if (request()->routeIs('dashboard')) aria-current="page" @endif>
                     <span aria-hidden="true" class="material-symbols-outlined">grid_view</span> Dashboard
                 </a>
@@ -198,17 +202,20 @@
                 <a href="{{ route('collections') }}" @if (request()->routeIs('collections')) aria-current="page" @endif>
                     <span aria-hidden="true" class="material-symbols-outlined">web</span> Pilih Template
                 </a>
-            </nav>
-            <div class="customer-sidebar-account">
-                <span class="account-avatar" aria-hidden="true">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</span>
-                <div class="customer-sidebar-identity">
-                    <strong>{{ auth()->user()->name }}</strong>
-                    <span>Konsumen</span>
+                </nav>
+            </div>
+            <div class="customer-sidebar-foot">
+                <div class="customer-sidebar-account">
+                    <span class="account-avatar" aria-hidden="true">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</span>
+                    <div class="customer-sidebar-identity">
+                        <strong>{{ auth()->user()->name }}</strong>
+                        <span>Konsumen</span>
+                    </div>
                 </div>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button aria-label="Keluar" title="Keluar" type="submit">
-                        <span aria-hidden="true" class="material-symbols-outlined">logout</span>
+                    <button class="customer-logout-btn" type="submit">
+                        <span aria-hidden="true" class="material-symbols-outlined">logout</span> Keluar
                     </button>
                 </form>
             </div>
@@ -220,6 +227,10 @@
                     <button aria-label="Buka navigasi" aria-controls="customer-sidebar" aria-expanded="false" class="customer-sidebar-toggle" data-sidebar-toggle type="button">
                         <span aria-hidden="true" class="material-symbols-outlined">menu</span>
                     </button>
+                    <a class="customer-topbar-brand" href="{{ route('dashboard') }}">
+                        <span aria-hidden="true">W</span>
+                        <strong>WEBIA</strong>
+                    </a>
                     <nav aria-label="Breadcrumb" class="customer-breadcrumb">
                         <a href="{{ route('dashboard') }}"><span aria-hidden="true" class="material-symbols-outlined">home</span><span class="sr-only">Kembali ke Dashboard</span></a>
                         <span aria-hidden="true" class="customer-breadcrumb-sep">/</span>
@@ -227,6 +238,10 @@
                     </nav>
                 </div>
                 <div class="customer-topbar-account">
+                    <div class="customer-topbar-identity">
+                        <strong>{{ auth()->user()->name }}</strong>
+                        <span>Konsumen</span>
+                    </div>
                     <span class="account-avatar" aria-hidden="true">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</span>
                 </div>
             </header>
