@@ -233,6 +233,16 @@ Route::view(
     'website-bisnis.templates.education.preschool.rumah-latte-preschool-daycare'
 )->name('webia.template.education.rumah-latte-preschool-daycare');
 
+Route::view(
+    '/webia/template/lumiere-photography-studio',
+    'website-bisnis.templates.photography.lumiere-photography-studio'
+)->name('webia.template.photography.lumiere-studio');
+
+Route::view(
+    '/webia/template/noir-studio-photography',
+    'website-bisnis.templates.photography.noir-studio-photography'
+)->name('webia.template.photography.noir-studio');
+
 // WEBIA template 4 — Automotive Dealer Vintage (Heritage Motors)
 Route::view(
     '/webia/template/automotive-dealer-vintage',
@@ -360,6 +370,11 @@ Route::view(
     '/webia/template/healthcare/psychology/ruang-tenang',
     'website-bisnis.template.healthcare.psychology.ruang-tenang.index'
 )->name('webia.template.healthcare.psychology.ruang-tenang');
+
+Route::view(
+    '/webia/template/healthcare/psychology/mitra-jiwa',
+    'website-bisnis.templates.healthcare.psychology.mitra-jiwa'
+)->name('webia.template.healthcare.psychology.mitra-jiwa');
 
 // =====================================================
 // WEBIA - WEDDING & EVENT (WEDDING ORGANIZER)
