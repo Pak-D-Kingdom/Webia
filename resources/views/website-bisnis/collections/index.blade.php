@@ -217,7 +217,31 @@
         <p class="webia-cart-note">Kamu akan mengisi data pemesan di halaman berikutnya; pembayaran QRIS, virtual
             account, e-wallet, atau transfer bisa langsung setelah pesanan dibuat.</p>
     </dialog>
+
+    {{-- Form Buat Pesanan dimuat ke modal ini dari halaman /orders/create --}}
+    <dialog class="webia-cart-dialog webia-order-dialog" id="webia-order-dialog" aria-labelledby="webia-order-dialog-title">
+        <div class="webia-cart-dialog-head">
+            <div><span class="website-eyebrow">PESAN WEBSITE</span>
+                <h2 id="webia-order-dialog-title">Buat Pesanan</h2>
+                <p id="webia-order-dialog-template"></p>
+            </div>
+            <button type="button" class="webia-cart-close" data-close-dialog aria-label="Tutup">×</button>
+        </div>
+        <div class="webia-order-dialog-body" id="webia-order-dialog-body"></div>
+    </dialog>
 @endsection
+
+@push('styles')
+    {{-- Form pesanan memakai ulang markup + style halaman Buat Pesanan; layer agar tidak menimpa style koleksi --}}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0,0&display=block" rel="stylesheet">
+    <style>@import url('{{ asset('css/website-bisnis/account.css') }}?v={{ filemtime(public_path('css/website-bisnis/account.css')) }}') layer(webia-order-form);</style>
+@endpush
+
+@push('scripts')
+    <script src="{{ asset('js/website-bisnis/account.js') }}?v={{ filemtime(public_path('js/website-bisnis/account.js')) }}" defer></script>
+@endpush
 
 @push('styles')
 @endpush

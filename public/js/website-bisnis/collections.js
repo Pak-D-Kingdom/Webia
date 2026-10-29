@@ -457,4 +457,90 @@ const themes = {
     });
     packagePicker?.addEventListener('click', (event) => { if (event.target === packagePicker) closeDialog(packagePicker); });
 
+    /* ---------- Modal Buat Pesanan: form dari halaman /orders/create dimuat & disubmit via fetch ---------- */
+    const orderDialog = document.getElementById('webia-order-dialog');
+    const orderDialogBody = document.getElementById('webia-order-dialog-body');
+
+    const mountOrderForm = (doc) => {
+        const form = doc.querySelector('form.customer-create-grid');
+        if (!form) {
+            orderDialogBody.innerHTML = '<p class="webia-cart-note">Formulir tidak tersedia. Coba lagi nanti.</p>';
+            return null;
+        }
+        orderDialogBody.replaceChildren(form);
+        form.addEventListener('submit', handleOrderSubmit);
+        window.webiaInitOrderForm?.(form);
+        orderDialogBody.scrollTop = 0;
+        return form;
+    };
+
+    const loadOrderForm = async (url) => {
+        document.getElementById('webia-order-dialog-template').textContent = `Template: ${activeTemplate?.name ?? ''}`;
+        orderDialogBody.innerHTML = '<p class="webia-cart-note">Memuat formulir pesanan…</p>';
+        openDialog(orderDialog);
+        try {
+            const response = await fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+            const doc = new DOMParser().parseFromString(await response.text(), 'text/html');
+            mountOrderForm(doc);
+        } catch {
+            orderDialogBody.innerHTML = '<p class="webia-cart-note">Gagal memuat formulir. Periksa koneksi lalu coba lagi.</p>';
+        }
+    };
+
+    async function handleOrderSubmit(event) {
+        event.preventDefault();
+        const form = event.currentTarget;
+        const submitButton = form.querySelector('[data-submit]');
+        if (submitButton) submitButton.disabled = true;
+        try {
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json',
+                },
+            });
+            if (response.status === 422) {
+                const { errors } = await response.json();
+                form.querySelectorAll('.form-error[data-modal-error]').forEach((error) => error.remove());
+                Object.entries(errors).forEach(([name, messages]) => {
+                    const input = form.querySelector(`[name="${CSS.escape(name)}"], [name="${CSS.escape(name)}[]"]`);
+                    if (!input) return;
+                    const error = document.createElement('p');
+                    error.className = 'form-error';
+                    error.dataset.modalError = '';
+                    error.textContent = messages[0];
+                    input.closest('.form-field, label, fieldset')?.appendChild(error);
+                });
+                form.querySelector('.form-error[data-modal-error]')?.scrollIntoView({ block: 'center' });
+                if (submitButton) submitButton.disabled = false;
+                return;
+            }
+            const path = new URL(response.url, window.location.origin).pathname;
+            if (path !== '/orders/create') {
+                // Sukses: ikuti redirect server (guest → halaman sukses + popup Snap, login → detail pesanan).
+                window.location.href = response.url;
+                return;
+            }
+            // Validasi gagal: form beserta pesan error dirender ulang di modal.
+            const doc = new DOMParser().parseFromString(await response.text(), 'text/html');
+            if (!mountOrderForm(doc)) {
+                window.location.href = response.url;
+            }
+        } catch {
+            orderDialogBody.innerHTML = '<p class="webia-cart-note">Gagal mengirim pesanan. Periksa koneksi lalu coba lagi.</p>';
+        }
+    }
+
+    packageOptionsRoot?.querySelectorAll('[data-package-slug]').forEach((link) => {
+        link.addEventListener('click', (event) => {
+            event.preventDefault();
+            closeDialog(packagePicker);
+            loadOrderForm(link.href);
+        });
+    });
+
+    orderDialog?.addEventListener('click', (event) => { if (event.target === orderDialog) closeDialog(orderDialog); });
+
 });

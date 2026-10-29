@@ -33,20 +33,18 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // Buat Pesanan: ringkasan pesanan, total, dan validasi paket (data-price).
-  const orderForm = document.querySelector('.customer-order-form, .customer-create-grid');
-
-  if (orderForm) {
-    const totalEl = orderForm.querySelector('[data-total]');
-    const pkgNameEl = orderForm.querySelector('[data-summary-package]');
-    const pkgPriceEl = orderForm.querySelector('[data-summary-package-price]');
-    const addonListEl = orderForm.querySelector('[data-summary-addons]');
-    const submitBtn = orderForm.querySelector('[data-submit]');
-    const submitNote = orderForm.querySelector('[data-submit-note]');
-    const submitCaption = orderForm.querySelector('[data-submit-caption]');
+  const initOrderForm = function (form) {
+    const totalEl = form.querySelector('[data-total]');
+    const pkgNameEl = form.querySelector('[data-summary-package]');
+    const pkgPriceEl = form.querySelector('[data-summary-package-price]');
+    const addonListEl = form.querySelector('[data-summary-addons]');
+    const submitBtn = form.querySelector('[data-submit]');
+    const submitNote = form.querySelector('[data-submit-note]');
+    const submitCaption = form.querySelector('[data-submit-caption]');
     const formatRupiah = (value) => 'Rp' + value.toLocaleString('id-ID');
 
     const recalcOrder = function () {
-      const pkg = orderForm.querySelector('input[name="package_id"]:checked');
+      const pkg = form.querySelector('input[name="package_id"]:checked');
       let total = pkg ? Number(pkg.dataset.price) || 0 : 0;
 
       if (pkgNameEl) {
@@ -60,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
 
       const chosenAddons = [];
-      orderForm.querySelectorAll('input[name="addon_ids[]"]').forEach(function (input) {
+      form.querySelectorAll('input[name="addon_ids[]"]').forEach(function (input) {
         if (!input.checked) return;
         const price = Number(input.dataset.price) || 0;
         total += price;
@@ -96,9 +94,14 @@ document.addEventListener('DOMContentLoaded', function () {
       if (submitCaption) submitCaption.hidden = !pkg;
     };
 
-    orderForm.addEventListener('change', recalcOrder);
+    form.addEventListener('change', recalcOrder);
     recalcOrder();
-  }
+  };
+
+  // Expose untuk halaman yang memuat form pesanan ke modal (koleksi publik).
+  window.webiaInitOrderForm = initOrderForm;
+  const orderForm = document.querySelector('.customer-order-form, .customer-create-grid');
+  if (orderForm) initOrderForm(orderForm);
 
   // Dashboard: tab switch grafik Pendapatan / Volume.
   document.querySelectorAll('[data-series]').forEach(function (tab) {

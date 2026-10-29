@@ -7225,6 +7225,21 @@ html {
     font-weight: 800
 }
 
+/* Modal Buat Pesanan: menampung form dari halaman /orders/create */
+.webia-order-dialog {
+    width: min(58rem, 94vw)
+}
+
+.webia-order-dialog-body {
+    max-height: min(72vh, 46rem);
+    padding: 1.25rem 1.5rem 1.5rem;
+    overflow-y: auto
+}
+
+.webia-order-dialog-body .customer-create-grid {
+    gap: 1.25rem
+}
+
 .webia-cart-note {
     margin: 0;
     padding: 0 26px 22px;
