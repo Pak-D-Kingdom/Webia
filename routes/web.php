@@ -158,6 +158,21 @@ Route::view(
 )->name('webia.template.property.pusaka-asri-property-traditional');
 
 Route::view(
+    '/webia/template/agriternak-organic-ethical-precision',
+    'website-bisnis.templates.agriculture.agriternak-organic-ethical-precision'
+)->name('webia.template.agriculture.agriternak-organic-ethical-precision');
+
+Route::view(
+    '/webia/template/agriternak-futuristic-iot',
+    'website-bisnis.templates.agriculture.agriternak-futuristic-iot'
+)->name('webia.template.agriculture.agriternak-futuristic-iot');
+
+Route::view(
+    '/webia/template/agriternak-bold-livestock',
+    'website-bisnis.templates.agriculture.agriternak-bold-livestock'
+)->name('webia.template.agriculture.agriternak-bold-livestock');
+
+Route::view(
     '/webia/template/fnb-bakery-playful-colorful',
     'website-bisnis.templates.fnb.bakery.bakery-playful-colorful'
 )->name('webia.template.fnb.bakery.playful.colorful');
