@@ -3,10 +3,24 @@
     // Ganti dengan nomor WhatsApp resmi salon, gunakan format internasional tanpa tanda +.
     const WHATSAPP_NUMBER = '6281234567890';
     const root = document.querySelector('.rose-site');
-    if (!root) return;
+if (!root) return;
 
-    const menuButton = root.querySelector('.rose-menu-toggle');
-    const nav = root.querySelector('.rose-nav');
+const menuButton = root.querySelector('.rose-menu-toggle');
+const nav = root.querySelector('.rose-nav');
+
+if (menuButton && nav) {
+    menuButton.addEventListener('click', () => {
+        const opened = nav.classList.toggle('is-open');
+        menuButton.setAttribute('aria-expanded', String(opened));
+    });
+
+    nav.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            nav.classList.remove('is-open');
+            menuButton.setAttribute('aria-expanded', 'false');
+        });
+    });
+}
     menuButton?.addEventListener('click', () => {
         const opened = nav.classList.toggle('is-open');
         menuButton.setAttribute('aria-expanded', String(opened));
