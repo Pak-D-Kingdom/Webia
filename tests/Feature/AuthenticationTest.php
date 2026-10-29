@@ -2,38 +2,70 @@
 
 namespace Tests\Feature;
 
+use App\Mail\AccountCredentialsMail;
 use App\Models\User;
+use App\Models\WebiaOrder;
+use App\Models\WebiaPackage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class AuthenticationTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_customer_can_register(): void
+    public function test_guest_order_creates_account_and_sends_credentials(): void
     {
-        $response = $this->post(route('register'), [
+        Mail::fake();
+        $package = WebiaPackage::factory()->create(['name' => 'Pixel', 'price' => 499000]);
+
+        $response = $this->post(route('orders.store'), [
+            'package_id' => $package->id,
             'name' => 'Zainul',
             'email' => 'zainul@example.com',
-            'password' => 'password123',
-            'password_confirmation' => 'password123',
         ]);
 
-        $response->assertRedirect(route('dashboard'));
-        $this->assertAuthenticated();
-        $this->assertDatabaseHas('users', [
-            'email' => 'zainul@example.com',
-            'role' => 'customer',
-        ]);
+        $order = WebiaOrder::first();
+        $response->assertRedirect(route('orders.success'));
+        $response->assertSessionHas('guest_order');
+        $this->get(route('orders.success'))->assertOk()->assertSee($order->order_number);
+        $this->assertGuest();
+        $this->assertDatabaseHas('users', ['email' => 'zainul@example.com', 'role' => 'customer']);
+        $this->assertSame('awaiting_payment', $order->status);
+        $this->assertSame(499000, $order->total_price);
+        Mail::assertSent(AccountCredentialsMail::class, fn (AccountCredentialsMail $mail): bool => $mail->plainPassword !== null
+            && $mail->hasTo('zainul@example.com')
+            && $mail->order->is($order));
     }
 
-    public function test_registration_validates_required_fields(): void
+    public function test_guest_order_with_existing_email_reuses_account(): void
     {
-        $response = $this->from(route('register'))->post(route('register'), []);
+        Mail::fake();
+        $existing = User::factory()->create(['email' => 'zainul@example.com', 'password' => 'password123']);
+        $package = WebiaPackage::factory()->create();
 
-        $response->assertRedirect(route('register'));
-        $response->assertSessionHasErrors(['name', 'email', 'password']);
-        $this->assertGuest();
+        $this->post(route('orders.store'), [
+            'package_id' => $package->id,
+            'name' => 'Zainul',
+            'email' => 'zainul@example.com',
+        ])->assertRedirect(route('orders.success'));
+
+        $this->assertSame(1, User::where('email', 'zainul@example.com')->count());
+        $order = WebiaOrder::first();
+        $this->assertSame($existing->id, $order->user_id);
+        Mail::assertSent(AccountCredentialsMail::class, fn (AccountCredentialsMail $mail): bool => $mail->plainPassword === null
+            && $mail->hasTo('zainul@example.com'));
+    }
+
+    public function test_guest_order_validates_account_fields(): void
+    {
+        $package = WebiaPackage::factory()->create();
+
+        $this->post(route('orders.store'), [
+            'package_id' => $package->id,
+        ])->assertSessionHasErrors(['name', 'email']);
+
+        $this->assertDatabaseCount('webia_orders', 0);
     }
 
     public function test_customer_can_log_in_and_log_out(): void

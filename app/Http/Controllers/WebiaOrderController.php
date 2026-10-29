@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\WebiaAddon;
 use App\Models\WebiaOrder;
 use App\Models\WebiaOrderLog;
@@ -67,15 +68,38 @@ class WebiaOrderController extends Controller
             'template_id' => ['nullable', Rule::exists('webia_templates', 'id')->where('is_active', true)],
             'addon_ids' => ['nullable', 'array'],
             'addon_ids.*' => ['integer', Rule::exists('webia_addons', 'id')->where('is_active', true)],
+            ...auth()->check() ? [] : [
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'lowercase', 'email', 'max:255'],
+            ],
         ]);
 
         $package = WebiaPackage::findOrFail($validated['package_id']);
         $template = isset($validated['template_id']) ? WebiaTemplate::findOrFail($validated['template_id']) : null;
         $addons = WebiaAddon::whereKey($validated['addon_ids'] ?? [])->get();
 
-        $order = $this->createOrder($request, $package, $template, $addons);
+        // Guest: akun dibuat otomatis; email sudah terdaftar dipakai tanpa password baru.
+        $plainPassword = null;
+        $user = User::where('email', $validated['email'] ?? $request->user()->email)->first();
+        if ($user === null) {
+            $plainPassword = Str::password(12);
+            $user = User::create([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'password' => $plainPassword,
+            ]);
+        }
 
-        return redirect()->route('orders.show', $order);
+        $order = $this->createOrder($user, $validated['category_slug'] ?? null, $package, $template, $addons);
+        $this->orderMail->sendCredentials($order, $plainPassword);
+
+        if ($request->user() === null) {
+            session(['guest_order' => ['email' => $user->email, 'order_number' => $order->order_number]]);
+        }
+
+        return auth()->check()
+            ? redirect()->route('orders.show', $order)
+            : redirect()->route('orders.success');
     }
 
     public function show(Request $request, WebiaOrder $order): View
@@ -226,19 +250,19 @@ class WebiaOrderController extends Controller
     }
 
     /** @param Collection<int, WebiaAddon> $addons */
-    private function createOrder(Request $request, WebiaPackage $package, ?WebiaTemplate $template, Collection $addons): WebiaOrder
+    private function createOrder(User $user, ?string $categorySlug, WebiaPackage $package, ?WebiaTemplate $template, Collection $addons): WebiaOrder
     {
         for ($attempt = 0; $attempt < 5; $attempt++) {
             try {
-                return DB::transaction(function () use ($request, $package, $template, $addons): WebiaOrder {
+                return DB::transaction(function () use ($user, $categorySlug, $package, $template, $addons): WebiaOrder {
                     $order = WebiaOrder::create([
-                        'user_id' => $request->user()->id,
+                        'user_id' => $user->id,
                         'order_number' => $this->orderNumber(),
                         'webia_package_id' => $package->id,
                         'package_snapshot' => ['name' => $package->name, 'price' => $package->price],
                         'webia_template_id' => $template?->id,
                         'template_snapshot' => $template ? ['name' => $template->name, 'slug' => $template->slug, 'category_slug' => $template->category_slug] : null,
-                        'category_slug' => $template?->category_slug ?? $request->input('category_slug'),
+                        'category_slug' => $template?->category_slug ?? $categorySlug,
                         'addon_ids' => $addons->modelKeys(),
                         'addon_snapshot' => $addons->map(fn (WebiaAddon $addon): array => [
                             'id' => $addon->id,
@@ -251,7 +275,7 @@ class WebiaOrderController extends Controller
 
                     WebiaOrderLog::create([
                         'webia_order_id' => $order->id,
-                        'actor_id' => $request->user()->id,
+                        'actor_id' => $user->id,
                         'to_status' => 'awaiting_payment',
                     ]);
 

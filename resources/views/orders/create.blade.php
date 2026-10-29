@@ -5,9 +5,9 @@
 @section('content')
     <section class="dashboard-panel" aria-labelledby="order-create-title">
         <div class="customer-create-head">
-            <a class="customer-create-back" href="{{ route('orders.index') }}">
+            <a class="customer-create-back" href="{{ auth()->check() ? route('orders.index') : route('collections') }}">
                 <span aria-hidden="true" class="material-symbols-outlined">arrow_back</span>
-                Kembali ke Pesanan Saya
+                {{ auth()->check() ? 'Kembali ke Pesanan Saya' : 'Kembali ke koleksi template' }}
             </a>
             <div class="customer-page-head">
                 <h1 id="order-create-title">Buat Pesanan</h1>
@@ -24,6 +24,18 @@
             @endif
 
             <section class="customer-create-main" aria-label="Formulir pemilihan paket dan layanan">
+                @guest
+                    <fieldset class="customer-create-card">
+                        <legend class="customer-create-legend">
+                            <span aria-hidden="true" class="material-symbols-outlined">badge</span>
+                            Data akun
+                        </legend>
+                        <p class="customer-create-hint">Akun WEBIA dibuat otomatis. Email dan kata sandi untuk masuk ke portal dikirim ke email ini.</p>
+                        <div class="form-field"><label for="guest_name">Nama lengkap</label><input id="guest_name" name="name" type="text" value="{{ old('name') }}" required autocomplete="name">@error('name') <p class="form-error">{{ $message }}</p> @enderror</div>
+                        <div class="form-field"><label for="guest_email">Email</label><input id="guest_email" name="email" type="email" value="{{ old('email') }}" required autocomplete="email">@error('email') <p class="form-error">{{ $message }}</p> @enderror</div>
+                    </fieldset>
+                @endguest
+
                 @if ($selectedTemplate)
                     @php
                         $templatePreview = null;
@@ -203,7 +215,7 @@
                             <span aria-hidden="true" class="material-symbols-outlined">arrow_forward</span>
                         </button>
                         <p class="customer-create-note-error" data-submit-note @if ($initialPackage) hidden @endif>Pilih satu paket untuk melanjutkan pemesanan.</p>
-                        <p class="customer-create-note" data-submit-caption @if (! $initialPackage) hidden @endif>Pesanan dibuat setelah kamu menekan tombol ini.</p>
+                        <p class="customer-create-note" data-submit-caption @if (! $initialPackage) hidden @endif>@if (auth()->check())Pesanan dibuat setelah kamu menekan tombol ini.@else Akun dan pesanan dibuat setelah kamu menekan tombol ini; kredensial masuk dikirim via email.@endif</p>
                     </div>
                 </div>
             </aside>
