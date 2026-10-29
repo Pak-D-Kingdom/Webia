@@ -424,116 +424,37 @@ const themes = {
         applyFilters();
     }
 
-    /* ---------- Cart & checkout frontend demo; no backend requests ---------- */
-    const templateCards = Array.from(grid.querySelectorAll('.webia-gallery-card'));
+    /* ---------- Dialog pilih paket: data paket nyata, lanjut ke halaman Buat Pesanan ---------- */
     const packagePicker = document.getElementById('webia-package-picker');
-    const cartDialog = document.getElementById('webia-cart-dialog');
-    const checkoutDialog = document.getElementById('webia-checkout-dialog');
-    const successDialog = document.getElementById('webia-checkout-success');
-    const cartItemsNode = document.getElementById('webia-cart-items');
-    const cartBadge = document.getElementById('webia-cart-badge');
-    const cartTotalNode = document.getElementById('webia-cart-total');
-    const packageOptionsNode = document.getElementById('webia-package-options');
-    const checkoutSummary = document.getElementById('webia-checkout-summary');
+    const packageOptionsRoot = packagePicker?.querySelector('.webia-package-options');
+    const createBaseUrl = packagePicker?.dataset.createUrl || '/orders/create';
     let activeTemplate = null;
-    let cart = [];
 
-    const packageCatalog = [
-        { id: 'pixel', name: 'Pixel', price: 99500, oldPrice: 589500, tagline: 'Landing page sederhana', features: ['1 halaman landing page', 'WhatsApp, kontak, dan peta', 'AI Chatbot 500 pesan/bulan*', 'Tanpa CMS'] },
-        { id: 'pulse', name: 'Pulse', price: 899000, oldPrice: 1199000, tagline: 'Landing page lebih lengkap', features: ['Galeri, testimoni, layanan, FAQ', 'AI Chatbot 1.500 pesan/bulan*', 'SEO dasar dan analitik', 'Tanpa CMS'] },
-        { id: 'nexus', name: 'Nexus', price: 1499000, oldPrice: 1999000, tagline: 'Website dengan CMS', features: ['Website beberapa halaman', 'CMS untuk mengelola konten', 'Tracking data pelanggan sesuai cakupan', 'AI Chatbot 2.500 pesan/bulan*'] },
-        { id: 'infinity', name: 'Infinity', price: 2499000, oldPrice: 3499000, tagline: 'CMS lanjutan dan fitur custom', features: ['Website multi-halaman', 'Custom fitur sesuai kebutuhan', 'CMS lanjutan dan tracking pelanggan', 'AI Chatbot 5.000 pesan/bulan*'] }
-    ];
-    const rupiah = (amount) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(amount);
     const openDialog = (dialog) => { if (dialog && !dialog.open) dialog.showModal(); };
     const closeDialog = (dialog) => { if (dialog?.open) dialog.close(); };
 
-    const renderPackageOptions = () => {
-        if (!packageOptionsNode || !activeTemplate) return;
-        packageOptionsNode.replaceChildren();
-        packageCatalog.forEach((item) => {
-            const button = document.createElement('button');
-            button.type = 'button';
-            button.className = 'webia-package-option';
-            const title = document.createElement('strong'); title.textContent = item.name;
-            const old = document.createElement('del'); old.textContent = rupiah(item.oldPrice);
-            const price = document.createElement('span'); price.className = 'webia-option-price'; price.textContent = rupiah(item.price);
-            const tagline = document.createElement('small'); tagline.textContent = item.tagline + ' · ' + item.features.join(' · ');
-            const choose = document.createElement('em'); choose.textContent = 'Pilih paket ini +';
-            button.append(title, old, price, tagline, choose);
-            button.addEventListener('click', () => {
-                cart.push({ key: `${Date.now()}-${Math.random().toString(16).slice(2)}`, template: activeTemplate.name, category: activeTemplate.categoryLabel, packageId: item.id, packageName: item.name, price: item.price });
-                renderCart();
-                closeDialog(packagePicker);
-                openDialog(cartDialog);
-            });
-            packageOptionsNode.appendChild(button);
-        });
-    };
-
-    const renderCart = () => {
-        if (!cartItemsNode) return;
-        cartBadge.textContent = String(cart.length);
-        cartItemsNode.replaceChildren();
-        if (!cart.length) {
-            const emptyState = document.createElement('div'); emptyState.className = 'webia-cart-empty'; emptyState.textContent = 'Keranjangmu masih kosong. Tambahkan template yang kamu suka, ya!';
-            cartItemsNode.appendChild(emptyState);
-        } else {
-            cart.forEach((item) => {
-                const article = document.createElement('article'); article.className = 'webia-cart-item';
-                const info = document.createElement('div');
-                const title = document.createElement('h3'); title.textContent = item.template;
-                const desc = document.createElement('p'); desc.textContent = `${item.category} · Paket ${item.packageName}`;
-                const price = document.createElement('strong'); price.textContent = rupiah(item.price);
-                info.append(title, desc, price);
-                const remove = document.createElement('button'); remove.type = 'button'; remove.className = 'webia-cart-remove'; remove.textContent = 'Hapus';
-                remove.addEventListener('click', () => { cart = cart.filter((entry) => entry.key !== item.key); renderCart(); });
-                article.append(info, remove); cartItemsNode.appendChild(article);
-            });
-        }
-        const total = cart.reduce((sum, item) => sum + item.price, 0);
-        cartTotalNode.textContent = rupiah(total);
-        checkoutSummary.textContent = cart.length ? `${cart.length} item dipilih · Estimasi total ${rupiah(total)}. Harga ini masih demo frontend.` : 'Keranjang masih kosong.';
-        document.getElementById('webia-checkout-open').disabled = !cart.length;
-    };
-
-    templateCards.forEach((card) => {
+    cards.forEach((card) => {
         const addButton = card.querySelector('[data-template-add]');
         addButton?.addEventListener('click', () => {
             activeTemplate = {
+                id: card.dataset.templateId,
                 name: card.querySelector('.webia-template-meta h3')?.textContent.trim() || 'Template Website',
-                category: card.dataset.category || 'company',
-                categoryLabel: card.querySelector('.webia-template-meta > span')?.textContent.trim() || 'WEBSITE'
             };
+            if (!activeTemplate.id) return;
             document.getElementById('webia-package-template-name').textContent = `Template: ${activeTemplate.name}`;
-            renderPackageOptions();
+            packageOptionsRoot?.querySelectorAll('[data-package-slug]').forEach((link) => {
+                const url = new URL(createBaseUrl, window.location.origin);
+                url.searchParams.set('template', activeTemplate.id);
+                url.searchParams.set('package', link.dataset.packageSlug);
+                link.href = url.toString();
+            });
             openDialog(packagePicker);
         });
     });
 
-    document.getElementById('webia-cart-open')?.addEventListener('click', () => { renderCart(); openDialog(cartDialog); });
-    document.getElementById('webia-checkout-open')?.addEventListener('click', () => {
-        if (!cart.length) return;
-        closeDialog(cartDialog); renderCart(); openDialog(checkoutDialog);
-    });
     document.querySelectorAll('[data-close-dialog]').forEach((button) => {
         button.addEventListener('click', () => closeDialog(button.closest('dialog')));
     });
-    [packagePicker, cartDialog, checkoutDialog, successDialog].forEach((dialog) => {
-        dialog?.addEventListener('click', (event) => { if (event.target === dialog) closeDialog(dialog); });
-    });
-    document.getElementById('webia-checkout-form')?.addEventListener('submit', (event) => {
-        event.preventDefault();
-        if (!cart.length) return;
-        const form = event.currentTarget;
-        if (!form.reportValidity()) return;
-        // Deliberately frontend-only: no network, API, or persistent storage.
-        closeDialog(checkoutDialog);
-        cart = [];
-        renderCart();
-        form.reset();
-        openDialog(successDialog);
-    });
-    renderCart();
+    packagePicker?.addEventListener('click', (event) => { if (event.target === packagePicker) closeDialog(packagePicker); });
 
 });

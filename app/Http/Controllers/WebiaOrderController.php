@@ -94,7 +94,16 @@ class WebiaOrderController extends Controller
         $this->orderMail->sendCredentials($order, $plainPassword);
 
         if ($request->user() === null) {
-            session(['guest_order' => ['email' => $user->email, 'order_number' => $order->order_number]]);
+            // Popup Snap dibuka inline di halaman sukses; webhook Midtrans menandai order lunas.
+            $payment = $this->midtrans->createTransaction($order, $this->nextMidtransOrderId($order));
+            session(['guest_order' => [
+                'email' => $user->email,
+                'order_number' => $order->order_number,
+                'snap_token' => $this->midtrans->configured() ? $payment->snap_token : null,
+                // Fallback bila popup Snap tidak bisa jalan (client key belum diisi).
+                'snap_redirect_url' => $payment->snap_redirect_url,
+                'simulate_url' => ! $this->midtrans->configured() ? $payment->snap_redirect_url : null,
+            ]]);
         }
 
         return auth()->check()

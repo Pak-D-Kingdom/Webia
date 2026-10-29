@@ -119,6 +119,7 @@
                     data-design-style="{{ $template['design_style'] ?? 'Modern' }}"
                     data-color-theme="{{ $template['color_theme'] ?? '' }}"
                     data-template-url="{{ $template['template_url'] ?? '' }}"
+                    data-template-id="{{ $template['id'] }}"
                     data-search="{{ strtolower($template['name'] . ' ' . $template['label'] . ' ' . $template['desc'] . ' ' . implode(' ', $template['business_types'] ?? []) . ' ' . ($template['design_style'] ?? 'Modern') . ' ' . ($template['color_theme'] ?? '')) }}"
                     data-preview-images="{{ json_encode($previewImages) }}">
                     <div class="webia-template-preview {{ $template['style'] }}">
@@ -151,8 +152,8 @@
                         </button>
                     </div>
                     <button type="button" class="webia-add-to-cart" data-template-add
-                        aria-label="Tambahkan {{ $template['name'] }} ke keranjang">
-                        <span>＋</span> Tambahkan ke Keranjang
+                        aria-label="Pesan template {{ $template['name'] }}">
+                        <span>＋</span> Pesan Template Ini
                     </button>
                     <div class="webia-template-meta">
                         <div class="webia-template-flags" aria-label="Informasi template">
@@ -189,12 +190,9 @@
         </div>
     </section>
 
-    {{-- KERANJANG FRONTEND: seluruh data disimpan sementara di browser --}}
-    <button type="button" class="webia-cart-fab" id="webia-cart-open" aria-label="Buka keranjang">
-        <span aria-hidden="true">🛒</span><span>Keranjang</span><b id="webia-cart-badge">0</b>
-    </button>
-
-    <dialog class="webia-cart-dialog" id="webia-package-picker" aria-labelledby="webia-package-picker-title">
+    {{-- Dialog pilih paket memakai data paket nyata dari DB; lanjut ke halaman Buat Pesanan --}}
+    <dialog class="webia-cart-dialog" id="webia-package-picker" aria-labelledby="webia-package-picker-title"
+        data-create-url="{{ route('orders.create') }}">
         <div class="webia-cart-dialog-head">
             <div><span class="website-eyebrow">PERSONALIZE YOUR WEBSITE</span>
                 <h2 id="webia-package-picker-title">Pilih Paket Website</h2>
@@ -202,62 +200,22 @@
             </div>
             <button type="button" class="webia-cart-close" data-close-dialog aria-label="Tutup">×</button>
         </div>
-        <div class="webia-package-options" id="webia-package-options"></div>
-        <p class="webia-cart-note">Harga dan fitur merupakan data demo frontend. Detail akhir akan dikonfirmasi oleh tim
-            WEBIA.</p>
-    </dialog>
-
-    <dialog class="webia-cart-dialog webia-cart-review" id="webia-cart-dialog" aria-labelledby="webia-cart-title">
-        <div class="webia-cart-dialog-head">
-            <div><span class="website-eyebrow">YOUR SELECTED DESIGNS</span>
-                <h2 id="webia-cart-title">Keranjang Belanja</h2>
-                <p>Periksa template dan paket pilihanmu.</p>
-            </div>
-            <button type="button" class="webia-cart-close" data-close-dialog aria-label="Tutup">×</button>
+        <div class="webia-package-options">
+            @forelse ($packages as $package)
+                <a class="webia-package-option" href="{{ route('orders.create', ['package' => $package['slug']]) }}"
+                    data-package-slug="{{ $package['slug'] }}">
+                    <strong>{{ $package['name'] }}</strong>
+                    <del></del>
+                    <span class="webia-option-price">Rp{{ number_format($package['price'], 0, ',', '.') }}</span>
+                    <small>{{ $package['description'] }}{{ $package['features'] ? ' · ' . implode(' · ', $package['features']) : '' }}</small>
+                    <em>Pilih paket ini +</em>
+                </a>
+            @empty
+                <p class="webia-cart-note">Belum ada paket aktif. Hubungi tim WEBIA.</p>
+            @endforelse
         </div>
-        <div id="webia-cart-items" class="webia-cart-items"></div>
-        <div class="webia-cart-total"><span>Estimasi total</span><strong id="webia-cart-total">Rp0</strong></div>
-        <button type="button" class="website-button website-button-primary webia-cart-checkout"
-            id="webia-checkout-open">Lanjut Checkout ↗</button>
-        <p class="webia-cart-note">Belum ada pembayaran sungguhan. Ini hanya simulasi alur checkout frontend.</p>
-    </dialog>
-
-    <dialog class="webia-cart-dialog webia-checkout-dialog" id="webia-checkout-dialog"
-        aria-labelledby="webia-checkout-title">
-        <div class="webia-cart-dialog-head">
-            <div><span class="website-eyebrow">CHECKOUT PREVIEW</span>
-                <h2 id="webia-checkout-title">Data Pemesan</h2>
-                <p>Isi data dummy untuk mencoba tampilan checkout.</p>
-            </div>
-            <button type="button" class="webia-cart-close" data-close-dialog aria-label="Tutup">×</button>
-        </div>
-        <form id="webia-checkout-form" class="webia-checkout-form">
-            <label>Nama lengkap<input name="name" required autocomplete="name" placeholder="Nama pemesan"></label>
-            <label>Email<input name="email" type="email" required autocomplete="email"
-                    placeholder="nama@email.com"></label>
-            <label>Nomor WhatsApp<input name="phone" required inputmode="tel" placeholder="08xxxxxxxxxx"></label>
-            <label>Nama bisnis<input name="business" required placeholder="Nama bisnis kamu"></label>
-            <label>Alamat / catatan kebutuhan
-                <textarea name="address" rows="3" placeholder="Alamat atau kebutuhan khusus (opsional)"></textarea>
-            </label>
-            <label>Metode pembayaran demo<select name="payment" required>
-                    <option value="">Pilih metode</option>
-                    <option>QRIS (demo)</option>
-                    <option>Transfer bank (demo)</option>
-                    <option>Konfirmasi admin via WhatsApp</option>
-                </select></label>
-            <div class="webia-checkout-summary" id="webia-checkout-summary"></div>
-            <button class="website-button website-button-primary" type="submit">Konfirmasi Checkout Demo ↗</button>
-            <p class="webia-cart-note">Form ini tidak mengirim atau menyimpan data ke server.</p>
-        </form>
-    </dialog>
-
-    <dialog class="webia-cart-dialog" id="webia-checkout-success" aria-labelledby="webia-checkout-success-title">
-        <div class="webia-checkout-success"><span>✦</span>
-            <h2 id="webia-checkout-success-title">Simulasi checkout selesai!</h2>
-            <p>Pesanan demo sudah dirangkum di tampilan ini. Belum ada pesanan atau pembayaran yang dikirim ke backend.</p>
-            <button type="button" class="website-button website-button-primary" data-close-dialog>Selesai</button>
-        </div>
+        <p class="webia-cart-note">Kamu akan mengisi data pemesan di halaman berikutnya; pembayaran QRIS, virtual
+            account, e-wallet, atau transfer bisa langsung setelah pesanan dibuat.</p>
     </dialog>
 @endsection
 

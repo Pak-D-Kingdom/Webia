@@ -210,6 +210,17 @@ class MidtransPaymentTest extends TestCase
         $this->assertStringStartsWith('fake-', (string) $payment->snap_token);
     }
 
+    public function test_guest_can_open_simulate_page_when_server_key_absent(): void
+    {
+        config(['webia.midtrans.server_key' => null]);
+        $payment = WebiaPayment::factory()->create();
+
+        $this->get(route('payments.midtrans.simulate', $payment))->assertOk();
+        $this->post(route('payments.midtrans.simulate', $payment))
+            ->assertRedirect(route('orders.success'));
+        $this->assertSame('paid', $payment->fresh()->status);
+    }
+
     public function test_simulate_page_and_pay_are_absent_when_server_key_exists(): void
     {
         $payment = WebiaPayment::factory()->create();

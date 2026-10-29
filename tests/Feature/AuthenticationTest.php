@@ -33,6 +33,7 @@ class AuthenticationTest extends TestCase
         $this->assertDatabaseHas('users', ['email' => 'zainul@example.com', 'role' => 'customer']);
         $this->assertSame('awaiting_payment', $order->status);
         $this->assertSame(499000, $order->total_price);
+        $this->assertDatabaseHas('webia_payments', ['webia_order_id' => $order->id, 'status' => 'created']);
         Mail::assertSent(AccountCredentialsMail::class, fn (AccountCredentialsMail $mail): bool => $mail->plainPassword !== null
             && $mail->hasTo('zainul@example.com')
             && $mail->order->is($order));
