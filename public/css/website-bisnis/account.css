@@ -365,6 +365,7 @@ a {
     font-size: 0.78rem;
     font-weight: 800;
     line-height: 1.2;
+    white-space: nowrap;
 }
 
 .status-pill-muted {
@@ -3297,13 +3298,167 @@ a {
     }
 }
 
+/* Segmented filter ala Stitch */
+.customer-filter {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    padding: 0.25rem;
+    background: rgba(71, 70, 81, 0.08);
+    border: 1px solid var(--account-line);
+    border-radius: 0.6rem;
+}
+
 .customer-filter a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 38px;
+    padding: 0.35rem 1rem;
+    border-radius: 0.45rem;
+    color: var(--account-muted);
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-decoration: none;
     white-space: nowrap;
 }
 
-/* min-width 58rem tabel admin memaksa root scroll; tabel konsumen muat tanpa itu */
+.customer-filter a:hover {
+    color: var(--account-ink);
+}
+
+.customer-filter a[aria-current='page'] {
+    color: var(--account-action);
+    background: var(--account-surface);
+    border: 1px solid var(--account-line);
+    box-shadow: 0 1px 2px rgba(25, 28, 30, 0.08);
+    font-weight: 700;
+}
+
+/* Header halaman dengan tombol aksi di kanan */
+.customer-orders-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.customer-orders-head .account-submit {
+    margin-top: 0;
+}
+
+.customer-orders-head .account-submit .material-symbols-outlined {
+    font-size: 1.15rem;
+}
+
+/* Tabel pesanan ala Stitch: kartu putih, header abu, hover baris */
+.customer-orders-card {
+    background: var(--account-surface);
+    border: 1px solid var(--account-line);
+    border-radius: 0.75rem;
+    box-shadow: var(--account-shadow);
+    overflow: hidden;
+}
+
+.customer-orders-scroll {
+    overflow-x: auto;
+}
+
 .customer-orders-table {
-    min-width: 0;
+    width: 100%;
+    min-width: 56rem;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.82rem;
+}
+
+.customer-orders-table thead tr {
+    background: var(--account-page);
+    border-bottom: 1px solid var(--account-line);
+    color: var(--account-muted);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.customer-orders-table th,
+.customer-orders-table td {
+    padding: 0.9rem 1.25rem;
+    vertical-align: middle;
+}
+
+.customer-orders-table tbody tr {
+    border-bottom: 1px solid var(--account-line);
+}
+
+.customer-orders-table tbody tr:last-child {
+    border-bottom: 0;
+}
+
+.customer-orders-table tbody tr:hover {
+    background: var(--account-page);
+}
+
+.customer-orders-no {
+    color: var(--account-action);
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.customer-orders-pkg {
+    display: block;
+    color: var(--account-ink);
+    font-weight: 600;
+}
+
+.customer-orders-tpl {
+    display: block;
+    margin-top: 0.1rem;
+    color: var(--account-muted);
+    font-size: 0.72rem;
+}
+
+.customer-orders-total {
+    color: var(--account-ink);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.customer-orders-date {
+    color: var(--account-muted);
+    white-space: nowrap;
+}
+
+.customer-orders-action {
+    text-align: right;
+    white-space: nowrap;
+}
+
+.customer-orders-detail {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    min-height: 44px;
+    padding: 0.35rem 0.75rem;
+    color: var(--account-action);
+    font-size: 0.78rem;
+    font-weight: 700;
+    border-radius: 0.4rem;
+    text-decoration: none;
+}
+
+.customer-orders-detail:hover {
+    color: var(--account-action-hover);
+    background: rgba(26, 20, 107, 0.06);
+}
+
+.customer-orders-detail .material-symbols-outlined {
+    font-size: 1rem;
+}
+
+.status-pill-icon {
+    font-size: 1rem;
 }
 
 .customer-order-number {

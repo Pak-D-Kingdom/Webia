@@ -4,17 +4,18 @@
 
 @section('content')
     <section class="dashboard-panel" aria-labelledby="orders-title">
-        <div class="order-heading">
-            <div>
-                <p class="account-label">Akun</p>
+        <div class="customer-orders-head">
+            <div class="customer-page-head">
                 <h1 id="orders-title">Pesanan Saya</h1>
+                <p>Lihat pembayaran dan progres seluruh pesananmu.</p>
             </div>
-            <div class="admin-actions">
-                <a href="{{ route('orders.create') }}">Buat Pesanan</a>
-            </div>
+            <a class="account-submit" href="{{ route('orders.create') }}">
+                <span aria-hidden="true" class="material-symbols-outlined">add</span>
+                Buat Pesanan
+            </a>
         </div>
 
-        <nav class="admin-filter customer-filter" aria-label="Filter status pesanan">
+        <nav class="customer-filter" aria-label="Filter status pesanan">
             @foreach ([
                 'semua' => 'Semua',
                 'menunggu_pembayaran' => 'Menunggu pembayaran',
@@ -33,35 +34,43 @@
                 <div class="dashboard-empty" role="status"><h2>Belum ada pesanan</h2><p>Pilih template dari katalog WEBIA untuk memulai.</p><a class="account-submit" href="{{ route('collections') }}">Pilih template</a></div>
             @endif
         @else
-        <div class="admin-table-wrap">
-            <table class="admin-table customer-orders-table">
-                <thead>
-                    <tr>
-                        <th scope="col">Pesanan</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Total</th>
-                        <th scope="col">Tanggal</th>
-                        <th scope="col" class="admin-table-action"><span class="sr-only">Aksi</span></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($orders as $order)
+        <div class="customer-orders-card">
+            <div class="customer-orders-scroll">
+                <table class="customer-orders-table">
+                    <thead>
                         <tr>
-                            <th scope="row" data-label="Pesanan">
-                                {{ $order->package->name }}
-                                <span class="customer-order-number">{{ $order->order_number }}</span>
-                            </th>
-                            <td data-label="Status">
-                                <x-status-pill :status="$order->status" />
-                                <x-status-pill :status="$order->delivery_status" />
-                            </td>
-                            <td data-label="Total" class="ops-money">Rp{{ number_format($order->total_price, 0, ',', '.') }}</td>
-                            <td data-label="Tanggal" class="ops-dim">{{ $order->created_at->translatedFormat('d M Y') }}</td>
-                            <td class="admin-table-action"><a href="{{ route('orders.show', $order) }}">Detail</a></td>
+                            <th scope="col">Pesanan</th>
+                            <th scope="col">Paket &amp; Template</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">Status Pembayaran</th>
+                            <th scope="col">Status Pengerjaan</th>
+                            <th scope="col">Tanggal</th>
+                            <th scope="col" class="customer-orders-action" aria-label="Aksi"></th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach ($orders as $order)
+                            <tr>
+                                <td class="customer-orders-no">{{ $order->order_number }}</td>
+                                <td>
+                                    <span class="customer-orders-pkg">{{ $order->package->name }}</span>
+                                    <span class="customer-orders-tpl">{{ $order->template?->name ?? $order->template_snapshot['name'] ?? '-' }}</span>
+                                </td>
+                                <td class="customer-orders-total">Rp{{ number_format($order->total_price, 0, ',', '.') }}</td>
+                                <td><x-status-pill :status="$order->status" with-icon /></td>
+                                <td><x-status-pill :status="$order->delivery_status" with-icon /></td>
+                                <td class="customer-orders-date">{{ $order->created_at->translatedFormat('d M Y') }}</td>
+                                <td class="customer-orders-action">
+                                    <a class="customer-orders-detail" href="{{ route('orders.show', $order) }}">
+                                        Lihat detail
+                                        <span aria-hidden="true" class="material-symbols-outlined">arrow_forward</span>
+                                    </a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
         @endif
     </section>
