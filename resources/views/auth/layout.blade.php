@@ -257,7 +257,7 @@
             </a>
             <div class="header-actions">@yield('header-action')</div>
         </header>
-        <main id="main-content" class="account-main">
+        <main id="main-content" class="account-main customer-main">
             @yield('content')
         </main>
         <footer class="account-footer"><strong>WEBIA</strong><span>&copy; {{ now()->year }} WEBIA Indonesia. Solusi digital untuk UMKM.</span></footer>
