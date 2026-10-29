@@ -10,45 +10,6 @@ class WebiaTemplateSeederAthiya extends Seeder
     public function run(): void
     {
         $templates = [
-            // Template 1: Aurum & Co. (Luxury Modern Elegant)
-            [
-                'name' => 'Aurum & Co. — Haute Gastronomy',
-                'slug' => 'aurumco-catering',
-                'category_slug' => 'fnb',
-                'category_label' => 'F&B',
-                'business_types' => ['Catering', 'Wedding & Event Catering', 'Private Chef'],
-                'design_style' => 'Luxury',
-                'color_theme' => 'Obsidian & Gold',
-                'description' => 'Website catering mewah avant-garde untuk gala, jamuan privat, wedding haute cuisine, dan kalkulator dossier WhatsApp.',
-                'preview_style' => 'preview-cafe',
-                'eyebrow' => 'AVANT-GARDE CULINARY ATELIER',
-                'headline' => 'Gastronomy as<br>Living Sculpture.',
-                'tag' => 'F&B · Luxury Catering · Obsidian & Gold',
-                'preview_folder' => null,
-                'template_url' => '/webia/template/aurumco-catering',
-                'is_active' => true,
-                'sort_order' => 20,
-            ],
-
-            // Template 2: Valla & Co. (Nordic Botanical Clean)
-            [
-                'name' => 'Valla & Co. — Nordic Botanical Catering',
-                'slug' => 'vallaco-catering',
-                'category_slug' => 'fnb',
-                'category_label' => 'F&B',
-                'business_types' => ['Catering', 'Wedding & Event Catering', 'Private Chef'],
-                'design_style' => 'Minimalist',
-                'color_theme' => 'Moss Green & Linen',
-                'description' => 'Website catering botanical bergaya Skandinavia untuk intimate wedding, retreat, dan gathering dengan live budget estimator dan direct WhatsApp.',
-                'preview_style' => 'preview-cafe',
-                'eyebrow' => 'SLOW LIVING · FORAGED INGREDIENTS · BESPOKE FEASTS',
-                'headline' => 'Quiet luxury,<br>organic stillness.',
-                'tag' => 'F&B · Nordic Botanical Catering · Minimalist',
-                'preview_folder' => null,
-                'template_url' => '/webia/template/vallaco-catering',
-                'is_active' => true,
-                'sort_order' => 21,
-            ],
             [
                 'name' => 'Rasa Rupa — Makanan Nusantara sebagai Karya Seni',
                 'slug' => 'rasa-rupa-artistik',
