@@ -20,13 +20,13 @@
 */
 
 $site = [
-    'name'    => 'GreenHaven',
+    'name' => 'GreenHaven',
     'tagline' => 'Premium Real Estate',
     'address' => 'Jl. Melati No. 12, Jakarta Selatan',
-    'email'   => 'hello@greenhaven.co.id',
-    'phone'   => '+62 812 3456 7890',
-    'hours'   => 'Mon - Sun 09:00 - 18:00',
-    'social'  => [
+    'email' => 'hello@greenhaven.co.id',
+    'phone' => '+62 812 3456 7890',
+    'hours' => 'Mon - Sun 09:00 - 18:00',
+    'social' => [
         ['icon' => 'instagram', 'label' => 'Instagram', 'url' => '#'],
         ['icon' => 'facebook',  'label' => 'Facebook',  'url' => '#'],
         ['icon' => 'youtube',   'label' => 'YouTube',   'url' => '#'],
@@ -39,19 +39,19 @@ $site = [
  | fasilitas, dan rincian harga, sehingga cukup mengisi $facts per properti.
  * ------------------------------------------------------------------------- */
 $highlights = fn (array $f): array => [
-    ['icon' => 'bed',  'label' => $f['bedrooms'] . ' Bedrooms'],
-    ['icon' => 'bath', 'label' => $f['bathrooms'] . ' Bathrooms'],
-    ['icon' => 'car',  'label' => $f['carport'] . ' Carport'],
-    ['icon' => 'land', 'label' => $f['land'] . ' m² Land'],
+    ['icon' => 'bed',  'label' => $f['bedrooms'].' Bedrooms'],
+    ['icon' => 'bath', 'label' => $f['bathrooms'].' Bathrooms'],
+    ['icon' => 'car',  'label' => $f['carport'].' Carport'],
+    ['icon' => 'land', 'label' => $f['land'].' m² Land'],
 ];
 
 $specs = fn (array $f): array => [
     ['icon' => 'home',     'label' => 'Property Type', 'value' => $f['type']],
-    ['icon' => 'land',     'label' => 'Land Area',     'value' => $f['land'] . ' m²'],
-    ['icon' => 'building', 'label' => 'Building Area', 'value' => $f['building'] . ' m²'],
+    ['icon' => 'land',     'label' => 'Land Area',     'value' => $f['land'].' m²'],
+    ['icon' => 'building', 'label' => 'Building Area', 'value' => $f['building'].' m²'],
     ['icon' => 'bed',      'label' => 'Bedrooms',      'value' => $f['bedrooms']],
     ['icon' => 'bath',     'label' => 'Bathrooms',     'value' => $f['bathrooms']],
-    ['icon' => 'car',      'label' => 'Carport',       'value' => $f['carport'] . ($f['carport'] > 1 ? ' Cars' : ' Car')],
+    ['icon' => 'car',      'label' => 'Carport',       'value' => $f['carport'].($f['carport'] > 1 ? ' Cars' : ' Car')],
     ['icon' => 'file',     'label' => 'Certificate',   'value' => $f['certificate']],
     ['icon' => 'calendar', 'label' => 'Year Built',    'value' => $f['year']],
 ];
@@ -82,19 +82,19 @@ $story2 = 'With {bedrooms} bedrooms, {bathrooms} bathrooms and a {carport}-car c
 $story3 = 'Completed in {year} and held under {certificate}, the property is offered at {price}. Book a private viewing to experience the {view} for yourself.';
 
 $priceRows = fn (array $f): array => [
-    ['label' => 'Asking Price',            'value' => 'IDR ' . number_format($f['price'], 0, ',', '.')],
+    ['label' => 'Asking Price',            'value' => 'IDR '.number_format($f['price'], 0, ',', '.')],
     ['label' => 'Price Status',            'value' => $f['price_status']],
-    ['label' => 'Price per m² (Land)',     'value' => '≈ IDR ' . number_format($f['price'] / $f['land'], 0, ',', '.')],
-    ['label' => 'Price per m² (Building)', 'value' => '≈ IDR ' . number_format($f['price'] / $f['building'], 0, ',', '.')],
+    ['label' => 'Price per m² (Land)',     'value' => '≈ IDR '.number_format($f['price'] / $f['land'], 0, ',', '.')],
+    ['label' => 'Price per m² (Building)', 'value' => '≈ IDR '.number_format($f['price'] / $f['building'], 0, ',', '.')],
 ];
 
 // Melengkapi data properti dari 'facts'
 $build = fn (array $p): array => $p + [
-    'price_cur'  => 'IDR',
-    'price'      => number_format($p['facts']['price'], 0, ',', '.'),
-    'price_note' => '(' . $p['facts']['price_status'] . ')',
+    'price_cur' => 'IDR',
+    'price' => number_format($p['facts']['price'], 0, ',', '.'),
+    'price_note' => '('.$p['facts']['price_status'].')',
     'highlights' => $highlights($p['facts']),
-    'specs'      => $specs($p['facts']),
+    'specs' => $specs($p['facts']),
     'facilities' => $facilities($p['facts']),
     'price_rows' => $priceRows($p['facts']),
     'map_image'  => 'map-bali.jpg',
@@ -109,18 +109,18 @@ $properties = [
 
     // ------------------------------------------------------------ properti utama
     'modern-luxury-villa-bukit-indah' => $build([
-        'slug'        => 'modern-luxury-villa-bukit-indah',
-        'badge'       => 'Featured',
-        'hero_badge'  => 'Premium Property',
-        'title'       => 'Modern Luxury Villa with Breathtaking View',
-        'place'       => 'Bukit Indah Residence, Bali',
-        'place_name'  => 'Bukit Indah Residence',
-        'place_city'  => 'Bali',
-        'address'     => 'Jl. Bukit Indah No. 28, Jimbaran, Kuta Selatan, Bali',
-        'card_file'   => 'gallery-1.jpg',
-        'card_alt'    => 'Modern luxury villa with swimming pool',
+        'slug' => 'modern-luxury-villa-bukit-indah',
+        'badge' => 'Featured',
+        'hero_badge' => 'Premium Property',
+        'title' => 'Modern Luxury Villa with Breathtaking View',
+        'place' => 'Bukit Indah Residence, Bali',
+        'place_name' => 'Bukit Indah Residence',
+        'place_city' => 'Bali',
+        'address' => 'Jl. Bukit Indah No. 28, Jimbaran, Kuta Selatan, Bali',
+        'card_file' => 'gallery-1.jpg',
+        'card_alt' => 'Modern luxury villa with swimming pool',
         'more_photos' => 12,
-        'facts'       => [
+        'facts' => [
             'type' => 'Villa', 'land' => 450, 'building' => 320, 'bedrooms' => 4, 'bathrooms' => 4, 'carport' => 2,
             'certificate' => 'SHM (Sertifikat Hak Milik)', 'year' => 2022,
             'price' => 12500000000, 'price_status' => 'Negotiable', 'view' => 'Panoramic Sunset View',
@@ -149,17 +149,17 @@ $properties = [
 
     // ------------------------------------------------------------ DATA CONTOH
     'tropical-pool-villa-jimbaran' => $build([
-        'slug'        => 'tropical-pool-villa-jimbaran',
-        'badge'       => 'New',
-        'title'       => 'Tropical Pool Villa with Garden View',
-        'place'       => 'Jimbaran, Bali',
-        'place_name'  => 'Jimbaran Garden Villa',
-        'place_city'  => 'Bali',
-        'address'     => 'Jl. Raya Uluwatu No. 15, Jimbaran, Kuta Selatan, Bali',
-        'card_file'   => 'gallery-4.jpg',
-        'card_alt'    => 'Tropical pool villa with sea view',
+        'slug' => 'tropical-pool-villa-jimbaran',
+        'badge' => 'New',
+        'title' => 'Tropical Pool Villa with Garden View',
+        'place' => 'Jimbaran, Bali',
+        'place_name' => 'Jimbaran Garden Villa',
+        'place_city' => 'Bali',
+        'address' => 'Jl. Raya Uluwatu No. 15, Jimbaran, Kuta Selatan, Bali',
+        'card_file' => 'gallery-4.jpg',
+        'card_alt' => 'Tropical pool villa with sea view',
         'more_photos' => 0,
-        'facts'       => [
+        'facts' => [
             'type' => 'Villa', 'land' => 320, 'building' => 240, 'bedrooms' => 3, 'bathrooms' => 3, 'carport' => 1,
             'certificate' => 'SHM (Sertifikat Hak Milik)', 'year' => 2021,
             'price' => 8900000000, 'price_status' => 'Negotiable', 'view' => 'Garden & Sea View',
@@ -179,17 +179,17 @@ $properties = [
     ]),
 
     'sunset-hillside-residence-uluwatu' => $build([
-        'slug'        => 'sunset-hillside-residence-uluwatu',
-        'badge'       => 'Exclusive',
-        'title'       => 'Sunset Hillside Residence',
-        'place'       => 'Uluwatu, Bali',
-        'place_name'  => 'Uluwatu Hillside Residence',
-        'place_city'  => 'Bali',
-        'address'     => 'Jl. Labuansait No. 21, Pecatu, Kuta Selatan, Bali',
-        'card_file'   => 'gallery-5.jpg',
-        'card_alt'    => 'Hillside residence at sunset',
+        'slug' => 'sunset-hillside-residence-uluwatu',
+        'badge' => 'Exclusive',
+        'title' => 'Sunset Hillside Residence',
+        'place' => 'Uluwatu, Bali',
+        'place_name' => 'Uluwatu Hillside Residence',
+        'place_city' => 'Bali',
+        'address' => 'Jl. Labuansait No. 21, Pecatu, Kuta Selatan, Bali',
+        'card_file' => 'gallery-5.jpg',
+        'card_alt' => 'Hillside residence at sunset',
         'more_photos' => 0,
-        'facts'       => [
+        'facts' => [
             'type' => 'Residence', 'land' => 600, 'building' => 450, 'bedrooms' => 5, 'bathrooms' => 5, 'carport' => 3,
             'certificate' => 'SHM (Sertifikat Hak Milik)', 'year' => 2023,
             'price' => 15750000000, 'price_status' => 'Negotiable', 'view' => 'Sunset Ocean View',
@@ -213,8 +213,8 @@ return [
 
     // Lokasi aset publik (relatif terhadap public/, dipakai dengan asset())
     'paths' => [
-        'css'    => 'css/website-bisnis/template/property/luxury/real-estate-agency-emerald-green/real-estate-agency.css',
-        'js'     => 'js/website-bisnis/template/property/luxury/real-estate-agency-emerald-green/real-estate-agency.js',
+        'css' => 'css/website-bisnis/template/property/luxury/real-estate-agency-emerald-green/real-estate-agency.css',
+        'js' => 'js/website-bisnis/template/property/luxury/real-estate-agency-emerald-green/real-estate-agency.js',
         'images' => 'images/website-bisnis/template/property/luxury/real-estate-agency-emerald-green',
     ],
 
@@ -253,13 +253,13 @@ return [
 
     // Judul & subjudul tiap halaman (header halaman & heading preview/section)
     'pages' => [
-        'property'      => ['label' => 'Property',      'title' => 'Property Listing',       'subtitle' => 'Discover our curated collection of luxury villas and residences.'],
+        'property' => ['label' => 'Property',      'title' => 'Property Listing',       'subtitle' => 'Discover our curated collection of luxury villas and residences.'],
         'specification' => ['label' => 'Specification', 'title' => 'Property Specification', 'subtitle' => 'Modern design, premium location, and complete facilities.'],
-        'about'         => ['label' => 'About Us',      'title' => 'About Us',               'subtitle' => 'The people and principles behind every GreenHaven property.'],
-        'gallery'       => ['label' => 'Gallery',       'title' => 'Property Gallery',       'subtitle' => 'Explore the beauty and elegance of this property'],
-        'booking'       => ['label' => 'Booking',       'title' => 'Schedule a Private Viewing', 'subtitle' => 'See the property in person and experience its true beauty.'],
-        'blog'          => ['label' => 'Blog',          'title' => 'Blog & Insights',        'subtitle' => 'Guides, market notes and inspiration for modern property owners.'],
-        'contact'       => ['label' => 'Contact',       'title' => 'Contact Us',             'subtitle' => 'Questions about a property? Our team is ready to help.'],
+        'about' => ['label' => 'About Us',      'title' => 'About Us',               'subtitle' => 'The people and principles behind every GreenHaven property.'],
+        'gallery' => ['label' => 'Gallery',       'title' => 'Property Gallery',       'subtitle' => 'Explore the beauty and elegance of this property'],
+        'booking' => ['label' => 'Booking',       'title' => 'Schedule a Private Viewing', 'subtitle' => 'See the property in person and experience its true beauty.'],
+        'blog' => ['label' => 'Blog',          'title' => 'Blog & Insights',        'subtitle' => 'Guides, market notes and inspiration for modern property owners.'],
+        'contact' => ['label' => 'Contact',       'title' => 'Contact Us',             'subtitle' => 'Questions about a property? Our team is ready to help.'],
     ],
 
     'properties' => $properties,
@@ -298,10 +298,10 @@ return [
 
     'about' => [
         'eyebrow' => 'About GreenHaven',
-        'title'   => 'Where luxury meets lasting value',
-        'file'    => 'booking-living.jpg',
-        'alt'     => 'Elegant living space designed for comfort',
-        'text'    => [
+        'title' => 'Where luxury meets lasting value',
+        'file' => 'booking-living.jpg',
+        'alt' => 'Elegant living space designed for comfort',
+        'text' => [
             'GreenHaven is a premium real estate agency dedicated to architecture-led villas and residences in exclusive locations. Every property we represent is selected for its design, its setting and its long-term value.',
             'From the first enquiry to a private viewing and beyond, our team guides you with clarity, discretion and care.',
         ],
@@ -411,30 +411,30 @@ return [
     // Gambar latar header tiap halaman (halaman detail memakai foto properti / artikel sendiri)
     'header_images' => [
         'property' => 'header-property.jpg',
-        'about'    => 'header-about.jpg',
-        'gallery'  => 'header-gallery.jpg',
-        'booking'  => 'header-booking.jpg',
-        'blog'     => 'header-blog.jpg',
-        'contact'  => 'header-contact.jpg',
+        'about' => 'header-about.jpg',
+        'gallery' => 'header-gallery.jpg',
+        'booking' => 'header-booking.jpg',
+        'blog' => 'header-blog.jpg',
+        'contact' => 'header-contact.jpg',
     ],
 
     'inquiry' => [
         'eyebrow' => 'Get in touch',
-        'title'   => 'Inquire Now',
-        'text'    => 'Get more information about this property. Our team is ready to assist you.',
+        'title' => 'Inquire Now',
+        'text' => 'Get more information about this property. Our team is ready to assist you.',
     ],
 
     // WhatsApp: tombol mengambang, form Inquiry, form Booking dan FAQ AI memakai nomor ini.
     // Format internasional tanpa + / spasi (0895630300345 -> 62895630300345).
     // Pesan tombol mengambang: %s pertama = judul properti, %s kedua = lokasi.
     'whatsapp' => [
-        'number'  => '62895630300345',
-        'label'   => 'Chat via WhatsApp',
+        'number' => '62895630300345',
+        'label' => 'Chat via WhatsApp',
         'message' => 'Halo GreenHaven, saya tertarik dengan %s di %s.',
         // Kalimat pembuka pesan yang dikirim form ke WhatsApp
         'inquiry_intro' => 'Halo GreenHaven, saya ingin bertanya tentang properti berikut:',
         'booking_intro' => 'Halo GreenHaven, saya ingin menjadwalkan kunjungan (viewing) ke properti berikut:',
-        'ai_intro'      => 'Halo GreenHaven, saya punya pertanyaan:',
+        'ai_intro' => 'Halo GreenHaven, saya punya pertanyaan:',
     ],
 
     // Jam kunjungan: 09:00 - 17:30, tiap 30 menit
@@ -448,33 +448,33 @@ return [
     // {certificate} otomatis diganti sesuai properti yang sedang dilihat.
     'assistant' => [
         'greeting' => 'Siap membantu Anda menemukan properti impian!',
-        'teaser'   => 'Tanya saya tentang properti ini',
-        'fallback' => 'Maaf, saya belum menemukan jawaban yang tepat. Silakan kirim pertanyaan lewat form "Inquire Now" atau hubungi tim kami di ' . $site['phone'] . '.',
+        'teaser' => 'Tanya saya tentang properti ini',
+        'fallback' => 'Maaf, saya belum menemukan jawaban yang tepat. Silakan kirim pertanyaan lewat form "Inquire Now" atau hubungi tim kami di '.$site['phone'].'.',
         'faq' => [
             ['q' => 'Properti ini masih tersedia?', 'chip' => true,
-             'keys' => ['tersedia', 'available', 'ready', 'dijual', 'masih', 'terjual'],
-             'a' => 'Ya, {title} masih tersedia. Kirim pesan lewat form "Inquire Now" atau jadwalkan kunjungan agar tim kami memastikan ketersediaan terbaru.'],
+                'keys' => ['tersedia', 'available', 'ready', 'dijual', 'masih', 'terjual'],
+                'a' => 'Ya, {title} masih tersedia. Kirim pesan lewat form "Inquire Now" atau jadwalkan kunjungan agar tim kami memastikan ketersediaan terbaru.'],
             ['q' => 'Apa saja fasilitas yang tersedia?', 'chip' => true,
-             'keys' => ['fasilitas', 'facilities', 'kolam', 'pool', 'taman', 'garden', 'furnish'],
-             'a' => 'Properti ini memiliki {bedrooms} kamar tidur, {bathrooms} kamar mandi, carport untuk {carport} mobil, kolam renang, taman tropis, serta area living terbuka dengan pemandangan.'],
+                'keys' => ['fasilitas', 'facilities', 'kolam', 'pool', 'taman', 'garden', 'furnish'],
+                'a' => 'Properti ini memiliki {bedrooms} kamar tidur, {bathrooms} kamar mandi, carport untuk {carport} mobil, kolam renang, taman tropis, serta area living terbuka dengan pemandangan.'],
             ['q' => 'Bagaimana cara booking/viewing?', 'chip' => true,
              'keys' => ['booking', 'viewing', 'kunjungan', 'survei', 'survey', 'jadwal', 'lihat', 'datang', 'cara'],
              'a' => 'Klik tombol "Book a Viewing", pilih tanggal dan jam kunjungan di halaman Booking, lalu kirim permintaan. Jam kunjungan: Senin - Minggu, 09:00 - 18:00.'],
             ['q' => 'Berapa harga terendah di area ini?', 'chip' => true,
-             'keys' => ['harga', 'price', 'nego', 'negotiable', 'berapa', 'murah', 'terendah', 'cicilan', 'kpr'],
-             'a' => 'Harga {title} adalah {price}. Untuk perbandingan properti lain di area ini, silakan hubungi tim kami di ' . $site['phone'] . '.'],
+                'keys' => ['harga', 'price', 'nego', 'negotiable', 'berapa', 'murah', 'terendah', 'cicilan', 'kpr'],
+                'a' => 'Harga {title} adalah {price}. Untuk perbandingan properti lain di area ini, silakan hubungi tim kami di '.$site['phone'].'.'],
             ['q' => 'Di mana lokasinya?',
-             'keys' => ['lokasi', 'location', 'alamat', 'address', 'dimana', 'map', 'peta', 'jimbaran', 'bali'],
-             'a' => 'Properti berada di {address}. Gunakan tombol "Open in Google Maps" pada bagian lokasi untuk petunjuk arah.'],
+                'keys' => ['lokasi', 'location', 'alamat', 'address', 'dimana', 'map', 'peta', 'jimbaran', 'bali'],
+                'a' => 'Properti berada di {address}. Gunakan tombol "Open in Google Maps" pada bagian lokasi untuk petunjuk arah.'],
             ['q' => 'Berapa luas tanah dan bangunan?',
-             'keys' => ['luas', 'tanah', 'bangunan', 'kamar', 'land', 'building', 'bedroom', 'bathroom', 'spesifikasi'],
-             'a' => 'Luas tanah {land} m² dan luas bangunan {building} m², dengan {bedrooms} kamar tidur, {bathrooms} kamar mandi, dan carport {carport} mobil. Dibangun tahun {year}.'],
+                'keys' => ['luas', 'tanah', 'bangunan', 'kamar', 'land', 'building', 'bedroom', 'bathroom', 'spesifikasi'],
+                'a' => 'Luas tanah {land} m² dan luas bangunan {building} m², dengan {bedrooms} kamar tidur, {bathrooms} kamar mandi, dan carport {carport} mobil. Dibangun tahun {year}.'],
             ['q' => 'Apa jenis sertifikatnya?',
-             'keys' => ['sertifikat', 'shm', 'certificate', 'legal', 'surat', 'hak milik'],
-             'a' => 'Properti ini memiliki sertifikat {certificate}.'],
+                'keys' => ['sertifikat', 'shm', 'certificate', 'legal', 'surat', 'hak milik'],
+                'a' => 'Properti ini memiliki sertifikat {certificate}.'],
             ['q' => 'Bagaimana cara menghubungi tim?',
-             'keys' => ['hubungi', 'kontak', 'contact', 'telepon', 'telp', 'whatsapp', 'wa', 'email', 'jam', 'buka'],
-             'a' => 'Anda bisa menghubungi kami di ' . $site['phone'] . ' atau ' . $site['email'] . ', setiap hari pukul 09:00 - 18:00.'],
+                'keys' => ['hubungi', 'kontak', 'contact', 'telepon', 'telp', 'whatsapp', 'wa', 'email', 'jam', 'buka'],
+                'a' => 'Anda bisa menghubungi kami di '.$site['phone'].' atau '.$site['email'].', setiap hari pukul 09:00 - 18:00.'],
         ],
     ],
 ];

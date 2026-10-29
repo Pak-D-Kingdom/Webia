@@ -10,21 +10,21 @@
 return [
     'meta' => [
         'title' => 'KreasiNusa — Creative Solution for a Better Tomorrow',
-        'desc'  => 'KreasiNusa mitra kreatif dan teknologi untuk membantu pertumbuhan bisnis Anda.',
+        'desc' => 'KreasiNusa mitra kreatif dan teknologi untuk membantu pertumbuhan bisnis Anda.',
     ],
     'img' => 'images/website-bisnis/template/company/elegan/company-profile-terracotta/', // relatif ke /public
 
-    'brand'  => ['name' => 'KreasiNusa', 'tagline' => 'Creative Solution for a Better Tomorrow'],
+    'brand' => ['name' => 'KreasiNusa', 'tagline' => 'Creative Solution for a Better Tomorrow'],
     'topbar' => [
         'address' => 'Jl. Wijaya No. 45, Jakarta Selatan',
-        'email'   => 'hello@kreasinusa.id',
-        'hours'   => 'Sen - Jum 09:00 - 18:00',
-        'phone'   => '+62 812 3456 7890',
+        'email' => 'hello@kreasinusa.id',
+        'hours' => 'Sen - Jum 09:00 - 18:00',
+        'phone' => '+62 812 3456 7890',
     ],
     'whatsapp' => [
         'number' => '62895630300345', // 0895630300345 → format internasional tanpa + atau 0; dipakai tombol floating, panel kontak, dan form
-        'text'   => 'Halo KreasiNusa, saya ingin berkonsultasi tentang proyek saya.',
-        'label'  => 'Chat WhatsApp',
+        'text' => 'Halo KreasiNusa, saya ingin berkonsultasi tentang proyek saya.',
+        'label' => 'Chat WhatsApp',
         'form_intro' => 'Halo KreasiNusa, saya mengirim pesan melalui website.',
     ],
     'social' => [
@@ -55,13 +55,13 @@ return [
 
     'hero' => [
         'eyebrow' => ['Kreativitas', 'Teknologi', 'Dampak Nyata'],
-        'title'   => 'Bersama Mewujudkan',
-        'accent'  => 'Ide Menjadi Solusi',
-        'text'    => 'KreasiNusa hadir sebagai mitra terpercaya dalam menghadirkan solusi kreatif dan inovatif untuk mendukung pertumbuhan bisnis Anda.',
-        'image'   => 'hero.svg',
-        'quote'   => ['Your Vision', 'Our Strategy'],
-        'cta'     => ['t' => 'Jelajahi Layanan', 'h' => '#layanan'],
-        'cta2'    => ['t' => 'Tentang Kami', 'r' => 'company-terracotta.about'],
+        'title' => 'Bersama Mewujudkan',
+        'accent' => 'Ide Menjadi Solusi',
+        'text' => 'KreasiNusa hadir sebagai mitra terpercaya dalam menghadirkan solusi kreatif dan inovatif untuk mendukung pertumbuhan bisnis Anda.',
+        'image' => 'hero.svg',
+        'quote' => ['Your Vision', 'Our Strategy'],
+        'cta' => ['t' => 'Jelajahi Layanan', 'h' => '#layanan'],
+        'cta2' => ['t' => 'Tentang Kami', 'r' => 'company-terracotta.about'],
     ],
     'highlights' => [
         ['i' => 'bulb',   't' => 'Solusi Kreatif',           'd' => 'Ide segar untuk masa depan'],
@@ -74,10 +74,10 @@ return [
     // Halaman Tentang Kami
     'about' => [
         'eyebrow' => 'Tentang Kami',
-        'title'   => 'Lebih dari Sekadar Penyedia Layanan',
-        'text'    => 'KreasiNusa adalah perusahaan yang bergerak di bidang kreatif dan teknologi, berkomitmen untuk membantu bisnis dan organisasi mencapai tujuan mereka melalui solusi yang inovatif, efektif, dan berkelanjutan.',
-        'video'   => ['image' => 'about-video.svg', 'caption' => 'Kenalan dengan KreasiNusa', 'duration' => '2:45'],
-        'vision'  => 'Menjadi mitra kreatif dan teknologi terpercaya yang membantu bisnis tumbuh lewat solusi berdampak nyata.',
+        'title' => 'Lebih dari Sekadar Penyedia Layanan',
+        'text' => 'KreasiNusa adalah perusahaan yang bergerak di bidang kreatif dan teknologi, berkomitmen untuk membantu bisnis dan organisasi mencapai tujuan mereka melalui solusi yang inovatif, efektif, dan berkelanjutan.',
+        'video' => ['image' => 'about-video.svg', 'caption' => 'Kenalan dengan KreasiNusa', 'duration' => '2:45'],
+        'vision' => 'Menjadi mitra kreatif dan teknologi terpercaya yang membantu bisnis tumbuh lewat solusi berdampak nyata.',
         'mission' => [
             'Menghadirkan solusi kreatif yang relevan dengan kebutuhan klien.',
             'Menjaga kualitas lewat proses kerja yang terukur dan transparan.',
@@ -88,8 +88,8 @@ return [
 
     'services' => [
         'eyebrow' => 'Layanan Kami',
-        'title'   => 'Solusi Terbaik untuk Setiap Kebutuhan Anda',
-        'items'   => [
+        'title' => 'Solusi Terbaik untuk Setiap Kebutuhan Anda',
+        'items' => [
             ['i' => 'palette', 't' => 'Branding & Identity', 'd' => 'Membangun citra yang kuat'],
             ['i' => 'monitor', 't' => 'Website & Digital',   'd' => 'Solusi digital untuk bisnis Anda'],
             ['i' => 'layout',  't' => 'UI/UX Design',        'd' => 'Pengalaman pengguna yang optimal'],
@@ -103,7 +103,7 @@ return [
     'portfolio' => [
         'title' => 'Portofolio', 'desc' => 'Karya terbaik yang telah kami selesaikan',
         'preview' => 3, // jumlah item yang tampil di beranda
-        'more'    => ['t' => 'Lihat Semua', 'r' => 'company-terracotta.portfolio'],
+        'more' => ['t' => 'Lihat Semua', 'r' => 'company-terracotta.portfolio'],
         'items' => [
             ['img' => 'portfolio-1.svg', 't' => 'Branding Campaign',     'c' => 'Identitas Visual'],
             ['img' => 'portfolio-2.svg', 't' => 'Website Development',   'c' => 'Platform Digital'],
@@ -138,23 +138,23 @@ return [
 
     'quotation' => [
         'title' => 'Dapatkan Penawaran Terbaik untuk Proyek Anda',
-        'text'  => 'Konsultasikan kebutuhan Anda, dan tim kami siap memberikan solusi serta penawaran yang sesuai.',
-        'cta'   => 'Minta Penawaran Sekarang',
+        'text' => 'Konsultasikan kebutuhan Anda, dan tim kami siap memberikan solusi serta penawaran yang sesuai.',
+        'cta' => 'Minta Penawaran Sekarang',
         'image' => 'quotation-bg.svg',
     ],
     'contact' => [
         'title' => 'Hubungi Kami',
-        'text'  => 'Ceritakan kebutuhan Anda. Tim kami akan membalas pada jam kerja.',
-        'form'  => 'Kirim Pesan',
+        'text' => 'Ceritakan kebutuhan Anda. Tim kami akan membalas pada jam kerja.',
+        'form' => 'Kirim Pesan',
         'form_text' => 'Isi formulir berikut dan kami segera menghubungi Anda.',
-        'send'  => 'Kirim Pesan',
+        'send' => 'Kirim Pesan',
     ],
 
     'ai' => [
-        'title'    => 'AI Assistant',
+        'title' => 'AI Assistant',
         'subtitle' => 'Tanya apa saja tentang KreasiNusa',
-        'hello'    => 'Halo! Saya AI Assistant dari KreasiNusa. Ada yang bisa saya bantu?',
-        'image'    => 'ai-robot.svg',
+        'hello' => 'Halo! Saya AI Assistant dari KreasiNusa. Ada yang bisa saya bantu?',
+        'image' => 'ai-robot.svg',
         'fab_label' => 'Tanya AI',
         'fallback' => 'Maaf, saya belum menemukan jawabannya. Silakan pilih topik di atas atau hubungi tim kami lewat formulir kontak.',
         'faq' => [

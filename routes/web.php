@@ -110,6 +110,21 @@ Route::view(
 )->name('webia.template.beauty.atelier-kulit-creative-beauty-clinic');
 
 Route::view(
+    '/webia/template/tanah-warna-rustic-makeup-artist',
+    'website-bisnis.templates.beauty.tanah-warna-rustic-makeup-artist'
+)->name('webia.template.beauty.tanah-warna-rustic-makeup-artist');
+
+Route::view(
+    '/webia/template/rosalind-vintage-makeup-artist',
+    'website-bisnis.templates.beauty.rosalind-vintage-makeup-artist'
+)->name('webia.template.beauty.rosalind-vintage-makeup-artist');
+
+Route::view(
+    '/webia/template/visage-editorial-makeup-artist',
+    'website-bisnis.templates.beauty.visage-editorial-makeup-artist'
+)->name('webia.template.beauty.visage-editorial-makeup-artist');
+
+Route::view(
     '/webia/template/voltrix-futuristic-automotive',
     'website-bisnis.templates.automotive.voltrix-futuristic-automotive'
 )->name('webia.template.automotive.voltrix-futuristic-automotive');
@@ -131,6 +146,16 @@ Route::view(
     '/webia/template/apex-scuderia-automotive-minimalist',
     'website-bisnis.templates.automotive.apex-scuderia-automotive-minimalist'
 )->name('webia.template.automotive.apex-scuderia-automotive-minimalist');
+
+Route::view(
+    '/webia/template/denim-horizon-property-minimalist',
+    'website-bisnis.templates.property.property-minimalist'
+)->name('webia.template.property.denim-horizon-property-minimalist');
+
+Route::view(
+    '/webia/template/pusaka-asri-property-traditional',
+    'website-bisnis.templates.property.property-traditional'
+)->name('webia.template.property.pusaka-asri-property-traditional');
 
 Route::view(
     '/webia/template/fnb-bakery-playful-colorful',
@@ -317,6 +342,16 @@ Route::view(
     '/webia/template/education-onlinecourse-modern',
     'website-bisnis.templates.education.online-course.education-onlinecourse-modern'
 )->name('webia.template.education-onlinecourse-modern');
+
+Route::view(
+    '/webia/template/education/preschool-daycare-jeli-kecil',
+    'website-bisnis.template.education.preschool-daycare-jeli-kecil.index'
+)->name('webia.template.education.jeli-kecil');
+
+Route::view(
+    '/webia/template/healthcare/psychology/ruang-tenang',
+    'website-bisnis.template.healthcare.psychology.ruang-tenang.index'
+)->name('webia.template.healthcare.psychology.ruang-tenang');
 
 // =====================================================
 // WEBIA - WEDDING & EVENT (WEDDING ORGANIZER)
@@ -647,19 +682,19 @@ Route::prefix('webia/template/healthcare/elegan/klinik-kecantikan-rose-gold')
         // Namespace view, key config, dan prefix nama route — dibaca oleh seluruh blade.
         $tpl = 'website-bisnis.template.healthcare.elegan.klinik-kecantikan-rose-gold';
         $cfg = 'template.healthcare.elegan.klinik-kecantikan-rose-gold.klinik-kecantikan';
-        $rp  = 'webia.template.healthcare.elegan.klinik-kecantikan-rose-gold.';
- 
+        $rp = 'webia.template.healthcare.elegan.klinik-kecantikan-rose-gold.';
+
         // Variabel ditulis eksplisit: arrow function hanya menangkap variabel yang
         // disebut langsung di badannya (compact('tpl') TIDAK menangkapnya).
         $data = fn (string $page) => ['tpl' => $tpl, 'cfg' => $cfg, 'rp' => $rp, 'page' => $page];
- 
-        Route::view('/',            "$tpl.index",       $data('home'))->name('index');
-        Route::view('/layanan',     "$tpl.services",    $data('services'))->name('services');
-        Route::view('/dokter',      "$tpl.doctors",     $data('doctors'))->name('doctors');
-        Route::view('/jadwal',      "$tpl.schedule",    $data('schedule'))->name('schedule');
-        Route::view('/booking',     "$tpl.appointment", $data('appointment'))->name('appointment');
-        Route::view('/faq',         "$tpl.faq",         $data('faq'))->name('faq');
-        Route::view('/kebijakan',   "$tpl.policy",      $data('policy'))->name('policy');
+
+        Route::view('/', "$tpl.index", $data('home'))->name('index');
+        Route::view('/layanan', "$tpl.services", $data('services'))->name('services');
+        Route::view('/dokter', "$tpl.doctors", $data('doctors'))->name('doctors');
+        Route::view('/jadwal', "$tpl.schedule", $data('schedule'))->name('schedule');
+        Route::view('/booking', "$tpl.appointment", $data('appointment'))->name('appointment');
+        Route::view('/faq', "$tpl.faq", $data('faq'))->name('faq');
+        Route::view('/kebijakan', "$tpl.policy", $data('policy'))->name('policy');
     });
 
 Route::prefix('webia/template/retail/luxury/skincare-soft-pink')
@@ -1038,3 +1073,10 @@ Route::view(
     'webia/template/property/coral-haven',
     'website-bisnis.template.property.perumahan.coral-haven'
 )->name('webia.templates.coral-haven');
+
+Route::prefix('webia/template')->group(function () {
+    Route::view(
+        '/griya-etnik-nantara',
+        'website-bisnis.templates.interior-architecture.architecture-building-design.griya-etnik-nantara.griya-etnik-nantara'
+    )->name('webia.template.griya-etnik-nantara');
+});
