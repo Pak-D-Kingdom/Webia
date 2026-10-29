@@ -919,6 +919,123 @@ Route::prefix('webia/template/interior-architecture/premium-minimal/furniture-mo
         Route::view('/ai-chatbot',             $ns.'.ai-chatbot')->name('ai-chatbot');
     });
 
+Route::prefix('webia/template/interior-architecture/luxury/furniture-chocolate-luxe')
+    ->name('webia.template.furniture-chocolate-luxe.')
+    ->group(function () {
+        $viewBase = 'website-bisnis.template.interior&architecture.luxury.furniture-chocolate-luxe';
+        $configKey = 'template.interior&architecture.luxury.furniture-chocolate-luxe.furniture';
+
+        // nama route => [uri, nama view]
+        $pages = [
+            'home'          => ['/', 'index'],
+            'hero'          => ['hero', 'hero'],
+            'catalog'       => ['katalog', 'catalog'],
+            'custom-design' => ['custom-design', 'custom-design'],
+            'materials'     => ['material-finishing', 'materials'],
+            'dimensions'    => ['dimensi', 'dimensions'],
+            'gallery'       => ['galeri', 'gallery'],
+            'order'         => ['custom-order', 'order'],
+            'lead-time'     => ['lead-time', 'lead-time'],
+            'quotation'     => ['penawaran', 'quotation'],
+            'ai-chat'       => ['ai-chat', 'ai-chat'],
+        ];
+
+        foreach ($pages as $name => [$uri, $view]) {
+            Route::get($uri, function () use ($viewBase, $configKey, $view, $name) {
+                return view($viewBase . '.' . $view, [
+                    'furniture'  => config($configKey),
+                    'activePage' => $name,
+                ]);
+            })->name($name);
+        }
+    });
+
+
+/*
+|--------------------------------------------------------------------------
+| Laundry Baby Blue - View Composer
+|--------------------------------------------------------------------------
+*/
+
+View::composer(
+    'website-bisnis.template.home-services.modern.laundry-baby-blue.*',
+    function ($view) {
+        $cfg = config('template.home-services.modern.laundry-baby-blue.laundry');
+
+        // Cadangan jika config tidak terbaca otomatis
+        if (!is_array($cfg)) {
+            $cfg = require config_path(
+                'template/home-services/modern/laundry-baby-blue/laundry.php'
+            );
+        }
+
+        $view->with([
+            'laundry' => $cfg,
+
+            'lbAsset' => fn (string $type, string $file = '') =>
+                asset(rtrim($cfg['assets'][$type] . '/' . $file, '/')),
+
+            'lbRoute' => fn (string $name) =>
+                route('webia.laundry-baby-blue.' . $name),
+        ]);
+    }
+);
+
+/*
+|--------------------------------------------------------------------------
+| Laundry Baby Blue - Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('webia/template/home-services/modern/laundry-baby-blue')
+    ->name('webia.laundry-baby-blue.')
+    ->group(function () {
+        $v = 'website-bisnis.template.home-services.modern.laundry-baby-blue';
+
+        Route::view('/', "$v.index")->name('home');
+        Route::view('/layanan', "$v.layanan")->name('layanan');
+        Route::view('/harga', "$v.harga")->name('harga');
+        Route::view('/pilihan-layanan', "$v.pilihan-layanan")->name('pilihan');
+        Route::view('/estimasi-waktu', "$v.estimasi-waktu")->name('estimasi');
+        Route::view('/area-layanan', "$v.area-layanan")->name('area');
+        Route::view('/cara-order', "$v.cara-order")->name('cara-order');
+        Route::view('/jam-operasional', "$v.jam-operasional")->name('jam');
+        Route::view('/order-inquiry', "$v.order-inquiry")->name('order-inquiry');
+        Route::view('/ai-chatbot', "$v.ai-chatbot")->name('ai-chatbot');
+    });
+
+Route::prefix('webia/template/home-services/minimalis/laundry-mint-fresh')
+    ->name('laundry-mint-fresh.')
+    ->group(function () {
+        $v = 'website-bisnis.template.home-services.minimalis.laundry-mint-fresh.';
+
+        Route::view('/',                 $v . 'pages.home')->name('home');
+        Route::view('/layanan',          $v . 'pages.layanan')->name('layanan');
+        Route::view('/daftar-harga',     $v . 'pages.harga')->name('harga');
+        Route::view('/opsi-layanan',     $v . 'pages.opsi')->name('opsi');
+        Route::view('/estimasi-waktu',   $v . 'pages.estimasi')->name('estimasi');
+        Route::view('/area-jemput-antar', $v . 'pages.area')->name('area');
+        Route::view('/cara-pemesanan',   $v . 'pages.cara')->name('cara');
+        Route::view('/jam-operasional',  $v . 'pages.jam')->name('jam');
+        Route::view('/order-inquiry',    $v . 'pages.inquiry')->name('inquiry');
+    });
+
+Route::prefix('webia/template/home-services/professional/laundry-classic-trust')
+    ->name('laundry-classic-trust.')
+    ->group(function () {
+        $v = 'website-bisnis.template.home-services.professional.laundry-classic-trust';
+
+        Route::view('/',                  "$v.index")->name('home');
+        Route::view('/layanan-laundry',   "$v.services")->name('services');
+        Route::view('/daftar-harga',      "$v.prices")->name('prices');
+        Route::view('/service-options',   "$v.options")->name('options');
+        Route::view('/estimasi-waktu',    "$v.turnaround")->name('turnaround');
+        Route::view('/area-jemput-antar', "$v.coverage")->name('coverage');
+        Route::view('/cara-pemesanan',    "$v.instructions")->name('instructions');
+        Route::view('/jam-operasional',   "$v.hours")->name('hours');
+        Route::view('/order-inquiry',     "$v.inquiry")->name('contact');
+    });
+
 
 // ------------------------------------------------------------------------------------------------------------------//
 

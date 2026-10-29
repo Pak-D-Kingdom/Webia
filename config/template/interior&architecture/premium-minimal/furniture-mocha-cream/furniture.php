@@ -62,10 +62,10 @@ return [
         ['label' => 'Material & Finishing', 'route' => 'materials'],
         ['label' => 'Project Gallery',      'route' => 'gallery'],
         ['label' => 'Pemesanan', 'children' => [
-            ['label' => 'Ukuran Produk',         'route' => 'dimensions'],
-            ['label' => 'Custom Order Form',     'route' => 'custom-order'],
-            ['label' => 'Production Lead Time',  'route' => 'lead-time'],
-            ['label' => 'Quotation Request',     'route' => 'quotation'],
+            ['label' => 'Ukuran Produk',        'route' => 'dimensions',   'icon' => 'ruler',     'desc' => 'Ukuran standar tiap jenis furniture'],
+            ['label' => 'Custom Order Form',    'route' => 'custom-order', 'icon' => 'clipboard', 'desc' => 'Mulai pesanan custom Anda'],
+            ['label' => 'Production Lead Time', 'route' => 'lead-time',    'icon' => 'timer',     'desc' => 'Hitung estimasi waktu produksi'],
+            ['label' => 'Quotation Request',    'route' => 'quotation',    'icon' => 'file',      'desc' => 'Minta penawaran harga'],
         ]],
     ],
 

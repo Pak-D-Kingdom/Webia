@@ -79,15 +79,47 @@
             var onScroll = function () { header.classList.toggle('is-stuck', window.scrollY > 8); };
             onScroll(); window.addEventListener('scroll', onScroll, { passive: true });
         }
-        // dropdown (klik untuk perangkat sentuh; hover ditangani CSS)
+        // dropdown navbar: hover-intent (mouse), klik (sentuh), keyboard penuh
+        var canHover = window.matchMedia && window.matchMedia('(hover: hover)').matches;
         $$('[data-fm-drop]').forEach(function (d) {
-            var btn = $('button', d);
-            btn.addEventListener('click', function (e) {
-                e.stopPropagation();
-                var open = d.classList.toggle('is-open'); btn.setAttribute('aria-expanded', open);
+            var btn = $('button', d), menu = $('.fm-menu', d), links = $$('a', menu), openT = null, closeT = null;
+            function isOpen() { return d.classList.contains('is-open'); }
+            function open(focusFirst) {
+                clearTimeout(closeT);
+                $$('[data-fm-drop].is-open').forEach(function (o) { if (o !== d) { o.classList.remove('is-open'); $('button', o).setAttribute('aria-expanded', 'false'); } });
+                d.classList.add('is-open'); btn.setAttribute('aria-expanded', 'true');
+                if (focusFirst && links[0]) setTimeout(function () { links[0].focus(); }, 40);
+            }
+            function close(returnFocus) {
+                clearTimeout(openT); d.classList.remove('is-open'); btn.setAttribute('aria-expanded', 'false');
+                if (returnFocus) btn.focus();
+            }
+            btn.addEventListener('click', function (e) { e.stopPropagation(); isOpen() ? close() : open(); });
+            if (canHover) {
+                d.addEventListener('mouseenter', function () { clearTimeout(closeT); openT = setTimeout(open, 90); });
+                d.addEventListener('mouseleave', function () { clearTimeout(openT); closeT = setTimeout(function () { close(); }, 220); });
+            }
+            btn.addEventListener('keydown', function (e) {
+                if (e.key === 'ArrowDown') { e.preventDefault(); open(true); }
+                else if (e.key === 'ArrowUp') { e.preventDefault(); open(); setTimeout(function () { links[links.length - 1].focus(); }, 40); }
             });
-            document.addEventListener('click', function (e) { if (!d.contains(e.target)) { d.classList.remove('is-open'); btn.setAttribute('aria-expanded', 'false'); } });
-            registerOverlay({ isOpen: function () { return d.classList.contains('is-open'); }, close: function () { d.classList.remove('is-open'); btn.setAttribute('aria-expanded', 'false'); btn.focus(); } });
+            menu.addEventListener('keydown', function (e) {
+                var i = links.indexOf(document.activeElement);
+                if (e.key === 'ArrowDown') { e.preventDefault(); links[(i + 1) % links.length].focus(); }
+                else if (e.key === 'ArrowUp') { e.preventDefault(); links[(i - 1 + links.length) % links.length].focus(); }
+                else if (e.key === 'Home') { e.preventDefault(); links[0].focus(); }
+                else if (e.key === 'End') { e.preventDefault(); links[links.length - 1].focus(); }
+            });
+            d.addEventListener('focusout', function (e) { if (isOpen() && !d.contains(e.relatedTarget)) close(); });
+            document.addEventListener('click', function (e) { if (!d.contains(e.target)) close(); });
+            registerOverlay({ isOpen: isOpen, close: function () { close(true); } });
+        });
+        // accordion di drawer mobile
+        $$('[data-fm-acc]').forEach(function (a) {
+            var b = $('.fm-acc__btn', a), p = $('.fm-acc__panel', a);
+            b.addEventListener('click', function () {
+                var open = p.hidden; p.hidden = !open; a.classList.toggle('is-open', open); b.setAttribute('aria-expanded', open);
+            });
         });
         // drawer
         var drawer = $('[data-fm-drawer]'), burger = $('[data-fm-drawer-open]');
@@ -446,7 +478,7 @@
                 var g = field.closest('.fm-fg') || field.closest('fieldset'), e = g && $('[data-fm-err]', g);
                 if (g) g.classList.toggle('has-error', !!msg);
                 if (e) e.textContent = msg || '';
-                if (field.setAttribute) { if (msg) field.setAttribute('aria-invalid', 'true'); else field.removeAttribute('aria-invalid'); }
+                if (field.setAttribute) { if (msg) field.setAttribute('aria-invalid', 'true'); else field.removeAttribute('aria-invalid'); if (field._fmBtn) { if (msg) field._fmBtn.setAttribute('aria-invalid', 'true'); else field._fmBtn.removeAttribute('aria-invalid'); } }
             }
             function validate() {
                 var ok = true, firstBad = null;
@@ -460,7 +492,7 @@
                 var em = form.email; if (em) { var bad2 = em.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em.value.trim()); setErr(em, bad2 ? 'Format email tidak valid.' : ''); if (bad2) { ok = false; firstBad = firstBad || em; } }
                 var need = $('[data-fm-need]', form);
                 if (need) { var any = $$('input:checked', need).length > 0; setErr(need, any ? '' : 'Pilih minimal satu kebutuhan furniture.'); if (!any) { ok = false; firstBad = firstBad || $('input', need); } }
-                if (firstBad && firstBad.focus) firstBad.focus();
+                if (firstBad) (firstBad._fmBtn || firstBad).focus();
                 return ok;
             }
             function line(label, v) { v = String(v == null ? '' : v).trim(); return v ? '• ' + label + ': ' + v : ''; }
@@ -583,6 +615,83 @@
         });
     }
 
+    /* ───────── dropdown form (select kustom di atas <select> asli) ───────── */
+    var selUid = 0;
+    function initSelects() {
+        var all = [];
+        $$('.fm-fg select').forEach(function (native) {
+            if (native.multiple || native.dataset.fmNative !== undefined) return;
+            var uid = 'fm-sel-' + (++selUid), wrap = el('div', { class: 'fm-select' }), label = native.id && $('label[for="' + native.id + '"]');
+            native.parentNode.insertBefore(wrap, native); wrap.appendChild(native);
+            native.classList.add('fm-select__native'); native.tabIndex = -1; native.setAttribute('aria-hidden', 'true');
+
+            var val = el('span', { class: 'fm-select__val' });
+            var btn = el('button', { type: 'button', class: 'fm-select__btn', role: 'combobox', 'aria-haspopup': 'listbox', 'aria-expanded': 'false', 'aria-controls': uid + '-list', id: uid + '-btn' }, val, icon('chevron', 'fm-select__caret'));
+            if (label) { if (!label.id) label.id = uid + '-label'; btn.setAttribute('aria-labelledby', label.id + ' ' + uid + '-btn'); }
+            if (native.required) btn.setAttribute('aria-required', 'true');
+            var list = el('ul', { class: 'fm-select__list', role: 'listbox', id: uid + '-list', 'aria-labelledby': label ? label.id : null, hidden: true });
+            var opts = $$('option', native).map(function (o, i) {
+                var li = el('li', { class: 'fm-select__opt' + (o.value === '' ? ' is-placeholder' : ''), role: 'option', id: uid + '-o' + i, 'data-i': i }, el('span', { text: o.textContent }), icon('check'));
+                list.appendChild(li); return li;
+            });
+            wrap.append(btn, list);
+            native._fmBtn = btn;
+
+            var act = -1, typed = '', typedT = null;
+            function sync() {
+                var i = native.selectedIndex < 0 ? 0 : native.selectedIndex, o = native.options[i];
+                val.textContent = o ? o.textContent : ''; val.classList.toggle('is-placeholder', !o || o.value === '');
+                opts.forEach(function (li, k) { li.setAttribute('aria-selected', k === i ? 'true' : 'false'); });
+                if (native.getAttribute('aria-invalid')) btn.setAttribute('aria-invalid', 'true'); else btn.removeAttribute('aria-invalid');
+            }
+            function setActive(i) {
+                act = Math.max(0, Math.min(opts.length - 1, i));
+                opts.forEach(function (li, k) { li.classList.toggle('is-active', k === act); });
+                btn.setAttribute('aria-activedescendant', opts[act].id); opts[act].scrollIntoView({ block: 'nearest' });
+            }
+            function open() {
+                if (!list.hidden) return;
+                $$('.fm-select.is-open').forEach(function (w) { w._fmClose && w._fmClose(); });
+                list.hidden = false; wrap.classList.add('is-open'); btn.setAttribute('aria-expanded', 'true');
+                var r = btn.getBoundingClientRect(), need = Math.min(264, list.scrollHeight) + 16;
+                wrap.classList.toggle('is-up', window.innerHeight - r.bottom < need && r.top > need);
+                setActive(native.selectedIndex < 0 ? 0 : native.selectedIndex);
+            }
+            function close() { if (list.hidden) return; list.hidden = true; wrap.classList.remove('is-open', 'is-up'); btn.setAttribute('aria-expanded', 'false'); btn.removeAttribute('aria-activedescendant'); }
+            function choose(i) {
+                var changed = native.selectedIndex !== i; native.selectedIndex = i; sync(); close(); btn.focus();
+                if (changed) { native.dispatchEvent(new Event('input', { bubbles: true })); native.dispatchEvent(new Event('change', { bubbles: true })); }
+            }
+            wrap._fmClose = close; native._fmSync = sync;
+
+            btn.addEventListener('click', function () { list.hidden ? open() : close(); });
+            opts.forEach(function (li, k) {
+                li.addEventListener('mousedown', function (e) { e.preventDefault(); });
+                li.addEventListener('click', function () { choose(k); });
+                li.addEventListener('mousemove', function () { if (act !== k) setActive(k); });
+            });
+            btn.addEventListener('keydown', function (e) {
+                var k = e.key;
+                if (k === 'ArrowDown' || k === 'ArrowUp') { e.preventDefault(); if (list.hidden) open(); else setActive(act + (k === 'ArrowDown' ? 1 : -1)); }
+                else if (k === 'Home' && !list.hidden) { e.preventDefault(); setActive(0); }
+                else if (k === 'End' && !list.hidden) { e.preventDefault(); setActive(opts.length - 1); }
+                else if (k === 'Enter' || k === ' ') { e.preventDefault(); if (list.hidden) open(); else choose(act); }
+                else if (k === 'Tab') { close(); }
+                else if (k.length === 1 && /\S/.test(k)) { // typeahead
+                    clearTimeout(typedT); typed += k.toLowerCase(); typedT = setTimeout(function () { typed = ''; }, 600);
+                    var hit = opts.map(function (li, i) { return i; }).filter(function (i) { return native.options[i].textContent.toLowerCase().indexOf(typed) === 0; })[0];
+                    if (hit != null) { if (list.hidden) open(); setActive(hit); }
+                }
+            });
+            btn.addEventListener('blur', function () { setTimeout(function () { if (!wrap.contains(document.activeElement)) close(); }, 0); });
+            if (label) label.addEventListener('click', function (e) { e.preventDefault(); btn.focus(); });
+            native.addEventListener('change', sync);
+            sync(); all.push(wrap);
+        });
+        document.addEventListener('click', function (e) { all.forEach(function (w) { if (!w.contains(e.target)) w._fmClose(); }); });
+        registerOverlay({ isOpen: function () { return all.some(function (w) { return w.classList.contains('is-open'); }); }, close: function () { all.forEach(function (w) { w._fmClose(); }); } });
+    }
+
     /* ───────── sinkron tampilan chip radio/checkbox (fallback tanpa :has) ───────── */
     function initChips() {
         function sync() { $$('.fm-chip--radio, .fm-chip--check').forEach(function (l) { var i = $('input', l); l.classList.toggle('is-active', !!(i && i.checked)); }); }
@@ -592,7 +701,7 @@
     /* ───────── boot ───────── */
     function boot() {
         initHeader(); initSearch(); initFav(); initHero(); initVideo(); initReveal();
-        initCatalog(); initConfig(); initMaterials(); initDims(); initGallery(); initForms(); initLead(); initChat(); initNews(); initChips();
+        initCatalog(); initConfig(); initMaterials(); initDims(); initGallery(); initForms(); initLead(); initChat(); initNews(); initChips(); initSelects();
     }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
 })();
