@@ -3256,7 +3256,12 @@ a {
 }
 
 .customer-main {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding-inline: clamp(1rem, 2.5vw, 2.5rem);
     padding-top: clamp(1.5rem, 3vw, 2.5rem);
+    padding-bottom: 2rem;
 }
 
 /* Panel konsumen satu kolom penuh, bukan grid dua kolom halaman guest */
