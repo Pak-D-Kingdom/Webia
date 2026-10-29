@@ -50,6 +50,26 @@ class seedersputri extends Seeder
                 'sort_order' => 52,
             ],
 
+            // Template 3 — Technology & IT · Data Analytics · Luxury · Pastel Mix (Sesuai Screenshot)
+            [
+                'name' => 'AuraMetrics Studio — Data Analytics Luxury Pastel Mix',
+                'slug' => 'technology-dataanalytics-luxury-pastelmix-putri',
+                'category_slug' => 'technology-it',
+                'category_label' => 'Technology & IT',
+                'business_types' => ['Data Analytics'],
+                'design_style' => 'Luxury',
+                'color_theme' => 'Pastel Mix',
+                'description' => 'Website konsultan analitik data mewah bertema Pastel Mix untuk AuraMetrics Studio. Solusi eksekutif business intelligence, predictive AI, lakehouse modern, visualisasi KPI mewah, kalkulator ROI, FAQ interaktif, WhatsApp concierge, dan AuraData AI.',
+                'preview_style' => 'preview-company',
+                'eyebrow' => 'BESPOKE ENTERPRISE DATA INTELLIGENCE',
+                'headline' => 'Presisi Data Mewah,<br>Keputusan Bernilai Tinggi.',
+                'tag' => 'Technology & IT · Data Analytics · Luxury · Pastel Mix',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/technology-dataanalytics-luxury-pastelmix-putri',
+                'is_active' => true,
+                'sort_order' => 54,
+            ],
+
             // Template Default — Technology & IT · Software House · Professional
             [
                 'name' => 'Nexora Digital — Software House',

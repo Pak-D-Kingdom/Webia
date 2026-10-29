@@ -328,6 +328,14 @@ Route::view(
 )->name('webia.template.technology-softwarehouse-minimalist-softpink-putri');
 
 // =====================================================
+// WEBIA - TECHNOLOGY & IT — PUTRI (Data Analytics Luxury Pastel Mix)
+// =====================================================
+Route::view(
+    '/webia/template/technology-dataanalytics-luxury-pastelmix-putri',
+    'website-bisnis.templates.technology.data-analytics.technology-dataanalytics-luxury-pastelmix-putri'
+)->name('webia.template.technology-dataanalytics-luxury-pastelmix-putri');
+
+// =====================================================
 // WEBIA - SPORTS & FITNESS (GYM & FITNESS)
 // =====================================================
 Route::view(
