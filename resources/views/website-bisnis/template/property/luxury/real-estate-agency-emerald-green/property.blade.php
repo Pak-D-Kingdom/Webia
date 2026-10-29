@@ -4,7 +4,6 @@
     $blocks = [
         ['partials.page-header'],
         ['sections.listing'],
-        ['sections.inquiry'],
     ];
 @endphp
 

@@ -16,23 +16,23 @@
 return [
 
     'meta' => [
-        'title'       => 'RoseGlow Clinic — Beauty & Aesthetic Care',
+        'title' => 'RoseGlow Clinic — Beauty & Aesthetic Care',
         'description' => 'Klinik kecantikan & aesthetic dengan dokter berpengalaman, teknologi modern, dan produk premium.',
     ],
 
     'brand' => [
-        'name'    => 'RoseGlow Clinic',
+        'name' => 'RoseGlow Clinic',
         'tagline' => 'Beauty & Aesthetic Care',
-        'slogan'  => 'Kecantikan adalah investasi untuk diri sendiri',
+        'slogan' => 'Kecantikan adalah investasi untuk diri sendiri',
     ],
 
     'contact' => [
-        'phone'     => '+62 812 3456 7890',
-        'whatsapp'  => '6281234567890', // tombol WhatsApp melayang & asisten AI (format internasional tanpa + / spasi)
+        'phone' => '+62 812 3456 7890',
+        'whatsapp' => '6281234567890', // tombol WhatsApp melayang & asisten AI (format internasional tanpa + / spasi)
         'booking_whatsapp' => '62895630300345', // tujuan form Booking Appointment (0895630300345)
-        'email'     => 'info@roseglowclinic.id',
-        'address'   => 'Jl. Melati No. 28, Jakarta Selatan',
-        'maps_url'  => 'https://www.google.com/maps/search/?api=1&query=Jl.+Melati+No.+28+Jakarta+Selatan',
+        'email' => 'info@roseglowclinic.id',
+        'address' => 'Jl. Melati No. 28, Jakarta Selatan',
+        'maps_url' => 'https://www.google.com/maps/search/?api=1&query=Jl.+Melati+No.+28+Jakarta+Selatan',
         'hours_short' => 'Sen – Jum 08.00 – 20.00',
     ],
 
@@ -63,9 +63,9 @@ return [
     ],
 
     'hero' => [
-        'eyebrow'   => 'Klinik Kecantikan & Aesthetic',
-        'title'     => 'Tampil Lebih Percaya Diri dengan Perawatan Terbaik',
-        'text'      => 'Perawatan kulit dan kecantikan profesional dengan teknologi modern dan ditangani oleh dokter ahli berpengalaman.',
+        'eyebrow' => 'Klinik Kecantikan & Aesthetic',
+        'title' => 'Tampil Lebih Percaya Diri dengan Perawatan Terbaik',
+        'text' => 'Perawatan kulit dan kecantikan profesional dengan teknologi modern dan ditangani oleh dokter ahli berpengalaman.',
         'image_alt' => 'Pasien tersenyum dengan kulit sehat di ruang perawatan RoseGlow Clinic',
         'trust' => [
             ['icon' => 'bi-person-heart',    'label' => 'Dokter Berpengalaman'],
@@ -83,8 +83,8 @@ return [
 
     'services_intro' => [
         'eyebrow' => 'Layanan Unggulan',
-        'title'   => 'Perawatan Terbaik untuk Kecantikan Anda',
-        'text'    => 'Kami menyediakan berbagai layanan perawatan kulit dan kecantikan dengan teknologi terkini dan ditangani oleh dokter ahli.',
+        'title' => 'Perawatan Terbaik untuk Kecantikan Anda',
+        'text' => 'Kami menyediakan berbagai layanan perawatan kulit dan kecantikan dengan teknologi terkini dan ditangani oleh dokter ahli.',
     ],
 
     'services' => [
@@ -134,32 +134,32 @@ return [
 
     'doctors_intro' => [
         'eyebrow' => 'Dokter & Staff',
-        'title'   => 'Tim Profesional Kami',
-        'text'    => 'Didukung oleh dokter spesialis dan tim terlatih yang siap memberikan pelayanan terbaik untuk Anda.',
+        'title' => 'Tim Profesional Kami',
+        'text' => 'Didukung oleh dokter spesialis dan tim terlatih yang siap memberikan pelayanan terbaik untuk Anda.',
     ],
 
     'doctors' => [
         ['slug' => 'amanda-putri', 'name' => 'dr. Amanda Putri, Sp.KK', 'role' => 'Dokter Spesialis Kulit & Kelamin', 'tag' => 'Dokter',
-         'image' => 'doctor-1.jpg', 'exp' => '10 tahun', 'focus' => 'Acne, anti aging, laser',
-         'bio' => 'Menangani masalah kulit mulai dari jerawat hingga peremajaan dengan pendekatan yang natural.',
-         'days' => ['Senin', 'Rabu', 'Jumat'], 'time' => '09.00 – 17.00'],
+            'image' => 'doctor-1.jpg', 'exp' => '10 tahun', 'focus' => 'Acne, anti aging, laser',
+            'bio' => 'Menangani masalah kulit mulai dari jerawat hingga peremajaan dengan pendekatan yang natural.',
+            'days' => ['Senin', 'Rabu', 'Jumat'], 'time' => '09.00 – 17.00'],
         ['slug' => 'rizky-maulana', 'name' => 'dr. Rizky Maulana, Sp.AK', 'role' => 'Spesialis Aesthetic', 'tag' => 'Dokter',
-         'image' => 'doctor-2.jpg', 'exp' => '8 tahun', 'focus' => 'Skin booster, body contouring',
-         'bio' => 'Berfokus pada prosedur estetika yang aman dengan hasil yang tampak natural.',
-         'days' => ['Selasa', 'Kamis', 'Sabtu'], 'time' => '10.00 – 18.00'],
+            'image' => 'doctor-2.jpg', 'exp' => '8 tahun', 'focus' => 'Skin booster, body contouring',
+            'bio' => 'Berfokus pada prosedur estetika yang aman dengan hasil yang tampak natural.',
+            'days' => ['Selasa', 'Kamis', 'Sabtu'], 'time' => '10.00 – 18.00'],
         ['slug' => 'sari-wulandari', 'name' => 'dr. Sari Wulandari', 'role' => 'Dokter Umum', 'tag' => 'Dokter',
-         'image' => 'doctor-3.jpg', 'exp' => '6 tahun', 'focus' => 'Konsultasi awal & skincare',
-         'bio' => 'Melakukan konsultasi awal dan menyusun rencana perawatan sesuai kondisi kulit pasien.',
-         'days' => ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'], 'time' => '08.00 – 16.00'],
+            'image' => 'doctor-3.jpg', 'exp' => '6 tahun', 'focus' => 'Konsultasi awal & skincare',
+            'bio' => 'Melakukan konsultasi awal dan menyusun rencana perawatan sesuai kondisi kulit pasien.',
+            'days' => ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'], 'time' => '08.00 – 16.00'],
         ['slug' => 'nadia-lestari', 'name' => 'Nadia Lestari', 'role' => 'Therapist', 'tag' => 'Therapist',
-         'image' => 'doctor-4.jpg', 'exp' => '5 tahun', 'focus' => 'Facial & perawatan tubuh',
-         'bio' => 'Terapis berpengalaman untuk facial treatment dan perawatan tubuh yang nyaman.',
-         'days' => ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'], 'time' => '09.00 – 18.00'],
+            'image' => 'doctor-4.jpg', 'exp' => '5 tahun', 'focus' => 'Facial & perawatan tubuh',
+            'bio' => 'Terapis berpengalaman untuk facial treatment dan perawatan tubuh yang nyaman.',
+            'days' => ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'], 'time' => '09.00 – 18.00'],
     ],
 
     'schedule' => [
         'title' => 'Jadwal Praktik',
-        'text'  => 'Lihat jadwal dokter dan pilih waktu yang sesuai dengan Anda.',
+        'text' => 'Lihat jadwal dokter dan pilih waktu yang sesuai dengan Anda.',
         'hours' => [
             ['day' => 'Senin - Jumat', 'time' => '08.00 - 20.00', 'open' => true],
             ['day' => 'Sabtu',         'time' => '08.00 - 16.00', 'open' => true],
@@ -171,69 +171,69 @@ return [
 
     'location' => [
         'title' => 'Lokasi Klinik',
-        'text'  => 'Klinik kami berada di lokasi strategis dan mudah diakses dengan berbagai moda transportasi.',
+        'text' => 'Klinik kami berada di lokasi strategis dan mudah diakses dengan berbagai moda transportasi.',
         'badge' => 'Mudah Dijangkau',
         'image_alt' => 'Gedung RoseGlow Clinic',
     ],
 
     'booking' => [
         'title' => 'Booking Appointment',
-        'text'  => 'Konsultasikan kebutuhan perawatan Anda bersama tim dokter kami.',
+        'text' => 'Konsultasikan kebutuhan perawatan Anda bersama tim dokter kami.',
         'button' => 'Booking Sekarang',
         'times' => ['09.00', '10.00', '11.00', '13.00', '14.00', '15.00', '16.00', '17.00', '18.00'],
     ],
 
     'faq' => [
         ['cat' => 'Perawatan', 'q' => 'Apakah perawatan ini aman untuk kulit sensitif?',
-         'a' => 'Aman. Dokter akan menilai kondisi kulit Anda terlebih dahulu, lalu memilih produk dan tindakan yang sesuai untuk kulit sensitif.'],
+            'a' => 'Aman. Dokter akan menilai kondisi kulit Anda terlebih dahulu, lalu memilih produk dan tindakan yang sesuai untuk kulit sensitif.'],
         ['cat' => 'Perawatan', 'q' => 'Berapa lama hasil perawatan bisa terlihat?',
-         'a' => 'Beberapa perawatan seperti facial memberi efek segar segera. Perawatan lain seperti laser atau anti aging memerlukan beberapa sesi; dokter akan menjelaskan estimasinya saat konsultasi.'],
+            'a' => 'Beberapa perawatan seperti facial memberi efek segar segera. Perawatan lain seperti laser atau anti aging memerlukan beberapa sesi; dokter akan menjelaskan estimasinya saat konsultasi.'],
         ['cat' => 'Perawatan', 'q' => 'Apakah ada efek samping setelah treatment?',
-         'a' => 'Kemerahan ringan atau rasa hangat bisa muncul sesaat setelah tindakan tertentu dan biasanya mereda dalam waktu singkat. Dokter akan memberi panduan perawatan lanjutan.'],
+            'a' => 'Kemerahan ringan atau rasa hangat bisa muncul sesaat setelah tindakan tertentu dan biasanya mereda dalam waktu singkat. Dokter akan memberi panduan perawatan lanjutan.'],
         ['cat' => 'Booking', 'q' => 'Bagaimana cara membuat janji?',
-         'a' => 'Isi formulir Booking Appointment di website ini atau hubungi kami melalui WhatsApp. Tim kami akan mengonfirmasi jadwal Anda.'],
+            'a' => 'Isi formulir Booking Appointment di website ini atau hubungi kami melalui WhatsApp. Tim kami akan mengonfirmasi jadwal Anda.'],
         ['cat' => 'Booking', 'q' => 'Apakah saya bisa mengubah atau membatalkan jadwal?',
-         'a' => 'Bisa. Mohon informasikan minimal 24 jam sebelum jadwal agar slot dapat digunakan pasien lain.'],
+            'a' => 'Bisa. Mohon informasikan minimal 24 jam sebelum jadwal agar slot dapat digunakan pasien lain.'],
         ['cat' => 'Booking', 'q' => 'Apakah perlu konsultasi sebelum treatment?',
-         'a' => 'Ya. Konsultasi dengan dokter dilakukan lebih dulu agar perawatan sesuai kondisi dan tujuan Anda.'],
+            'a' => 'Ya. Konsultasi dengan dokter dilakukan lebih dulu agar perawatan sesuai kondisi dan tujuan Anda.'],
         ['cat' => 'Pembayaran', 'q' => 'Metode pembayaran apa saja yang diterima?',
-         'a' => 'Kami menerima tunai, transfer bank, kartu debit/kredit, dan dompet digital.'],
+            'a' => 'Kami menerima tunai, transfer bank, kartu debit/kredit, dan dompet digital.'],
         ['cat' => 'Pembayaran', 'q' => 'Apakah harga yang tertera sudah final?',
-         'a' => 'Harga "Mulai dari" adalah harga dasar. Biaya akhir bergantung pada kebutuhan dan rencana perawatan dari dokter.'],
+            'a' => 'Harga "Mulai dari" adalah harga dasar. Biaya akhir bergantung pada kebutuhan dan rencana perawatan dari dokter.'],
         ['cat' => 'Keamanan', 'q' => 'Apakah data pribadi saya aman?',
-         'a' => 'Data Anda hanya digunakan untuk keperluan pelayanan dan tidak dibagikan ke pihak lain tanpa persetujuan. Lihat Kebijakan Privasi kami.'],
+            'a' => 'Data Anda hanya digunakan untuk keperluan pelayanan dan tidak dibagikan ke pihak lain tanpa persetujuan. Lihat Kebijakan Privasi kami.'],
         ['cat' => 'Keamanan', 'q' => 'Apakah produk yang digunakan sudah terdaftar?',
-         'a' => 'Kami menggunakan produk premium yang sesuai standar dan digunakan sesuai prosedur klinik.'],
+            'a' => 'Kami menggunakan produk premium yang sesuai standar dan digunakan sesuai prosedur klinik.'],
     ],
 
     'policy' => [
         ['id' => 'privasi', 'icon' => 'bi-shield-lock', 'title' => 'Kebijakan Privasi',
-         'summary' => 'Cara kami mengumpulkan, menggunakan, dan melindungi data pribadi Anda.',
-         'items' => [
-            'Kami mengumpulkan data seperti nama, nomor telepon, email, dan keluhan kulit untuk keperluan reservasi dan pelayanan.',
-            'Data tidak dijual atau dibagikan kepada pihak ketiga tanpa persetujuan Anda, kecuali diwajibkan oleh hukum.',
-            'Informasi kesehatan diperlakukan sebagai data sensitif dan hanya diakses oleh tenaga yang menangani Anda.',
-            'Anda dapat meminta akses, perubahan, atau penghapusan data melalui kontak resmi klinik.',
-         ]],
+            'summary' => 'Cara kami mengumpulkan, menggunakan, dan melindungi data pribadi Anda.',
+            'items' => [
+                'Kami mengumpulkan data seperti nama, nomor telepon, email, dan keluhan kulit untuk keperluan reservasi dan pelayanan.',
+                'Data tidak dijual atau dibagikan kepada pihak ketiga tanpa persetujuan Anda, kecuali diwajibkan oleh hukum.',
+                'Informasi kesehatan diperlakukan sebagai data sensitif dan hanya diakses oleh tenaga yang menangani Anda.',
+                'Anda dapat meminta akses, perubahan, atau penghapusan data melalui kontak resmi klinik.',
+            ]],
         ['id' => 'syarat', 'icon' => 'bi-file-earmark-text', 'title' => 'Syarat & Ketentuan',
-         'summary' => 'Ketentuan penggunaan layanan dan website RoseGlow Clinic.',
-         'items' => [
-            'Seluruh tindakan dilakukan setelah konsultasi dan persetujuan pasien.',
-            'Harga dapat berubah sewaktu-waktu; harga final dikonfirmasi saat konsultasi.',
-            'Hasil perawatan dapat berbeda pada setiap individu sesuai kondisi kulit dan kepatuhan perawatan lanjutan.',
-            'Konten pada website ini bersifat informatif dan bukan pengganti konsultasi medis.',
-         ]],
+            'summary' => 'Ketentuan penggunaan layanan dan website RoseGlow Clinic.',
+            'items' => [
+                'Seluruh tindakan dilakukan setelah konsultasi dan persetujuan pasien.',
+                'Harga dapat berubah sewaktu-waktu; harga final dikonfirmasi saat konsultasi.',
+                'Hasil perawatan dapat berbeda pada setiap individu sesuai kondisi kulit dan kepatuhan perawatan lanjutan.',
+                'Konten pada website ini bersifat informatif dan bukan pengganti konsultasi medis.',
+            ]],
         ['id' => 'pembatalan', 'icon' => 'bi-calendar-x', 'title' => 'Pembatalan & Reschedule',
-         'summary' => 'Aturan perubahan jadwal agar semua pasien terlayani dengan baik.',
-         'items' => [
-            'Perubahan atau pembatalan jadwal diinformasikan paling lambat 24 jam sebelumnya.',
-            'Keterlambatan lebih dari 15 menit dapat membuat jadwal dipindahkan sesuai ketersediaan.',
-            'Jadwal dokter dapat berubah karena keadaan tertentu; kami akan menginformasikan lebih dulu.',
-         ]],
+            'summary' => 'Aturan perubahan jadwal agar semua pasien terlayani dengan baik.',
+            'items' => [
+                'Perubahan atau pembatalan jadwal diinformasikan paling lambat 24 jam sebelumnya.',
+                'Keterlambatan lebih dari 15 menit dapat membuat jadwal dipindahkan sesuai ketersediaan.',
+                'Jadwal dokter dapat berubah karena keadaan tertentu; kami akan menginformasikan lebih dulu.',
+            ]],
     ],
 
     'footer' => [
-        'nav'  => [
+        'nav' => [
             ['label' => 'Beranda', 'route' => 'index'],
             ['label' => 'Layanan', 'route' => 'services'],
             ['label' => 'Dokter & Staff', 'route' => 'doctors'],
@@ -249,24 +249,24 @@ return [
     ],
 
     'whatsapp' => [
-        'label'   => 'Chat WhatsApp',
+        'label' => 'Chat WhatsApp',
         'message' => 'Halo RoseGlow Clinic, saya ingin bertanya tentang perawatan.',
     ],
 
     // AI Beauty Assistant — rule based (statis). Backend dapat mengganti
     // dengan endpoint lewat atribut data-endpoint pada #rgAssistant.
     'assistant' => [
-        'name'     => 'AI Beauty Assistant',
+        'name' => 'AI Beauty Assistant',
         'subtitle' => 'Siap membantu pertanyaan seputar perawatan, layanan, jadwal, dan informasi klinik.',
-        'hello'    => 'Halo!',
+        'hello' => 'Halo!',
         'greeting' => 'Ada yang bisa saya bantu hari ini?',
-        'teaser'   => 'Tanya Beauty Assistant',
+        'teaser' => 'Tanya Beauty Assistant',
         'placeholder' => 'Tulis pertanyaanmu...',
         'fallback' => 'Maaf, saya belum menemukan jawabannya. Anda bisa bertanya lewat WhatsApp agar dibantu tim kami.',
         'quick' => [
             ['key' => 'layanan', 'icon' => 'bi-tags',          'label' => 'Info layanan & harga'],
             ['key' => 'tips',    'icon' => 'bi-bandaid',       'label' => 'Tips perawatan kulit'],
-            ['key' => 'jadwal',  'icon' => 'bi-calendar2-week','label' => 'Jadwal dokter'],
+            ['key' => 'jadwal',  'icon' => 'bi-calendar2-week', 'label' => 'Jadwal dokter'],
             ['key' => 'lokasi',  'icon' => 'bi-geo-alt',       'label' => 'Lokasi klinik'],
         ],
         // 5 tombol ikon di bagian bawah panel
@@ -280,12 +280,12 @@ return [
         // kata kunci => key jawaban
         'keywords' => [
             'layanan' => ['layanan', 'harga', 'biaya', 'treatment', 'tarif', 'facial', 'laser', 'booster', 'jerawat', 'acne', 'body'],
-            'tips'    => ['tips', 'cara', 'rawat', 'perawatan kulit', 'kulit kering', 'kulit berminyak', 'sunscreen', 'skincare'],
-            'jadwal'  => ['jadwal', 'jam', 'buka', 'praktik', 'dokter', 'hari'],
-            'lokasi'  => ['lokasi', 'alamat', 'dimana', 'di mana', 'maps', 'peta'],
+            'tips' => ['tips', 'cara', 'rawat', 'perawatan kulit', 'kulit kering', 'kulit berminyak', 'sunscreen', 'skincare'],
+            'jadwal' => ['jadwal', 'jam', 'buka', 'praktik', 'dokter', 'hari'],
+            'lokasi' => ['lokasi', 'alamat', 'dimana', 'di mana', 'maps', 'peta'],
             'booking' => ['booking', 'janji', 'reservasi', 'daftar', 'appointment'],
-            'klinik'  => ['klinik', 'kontak', 'telepon', 'email', 'whatsapp', 'wa'],
-            'produk'  => ['produk', 'serum', 'krim', 'sunscreen'],
+            'klinik' => ['klinik', 'kontak', 'telepon', 'email', 'whatsapp', 'wa'],
+            'produk' => ['produk', 'serum', 'krim', 'sunscreen'],
             'edukasi' => ['edukasi', 'artikel', 'belajar'],
         ],
         'tips' => 'Tiga dasar perawatan kulit harian: bersihkan wajah pagi & malam, pakai pelembap sesuai jenis kulit, dan gunakan sunscreen setiap pagi. Untuk keluhan khusus, konsultasikan dengan dokter kami.',
@@ -294,6 +294,6 @@ return [
     ],
 
     'images_dir' => 'images/website-bisnis/template/healthcare/elegan/klinik-kecantikan-rose-gold',
-    'css'        => 'css/website-bisnis/template/healthcare/elegan/klinik-kecantikan-rose-gold/klinik-kecantikan.css',
-    'js'         => 'js/website-bisnis/template/healthcare/elegan/klinik-kecantikan-rose-gold/klinik-kecantikan.js',
+    'css' => 'css/website-bisnis/template/healthcare/elegan/klinik-kecantikan-rose-gold/klinik-kecantikan.css',
+    'js' => 'js/website-bisnis/template/healthcare/elegan/klinik-kecantikan-rose-gold/klinik-kecantikan.js',
 ];

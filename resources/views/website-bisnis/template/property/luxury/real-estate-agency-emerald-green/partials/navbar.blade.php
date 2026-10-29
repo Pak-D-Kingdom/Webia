@@ -18,12 +18,12 @@
                     </li>
                 @endforeach
             </ul>
-            <a class="rea-btn rea-btn--dark rea-nav__cta rea-nav__cta--mobile" href="{{ $route('contact', '#inquiry') }}">Get In Touch {{ $icon('arrow') }}</a>
+            <a class="rea-btn rea-btn--dark rea-nav__cta rea-nav__cta--mobile" href="{{ $route('booking') }}">Book a Viewing {{ $icon('arrow') }}</a>
         </nav>
 
         <div class="rea-nav__actions">
             <button class="rea-iconbtn" type="button" aria-label="Search" aria-expanded="false" aria-controls="rea-search" data-search-toggle>{{ $icon('search') }}</button>
-            <a class="rea-btn rea-btn--dark rea-nav__cta" href="{{ $route('contact', '#inquiry') }}">Get In Touch {{ $icon('arrow') }}</a>
+            <a class="rea-btn rea-btn--dark rea-nav__cta" href="{{ $route('booking') }}">Book a Viewing {{ $icon('arrow') }}</a>
             <button class="rea-iconbtn rea-nav__toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="rea-menu" data-nav-toggle>
                 {{ $icon('menu', 'rea-icon--menu') }}{{ $icon('x', 'rea-icon--close') }}
             </button>
