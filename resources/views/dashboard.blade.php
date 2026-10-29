@@ -111,30 +111,42 @@
             </div>
         @endif
 
-        <div class="dashboard-empty customer-recent-card">
-            <div class="order-heading customer-recent-head">
-                <h2>Pesanan terbaru</h2>
-                <a class="customer-recent-link" href="{{ route('orders.index') }}">
-                    Lihat semua pesanan
-                    <span aria-hidden="true" class="material-symbols-outlined">chevron_right</span>
+        @if ($orders->isNotEmpty())
+            <div class="dashboard-empty customer-recent-card">
+                <div class="order-heading customer-recent-head">
+                    <h2>Pesanan terbaru</h2>
+                    <a class="customer-recent-link" href="{{ route('orders.index') }}">
+                        Lihat semua pesanan
+                        <span aria-hidden="true" class="material-symbols-outlined">chevron_right</span>
+                    </a>
+                </div>
+                <div class="admin-list dashboard-history-list customer-recent-list">
+                    @foreach ($orders->take(5) as $order)
+                        <article class="admin-list-item">
+                            <div>
+                                <h3>{{ $order->package->name }}</h3>
+                                <p>Nomor: {{ $order->order_number }}</p>
+                            </div>
+                            <div class="list-item-meta">
+                                <x-status-pill :status="$order->status" />
+                                <a class="customer-detail-btn" href="{{ route('orders.show', $order) }}">Detail</a>
+                            </div>
+                        </article>
+                    @endforeach
+                </div>
+            </div>
+        @else
+            <section class="customer-empty" aria-labelledby="customer-empty-title">
+                <span class="customer-empty-icon" aria-hidden="true">
+                    <span class="material-symbols-outlined">shopping_bag</span>
+                </span>
+                <h2 id="customer-empty-title">Belum ada pesanan</h2>
+                <p>Pilih template website untuk membuat pesanan pertamamu.</p>
+                <a class="customer-empty-cta" href="{{ route('collections') }}">
+                    <span aria-hidden="true" class="material-symbols-outlined">web</span>
+                    Pilih template
                 </a>
-            </div>
-            <div class="admin-list dashboard-history-list customer-recent-list">
-                @forelse ($orders->take(5) as $order)
-                    <article class="admin-list-item">
-                        <div>
-                            <h3>{{ $order->package->name }}</h3>
-                            <p>Nomor: {{ $order->order_number }}</p>
-                        </div>
-                        <div class="list-item-meta">
-                            <x-status-pill :status="$order->status" />
-                            <a class="customer-detail-btn" href="{{ route('orders.show', $order) }}">Detail</a>
-                        </div>
-                    </article>
-                @empty
-                    <div role="status"><h3>Belum ada pesanan</h3><p>Pilih template dari katalog WEBIA untuk memulai.</p><a class="account-submit" href="{{ route('collections') }}">Pilih template</a></div>
-                @endforelse
-            </div>
-        </div>
+            </section>
+        @endif
     </section>
 @endsection
