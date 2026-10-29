@@ -4,11 +4,8 @@
     $detail = true;   // header & judul tab memakai data properti
     $blocks = [
         ['partials.page-header'],
-        ['sections.gallery', ['head' => true]],
-        ['sections.specification', ['head' => true]],
-        ['sections.price'],
-        ['sections.booking'],
-        ['sections.location'],
+        ['partials.detail-nav'],
+        ['sections.detail'],   // galeri, info & harga, spesifikasi, fasilitas, deskripsi, lokasi
     ];
 @endphp
 

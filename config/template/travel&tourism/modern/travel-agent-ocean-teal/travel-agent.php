@@ -1,0 +1,291 @@
+<?php
+
+/*
+|--------------------------------------------------------------------------
+| Template: Travel Agent · Modern · Ocean Teal ("OceanJourney")
+|--------------------------------------------------------------------------
+| Seluruh konten statis tampilan ada di file ini (tanpa closure, aman untuk
+| `php artisan config:cache`). Dibaca di web.php lewat:
+|   config('template.travel&tourism.modern.travel-agent-ocean-teal.travel-agent')
+|
+| Ganti isi array di bawah untuk mengubah teks, harga, jadwal, dll.
+| Nama file gambar mengacu ke:
+|   public/images/website-bisnis/template/travel&tourism/modern/travel-agent-ocean-teal/
+*/
+
+return [
+
+    'brand' => [
+        'name'    => 'OceanJourney',
+        'tagline' => 'Travel & Tour Operator',
+        'about'   => 'Operator tour terpercaya untuk liburan domestik dan internasional, dengan itinerary jelas dan pendampingan penuh dari berangkat sampai pulang.',
+        'credit'  => '© 2026 WEBIA by D-KREASI. Seluruh hak cipta dilindungi.',
+    ],
+
+    'contact' => [
+        'phone'    => '0895 6303 00345',
+        'tel'      => '+62895630300345',
+        'whatsapp' => '62895630300345', // format internasional tanpa +
+        'email'    => 'halo@oceanjourney.id',
+        'address'  => 'Jl. Pantai Indah No. 88, Jakarta Utara',
+        'hours'    => 'Senin–Sabtu, 08.00–20.00 WIB',
+    ],
+
+    'social' => [
+        ['icon' => 'facebook',  'label' => 'Facebook',  'url' => 'https://www.facebook.com/'],
+        ['icon' => 'instagram', 'label' => 'Instagram', 'url' => 'https://www.instagram.com/'],
+        ['icon' => 'youtube',   'label' => 'YouTube',   'url' => 'https://www.youtube.com/'],
+        ['icon' => 'tiktok',    'label' => 'TikTok',    'url' => 'https://www.tiktok.com/'],
+    ],
+
+    // key = nama route/view, value = label menu
+    'nav' => [
+        'index'      => 'Beranda',
+        'destinasi'  => 'Destinasi',
+        'paket-tour' => 'Paket Tour',
+        'harga'      => 'Harga',
+        'jadwal'     => 'Jadwal Keberangkatan',
+        'galeri'     => 'Galeri',
+        'testimoni'  => 'Testimoni',
+        'inquiry'    => 'Inquiry',
+    ],
+
+    'destinations' => [
+        ['slug' => 'bali', 'name' => 'Bali', 'country' => 'Indonesia', 'type' => 'domestik', 'image' => 'dest-bali.jpg',
+         'summary' => 'Pura di atas air, sawah berundak, dan matahari terbenam di tebing Uluwatu.',
+         'highlights' => ['Ubud & Kintamani', 'Uluwatu', 'Pantai Jimbaran'], 'best' => 'April – Oktober'],
+        ['slug' => 'labuan-bajo', 'name' => 'Labuan Bajo', 'country' => 'Indonesia', 'type' => 'domestik', 'image' => 'dest-labuan-bajo.jpg',
+         'summary' => 'Pulau-pulau savana, Pulau Padar, dan pelayaran phinisi di laut tenang.',
+         'highlights' => ['Pulau Padar', 'Pink Beach', 'Komodo'], 'best' => 'April – Desember'],
+        ['slug' => 'tokyo', 'name' => 'Tokyo', 'country' => 'Jepang', 'type' => 'internasional', 'image' => 'dest-tokyo.jpg',
+         'summary' => 'Kota modern, kuil tradisional, dan pemandangan Gunung Fuji dari sela sakura.',
+         'highlights' => ['Asakusa', 'Gunung Fuji', 'Shibuya'], 'best' => 'Akhir Maret – April'],
+        ['slug' => 'santorini', 'name' => 'Santorini', 'country' => 'Yunani', 'type' => 'internasional', 'image' => 'dest-santorini.jpg',
+         'summary' => 'Kubah biru, rumah putih, dan caldera dengan sunset terbaik di Mediterania.',
+         'highlights' => ['Oia', 'Fira', 'Caldera Cruise'], 'best' => 'Mei – Oktober'],
+        ['slug' => 'swiss', 'name' => 'Swiss', 'country' => 'Swiss', 'type' => 'internasional', 'image' => 'dest-swiss.jpg',
+         'summary' => 'Puncak bersalju, padang hijau, dan kereta panorama menembus pegunungan Alpen.',
+         'highlights' => ['Interlaken', 'Jungfraujoch', 'Lucerne'], 'best' => 'Juni – September'],
+        ['slug' => 'maldives', 'name' => 'Maldives', 'country' => 'Maladewa', 'type' => 'internasional', 'image' => 'dest-maldives.jpg',
+         'summary' => 'Water villa di atas laguna biru jernih, cocok untuk liburan santai.',
+         'highlights' => ['Water Villa', 'Snorkeling', 'Sandbank'], 'best' => 'November – April'],
+    ],
+
+    'packages' => [
+        ['slug' => 'bali-4d3n', 'dest' => 'bali', 'title' => 'Bali 4D3N – Explore Paradise', 'duration' => '4 Hari 3 Malam',
+         'location' => 'Bali, Indonesia', 'price' => 4850000, 'image' => 'pkg-bali.jpg', 'badge' => 'Best Seller',
+         'includes' => ['Hotel 3 malam', 'Transport & tiket wisata', 'Makan sesuai itinerary', 'Guide lokal']],
+        ['slug' => 'labuan-bajo-4d3n', 'dest' => 'labuan-bajo', 'title' => 'Labuan Bajo 4D3N – Sailing Trip', 'duration' => '4 Hari 3 Malam',
+         'location' => 'Labuan Bajo, Indonesia', 'price' => 6750000, 'image' => 'pkg-labuan-bajo.jpg', 'badge' => null,
+         'includes' => ['Hotel & kapal phinisi', 'Island hopping', 'Makan di kapal', 'Peralatan snorkeling']],
+        ['slug' => 'tokyo-5d4n', 'dest' => 'tokyo', 'title' => 'Tokyo 5D4N – Sakura Journey', 'duration' => '5 Hari 4 Malam',
+         'location' => 'Tokyo, Jepang', 'price' => 12900000, 'image' => 'pkg-tokyo.jpg', 'badge' => null,
+         'includes' => ['Tiket pesawat PP', 'Hotel 4 malam', 'Tiket kereta & tur kota', 'Tour leader']],
+        ['slug' => 'santorini-4d3n', 'dest' => 'santorini', 'title' => 'Santorini 4D3N – Blue Dream', 'duration' => '4 Hari 3 Malam',
+         'location' => 'Santorini, Yunani', 'price' => 12500000, 'image' => 'pkg-santorini.jpg', 'badge' => null,
+         'includes' => ['Hotel caldera view', 'Transfer & tur pulau', 'Sunset dinner di Oia', 'Pemandu berbahasa Inggris']],
+        ['slug' => 'swiss-7d6n', 'dest' => 'swiss', 'title' => 'Swiss 7D6N – Alpine Escape', 'duration' => '7 Hari 6 Malam',
+         'location' => 'Swiss', 'price' => 24900000, 'image' => 'dest-swiss.jpg', 'badge' => null,
+         'includes' => ['Tiket pesawat PP', 'Swiss Travel Pass', 'Hotel 6 malam', 'Tour leader']],
+        ['slug' => 'maldives-5d4n', 'dest' => 'maldives', 'title' => 'Maldives 5D4N – Island Retreat', 'duration' => '5 Hari 4 Malam',
+         'location' => 'Maldives, Maladewa', 'price' => 18500000, 'image' => 'dest-maldives.jpg', 'badge' => null,
+         'includes' => ['Tiket pesawat PP', 'Water villa 4 malam', 'Speedboat transfer', 'Sarapan & makan malam']],
+    ],
+
+    // key = slug paket
+    'itineraries' => [
+        'bali-4d3n' => [
+            ['title' => 'Bali – Ubud', 'desc' => 'Check-in hotel, Ubud Palace'],
+            ['title' => 'Ubud – Kintamani', 'desc' => 'Trekking, hot spring, view point'],
+            ['title' => 'Uluwatu – Jimbaran', 'desc' => 'Sunset, dinner, free time'],
+            ['title' => 'Transfer Out', 'desc' => 'Shopping, kembali ke tanah air'],
+        ],
+        'labuan-bajo-4d3n' => [
+            ['title' => 'Tiba di Labuan Bajo', 'desc' => 'Check-in kapal, sunset di Kelor'],
+            ['title' => 'Padar – Pink Beach', 'desc' => 'Trekking Padar, snorkeling'],
+            ['title' => 'Komodo – Manta Point', 'desc' => 'Melihat komodo, berenang bersama manta'],
+            ['title' => 'Kembali ke Pelabuhan', 'desc' => 'Sarapan, transfer ke bandara'],
+        ],
+        'tokyo-5d4n' => [
+            ['title' => 'Tiba di Tokyo', 'desc' => 'Transfer hotel, jalan malam di Shinjuku'],
+            ['title' => 'Asakusa – Ueno', 'desc' => 'Sensoji, Skytree, taman sakura'],
+            ['title' => 'Gunung Fuji', 'desc' => 'Kawaguchiko, Oshino Hakkai'],
+            ['title' => 'Shibuya – Harajuku', 'desc' => 'Shopping dan free time'],
+            ['title' => 'Transfer Out', 'desc' => 'Oleh-oleh, kembali ke Indonesia'],
+        ],
+        'santorini-4d3n' => [
+            ['title' => 'Tiba di Santorini', 'desc' => 'Transfer hotel, jalan sore di Fira'],
+            ['title' => 'Oia', 'desc' => 'Kubah biru, sunset dinner'],
+            ['title' => 'Caldera Cruise', 'desc' => 'Hot spring, pulau vulkanik, pantai merah'],
+            ['title' => 'Transfer Out', 'desc' => 'Sarapan, transfer ke bandara'],
+        ],
+        'swiss-7d6n' => [
+            ['title' => 'Tiba di Zurich', 'desc' => 'Transfer ke Lucerne'],
+            ['title' => 'Lucerne', 'desc' => 'Chapel Bridge, Gunung Pilatus'],
+            ['title' => 'Interlaken', 'desc' => 'Danau Brienz, desa Iseltwald'],
+            ['title' => 'Jungfraujoch', 'desc' => 'Kereta ke Top of Europe'],
+            ['title' => 'Zermatt', 'desc' => 'Glacier Express, pemandangan Matterhorn'],
+            ['title' => 'Free Time', 'desc' => 'Belanja dan jalan santai'],
+            ['title' => 'Transfer Out', 'desc' => 'Kembali ke Indonesia'],
+        ],
+        'maldives-5d4n' => [
+            ['title' => 'Tiba di Malé', 'desc' => 'Speedboat ke resort, check-in water villa'],
+            ['title' => 'Snorkeling', 'desc' => 'Terumbu karang dan penyu'],
+            ['title' => 'Sandbank Trip', 'desc' => 'Piknik di pulau pasir, sunset cruise'],
+            ['title' => 'Free Time', 'desc' => 'Spa, kayak, bersantai di pantai'],
+            ['title' => 'Transfer Out', 'desc' => 'Kembali ke Malé, pulang'],
+        ],
+    ],
+
+    'prices' => [
+        ['code' => '4D3N', 'name' => 'Paket 4D3N', 'price' => 4850000, 'popular' => false,
+         'desc' => 'Pas untuk liburan singkat akhir pekan.',
+         'features' => ['Hotel 3 malam', 'Transport selama tour', 'Tiket wisata utama', 'Guide lokal']],
+        ['code' => '5D4N', 'name' => 'Paket 5D4N', 'price' => 6750000, 'popular' => true,
+         'desc' => 'Pilihan paling banyak diambil pelanggan.',
+         'features' => ['Hotel 4 malam', 'Transport & tiket wisata', 'Makan sesuai itinerary', 'Guide + dokumentasi']],
+        ['code' => '7D6N', 'name' => 'Paket 7D6N', 'price' => 9950000, 'popular' => false,
+         'desc' => 'Lebih lama, lebih banyak destinasi.',
+         'features' => ['Hotel 6 malam', 'Transport & tiket wisata', 'Makan hampir semua waktu', 'Guide + free time lebih panjang']],
+    ],
+    'price_included' => ['Akomodasi sesuai paket', 'Transportasi selama tour', 'Tiket masuk objek wisata di itinerary', 'Makan sesuai itinerary', 'Pemandu / tour leader', 'Asuransi perjalanan dasar'],
+    'price_excluded' => ['Tiket pesawat dari kota asal (paket domestik)', 'Visa dan biaya paspor', 'Pengeluaran pribadi', 'Tips guide dan driver', 'Single supplement kamar sendiri'],
+    'price_note' => 'Harga per orang, berlaku untuk minimal 2 peserta. Harga dapat berubah mengikuti musim dan ketersediaan.',
+
+    // status: tersedia | terbatas | penuh
+    'schedules' => [
+        ['day' => '12', 'month' => 'Nov', 'year' => '2026', 'iso' => '2026-11-12', 'dest' => 'bali', 'name' => 'Bali', 'package' => 'Bali 4D3N', 'seats' => 12, 'status' => 'tersedia'],
+        ['day' => '19', 'month' => 'Nov', 'year' => '2026', 'iso' => '2026-11-19', 'dest' => 'labuan-bajo', 'name' => 'Labuan Bajo', 'package' => 'Labuan Bajo 4D3N', 'seats' => 9, 'status' => 'tersedia'],
+        ['day' => '26', 'month' => 'Nov', 'year' => '2026', 'iso' => '2026-11-26', 'dest' => 'tokyo', 'name' => 'Tokyo', 'package' => 'Tokyo 5D4N', 'seats' => 6, 'status' => 'tersedia'],
+        ['day' => '03', 'month' => 'Des', 'year' => '2026', 'iso' => '2026-12-03', 'dest' => 'santorini', 'name' => 'Santorini', 'package' => 'Santorini 4D3N', 'seats' => 8, 'status' => 'tersedia'],
+        ['day' => '10', 'month' => 'Des', 'year' => '2026', 'iso' => '2026-12-10', 'dest' => 'swiss', 'name' => 'Swiss', 'package' => 'Swiss 7D6N', 'seats' => 3, 'status' => 'terbatas'],
+        ['day' => '17', 'month' => 'Des', 'year' => '2026', 'iso' => '2026-12-17', 'dest' => 'maldives', 'name' => 'Maldives', 'package' => 'Maldives 5D4N', 'seats' => 5, 'status' => 'tersedia'],
+        ['day' => '24', 'month' => 'Des', 'year' => '2026', 'iso' => '2026-12-24', 'dest' => 'bali', 'name' => 'Bali', 'package' => 'Bali 4D3N', 'seats' => 2, 'status' => 'terbatas'],
+        ['day' => '07', 'month' => 'Jan', 'year' => '2027', 'iso' => '2027-01-07', 'dest' => 'tokyo', 'name' => 'Tokyo', 'package' => 'Tokyo 5D4N', 'seats' => 0, 'status' => 'penuh'],
+    ],
+
+    'gallery' => [
+        ['image' => 'gallery-1.jpg',       'caption' => 'Pantai berair jernih',       'cat' => 'pantai'],
+        ['image' => 'gallery-2.jpg',       'caption' => 'Snorkeling bersama penyu',   'cat' => 'laut'],
+        ['image' => 'gallery-3.jpg',       'caption' => 'Pura di tepi danau, Bali',   'cat' => 'budaya'],
+        ['image' => 'gallery-4.jpg',       'caption' => 'Trekking di pegunungan',     'cat' => 'alam'],
+        ['image' => 'dest-maldives.jpg',   'caption' => 'Water villa, Maldives',      'cat' => 'pantai'],
+        ['image' => 'pkg-labuan-bajo.jpg', 'caption' => 'Phinisi di Labuan Bajo',     'cat' => 'laut'],
+        ['image' => 'dest-tokyo.jpg',      'caption' => 'Sakura dan pagoda, Tokyo',   'cat' => 'budaya'],
+        ['image' => 'dest-santorini.jpg',  'caption' => 'Kubah biru Santorini',       'cat' => 'pantai'],
+        ['image' => 'dest-swiss.jpg',      'caption' => 'Pegunungan Alpen, Swiss',    'cat' => 'alam'],
+        ['image' => 'dest-labuan-bajo.jpg','caption' => 'Teluk Labuan Bajo',          'cat' => 'laut'],
+    ],
+    'gallery_cats' => ['pantai' => 'Pantai', 'laut' => 'Laut', 'budaya' => 'Budaya', 'alam' => 'Alam'],
+
+    'testimonials' => [
+        ['name' => 'Sari Dewi', 'trip' => 'Bali 4D3N', 'avatar' => 'avatar-sari.jpg', 'rating' => 5,
+         'quote' => 'Pengalaman yang luar biasa! Semua terorganisir dengan baik, dari transportasi, hotel, hingga guide-nya. Pasti akan liburan lagi dengan OceanJourney!'],
+        ['name' => 'Budi Santoso', 'trip' => 'Labuan Bajo 4D3N', 'avatar' => null, 'rating' => 5,
+         'quote' => 'Kapal phinisi nyaman, kru ramah, dan jadwalnya tidak terburu-buru. Pink Beach dan Padar jadi kenangan terbaik keluarga kami.'],
+        ['name' => 'Maya Putri', 'trip' => 'Tokyo 5D4N', 'avatar' => null, 'rating' => 5,
+         'quote' => 'Tour leader sangat membantu, terutama soal kereta dan tiket. Pas berangkat saat sakura mekar, hasil fotonya luar biasa.'],
+        ['name' => 'Rizky Ananda', 'trip' => 'Santorini 4D3N', 'avatar' => null, 'rating' => 4,
+         'quote' => 'Hotel dengan caldera view sesuai ekspektasi. Sunset dinner di Oia jadi momen paling berkesan untuk honeymoon kami.'],
+        ['name' => 'Dian Permata', 'trip' => 'Maldives 5D4N', 'avatar' => null, 'rating' => 5,
+         'quote' => 'Proses booking cepat lewat WhatsApp, semua pertanyaan dijawab jelas. Water villa-nya bersih dan lautnya jernih sekali.'],
+    ],
+
+    // Chatbot FAQ (destinasi & paket). keys = kata kunci pencarian, link = nama route.
+    'chat' => [
+        'title'    => 'AI Travel Assistant',
+        'subtitle' => 'Tanya destinasi, paket tour, itinerary, harga, dan info lengkap lainnya!',
+        'welcome'  => 'Halo! Saya asisten perjalanan OceanJourney. Mau tanya soal destinasi atau paket tour?',
+        'placeholder' => 'Tulis pesan Anda...',
+        'fallback' => 'Maaf, saya belum menemukan jawaban untuk itu. Coba pilih salah satu topik di bawah, atau tanyakan langsung ke tim kami lewat WhatsApp.',
+        'quick'    => ['cocok', 'paket-harga', 'jadwal', 'lainnya'],
+    ],
+
+    'faqs' => [
+        ['id' => 'cocok', 'cat' => 'Destinasi', 'q' => 'Destinasi mana yang cocok untuk saya?',
+         'a' => "Tergantung gaya liburan Anda:\n• Pantai & santai: Bali, Maldives\n• Petualangan laut: Labuan Bajo\n• Budaya & kota: Tokyo\n• Romantis & pemandangan: Santorini, Swiss\nCeritakan jumlah peserta dan budget Anda, nanti kami bantu pilihkan.",
+         'keys' => ['cocok', 'rekomendasi', 'saran', 'kemana', 'ke mana', 'pilih', 'destinasi', 'tujuan', 'honeymoon', 'liburan'], 'link' => 'destinasi', 'link_label' => 'Lihat destinasi'],
+        ['id' => 'bali', 'cat' => 'Destinasi', 'q' => 'Kapan waktu terbaik berkunjung ke Bali?',
+         'a' => 'Musim kemarau (April – Oktober) paling nyaman untuk pantai dan sunset. Hindari puncak keramaian di Juli–Agustus dan akhir tahun jika ingin suasana lebih tenang.',
+         'keys' => ['bali', 'ubud', 'kintamani', 'uluwatu', 'jimbaran'], 'link' => 'itinerary', 'link_label' => 'Lihat itinerary Bali'],
+        ['id' => 'labuan-bajo', 'cat' => 'Destinasi', 'q' => 'Apa saja yang bisa dilakukan di Labuan Bajo?',
+         'a' => 'Berlayar dengan kapal phinisi, trekking Pulau Padar, snorkeling di Pink Beach dan Manta Point, serta melihat komodo di Pulau Komodo. Musim terbaik: April – Desember.',
+         'keys' => ['labuan', 'bajo', 'komodo', 'padar', 'phinisi', 'sailing', 'pink beach'], 'link' => 'paket-tour', 'link_label' => 'Lihat paket'],
+        ['id' => 'tokyo', 'cat' => 'Destinasi', 'q' => 'Kapan musim sakura di Tokyo?',
+         'a' => 'Sakura biasanya mekar akhir Maret hingga awal April. Untuk daun musim gugur (momiji), datanglah sekitar November. Paket Tokyo 5D4N kami menyesuaikan jadwal dengan musim mekar.',
+         'keys' => ['tokyo', 'jepang', 'japan', 'sakura', 'fuji', 'momiji'], 'link' => 'jadwal', 'link_label' => 'Lihat jadwal'],
+        ['id' => 'eropa', 'cat' => 'Destinasi', 'q' => 'Bagaimana dengan Santorini, Swiss, dan Maldives?',
+         'a' => "• Santorini: Mei – Oktober, kubah biru dan sunset di Oia\n• Swiss: Juni – September untuk trekking dan kereta panorama\n• Maldives: November – April, cuaca cerah untuk snorkeling dan water villa",
+         'keys' => ['santorini', 'yunani', 'greece', 'swiss', 'alpen', 'maldives', 'maladewa', 'eropa'], 'link' => 'destinasi', 'link_label' => 'Lihat destinasi'],
+        ['id' => 'paket-harga', 'cat' => 'Paket', 'q' => 'Informasi paket tour & harga',
+         'a' => "Harga paket per orang (min. 2 peserta):\n• 4D3N: Rp 4.850.000\n• 5D4N: Rp 6.750.000\n• 7D6N: Rp 9.950.000\nPaket luar negeri memiliki harga berbeda per destinasi, lihat halaman Paket Tour.",
+         'keys' => ['paket', 'tour', 'harga', 'biaya', 'tarif', 'berapa', 'murah', 'promo', 'budget'], 'link' => 'harga', 'link_label' => 'Lihat harga'],
+        ['id' => 'termasuk', 'cat' => 'Paket', 'q' => 'Apa saja yang termasuk dalam paket?',
+         'a' => 'Umumnya sudah termasuk hotel, transportasi selama tour, tiket wisata sesuai itinerary, makan yang tertera, dan guide / tour leader. Tiket pesawat dan visa tergantung paket, rinciannya ada di halaman Harga.',
+         'keys' => ['termasuk', 'include', 'fasilitas', 'sudah', 'dapat apa'], 'link' => 'harga', 'link_label' => 'Lihat rincian'],
+        ['id' => 'jadwal', 'cat' => 'Paket', 'q' => 'Jadwal keberangkatan terbaru',
+         'a' => "Keberangkatan terdekat:\n• 12 Nov 2026 – Bali\n• 19 Nov 2026 – Labuan Bajo\n• 26 Nov 2026 – Tokyo\n• 03 Des 2026 – Santorini\nKuota terbatas, segera kirim inquiry untuk mengamankan kursi.",
+         'keys' => ['jadwal', 'berangkat', 'keberangkatan', 'tanggal', 'kapan', 'terdekat'], 'link' => 'jadwal', 'link_label' => 'Lihat semua jadwal'],
+        ['id' => 'itinerary', 'cat' => 'Paket', 'q' => 'Bagaimana rencana perjalanan per hari?',
+         'a' => 'Setiap paket punya itinerary harian lengkap: lokasi, aktivitas, dan waktu bebas. Pilih paket di halaman Itinerary untuk melihat detailnya.',
+         'keys' => ['itinerary', 'rencana', 'perhari', 'per hari', 'hari ke', 'acara'], 'link' => 'itinerary', 'link_label' => 'Lihat itinerary'],
+        ['id' => 'booking', 'cat' => 'Pemesanan', 'q' => 'Bagaimana cara booking?',
+         'a' => "1. Isi form Booking Inquiry (nama, destinasi, tanggal)\n2. Tim kami menghubungi lewat WhatsApp untuk konfirmasi\n3. Bayar DP untuk mengunci kursi\n4. Pelunasan sebelum keberangkatan",
+         'keys' => ['booking', 'pesan', 'daftar', 'reservasi', 'inquiry', 'cara'], 'link' => 'inquiry', 'link_label' => 'Kirim inquiry'],
+        ['id' => 'private', 'cat' => 'Pemesanan', 'q' => 'Apakah bisa private tour atau rombongan?',
+         'a' => 'Bisa. Kami melayani private tour, keluarga, honeymoon, dan rombongan kantor. Itinerary dan harga disesuaikan, silakan kirim inquiry atau chat WhatsApp.',
+         'keys' => ['private', 'custom', 'rombongan', 'keluarga', 'grup', 'group', 'kantor', 'sendiri'], 'link' => 'inquiry', 'link_label' => 'Kirim inquiry'],
+        ['id' => 'bayar', 'cat' => 'Pemesanan', 'q' => 'Bagaimana pembayarannya?',
+         'a' => 'Pembayaran dilakukan bertahap: DP saat konfirmasi, lalu pelunasan sebelum keberangkatan. Detail nominal dan rekening dikirim tim kami lewat WhatsApp.',
+         'keys' => ['bayar', 'pembayaran', 'dp', 'cicil', 'transfer', 'lunas'], 'link' => null, 'link_label' => null],
+        ['id' => 'visa', 'cat' => 'Pemesanan', 'q' => 'Apakah perlu visa dan paspor?',
+         'a' => 'Untuk tujuan luar negeri, paspor wajib berlaku minimal 6 bulan. Visa tergantung negara tujuan, tim kami membantu panduan dokumennya setelah booking.',
+         'keys' => ['visa', 'paspor', 'passport', 'dokumen', 'syarat'], 'link' => 'inquiry', 'link_label' => 'Tanya tim kami'],
+        ['id' => 'batal', 'cat' => 'Pemesanan', 'q' => 'Bagaimana jika harus membatalkan atau menjadwal ulang?',
+         'a' => 'Pembatalan dan reschedule mengikuti ketentuan paket yang dipilih. Hubungi kami sesegera mungkin agar biaya yang dikenakan bisa ditekan.',
+         'keys' => ['batal', 'refund', 'reschedule', 'jadwal ulang', 'ganti tanggal', 'pembatalan'], 'link' => null, 'link_label' => null],
+        ['id' => 'lainnya', 'cat' => null, 'q' => 'Tanya lainnya...',
+         'a' => 'Silakan ketik pertanyaan Anda, misalnya "Bali bulan Desember", "paket keluarga", atau "cara bayar". Untuk hal yang lebih spesifik, tim kami siap membantu lewat WhatsApp.',
+         'keys' => [], 'link' => null, 'link_label' => null],
+    ],
+
+    // Ikon SVG (stroke 1.8, viewBox 24). Dirender oleh helper $icon() di web.php.
+    'icons' => [
+        'search'     => '<circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>',
+        'pin'        => '<path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',
+        'calendar'   => '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+        'user'       => '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+        'users'      => '<circle cx="9" cy="8" r="3.5"/><path d="M2 21a7 7 0 0 1 14 0M16 4.5a3.5 3.5 0 0 1 0 7M22 21a7 7 0 0 0-4-6.3"/>',
+        'arrow'      => '<path d="M5 12h14M13 6l6 6-6 6"/>',
+        'arrow-left' => '<path d="M19 12H5M11 6l-6 6 6 6"/>',
+        'down'       => '<path d="m6 9 6 6 6-6"/>',
+        'left'       => '<path d="m15 6-6 6 6 6"/>',
+        'right'      => '<path d="m9 6 6 6-6 6"/>',
+        'phone'      => '<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/>',
+        'mail'       => '<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/>',
+        'clock'      => '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
+        'plane'      => '<path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2Z"/>',
+        'menu'       => '<path d="M4 7h16M4 12h16M4 17h16"/>',
+        'close'      => '<path d="M6 6l12 12M18 6 6 18"/>',
+        'check'      => '<path d="m5 12 5 5L20 7"/>',
+        'star'       => '<path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/>',
+        'camera'     => '<path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3z"/><circle cx="12" cy="13" r="3.5"/>',
+        'route'      => '<circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/>',
+        'compass'    => '<circle cx="12" cy="12" r="10"/><path d="m16 8-2 6-6 2 2-6Z"/>',
+        'tag'        => '<path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L2 12V2h10l8.6 8.6a2 2 0 0 1 0 2.8Z"/><circle cx="7" cy="7" r="1.5"/>',
+        'suitcase'   => '<rect x="3" y="7" width="18" height="14" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M12 12v3"/>',
+        'chat'       => '<path d="M21 12a8 8 0 0 1-11.8 7L3 21l2-5.5A8 8 0 1 1 21 12Z"/>',
+        'send'       => '<path d="m22 2-11 11M22 2l-7 20-4-9-9-4Z"/>',
+        'sparkle'    => '<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8Z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8Z"/>',
+        'whatsapp'   => '<path d="M3 21l1.7-5.1A8.5 8.5 0 1 1 8 19.4Z"/><path d="M9 8.6c0 3.4 3 6.4 6.4 6.4l1.1-1.6-2.1-1-1 .8a4 4 0 0 1-2-2l.8-1-1-2.1Z"/>',
+        'whatsapp-solid' => '<path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>',
+        'globe'      => '<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/>',
+        'help'       => '<circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4.5M12 17.5h.01"/>',
+        'expand'     => '<path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>',
+        'shield'     => '<path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6Z"/><path d="m9 12 2 2 4-4"/>',
+        'facebook'   => '<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>',
+        'instagram'  => '<rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/>',
+        'youtube'    => '<path d="M22.5 6.4a2.8 2.8 0 0 0-2-2C18.9 4 12 4 12 4s-6.9 0-8.6.4a2.8 2.8 0 0 0-2 2A29 29 0 0 0 1 11.8a29 29 0 0 0 .4 5.3 2.8 2.8 0 0 0 2 2c1.7.4 8.6.4 8.6.4s6.9 0 8.6-.4a2.8 2.8 0 0 0 2-2 29 29 0 0 0 .4-5.3 29 29 0 0 0-.5-5.4Z"/><path d="m9.8 15 5.7-3.2L9.8 8.5Z"/>',
+        'tiktok'     => '<path d="M9 12a4 4 0 1 0 4 4V3a5 5 0 0 0 5 5"/>',
+    ],
+];

@@ -441,7 +441,6 @@ html.rea-lock { overflow: hidden; }
 .rea-btn--sm { min-height: 38px; padding: .5rem 1.05rem; font-size: .8rem; }
 .rea-btn--ghost { color: #fff; border: 1px solid rgba(255, 255, 255, .42); background: transparent; }
 .rea-btn--ghost:hover { background: rgba(255, 255, 255, .1); }
-.rea-cta-row { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2rem; }
 
 /* Header halaman dalam ---------------------------------------------------- */
 .rea-pagehead {
@@ -496,11 +495,7 @@ html.rea-lock { overflow: hidden; }
 @media (min-width: 1100px) { .rea-listings { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 
 /* Specification ----------------------------------------------------------- */
-.rea-speccard {
-    padding: clamp(.5rem, 2vw, 1rem) clamp(1.25rem, 3vw, 2.25rem);
-    background: #fff; border: 1px solid var(--rea-line); border-radius: var(--rea-radius);
-    box-shadow: var(--rea-shadow-sm);
-}
+
 .rea-specs { display: grid; grid-template-columns: minmax(0, 1fr); column-gap: 3.5rem; }
 .rea-specs__row {
     display: flex; align-items: center; justify-content: space-between; gap: 1rem;
@@ -515,41 +510,7 @@ html.rea-lock { overflow: hidden; }
     .rea-specs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
-.rea-facilities { margin-top: 2.5rem; }
-.rea-facilities h3 { font-family: var(--rea-font-display); font-weight: 600; font-size: 1.3rem; color: var(--rea-emerald-900); }
-.rea-facilities ul { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)); gap: .75rem; margin-top: 1.1rem; }
-.rea-facilities li { display: flex; align-items: center; gap: .75rem; padding: .9rem 1.1rem; font-size: .88rem; background: #fff; border: 1px solid var(--rea-line); border-radius: 12px; }
-.rea-facilities .rea-icon { width: 1.3rem; height: 1.3rem; stroke-width: 1.5; color: var(--rea-gold-600); }
-
 /* Price ------------------------------------------------------------------- */
-.rea-price-band {
-    position: relative; isolation: isolate; overflow: hidden;
-    padding-block: clamp(2.5rem, 5vw, 4rem);
-    color: #fff;
-    background: radial-gradient(90% 140% at 100% 0%, rgba(47, 106, 88, .55), transparent 55%), var(--rea-emerald-900);
-}
-.rea-price-band::before {
-    content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
-    background: linear-gradient(180deg, rgba(9, 38, 32, .9), rgba(9, 38, 32, .8)), var(--band-img) center / cover no-repeat;
-}
-.rea-price-band__inner { display: grid; gap: 2rem; align-items: center; }
-.rea-price-band__value { margin-top: .7rem; font-family: var(--rea-font-display); font-weight: 600; font-size: clamp(2rem, 4.4vw, 3.5rem); line-height: 1.1; }
-.rea-price-band__value small { font-family: var(--rea-font-body); font-size: .4em; font-weight: 500; letter-spacing: .1em; color: var(--rea-gold-300); }
-.rea-price-band__note { margin-top: .35rem; color: rgba(255, 255, 255, .8); }
-.rea-price-band__actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.75rem; }
-.rea-price-band__facts { border-top: 1px solid rgba(255, 255, 255, .16); }
-.rea-price-band__facts > div { display: flex; justify-content: space-between; gap: 1rem; padding: .95rem 0; font-size: .9rem; border-bottom: 1px solid rgba(255, 255, 255, .16); }
-.rea-price-band__facts dt { color: rgba(255, 255, 255, .72); }
-.rea-price-band__facts dd { font-weight: 500; text-align: right; color: var(--rea-gold-300); }
-@media (min-width: 900px) {
-    .rea-price-band__inner { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 4rem; }
-}
-
-.rea-pay { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.25rem; }
-.rea-pay__item { padding: 1.6rem; background: #fff; border: 1px solid var(--rea-line); border-radius: var(--rea-radius); box-shadow: var(--rea-shadow-sm); }
-.rea-pay__item h3 { margin-top: 1rem; font-family: var(--rea-font-display); font-weight: 600; font-size: 1.1rem; color: var(--rea-emerald-900); }
-.rea-pay__item p { margin-top: .4rem; font-size: .86rem; line-height: 1.6; color: var(--rea-muted); }
-@media (min-width: 800px) { .rea-pay { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 
 /* About ------------------------------------------------------------------- */
 .rea-about { display: grid; gap: 2.5rem; align-items: center; }
@@ -1214,12 +1175,6 @@ html.rea-lock { overflow: hidden; }
 /* ===== Tambahan: foto section, blog klik penuh, halaman artikel, banner booking beranda ===== */
 
 /* Specification: foto properti di samping kartu */
-.rea-specwrap { display: grid; gap: 1.5rem; align-items: stretch; }
-.rea-specwrap__photo { position: relative; min-height: 260px; margin: 0; overflow: hidden; border-radius: var(--rea-radius); background: var(--rea-emerald-900); box-shadow: var(--rea-shadow-sm); }
-.rea-specwrap__photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.rea-specwrap__photo figcaption { position: absolute; inset: auto 0 0 0; padding: 2.2rem 1.25rem 1rem; font-family: var(--rea-font-display); font-size: 1.05rem; color: #fff; background: linear-gradient(0deg, rgba(8, 32, 27, .85), transparent); }
-@media (min-width: 960px) { .rea-specwrap { grid-template-columns: minmax(0, .72fr) minmax(0, 1.28fr); } }
-@media (min-width: 960px) and (max-width: 1199.98px) { .rea-specwrap .rea-specs { grid-template-columns: minmax(0, 1fr); } }
 
 /* Booking: foto di kartu info & banner beranda tanpa pilihan tanggal/jam */
 .rea-bookinfo__photo { width: 100%; aspect-ratio: 16 / 9; margin-bottom: 1.75rem; object-fit: cover; border-radius: 14px; }
@@ -1268,3 +1223,132 @@ html.rea-lock { overflow: hidden; }
 
 /* Tautan di dalam balon chat AI (hand-off ke WhatsApp) */
 .rea-msg a { display: inline-block; margin-top: .35rem; font-weight: 500; text-decoration: underline; color: var(--rea-emerald-700); }
+
+/* ===== Halaman detail properti ===== */
+.rea-btn--outline { color: var(--rea-emerald-800); background: #fff; border: 1px solid var(--rea-emerald-600); }
+.rea-btn--outline:hover { color: #fff; background: var(--rea-emerald-600); }
+.rea-btn--outline .rea-icon, .rea-btn--dark .rea-icon { width: 1rem; height: 1rem; }
+
+/* Menu cepat (sticky) */
+.rea-detailnav { position: sticky; top: var(--rea-nav-h); z-index: 40; background: rgba(253, 251, 247, .94); backdrop-filter: blur(10px); border-bottom: 1px solid var(--rea-line); }
+.rea-detailnav ul { display: flex; gap: .25rem; padding-block: .55rem; overflow-x: auto; scrollbar-width: none; }
+.rea-detailnav ul::-webkit-scrollbar { display: none; }
+.rea-detailnav a { display: block; padding: .5rem 1rem; font-size: .84rem; white-space: nowrap; color: var(--rea-muted); border-radius: 999px; transition: background-color .2s, color .2s; }
+.rea-detailnav a:hover { background: rgba(15, 47, 42, .06); color: var(--rea-ink); }
+.rea-detailnav a.is-active { color: #fff; background: var(--rea-emerald-600); }
+
+/* Tata letak: konten + kartu samping */
+.rea-detail { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2rem; padding-block: clamp(1.75rem, 4vw, 3rem); align-items: start; }
+.rea-detail__main { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.5rem; min-width: 0; }
+.rea-detail__aside { display: none; }
+.rea-detail .rea-panel { scroll-margin-top: calc(var(--rea-nav-h) + 72px); }
+@media (min-width: 1100px) {
+    .rea-detail { grid-template-columns: minmax(0, 1fr) 340px; gap: 2.5rem; }
+    .rea-detail__aside { display: block; position: sticky; top: calc(var(--rea-nav-h) + 76px); }
+}
+
+/* Panel */
+.rea-panel { padding: clamp(1.25rem, 3vw, 2rem); background: #fff; border: 1px solid var(--rea-line); border-radius: var(--rea-radius-lg); box-shadow: var(--rea-shadow-sm); }
+.rea-panel--flush { padding: 0; overflow: hidden; }
+.rea-panel__head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: .75rem 1.5rem; margin-bottom: 1.5rem; }
+.rea-panel__head--pad { margin: 0; padding: clamp(1.25rem, 3vw, 2rem) clamp(1.25rem, 3vw, 2rem) 1.25rem; }
+.rea-panel__head h2 { margin-top: .45rem; font-family: var(--rea-font-display); font-weight: 600; font-size: clamp(1.4rem, 2.2vw, 1.8rem); line-height: 1.2; color: var(--rea-emerald-900); }
+.rea-panel__head p:not(.rea-eyebrow) { margin-top: .35rem; font-size: .9rem; color: var(--rea-muted); }
+.rea-panel__place { display: flex; align-items: center; gap: .45rem; }
+.rea-panel__place .rea-icon { width: 1rem; height: 1rem; color: var(--rea-gold-600); }
+
+/* 1. Galeri */
+.rea-viewer { position: relative; }
+.rea-viewer__stage { position: relative; display: block; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; background: var(--rea-emerald-900); cursor: zoom-in; }
+.rea-viewer__stage img { width: 100%; height: 100%; object-fit: cover; transition: opacity .25s; }
+.rea-viewer__stage img.is-swapping { opacity: 0; }
+.rea-viewer__stage .rea-photo__expand { top: 1rem; right: 1rem; }
+.rea-viewer__count { position: absolute; left: 1rem; bottom: 1rem; padding: .4rem .85rem; font-size: .76rem; font-weight: 500; color: #fff; background: rgba(10, 36, 32, .7); border-radius: 999px; backdrop-filter: blur(6px); }
+.rea-viewer__nav { position: absolute; top: 50%; transform: translateY(-50%); }
+.rea-viewer__nav--prev { left: 1rem; }
+.rea-viewer__nav--next { right: 1rem; }
+.rea-viewer__thumbs { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .6rem; padding: .75rem; background: var(--rea-cream-50); }
+.rea-viewer__thumbs button { display: block; width: 100%; aspect-ratio: 4 / 3; overflow: hidden; border-radius: 10px; opacity: .72; transition: opacity .2s, outline-color .2s; outline: 2px solid transparent; outline-offset: 2px; }
+.rea-viewer__thumbs button:hover { opacity: 1; }
+.rea-viewer__thumbs button.is-active { opacity: 1; outline-color: var(--rea-gold-500); }
+.rea-viewer__thumbs img { width: 100%; height: 100%; object-fit: cover; }
+.rea-viewer__video { padding: 0 .75rem .75rem; background: var(--rea-cream-50); }
+.rea-viewer__video iframe { display: block; width: 100%; aspect-ratio: 16 / 9; border: 0; border-radius: 12px; }
+@media (max-width: 559.98px) { .rea-viewer__stage { aspect-ratio: 4 / 3; } .rea-viewer__thumbs { gap: .4rem; padding: .5rem; } }
+
+/* 2. Informasi utama & harga */
+.rea-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
+.rea-tiles li { display: grid; justify-items: start; gap: .1rem; padding: 1rem 1.1rem; background: var(--rea-cream-50); border: 1px solid var(--rea-line); border-radius: 14px; }
+.rea-tiles__icon { display: grid; place-items: center; width: 2.1rem; height: 2.1rem; margin-bottom: .45rem; color: var(--rea-gold-700); background: var(--rea-cream-300); border-radius: 50%; }
+.rea-tiles__icon .rea-icon { width: 1.1rem; height: 1.1rem; stroke-width: 1.5; }
+.rea-tiles strong { font-family: var(--rea-font-display); font-weight: 600; font-size: 1.35rem; line-height: 1.2; color: var(--rea-emerald-900); }
+.rea-tiles li > span:last-child { font-size: .78rem; color: var(--rea-muted); }
+@media (min-width: 640px) { .rea-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+.rea-pricebox { position: relative; isolation: isolate; overflow: hidden; display: grid; gap: 1.5rem; margin-top: 1.25rem; padding: clamp(1.4rem, 3vw, 2rem); color: #fff; border-radius: var(--rea-radius); background: var(--rea-emerald-900); }
+.rea-pricebox::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(120deg, rgba(9, 38, 32, .92), rgba(9, 38, 32, .78)), var(--band-img) center / cover no-repeat; }
+.rea-pricebox__value { margin-top: .5rem; font-family: var(--rea-font-display); font-weight: 600; font-size: clamp(1.9rem, 3.6vw, 2.8rem); line-height: 1.1; }
+.rea-pricebox__value small { font-family: var(--rea-font-body); font-size: .4em; font-weight: 500; letter-spacing: .1em; color: var(--rea-gold-300); }
+.rea-pricebox__note { margin-top: .3rem; color: rgba(255, 255, 255, .8); }
+.rea-pricebox__actions { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1.4rem; }
+.rea-pricebox__facts > div { display: flex; justify-content: space-between; gap: 1rem; padding: .8rem 0; font-size: .88rem; border-bottom: 1px solid rgba(255, 255, 255, .16); }
+.rea-pricebox__facts > div:first-child { border-top: 1px solid rgba(255, 255, 255, .16); }
+.rea-pricebox__facts dt { color: rgba(255, 255, 255, .72); }
+.rea-pricebox__facts dd { font-weight: 500; text-align: right; color: var(--rea-gold-300); }
+@media (min-width: 720px) { .rea-pricebox { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 2.5rem; align-items: center; } }
+
+.rea-pay2 { margin-top: 1.5rem; }
+.rea-pay2 h3 { font-family: var(--rea-font-display); font-weight: 600; font-size: 1.05rem; color: var(--rea-emerald-900); }
+.rea-pay2 ul { display: grid; gap: .75rem; margin-top: .9rem; }
+.rea-pay2 li { display: flex; align-items: flex-start; gap: .8rem; padding: .9rem 1rem; background: var(--rea-cream-50); border: 1px solid var(--rea-line); border-radius: 12px; }
+.rea-pay2 .rea-icon { width: 1.2rem; height: 1.2rem; margin-top: .1rem; color: var(--rea-gold-600); }
+.rea-pay2 strong { display: block; font-size: .9rem; color: var(--rea-emerald-900); }
+.rea-pay2 span { font-size: .8rem; line-height: 1.5; color: var(--rea-muted); }
+@media (min-width: 760px) { .rea-pay2 ul { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* 3. Spesifikasi (baris memakai .rea-specs) */
+.rea-panel .rea-specs { column-gap: 3rem; }
+.rea-panel .rea-specs__row:last-child { border-bottom: 0; }
+@media (min-width: 760px) { .rea-panel .rea-specs__row:nth-last-child(2) { border-bottom: 0; } }
+
+/* 4. Fasilitas */
+.rea-facgroups { display: grid; gap: 1rem; }
+.rea-facgroup { padding: 1.2rem 1.3rem; background: var(--rea-cream-50); border: 1px solid var(--rea-line); border-radius: 14px; }
+.rea-facgroup h3 { display: flex; align-items: center; gap: .65rem; font-family: var(--rea-font-display); font-weight: 600; font-size: 1.02rem; color: var(--rea-emerald-900); }
+.rea-facgroup h3 span { display: grid; place-items: center; width: 1.9rem; height: 1.9rem; color: var(--rea-gold-700); background: var(--rea-cream-300); border-radius: 50%; }
+.rea-facgroup h3 .rea-icon { width: 1rem; height: 1rem; }
+.rea-facgroup ul { display: grid; gap: .65rem; margin-top: 1rem; }
+.rea-facgroup li { display: flex; align-items: center; gap: .7rem; font-size: .88rem; }
+.rea-facgroup li .rea-icon { width: 1.1rem; height: 1.1rem; color: var(--rea-emerald-600); }
+@media (min-width: 760px) { .rea-facgroups { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* 5. Deskripsi */
+.rea-story { max-width: 72ch; }
+.rea-story p { margin-bottom: 1rem; line-height: 1.85; color: #3c4a46; }
+.rea-story__lead { font-family: var(--rea-font-display); font-size: 1.2rem; line-height: 1.65 !important; color: var(--rea-emerald-900) !important; }
+.rea-story__points { display: grid; gap: .7rem; margin-top: 1.25rem; padding: 1.25rem 1.4rem; background: var(--rea-cream-50); border: 1px solid var(--rea-line); border-radius: 14px; }
+.rea-story__points li { display: flex; align-items: flex-start; gap: .65rem; font-size: .9rem; }
+.rea-story__points .rea-icon { width: 1.1rem; height: 1.1rem; margin-top: .15rem; color: var(--rea-gold-600); stroke-width: 2.2; }
+@media (min-width: 640px) { .rea-story__points { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* 6. Lokasi & peta interaktif */
+.rea-mapembed { position: relative; overflow: hidden; width: 100%; aspect-ratio: 16 / 9; min-height: 300px; background: #dfe9f1 var(--map-fallback) center / cover no-repeat; border: 1px solid var(--rea-line); border-radius: var(--rea-radius); }
+.rea-mapembed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.rea-locbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem 1.5rem; margin-top: 1.1rem; }
+.rea-locbar__addr { display: flex; align-items: center; gap: .9rem; min-width: 0; }
+.rea-locbar h3 { font-family: var(--rea-font-display); font-weight: 600; font-size: 1.02rem; color: var(--rea-emerald-900); }
+.rea-locbar address { margin-top: .15rem; font-size: .85rem; line-height: 1.5; color: var(--rea-muted); }
+.rea-locbar__actions { display: flex; flex-wrap: wrap; gap: .5rem; }
+
+/* Kartu samping (sticky) */
+.rea-sidecard { display: grid; gap: .85rem; padding: 1.75rem; color: #fff; background: radial-gradient(100% 80% at 100% 0%, rgba(47, 106, 88, .5), transparent 60%), var(--rea-emerald-900); border: 1px solid rgba(222, 183, 135, .3); border-radius: var(--rea-radius-lg); box-shadow: var(--rea-shadow-lg); }
+.rea-sidecard__price { font-family: var(--rea-font-display); font-weight: 600; font-size: 1.85rem; line-height: 1.15; }
+.rea-sidecard__price small { font-family: var(--rea-font-body); font-size: .45em; font-weight: 500; letter-spacing: .1em; color: var(--rea-gold-300); }
+.rea-sidecard__note { margin-top: -.5rem; font-size: .86rem; color: rgba(255, 255, 255, .78); }
+.rea-sidecard__facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .6rem .9rem; padding-block: .9rem; font-size: .8rem; border-block: 1px solid rgba(255, 255, 255, .16); }
+.rea-sidecard__facts li { display: flex; align-items: center; gap: .5rem; }
+.rea-sidecard__facts .rea-icon { width: 1rem; height: 1rem; color: var(--rea-gold-400); }
+.rea-sidecard .rea-btn--block { border-radius: 999px; }
+.rea-sidecard__contact { display: grid; gap: .5rem; margin-top: .4rem; font-size: .78rem; color: rgba(255, 255, 255, .75); }
+.rea-sidecard__contact li { display: flex; align-items: center; gap: .55rem; }
+.rea-sidecard__contact .rea-icon { width: .95rem; height: .95rem; color: var(--rea-gold-400); }
