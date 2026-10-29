@@ -3468,60 +3468,506 @@ a {
     font-weight: 600;
 }
 
-.customer-template-card {
-    border: 1px dashed var(--account-line-strong);
+/* ==== Buat Pesanan ala Stitch ==== */
+.customer-create-head {
+    display: grid;
+    gap: 0.5rem;
 }
 
-.customer-package-options {
+.customer-create-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 44px;
+    color: var(--account-action);
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.customer-create-back:hover {
+    text-decoration: underline;
+}
+
+.customer-create-back .material-symbols-outlined {
+    font-size: 1.1rem;
+}
+
+/* Form = grid dua kolom: form 2fr + ringkasan 1fr (sticky) */
+.customer-create-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: 1.5rem;
+    align-items: start;
+}
+
+@media (max-width: 63.97rem) {
+    .customer-create-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (min-width: 64rem) {
+    .customer-create-aside {
+        position: sticky;
+        top: 1.5rem;
+    }
+}
+
+.customer-create-main {
+    display: grid;
+    gap: 1.25rem;
+}
+
+.customer-create-card {
+    display: grid;
+    gap: 1rem;
+    margin: 0;
+    padding: 1.5rem;
+    background: var(--account-surface);
+    border: 1px solid var(--account-line);
+    border-radius: 0.75rem;
+    box-shadow: var(--account-shadow);
+}
+
+.customer-create-card.has-error {
+    border: 2px solid #ba1a1a;
+}
+
+.customer-create-card legend {
+    font-size: 1rem;
+    padding: 0;
+}
+
+.customer-create-legend {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--account-ink);
+    font-size: 1.05rem;
+    font-weight: 800;
+}
+
+.customer-create-legend .material-symbols-outlined {
+    color: var(--account-action);
+    font-size: 1.3rem;
+}
+
+.customer-create-card h2 {
+    margin: 0;
+}
+
+.customer-create-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--account-line);
+}
+
+.customer-create-card-head h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--account-ink);
+    font-size: 1.05rem;
+    font-weight: 800;
+}
+
+.customer-create-card-head .material-symbols-outlined {
+    color: var(--account-action);
+    font-size: 1.3rem;
+}
+
+.customer-create-swap {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0.4rem 1rem;
+    color: var(--account-action);
+    background: var(--account-surface);
+    border: 1px solid var(--account-line-strong);
+    border-radius: 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.customer-create-swap:hover {
+    background: var(--account-page);
+}
+
+.customer-create-template {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--account-page);
+    border: 1px solid var(--account-line);
+    border-radius: 0.6rem;
+}
+
+.customer-create-thumb {
+    width: 6rem;
+    height: 5rem;
+    flex-shrink: 0;
+    object-fit: cover;
+    background: var(--account-surface);
+    border: 1px solid var(--account-line);
+    border-radius: 0.4rem;
+}
+
+.customer-create-thumb-empty {
+    display: grid;
+    place-items: center;
+    color: var(--account-muted);
+}
+
+.customer-create-template-body {
+    display: grid;
+    align-content: start;
+    gap: 0.2rem;
+    min-width: 0;
+}
+
+.customer-create-cat {
+    justify-self: start;
+    padding: 0.15rem 0.6rem;
+    color: var(--account-muted);
+    background: var(--account-surface);
+    border: 1px solid var(--account-line);
+    border-radius: 0.35rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+}
+
+.customer-create-template-body h3 {
+    margin: 0.15rem 0 0;
+    color: var(--account-ink);
+    font-size: 1rem;
+    font-weight: 800;
+}
+
+.customer-create-template-body p {
+    margin: 0.1rem 0 0;
+    color: var(--account-muted);
+    font-size: 0.75rem;
+}
+
+/* State template belum dipilih (validasi ala Stitch) */
+.customer-create-tpl-empty {
+    padding: 1rem;
+}
+
+.customer-create-tpl-empty-box {
+    display: grid;
+    justify-items: center;
+    gap: 0.5rem;
+    padding: 1.5rem;
+    text-align: center;
+    background: var(--account-page);
+    border: 1px dashed var(--account-line-strong);
+    border-radius: 0.6rem;
+}
+
+.customer-create-tpl-empty-icon {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    color: var(--account-action);
+    background: var(--account-surface);
+    border: 1px solid var(--account-line);
+    border-radius: 50%;
+}
+
+.customer-create-tpl-empty-box h2 {
+    margin: 0.4rem 0 0;
+    color: var(--account-ink);
+    font-size: 1rem;
+    font-weight: 800;
+}
+
+.customer-create-tpl-empty-box p {
+    margin: 0;
+    max-width: 26rem;
+    color: var(--account-muted);
+    font-size: 0.78rem;
+}
+
+.customer-create-tpl-empty-box .account-submit {
+    margin-top: 0.5rem;
+}
+
+.customer-create-tpl-empty-box .account-submit .material-symbols-outlined {
+    font-size: 1.1rem;
+}
+
+/* Opsi radio & checkbox ala Stitch */
+.customer-create-options {
     display: grid;
     gap: 0.75rem;
 }
 
-.customer-package-option {
+.customer-create-option {
     display: flex;
     align-items: flex-start;
-    gap: 0.85rem;
-    padding: 1rem;
-    border: 1px solid var(--account-line-strong);
-    border-radius: 0.75rem;
+    gap: 1rem;
+    padding: 1.25rem;
     background: var(--account-surface);
+    border: 1px solid var(--account-line);
+    border-radius: 0.6rem;
     cursor: pointer;
 }
 
-.customer-package-option:hover {
-    border-color: var(--account-action);
+.customer-create-option:hover {
+    border-color: var(--account-line-strong);
+    background: var(--account-page);
 }
 
-.customer-package-option:has(input:checked) {
+.customer-create-option:has(input:checked) {
     background: var(--account-action-soft);
-    border-color: var(--account-action);
-    box-shadow: 0 0 0 1px var(--account-action);
+    border: 2px solid var(--account-action);
 }
 
-.customer-package-option input {
+.customer-create-option:focus-within {
+    outline: 2px solid var(--account-action);
+    outline-offset: 2px;
+}
+
+.customer-create-option input {
     width: 1.25rem;
     height: 1.25rem;
-    margin-top: 0.2rem;
+    margin-top: 0.15rem;
     flex-shrink: 0;
     accent-color: var(--account-action);
 }
 
-.customer-package-body {
+.customer-create-option-addon {
+    padding: 1rem;
+    min-height: 44px;
+}
+
+.customer-create-option-body {
     display: grid;
-    gap: 0.2rem;
+    gap: 0.3rem;
+    width: 100%;
+    min-width: 0;
 }
 
-.customer-package-body strong {
+.customer-create-option-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.customer-create-option-row strong:first-child {
     color: var(--account-ink);
-}
-
-.customer-package-body span {
-    color: var(--account-action);
+    font-size: 0.95rem;
     font-weight: 800;
 }
 
-.customer-package-body small {
+.customer-create-option-addon .customer-create-option-row strong:first-child {
+    font-size: 0.85rem;
+}
+
+.customer-create-option-price {
+    color: var(--account-action);
+    font-size: 0.95rem;
+    font-weight: 800;
+}
+
+.customer-create-option-addon .customer-create-option-price {
+    font-size: 0.8rem;
+}
+
+.customer-create-badge {
+    padding: 0.15rem 0.6rem;
     color: var(--account-muted);
+    background: var(--account-page);
+    border: 1px solid var(--account-line);
+    border-radius: 0.35rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+}
+
+.customer-create-option-desc {
+    color: var(--account-muted);
+    font-size: 0.78rem;
+}
+
+.customer-create-features {
+    display: grid;
+    gap: 0.25rem;
+    padding-top: 0.4rem;
+    color: var(--account-muted);
+    font-size: 0.72rem;
+}
+
+.customer-create-features > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.customer-create-features .material-symbols-outlined {
+    font-size: 0.95rem;
+    color: var(--account-teal);
+}
+
+/* Alert error validasi ala Stitch */
+.customer-create-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    margin: 0;
+    padding: 0.75rem;
+    color: #ba1a1a;
+    background: #ffedea;
+    border: 1px solid #f3c9cf;
+    border-radius: 0.45rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.customer-create-alert .material-symbols-outlined {
+    flex-shrink: 0;
+    font-size: 1.15rem;
+}
+
+/* Ringkasan pesanan ala Stitch */
+.customer-create-summary h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-bottom: 0.75rem;
+    color: var(--account-ink);
+    font-size: 1.05rem;
+    font-weight: 800;
+    border-bottom: 1px solid var(--account-line);
+}
+
+.customer-create-summary h2 .material-symbols-outlined {
+    color: var(--account-action);
+    font-size: 1.3rem;
+}
+
+.customer-create-summary-rows {
+    display: grid;
+    gap: 0.75rem;
+    font-size: 0.8rem;
+}
+
+.customer-create-summary-row,
+.customer-create-summary-total {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.customer-create-summary-row + .customer-create-summary-row,
+.customer-create-summary-addons {
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--account-line);
+}
+
+.customer-create-summary-row span,
+.customer-create-summary-addons > span:first-child {
+    color: var(--account-muted);
+}
+
+.customer-create-summary-row strong {
+    color: var(--account-ink);
+    font-size: 0.8rem;
+    text-align: right;
+}
+
+.customer-create-summary-row strong.is-unset {
+    color: var(--account-muted);
+    font-weight: 500;
+    font-style: italic;
+}
+
+.customer-create-summary-addons {
+    display: grid;
+    gap: 0.4rem;
+}
+
+.customer-create-addon-list {
+    display: grid;
+    gap: 0.3rem;
+    padding-left: 0.75rem;
+    border-left: 2px solid var(--account-line);
+    font-size: 0.72rem;
+}
+
+.customer-create-addon-list .is-unset {
+    color: var(--account-muted);
+    font-style: italic;
+}
+
+.customer-create-addon-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    color: var(--account-ink);
+    font-weight: 600;
+}
+
+.customer-create-summary-total {
+    padding-top: 1rem;
+    border-top: 2px solid var(--account-line);
+}
+
+.customer-create-summary-total > span {
+    color: var(--account-ink);
+    font-size: 0.95rem;
+    font-weight: 800;
+}
+
+.customer-create-summary-total strong {
+    color: var(--account-action);
+    font-size: 1.2rem;
+    font-weight: 800;
+}
+
+.customer-create-submit {
+    display: grid;
+    gap: 0.4rem;
+    padding-top: 0.5rem;
+}
+
+.customer-create-submit-btn {
+    display: flex;
+    width: 100%;
+    min-height: 48px;
+    margin-top: 0;
+    justify-content: center;
+    font-size: 0.9rem;
+}
+
+.customer-create-submit-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.customer-create-note {
+    margin: 0;
+    color: var(--account-muted);
+    font-size: 0.7rem;
+    text-align: center;
+}
+
+.customer-create-note-error {
+    margin: 0;
+    color: #ba1a1a;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-align: center;
 }
 
 .dashboard-site-done {
