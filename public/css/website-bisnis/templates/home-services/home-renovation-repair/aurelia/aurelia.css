@@ -1,0 +1,56 @@
+
+        .glass-dark {
+            background: rgba(34, 4, 7, 0.88);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .text-gradient-gold {
+            background: linear-gradient(135deg, #FFF0D4 0%, #D4A373 50%, #B08051 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .border-gold-glow {
+            border: 1px solid rgba(212, 163, 115, 0.4);
+            box-shadow: 0 0 25px rgba(212, 163, 115, 0.15);
+        }
+        .before-after-overlay {
+            clip-path: polygon(0 0, var(--slider-pos, 50%) 0, var(--slider-pos, 50%) 100%, 0 100%);
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(2deg); }
+        }
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .shimmer-bg {
+            background: linear-gradient(90deg, rgba(212,163,115,0.05) 0%, rgba(212,163,115,0.2) 50%, rgba(212,163,115,0.05) 100%);
+            background-size: 200% 100%;
+            animation: shimmer 3s infinite;
+        }
+    
+/* WEBIA integration overrides: preserve AURELIA reference design */
+html { scroll-behavior: smooth; }
+body { margin: 0; }
+img { max-width: 100%; }
+#waLink { right: 1.5rem !important; bottom: 1.5rem !important; }
+#aiChatbotContainer { right: 6.25rem !important; bottom: 1.5rem !important; }
+#aiChatBox { right: 0; max-width: calc(100vw - 2rem); }
+.aurelia-template-credit {
+  border-top: 1px solid rgba(212,163,115,.22);
+  padding: 14px 16px;
+  text-align: center;
+  color: #DFCDB7;
+  font-size: 11px;
+  letter-spacing: .04em;
+}
+@media (max-width: 640px) {
+  #waLink { right: 1rem !important; bottom: 1rem !important; }
+  #aiChatbotContainer { right: 5.25rem !important; bottom: 1rem !important; }
+  #waLink > div, #aiChatToggle > div { width: 3.25rem; height: 3.25rem; }
+  #aiChatBox { position: fixed; right: 1rem; bottom: 5.25rem; width: min(22rem, calc(100vw - 2rem)); }
+}
