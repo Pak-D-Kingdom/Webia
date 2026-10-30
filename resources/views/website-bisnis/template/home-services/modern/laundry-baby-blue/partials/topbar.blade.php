@@ -2,9 +2,9 @@
 <div class="lb-topbar">
     <div class="lb-container lb-topbar__inner">
         <ul class="lb-topbar__list">
-            <li class="lb-topbar__item lb-topbar__item--addr"><svg class="lb-i" aria-hidden="true"><use href="#i-pin"/></svg><span>{{ $contact['address'] }}</span></li>
+            <li class="lb-topbar__item lb-topbar__item--addr"><svg class="lb-i" aria-hidden="true"><use href="#i-pin-solid"/></svg><span>{{ $contact['address'] }}</span></li>
             <li class="lb-topbar__item"><svg class="lb-i" aria-hidden="true"><use href="#i-clock"/></svg><span>{{ $contact['hours_text'] }}</span></li>
-            <li class="lb-topbar__item lb-topbar__item--phone"><svg class="lb-i" aria-hidden="true"><use href="#i-phone"/></svg><a href="tel:{{ $tel }}">{{ $contact['phone'] }}</a></li>
+            <li class="lb-topbar__item lb-topbar__item--phone"><svg class="lb-i" aria-hidden="true"><use href="#i-phone-solid"/></svg><a href="tel:{{ $tel }}">{{ $contact['phone'] }}</a></li>
         </ul>
         <div class="lb-topbar__right">
             <ul class="lb-social" aria-label="Media sosial">

@@ -37,38 +37,22 @@
     function pad(n) { return (n < 10 ? '0' : '') + n; }
 
     /* ------------------------------------------------------------------ *
-     * 1. Header (bayangan saat scroll) + menu mobile
+     * 1. Header (bayangan saat scroll) + bar navigasi geser (layar kecil)
      * ------------------------------------------------------------------ */
     function initHeader() {
         var header = $('[data-lb-header]');
-        var toggle = $('[data-lb-nav-toggle]');
-        var nav = $('[data-lb-nav]');
-        var backdrop = $('[data-lb-nav-backdrop]');
-        if (!header || !toggle || !nav) { return; }
-
-        var desktop = window.matchMedia('(min-width: 1300px)');
+        if (!header) { return; }
 
         function onScroll() { header.classList.toggle('is-scrolled', window.scrollY > 6); }
         onScroll();
         window.addEventListener('scroll', onScroll, { passive: true });
 
-        function setOpen(open) {
-            nav.classList.toggle('is-open', open);
-            toggle.classList.toggle('is-open', open);
-            toggle.setAttribute('aria-expanded', String(open));
-            toggle.setAttribute('aria-label', open ? 'Tutup menu' : 'Buka menu');
-            doc.documentElement.classList.toggle('lb-lock', open);
-            if (backdrop) { backdrop.hidden = !open; }
+        // Bar navigasi bisa digeser: pastikan menu aktif terlihat di tengah.
+        var list = $('.lb-nav__list', header);
+        var active = list ? $('.is-active', list) : null;
+        if (list && active && list.scrollWidth > list.clientWidth) {
+            list.scrollLeft = Math.max(0, active.offsetLeft - (list.clientWidth - active.offsetWidth) / 2);
         }
-
-        toggle.addEventListener('click', function () { setOpen(!nav.classList.contains('is-open')); });
-        if (backdrop) { backdrop.addEventListener('click', function () { setOpen(false); }); }
-        nav.addEventListener('click', function (e) { if (e.target.closest('a')) { setOpen(false); } });
-        doc.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape' && nav.classList.contains('is-open')) { setOpen(false); toggle.focus(); }
-        });
-        var onMq = function () { if (desktop.matches) { setOpen(false); } };
-        if (desktop.addEventListener) { desktop.addEventListener('change', onMq); } else if (desktop.addListener) { desktop.addListener(onMq); }
     }
 
     /* ------------------------------------------------------------------ *

@@ -3,13 +3,14 @@
 <article class="lb-card lb-hours-card" aria-labelledby="lb-hours-title">
     <header class="lb-card__head">
         <span class="lb-card__icon"><svg class="lb-i" aria-hidden="true"><use href="#i-calendar"/></svg></span>
-        <div><h2 class="lb-card__title" id="lb-hours-title">Jam Operasional</h2><p class="lb-card__sub">{{ $hr['note'] }}</p></div>
+        <div><h2 class="lb-card__title" id="lb-hours-title"><a href="{{ route('webia.laundry-baby-blue.jam') }}">Jam Operasional</a></h2><p class="lb-card__sub">{{ $hr['note'] }}</p></div>
     </header>
     <div class="lb-hours-box">
         <svg class="lb-i lb-hours-box__ico" aria-hidden="true"><use href="#i-clock"/></svg>
         <p><strong>{{ $hr['range'] }}</strong><span>{{ $hr['time'] }}</span></p>
     </div>
-    <p class="lb-open" data-lb-open-badge hidden></p>
+    <img class="lb-hours-card__plant" src="{{ asset($laundry['assets']['img'] . '/hours-plant.webp') }}" alt="" width="210" height="312" loading="lazy">
+    <img class="lb-hours-card__plant-l" src="{{ asset($laundry['assets']['img'] . '/hours-plant-left.webp') }}" alt="" aria-hidden="true" width="240" height="228" loading="lazy">
 </article>
 @else
 <section class="lb-section" aria-label="Jam operasional">

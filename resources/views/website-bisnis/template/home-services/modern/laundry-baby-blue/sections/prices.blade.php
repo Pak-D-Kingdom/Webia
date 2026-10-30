@@ -60,7 +60,7 @@
     </div>
 
     @if ($mode === 'preview')
-        <a class="lb-btn lb-btn--ghost lb-btn--sm lb-card__link" href="{{ $lbRoute('harga') }}">Lihat Harga Lengkap <svg class="lb-i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        <a class="lb-btn lb-btn--ghost lb-btn--sm lb-card__link" href="{{ route('webia.laundry-baby-blue.harga') }}">Lihat Harga Lengkap <svg class="lb-i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
     @else
         <ul class="lb-notes">
             @foreach ($laundry['price_notes'] as $n)<li>{{ $n }}</li>@endforeach

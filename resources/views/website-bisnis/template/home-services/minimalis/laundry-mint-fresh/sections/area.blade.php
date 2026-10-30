@@ -1,5 +1,5 @@
 <article class="lw-card lw-card--area">
-    <img class="lw-area-art" src="{{ $img($c['img']['truck']) }}" alt="Mobil jemput dan antar FreshWash" loading="lazy" width="380" height="240">
+    <img class="lw-area-art" src="{{ $img($c['img']['area']) }}" alt="Mobil jemput dan antar FreshWash" loading="lazy" width="450" height="468">
     <div class="lw-area-body">
         <h2 class="lw-card__title">{{ $c['coverage']['title'] }}</h2>
         <p>{{ $c['coverage']['sub'] }}</p>

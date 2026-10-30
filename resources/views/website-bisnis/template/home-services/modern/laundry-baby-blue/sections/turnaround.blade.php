@@ -3,7 +3,7 @@
 <article class="lb-card lb-eta-card" aria-labelledby="lb-eta-title">
     <header class="lb-card__head">
         <span class="lb-card__icon"><svg class="lb-i" aria-hidden="true"><use href="#i-clock"/></svg></span>
-        <div><h2 class="lb-card__title" id="lb-eta-title">Estimasi Waktu Pengerjaan</h2><p class="lb-card__sub">Proses cepat, sesuai pilihan layanan.</p></div>
+        <div><h2 class="lb-card__title" id="lb-eta-title"><a href="{{ route('webia.laundry-baby-blue.estimasi') }}">Estimasi Waktu Pengerjaan</a></h2><p class="lb-card__sub">Proses cepat, sesuai pilihan layanan.</p></div>
     </header>
     <ul class="lb-eta-list">
         @foreach ($laundry['turnaround'] as $t)
@@ -13,7 +13,6 @@
             </li>
         @endforeach
     </ul>
-    <a class="lb-btn lb-btn--ghost lb-btn--sm lb-card__link" href="{{ $lbRoute('estimasi') }}">Hitung Estimasi <svg class="lb-i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
 </article>
 @else
 <section class="lb-section" aria-label="Estimasi waktu pengerjaan">
@@ -55,7 +54,7 @@
                 </label>
             </div>
             <div class="lb-estimator__result" data-lb-est-result aria-live="polite">Pilih layanan dan waktu untuk melihat perkiraan selesai.</div>
-            <a class="lb-btn lb-btn--primary lb-btn--block" href="{{ $lbRoute('order-inquiry') }}">Order Sekarang</a>
+            <a class="lb-btn lb-btn--primary lb-btn--block" href="{{ route('webia.laundry-baby-blue.order-inquiry') }}">Order Sekarang</a>
         </article>
     </div>
 </section>

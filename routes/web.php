@@ -983,58 +983,23 @@ Route::prefix('webia/template/interior-architecture/luxury/furniture-chocolate-l
         }
     });
 
-
-/*
-|--------------------------------------------------------------------------
-| Laundry Baby Blue - View Composer
-|--------------------------------------------------------------------------
-*/
-
-View::composer(
-    'website-bisnis.template.home-services.modern.laundry-baby-blue.*',
-    function ($view) {
-        $cfg = config('template.home-services.modern.laundry-baby-blue.laundry');
-
-        // Cadangan jika config tidak terbaca otomatis
-        if (!is_array($cfg)) {
-            $cfg = require config_path(
-                'template/home-services/modern/laundry-baby-blue/laundry.php'
-            );
-        }
-
-        $view->with([
-            'laundry' => $cfg,
-
-            'lbAsset' => fn (string $type, string $file = '') =>
-                asset(rtrim($cfg['assets'][$type] . '/' . $file, '/')),
-
-            'lbRoute' => fn (string $name) =>
-                route('webia.laundry-baby-blue.' . $name),
-        ]);
-    }
-);
-
-/*
-|--------------------------------------------------------------------------
-| Laundry Baby Blue - Routes
-|--------------------------------------------------------------------------
-*/
-
 Route::prefix('webia/template/home-services/modern/laundry-baby-blue')
     ->name('webia.laundry-baby-blue.')
     ->group(function () {
-        $v = 'website-bisnis.template.home-services.modern.laundry-baby-blue';
+        $view = 'website-bisnis.template.home-services.modern.laundry-baby-blue';
+        $data = ['laundry' => config('template.home-services.modern.laundry-baby-blue.laundry')
+            ?? require config_path('template/home-services/modern/laundry-baby-blue/laundry.php')];
 
-        Route::view('/', "$v.index")->name('home');
-        Route::view('/layanan', "$v.layanan")->name('layanan');
-        Route::view('/harga', "$v.harga")->name('harga');
-        Route::view('/pilihan-layanan', "$v.pilihan-layanan")->name('pilihan');
-        Route::view('/estimasi-waktu', "$v.estimasi-waktu")->name('estimasi');
-        Route::view('/area-layanan', "$v.area-layanan")->name('area');
-        Route::view('/cara-order', "$v.cara-order")->name('cara-order');
-        Route::view('/jam-operasional', "$v.jam-operasional")->name('jam');
-        Route::view('/order-inquiry', "$v.order-inquiry")->name('order-inquiry');
-        Route::view('/ai-chatbot', "$v.ai-chatbot")->name('ai-chatbot');
+        Route::view('/',                $view . '.index',             $data)->name('home');       // Beranda (preview semua section)
+        Route::view('/layanan',         $view . '.layanan',           $data)->name('layanan');    // Laundry services
+        Route::view('/harga',           $view . '.harga',             $data)->name('harga');      // Price list by item/kg
+        Route::view('/pilihan-layanan', $view . '.pilihan-layanan',   $data)->name('pilihan');    // Service options
+        Route::view('/estimasi-waktu',  $view . '.estimasi-waktu',    $data)->name('estimasi');   // Estimated turnaround time
+        Route::view('/area-layanan',    $view . '.area-layanan',      $data)->name('area');       // Pickup & delivery coverage
+        Route::view('/cara-order',      $view . '.cara-order',        $data)->name('cara-order'); // Order instructions
+        Route::view('/jam-operasional', $view . '.jam-operasional',   $data)->name('jam');        // Operating hours
+        Route::view('/order-inquiry',   $view . '.order-inquiry',     $data)->name('order-inquiry'); // Order inquiry
+        Route::view('/ai-chatbot',      $view . '.ai-chatbot',        $data)->name('ai-chatbot'); // AI chatbot (FAQ harga & proses)
     });
 
 Route::prefix('webia/template/home-services/minimalis/laundry-mint-fresh')
@@ -1068,6 +1033,80 @@ Route::prefix('webia/template/home-services/professional/laundry-classic-trust')
         Route::view('/jam-operasional',   "$v.hours")->name('hours');
         Route::view('/order-inquiry',     "$v.inquiry")->name('contact');
     });
+
+Route::prefix('webia/template/logistics-company-classic-trust')
+    ->name('webia.template.logistics-company.')
+    ->group(function () {
+        $view = 'website-bisnis.template.transportation&logistics.corporate.logistics-company-classic-trust.';
+
+        Route::view('/', $view . 'index')->name('home');
+        Route::view('/layanan', $view . 'layanan')->name('layanan');
+        Route::view('/opsi-pengiriman', $view . 'opsi-pengiriman')->name('opsi-pengiriman');
+        Route::view('/jangkauan', $view . 'jangkauan')->name('jangkauan');
+        Route::view('/armada-gudang', $view . 'armada-gudang')->name('armada-gudang');
+        Route::view('/proses-pengiriman', $view . 'proses-pengiriman')->name('proses-pengiriman');
+        Route::view('/tracking', $view . 'tracking')->name('tracking');
+        Route::view('/klien', $view . 'klien')->name('klien');
+        Route::view('/penawaran', $view . 'penawaran')->name('penawaran');
+        Route::view('/ai-chatbot', $view . 'ai-chatbot')->name('ai-chatbot');
+    });
+
+Route::prefix('webia/template/transportation-logistics/modern/logistics-company-midnight-navy')
+    ->name('logistics-company.')
+    ->group(function () {
+        $ns   = 'website-bisnis.template.transportation&logistics.modern.logistics-company-midnight-navy';
+        $site = require config_path('template/transportation&logistics/modern/logistics-company-midnight-navy/logistics-company.php');
+        $data = ['site' => $site];
+
+        Route::view('/', $ns . '.index', $data)->name('home');
+        Route::view('/layanan', $ns . '.layanan', $data)->name('services');
+        Route::view('/solusi-freight', $ns . '.solusi-freight', $data)->name('freight');
+        Route::view('/jangkauan', $ns . '.jangkauan', $data)->name('coverage');
+        Route::view('/armada-gudang', $ns . '.armada-gudang', $data)->name('fleet');
+        Route::view('/proses-pengiriman', $ns . '.proses-pengiriman', $data)->name('process');
+        Route::view('/tracking', $ns . '.tracking', $data)->name('tracking');
+        Route::view('/klien-korporat', $ns . '.klien-korporat', $data)->name('clients');
+        Route::view('/minta-penawaran', $ns . '.minta-penawaran', $data)->name('quotation');
+        Route::view('/ai-assistant', $ns . '.ai-assistant', $data)->name('chatbot');
+    });
+
+Route::prefix('webia/template/transportation-logistics/bold/logistics-company-orange-energy')
+    ->name('webia.template.logistics-company-orange-energy.')
+    ->group(function () {
+        $rp      = 'webia.template.logistics-company-orange-energy.';
+        $view    = 'website-bisnis.template.transportation&logistics.bold.logistics-company-orange-energy.';
+        $cfg     = 'template.transportation&logistics.bold.logistics-company-orange-energy.logistics-company';
+        $imgBase = 'images/website-bisnis/template/transportation&logistics/bold/logistics-company-orange-energy/';
+
+        // Data yang dibagikan ke semua view template (frontend statis, tanpa database).
+        $data = fn (): array => [
+            'site' => config($cfg),
+            'v'    => $view,
+            'rp'   => $rp,
+            'to'   => fn (?string $name = null): string => $name ? route($rp.$name) : '#',
+            'img'  => fn (string $file): string => asset($imgBase.$file),
+        ];
+
+        // uri => [nama route, nama file blade]
+        $pages = [
+            '/'                 => ['home', 'index'],
+            'layanan'           => ['layanan', 'layanan'],
+            'opsi-pengiriman'   => ['opsi-pengiriman', 'opsi-pengiriman'],
+            'jangkauan'         => ['jangkauan', 'jangkauan'],
+            'armada-gudang'     => ['armada-gudang', 'armada-gudang'],
+            'proses-pengiriman' => ['proses-pengiriman', 'proses-pengiriman'],
+            'tracking'          => ['tracking', 'tracking'],
+            'klien-korporat'    => ['klien-korporat', 'klien-korporat'],
+            'penawaran'         => ['penawaran', 'penawaran'],
+            'ai-assistant'      => ['ai-assistant', 'ai-assistant'],
+        ];
+
+        foreach ($pages as $uri => [$name, $file]) {
+            Route::get($uri, fn () => view($view.$file, $data()))->name($name);
+        }
+    });
+
+
 
 // ------------------------------------------------------------------------------------------------------------------//
 

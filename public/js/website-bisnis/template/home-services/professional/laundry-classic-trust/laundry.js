@@ -20,21 +20,15 @@
     onScroll(); window.addEventListener('scroll', onScroll, { passive: true });
 
     function setMenu(open) {
-      menu.classList.toggle('is-open', open);
+      menu.classList.toggle('is-open', open); document.body.classList.toggle('nav-open', open);
       burger.setAttribute('aria-expanded', String(open));
       burger.setAttribute('aria-label', open ? 'Tutup menu' : 'Buka menu');
       burger.querySelector('use').setAttribute('href', open ? '#i-close' : '#i-menu');
     }
     burger.addEventListener('click', function () { setMenu(!menu.classList.contains('is-open')); });
 
-    $$('.sub-btn', nav).forEach(function (b) {
-      b.addEventListener('click', function () {
-        var li = b.closest('.has-sub'), open = !li.classList.contains('is-open');
-        li.classList.toggle('is-open', open); b.setAttribute('aria-expanded', String(open));
-      });
-    });
     document.addEventListener('click', function (e) {
-      if (!nav.contains(e.target)) { setMenu(false); $$('.has-sub.is-open', nav).forEach(function (li) { li.classList.remove('is-open'); }); }
+      if (!nav.contains(e.target)) setMenu(false);
     });
     window.addEventListener('resize', function () { if (window.innerWidth > 1180) setMenu(false); });
 
@@ -49,6 +43,27 @@
       if (box && !box.hidden) { box.hidden = true; }
       setMenu(false);
     });
+  }
+
+  /* ---------- DROPDOWN (submenu navbar + bahasa) ---------- */
+  function initDropdowns() {
+    var SEL = '[data-dropdown], .has-sub';
+    function closeAll(except) {
+      $$(SEL).forEach(function (r) {
+        if (r === except) return;
+        r.classList.remove('is-open');
+        var b = $('.lang__btn, .sub-btn', r); if (b) b.setAttribute('aria-expanded', 'false');
+      });
+    }
+    $$('.lang__btn, .sub-btn').forEach(function (b) {
+      b.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var r = b.closest(SEL), open = !r.classList.contains('is-open');
+        closeAll(r); r.classList.toggle('is-open', open); b.setAttribute('aria-expanded', String(open));
+      });
+    });
+    document.addEventListener('click', function (e) { if (!e.target.closest(SEL)) closeAll(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeAll(); });
   }
 
   /* ---------- TABS (Per Item / Per Kg) + FILTER ---------- */
@@ -169,7 +184,7 @@
   function initBot() {
     var panel = $('[data-bot]'); if (!panel) return;
     var B = D.bot || { faq: [] }, log = $('[data-bot-log]', panel), form = $('[data-bot-form]', panel), input = $('input', form);
-    var fab = $('[data-bot-bubble]') && $('[data-bot-bubble]').parentNode, started = false, busy = false, lastFocus = null;
+    var fab = $('[data-fl-bot]'), started = false, busy = false, lastFocus = null;
 
     function add(text, who, link) {
       var m = document.createElement('div'); m.className = 'msg msg--' + who; m.textContent = text;
@@ -194,7 +209,7 @@
       setTimeout(function () { typing.remove(); add(r.a, 'bot', r.wa); busy = false; }, 650);
     }
     function open(q) {
-      lastFocus = document.activeElement; panel.hidden = false; document.body.classList.add('bot-open');
+      lastFocus = document.activeElement; panel.hidden = false; if (fab) fab.classList.remove('is-hint'); document.body.classList.add('bot-open');
       if (!started) { started = true; add(B.greeting, 'bot'); }
       var openers = $$('[data-bot-open]'); openers.forEach(function (o) { o.setAttribute('aria-expanded', 'true'); });
       if (q) ask(q); else setTimeout(function () { input.focus(); }, 50);
@@ -216,14 +231,16 @@
       f.addEventListener('submit', function (e) { e.preventDefault(); var i = $('input', f), v = i.value; i.value = ''; open(v || undefined); });
     });
 
-    // petunjuk kecil di tombol chatbot (sekali per sesi)
-    var seen = safe(function () { return sessionStorage.getItem('fw-bot-hint'); });
-    if (fab && !seen) {
-      setTimeout(function () { fab.classList.add('is-hint'); safe(function () { sessionStorage.setItem('fw-bot-hint', '1'); }); }, 3500);
-      setTimeout(function () { fab.classList.remove('is-hint'); }, 9000);
+    // label petunjuk tombol melayang (sekali per sesi): WhatsApp dulu, lalu FreshBot
+    var wa = $('[data-fl-wa]'), seen = safe(function () { return sessionStorage.getItem('fw-hint'); });
+    function hint(el, on, off) {
+      if (!el) return;
+      setTimeout(function () { if (panel.hidden) el.classList.add('is-hint'); }, on);
+      setTimeout(function () { el.classList.remove('is-hint'); }, off);
     }
+    if (!seen) { hint(wa, 1800, 5200); hint(fab, 6800, 12500); safe(function () { sessionStorage.setItem('fw-hint', '1'); }); }
   }
 
-  function init() { initNav(); initTabs(); initHours(); initForms(); initCoverage(); initBot(); }
+  function init() { initNav(); initDropdowns(); initTabs(); initHours(); initForms(); initCoverage(); initBot(); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();

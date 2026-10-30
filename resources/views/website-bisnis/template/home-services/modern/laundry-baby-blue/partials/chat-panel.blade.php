@@ -2,7 +2,7 @@
 <section class="lb-chat {{ $embed ? 'lb-chat--embed' : '' }}" @unless($embed) id="lbChat" hidden @endunless
          data-lb-chat @if($embed) data-lb-chat-embed @endif role="{{ $embed ? 'region' : 'dialog' }}" aria-label="{{ $laundry['chatbot']['name'] }}">
     <header class="lb-chat__head">
-        <span class="lb-chat__avatar"><img src="{{ $lbAsset('img', 'ai-robot-head.png') }}" alt="" width="44" height="27"></span>
+        <span class="lb-chat__avatar"><img src="{{ asset($laundry['assets']['img'] . '/ai-robot-head.png') }}" alt="" width="44" height="27"></span>
         <div class="lb-chat__title">
             <strong>{{ $laundry['chatbot']['name'] }}</strong>
             <span class="lb-chat__status"><i aria-hidden="true"></i>Online · siap membantu</span>

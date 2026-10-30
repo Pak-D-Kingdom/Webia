@@ -3,13 +3,21 @@
         <div class="grid grid--4">
             @foreach ($c['turnaround'] as $t)
                 <article class="card card--pad tat">
-                    <span class="tile__ic tile__ic--lg"><svg class="ic"><use href="#i-{{ $t['icon'] }}"/></svg></span>
+                    <span class="bub bub--lg"><svg class="ic"><use href="#i-{{ $t['icon'] }}"/></svg></span>
                     <h2>{{ $t['name'] }}</h2>
                     <b class="tat__time">{{ $t['time'] }}</b>
                     <p>{{ $t['desc'] }}</p>
                 </article>
             @endforeach
         </div>
+
+        <div class="card card--pad bars">
+            <h2>Perbandingan kecepatan layanan</h2>
+            @foreach ($c['turnaround'] as $t)
+                <div class="bar"><span>{{ $t['name'] }}</span><span class="bar__track"><span class="bar__fill" style="width: {{ $t['bar'] }}%"></span></span><b>{{ $t['time'] }}</b></div>
+            @endforeach
+        </div>
+
         <div class="card card--pad infobox">
             <h2>Perlu diketahui</h2>
             <ul class="checks">

@@ -15,7 +15,7 @@
     <div class="lw-container lw-page">
         <div class="lw-split">
             <article class="lw-card">
-                <img class="lw-time-art" src="{{ $img($c['img']['clock']) }}" alt="" width="300" height="160">
+                <img class="lw-time-art" src="{{ $img($c['img']['clock']) }}" alt="" width="366" height="174">
                 <ul class="lw-time-list lw-time-list--full">
                     @foreach ($c['turnaround']['items'] as $t)
                         <li><span class="lw-ico lw-ico--round"><svg class="lw-i"><use href="#i-{{ $t['icon'] }}"/></svg></span><span>{{ $t['name'] }}</span><b>{{ $t['time'] }}</b></li>

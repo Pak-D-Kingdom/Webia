@@ -5,14 +5,18 @@
         <span class="lb-bubble lb-bubble--a"></span><span class="lb-bubble lb-bubble--b"></span><span class="lb-bubble lb-bubble--c"></span>
     </div>
 
+    {{-- Desktop lebar (>=1400px): latar penuh persis desain, teks tetap HTML --}}
+    <img class="lb-hero__bg" src="{{ asset($laundry['assets']['img'] . '/hero-bg.webp') }}" width="3072" height="532" alt="" aria-hidden="true" fetchpriority="high" decoding="async">
+
+    {{-- Layar lebih kecil: gambar adegan di kanan / bawah --}}
     <div class="lb-hero__art">
-        <img class="lb-hero__scene" src="{{ $lbAsset('img', 'hero-scene.webp') }}" width="1896" height="530" fetchpriority="high" decoding="async"
+        <img class="lb-hero__scene" src="{{ asset($laundry['assets']['img'] . '/hero-scene.webp') }}" width="1896" height="530" fetchpriority="high" decoding="async"
              alt="Petugas BlueLaundry yang ceria membawa tumpukan handuk bersih di samping mesin cuci">
-        <p class="lb-hero__script" aria-hidden="true">
-            @foreach ($h['script'] as $line)<span>{{ $line }}</span>@endforeach
-            <svg viewBox="0 0 120 26" fill="none"><path d="M4 20C34 6 74 4 116 8M30 24c30-8 56-10 84-9" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
-        </p>
     </div>
+    <p class="lb-hero__script" aria-hidden="true">
+        @foreach ($h['script'] as $line)<span>{{ $line }}</span>@endforeach
+        <svg viewBox="0 0 120 26" fill="none"><path d="M4 20C34 6 74 4 116 8M30 24c30-8 56-10 84-9" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+    </p>
 
     <div class="lb-container lb-hero__inner">
         <div class="lb-hero__copy">
@@ -23,10 +27,9 @@
             </h1>
             <p class="lb-hero__text">{{ $h['text'] }}</p>
             <div class="lb-hero__cta">
-                <a class="lb-btn lb-btn--primary lb-btn--lg" href="{{ $lbRoute('layanan') }}">Lihat Layanan <svg class="lb-i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-                <a class="lb-btn lb-btn--outline lb-btn--lg" href="{{ $lbRoute('order-inquiry') }}"><svg class="lb-i" aria-hidden="true"><use href="#i-cart"/></svg>Order Sekarang</a>
+                <a class="lb-btn lb-btn--primary lb-btn--lg" href="{{ route('webia.laundry-baby-blue.layanan') }}">Lihat Layanan <svg class="lb-i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                <a class="lb-btn lb-btn--outline lb-btn--lg" href="{{ route('webia.laundry-baby-blue.order-inquiry') }}"><svg class="lb-i" aria-hidden="true"><use href="#i-cart"/></svg>Order Sekarang</a>
             </div>
         </div>
     </div>
-    <svg class="lb-hero__wave" viewBox="0 0 1440 40" preserveAspectRatio="none" aria-hidden="true"><path d="M0 22C200 -6 360 40 620 22S1040 -4 1240 16s200 8 200 8v16H0z"/></svg>
 </section>

@@ -1,6 +1,7 @@
-<section class="card card--faq b-faq" aria-labelledby="pv-faq">
+<section class="card card--faq" aria-labelledby="pv-faq">
+    <img class="faq__leaf" src="{{ $img('leaf.svg') }}" alt="" aria-hidden="true" loading="lazy">
     <div class="faq__head">
-        <img src="{{ $img('bunny.svg') }}" alt="" loading="lazy" width="96" height="88">
+        <img src="{{ $img('bunny-freshbot.png') }}" alt="" loading="lazy">
         <div>
             <h2 id="pv-faq">Punya Pertanyaan?<br>Tanya {{ $c['chatbot']['name'] }}!</h2>
             <p>AI Chatbot kami siap membantu 24/7 untuk semua pertanyaan seputar laundry.</p>

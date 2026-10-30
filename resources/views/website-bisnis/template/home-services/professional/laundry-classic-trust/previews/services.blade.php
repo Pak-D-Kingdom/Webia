@@ -1,5 +1,5 @@
 <article class="card card--photo b-show">
-    <img src="{{ $img('folded-clothes.svg') }}" alt="Pakaian terlipat rapi" loading="lazy">
+    <img src="{{ $img('service-photo.jpg') }}" alt="Pakaian terlipat rapi di atas meja kayu" loading="lazy">
     <div class="card--photo__txt">
         <h2>Layanan Laundry Lengkap &amp; Profesional</h2>
         <p>Dari pakaian sehari-hari hingga item khusus, semua kami tangani dengan penuh perhatian.</p>
@@ -15,7 +15,7 @@
     <ul class="tiles tiles--5">
         @foreach ($c['services'] as $s)
             <li><a class="tile" href="{{ $url('services') }}#{{ $s['slug'] }}">
-                <span class="tile__ic"><svg class="ic"><use href="#i-{{ $s['icon'] }}"/></svg></span>
+                <span class="bub"><svg class="ic"><use href="#i-{{ $s['icon'] }}"/></svg></span>
                 <strong>{{ $s['name'] }}</strong><small>({{ $s['variant'] }})</small>
             </a></li>
         @endforeach
