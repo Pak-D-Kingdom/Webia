@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\WebiaOrder;
 use App\Models\WebiaOrderLog;
+use App\Services\AccountProvisioner;
 use App\Services\OrderMail;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -155,7 +156,13 @@ class WebiaOrderController extends Controller
         });
 
         $newStatus = $validated['action'] === 'approve' ? 'paid' : 'rejected';
-        $this->orderMail->notifyCustomer($order, $newStatus);
+
+        if ($newStatus === 'paid') {
+            // Jalur sama dengan webhook Midtrans: buat/tautkan akun lalu antrekan email kredensial.
+            app(AccountProvisioner::class)->provision($order);
+        } else {
+            $this->orderMail->notifyCustomer($order, $newStatus);
+        }
 
         if ($request->expectsJson()) {
             return response()->json(['status' => 'ok', 'order_status' => $newStatus]);

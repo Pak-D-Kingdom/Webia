@@ -30,7 +30,7 @@
                             <span aria-hidden="true" class="material-symbols-outlined">badge</span>
                             Data akun
                         </legend>
-                        <p class="customer-create-hint">Akun WEBIA dibuat otomatis. Email dan kata sandi untuk masuk ke portal dikirim ke email ini.</p>
+                        <p class="customer-create-hint">Setelah pembayaran terkonfirmasi, akun WEBIA otomatis dibuat dan kredensial dikirim ke email ini.</p>
                         <div class="form-field"><label for="guest_name">Nama lengkap</label><input id="guest_name" name="name" type="text" value="{{ old('name') }}" required autocomplete="name">@error('name') <p class="form-error">{{ $message }}</p> @enderror</div>
                         <div class="form-field"><label for="guest_email">Email</label><input id="guest_email" name="email" type="email" value="{{ old('email') }}" required autocomplete="email">@error('email') <p class="form-error">{{ $message }}</p> @enderror</div>
                     </fieldset>

@@ -153,8 +153,8 @@
                         </td>
                         <td class="px-3 py-3.5 md:px-4">
                             <div class="flex flex-col">
-                                <span class="font-label-md text-label-md font-semibold text-on-surface">{{ $order->user?->name ?? 'Akun dihapus' }}</span>
-                                <span class="font-caption text-caption text-on-surface-variant">{{ $order->user?->email }}</span>
+                                <span class="font-label-md text-label-md font-semibold text-on-surface">{{ $order->user?->name ?? $order->guest_name ?? 'Menunggu lunas' }}</span>
+                                <span class="font-caption text-caption text-on-surface-variant">{{ $order->user?->email ?? $order->guest_email ?? '-' }}</span>
                             </div>
                         </td>
                         <td class="px-3 py-3.5 md:px-4">

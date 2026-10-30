@@ -13,8 +13,8 @@
                 <span class="material-symbols-outlined">mark_email_read</span>
             </span>
             <h1 id="order-success-title">Pesanan kamu sudah dibuat</h1>
-            <p>Nomor pesanan <strong>{{ $guestOrder['order_number'] }}</strong> sudah masuk ke akun WEBIA.</p>
-            <p>Kami mengirim email berisi email dan kata sandi untuk masuk ke portal ke <strong>{{ $guestOrder['email'] }}</strong>.</p>
+            <p>Nomor pesanan <strong>{{ $guestOrder['order_number'] }}</strong> sedang menunggu pembayaran.</p>
+            <p>Setelah pembayaran terkonfirmasi, akun WEBIA otomatis dibuat dan kredensial dikirim ke <strong>{{ $guestOrder['email'] }}</strong>.</p>
 
             @if ($snapToken && config('webia.midtrans.client_key'))
                 <div class="customer-create-submit">
@@ -74,13 +74,6 @@
                 };
 
                 if (button) button.addEventListener('click', open);
-                // Popup pembayaran muncul otomatis tanpa pindah halaman.
-                var tries = 0;
-                (function wait() {
-                    if (window.snap) { open(); return; }
-                    if (++tries > 25) return;
-                    setTimeout(wait, 200);
-                })();
             })();
         </script>
     @endif

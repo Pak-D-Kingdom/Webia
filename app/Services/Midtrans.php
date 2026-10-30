@@ -13,8 +13,6 @@ use Throwable;
 
 class Midtrans
 {
-    public function __construct(private OrderMail $orderMail) {}
-
     public function createTransaction(WebiaOrder $order, string $midtransOrderId): WebiaPayment
     {
         $previousPaymentIds = $order->payments()->where('status', 'created')->pluck('id');
@@ -112,18 +110,19 @@ class Midtrans
 
     public function applyNotification(WebiaPayment $payment, array $payload): void
     {
-        DB::transaction(function () use ($payment, $payload): void {
-            $order = WebiaOrder::whereKey($payment->webia_order_id)->lockForUpdate()->firstOrFail();
+        $order = $payment->order;
+        $paid = DB::transaction(function () use ($payment, $payload, $order): bool {
+            $order = WebiaOrder::whereKey($order->getKey())->lockForUpdate()->firstOrFail();
             $locked = WebiaPayment::whereKey($payment->id)->lockForUpdate()->firstOrFail();
             $newStatus = $this->mapTransactionStatus(
                 (string) data_get($payload, 'transaction_status'),
-                data_get($payload, 'fraud_status'),
+                (string) data_get($payload, 'fraud_status'),
             );
 
             if ($newStatus === 'paid' && $locked->status === 'duplicate') {
                 $locked->update(['payload' => $payload]);
 
-                return;
+                return false;
             }
 
             if ($newStatus === 'paid' && $locked->status !== 'paid' && $this->orderAlreadyPaid($locked, $order)) {
@@ -132,11 +131,12 @@ class Midtrans
                 WebiaOrderLog::create([
                     'webia_order_id' => $locked->webia_order_id,
                     'actor_id' => null,
+                    'from_status' => $order->status,
                     'to_status' => 'paid',
                     'note' => 'Pembayaran ganda ('.$locked->midtrans_order_id.') terdeteksi — perlu refund manual admin.',
                 ]);
 
-                return;
+                return false;
             }
 
             $locked->update([
@@ -148,7 +148,14 @@ class Midtrans
             if ($newStatus === 'paid') {
                 $this->markOrderPaid($locked, $order);
             }
+
+            return $newStatus === 'paid';
         });
+
+        // Akun hanya dibuat setelah pembayaran terkonfirmasi, dan itu pun setelah commit.
+        if ($paid) {
+            app(AccountProvisioner::class)->provision($order);
+        }
     }
 
     private function orderAlreadyPaid(WebiaPayment $payment, WebiaOrder $order): bool
@@ -184,7 +191,6 @@ class Midtrans
             'to_status' => 'paid',
             'note' => 'Dibayar via Midtrans ('.$payment->midtrans_order_id.').',
         ]);
-        $this->orderMail->notifyCustomer($order, 'paid');
     }
 
     public function configured(): bool

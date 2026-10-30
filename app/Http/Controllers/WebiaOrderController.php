@@ -80,27 +80,18 @@ class WebiaOrderController extends Controller
         $template = isset($validated['template_id']) ? WebiaTemplate::findOrFail($validated['template_id']) : null;
         $addons = WebiaAddon::whereKey($validated['addon_ids'] ?? [])->get();
 
-        // Guest: akun dibuat otomatis; email sudah terdaftar dipakai tanpa password baru.
-        $plainPassword = null;
-        $user = User::where('email', $validated['email'] ?? $request->user()->email)->first();
-        if ($user === null) {
-            $plainPassword = Str::password(12);
-            $user = User::create([
-                'name' => $validated['name'],
-                'email' => $validated['email'],
-                'password' => $plainPassword,
-            ]);
-        }
+        // Guest belum punya akun: nama/email disimpan di order; akun dibuat setelah pembayaran lunas.
+        $guestName = auth()->check() ? null : $validated['name'];
+        $guestEmail = auth()->check() ? null : $validated['email'];
 
-        $order = $this->createOrder($user, $validated['category_slug'] ?? null, $package, $template, $addons);
-        $this->orderMail->sendCredentials($order, $plainPassword);
+        $order = $this->createOrder($request->user(), $guestName, $guestEmail, $validated['category_slug'] ?? null, $package, $template, $addons);
 
         if ($request->user() === null) {
             // Popup Snap dibuka inline di halaman sukses; webhook Midtrans menandai order lunas.
             $payment = $this->midtrans->createTransaction($order, $this->nextMidtransOrderId($order));
             session(['guest_order' => [
                 'order_id' => $order->id,
-                'email' => $user->email,
+                'email' => $guestEmail,
                 'order_number' => $order->order_number,
                 'snap_token' => $this->midtrans->configured() ? $payment->snap_token : null,
                 // Fallback bila popup Snap tidak bisa jalan (client key belum diisi).
@@ -111,7 +102,7 @@ class WebiaOrderController extends Controller
             if ($request->expectsJson()) {
                 return response()->json([
                     'order_number' => $order->order_number,
-                    'email' => $user->email,
+                    'email' => $guestEmail,
                     'status' => $order->status,
                     'snap_token' => $this->midtrans->configured() ? $payment->snap_token : null,
                     'snap_redirect_url' => $payment->snap_redirect_url,
@@ -153,6 +144,8 @@ class WebiaOrderController extends Controller
             'status' => $status,
             'terminal' => in_array($status, ['paid', 'failed', 'expired'], true),
             'sync_failed' => $syncFailed,
+            'credential_status' => $order->credential_status,
+            'email' => $order->guest_email ?? $order->user?->email,
         ]);
     }
 
@@ -307,13 +300,15 @@ class WebiaOrderController extends Controller
     }
 
     /** @param Collection<int, WebiaAddon> $addons */
-    private function createOrder(User $user, ?string $categorySlug, WebiaPackage $package, ?WebiaTemplate $template, Collection $addons): WebiaOrder
+    private function createOrder(?User $user, ?string $guestName, ?string $guestEmail, ?string $categorySlug, WebiaPackage $package, ?WebiaTemplate $template, Collection $addons): WebiaOrder
     {
         for ($attempt = 0; $attempt < 5; $attempt++) {
             try {
-                return DB::transaction(function () use ($user, $categorySlug, $package, $template, $addons): WebiaOrder {
+                return DB::transaction(function () use ($user, $guestName, $guestEmail, $categorySlug, $package, $template, $addons): WebiaOrder {
                     $order = WebiaOrder::create([
-                        'user_id' => $user->id,
+                        'user_id' => $user?->id,
+                        'guest_name' => $guestName ?? $user?->name,
+                        'guest_email' => $guestEmail ?? $user?->email,
                         'order_number' => $this->orderNumber(),
                         'webia_package_id' => $package->id,
                         'package_snapshot' => ['name' => $package->name, 'price' => $package->price],
@@ -332,7 +327,7 @@ class WebiaOrderController extends Controller
 
                     WebiaOrderLog::create([
                         'webia_order_id' => $order->id,
-                        'actor_id' => $user->id,
+                        'actor_id' => $user?->id,
                         'to_status' => 'awaiting_payment',
                     ]);
 

@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Mail\AccountCredentialsMail;
 use App\Mail\OrderStatusMail;
 use App\Models\User;
 use App\Models\WebiaOrder;
@@ -15,13 +14,8 @@ class OrderMail
 {
     public function notifyCustomer(WebiaOrder $order, string $type): void
     {
-        $this->send($order->user?->email, new OrderStatusMail($order, $type));
-    }
-
-    public function sendCredentials(WebiaOrder $order, ?string $plainPassword): void
-    {
-        // $plainPassword null berarti akun sudah ada: kirim pemberitahuan tanpa kredensial baru.
-        $this->send($order->user?->email, new AccountCredentialsMail($order, $plainPassword));
+        // Guest tanpa akun tetap bisa diberi tahu (mis. pembayaran ditolak) lewat email order.
+        $this->send($order->user?->email ?? $order->guest_email, new OrderStatusMail($order, $type));
     }
 
     public function notifyAdmins(WebiaOrder $order): void
