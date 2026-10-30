@@ -1,0 +1,31 @@
+/* NANTARA ARCHITECTURE — WEBIA template styles */
+:root { color-scheme: dark; }
+html { scroll-behavior: smooth; scroll-padding-top: 6rem; }
+body { margin: 0; min-width: 320px; overflow-x: hidden; background-color: #2B1810; }
+img { max-width: 100%; }
+button, input, select, textarea { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+.glass-wood { background: rgba(43,24,16,.88); backdrop-filter: blur(12px); border: 1px solid rgba(200,155,60,.25); }
+.text-gradient-gold { background: linear-gradient(135deg,#F3ECE0 0%,#C89B3C 50%,#E5C578 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.text-gradient-brass { background: linear-gradient(135deg,#C89B3C 0%,#963D1E 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.wood-border { border:2px solid #C89B3C; outline:4px solid #3D2A1B; }
+.gebyok-shadow { box-shadow:0 20px 50px rgba(24,12,7,.6); }
+.hotspot-pulse { box-shadow:0 0 0 0 rgba(200,155,60,.7); animation:nantara-pulse-ring 1.8s infinite cubic-bezier(.66,0,0,1); }
+@keyframes nantara-pulse-ring { to { box-shadow:0 0 0 16px rgba(200,155,60,0); } }
+::-webkit-scrollbar { width:8px; }
+::-webkit-scrollbar-track { background:#2B1810; }
+::-webkit-scrollbar-thumb { background:#C89B3C; border-radius:4px; }
+::-webkit-scrollbar-thumb:hover { background:#963D1E; }
+.nantara-floating-actions { flex-direction:row !important; align-items:center !important; gap:12px !important; }
+.nantara-floating-actions > button { width:56px !important; height:56px !important; flex-shrink:0; }
+#wa-drawer, #ai-drawer { max-width:calc(100vw - 2rem); right:1rem; }
+#ai-drawer { width:min(24rem, calc(100vw - 2rem)); }
+#wa-drawer { width:min(20rem, calc(100vw - 2rem)); }
+#contact input, #contact select, #contact textarea { box-sizing:border-box; width:100%; }
+#contact input:focus, #contact select:focus, #contact textarea:focus { outline:2px solid #C89B3C; outline-offset:2px; }
+footer a, nav a { transition:color .2s ease; }
+@media (max-width: 640px) {
+  .nantara-floating-actions { right:1rem; bottom:1rem; }
+  .nantara-floating-actions > button { width:50px !important; height:50px !important; font-size:1.25rem !important; }
+  #wa-drawer, #ai-drawer { bottom:5.5rem; right:1rem; }
+}
