@@ -1243,8 +1243,9 @@ Route::prefix('webia/template')->group(function () {
         '/aurelia-home-renovation',
         'website-bisnis.templates.home-services.home-renovation-repair.aurelia.aurelia'
     )->name('webia.template.aurelia-home-renovation');
+
     Route::view(
-        '/griya-etnik-nantara',
-        'website-bisnis.templates.interior-architecture.architecture-building-design.griya-etnik-nantara.griya-etnik-nantara'
-    )->name('webia.template.griya-etnik-nantara');
+        '/matcha-clean-organic-deep-cleaning',
+        'website-bisnis.templates.home-services.home-cleaning-deep-cleaning.matcha-clean.matcha-clean'
+    )->name('webia.template.matcha-clean-organic-deep-cleaning');
 });
