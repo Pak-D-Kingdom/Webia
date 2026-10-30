@@ -1,30 +1,6 @@
-{{-- Prices. $mode: preview | page --}}
-@php $full = ($mode ?? 'preview') === 'page'; @endphp
+{{-- Prices: hanya halaman penuh. Tidak ada preview di beranda. --}}
 
-@if (! $full)
-    <article class="ta-panel ta-panel--price" aria-labelledby="ta-price-title">
-        @include($ns . '.partials.section-head', [
-            'ico' => 'tag', 'id' => 'ta-price-title', 'title' => 'Harga Paket',
-            'sub' => 'Pilih paket sesuai budget dan kebutuhan Anda.',
-        ])
-        <ul class="ta-pp">
-            @foreach ($ta['prices'] as $pr)
-                <li>
-                    <a @class(['ta-pp__item', 'is-popular' => $pr['popular']]) href="{{ $routes['inquiry'] }}?paket={{ $pr['code'] }}">
-                        @if ($pr['popular'])<span class="ta-pp__tag">Paling dipilih</span>@endif
-                        <span class="ta-pp__code">{{ substr($pr['code'], 0, 2) }}<small>{{ substr($pr['code'], 2) }}</small></span>
-                        <span>
-                            <span class="ta-pp__name">{{ $pr['name'] }}</span>
-                            <span class="ta-pp__feat">{{ $pr['features'][0] }} · {{ $pr['features'][1] }}</span>
-                        </span>
-                        <span class="ta-pp__price"><strong>{{ $rp($pr['price']) }}</strong><small>/orang</small></span>
-                    </a>
-                </li>
-            @endforeach
-        </ul>
-        <a class="ta-btn ta-btn--outline ta-btn--sm" href="{{ $routes['harga'] }}">Lihat Semua Harga {{ $icon('arrow') }}</a>
-    </article>
-@else
+
     <section class="ta-section" aria-label="Daftar harga">
         <div class="ta-container">
             <div class="ta-price-grid">
@@ -74,4 +50,4 @@
             </div>
         </div>
     </section>
-@endif
+

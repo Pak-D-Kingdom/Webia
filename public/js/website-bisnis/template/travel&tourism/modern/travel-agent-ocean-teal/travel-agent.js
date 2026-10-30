@@ -44,7 +44,7 @@
         doc.addEventListener('keydown', function (e) {
             if (e.key === 'Escape' && menu.classList.contains('is-open')) { setOpen(false); burger.focus(); }
         });
-        window.matchMedia('(min-width: 1320px)').addEventListener('change', function (e) { if (e.matches) setOpen(false); });
+        window.matchMedia('(min-width: 1280px)').addEventListener('change', function (e) { if (e.matches) setOpen(false); });
     }
 
     /* ------------------------------------------------------------------ */

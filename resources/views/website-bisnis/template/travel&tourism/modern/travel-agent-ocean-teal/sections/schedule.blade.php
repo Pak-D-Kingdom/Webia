@@ -19,12 +19,11 @@
                         <span class="ta-sch__date"><b>{{ $s['day'] }}</b><span>{{ $s['month'] }}</span><small>{{ $s['year'] }}</small></span>
                         <span class="ta-sch__info">
                             <strong>{{ $s['name'] }}</strong>
-                            <span class="ta-sch__pkg">{{ $s['package'] }}</span>
-                            <span class="ta-sch__seat">{{ $icon('users') }}{{ $s['seats'] > 0 ? 'Sisa ' . $s['seats'] . ' kursi' : 'Kuota penuh' }}</span>
+                            <span class="ta-sch__pkg">{{ $s['package'] }} · {{ $s['seats'] > 0 ? 'Sisa ' . $s['seats'] . ' kursi' : 'Kuota penuh' }}</span>
                         </span>
                         <span class="ta-sch__end">
-                            <span class="ta-status ta-status--{{ $s['status'] }}">{{ $icon('check') }}{{ $label[$s['status']] }}</span>
-                            <span class="ta-sch__go" aria-hidden="true">{{ $icon('arrow') }}</span>
+                            <span class="ta-sch__stat ta-sch__stat--{{ $s['status'] }}">{{ $label[$s['status']] }}</span>
+                            <span class="ta-sch__go" aria-hidden="true">{{ $icon('right') }}</span>
                         </span>
                     </a>
                 </li>
