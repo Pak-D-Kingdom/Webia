@@ -365,6 +365,7 @@ a {
     font-size: 0.78rem;
     font-weight: 800;
     line-height: 1.2;
+    white-space: nowrap;
 }
 
 .status-pill-muted {
@@ -1002,63 +1003,6 @@ a {
     margin: 0.2rem 0 0;
     font-weight: 800;
     overflow-wrap: anywhere;
-}
-
-.order-steps {
-    position: relative;
-    display: grid;
-    gap: 0;
-    margin: 1.75rem 0 0;
-    padding: 0 0 0 0.25rem;
-    list-style: none;
-}
-
-.order-steps li {
-    position: relative;
-    display: grid;
-    grid-template-columns: 2rem minmax(0, 1fr);
-    align-items: center;
-    gap: 0.75rem;
-    min-height: 3.25rem;
-    color: var(--account-muted);
-    font-size: 0.92rem;
-    font-weight: 700;
-}
-
-.order-steps li:not(:last-child)::after {
-    position: absolute;
-    top: 2.4rem;
-    bottom: -0.35rem;
-    left: 0.96rem;
-    width: 2px;
-    background: var(--account-line-strong);
-    content: '';
-}
-
-.order-step-state {
-    position: relative;
-    z-index: 1;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 2rem;
-    height: 2rem;
-    color: var(--account-muted);
-    background: var(--account-surface);
-    border: 2px solid var(--account-line-strong);
-    border-radius: 999px;
-    font-size: 0.78rem;
-    font-weight: 800;
-}
-
-.order-steps li[aria-current='step'] {
-    color: var(--account-action-hover);
-}
-
-.order-steps li[aria-current='step'] .order-step-state {
-    color: #ffffff;
-    background: var(--account-action);
-    border-color: var(--account-action);
 }
 
 .business-data-list {
@@ -3084,4 +3028,1775 @@ a {
     padding-top: 0.6rem;
     color: var(--account-muted);
     font-size: 0.72rem;
+}
+
+/* ==== Portal konsumen ala Stitch: sidebar indigo, topbar, shell ==== */
+
+.customer-sidebar {
+    position: fixed;
+    inset: 0 auto 0 -17rem;
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    width: 16rem;
+    max-width: 85vw;
+    padding: 1.15rem;
+    color: #ffffff;
+    background: var(--account-sidebar);
+    /* left, bukan transform: transformed fixed dihitung scrollable overflow oleh Chromium */
+    visibility: hidden;
+    transition: left 0.25s ease-out, visibility 0.25s;
+}
+
+.customer-sidebar.open {
+    left: 0;
+    visibility: visible;
+}
+
+.customer-sidebar-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.customer-sidebar-head .account-brand {
+    color: #ffffff;
+}
+
+.customer-sidebar-head .account-brand span {
+    color: var(--account-sidebar);
+    background: #ffffff;
+}
+
+.customer-sidebar :where(a, button):focus-visible {
+    outline-color: #ffffff;
+}
+
+.customer-sidebar-close,
+.customer-sidebar-toggle {
+    display: grid;
+    place-items: center;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0;
+    border: 0;
+    border-radius: 0.45rem;
+    background: transparent;
+    cursor: pointer;
+}
+
+.customer-sidebar-close {
+    color: #ded8e9;
+}
+
+.customer-sidebar-close:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.customer-sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    margin-top: 1.5rem;
+}
+
+.customer-sidebar-nav a {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 44px;
+    padding: 0.55rem 0.75rem;
+    color: #ded8e9;
+    border-radius: 0.45rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.customer-sidebar-nav a:hover,
+.customer-sidebar-nav a[aria-current='page'] {
+    color: #89f5e7;
+    background: rgba(137, 245, 231, 0.12);
+}
+
+.customer-sidebar-nav .material-symbols-outlined {
+    font-size: 1.2rem;
+}
+
+.customer-sidebar-account {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.customer-sidebar-account .account-avatar {
+    width: 2.1rem;
+    height: 2.1rem;
+    color: var(--account-sidebar);
+    background: #ffffff;
+}
+
+.customer-sidebar-identity {
+    display: grid;
+    flex: 1;
+    min-width: 0;
+    color: #ffffff;
+    line-height: 1.25;
+}
+
+.customer-sidebar-identity strong {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.customer-sidebar-identity span {
+    color: #ded8e9;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.customer-sidebar-account button:hover {
+    color: #ffdad6;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.customer-scrim {
+    position: fixed;
+    inset: 0;
+    z-index: 25;
+    background: rgba(15, 15, 30, 0.45);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease-out;
+}
+
+.customer-sidebar.open + .customer-scrim {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.customer-shell {
+    min-height: 100dvh;
+}
+
+.customer-topbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 4rem;
+    padding: 0.5rem clamp(1rem, 3vw, 2.5rem);
+    background: rgba(255, 255, 255, 0.92);
+    border-bottom: 1px solid var(--account-line);
+    backdrop-filter: blur(8px);
+}
+
+.customer-topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    min-width: 0;
+}
+
+.customer-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-width: 0;
+    min-height: 44px;
+    color: var(--account-muted);
+    font-weight: 700;
+}
+
+.customer-breadcrumb > a {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    color: var(--account-action);
+    border-radius: 0.45rem;
+    text-decoration: none;
+}
+
+.customer-breadcrumb > a:hover {
+    background: var(--account-lavender);
+}
+
+.customer-breadcrumb-sep {
+    color: var(--account-muted);
+}
+
+.customer-breadcrumb-page {
+    overflow: hidden;
+    color: var(--account-ink);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.customer-topbar-account {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.customer-topbar-account .account-avatar {
+    width: 1.9rem;
+    height: 1.9rem;
+}
+
+.customer-main {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding-inline: clamp(1rem, 2.5vw, 2.5rem);
+    padding-top: clamp(1.5rem, 3vw, 2.5rem);
+    padding-bottom: 2rem;
+}
+
+/* Panel konsumen satu kolom penuh, bukan grid dua kolom halaman guest */
+.customer-main .dashboard-panel {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    min-height: 0;
+}
+
+/* Cegah grid blowout: tabel lebar tetap scroll di dalam wrap */
+.customer-main .dashboard-panel > * {
+    min-width: 0;
+}
+
+@media (min-width: 60rem) {
+    .customer-shell {
+        margin-left: 16rem;
+    }
+
+    .customer-sidebar {
+        left: 0;
+        visibility: visible;
+    }
+
+    .customer-scrim,
+    .customer-sidebar-close {
+        display: none;
+    }
+
+    .customer-sidebar-toggle {
+        display: none;
+    }
+}
+
+/* Segmented filter ala Stitch */
+.customer-filter {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    padding: 0.25rem;
+    background: rgba(71, 70, 81, 0.08);
+    border: 1px solid var(--account-line);
+    border-radius: 0.6rem;
+}
+
+.customer-filter a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 38px;
+    padding: 0.35rem 1rem;
+    border-radius: 0.45rem;
+    color: var(--account-muted);
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.customer-filter a:hover {
+    color: var(--account-ink);
+}
+
+.customer-filter a[aria-current='page'] {
+    color: var(--account-action);
+    background: var(--account-surface);
+    border: 1px solid var(--account-line);
+    box-shadow: 0 1px 2px rgba(25, 28, 30, 0.08);
+    font-weight: 700;
+}
+
+/* Header halaman dengan tombol aksi di kanan */
+.customer-orders-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.customer-orders-head .account-submit {
+    margin-top: 0;
+}
+
+.customer-orders-head .account-submit .material-symbols-outlined {
+    font-size: 1.15rem;
+}
+
+/* Tabel pesanan ala Stitch: kartu putih, header abu, hover baris */
+.customer-orders-card {
+    background: var(--account-surface);
+    border: 1px solid var(--account-line);
+    border-radius: 0.75rem;
+    box-shadow: var(--account-shadow);
+    overflow: hidden;
+}
+
+.customer-orders-scroll {
+    overflow-x: auto;
+}
+
+.customer-orders-table {
+    width: 100%;
+    min-width: 56rem;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.82rem;
+}
+
+.customer-orders-table thead tr {
+    background: var(--account-page);
+    border-bottom: 1px solid var(--account-line);
+    color: var(--account-muted);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.customer-orders-table th,
+.customer-orders-table td {
+    padding: 0.9rem 1.25rem;
+    vertical-align: middle;
+}
+
+.customer-orders-table tbody tr {
+    border-bottom: 1px solid var(--account-line);
+}
+
+.customer-orders-table tbody tr:last-child {
+    border-bottom: 0;
+}
+
+.customer-orders-table tbody tr:hover {
+    background: var(--account-page);
+}
+
+.customer-orders-no {
+    color: var(--account-action);
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.customer-orders-pkg {
+    display: block;
+    color: var(--account-ink);
+    font-weight: 600;
+}
+
+.customer-orders-tpl {
+    display: block;
+    margin-top: 0.1rem;
+    color: var(--account-muted);
+    font-size: 0.72rem;
+}
+
+.customer-orders-total {
+    color: var(--account-ink);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.customer-orders-date {
+    color: var(--account-muted);
+    white-space: nowrap;
+}
+
+.customer-orders-action {
+    text-align: right;
+    white-space: nowrap;
+}
+
+.customer-orders-detail {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    min-height: 44px;
+    padding: 0.35rem 0.75rem;
+    color: var(--account-action);
+    font-size: 0.78rem;
+    font-weight: 700;
+    border-radius: 0.4rem;
+    text-decoration: none;
+}
+
+.customer-orders-detail:hover {
+    color: var(--account-action-hover);
+    background: rgba(26, 20, 107, 0.06);
+}
+
+.customer-orders-detail .material-symbols-outlined {
+    font-size: 1rem;
+}
+
+.status-pill-icon {
+    font-size: 1rem;
+}
+
+.customer-order-number {
+    display: block;
+    color: var(--account-muted);
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+/* ==== Buat Pesanan ala Stitch ==== */
+.customer-create-head {
+    display: grid;
+    gap: 0.5rem;
+}
+
+.customer-create-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 44px;
+    color: var(--account-action);
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.customer-create-back:hover {
+    text-decoration: underline;
+}
+
+.customer-create-back .material-symbols-outlined {
+    font-size: 1.1rem;
+}
+
+/* Form = grid dua kolom: form 2fr + ringkasan 1fr (sticky) */
+.customer-create-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: 1.5rem;
+    align-items: start;
+}
+
+@media (max-width: 63.97rem) {
+    .customer-create-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (min-width: 64rem) {
+    .customer-create-aside {
+        position: sticky;
+        top: 1.5rem;
+    }
+}
+
+.customer-create-main {
+    display: grid;
+    gap: 1.25rem;
+}
+
+.customer-create-card {
+    display: grid;
+    gap: 1rem;
+    margin: 0;
+    padding: 1.5rem;
+    background: var(--account-surface);
+    border: 1px solid var(--account-line);
+    border-radius: 0.75rem;
+    box-shadow: var(--account-shadow);
+}
+
+.customer-create-card.has-error {
+    border: 2px solid #ba1a1a;
+}
+
+.customer-create-card legend {
+    font-size: 1rem;
+    padding: 0;
+}
+
+.customer-create-legend {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--account-ink);
+    font-size: 1.05rem;
+    font-weight: 800;
+}
+
+.customer-create-legend .material-symbols-outlined {
+    color: var(--account-action);
+    font-size: 1.3rem;
+}
+
+.customer-create-card h2 {
+    margin: 0;
+}
+
+.customer-create-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--account-line);
+}
+
+.customer-create-card-head h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--account-ink);
+    font-size: 1.05rem;
+    font-weight: 800;
+}
+
+.customer-create-card-head .material-symbols-outlined {
+    color: var(--account-action);
+    font-size: 1.3rem;
+}
+
+.customer-create-swap {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0.4rem 1rem;
+    color: var(--account-action);
+    background: var(--account-surface);
+    border: 1px solid var(--account-line-strong);
+    border-radius: 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.customer-create-swap:hover {
+    background: var(--account-page);
+}
+
+.customer-create-template {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--account-page);
+    border: 1px solid var(--account-line);
+    border-radius: 0.6rem;
+}
+
+.customer-create-thumb {
+    width: 6rem;
+    height: 5rem;
+    flex-shrink: 0;
+    object-fit: cover;
+    background: var(--account-surface);
+    border: 1px solid var(--account-line);
+    border-radius: 0.4rem;
+}
+
+.customer-create-thumb-empty {
+    display: grid;
+    place-items: center;
+    color: var(--account-muted);
+}
+
+.customer-create-template-body {
+    display: grid;
+    align-content: start;
+    gap: 0.2rem;
+    min-width: 0;
+}
+
+.customer-create-cat {
+    justify-self: start;
+    padding: 0.15rem 0.6rem;
+    color: var(--account-muted);
+    background: var(--account-surface);
+    border: 1px solid var(--account-line);
+    border-radius: 0.35rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+}
+
+.customer-create-template-body h3 {
+    margin: 0.15rem 0 0;
+    color: var(--account-ink);
+    font-size: 1rem;
+    font-weight: 800;
+}
+
+.customer-create-template-body p {
+    margin: 0.1rem 0 0;
+    color: var(--account-muted);
+    font-size: 0.75rem;
+}
+
+/* State template belum dipilih (validasi ala Stitch) */
+.customer-create-tpl-empty {
+    padding: 1rem;
+}
+
+.customer-create-tpl-empty-box {
+    display: grid;
+    justify-items: center;
+    gap: 0.5rem;
+    padding: 1.5rem;
+    text-align: center;
+    background: var(--account-page);
+    border: 1px dashed var(--account-line-strong);
+    border-radius: 0.6rem;
+}
+
+.customer-create-tpl-empty-icon {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    color: var(--account-action);
+    background: var(--account-surface);
+    border: 1px solid var(--account-line);
+    border-radius: 50%;
+}
+
+.customer-create-tpl-empty-box h2 {
+    margin: 0.4rem 0 0;
+    color: var(--account-ink);
+    font-size: 1rem;
+    font-weight: 800;
+}
+
+.customer-create-tpl-empty-box p {
+    margin: 0;
+    max-width: 26rem;
+    color: var(--account-muted);
+    font-size: 0.78rem;
+}
+
+.customer-create-tpl-empty-box .account-submit {
+    margin-top: 0.5rem;
+}
+
+.customer-create-tpl-empty-box .account-submit .material-symbols-outlined {
+    font-size: 1.1rem;
+}
+
+/* Opsi radio & checkbox ala Stitch */
+.customer-create-options {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.customer-create-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: var(--account-surface);
+    border: 1px solid var(--account-line);
+    border-radius: 0.6rem;
+    cursor: pointer;
+}
+
+.customer-create-option:hover {
+    border-color: var(--account-line-strong);
+    background: var(--account-page);
+}
+
+.customer-create-option:has(input:checked) {
+    background: var(--account-action-soft);
+    border: 2px solid var(--account-action);
+}
+
+.customer-create-option:focus-within {
+    outline: 2px solid var(--account-action);
+    outline-offset: 2px;
+}
+
+.customer-create-option input {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-top: 0.15rem;
+    flex-shrink: 0;
+    accent-color: var(--account-action);
+}
+
+.customer-create-option-addon {
+    padding: 1rem;
+    min-height: 44px;
+}
+
+.customer-create-option-body {
+    display: grid;
+    gap: 0.3rem;
+    width: 100%;
+    min-width: 0;
+}
+
+.customer-create-option-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.customer-create-option-row strong:first-child {
+    color: var(--account-ink);
+    font-size: 0.95rem;
+    font-weight: 800;
+}
+
+.customer-create-option-addon .customer-create-option-row strong:first-child {
+    font-size: 0.85rem;
+}
+
+.customer-create-option-price {
+    color: var(--account-action);
+    font-size: 0.95rem;
+    font-weight: 800;
+}
+
+.customer-create-option-addon .customer-create-option-price {
+    font-size: 0.8rem;
+}
+
+.customer-create-badge {
+    padding: 0.15rem 0.6rem;
+    color: var(--account-muted);
+    background: var(--account-page);
+    border: 1px solid var(--account-line);
+    border-radius: 0.35rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+}
+
+.customer-create-option-desc {
+    color: var(--account-muted);
+    font-size: 0.78rem;
+}
+
+.customer-create-features {
+    display: grid;
+    gap: 0.25rem;
+    padding-top: 0.4rem;
+    color: var(--account-muted);
+    font-size: 0.72rem;
+}
+
+.customer-create-features > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.customer-create-features .material-symbols-outlined {
+    font-size: 0.95rem;
+    color: var(--account-teal);
+}
+
+/* Alert error validasi ala Stitch */
+.customer-create-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    margin: 0;
+    padding: 0.75rem;
+    color: #ba1a1a;
+    background: #ffedea;
+    border: 1px solid #f3c9cf;
+    border-radius: 0.45rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.customer-create-alert .material-symbols-outlined {
+    flex-shrink: 0;
+    font-size: 1.15rem;
+}
+
+/* Ringkasan pesanan ala Stitch */
+.customer-create-summary h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-bottom: 0.75rem;
+    color: var(--account-ink);
+    font-size: 1.05rem;
+    font-weight: 800;
+    border-bottom: 1px solid var(--account-line);
+}
+
+.customer-create-summary h2 .material-symbols-outlined {
+    color: var(--account-action);
+    font-size: 1.3rem;
+}
+
+.customer-create-summary-rows {
+    display: grid;
+    gap: 0.75rem;
+    font-size: 0.8rem;
+}
+
+.customer-create-summary-row,
+.customer-create-summary-total {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.customer-create-summary-row + .customer-create-summary-row,
+.customer-create-summary-addons {
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--account-line);
+}
+
+.customer-create-summary-row span,
+.customer-create-summary-addons > span:first-child {
+    color: var(--account-muted);
+}
+
+.customer-create-summary-row strong {
+    color: var(--account-ink);
+    font-size: 0.8rem;
+    text-align: right;
+}
+
+.customer-create-summary-row strong.is-unset {
+    color: var(--account-muted);
+    font-weight: 500;
+    font-style: italic;
+}
+
+.customer-create-summary-addons {
+    display: grid;
+    gap: 0.4rem;
+}
+
+.customer-create-addon-list {
+    display: grid;
+    gap: 0.3rem;
+    padding-left: 0.75rem;
+    border-left: 2px solid var(--account-line);
+    font-size: 0.72rem;
+}
+
+.customer-create-addon-list .is-unset {
+    color: var(--account-muted);
+    font-style: italic;
+}
+
+.customer-create-addon-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    color: var(--account-ink);
+    font-weight: 600;
+}
+
+.customer-create-summary-total {
+    padding-top: 1rem;
+    border-top: 2px solid var(--account-line);
+}
+
+.customer-create-summary-total > span {
+    color: var(--account-ink);
+    font-size: 0.95rem;
+    font-weight: 800;
+}
+
+.customer-create-summary-total strong {
+    color: var(--account-action);
+    font-size: 1.2rem;
+    font-weight: 800;
+}
+
+.customer-create-submit {
+    display: grid;
+    gap: 0.4rem;
+    padding-top: 0.5rem;
+}
+
+.customer-create-submit-btn {
+    display: flex;
+    width: 100%;
+    min-height: 48px;
+    margin-top: 0;
+    justify-content: center;
+    font-size: 0.9rem;
+}
+
+.customer-create-submit-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.customer-create-note {
+    margin: 0;
+    color: var(--account-muted);
+    font-size: 0.7rem;
+    text-align: center;
+}
+
+.customer-create-note-error {
+    margin: 0;
+    color: #ba1a1a;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.dashboard-site-done {
+    background: var(--account-mint);
+    border: 1px solid var(--account-teal);
+}
+
+.dashboard-site-done dd {
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+/* ==== Dashboard konsumen ala Stitch (iterasi 2) ==== */
+
+/* Brand sidebar: tile + kolom teks (scope ketat untuk mengalahkan .account-brand span) */
+.customer-brand {
+    gap: 0.6rem;
+}
+
+.customer-sidebar-head .account-brand .customer-brand-copy {
+    display: grid;
+    width: auto;
+    height: auto;
+    padding: 0;
+    background: transparent;
+    border-radius: 0;
+    line-height: 1.2;
+}
+
+.customer-sidebar-head .account-brand .customer-brand-copy strong {
+    color: #ffffff;
+    font-size: 1rem;
+    letter-spacing: 0.04em;
+}
+
+.customer-sidebar-head .account-brand .customer-brand-copy span {
+    display: block;
+    width: auto;
+    height: auto;
+    padding: 0;
+    color: rgba(255, 255, 255, 0.7);
+    background: transparent;
+    border-radius: 0;
+    font-size: 0.72rem;
+    font-weight: 600;
+}
+
+.customer-sidebar-body {
+    padding: 1rem 0.4rem 0;
+}
+
+.customer-sidebar-label {
+    margin: 0 0 0.5rem;
+    padding: 0 0.75rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.customer-sidebar-nav a {
+    border-left: 4px solid transparent;
+    gap: 0.75rem;
+}
+
+.customer-sidebar-nav a[aria-current='page'] {
+    border-left-color: #89f5e7;
+}
+
+.customer-sidebar-nav a[aria-current='page'] .material-symbols-outlined {
+    color: #89f5e7;
+}
+
+/* Foot sidebar: blok gelap, identitas + Keluar full-width */
+.customer-sidebar-foot {
+    margin: auto -1.15rem -1.15rem;
+    padding: 0.75rem;
+    background: #16105c;
+    border-top: 1px solid rgba(137, 245, 231, 0.25);
+}
+
+.customer-sidebar-foot .customer-sidebar-account {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.25rem;
+    margin: 0;
+    border: 0;
+}
+
+.customer-sidebar-foot .account-avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+    color: #89f5e7;
+    background: rgba(137, 245, 231, 0.14);
+    border: 1px solid rgba(137, 245, 231, 0.4);
+}
+
+.customer-logout-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    width: 100%;
+    min-height: 44px;
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    color: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.05);
+    border: 0;
+    border-radius: 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.customer-logout-btn:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.12);
+}
+
+/* Topbar: brand mobile, identitas desktop */
+.customer-topbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    color: var(--account-ink);
+    text-decoration: none;
+}
+
+.customer-topbar-brand span {
+    display: grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    color: #89f5e7;
+    background: var(--account-sidebar);
+    border-radius: 0.4rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+}
+
+.customer-topbar-brand strong {
+    font-size: 0.9rem;
+    letter-spacing: -0.01em;
+}
+
+.customer-topbar-identity {
+    display: none;
+    text-align: right;
+    line-height: 1.3;
+}
+
+.customer-topbar-identity strong {
+    display: block;
+    color: var(--account-ink);
+    font-size: 0.78rem;
+}
+
+.customer-topbar-identity span {
+    color: var(--account-muted);
+    font-size: 0.7rem;
+}
+
+@media (min-width: 48rem) {
+    .customer-topbar-identity {
+        display: block;
+    }
+}
+
+@media (min-width: 60rem) {
+    .customer-topbar-brand {
+        display: none;
+    }
+}
+
+@media (max-width: 59.97rem) {
+    .customer-breadcrumb {
+        display: none;
+    }
+}
+
+/* Head halaman: judul + subjudul */
+.customer-page-head {
+    display: grid;
+    gap: 0.3rem;
+}
+
+.customer-page-head h1 {
+    margin: 0;
+    font-size: clamp(1.4rem, 2.5vw, 1.6rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--account-ink);
+}
+
+.customer-page-head p {
+    margin: 0;
+    color: var(--account-muted);
+    font-size: 0.85rem;
+}
+
+/* Grid dashboard: kartu pesanan 2fr + fokus tindakan 1fr; fokus dulu di mobile */
+.customer-dash-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    align-items: start;
+}
+
+/* Mobile ala Stitch: kartu Fokus Tindakan di atas kartu pesanan */
+@media (max-width: 63.97rem) {
+    .customer-focus-card {
+        order: -1;
+    }
+}
+
+@media (min-width: 64rem) {
+    .customer-dash-grid {
+        grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    }
+}
+
+.customer-order-card {
+    display: grid;
+    gap: 1.25rem;
+}
+
+.customer-order-card .order-heading {
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--account-line);
+}
+
+.customer-order-card h2 {
+    margin: 0.1rem 0 0;
+    font-size: 1.15rem;
+    font-weight: 800;
+}
+
+.customer-steps-label {
+    margin: 0 0 0.75rem;
+    color: var(--account-muted);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.customer-detail-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 44px;
+    padding: 0.5rem 1rem;
+    color: var(--account-ink);
+    background: var(--account-surface);
+    border: 1px solid var(--account-line-strong);
+    border-radius: 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.customer-detail-link:hover {
+    background: var(--account-page);
+}
+
+.customer-detail-link .material-symbols-outlined {
+    font-size: 1.1rem;
+}
+
+/* Kartu fokus tindakan */
+.customer-focus-card {
+    display: grid;
+    gap: 0.6rem;
+    padding: 1.25rem;
+    background: var(--account-surface);
+    border: 2px solid var(--account-action);
+    border-radius: 0.75rem;
+    box-shadow: var(--account-shadow);
+}
+
+.customer-focus-head {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.customer-focus-dot {
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background: var(--account-teal);
+    animation: ops-pulse 2s infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .customer-focus-dot {
+        animation: none;
+    }
+}
+
+.customer-focus-label {
+    color: var(--account-teal);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.customer-focus-card h2 {
+    margin: 0.3rem 0 0;
+    color: var(--account-ink);
+    font-size: 1.1rem;
+    font-weight: 800;
+    line-height: 1.3;
+}
+
+.customer-focus-card > p {
+    margin: 0;
+    color: var(--account-muted);
+    font-size: 0.82rem;
+    line-height: 1.55;
+}
+
+.customer-focus-actions {
+    display: grid;
+    gap: 0.4rem;
+    margin-top: 0.75rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--account-line);
+}
+
+.customer-focus-actions .customer-focus-btn {
+    display: flex;
+    width: 100%;
+    margin-top: 0;
+    justify-content: center;
+}
+
+.customer-focus-actions .customer-focus-btn .material-symbols-outlined {
+    font-size: 1.1rem;
+}
+
+.customer-focus-actions p {
+    margin: 0;
+    color: var(--account-muted);
+    font-size: 0.7rem;
+    text-align: center;
+}
+
+/* Kartu website selesai */
+.customer-site-done {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+@media (min-width: 40rem) {
+    .customer-site-done {
+        align-items: center;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
+
+.customer-done-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin: 0;
+    padding: 0.25rem 0.6rem;
+    color: var(--account-teal);
+    background: var(--account-mint);
+    border-radius: 0.35rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+}
+
+.customer-done-badge .material-symbols-outlined {
+    font-size: 1rem;
+}
+
+.customer-site-done h2 {
+    margin: 0.5rem 0 0;
+    color: var(--account-ink);
+    font-size: 1.05rem;
+    font-weight: 800;
+}
+
+.customer-site-name {
+    margin: 0.15rem 0 0;
+    color: var(--account-ink);
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.customer-site-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.25rem;
+    margin-top: 0.4rem;
+    color: var(--account-muted);
+    font-size: 0.75rem;
+}
+
+.customer-site-meta strong {
+    color: var(--account-ink);
+}
+
+.customer-site-url {
+    color: var(--account-ink);
+    font-family: ui-monospace, monospace;
+    overflow-wrap: anywhere;
+}
+
+.customer-open-site {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 44px;
+    padding: 0.5rem 1.25rem;
+    color: #ffffff;
+    background: var(--account-teal);
+    border-radius: 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.customer-open-site:hover {
+    background: #00554e;
+}
+
+.customer-open-site .material-symbols-outlined {
+    font-size: 1.1rem;
+}
+
+/* Kartu pesanan terbaru */
+.customer-recent-card {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.customer-recent-head {
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--account-line);
+}
+
+.customer-recent-head h2 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 800;
+}
+
+.customer-recent-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.15rem;
+    min-height: 44px;
+    color: var(--account-action);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.customer-recent-link:hover {
+    text-decoration: underline;
+}
+
+.customer-recent-link .material-symbols-outlined {
+    font-size: 1rem;
+}
+
+.customer-recent-list .admin-list-item {
+    padding: 0.75rem 0.5rem;
+    border-radius: 0.45rem;
+}
+
+.customer-recent-list .admin-list-item h3 {
+    margin: 0;
+    color: var(--account-ink);
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.customer-recent-list .admin-list-item p {
+    margin: 0.1rem 0 0;
+    color: var(--account-muted);
+    font-size: 0.75rem;
+}
+
+.customer-detail-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0.35rem 0.85rem;
+    color: var(--account-ink);
+    background: var(--account-surface);
+    border: 1px solid var(--account-line-strong);
+    border-radius: 0.45rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.customer-detail-btn:hover {
+    background: var(--account-page);
+}
+
+/* ==== Timeline tahap ala Stitch: horizontal desktop, vertikal mobile ==== */
+
+.customer-steps {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.4rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* Garis penghubung horizontal di belakang dot */
+.customer-steps::before {
+    position: absolute;
+    z-index: 0;
+    top: 1rem;
+    right: 10%;
+    left: 10%;
+    height: 2px;
+    background: var(--account-line);
+    content: '';
+}
+
+.customer-step {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    justify-items: center;
+    gap: 0.25rem;
+    padding: 0 0.2rem;
+    text-align: center;
+}
+
+.customer-step.is-idle {
+    opacity: 0.65;
+}
+
+.customer-step-dot {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    color: #ffffff;
+    background: var(--account-teal);
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px var(--account-surface);
+}
+
+.customer-step-dot .material-symbols-outlined {
+    font-size: 1.05rem;
+}
+
+.customer-step.is-idle .customer-step-dot {
+    color: var(--account-muted);
+    background: var(--account-page);
+    border: 2px solid var(--account-line-strong);
+}
+
+.customer-step[aria-current='step'] .customer-step-dot {
+    color: #89f5e7;
+    background: var(--account-action);
+    box-shadow: 0 0 0 4px var(--account-surface), 0 0 0 6px rgba(137, 245, 231, 0.4);
+}
+
+.customer-step-label {
+    color: var(--account-ink);
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.customer-step[aria-current='step'] .customer-step-label {
+    font-weight: 800;
+}
+
+.customer-step-state {
+    padding: 0.1rem 0.4rem;
+    color: var(--account-teal);
+    background: rgba(0, 106, 97, 0.1);
+    border-radius: 0.25rem;
+    font-size: 0.62rem;
+    font-weight: 700;
+}
+
+.customer-step.is-idle .customer-step-state {
+    color: var(--account-muted);
+    background: var(--account-page);
+    border: 1px solid var(--account-line);
+}
+
+.customer-step[aria-current='step'] .customer-step-state {
+    color: var(--account-action);
+    background: rgba(26, 20, 107, 0.08);
+    font-weight: 800;
+}
+
+.customer-step-date {
+    color: var(--account-muted);
+    font-family: ui-monospace, monospace;
+    font-size: 0.62rem;
+}
+
+/* Mobile: vertikal dengan garis kiri */
+@media (max-width: 47.97rem) {
+    .customer-steps {
+        grid-template-columns: 1fr;
+        gap: 0.9rem;
+        margin-left: 1.25rem;
+        padding-left: 1.5rem;
+        border-left: 2px solid var(--account-line);
+    }
+
+    .customer-steps::before {
+        content: none;
+    }
+
+    .customer-step {
+        position: relative;
+        grid-template-columns: minmax(0, 1fr) auto;
+        justify-items: stretch;
+        align-items: center;
+        gap: 0.25rem 0.5rem;
+        padding: 0;
+        text-align: left;
+    }
+
+    .customer-step-dot {
+        position: absolute;
+        top: 0;
+        left: -1.75rem;
+        width: 1.5rem;
+        height: 1.5rem;
+        box-shadow: 0 0 0 3px var(--account-surface);
+    }
+
+    .customer-step-dot .material-symbols-outlined {
+        font-size: 0.85rem;
+    }
+
+    .customer-step[aria-current='step'] .customer-step-dot {
+        box-shadow: 0 0 0 3px var(--account-surface), 0 0 0 5px rgba(137, 245, 231, 0.4);
+    }
+
+    .customer-step-date {
+        grid-column: 1 / -1;
+    }
+}
+
+/* ==== Detail pesanan ala Stitch ==== */
+.customer-steps-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 0 1.25rem;
+    color: var(--account-ink);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.customer-steps-heading .material-symbols-outlined {
+    color: var(--account-action);
+}
+
+.customer-detail-head {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.customer-detail-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--account-line);
+}
+
+.customer-detail-id {
+    margin: 0;
+    color: var(--account-muted);
+    font-family: ui-monospace, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.customer-detail-title {
+    margin: 0.15rem 0 0;
+    color: var(--account-ink);
+    font-size: clamp(1.4rem, 2.5vw, 1.75rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.customer-detail-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding-top: 0.5rem;
+}
+
+.customer-detail-total {
+    padding: 0.75rem 1.25rem;
+    text-align: center;
+    background: var(--account-surface);
+    border: 1px solid var(--account-line);
+    border-radius: 0.6rem;
+}
+
+.customer-detail-total p {
+    margin: 0;
+    color: var(--account-muted);
+    font-size: 0.7rem;
+}
+
+.customer-detail-total strong {
+    display: block;
+    margin-top: 0.15rem;
+    color: var(--account-action);
+    font-family: ui-monospace, monospace;
+    font-size: 1.3rem;
+    font-weight: 800;
+}
+
+.customer-detail-accounts {
+    display: grid;
+    gap: 0.4rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--account-muted);
+    font-size: 0.8rem;
+}
+
+.customer-detail-accounts strong {
+    color: var(--account-ink);
+}
+
+.customer-detail-secondary {
+    min-height: 44px;
+    padding: 0.4rem 1rem;
+    color: var(--account-action);
+    background: var(--account-surface);
+    border: 1px solid var(--account-line-strong);
+    border-radius: 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.customer-detail-secondary:hover {
+    background: var(--account-page);
+}
+
+/* Panel verifikasi ala Stitch */
+.customer-verify-panel {
+    justify-items: center;
+    padding: 2rem 1.5rem;
+    text-align: center;
+}
+
+.customer-verify-icon {
+    display: grid;
+    place-items: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    color: #3566a8;
+    background: #eef5ff;
+    border: 1px solid #c7ddf5;
+    border-radius: 50%;
+}
+
+.customer-verify-icon .material-symbols-outlined {
+    font-size: 1.75rem;
+}
+
+.customer-verify-panel h2 {
+    margin: 0.5rem 0 0;
+    color: var(--account-ink);
+    font-size: 1.15rem;
+    font-weight: 800;
+}
+
+.customer-verify-panel > p {
+    margin: 0;
+    max-width: 26rem;
+    color: var(--account-muted);
+    font-size: 0.8rem;
+    line-height: 1.6;
+}
+
+.customer-verify-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+    max-width: 20rem;
+    margin-top: 0.5rem;
+    padding-top: 1rem;
+    color: var(--account-muted);
+    border-top: 1px solid var(--account-line);
+    font-size: 0.72rem;
+}
+
+.customer-verify-meta strong {
+    color: var(--account-ink);
+    font-family: ui-monospace, monospace;
+}
+
+.customer-verify-note {
+    margin: 0.25rem 0 0;
+    color: var(--account-muted);
+    font-size: 0.68rem;
+    font-style: italic;
 }

@@ -5,33 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title') | WEBIA</title>
 @php
-    $isAuthPage = request()->routeIs('login', 'register');
+    $isAuthPage = request()->routeIs('login');
     $isAdmin = auth()->check() && request()->routeIs('admin.*');
 @endphp
 @if ($isAuthPage)
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/website-bisnis/auth.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/website-bisnis/auth.css') }}?v={{ filemtime(public_path('css/website-bisnis/auth.css')) }}">
 @elseif ($isAdmin)
     <style>
         @layer theme, base, legacy, components, utilities;
-        @import url('{{ asset('css/website-bisnis/account.css') }}') layer(legacy);
+        @import url('{{ asset('css/website-bisnis/account.css') }}?v={{ filemtime(public_path('css/website-bisnis/account.css')) }}') layer(legacy);
     </style>
     @vite('resources/css/admin.css')
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0,0&display=block" rel="stylesheet">
-    <script src="{{ asset('js/website-bisnis/admin-dashboard.js') }}" defer></script>
-    <script src="{{ asset('js/website-bisnis/admin-navigation.js') }}" defer></script>
+    <script src="{{ asset('js/website-bisnis/admin-dashboard.js') }}?v={{ filemtime(public_path('js/website-bisnis/admin-dashboard.js')) }}" defer></script>
+    <script src="{{ asset('js/website-bisnis/admin-navigation.js') }}?v={{ filemtime(public_path('js/website-bisnis/admin-navigation.js')) }}" defer></script>
 @else
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0,0&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/website-bisnis/account.css') }}">
-    <script src="{{ asset('js/website-bisnis/account.js') }}" defer></script>
+    <link rel="stylesheet" href="{{ asset('css/website-bisnis/account.css') }}?v={{ filemtime(public_path('css/website-bisnis/account.css')) }}">
+    <script src="{{ asset('js/website-bisnis/account.js') }}?v={{ filemtime(public_path('js/website-bisnis/account.js')) }}" defer></script>
 @endif
 </head>
 @if ($isAuthPage)
@@ -176,36 +176,92 @@
 @else
 <body class="account-body {{ auth()->check() ? 'customer-body' : 'guest-body' }}">
     <a class="skip-link" href="#main-content">Lewati ke konten</a>
-    <header class="account-header customer-header">
-        @guest
-            <a class="back-home" href="{{ route('home') }}" aria-label="Kembali ke beranda"><span aria-hidden="true">â†</span> Kembali ke Beranda</a>
-        @endguest
-        <a class="account-brand" href="{{ auth()->check() ? route('dashboard') : route('home') }}">
-            <span aria-hidden="true">W</span>
-            <strong>WEBIA</strong>
-            <span class="sr-only">{{ auth()->check() ? ' dashboard customer' : ' kembali ke beranda' }}</span>
-        </a>
-        @auth
-            <nav class="customer-nav" aria-label="Navigasi akun">
-                <a href="{{ route('dashboard') }}" @if (request()->routeIs('dashboard')) aria-current="page" @endif>Dashboard</a>
-                <a href="{{ route('orders.index') }}" @if (request()->routeIs('orders.*')) aria-current="page" @endif>Pesanan saya</a>
-            </nav>
-            <div class="customer-account">
-                <span class="account-avatar" aria-hidden="true">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</span>
-                <strong>{{ auth()->user()->name }}</strong>
+    @auth
+        <aside class="customer-sidebar" id="customer-sidebar" aria-label="Navigasi portal konsumen">
+            <div class="customer-sidebar-head">
+                <a class="account-brand customer-brand" href="{{ route('dashboard') }}">
+                    <span aria-hidden="true">W</span>
+                    <span class="customer-brand-copy">
+                        <strong>WEBIA</strong>
+                        <span>Portal Konsumen</span>
+                    </span>
+                </a>
+                <button aria-label="Tutup navigasi" class="customer-sidebar-close" data-sidebar-close type="button">
+                    <span aria-hidden="true" class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div class="customer-sidebar-body">
+                <p class="customer-sidebar-label">Utama</p>
+                <nav class="customer-sidebar-nav" aria-label="Navigasi portal">
+                <a href="{{ route('dashboard') }}" @if (request()->routeIs('dashboard')) aria-current="page" @endif>
+                    <span aria-hidden="true" class="material-symbols-outlined">grid_view</span> Dashboard
+                </a>
+                <a href="{{ route('orders.index') }}" @if (request()->routeIs('orders.*')) aria-current="page" @endif>
+                    <span aria-hidden="true" class="material-symbols-outlined">shopping_bag</span> Pesanan Saya
+                </a>
+                </nav>
+            </div>
+            <div class="customer-sidebar-foot">
+                <div class="customer-sidebar-account">
+                    <span class="account-avatar" aria-hidden="true">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</span>
+                    <div class="customer-sidebar-identity">
+                        <strong>{{ auth()->user()->name }}</strong>
+                        <span>Konsumen</span>
+                    </div>
+                </div>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="submit">Keluar</button>
+                    <button class="customer-logout-btn" type="submit">
+                        <span aria-hidden="true" class="material-symbols-outlined">logout</span> Keluar
+                    </button>
                 </form>
             </div>
-        @else
+        </aside>
+        <div class="customer-scrim" data-sidebar-scrim></div>
+        <div class="customer-shell">
+            <header class="customer-topbar">
+                <div class="customer-topbar-left">
+                    <button aria-label="Buka navigasi" aria-controls="customer-sidebar" aria-expanded="false" class="customer-sidebar-toggle" data-sidebar-toggle type="button">
+                        <span aria-hidden="true" class="material-symbols-outlined">menu</span>
+                    </button>
+                    <a class="customer-topbar-brand" href="{{ route('dashboard') }}">
+                        <span aria-hidden="true">W</span>
+                        <strong>WEBIA</strong>
+                    </a>
+                    <nav aria-label="Breadcrumb" class="customer-breadcrumb">
+                        <a href="{{ route('dashboard') }}"><span aria-hidden="true" class="material-symbols-outlined">home</span><span class="sr-only">Kembali ke Dashboard</span></a>
+                        <span aria-hidden="true" class="customer-breadcrumb-sep">/</span>
+                        <span class="customer-breadcrumb-page">@yield('title')</span>
+                    </nav>
+                </div>
+                <div class="customer-topbar-account">
+                    <div class="customer-topbar-identity">
+                        <strong>{{ auth()->user()->name }}</strong>
+                        <span>Konsumen</span>
+                    </div>
+                    <span class="account-avatar" aria-hidden="true">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</span>
+                </div>
+            </header>
+            <main id="main-content" class="account-main customer-main">
+                @yield('content')
+            </main>
+        </div>
+    @endauth
+    @guest
+        <header class="account-header customer-header">
+            <a class="back-home" href="{{ route('home') }}" aria-label="Kembali ke beranda"><span aria-hidden="true">&larr;</span> Kembali ke Beranda</a>
+            <a class="account-brand" href="{{ route('home') }}">
+                <span aria-hidden="true">W</span>
+                <strong>WEBIA</strong>
+                <span class="sr-only"> kembali ke beranda</span>
+            </a>
             <div class="header-actions">@yield('header-action')</div>
-        @endauth
-    </header>
-    <main id="main-content" class="account-main">
-        @yield('content')
-    </main>
-    <footer class="account-footer"><strong>WEBIA</strong><span>&copy; {{ now()->year }} WEBIA Indonesia. Solusi digital untuk UMKM.</span></footer>
+        </header>
+        <main id="main-content" class="account-main customer-main">
+            @yield('content')
+        </main>
+        <footer class="account-footer"><strong>WEBIA</strong><span>&copy; {{ now()->year }} WEBIA Indonesia. Solusi digital untuk UMKM.</span></footer>
+    @endguest
 @endif
 </body>
 </html>

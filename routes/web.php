@@ -5,7 +5,6 @@ use App\Http\Controllers\Admin\WebiaAddonController;
 use App\Http\Controllers\Admin\WebiaOrderController as AdminWebiaOrderController;
 use App\Http\Controllers\Admin\WebiaPackageController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CustomerSiteController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MidtransController;
@@ -22,29 +21,39 @@ Route::redirect('/webia', '/');
 // Webhook & callback Midtrans — diluar middleware auth (dipanggil server Midtrans / redirect publik).
 Route::post('/payments/midtrans/notify', [MidtransController::class, 'notify'])->middleware('throttle:60,1')->name('payments.midtrans.notify');
 Route::get('/payments/midtrans/callback', [MidtransController::class, 'callback'])->middleware('throttle:30,1')->name('payments.midtrans.callback');
+
+// Dev-only simulasi pembayaran; guest dari checkout publik juga boleh (dijaga di controller).
+Route::get('/payments/midtrans/simulate/{payment}', [MidtransController::class, 'simulateShow'])->middleware('throttle:10,1')->name('payments.midtrans.simulate');
+Route::post('/payments/midtrans/simulate/{payment}', [MidtransController::class, 'simulatePay'])->middleware('throttle:10,1')->name('payments.midtrans.simulate.pay');
 Route::get('/s/{order:site_slug}/{page?}', CustomerSiteController::class)
     ->whereIn('page', ['menu', 'reservasi'])
     ->name('sites.show');
 
 Route::middleware('guest')->group(function (): void {
-    Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
-    Route::post('/register', [RegisteredUserController::class, 'store'])->middleware('throttle:6,1');
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
     Route::post('/login', [AuthenticatedSessionController::class, 'store'])->middleware('throttle:6,1');
 });
+
+// Buat pesanan bisa diakses guest: akun dibuat otomatis saat pesanan dikirim.
+Route::get('/orders/create', [WebiaOrderController::class, 'create'])->name('orders.create');
+Route::post('/orders', [WebiaOrderController::class, 'store'])->middleware('throttle:10,1')->name('orders.store');
+Route::get('/orders/{order}/payment-status', [WebiaOrderController::class, 'guestPaymentStatus'])->middleware(['signed', 'throttle:12,1'])->name('orders.payment-status');
+Route::get('/orders/success', function () {
+    if (! session('guest_order')) {
+        return redirect()->route('home');
+    }
+
+    return view('orders.success');
+})->name('orders.success');
 
 Route::middleware('auth')->group(function (): void {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
     Route::get('/orders', [WebiaOrderController::class, 'index'])->name('orders.index');
-    Route::get('/orders/create', [WebiaOrderController::class, 'create'])->name('orders.create');
-    Route::post('/orders', [WebiaOrderController::class, 'store'])->middleware('throttle:10,1')->name('orders.store');
     Route::get('/orders/{order}', [WebiaOrderController::class, 'show'])->name('orders.show');
     Route::post('/orders/{order}/receipt', [WebiaOrderController::class, 'uploadReceipt'])->middleware('throttle:5,1')->name('orders.receipt');
     Route::post('/orders/{order}/pay', [WebiaOrderController::class, 'pay'])->middleware('throttle:6,1')->name('orders.pay');
     Route::post('/orders/{order}/pay/check', [WebiaOrderController::class, 'checkStatus'])->middleware('throttle:10,1')->name('orders.pay.check');
-    Route::get('/payments/midtrans/simulate/{payment}', [MidtransController::class, 'simulateShow'])->middleware('throttle:10,1')->name('payments.midtrans.simulate');
-    Route::post('/payments/midtrans/simulate/{payment}', [MidtransController::class, 'simulatePay'])->middleware('throttle:10,1')->name('payments.midtrans.simulate.pay');
     Route::post('/orders/{order}/business', [WebiaOrderController::class, 'saveBusinessData'])->middleware('throttle:10,1')->name('orders.business');
 
     Route::middleware('admin')->prefix('admin')->name('admin.')->group(function (): void {
@@ -1060,7 +1069,6 @@ Route::prefix('webia/template/home-services/professional/laundry-classic-trust')
         Route::view('/order-inquiry',     "$v.inquiry")->name('contact');
     });
 
-
 // ------------------------------------------------------------------------------------------------------------------//
 
 Route::prefix('webia/template')->group(function () {
@@ -1239,7 +1247,4 @@ Route::prefix('webia/template')->group(function () {
         '/griya-etnik-nantara',
         'website-bisnis.templates.interior-architecture.architecture-building-design.griya-etnik-nantara.griya-etnik-nantara'
     )->name('webia.template.griya-etnik-nantara');
-        '/matcha-clean-organic-deep-cleaning',
-        'website-bisnis.templates.home-services.home-cleaning-deep-cleaning.matcha-clean.matcha-clean'
-    )->name('webia.template.matcha-clean-organic-deep-cleaning');
 });

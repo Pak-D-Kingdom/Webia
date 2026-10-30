@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Mail\OrderStatusMail;
 use App\Models\User;
 use App\Models\WebiaOrder;
+use Illuminate\Mail\Mailable;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Throwable;
@@ -13,7 +14,8 @@ class OrderMail
 {
     public function notifyCustomer(WebiaOrder $order, string $type): void
     {
-        $this->send($order->user?->email, new OrderStatusMail($order, $type));
+        // Guest tanpa akun tetap bisa diberi tahu (mis. pembayaran ditolak) lewat email order.
+        $this->send($order->user?->email ?? $order->guest_email, new OrderStatusMail($order, $type));
     }
 
     public function notifyAdmins(WebiaOrder $order): void
@@ -25,7 +27,7 @@ class OrderMail
         }
     }
 
-    private function send(?string $recipient, OrderStatusMail $mail): void
+    private function send(?string $recipient, Mailable $mail): void
     {
         // Kegagalan email tak boleh menggagalkan aksi yang memicunya (webhook / keputusan admin).
         try {
@@ -33,7 +35,7 @@ class OrderMail
                 Mail::to($recipient)->send($mail);
             }
         } catch (Throwable $exception) {
-            Log::warning('Email status order gagal dikirim', ['to' => $recipient, 'error' => $exception->getMessage()]);
+            Log::warning('Email WEBIA gagal dikirim', ['to' => $recipient, 'error' => $exception->getMessage()]);
         }
     }
 }

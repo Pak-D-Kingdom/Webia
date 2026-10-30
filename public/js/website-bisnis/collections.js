@@ -424,116 +424,301 @@ const themes = {
         applyFilters();
     }
 
-    /* ---------- Cart & checkout frontend demo; no backend requests ---------- */
-    const templateCards = Array.from(grid.querySelectorAll('.webia-gallery-card'));
+    /* ---------- Dialog pilih paket: data paket nyata, lanjut ke halaman Buat Pesanan ---------- */
     const packagePicker = document.getElementById('webia-package-picker');
-    const cartDialog = document.getElementById('webia-cart-dialog');
-    const checkoutDialog = document.getElementById('webia-checkout-dialog');
-    const successDialog = document.getElementById('webia-checkout-success');
-    const cartItemsNode = document.getElementById('webia-cart-items');
-    const cartBadge = document.getElementById('webia-cart-badge');
-    const cartTotalNode = document.getElementById('webia-cart-total');
-    const packageOptionsNode = document.getElementById('webia-package-options');
-    const checkoutSummary = document.getElementById('webia-checkout-summary');
+    const packageOptionsRoot = packagePicker?.querySelector('.webia-package-options');
+    const createBaseUrl = packagePicker?.dataset.createUrl || '/orders/create';
     let activeTemplate = null;
-    let cart = [];
 
-    const packageCatalog = [
-        { id: 'pixel', name: 'Pixel', price: 99500, oldPrice: 589500, tagline: 'Landing page sederhana', features: ['1 halaman landing page', 'WhatsApp, kontak, dan peta', 'AI Chatbot 500 pesan/bulan*', 'Tanpa CMS'] },
-        { id: 'pulse', name: 'Pulse', price: 899000, oldPrice: 1199000, tagline: 'Landing page lebih lengkap', features: ['Galeri, testimoni, layanan, FAQ', 'AI Chatbot 1.500 pesan/bulan*', 'SEO dasar dan analitik', 'Tanpa CMS'] },
-        { id: 'nexus', name: 'Nexus', price: 1499000, oldPrice: 1999000, tagline: 'Website dengan CMS', features: ['Website beberapa halaman', 'CMS untuk mengelola konten', 'Tracking data pelanggan sesuai cakupan', 'AI Chatbot 2.500 pesan/bulan*'] },
-        { id: 'infinity', name: 'Infinity', price: 2499000, oldPrice: 3499000, tagline: 'CMS lanjutan dan fitur custom', features: ['Website multi-halaman', 'Custom fitur sesuai kebutuhan', 'CMS lanjutan dan tracking pelanggan', 'AI Chatbot 5.000 pesan/bulan*'] }
-    ];
-    const rupiah = (amount) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(amount);
     const openDialog = (dialog) => { if (dialog && !dialog.open) dialog.showModal(); };
     const closeDialog = (dialog) => { if (dialog?.open) dialog.close(); };
 
-    const renderPackageOptions = () => {
-        if (!packageOptionsNode || !activeTemplate) return;
-        packageOptionsNode.replaceChildren();
-        packageCatalog.forEach((item) => {
-            const button = document.createElement('button');
-            button.type = 'button';
-            button.className = 'webia-package-option';
-            const title = document.createElement('strong'); title.textContent = item.name;
-            const old = document.createElement('del'); old.textContent = rupiah(item.oldPrice);
-            const price = document.createElement('span'); price.className = 'webia-option-price'; price.textContent = rupiah(item.price);
-            const tagline = document.createElement('small'); tagline.textContent = item.tagline + ' · ' + item.features.join(' · ');
-            const choose = document.createElement('em'); choose.textContent = 'Pilih paket ini +';
-            button.append(title, old, price, tagline, choose);
-            button.addEventListener('click', () => {
-                cart.push({ key: `${Date.now()}-${Math.random().toString(16).slice(2)}`, template: activeTemplate.name, category: activeTemplate.categoryLabel, packageId: item.id, packageName: item.name, price: item.price });
-                renderCart();
-                closeDialog(packagePicker);
-                openDialog(cartDialog);
-            });
-            packageOptionsNode.appendChild(button);
-        });
-    };
-
-    const renderCart = () => {
-        if (!cartItemsNode) return;
-        cartBadge.textContent = String(cart.length);
-        cartItemsNode.replaceChildren();
-        if (!cart.length) {
-            const emptyState = document.createElement('div'); emptyState.className = 'webia-cart-empty'; emptyState.textContent = 'Keranjangmu masih kosong. Tambahkan template yang kamu suka, ya!';
-            cartItemsNode.appendChild(emptyState);
-        } else {
-            cart.forEach((item) => {
-                const article = document.createElement('article'); article.className = 'webia-cart-item';
-                const info = document.createElement('div');
-                const title = document.createElement('h3'); title.textContent = item.template;
-                const desc = document.createElement('p'); desc.textContent = `${item.category} · Paket ${item.packageName}`;
-                const price = document.createElement('strong'); price.textContent = rupiah(item.price);
-                info.append(title, desc, price);
-                const remove = document.createElement('button'); remove.type = 'button'; remove.className = 'webia-cart-remove'; remove.textContent = 'Hapus';
-                remove.addEventListener('click', () => { cart = cart.filter((entry) => entry.key !== item.key); renderCart(); });
-                article.append(info, remove); cartItemsNode.appendChild(article);
-            });
-        }
-        const total = cart.reduce((sum, item) => sum + item.price, 0);
-        cartTotalNode.textContent = rupiah(total);
-        checkoutSummary.textContent = cart.length ? `${cart.length} item dipilih · Estimasi total ${rupiah(total)}. Harga ini masih demo frontend.` : 'Keranjang masih kosong.';
-        document.getElementById('webia-checkout-open').disabled = !cart.length;
-    };
-
-    templateCards.forEach((card) => {
+    cards.forEach((card) => {
         const addButton = card.querySelector('[data-template-add]');
         addButton?.addEventListener('click', () => {
             activeTemplate = {
+                id: card.dataset.templateId,
                 name: card.querySelector('.webia-template-meta h3')?.textContent.trim() || 'Template Website',
-                category: card.dataset.category || 'company',
-                categoryLabel: card.querySelector('.webia-template-meta > span')?.textContent.trim() || 'WEBSITE'
             };
+            if (!activeTemplate.id) return;
             document.getElementById('webia-package-template-name').textContent = `Template: ${activeTemplate.name}`;
-            renderPackageOptions();
+            packageOptionsRoot?.querySelectorAll('[data-package-slug]').forEach((link) => {
+                const url = new URL(createBaseUrl, window.location.origin);
+                url.searchParams.set('template', activeTemplate.id);
+                url.searchParams.set('package', link.dataset.packageSlug);
+                link.href = url.toString();
+            });
             openDialog(packagePicker);
         });
     });
 
-    document.getElementById('webia-cart-open')?.addEventListener('click', () => { renderCart(); openDialog(cartDialog); });
-    document.getElementById('webia-checkout-open')?.addEventListener('click', () => {
-        if (!cart.length) return;
-        closeDialog(cartDialog); renderCart(); openDialog(checkoutDialog);
-    });
     document.querySelectorAll('[data-close-dialog]').forEach((button) => {
         button.addEventListener('click', () => closeDialog(button.closest('dialog')));
     });
-    [packagePicker, cartDialog, checkoutDialog, successDialog].forEach((dialog) => {
-        dialog?.addEventListener('click', (event) => { if (event.target === dialog) closeDialog(dialog); });
-    });
-    document.getElementById('webia-checkout-form')?.addEventListener('submit', (event) => {
+    packagePicker?.addEventListener('click', (event) => { if (event.target === packagePicker) closeDialog(packagePicker); });
+
+    /* ---------- Modal Buat Pesanan: form dari halaman /orders/create dimuat & disubmit via fetch ---------- */
+    const orderDialog = document.getElementById('webia-order-dialog');
+    const orderDialogBody = document.getElementById('webia-order-dialog-body');
+    const orderDialogTitle = document.getElementById('webia-order-dialog-title');
+    const orderDialogTemplate = document.getElementById('webia-order-dialog-template');
+    let paymentPollTimer = null;
+    let paymentStatusController = null;
+    let orderFormController = null;
+    let paymentGeneration = 0;
+
+    const stopPaymentPolling = () => {
+        if (paymentPollTimer) window.clearInterval(paymentPollTimer);
+        paymentPollTimer = null;
+        paymentStatusController?.abort();
+        paymentStatusController = null;
+        orderFormController?.abort();
+        orderFormController = null;
+        paymentGeneration++;
+    };
+
+    const updatePaymentStatus = (status) => {
+        const panel = orderDialogBody.querySelector('[data-payment-panel]');
+        const panelTitle = panel?.querySelector('[data-payment-title]');
+        const statusText = panel?.querySelector('[data-payment-status]');
+        const note = panel?.querySelector('[data-payment-note]');
+        const payButton = panel?.querySelector('[data-pay-button]');
+        const loginLink = panel?.querySelector('[data-login-link]');
+        const icon = panel?.querySelector('.material-symbols-outlined');
+        if (!panel || !statusText || !note) return;
+
+        if (status === 'paid') {
+            stopPaymentPolling();
+            panel.classList.add('is-paid');
+            orderDialogTitle.textContent = 'Pembayaran Berhasil';
+            if (panelTitle) panelTitle.textContent = 'Pembayaran kamu sudah diterima';
+            statusText.textContent = 'Sudah dibayar';
+            note.textContent = 'Pembayaran sudah terkonfirmasi. Masuk ke portal untuk melanjutkan pesanan.';
+            if (icon) icon.textContent = 'task_alt';
+            if (payButton) payButton.hidden = true;
+            if (loginLink) loginLink.hidden = false;
+            return;
+        }
+
+        if (status === 'failed' || status === 'expired') {
+            stopPaymentPolling();
+            statusText.textContent = status === 'expired' ? 'Pembayaran kedaluwarsa' : 'Pembayaran gagal';
+            note.textContent = 'Masuk ke portal untuk membuat pembayaran baru.';
+            if (icon) icon.textContent = 'error';
+            if (payButton) payButton.hidden = true;
+            if (loginLink) loginLink.hidden = false;
+            return;
+        }
+
+        statusText.textContent = 'Menunggu pembayaran';
+        note.textContent = 'Status diperiksa otomatis. Modal ini boleh ditutup setelah pembayaran selesai.';
+    };
+
+    const checkPaymentStatus = async (url, generation) => {
+        if (generation !== paymentGeneration || paymentStatusController) return;
+        const controller = new AbortController();
+        paymentStatusController = controller;
+        try {
+            const response = await fetch(url, {
+                headers: { 'Accept': 'application/json' },
+                signal: controller.signal,
+            });
+            if (generation !== paymentGeneration) return;
+            if (!response.ok) throw new Error('Payment status request failed');
+            const result = await response.json();
+            if (generation !== paymentGeneration) return;
+            updatePaymentStatus(result.status);
+            if (result.sync_failed) {
+                const note = orderDialogBody.querySelector('[data-payment-note]');
+                if (note) note.textContent = 'Konfirmasi Midtrans tertunda. Sistem akan mencoba lagi otomatis.';
+            }
+        } catch (error) {
+            if (error.name === 'AbortError' || generation !== paymentGeneration) return;
+            const note = orderDialogBody.querySelector('[data-payment-note]');
+            if (note) note.textContent = 'Status belum bisa diperiksa. Sistem akan mencoba lagi otomatis.';
+        } finally {
+            if (paymentStatusController === controller) paymentStatusController = null;
+        }
+    };
+
+    const renderPayment = (payment) => {
+        stopPaymentPolling();
+        const generation = paymentGeneration;
+        orderDialogTitle.textContent = 'Pembayaran';
+        orderDialogTemplate.textContent = `Pesanan ${payment.order_number}`;
+        orderDialogBody.innerHTML = `
+            <section class="customer-create-card customer-verify-panel webia-payment-panel" data-payment-panel aria-labelledby="webia-payment-title">
+                <span class="customer-verify-icon" aria-hidden="true"><span class="material-symbols-outlined">payments</span></span>
+                <h2 id="webia-payment-title" data-payment-title>Pesanan kamu sudah dibuat</h2>
+                <p>Nomor pesanan <strong>${escapeHtml(payment.order_number)}</strong> sudah masuk ke akun WEBIA.</p>
+                <p>Email dan kata sandi portal dikirim ke <strong>${escapeHtml(payment.email)}</strong>.</p>
+                <div class="customer-verify-meta" role="status" aria-live="polite">
+                    <span>Status pembayaran</span><strong data-payment-status>Menunggu pembayaran</strong>
+                </div>
+                <div class="customer-create-submit webia-payment-actions">
+                    <button class="account-submit customer-create-submit-btn" type="button" data-pay-button>Bayar sekarang</button>
+                    <a class="customer-detail-secondary" href="${escapeHtml(payment.login_url)}" data-login-link hidden>Masuk ke portal</a>
+                </div>
+                <p class="customer-verify-note" data-payment-note>Status diperiksa otomatis. Modal ini boleh ditutup setelah pembayaran selesai.</p>
+            </section>`;
+        orderDialogBody.scrollTop = 0;
+
+        const payButton = orderDialogBody.querySelector('[data-pay-button]');
+        const loginLink = orderDialogBody.querySelector('[data-login-link]');
+        if (!payment.payment_ready) {
+            payButton.hidden = true;
+            loginLink.hidden = false;
+            const statusText = orderDialogBody.querySelector('[data-payment-status]');
+            const note = orderDialogBody.querySelector('[data-payment-note]');
+            if (statusText) statusText.textContent = 'Pembayaran belum tersedia';
+            if (note) note.textContent = 'Pembayaran gagal dibuat. Masuk ke portal lalu coba bayar lagi dari detail pesanan.';
+            return;
+        }
+
+        let snapOpened = false;
+        const openPayment = () => {
+            if (payment.snap_token && window.snap) {
+                if (snapOpened) return;
+                snapOpened = true;
+                window.snap.pay(payment.snap_token, {
+                    onSuccess: () => { snapOpened = false; checkPaymentStatus(payment.payment_status_url, generation); },
+                    onPending: () => { snapOpened = false; checkPaymentStatus(payment.payment_status_url, generation); },
+                    onError: () => { snapOpened = false; },
+                    onClose: () => { snapOpened = false; },
+                });
+                return;
+            }
+            const fallbackUrl = payment.simulate_url || payment.snap_redirect_url;
+            if (fallbackUrl) window.location.href = fallbackUrl;
+        };
+        payButton?.addEventListener('click', openPayment);
+
+        checkPaymentStatus(payment.payment_status_url, generation);
+        paymentPollTimer = window.setInterval(() => checkPaymentStatus(payment.payment_status_url, generation), 10000);
+
+        if (payment.snap_token) {
+            let attempts = 0;
+            const waitForSnap = () => {
+                if (generation !== paymentGeneration || !orderDialog.open) return;
+                if (window.snap) {
+                    openPayment();
+                } else if (++attempts <= 25) {
+                    window.setTimeout(waitForSnap, 200);
+                }
+            };
+            waitForSnap();
+        }
+    };
+
+    const mountOrderForm = (doc) => {
+        const form = doc.querySelector('form.customer-create-grid');
+        if (!form) {
+            orderDialogBody.innerHTML = '<p class="webia-cart-note">Formulir tidak tersedia. Coba lagi nanti.</p>';
+            return null;
+        }
+        orderDialogBody.replaceChildren(form);
+        form.addEventListener('submit', handleOrderSubmit);
+        window.webiaInitOrderForm?.(form);
+        orderDialogBody.scrollTop = 0;
+        return form;
+    };
+
+    const loadOrderForm = async (url) => {
+        stopPaymentPolling();
+        const generation = paymentGeneration;
+        const controller = new AbortController();
+        orderFormController = controller;
+        orderDialogTitle.textContent = 'Buat Pesanan';
+        orderDialogTemplate.textContent = `Template: ${activeTemplate?.name ?? ''}`;
+        orderDialogBody.innerHTML = '<p class="webia-cart-note">Memuat formulir pesanan…</p>';
+        openDialog(orderDialog);
+        try {
+            const response = await fetch(url, {
+                headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                signal: controller.signal,
+            });
+            const doc = new DOMParser().parseFromString(await response.text(), 'text/html');
+            if (generation === paymentGeneration) mountOrderForm(doc);
+        } catch (error) {
+            if (error.name !== 'AbortError' && generation === paymentGeneration) {
+                orderDialogBody.innerHTML = '<p class="webia-cart-note">Gagal memuat formulir. Periksa koneksi lalu coba lagi.</p>';
+            }
+        } finally {
+            if (orderFormController === controller) orderFormController = null;
+        }
+    };
+
+    async function handleOrderSubmit(event) {
         event.preventDefault();
-        if (!cart.length) return;
         const form = event.currentTarget;
-        if (!form.reportValidity()) return;
-        // Deliberately frontend-only: no network, API, or persistent storage.
-        closeDialog(checkoutDialog);
-        cart = [];
-        renderCart();
-        form.reset();
-        openDialog(successDialog);
+        const submitButton = form.querySelector('[data-submit]');
+        const generation = paymentGeneration;
+        if (submitButton) submitButton.disabled = true;
+        try {
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json',
+                },
+            });
+            if (response.status === 422) {
+                const { errors } = await response.json();
+                if (generation !== paymentGeneration) return;
+                form.querySelectorAll('.form-error[data-modal-error]').forEach((error) => error.remove());
+                Object.entries(errors).forEach(([name, messages]) => {
+                    const input = form.querySelector(`[name="${CSS.escape(name)}"], [name="${CSS.escape(name)}[]"]`);
+                    if (!input) return;
+                    const error = document.createElement('p');
+                    error.className = 'form-error';
+                    error.dataset.modalError = '';
+                    error.textContent = messages[0];
+                    input.closest('.form-field, label, fieldset')?.appendChild(error);
+                });
+                form.querySelector('.form-error[data-modal-error]')?.scrollIntoView({ block: 'center' });
+                if (submitButton) submitButton.disabled = false;
+                return;
+            }
+            if (response.ok && response.headers.get('content-type')?.includes('application/json')) {
+                const payment = await response.json();
+                if (generation === paymentGeneration) renderPayment(payment);
+                return;
+            }
+            if (!response.ok) throw new Error('Order request failed');
+
+            if (generation !== paymentGeneration) return;
+            const path = new URL(response.url, window.location.origin).pathname;
+            if (path !== '/orders/create') {
+                window.location.href = response.url;
+                return;
+            }
+            const doc = new DOMParser().parseFromString(await response.text(), 'text/html');
+            if (generation !== paymentGeneration) return;
+            if (!mountOrderForm(doc)) window.location.href = response.url;
+        } catch {
+            if (generation !== paymentGeneration) return;
+            if (submitButton) submitButton.disabled = false;
+            let error = form.querySelector('.customer-create-note-error[data-submit-error]');
+            if (!error) {
+                error = document.createElement('p');
+                error.className = 'customer-create-note-error';
+                error.dataset.submitError = '';
+                form.appendChild(error);
+            }
+            error.textContent = 'Gagal mengirim pesanan. Periksa koneksi lalu coba lagi.';
+        }
+    }
+
+    packageOptionsRoot?.querySelectorAll('[data-package-slug]').forEach((link) => {
+        link.addEventListener('click', (event) => {
+            event.preventDefault();
+            closeDialog(packagePicker);
+            loadOrderForm(link.href);
+        });
     });
-    renderCart();
+
+    orderDialog?.addEventListener('click', (event) => { if (event.target === orderDialog) closeDialog(orderDialog); });
+    orderDialog?.addEventListener('close', stopPaymentPolling);
 
 });
