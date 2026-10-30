@@ -39,7 +39,7 @@
         <div class="customer-create-grid">
             <div class="customer-create-main">
                 @if (in_array($order->status, ['awaiting_payment', 'rejected']))
-                    <div class="customer-create-card">
+                    <div class="customer-create-card" @if ($pendingPayment) data-payment-status-url="{{ route('orders.payment-status.authenticated', $order) }}" @endif>
                         <h2 class="customer-create-legend">
                             <span aria-hidden="true" class="material-symbols-outlined">account_balance_wallet</span>
                             Bayar via Midtrans
@@ -51,10 +51,7 @@
                         </form>
                         @if ($pendingPayment?->snap_redirect_url)
                             <p><a href="{{ $pendingPayment->snap_redirect_url }}">Lanjutkan sesi pembayaran sebelumnya</a></p>
-                            <form method="POST" action="{{ route('orders.pay.check', $order) }}">
-                                @csrf
-                                <button class="customer-detail-secondary" type="submit">Cek status pembayaran</button>
-                            </form>
+                            <p class="customer-create-option-desc" data-payment-status-note role="status" aria-live="polite">Status pembayaran diperiksa otomatis.</p>
                         @endif
                     </div>
 

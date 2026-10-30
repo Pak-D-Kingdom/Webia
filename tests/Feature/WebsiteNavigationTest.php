@@ -46,4 +46,14 @@ class WebsiteNavigationTest extends TestCase
             ->assertOk()
             ->assertSee('js/website-bisnis/website-bisnis.js', false);
     }
+
+    public function test_template_gallery_uses_order_dialog_without_package_picker(): void
+    {
+        $this->get(route('collections'))
+            ->assertOk()
+            ->assertSee('id="webia-order-dialog"', false)
+            ->assertSee('data-create-url="'.route('orders.create').'"', false)
+            ->assertDontSee('id="webia-package-picker"', false)
+            ->assertDontSee('Pilih Paket Website');
+    }
 }

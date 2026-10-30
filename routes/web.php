@@ -51,6 +51,7 @@ Route::middleware('auth')->group(function (): void {
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
     Route::get('/orders', [WebiaOrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{order}', [WebiaOrderController::class, 'show'])->name('orders.show');
+    Route::get('/orders/{order}/payment-status/live', [WebiaOrderController::class, 'authenticatedPaymentStatus'])->middleware('throttle:12,1')->name('orders.payment-status.authenticated');
     Route::post('/orders/{order}/receipt', [WebiaOrderController::class, 'uploadReceipt'])->middleware('throttle:5,1')->name('orders.receipt');
     Route::post('/orders/{order}/pay', [WebiaOrderController::class, 'pay'])->middleware('throttle:6,1')->name('orders.pay');
     Route::post('/orders/{order}/pay/check', [WebiaOrderController::class, 'checkStatus'])->middleware('throttle:10,1')->name('orders.pay.check');

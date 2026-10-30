@@ -103,6 +103,38 @@ document.addEventListener('DOMContentLoaded', function () {
   const orderForm = document.querySelector('.customer-order-form, .customer-create-grid');
   if (orderForm) initOrderForm(orderForm);
 
+  const paymentStatusPanel = document.querySelector('[data-payment-status-url]');
+  if (paymentStatusPanel) {
+    const statusNote = paymentStatusPanel.querySelector('[data-payment-status-note]');
+    let paymentStatusRequest = false;
+    const checkPaymentStatus = async function () {
+      if (paymentStatusRequest || document.hidden) return;
+      paymentStatusRequest = true;
+      try {
+        const response = await fetch(paymentStatusPanel.dataset.paymentStatusUrl, {
+          headers: { Accept: 'application/json' },
+        });
+        if (!response.ok) throw new Error('Payment status request failed');
+        const payment = await response.json();
+        if (payment.terminal) {
+          window.location.reload();
+          return;
+        }
+        if (statusNote) {
+          statusNote.textContent = payment.sync_failed
+            ? 'Konfirmasi Midtrans tertunda. Sistem akan mencoba lagi otomatis.'
+            : 'Status pembayaran diperiksa otomatis.';
+        }
+      } catch {
+        if (statusNote) statusNote.textContent = 'Status belum bisa diperiksa. Sistem akan mencoba lagi otomatis.';
+      } finally {
+        paymentStatusRequest = false;
+      }
+    };
+    checkPaymentStatus();
+    window.setInterval(checkPaymentStatus, 10000);
+  }
+
   // Dashboard: tab switch grafik Pendapatan / Volume.
   document.querySelectorAll('[data-series]').forEach(function (tab) {
     tab.addEventListener('click', function () {

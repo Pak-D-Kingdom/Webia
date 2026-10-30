@@ -121,32 +121,7 @@ class WebiaOrderController extends Controller
 
     public function guestPaymentStatus(Request $request, WebiaOrder $order): JsonResponse
     {
-        $payment = $order->payments()->latest()->first();
-        abort_if($payment === null, 404);
-
-        $lastSync = (int) $request->session()->get('guest_payment_last_sync.'.$order->id, 0);
-        $syncFailed = false;
-        if ($order->status !== 'paid' && $payment->status === 'created' && $this->midtrans->configured() && time() - $lastSync >= 10) {
-            $request->session()->put('guest_payment_last_sync.'.$order->id, time());
-            $result = $this->midtrans->status($payment->midtrans_order_id);
-            if ($result !== null) {
-                $this->midtrans->applyNotification($payment, $result);
-                $order->refresh();
-                $payment->refresh();
-            } else {
-                $syncFailed = true;
-            }
-        }
-
-        $status = $order->status === 'paid' ? 'paid' : $payment->status;
-
-        return response()->json([
-            'status' => $status,
-            'terminal' => in_array($status, ['paid', 'failed', 'expired'], true),
-            'sync_failed' => $syncFailed,
-            'credential_status' => $order->credential_status,
-            'email' => $order->guest_email ?? $order->user?->email,
-        ]);
+        return $this->paymentStatus($request, $order);
     }
 
     public function show(Request $request, WebiaOrder $order): View
@@ -156,6 +131,13 @@ class WebiaOrderController extends Controller
         $pendingPayment = $order->payments->where('status', 'created')->last();
 
         return view('orders.show', compact('order', 'pendingPayment'));
+    }
+
+    public function authenticatedPaymentStatus(Request $request, WebiaOrder $order): JsonResponse
+    {
+        abort_unless($order->user_id === $request->user()->id, 404);
+
+        return $this->paymentStatus($request, $order);
     }
 
     public function uploadReceipt(Request $request, WebiaOrder $order): RedirectResponse
@@ -269,6 +251,36 @@ class WebiaOrderController extends Controller
     private function nextMidtransOrderId(WebiaOrder $order): string
     {
         return 'WEB-'.$order->id.'-'.str_pad((string) ($order->payments()->count() + 1), 2, '0', STR_PAD_LEFT);
+    }
+
+    private function paymentStatus(Request $request, WebiaOrder $order): JsonResponse
+    {
+        $payment = $order->payments()->latest()->first();
+        abort_if($payment === null, 404);
+
+        $lastSync = (int) $request->session()->get('payment_last_sync.'.$order->id, 0);
+        $syncFailed = false;
+        if ($order->status !== 'paid' && $payment->status === 'created' && $this->midtrans->configured() && time() - $lastSync >= 10) {
+            $request->session()->put('payment_last_sync.'.$order->id, time());
+            $result = $this->midtrans->status($payment->midtrans_order_id);
+            if ($result !== null) {
+                $this->midtrans->applyNotification($payment, $result);
+                $order->refresh();
+                $payment->refresh();
+            } else {
+                $syncFailed = true;
+            }
+        }
+
+        $status = $order->status === 'paid' ? 'paid' : $payment->status;
+
+        return response()->json([
+            'status' => $status,
+            'terminal' => in_array($status, ['paid', 'failed', 'expired'], true),
+            'sync_failed' => $syncFailed,
+            'credential_status' => $order->credential_status,
+            'email' => $order->guest_email ?? $order->user?->email,
+        ]);
     }
 
     public function saveBusinessData(Request $request, WebiaOrder $order): RedirectResponse

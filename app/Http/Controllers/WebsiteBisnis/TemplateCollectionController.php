@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\WebsiteBisnis;
 
 use App\Http\Controllers\Controller;
-use App\Models\WebiaPackage;
 use App\Models\WebiaTemplate;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -14,19 +13,6 @@ class TemplateCollectionController extends Controller
 {
     public function index(Router $router): View
     {
-        $packages = WebiaPackage::query()
-            ->where('is_active', true)
-            ->orderBy('sort_order')
-            ->get()
-            ->map(fn (WebiaPackage $package) => [
-                'slug' => $package->slug,
-                'name' => $package->name,
-                'price' => $package->price,
-                'description' => $package->description,
-                'features' => $package->features ?? [],
-            ])
-            ->all();
-
         $templates = WebiaTemplate::query()
             ->where('is_active', true)
             ->orderBy('sort_order')
@@ -50,7 +36,7 @@ class TemplateCollectionController extends Controller
             ])
             ->all();
 
-        return view('website-bisnis.collections.index', compact('templates', 'packages'));
+        return view('website-bisnis.collections.index', compact('templates'));
     }
 
     private function availableTemplateUrl(?string $templateUrl, Router $router): ?string
