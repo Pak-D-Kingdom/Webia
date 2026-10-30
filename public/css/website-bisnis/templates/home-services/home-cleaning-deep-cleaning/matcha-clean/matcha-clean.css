@@ -1,0 +1,61 @@
+/* MATCHA CLEAN — WEBIA template styles; reference visual styling preserved */
+
+        /* Ambient Glassmorphism & Shadow Depth */
+        .glass-matcha {
+            background: rgba(247, 245, 240, 0.92);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid rgba(116, 142, 99, 0.25);
+        }
+        .organic-shadow {
+            box-shadow: 0 20px 40px -15px rgba(28, 45, 31, 0.08);
+        }
+        .before-after-overlay {
+            clip-path: polygon(0 0, var(--slider-pos, 50%) 0, var(--slider-pos, 50%) 100%, 0 100%);
+        }
+
+        /* Leaf Bounce & Ripples */
+        @keyframes matchaLeafBounce {
+            0%, 100% { transform: translateY(0) scale(1); }
+            30% { transform: translateY(-10px) scale(1.06) rotate(-4deg); }
+            50% { transform: translateY(0) scale(0.96) rotate(2deg); }
+            70% { transform: translateY(-4px) scale(1.02); }
+        }
+        .animate-matcha-bounce {
+            animation: matchaLeafBounce 3.5s cubic-bezier(0.28, 0.84, 0.42, 1) infinite;
+        }
+
+        @keyframes softRipple {
+            0% { box-shadow: 0 0 0 0 rgba(116, 142, 99, 0.4); }
+            70% { box-shadow: 0 0 0 18px rgba(116, 142, 99, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(116, 142, 99, 0); }
+        }
+        .matcha-ripple-effect {
+            animation: softRipple 2.8s infinite;
+        }
+
+        /* Custom Organic Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #F7F5F0; }
+        ::-webkit-scrollbar-thumb {
+            background: #748E63;
+            border-radius: 99px;
+            border: 2px solid #F7F5F0;
+        }
+
+        /* Falling Leaves Canvas Overlay */
+        #leavesCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 15;
+        }
+    
+
+/* Matcha Clean refinements */
+html { scroll-behavior: smooth; }
+#booking input:focus, #booking select:focus, #booking textarea:focus { outline: 2px solid #839F68; outline-offset: 1px; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; } }
