@@ -13,6 +13,7 @@ use App\Http\Controllers\WebiaOrderController;
 use App\Http\Controllers\WebsiteBisnis\TemplateCollectionController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\HtmlString;
+use Illuminate\Support\Facades\View;
 
 // WEBIA — Homepage utama
 Route::view('/', 'website-bisnis.index')->name('home');
