@@ -37,6 +37,7 @@ Route::middleware('guest')->group(function (): void {
 // Buat pesanan bisa diakses guest: akun dibuat otomatis saat pesanan dikirim.
 Route::get('/orders/create', [WebiaOrderController::class, 'create'])->name('orders.create');
 Route::post('/orders', [WebiaOrderController::class, 'store'])->middleware('throttle:10,1')->name('orders.store');
+Route::get('/orders/{order}/payment-status', [WebiaOrderController::class, 'guestPaymentStatus'])->middleware(['signed', 'throttle:12,1'])->name('orders.payment-status');
 Route::get('/orders/success', function () {
     if (! session('guest_order')) {
         return redirect()->route('home');

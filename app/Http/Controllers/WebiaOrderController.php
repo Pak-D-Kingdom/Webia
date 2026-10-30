@@ -13,10 +13,12 @@ use App\Services\Midtrans;
 use App\Services\OrderMail;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
@@ -60,7 +62,7 @@ class WebiaOrderController extends Controller
         return view('orders.create', compact('packages', 'addons', 'selectedPackage', 'selectedTemplate'));
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request): RedirectResponse|JsonResponse
     {
         $validated = $request->validate([
             'package_id' => ['required', Rule::exists('webia_packages', 'id')->where('is_active', true)],
@@ -97,6 +99,7 @@ class WebiaOrderController extends Controller
             // Popup Snap dibuka inline di halaman sukses; webhook Midtrans menandai order lunas.
             $payment = $this->midtrans->createTransaction($order, $this->nextMidtransOrderId($order));
             session(['guest_order' => [
+                'order_id' => $order->id,
                 'email' => $user->email,
                 'order_number' => $order->order_number,
                 'snap_token' => $this->midtrans->configured() ? $payment->snap_token : null,
@@ -104,11 +107,53 @@ class WebiaOrderController extends Controller
                 'snap_redirect_url' => $payment->snap_redirect_url,
                 'simulate_url' => ! $this->midtrans->configured() ? $payment->snap_redirect_url : null,
             ]]);
+
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'order_number' => $order->order_number,
+                    'email' => $user->email,
+                    'status' => $order->status,
+                    'snap_token' => $this->midtrans->configured() ? $payment->snap_token : null,
+                    'snap_redirect_url' => $payment->snap_redirect_url,
+                    'simulate_url' => ! $this->midtrans->configured() ? $payment->snap_redirect_url : null,
+                    'payment_ready' => $payment->snap_token !== null || $payment->snap_redirect_url !== null,
+                    'payment_status_url' => URL::temporarySignedRoute('orders.payment-status', now()->addDay(), ['order' => $order]),
+                    'login_url' => route('login'),
+                ], 201);
+            }
         }
 
         return auth()->check()
             ? redirect()->route('orders.show', $order)
             : redirect()->route('orders.success');
+    }
+
+    public function guestPaymentStatus(Request $request, WebiaOrder $order): JsonResponse
+    {
+        $payment = $order->payments()->latest()->first();
+        abort_if($payment === null, 404);
+
+        $lastSync = (int) $request->session()->get('guest_payment_last_sync.'.$order->id, 0);
+        $syncFailed = false;
+        if ($order->status !== 'paid' && $payment->status === 'created' && $this->midtrans->configured() && time() - $lastSync >= 10) {
+            $request->session()->put('guest_payment_last_sync.'.$order->id, time());
+            $result = $this->midtrans->status($payment->midtrans_order_id);
+            if ($result !== null) {
+                $this->midtrans->applyNotification($payment, $result);
+                $order->refresh();
+                $payment->refresh();
+            } else {
+                $syncFailed = true;
+            }
+        }
+
+        $status = $order->status === 'paid' ? 'paid' : $payment->status;
+
+        return response()->json([
+            'status' => $status,
+            'terminal' => in_array($status, ['paid', 'failed', 'expired'], true),
+            'sync_failed' => $syncFailed,
+        ]);
     }
 
     public function show(Request $request, WebiaOrder $order): View
@@ -215,7 +260,10 @@ class WebiaOrderController extends Controller
 
         $this->midtrans->applyNotification($payment, $result);
 
-        $message = match ($this->midtrans->mapTransactionStatus((string) data_get($result, 'transaction_status'))) {
+        $message = match ($this->midtrans->mapTransactionStatus(
+            (string) data_get($result, 'transaction_status'),
+            data_get($result, 'fraud_status'),
+        )) {
             'paid' => 'Pembayaran berhasil dikonfirmasi.',
             'failed' => 'Pembayaran gagal. Silakan bayar ulang.',
             'expired' => 'Sesi pembayaran sudah kedaluwarsa. Silakan bayar ulang.',

@@ -214,8 +214,7 @@
                 <p class="webia-cart-note">Belum ada paket aktif. Hubungi tim WEBIA.</p>
             @endforelse
         </div>
-        <p class="webia-cart-note">Kamu akan mengisi data pemesan di halaman berikutnya; pembayaran QRIS, virtual
-            account, e-wallet, atau transfer bisa langsung setelah pesanan dibuat.</p>
+        <p class="webia-cart-note">Data pemesan dan pembayaran QRIS, virtual account, e-wallet, atau transfer diproses langsung di halaman ini.</p>
     </dialog>
 
     {{-- Form Buat Pesanan dimuat ke modal ini dari halaman /orders/create --}}
@@ -241,6 +240,10 @@
 
 @push('scripts')
     <script src="{{ asset('js/website-bisnis/account.js') }}?v={{ filemtime(public_path('js/website-bisnis/account.js')) }}" defer></script>
+    @if (config('webia.midtrans.client_key'))
+        <script src="https://app.{{ config('webia.midtrans.is_production') ? '' : 'sandbox.' }}midtrans.com/snap/snap.js"
+            data-client-key="{{ config('webia.midtrans.client_key') }}"></script>
+    @endif
 @endpush
 
 @push('styles')

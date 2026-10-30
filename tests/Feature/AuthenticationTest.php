@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\WebiaOrder;
 use App\Models\WebiaPackage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
@@ -37,6 +38,73 @@ class AuthenticationTest extends TestCase
         Mail::assertSent(AccountCredentialsMail::class, fn (AccountCredentialsMail $mail): bool => $mail->plainPassword !== null
             && $mail->hasTo('zainul@example.com')
             && $mail->order->is($order));
+    }
+
+    public function test_guest_modal_order_returns_payment_data_as_json(): void
+    {
+        Mail::fake();
+        config([
+            'webia.midtrans.server_key' => 'SB-Mid-server-test-key',
+            'webia.midtrans.client_key' => 'SB-Mid-client-test-key',
+        ]);
+        Http::fake([
+            'api.sandbox.midtrans.com/snap/v1/transactions' => Http::response([
+                'token' => 'snap-modal-token',
+                'redirect_url' => 'https://app.sandbox.midtrans.com/snap/pay',
+            ]),
+        ]);
+        $package = WebiaPackage::factory()->create(['price' => 499000]);
+
+        $response = $this->postJson(route('orders.store'), [
+            'package_id' => $package->id,
+            'name' => 'Zainul',
+            'email' => 'zainul@example.com',
+        ]);
+
+        $order = WebiaOrder::firstOrFail();
+        $response->assertCreated()->assertJson([
+            'order_number' => $order->order_number,
+            'email' => 'zainul@example.com',
+            'status' => 'awaiting_payment',
+            'snap_token' => 'snap-modal-token',
+        ]);
+        $response->assertSessionHas('guest_order.order_id', $order->id);
+        $statusUrl = $response->json('payment_status_url');
+        $this->assertIsString($statusUrl);
+        $this->getJson($statusUrl)->assertOk()->assertJson(['status' => 'created']);
+    }
+
+    public function test_guest_modal_order_exposes_recovery_when_midtrans_transaction_fails(): void
+    {
+        Mail::fake();
+        config(['webia.midtrans.server_key' => 'SB-Mid-server-test-key']);
+        Http::fake([
+            'api.sandbox.midtrans.com/snap/v1/transactions' => Http::response([], 500),
+        ]);
+        $package = WebiaPackage::factory()->create();
+
+        $this->postJson(route('orders.store'), [
+            'package_id' => $package->id,
+            'name' => 'Zainul',
+            'email' => 'zainul@example.com',
+        ])->assertCreated()->assertJson([
+            'payment_ready' => false,
+            'snap_token' => null,
+            'snap_redirect_url' => null,
+        ]);
+    }
+
+    public function test_authenticated_json_order_keeps_detail_redirect_contract(): void
+    {
+        $user = User::factory()->create();
+        $package = WebiaPackage::factory()->create();
+
+        $response = $this->actingAs($user)->postJson(route('orders.store'), [
+            'package_id' => $package->id,
+        ]);
+
+        $response->assertRedirect(route('orders.show', WebiaOrder::firstOrFail()));
+        $response->assertSessionMissing('guest_order');
     }
 
     public function test_guest_order_with_existing_email_reuses_account(): void

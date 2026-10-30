@@ -115,7 +115,10 @@ class Midtrans
         DB::transaction(function () use ($payment, $payload): void {
             $order = WebiaOrder::whereKey($payment->webia_order_id)->lockForUpdate()->firstOrFail();
             $locked = WebiaPayment::whereKey($payment->id)->lockForUpdate()->firstOrFail();
-            $newStatus = $this->mapTransactionStatus((string) data_get($payload, 'transaction_status'));
+            $newStatus = $this->mapTransactionStatus(
+                (string) data_get($payload, 'transaction_status'),
+                data_get($payload, 'fraud_status'),
+            );
 
             if ($newStatus === 'paid' && $locked->status === 'duplicate') {
                 $locked->update(['payload' => $payload]);
@@ -155,10 +158,11 @@ class Midtrans
     }
 
     /** Status notifikasi yang dikenal; null berarti dibiarkan (mis. pending). */
-    public function mapTransactionStatus(string $transactionStatus): ?string
+    public function mapTransactionStatus(string $transactionStatus, mixed $fraudStatus = null): ?string
     {
         return match ($transactionStatus) {
-            'settlement', 'capture' => 'paid',
+            'settlement' => 'paid',
+            'capture' => $fraudStatus === 'accept' ? 'paid' : null,
             'deny', 'cancel' => 'failed',
             'expire' => 'expired',
             default => null,

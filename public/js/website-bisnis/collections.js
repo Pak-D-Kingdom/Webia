@@ -460,6 +460,155 @@ const themes = {
     /* ---------- Modal Buat Pesanan: form dari halaman /orders/create dimuat & disubmit via fetch ---------- */
     const orderDialog = document.getElementById('webia-order-dialog');
     const orderDialogBody = document.getElementById('webia-order-dialog-body');
+    const orderDialogTitle = document.getElementById('webia-order-dialog-title');
+    const orderDialogTemplate = document.getElementById('webia-order-dialog-template');
+    let paymentPollTimer = null;
+    let paymentStatusController = null;
+    let orderFormController = null;
+    let paymentGeneration = 0;
+
+    const stopPaymentPolling = () => {
+        if (paymentPollTimer) window.clearInterval(paymentPollTimer);
+        paymentPollTimer = null;
+        paymentStatusController?.abort();
+        paymentStatusController = null;
+        orderFormController?.abort();
+        orderFormController = null;
+        paymentGeneration++;
+    };
+
+    const updatePaymentStatus = (status) => {
+        const panel = orderDialogBody.querySelector('[data-payment-panel]');
+        const panelTitle = panel?.querySelector('[data-payment-title]');
+        const statusText = panel?.querySelector('[data-payment-status]');
+        const note = panel?.querySelector('[data-payment-note]');
+        const payButton = panel?.querySelector('[data-pay-button]');
+        const loginLink = panel?.querySelector('[data-login-link]');
+        const icon = panel?.querySelector('.material-symbols-outlined');
+        if (!panel || !statusText || !note) return;
+
+        if (status === 'paid') {
+            stopPaymentPolling();
+            panel.classList.add('is-paid');
+            orderDialogTitle.textContent = 'Pembayaran Berhasil';
+            if (panelTitle) panelTitle.textContent = 'Pembayaran kamu sudah diterima';
+            statusText.textContent = 'Sudah dibayar';
+            note.textContent = 'Pembayaran sudah terkonfirmasi. Masuk ke portal untuk melanjutkan pesanan.';
+            if (icon) icon.textContent = 'task_alt';
+            if (payButton) payButton.hidden = true;
+            if (loginLink) loginLink.hidden = false;
+            return;
+        }
+
+        if (status === 'failed' || status === 'expired') {
+            stopPaymentPolling();
+            statusText.textContent = status === 'expired' ? 'Pembayaran kedaluwarsa' : 'Pembayaran gagal';
+            note.textContent = 'Masuk ke portal untuk membuat pembayaran baru.';
+            if (icon) icon.textContent = 'error';
+            if (payButton) payButton.hidden = true;
+            if (loginLink) loginLink.hidden = false;
+            return;
+        }
+
+        statusText.textContent = 'Menunggu pembayaran';
+        note.textContent = 'Status diperiksa otomatis. Modal ini boleh ditutup setelah pembayaran selesai.';
+    };
+
+    const checkPaymentStatus = async (url, generation) => {
+        if (generation !== paymentGeneration || paymentStatusController) return;
+        const controller = new AbortController();
+        paymentStatusController = controller;
+        try {
+            const response = await fetch(url, {
+                headers: { 'Accept': 'application/json' },
+                signal: controller.signal,
+            });
+            if (generation !== paymentGeneration) return;
+            if (!response.ok) throw new Error('Payment status request failed');
+            const result = await response.json();
+            if (generation !== paymentGeneration) return;
+            updatePaymentStatus(result.status);
+            if (result.sync_failed) {
+                const note = orderDialogBody.querySelector('[data-payment-note]');
+                if (note) note.textContent = 'Konfirmasi Midtrans tertunda. Sistem akan mencoba lagi otomatis.';
+            }
+        } catch (error) {
+            if (error.name === 'AbortError' || generation !== paymentGeneration) return;
+            const note = orderDialogBody.querySelector('[data-payment-note]');
+            if (note) note.textContent = 'Status belum bisa diperiksa. Sistem akan mencoba lagi otomatis.';
+        } finally {
+            if (paymentStatusController === controller) paymentStatusController = null;
+        }
+    };
+
+    const renderPayment = (payment) => {
+        stopPaymentPolling();
+        const generation = paymentGeneration;
+        orderDialogTitle.textContent = 'Pembayaran';
+        orderDialogTemplate.textContent = `Pesanan ${payment.order_number}`;
+        orderDialogBody.innerHTML = `
+            <section class="customer-create-card customer-verify-panel webia-payment-panel" data-payment-panel aria-labelledby="webia-payment-title">
+                <span class="customer-verify-icon" aria-hidden="true"><span class="material-symbols-outlined">payments</span></span>
+                <h2 id="webia-payment-title" data-payment-title>Pesanan kamu sudah dibuat</h2>
+                <p>Nomor pesanan <strong>${escapeHtml(payment.order_number)}</strong> sudah masuk ke akun WEBIA.</p>
+                <p>Email dan kata sandi portal dikirim ke <strong>${escapeHtml(payment.email)}</strong>.</p>
+                <div class="customer-verify-meta" role="status" aria-live="polite">
+                    <span>Status pembayaran</span><strong data-payment-status>Menunggu pembayaran</strong>
+                </div>
+                <div class="customer-create-submit webia-payment-actions">
+                    <button class="account-submit customer-create-submit-btn" type="button" data-pay-button>Bayar sekarang</button>
+                    <a class="customer-detail-secondary" href="${escapeHtml(payment.login_url)}" data-login-link hidden>Masuk ke portal</a>
+                </div>
+                <p class="customer-verify-note" data-payment-note>Status diperiksa otomatis. Modal ini boleh ditutup setelah pembayaran selesai.</p>
+            </section>`;
+        orderDialogBody.scrollTop = 0;
+
+        const payButton = orderDialogBody.querySelector('[data-pay-button]');
+        const loginLink = orderDialogBody.querySelector('[data-login-link]');
+        if (!payment.payment_ready) {
+            payButton.hidden = true;
+            loginLink.hidden = false;
+            const statusText = orderDialogBody.querySelector('[data-payment-status]');
+            const note = orderDialogBody.querySelector('[data-payment-note]');
+            if (statusText) statusText.textContent = 'Pembayaran belum tersedia';
+            if (note) note.textContent = 'Pembayaran gagal dibuat. Masuk ke portal lalu coba bayar lagi dari detail pesanan.';
+            return;
+        }
+
+        let snapOpened = false;
+        const openPayment = () => {
+            if (payment.snap_token && window.snap) {
+                if (snapOpened) return;
+                snapOpened = true;
+                window.snap.pay(payment.snap_token, {
+                    onSuccess: () => { snapOpened = false; checkPaymentStatus(payment.payment_status_url, generation); },
+                    onPending: () => { snapOpened = false; checkPaymentStatus(payment.payment_status_url, generation); },
+                    onError: () => { snapOpened = false; },
+                    onClose: () => { snapOpened = false; },
+                });
+                return;
+            }
+            const fallbackUrl = payment.simulate_url || payment.snap_redirect_url;
+            if (fallbackUrl) window.location.href = fallbackUrl;
+        };
+        payButton?.addEventListener('click', openPayment);
+
+        checkPaymentStatus(payment.payment_status_url, generation);
+        paymentPollTimer = window.setInterval(() => checkPaymentStatus(payment.payment_status_url, generation), 10000);
+
+        if (payment.snap_token) {
+            let attempts = 0;
+            const waitForSnap = () => {
+                if (generation !== paymentGeneration || !orderDialog.open) return;
+                if (window.snap) {
+                    openPayment();
+                } else if (++attempts <= 25) {
+                    window.setTimeout(waitForSnap, 200);
+                }
+            };
+            waitForSnap();
+        }
+    };
 
     const mountOrderForm = (doc) => {
         const form = doc.querySelector('form.customer-create-grid');
@@ -475,15 +624,27 @@ const themes = {
     };
 
     const loadOrderForm = async (url) => {
-        document.getElementById('webia-order-dialog-template').textContent = `Template: ${activeTemplate?.name ?? ''}`;
+        stopPaymentPolling();
+        const generation = paymentGeneration;
+        const controller = new AbortController();
+        orderFormController = controller;
+        orderDialogTitle.textContent = 'Buat Pesanan';
+        orderDialogTemplate.textContent = `Template: ${activeTemplate?.name ?? ''}`;
         orderDialogBody.innerHTML = '<p class="webia-cart-note">Memuat formulir pesanan…</p>';
         openDialog(orderDialog);
         try {
-            const response = await fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+            const response = await fetch(url, {
+                headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                signal: controller.signal,
+            });
             const doc = new DOMParser().parseFromString(await response.text(), 'text/html');
-            mountOrderForm(doc);
-        } catch {
-            orderDialogBody.innerHTML = '<p class="webia-cart-note">Gagal memuat formulir. Periksa koneksi lalu coba lagi.</p>';
+            if (generation === paymentGeneration) mountOrderForm(doc);
+        } catch (error) {
+            if (error.name !== 'AbortError' && generation === paymentGeneration) {
+                orderDialogBody.innerHTML = '<p class="webia-cart-note">Gagal memuat formulir. Periksa koneksi lalu coba lagi.</p>';
+            }
+        } finally {
+            if (orderFormController === controller) orderFormController = null;
         }
     };
 
@@ -491,6 +652,7 @@ const themes = {
         event.preventDefault();
         const form = event.currentTarget;
         const submitButton = form.querySelector('[data-submit]');
+        const generation = paymentGeneration;
         if (submitButton) submitButton.disabled = true;
         try {
             const response = await fetch(form.action, {
@@ -503,6 +665,7 @@ const themes = {
             });
             if (response.status === 422) {
                 const { errors } = await response.json();
+                if (generation !== paymentGeneration) return;
                 form.querySelectorAll('.form-error[data-modal-error]').forEach((error) => error.remove());
                 Object.entries(errors).forEach(([name, messages]) => {
                     const input = form.querySelector(`[name="${CSS.escape(name)}"], [name="${CSS.escape(name)}[]"]`);
@@ -517,19 +680,33 @@ const themes = {
                 if (submitButton) submitButton.disabled = false;
                 return;
             }
+            if (response.ok && response.headers.get('content-type')?.includes('application/json')) {
+                const payment = await response.json();
+                if (generation === paymentGeneration) renderPayment(payment);
+                return;
+            }
+            if (!response.ok) throw new Error('Order request failed');
+
+            if (generation !== paymentGeneration) return;
             const path = new URL(response.url, window.location.origin).pathname;
             if (path !== '/orders/create') {
-                // Sukses: ikuti redirect server (guest → halaman sukses + popup Snap, login → detail pesanan).
                 window.location.href = response.url;
                 return;
             }
-            // Validasi gagal: form beserta pesan error dirender ulang di modal.
             const doc = new DOMParser().parseFromString(await response.text(), 'text/html');
-            if (!mountOrderForm(doc)) {
-                window.location.href = response.url;
-            }
+            if (generation !== paymentGeneration) return;
+            if (!mountOrderForm(doc)) window.location.href = response.url;
         } catch {
-            orderDialogBody.innerHTML = '<p class="webia-cart-note">Gagal mengirim pesanan. Periksa koneksi lalu coba lagi.</p>';
+            if (generation !== paymentGeneration) return;
+            if (submitButton) submitButton.disabled = false;
+            let error = form.querySelector('.customer-create-note-error[data-submit-error]');
+            if (!error) {
+                error = document.createElement('p');
+                error.className = 'customer-create-note-error';
+                error.dataset.submitError = '';
+                form.appendChild(error);
+            }
+            error.textContent = 'Gagal mengirim pesanan. Periksa koneksi lalu coba lagi.';
         }
     }
 
@@ -542,5 +719,6 @@ const themes = {
     });
 
     orderDialog?.addEventListener('click', (event) => { if (event.target === orderDialog) closeDialog(orderDialog); });
+    orderDialog?.addEventListener('close', stopPaymentPolling);
 
 });

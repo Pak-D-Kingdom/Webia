@@ -7240,6 +7240,44 @@ html {
     gap: 1.25rem
 }
 
+.webia-payment-panel {
+    min-height: 25rem
+}
+
+.webia-payment-panel .customer-verify-meta {
+    max-width: 24rem
+}
+
+.webia-payment-panel .customer-verify-meta strong {
+    color: #795b15
+}
+
+.webia-payment-panel.is-paid .customer-verify-icon {
+    color: #1f7249;
+    background: #edf9f2;
+    border-color: #b9e2ca
+}
+
+.webia-payment-panel.is-paid .customer-verify-meta strong {
+    color: #1f7249
+}
+
+.webia-payment-actions {
+    width: 100%;
+    max-width: 20rem
+}
+
+.webia-payment-actions .customer-detail-secondary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none
+}
+
+.webia-payment-actions [hidden] {
+    display: none
+}
+
 .webia-cart-note {
     margin: 0;
     padding: 0 26px 22px;
