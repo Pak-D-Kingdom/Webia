@@ -1,4 +1,4 @@
-@props(['status', 'tone' => null, 'label' => null])
+@props(['status', 'tone' => null, 'label' => null, 'withIcon' => false])
 
 @php
     // Indonesian label mapping for consumer UI
@@ -21,5 +21,13 @@
     };
     // Safely determine CSS class without operator precedence issues
     $pillClass = $tone ?? ($resolvedTone === 'muted' ? 'status-pill-muted' : 'status-pill--' . $resolvedTone);
+    $icon = match ($status) {
+        'paid', 'delivered' => 'check_circle',
+        'awaiting_payment', 'payment_uploaded' => 'schedule',
+        'rejected' => 'error',
+        'not_started' => 'hourglass_empty',
+        'in_progress' => 'pending',
+        default => null,
+    };
 @endphp
-<span class="status-pill {{ $pillClass }}">{{ $resolvedLabel }}</span>
+<span class="status-pill {{ $pillClass }}">@if ($withIcon && $icon)<span aria-hidden="true" class="material-symbols-outlined status-pill-icon">{{ $icon }}</span>@endif{{ $resolvedLabel }}</span>

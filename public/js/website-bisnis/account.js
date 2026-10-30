@@ -1,8 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
-  // Sidebar drawer (mobile): buka/tutup via tombol & tutupan scrim.
+  // Drawer sidebar: satu pasang toggle/scrim, id sidebar dari aria-controls toggle.
   const toggleBtn = document.querySelector('[data-sidebar-toggle]');
-  const sidebar = document.getElementById('admin-sidebar');
-  const scrim = document.querySelector('[data-sidebar-close]');
+  const sidebar = toggleBtn && document.getElementById(toggleBtn.getAttribute('aria-controls'));
+  const scrim = document.querySelector('[data-sidebar-scrim]');
+  const closeBtn = document.querySelector('[data-sidebar-close]');
 
   if (toggleBtn && sidebar) {
     const openSidebar = () => {
@@ -13,26 +14,94 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     const closeSidebar = () => {
+      if (!sidebar.classList.contains('open')) return;
       sidebar.classList.remove('open');
       toggleBtn.setAttribute('aria-expanded', 'false');
+      toggleBtn.focus();
     };
 
     toggleBtn.addEventListener('click', function () {
-      if (sidebar.classList.contains('open')) {
-        closeSidebar();
-      } else {
-        openSidebar();
-      }
+      sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
     });
 
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && sidebar.classList.contains('open')) {
-        closeSidebar();
-      }
+      if (e.key === 'Escape') closeSidebar();
     });
 
     if (scrim) scrim.addEventListener('click', closeSidebar);
+    if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
   }
+
+  // Buat Pesanan: ringkasan pesanan, total, dan validasi paket (data-price).
+  const initOrderForm = function (form) {
+    const totalEl = form.querySelector('[data-total]');
+    const pkgNameEl = form.querySelector('[data-summary-package]');
+    const pkgPriceEl = form.querySelector('[data-summary-package-price]');
+    const addonListEl = form.querySelector('[data-summary-addons]');
+    const submitBtn = form.querySelector('[data-submit]');
+    const submitNote = form.querySelector('[data-submit-note]');
+    const submitCaption = form.querySelector('[data-submit-caption]');
+    const formatRupiah = (value) => 'Rp' + value.toLocaleString('id-ID');
+
+    const recalcOrder = function () {
+      const pkg = form.querySelector('input[name="package_id"]:checked');
+      let total = pkg ? Number(pkg.dataset.price) || 0 : 0;
+
+      if (pkgNameEl) {
+        const name = pkg ? pkg.closest('label').querySelector('[data-pkg-name]').textContent.trim() : null;
+        pkgNameEl.textContent = name || 'Belum dipilih';
+        pkgNameEl.classList.toggle('is-unset', !name);
+      }
+      if (pkgPriceEl) {
+        pkgPriceEl.textContent = pkg ? formatRupiah(Number(pkg.dataset.price) || 0) : '-';
+        pkgPriceEl.classList.toggle('is-unset', !pkg);
+      }
+
+      const chosenAddons = [];
+      form.querySelectorAll('input[name="addon_ids[]"]').forEach(function (input) {
+        if (!input.checked) return;
+        const price = Number(input.dataset.price) || 0;
+        total += price;
+        chosenAddons.push({
+          name: input.closest('label').querySelector('[data-addon-name]').textContent.trim(),
+          hasPrice: input.dataset.price !== '' && Number(input.dataset.price) > 0,
+          price: price,
+        });
+      });
+
+      if (addonListEl) {
+        addonListEl.textContent = '';
+        const emptyNote = document.createElement('span');
+        emptyNote.className = 'is-unset';
+        emptyNote.textContent = 'Tidak ada add-on';
+        emptyNote.hidden = chosenAddons.length > 0;
+        addonListEl.appendChild(emptyNote);
+        chosenAddons.forEach(function (addon) {
+          const row = document.createElement('span');
+          row.className = 'customer-create-addon-row';
+          const name = document.createElement('span');
+          name.textContent = addon.name;
+          const price = document.createElement('span');
+          price.textContent = addon.hasPrice ? formatRupiah(addon.price) : 'Konsultasi';
+          row.append(name, price);
+          addonListEl.appendChild(row);
+        });
+      }
+
+      if (totalEl) totalEl.textContent = formatRupiah(total);
+      if (submitBtn) submitBtn.disabled = !pkg;
+      if (submitNote) submitNote.hidden = !!pkg;
+      if (submitCaption) submitCaption.hidden = !pkg;
+    };
+
+    form.addEventListener('change', recalcOrder);
+    recalcOrder();
+  };
+
+  // Expose untuk halaman yang memuat form pesanan ke modal (koleksi publik).
+  window.webiaInitOrderForm = initOrderForm;
+  const orderForm = document.querySelector('.customer-order-form, .customer-create-grid');
+  if (orderForm) initOrderForm(orderForm);
 
   // Dashboard: tab switch grafik Pendapatan / Volume.
   document.querySelectorAll('[data-series]').forEach(function (tab) {

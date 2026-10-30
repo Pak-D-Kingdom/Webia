@@ -369,7 +369,7 @@
                             <div class="flex min-w-0 items-center gap-2">
                                 <span class="rounded bg-primary-container px-1.5 py-0.5 font-caption text-caption font-bold uppercase text-on-primary">Transfer</span>
                                 <span class="font-label-md text-label-md font-bold text-primary">{{ $order->order_number }}</span>
-                                <span class="truncate font-caption text-caption text-on-surface-variant">{{ $order->user?->name ?? 'Akun dihapus' }}</span>
+                                <span class="truncate font-caption text-caption text-on-surface-variant">{{ $order->user?->name ?? $order->guest_name ?? 'Menunggu lunas' }}</span>
                             </div>
                             <span class="whitespace-nowrap font-label-md text-label-md font-bold tabular-nums text-primary">Rp {{ number_format($order->total_price, 0, ',', '.') }}</span>
                         </div>
@@ -467,7 +467,7 @@
                         <td class="px-4 py-3.5 font-label-md text-label-md font-bold text-primary">{{ $order->order_number }}</td>
                         <td class="px-4 py-3.5">
                             <div class="flex flex-col">
-                                <span class="font-label-md text-label-md font-semibold text-on-surface">{{ $order->user?->name ?? 'Akun dihapus' }}</span>
+                                <span class="font-label-md text-label-md font-semibold text-on-surface">{{ $order->user?->name ?? $order->guest_name ?? 'Menunggu lunas' }}</span>
                                 @if ($brand)
                                     <span class="font-caption text-caption text-on-surface-variant">{{ $brand }}</span>
                                 @endif

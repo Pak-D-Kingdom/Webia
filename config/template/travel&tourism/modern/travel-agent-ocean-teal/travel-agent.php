@@ -43,11 +43,11 @@ return [
         'index'      => 'Beranda',
         'destinasi'  => 'Destinasi',
         'paket-tour' => 'Paket Tour',
+        'itinerary'  => 'Itinerary',
         'harga'      => 'Harga',
         'jadwal'     => 'Jadwal Keberangkatan',
         'galeri'     => 'Galeri',
         'testimoni'  => 'Testimoni',
-        'inquiry'    => 'Inquiry',
     ],
 
     'destinations' => [

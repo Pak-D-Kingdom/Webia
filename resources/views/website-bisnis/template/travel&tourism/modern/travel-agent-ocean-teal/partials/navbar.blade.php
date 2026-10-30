@@ -1,4 +1,3 @@
-@php $navActive = $active === 'itinerary' ? 'paket-tour' : $active; @endphp
 <header class="ta-header" data-ta-header>
     <div class="ta-container ta-nav">
         <a class="ta-logo" href="{{ $routes['index'] }}" aria-label="{{ $ta['brand']['name'] }} – Beranda">
@@ -9,7 +8,7 @@
             <ul class="ta-menu__list">
                 @foreach ($ta['nav'] as $key => $label)
                     <li>
-                        <a href="{{ $routes[$key] }}" @class(['ta-menu__link', 'is-active' => $navActive === $key]) @if ($navActive === $key) aria-current="page" @endif>{{ $label }}</a>
+                        <a href="{{ $routes[$key] }}" @class(['ta-menu__link', 'is-active' => $active === $key]) @if ($active === $key) aria-current="page" @endif>{{ $label }}</a>
                     </li>
                 @endforeach
             </ul>

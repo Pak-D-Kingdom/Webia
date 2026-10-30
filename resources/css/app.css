@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 @import './automotive-template-themes.css';
 @import './property-template-themes.css';
+@import './agriculture-template-themes.css';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -12,6 +13,9 @@
 @source '../views/website-bisnis/templates/automotive/apex-scuderia-automotive-minimalist.blade.php';
 @source '../views/website-bisnis/templates/property/property-minimalist.blade.php';
 @source '../views/website-bisnis/templates/property/property-traditional.blade.php';
+@source '../views/website-bisnis/templates/agriculture/agriternak-organic-ethical-precision.blade.php';
+@source '../views/website-bisnis/templates/agriculture/agriternak-futuristic-iot.blade.php';
+@source '../views/website-bisnis/templates/agriculture/agriternak-bold-livestock.blade.php';
 
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',

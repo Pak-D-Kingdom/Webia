@@ -22,7 +22,7 @@
                 @foreach ($ta['nav'] as $key => $label)
                     <li><a href="{{ $routes[$key] }}">{{ $label }}</a></li>
                 @endforeach
-                <li><a href="{{ $routes['itinerary'] }}">Itinerary</a></li>
+                <li><a href="{{ $routes['inquiry'] }}">Inquiry</a></li>
                 <li><a href="{{ $routes['ai-chat'] }}">AI Chat</a></li>
             </ul>
         </nav>

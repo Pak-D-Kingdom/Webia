@@ -71,7 +71,7 @@
                     <button type="submit" class="auth-submit">Masuk</button>
                 </form>
 
-                <p class="auth-swap">Belum punya akun? <a href="{{ route('register') }}">Daftar sekarang</a></p>
+                <p class="auth-swap">Belum punya akun? Akun dibuat otomatis saat kamu <a href="{{ route('collections') }}">memesan template</a>.</p>
 
                 <a class="auth-admin-link" href="{{ route('login') }}">
                     <span aria-hidden="true">⚙️</span> Masuk dari Portal Admin WEBIA

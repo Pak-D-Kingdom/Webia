@@ -197,5 +197,68 @@ class WebiaTemplateAlleSeeder extends Seeder
                 'sort_order' => 41,
             ]
         );
+
+        WebiaTemplate::updateOrCreate(
+            ['slug' => 'agriternak-organic-ethical-precision'],
+            [
+                'name' => 'AgriTernak — Organic Ethical Precision Farming',
+                'category_slug' => 'agriculture',
+                'category_label' => 'Agriculture & Livestock',
+                'business_types' => ['Organic Livestock Farm'],
+                'design_style' => 'Organic & Ethical',
+                'color_theme' => 'Forest Moss & Fresh Green',
+                'description' => 'Ethical organic livestock farm showcase featuring regenerative farming practices, animal welfare standards, herd and product information, farm visit booking, educational resources, FAQs, WhatsApp contact, and an AI assistant demo.',
+                'preview_style' => 'preview-agriternak-organic-ethical-precision',
+                'eyebrow' => 'ETHICAL ORGANIC LIVESTOCK',
+                'headline' => 'Peternakan Organik Beretika: Merawat Harmoni Alam untuk Kualitas Ternak Terbaik',
+                'tag' => 'Agriculture & Livestock · Organic Farm · Ethical',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/agriternak-organic-ethical-precision',
+                'is_active' => true,
+                'sort_order' => 42,
+            ]
+        );
+
+        WebiaTemplate::updateOrCreate(
+            ['slug' => 'agriternak-futuristic-iot'],
+            [
+                'name' => 'AgriTernak — Arctic Frost AI & IoT Livestock Platform',
+                'category_slug' => 'agriculture',
+                'category_label' => 'Agriculture & Livestock',
+                'business_types' => ['Smart Livestock Farm'],
+                'design_style' => 'Futuristic Precision Technology',
+                'color_theme' => 'Arctic Frost Blue & Deep Slate',
+                'description' => 'Futuristic livestock platform showcasing AI and IoT pasture monitoring, real-time herd health and environmental telemetry, precision farming insights, technology capabilities, demo requests, FAQs, and AI assistant.',
+                'preview_style' => 'preview-agriternak-futuristic-iot',
+                'eyebrow' => 'AI & IoT PRECISION LIVESTOCK',
+                'headline' => 'Platform AI & IoT Peternakan: Automasi Presisi Tanpa Kompromi',
+                'tag' => 'Agriculture & Livestock · Smart Farming · AI & IoT',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/agriternak-futuristic-iot',
+                'is_active' => true,
+                'sort_order' => 43,
+            ]
+        );
+
+        WebiaTemplate::updateOrCreate(
+            ['slug' => 'agriternak-bold-livestock'],
+            [
+                'name' => 'AgriTernak — Bold Precision Livestock & Smart Pasture',
+                'category_slug' => 'agriculture',
+                'category_label' => 'Agriculture & Livestock',
+                'business_types' => ['Modern Livestock Farm'],
+                'design_style' => 'Bold & High-Impact',
+                'color_theme' => 'Deep Forest Green, Black & Mint Neon',
+                'description' => 'Bold modern livestock business showcase with smart pasture operations, herd and farm capabilities, precision livestock management, AI assistant, WhatsApp contact, and business inquiry tools.',
+                'preview_style' => 'preview-agriternak-bold-livestock',
+                'eyebrow' => 'PRECISION LIVESTOCK & SMART PASTURE',
+                'headline' => 'Revolusi Peternakan Modern: Produktivitas Tinggi, Hasil Maksimal.',
+                'tag' => 'Agriculture & Livestock · Modern Farm · Bold',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/agriternak-bold-livestock',
+                'is_active' => true,
+                'sort_order' => 44,
+            ]
+        );
     }
 }

@@ -70,6 +70,26 @@ class seedersputri extends Seeder
                 'sort_order' => 54,
             ],
 
+            // Template 4 — Technology & IT · Data Analytics · Corporate · Ocean Teal (Sesuai Screenshot)
+            [
+                'name' => 'Quantix Data Corp — Data Analytics Corporate Ocean Teal',
+                'slug' => 'technology-dataanalytics-corporate-oceanteal-putri',
+                'category_slug' => 'technology-it',
+                'category_label' => 'Technology & IT',
+                'business_types' => ['Data Analytics'],
+                'design_style' => 'Corporate',
+                'color_theme' => 'Ocean Teal',
+                'description' => 'Website enterprise analitik data bergaya Corporate dengan tema warna Ocean Teal untuk Quantix Data Corp. Solusi enterprise business intelligence, data governance, predictive modeling, arsitektur cloud lakehouse, kalkulator ROI, FAQ interaktif, dan Quantix AI.',
+                'preview_style' => 'preview-company',
+                'eyebrow' => 'ENTERPRISE DATA INTELLIGENCE & GOVERNANCE',
+                'headline' => 'Kekuatan Data Terstruktur,<br>Fondasi Keputusan Korporasi.',
+                'tag' => 'Technology & IT · Data Analytics · Corporate · Ocean Teal',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/technology-dataanalytics-corporate-oceanteal-putri',
+                'is_active' => true,
+                'sort_order' => 56,
+            ],
+
             // Template Default — Technology & IT · Software House · Professional
             [
                 'name' => 'Nexora Digital — Software House',

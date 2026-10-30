@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\WebiaAddon;
 use App\Models\WebiaOrder;
 use App\Models\WebiaOrderLog;
@@ -12,10 +13,12 @@ use App\Services\Midtrans;
 use App\Services\OrderMail;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
@@ -28,9 +31,24 @@ class WebiaOrderController extends Controller
 
     public function index(Request $request): View
     {
-        $orders = WebiaOrder::whereBelongsTo($request->user())->with('package')->latest()->get();
+        $filter = $request->string('filter')->toString();
+        $query = WebiaOrder::whereBelongsTo($request->user())->with('package')->latest();
 
-        return view('orders.index', compact('orders'));
+        if ($filter === 'menunggu_pembayaran') {
+            $query->whereIn('status', ['awaiting_payment', 'rejected']);
+        } elseif ($filter === 'menunggu_verifikasi') {
+            $query->where('status', 'payment_uploaded');
+        } elseif ($filter === 'dikerjakan') {
+            $query->where('status', 'paid')->where('delivery_status', '!=', 'delivered');
+        } elseif ($filter === 'selesai') {
+            $query->where('delivery_status', 'delivered');
+        } else {
+            $filter = null;
+        }
+
+        $orders = $query->get();
+
+        return view('orders.index', compact('orders', 'filter'));
     }
 
     public function create(Request $request): View
@@ -38,11 +56,13 @@ class WebiaOrderController extends Controller
         $packages = WebiaPackage::where('is_active', true)->orderBy('sort_order')->get();
         $addons = WebiaAddon::where('is_active', true)->orderBy('name')->get();
         $selectedPackage = $packages->firstWhere('slug', $request->string('package')->toString());
+        $selectedTemplate = WebiaTemplate::where('is_active', true)
+            ->find($request->string('template')->toInteger());
 
-        return view('orders.create', compact('packages', 'addons', 'selectedPackage'));
+        return view('orders.create', compact('packages', 'addons', 'selectedPackage', 'selectedTemplate'));
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request): RedirectResponse|JsonResponse
     {
         $validated = $request->validate([
             'package_id' => ['required', Rule::exists('webia_packages', 'id')->where('is_active', true)],
@@ -50,15 +70,83 @@ class WebiaOrderController extends Controller
             'template_id' => ['nullable', Rule::exists('webia_templates', 'id')->where('is_active', true)],
             'addon_ids' => ['nullable', 'array'],
             'addon_ids.*' => ['integer', Rule::exists('webia_addons', 'id')->where('is_active', true)],
+            ...auth()->check() ? [] : [
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'lowercase', 'email', 'max:255'],
+            ],
         ]);
 
         $package = WebiaPackage::findOrFail($validated['package_id']);
         $template = isset($validated['template_id']) ? WebiaTemplate::findOrFail($validated['template_id']) : null;
         $addons = WebiaAddon::whereKey($validated['addon_ids'] ?? [])->get();
 
-        $order = $this->createOrder($request, $package, $template, $addons);
+        // Guest belum punya akun: nama/email disimpan di order; akun dibuat setelah pembayaran lunas.
+        $guestName = auth()->check() ? null : $validated['name'];
+        $guestEmail = auth()->check() ? null : $validated['email'];
 
-        return redirect()->route('orders.show', $order);
+        $order = $this->createOrder($request->user(), $guestName, $guestEmail, $validated['category_slug'] ?? null, $package, $template, $addons);
+
+        if ($request->user() === null) {
+            // Popup Snap dibuka inline di halaman sukses; webhook Midtrans menandai order lunas.
+            $payment = $this->midtrans->createTransaction($order, $this->nextMidtransOrderId($order));
+            session(['guest_order' => [
+                'order_id' => $order->id,
+                'email' => $guestEmail,
+                'order_number' => $order->order_number,
+                'snap_token' => $this->midtrans->configured() ? $payment->snap_token : null,
+                // Fallback bila popup Snap tidak bisa jalan (client key belum diisi).
+                'snap_redirect_url' => $payment->snap_redirect_url,
+                'simulate_url' => ! $this->midtrans->configured() ? $payment->snap_redirect_url : null,
+            ]]);
+
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'order_number' => $order->order_number,
+                    'email' => $guestEmail,
+                    'status' => $order->status,
+                    'snap_token' => $this->midtrans->configured() ? $payment->snap_token : null,
+                    'snap_redirect_url' => $payment->snap_redirect_url,
+                    'simulate_url' => ! $this->midtrans->configured() ? $payment->snap_redirect_url : null,
+                    'payment_ready' => $payment->snap_token !== null || $payment->snap_redirect_url !== null,
+                    'payment_status_url' => URL::temporarySignedRoute('orders.payment-status', now()->addDay(), ['order' => $order]),
+                    'login_url' => route('login'),
+                ], 201);
+            }
+        }
+
+        return auth()->check()
+            ? redirect()->route('orders.show', $order)
+            : redirect()->route('orders.success');
+    }
+
+    public function guestPaymentStatus(Request $request, WebiaOrder $order): JsonResponse
+    {
+        $payment = $order->payments()->latest()->first();
+        abort_if($payment === null, 404);
+
+        $lastSync = (int) $request->session()->get('guest_payment_last_sync.'.$order->id, 0);
+        $syncFailed = false;
+        if ($order->status !== 'paid' && $payment->status === 'created' && $this->midtrans->configured() && time() - $lastSync >= 10) {
+            $request->session()->put('guest_payment_last_sync.'.$order->id, time());
+            $result = $this->midtrans->status($payment->midtrans_order_id);
+            if ($result !== null) {
+                $this->midtrans->applyNotification($payment, $result);
+                $order->refresh();
+                $payment->refresh();
+            } else {
+                $syncFailed = true;
+            }
+        }
+
+        $status = $order->status === 'paid' ? 'paid' : $payment->status;
+
+        return response()->json([
+            'status' => $status,
+            'terminal' => in_array($status, ['paid', 'failed', 'expired'], true),
+            'sync_failed' => $syncFailed,
+            'credential_status' => $order->credential_status,
+            'email' => $order->guest_email ?? $order->user?->email,
+        ]);
     }
 
     public function show(Request $request, WebiaOrder $order): View
@@ -165,7 +253,10 @@ class WebiaOrderController extends Controller
 
         $this->midtrans->applyNotification($payment, $result);
 
-        $message = match ($this->midtrans->mapTransactionStatus((string) data_get($result, 'transaction_status'))) {
+        $message = match ($this->midtrans->mapTransactionStatus(
+            (string) data_get($result, 'transaction_status'),
+            data_get($result, 'fraud_status'),
+        )) {
             'paid' => 'Pembayaran berhasil dikonfirmasi.',
             'failed' => 'Pembayaran gagal. Silakan bayar ulang.',
             'expired' => 'Sesi pembayaran sudah kedaluwarsa. Silakan bayar ulang.',
@@ -209,19 +300,21 @@ class WebiaOrderController extends Controller
     }
 
     /** @param Collection<int, WebiaAddon> $addons */
-    private function createOrder(Request $request, WebiaPackage $package, ?WebiaTemplate $template, Collection $addons): WebiaOrder
+    private function createOrder(?User $user, ?string $guestName, ?string $guestEmail, ?string $categorySlug, WebiaPackage $package, ?WebiaTemplate $template, Collection $addons): WebiaOrder
     {
         for ($attempt = 0; $attempt < 5; $attempt++) {
             try {
-                return DB::transaction(function () use ($request, $package, $template, $addons): WebiaOrder {
+                return DB::transaction(function () use ($user, $guestName, $guestEmail, $categorySlug, $package, $template, $addons): WebiaOrder {
                     $order = WebiaOrder::create([
-                        'user_id' => $request->user()->id,
+                        'user_id' => $user?->id,
+                        'guest_name' => $guestName ?? $user?->name,
+                        'guest_email' => $guestEmail ?? $user?->email,
                         'order_number' => $this->orderNumber(),
                         'webia_package_id' => $package->id,
                         'package_snapshot' => ['name' => $package->name, 'price' => $package->price],
                         'webia_template_id' => $template?->id,
                         'template_snapshot' => $template ? ['name' => $template->name, 'slug' => $template->slug, 'category_slug' => $template->category_slug] : null,
-                        'category_slug' => $template?->category_slug ?? $request->input('category_slug'),
+                        'category_slug' => $template?->category_slug ?? $categorySlug,
                         'addon_ids' => $addons->modelKeys(),
                         'addon_snapshot' => $addons->map(fn (WebiaAddon $addon): array => [
                             'id' => $addon->id,
@@ -234,7 +327,7 @@ class WebiaOrderController extends Controller
 
                     WebiaOrderLog::create([
                         'webia_order_id' => $order->id,
-                        'actor_id' => $request->user()->id,
+                        'actor_id' => $user?->id,
                         'to_status' => 'awaiting_payment',
                     ]);
 

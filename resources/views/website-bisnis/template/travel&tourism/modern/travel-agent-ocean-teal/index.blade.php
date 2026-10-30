@@ -8,11 +8,10 @@
     {{-- Destination catalog (preview) --}}
     @include($ns . '.sections.destinations', ['mode' => 'preview'])
 
-    {{-- Tour packages + Prices (preview) --}}
+    {{-- Tour packages (preview) --}}
     <section class="ta-section ta-section--tight">
         <div class="ta-container ta-feature">
             @include($ns . '.sections.packages', ['mode' => 'preview'])
-            @include($ns . '.sections.prices', ['mode' => 'preview'])
         </div>
     </section>
 

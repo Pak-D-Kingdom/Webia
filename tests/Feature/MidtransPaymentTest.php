@@ -8,6 +8,7 @@ use App\Models\WebiaPayment;
 use App\Services\Midtrans;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\URL;
 use Tests\TestCase;
 
 class MidtransPaymentTest extends TestCase
@@ -20,6 +21,100 @@ class MidtransPaymentTest extends TestCase
 
         config(['webia.midtrans.server_key' => 'SB-Mid-server-test-key']);
         config(['webia.midtrans.is_production' => false]);
+    }
+
+    public function test_guest_payment_status_requires_valid_signature(): void
+    {
+        $order = WebiaOrder::factory()->create(['status' => 'awaiting_payment']);
+        WebiaPayment::factory()->create(['webia_order_id' => $order->id]);
+
+        $this->getJson(route('orders.payment-status', ['order' => $order]))->assertForbidden();
+    }
+
+    public function test_guest_payment_status_reports_midtrans_sync_failure(): void
+    {
+        $order = WebiaOrder::factory()->create(['status' => 'awaiting_payment']);
+        WebiaPayment::factory()->create(['webia_order_id' => $order->id, 'status' => 'created']);
+        Http::fake([
+            'api.sandbox.midtrans.com/v2/*/status' => Http::response([], 500),
+        ]);
+
+        $this->getJson($this->paymentStatusUrl($order))
+            ->assertOk()
+            ->assertJson(['status' => 'created', 'sync_failed' => true]);
+    }
+
+    public function test_guest_payment_status_syncs_midtrans_and_marks_order_paid(): void
+    {
+        $order = WebiaOrder::factory()->create(['status' => 'awaiting_payment']);
+        $payment = WebiaPayment::factory()->create([
+            'webia_order_id' => $order->id,
+            'midtrans_order_id' => 'WEB-'.$order->id.'-01',
+            'status' => 'created',
+        ]);
+        Http::fake([
+            'api.sandbox.midtrans.com/v2/'.$payment->midtrans_order_id.'/status' => Http::response([
+                'order_id' => $payment->midtrans_order_id,
+                'status_code' => '200',
+                'gross_amount' => (string) $order->total_price,
+                'transaction_status' => 'settlement',
+            ]),
+        ]);
+
+        $this->getJson($this->paymentStatusUrl($order))
+            ->assertOk()
+            ->assertJson(['status' => 'paid', 'terminal' => true]);
+
+        $this->assertSame('paid', $order->fresh()->status);
+    }
+
+    public function test_guest_payment_status_rejects_tampered_order_id(): void
+    {
+        $allowedOrder = WebiaOrder::factory()->create();
+        $otherOrder = WebiaOrder::factory()->create();
+        WebiaPayment::factory()->create(['webia_order_id' => $otherOrder->id]);
+        $url = str_replace('/'.$allowedOrder->id.'/', '/'.$otherOrder->id.'/', $this->paymentStatusUrl($allowedOrder));
+
+        $this->getJson($url)->assertForbidden();
+    }
+
+    public function test_guest_payment_status_allows_multiple_signed_orders(): void
+    {
+        $firstOrder = WebiaOrder::factory()->create();
+        $secondOrder = WebiaOrder::factory()->create();
+        WebiaPayment::factory()->create(['webia_order_id' => $firstOrder->id]);
+        WebiaPayment::factory()->create(['webia_order_id' => $secondOrder->id]);
+
+        $this->getJson($this->paymentStatusUrl($firstOrder))->assertOk();
+        $this->getJson($this->paymentStatusUrl($secondOrder))->assertOk();
+    }
+
+    public function test_challenged_capture_does_not_mark_order_paid(): void
+    {
+        $order = WebiaOrder::factory()->create(['status' => 'awaiting_payment']);
+        $payment = WebiaPayment::factory()->create(['webia_order_id' => $order->id]);
+
+        app(Midtrans::class)->applyNotification($payment, [
+            'transaction_status' => 'capture',
+            'fraud_status' => 'challenge',
+        ]);
+
+        $this->assertSame('created', $payment->fresh()->status);
+        $this->assertSame('awaiting_payment', $order->fresh()->status);
+    }
+
+    public function test_accepted_capture_marks_order_paid(): void
+    {
+        $order = WebiaOrder::factory()->create(['status' => 'awaiting_payment']);
+        $payment = WebiaPayment::factory()->create(['webia_order_id' => $order->id]);
+
+        app(Midtrans::class)->applyNotification($payment, [
+            'transaction_status' => 'capture',
+            'fraud_status' => 'accept',
+        ]);
+
+        $this->assertSame('paid', $payment->fresh()->status);
+        $this->assertSame('paid', $order->fresh()->status);
     }
 
     public function test_signature_is_verified_against_server_key(): void
@@ -210,6 +305,17 @@ class MidtransPaymentTest extends TestCase
         $this->assertStringStartsWith('fake-', (string) $payment->snap_token);
     }
 
+    public function test_guest_can_open_simulate_page_when_server_key_absent(): void
+    {
+        config(['webia.midtrans.server_key' => null]);
+        $payment = WebiaPayment::factory()->create();
+
+        $this->get(route('payments.midtrans.simulate', $payment))->assertOk();
+        $this->post(route('payments.midtrans.simulate', $payment))
+            ->assertRedirect(route('orders.success'));
+        $this->assertSame('paid', $payment->fresh()->status);
+    }
+
     public function test_simulate_page_and_pay_are_absent_when_server_key_exists(): void
     {
         $payment = WebiaPayment::factory()->create();
@@ -382,6 +488,11 @@ class MidtransPaymentTest extends TestCase
             ->assertRedirect(route('orders.show', $order));
 
         $this->assertSame('paid', $order->fresh()->status);
+    }
+
+    private function paymentStatusUrl(WebiaOrder $order): string
+    {
+        return URL::temporarySignedRoute('orders.payment-status', now()->addDay(), ['order' => $order]);
     }
 
     private function signature(array $payload): string

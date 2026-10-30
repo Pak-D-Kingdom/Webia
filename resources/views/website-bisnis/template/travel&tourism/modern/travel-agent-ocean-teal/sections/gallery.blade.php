@@ -8,20 +8,15 @@
             'sub' => 'Lihat momen indah dari perjalanan kami.',
             'href' => $routes['galeri'], 'label' => 'Lihat Semua Galeri',
         ])
-        <ul class="ta-mosaic" data-ta-lightbox>
+        <ul class="ta-gal-grid" data-ta-lightbox>
             @foreach (array_slice($ta['gallery'], 0, 4) as $g)
                 <li>
                     <a href="{{ $img($g['image']) }}" data-caption="{{ $g['caption'] }}" aria-label="Perbesar foto: {{ $g['caption'] }}">
                         <img src="{{ $img($g['image']) }}" alt="{{ $g['caption'] }}" loading="lazy">
-                        <span class="ta-mosaic__cap">{{ $g['caption'] }}</span>
+                        <span class="ta-gal-grid__cap">{{ $g['caption'] }}</span>
                     </a>
                 </li>
             @endforeach
-            <li>
-                <a class="ta-gal-more" href="{{ $routes['galeri'] }}" data-ta-nolb>
-                    {{ $icon('camera') }}<strong>+{{ count($ta['gallery']) - 4 }}</strong>Lihat Semua Foto
-                </a>
-            </li>
         </ul>
     </article>
 @else

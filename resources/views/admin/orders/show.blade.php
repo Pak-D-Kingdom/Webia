@@ -57,7 +57,7 @@
                     </span>
                 </div>
                 <div class="flex flex-wrap items-center gap-x-3 gap-y-1 font-body-sm text-body-sm text-on-surface-variant">
-                    <span class="font-bold text-on-surface">{{ $order->user?->name ?? 'Akun dihapus' }}</span>
+                    <span class="font-bold text-on-surface">{{ $order->user?->name ?? $order->guest_name ?? 'Menunggu lunas' }}</span>
                     <span class="text-outline">•</span>
                     <span class="rounded bg-surface-container px-2 py-0.5 font-label-sm text-label-sm text-primary">{{ $packageName }}</span>
                     @if ($order->template_snapshot['name'] ?? $order->template?->name)
@@ -242,12 +242,12 @@
                 </div>
                 <div class="flex items-center gap-space-md rounded-xl bg-surface-container-low p-space-sm">
                     <div class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-primary-container font-headline-sm font-bold text-on-primary-container">
-                        {{ mb_strtoupper(mb_substr($order->user?->name ?? '??', 0, 2)) }}
+                        {{ mb_strtoupper(mb_substr($order->user?->name ?? $order->guest_name ?? '??', 0, 2)) }}
                     </div>
                     <div class="flex min-w-0 flex-col">
-                        <span class="truncate font-label-lg font-bold text-on-surface text-label-lg">{{ $order->user?->name ?? 'Akun dihapus' }}</span>
+                        <span class="truncate font-label-lg font-bold text-on-surface text-label-lg">{{ $order->user?->name ?? $order->guest_name ?? 'Menunggu lunas' }}</span>
                         <div class="mt-0.5 flex items-center gap-1.5">
-                            <span class="truncate font-mono text-caption text-primary">{{ $order->user?->email ?? '—' }}</span>
+                            <span class="truncate font-mono text-caption text-primary">{{ $order->user?->email ?? $order->guest_email ?? '-' }}</span>
                             @if ($order->user?->email)
                                 <button class="text-outline hover:text-primary" data-copy-text="{{ $order->user->email }}" data-copy-message="Email disalin" title="Salin Email" type="button">
                                     <span class="material-symbols-outlined text-xs">content_copy</span>
