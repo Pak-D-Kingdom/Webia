@@ -1124,6 +1124,18 @@ Route::prefix('webia/template')->group(function () {
 
 Route::prefix('webia/template')->group(function () {
     Route::view(
+        '/petit-wonder-candy-cloud',
+        'website-bisnis.templates.retail.baby-kids-products.petit-wonder-candy-cloud'
+    )->name('webia.template.retail.petit-wonder-candy-cloud');
+
+    Route::view(
+        '/aurora-petit-yellow-sunshine',
+        'website-bisnis.templates.retail.baby-kids-products.aurora-petit-yellow-sunshine'
+    )->name('webia.template.retail.aurora-petit-yellow-sunshine');
+});
+
+Route::prefix('webia/template')->group(function () {
+    Route::view(
         '/vibesnatch-fashion-store',
         'website-bisnis.templates.retail.fashion-clothing-store.vibesnatch.vibesnatch'
     )->name('webia.template.vibesnatch-fashion-store');
