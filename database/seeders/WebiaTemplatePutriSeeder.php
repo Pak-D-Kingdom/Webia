@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Models\WebiaTemplate;
 use Illuminate\Database\Seeder;
 
-class seedersputri extends Seeder
+class WebiaTemplatePutriSeeder extends Seeder
 {
     public function run(): void
     {
