@@ -90,6 +90,26 @@ class seedersputri extends Seeder
                 'sort_order' => 56,
             ],
 
+            // Template 5 — Technology & IT · Data Analytics · Creative · Arctic Frost (Sesuai Screenshot)
+            [
+                'name' => 'FrostByte Analytics — Data Analytics Creative Arctic Frost',
+                'slug' => 'technology-dataanalytics-creative-arcticfrost-putri',
+                'category_slug' => 'technology-it',
+                'category_label' => 'Technology & IT',
+                'business_types' => ['Data Analytics'],
+                'design_style' => 'Creative',
+                'color_theme' => 'Arctic Frost',
+                'description' => 'Website analitik data modern kreatif bernuansa Arctic Frost untuk FrostByte Analytics. Menghadirkan visualisasi data interaktif, arsitektur neural intelligence, kalkulator ROI prediktif, FAQ dinamis, concierge WhatsApp, dan asisten virtual FrostAI.',
+                'preview_style' => 'preview-company',
+                'eyebrow' => 'CREATIVE DATA INTELLIGENCE & ARTISTRY',
+                'headline' => 'Menyingkap Tabir Data,<br>Menciptakan Mahakarya Wawasan.',
+                'tag' => 'Technology & IT · Data Analytics · Creative · Arctic Frost',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/technology-dataanalytics-creative-arcticfrost-putri',
+                'is_active' => true,
+                'sort_order' => 58,
+            ],
+
             // Template Default — Technology & IT · Software House · Professional
             [
                 'name' => 'Nexora Digital — Software House',
