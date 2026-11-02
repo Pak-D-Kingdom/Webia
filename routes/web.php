@@ -1357,18 +1357,18 @@ Route::view(
     'website-bisnis.template.property.perumahan.coral-haven'
 )->name('webia.templates.coral-haven');
 
-// Template Salon — Nina
+// WEBIA — Indra Automotive templates.
 Route::view(
-    '/template/salon-modern-sage',
-    'website-bisnis.templates.salon-modern-sage'
-)->name('template.salon-modern-sage');
+    '/webia/template/tidal-detail-artistic-automotive',
+    'website-bisnis.templates.automotive.artistic'
+)->name('webia.template.automotive.tidal-detail-artistic');
 
 Route::view(
-    '/template/salon-classic-warm-neutral',
-    'website-bisnis.templates.salon-classic-warm-neutral'
-)->name('template.salon-classic-warm-neutral');
+    '/webia/template/noir-atelier-luxury-automotive',
+    'website-bisnis.templates.automotive.luxury'
+)->name('webia.template.automotive.noir-atelier-luxury');
 
 Route::view(
-    '/template/salon-elegant-soft-pink',
-    'website-bisnis.templates.salon-elegant-soft-pink'
-)->name('template.salon-elegant-soft-pink');
+    '/webia/template/form-auto-care-minimal-automotive',
+    'website-bisnis.templates.automotive.minimal'
+)->name('webia.template.automotive.form-auto-care-minimal');
