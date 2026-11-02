@@ -200,31 +200,28 @@ body.lb-body {
 .lb-nav__link { display: block; padding: 9px 13px; border-radius: 999px; font: 500 13.5px/1 var(--lb-head); color: var(--lb-ink); white-space: nowrap; transition: background .15s, color .15s; }
 .lb-nav__link:hover { background: var(--lb-sky-2); color: var(--lb-primary-d); }
 .lb-nav__link.is-active { color: #fff; background: linear-gradient(180deg, #6db1e2, #4a93c8); box-shadow: 0 6px 14px rgba(74, 147, 200, .38); }
-.lb-nav__cta-mobile { display: none; }
 .lb-header__cta { flex: none; }
-.lb-nav-toggle { display: none; margin-left: auto; width: 46px; height: 46px; place-items: center; border: 1px solid var(--lb-line); border-radius: 14px; background: #fff; color: var(--lb-primary-d); font-size: 22px; box-shadow: var(--lb-shadow-s); }
-.lb-nav-toggle .lb-i--close { display: none; }
-.lb-nav-toggle.is-open .lb-i--close { display: block; }
-.lb-nav-toggle.is-open .lb-i--menu { display: none; }
-.lb-nav-backdrop { position: fixed; inset: 0; z-index: 60; background: rgba(18, 49, 80, .35); backdrop-filter: blur(2px); }
 
+/* Layar < 1300px: tidak ada hamburger. Navigasi tampil sebagai bar atas (strip tautan)
+   yang bisa digeser horizontal, tepat di bawah logo + tombol Order. */
 @media (max-width: 1299.98px) {
-    .lb-nav-toggle { display: grid; }
-    .lb-header__cta { margin-left: 0; }
-    .lb-nav {
-        display: none; position: absolute; top: calc(100% + 4px); left: var(--lb-pad); right: var(--lb-pad); margin: 0; z-index: 75; pointer-events: auto;
-        background: #fff; padding: 12px 14px 18px; border-radius: 26px;
-        box-shadow: 0 24px 40px rgba(30, 80, 130, .22); max-height: calc(100vh - 130px); overflow-y: auto;
+    .lb-header .lb-header__inner { flex-wrap: wrap; row-gap: 0; padding-block: 8px 0; gap: 10px; padding-inline: 14px; }
+    .lb-brand { order: 1; }
+    .lb-header__cta { order: 2; margin-left: auto; min-height: 38px; padding: 0 18px; }
+    .lb-nav { order: 3; flex: 0 0 100%; width: 100%; margin: 6px 0 0; border-top: 1px solid var(--lb-line); }
+    .lb-nav__list {
+        display: flex; flex-wrap: nowrap; align-items: center; gap: 4px; padding: 8px 4px 9px;
+        overflow-x: auto; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; scrollbar-width: none; scroll-snap-type: x proximity;
+        -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 26px), transparent 100%);
+        mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 26px), transparent 100%);
     }
-    .lb-nav.is-open { display: block; animation: lb-drop .22s ease-out; }
-    .lb-nav__list { flex-direction: column; align-items: stretch; gap: 4px; }
-    .lb-nav__link { padding: 14px 16px; font-size: 15px; border-radius: 16px; }
-    .lb-header__cta { margin-left: auto; }
-        .lb-header__inner { gap: 10px; padding-inline: 14px; }
+    .lb-nav__list::-webkit-scrollbar { display: none; }
+    .lb-nav__list li { flex: none; scroll-snap-align: center; }
+    .lb-nav__link { padding: 8px 14px; font-size: 13px; }
 }
-@media (max-width: 719.98px) {
-    .lb-header__cta { display: none; }
-    .lb-nav__cta-mobile { display: flex; margin-top: 12px; }
+@media (max-width: 559.98px) {
+    .lb-header__cta { min-height: 34px; padding: 0 12px; font-size: 12px; gap: 6px; }
+    .lb-header__cta .lb-i { font-size: 15px; }
 }
 
 /* ============================== 6. HERO ============================== */
@@ -686,3 +683,242 @@ html.lb-chat-open .lb-fab__hint { display: none; }
 @media (max-width: 1299.98px) { .lb-header { padding-top: 6px; } }
 .lb-hours-card .lb-open { border-radius: 16px; line-height: 1.35; }
 .lb-form--preview .lb-field { padding: 0 10px; gap: 6px; }
+
+/* ======================================================================
+ * 16. PENYESUAIAN PERSIS DESAIN UI (beranda, topbar, navbar, footer)
+ *     Ukuran desain dasar = 1536px. --u = 1px desain pada lebar viewport.
+ * ====================================================================== */
+:root {
+    --lb-ink: #10294f;
+    --lb-ink-2: #2c4a76;
+    --lb-muted: #3f5f88;
+    --lb-icon: #235f98;
+    --lb-bg: #f3f8fe;
+    --u: calc(100vw / 1536);
+}
+body.lb-body {
+    background:
+        linear-gradient(90deg, #e9f2fd 0, #d2e8fa 52%, #bddcf8 100%) top / 100% 130px no-repeat,
+        linear-gradient(180deg, #f3f8fe, #f1f7fd 60%, #e9f3fc);
+}
+
+/* ----- Topbar: transparan, teks & ikon navy ----- */
+.lb-topbar { background: none; border: 0; color: #14305a; font-size: 11.5px; font-weight: 600; }
+.lb-topbar .lb-container { max-width: none; padding-inline: max(16px, calc((100% - 1356px) / 2)); }
+.lb-topbar__inner { min-height: 32px; }
+.lb-topbar__list { gap: 44px; }
+.lb-topbar__item, .lb-topbar__mail { gap: 9px; }
+.lb-topbar__item .lb-i, .lb-topbar__mail .lb-i { color: #10294f; font-size: 15px; stroke-width: 2.2; }
+.lb-topbar .lb-social { gap: 4px; }
+.lb-topbar .lb-social a { width: 26px; height: 26px; color: #10294f; }
+.lb-topbar .lb-social .lb-i { font-size: 17px; stroke-width: 2.3; }
+.lb-topbar__sep { width: 1px; height: 14px; margin: 0 12px; background: rgba(16, 41, 79, .32); }
+.lb-topbar__right { gap: 6px; }
+
+/* ----- Navbar: bar putih membulat selebar halaman ----- */
+.lb-header { padding: 0 0 6px; background: none; }
+.lb-header .lb-header__inner {
+    max-width: none; margin-inline: 0; width: 100%; min-height: 58px;
+    padding-inline: max(18px, calc((100% - 1356px) / 2));
+    background: rgba(255, 255, 255, .88); border-radius: 22px;
+    box-shadow: 0 8px 24px rgba(95, 150, 205, .14);
+}
+.lb-brand__logo { width: 54px; }
+.lb-brand__text strong { color: #0f2a5e; font-size: 22px; }
+.lb-brand__text strong span { color: inherit; }
+.lb-brand__text small { color: #0f2a5e; font-size: 11.5px; font-weight: 600; }
+.lb-nav__link { color: #0f2a52; font-weight: 600; }
+.lb-nav__link.is-active { background: linear-gradient(180deg, #7ab0d8, #5b97c6); box-shadow: 0 6px 14px rgba(91, 151, 198, .4); }
+.lb-btn--primary { background: linear-gradient(180deg, #2f78ae, #1c5587); }
+.lb-header__cta { min-height: 40px; padding: 0 22px; font-size: 13.5px; }
+
+/* ----- Hero: latar penuh dari desain pada layar lebar ----- */
+.lb-hero__bg { display: none; }
+.lb-hero__script { z-index: 2; }
+@media (max-width: 899.98px) { .lb-hero__script { top: auto; bottom: 150px; right: 6%; } }
+@media (min-width: 1400px) {
+    .lb-hero { aspect-ratio: 1536 / 266; min-height: 0; background: none; }
+    .lb-hero__bg { display: block; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+    .lb-hero__decor, .lb-hero__art { display: none; }
+    .lb-hero__inner { position: absolute; inset: 0; max-width: none; margin: 0; padding: calc(30 * var(--u)) 0 0 calc(172 * var(--u)); align-items: flex-start; min-height: 0; }
+    .lb-hero__copy { max-width: none; }
+    .lb-hero__eyebrow { font-size: calc(11.5 * var(--u)); margin-bottom: calc(8 * var(--u)); color: #1d3a63; }
+    .lb-hero__title { font-size: calc(35 * var(--u)); line-height: 1.08; letter-spacing: -.02em; color: #14294f; }
+    .lb-hero__text { font-size: calc(15 * var(--u)); line-height: 1.24; margin-top: calc(16 * var(--u)); max-width: calc(390 * var(--u)); color: #14294f; }
+    .lb-hero__cta { margin-top: calc(18 * var(--u)); gap: calc(16 * var(--u)); }
+    .lb-hero .lb-btn { min-height: calc(36 * var(--u)); padding: 0 calc(24 * var(--u)); font-size: calc(13.5 * var(--u)); }
+    .lb-hero .lb-btn .lb-i { font-size: calc(17 * var(--u)); }
+    .lb-hero__script { right: 5.4%; top: 10%; font-size: calc(36 * var(--u)); }
+}
+
+/* ----- Kartu beranda: kaca tipis, ringkas, ikon navy ----- */
+.lb-dash .lb-card { background: rgba(255, 255, 255, .62); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); border-radius: 22px; box-shadow: 0 10px 28px rgba(95, 150, 205, .11), inset 0 1px 0 #fff; padding: 14px 16px; }
+.lb-dash .lb-card__head { gap: 11px; margin-bottom: 9px; }
+.lb-dash .lb-card__icon { width: 42px; height: 42px; border-radius: 50%; color: var(--lb-icon); font-size: 21px; background: #e5effb; border: 0; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .85); }
+.lb-dash .lb-card__title { font: 700 15.5px/1.25 var(--lb-head); color: var(--lb-ink); }
+.lb-dash .lb-card__sub { font-size: 11.5px; color: var(--lb-muted); margin-top: 1px; }
+.lb-dash .lb-i { stroke-width: 1.9; }
+
+.lb-dash .lb-tabs { margin: 2px 0 5px; padding: 2px; }
+.lb-dash .lb-tab { min-height: 22px; font-size: 11px; color: var(--lb-ink); }
+.lb-dash .lb-pricelist__row { padding: 2.5px 0; font-size: 12px; gap: 9px; border-bottom-color: rgba(70, 130, 190, .12); }
+.lb-dash .lb-pricelist__ico { color: var(--lb-icon); font-size: 17px; }
+.lb-dash .lb-pricelist__price { font-size: 12px; font-weight: 500; }
+.lb-dash .lb-card__link { margin-top: 8px; }
+
+.lb-dash .lb-optlist { gap: 8px; }
+.lb-dash .lb-opt { padding: 6px 11px; border-radius: 18px; box-shadow: 0 3px 10px rgba(95, 150, 205, .1); }
+.lb-dash .lb-opt__ico { background: none; width: 30px; height: 30px; color: var(--lb-icon); }
+.lb-dash .lb-opt__check { color: #b7d2ee; width: 22px; height: 22px; }
+.lb-dash .lb-eta-list { gap: 8px; }
+.lb-dash .lb-eta { padding: 9px 12px; border-radius: 18px; box-shadow: 0 3px 10px rgba(95, 150, 205, .1); }
+.lb-dash .lb-eta__ico { color: var(--lb-icon); }
+.lb-dash .lb-cov { grid-template-columns: 118px minmax(0, 1fr); margin: 0 0 8px; }
+.lb-dash .lb-cov__list { font-size: 12px; gap: 6px; }
+.lb-dash .lb-cov__list .lb-i { color: #4f93c9; }
+.lb-dash .lb-steps { margin: 2px 0 0; }
+.lb-dash .lb-step__ico { width: 56px; height: 56px; color: var(--lb-icon); font-size: 26px; background: radial-gradient(circle at 50% 35%, #fff, #e9f2fc); box-shadow: 0 8px 18px rgba(95, 150, 205, .16); }
+.lb-dash .lb-step__txt { font-size: 12px; font-weight: 600; color: var(--lb-ink); }
+.lb-dash .lb-step:not(:last-child)::after { width: 9px; height: 9px; border-color: var(--lb-icon); top: 22px; right: -8px; }
+.lb-dash .lb-hours-box { padding: 12px 14px; border-radius: 22px; background: rgba(255, 255, 255, .8); }
+.lb-dash .lb-hours-box__ico { color: var(--lb-icon); font-size: 34px; }
+.lb-dash .lb-hours-box strong, .lb-dash .lb-hours-box span { font-size: 12.5px; color: var(--lb-ink); }
+.lb-hours-card__plant-l { position: absolute; left: -26px; bottom: 4px; width: 60px; height: auto; pointer-events: none; z-index: 2; }
+.lb-dash .lb-inquiry .lb-field { min-height: 34px; font-size: 12px; padding: 0 12px; }
+.lb-dash .lb-inquiry .lb-form__cell--submit .lb-btn { min-height: 34px; font-size: 12.5px; }
+.lb-dash .lb-field__ico { font-size: 16px; color: var(--lb-icon); }
+.lb-dash .lb-field input::placeholder { color: #36557f; }
+
+/* ----- AI Laundry Assistant ----- */
+.lb-dash .lb-ai { padding: 12px 12px 14px; border-radius: 30px; gap: 8px; }
+.lb-dash .lb-ai__bubble h2 { font-size: 14.5px; color: #0f2a52; }
+.lb-dash .lb-ai__bubble p { font-size: 12.5px; color: #1d3a63; }
+.lb-dash .lb-qchip { padding: 6px 10px; font-size: 12px; color: #0f2a52; }
+.lb-dash .lb-qchip__dot { width: 22px; height: 22px; font-size: 12px; }
+.lb-dash .lb-ai__chips { gap: 7px; }
+.lb-dash .lb-ai__form button { width: 32px; height: 32px; font-size: 15px; }
+.lb-dash .lb-ai__form { padding: 4px 4px 4px 14px; }
+
+/* ----- Layout beranda mengikuti proporsi desain (>=1400px) ----- */
+@media (min-width: 1400px) {
+    .lb-dash { max-width: none; padding-inline: calc(35 * var(--u)); gap: calc(15 * var(--u)) calc(15 * var(--u)); grid-template-columns: minmax(0, 1fr) calc(262 * var(--u)); padding-top: calc(10 * var(--u)); }
+    .lb-dash__row--4 { grid-template-columns: 1.2fr 1fr .96fr 1.05fr; gap: calc(13 * var(--u)); }
+    .lb-dash__row--3 { grid-template-columns: 1.85fr 1fr 1.08fr; gap: calc(13 * var(--u)); }
+    .lb-dash__row--3 > .lb-steps-card { grid-column: auto; }
+    .lb-svcstrip { grid-template-columns: calc(333 * var(--u)) minmax(0, 1fr); gap: 0; }
+    .lb-svcstrip__intro { margin-left: calc(-35 * var(--u)); gap: calc(8 * var(--u)); }
+    .lb-svcstrip__basket { width: calc(100 * var(--u)); margin-left: 0; }
+    .lb-svcstrip__copy h2 { font-size: calc(20 * var(--u)); }
+    .lb-svcstrip__copy p { font-size: calc(12.5 * var(--u)); max-width: calc(220 * var(--u)); }
+    .lb-svcstrip__list { gap: calc(9 * var(--u)); }
+    .lb-svc { padding: calc(8 * var(--u)) 4px calc(9 * var(--u)); border-radius: 20px; }
+    .lb-svc__img { height: calc(58 * var(--u)); }
+    .lb-svc__label { font-size: calc(12 * var(--u)); min-height: 2.5em; color: var(--lb-ink); }
+}
+.lb-svcstrip__copy h2 { color: #0f2a52; }
+.lb-svc__label { color: var(--lb-ink); }
+
+/* ----- Footer: latar dari desain, satu baris ----- */
+.lb-footer { margin-top: 10px; background: var(--lb-footer-bg) center bottom / cover no-repeat, #dcebf9; }
+.lb-footer__wave, .lb-footer::before { display: none; }
+.lb-footer__inner { padding-block: 34px 18px; }
+.lb-footer__col h2 { color: #0f2a52; font-size: 12.5px; }
+.lb-footer__col ul { font-size: 12px; color: #1d3a63; font-weight: 600; }
+.lb-footer__slogan, .lb-footer__slogan strong { color: #0f2a52; }
+.lb-footer__slogan { font-size: 12.5px; }
+.lb-footer__slogan strong { font-size: 13.5px; }
+.lb-brand--footer .lb-brand__text strong { font-size: 24px; }
+.lb-social--footer a { background: none; box-shadow: none; color: #10294f; }
+.lb-footer__credit { background: rgba(255, 255, 255, .55); color: #1d3a63; }
+@media (min-width: 1100px) {
+    .lb-footer__inner { display: flex; align-items: center; justify-content: flex-start; gap: 0; padding-left: calc(115 * var(--u)); padding-right: calc(60 * var(--u)); max-width: none; padding-block: calc(36 * var(--u)) calc(22 * var(--u)); }
+    .lb-footer__brand { display: flex; align-items: center; gap: 0; padding: 0; border: 0; min-height: 0; flex: none; }
+    .lb-footer__slogan { border-left: 1px solid rgba(16, 41, 79, .3); margin-left: calc(32 * var(--u)); padding-left: calc(20 * var(--u)); }
+    .lb-footer__cols { display: flex; align-items: flex-start; gap: calc(44 * var(--u)); margin-left: calc(32 * var(--u)); flex: 1; }
+    .lb-footer__col { min-width: 0; }
+    .lb-footer__cols > .lb-footer__col:first-child { border-left: 1px solid rgba(16, 41, 79, .3); padding-left: calc(30 * var(--u)); }
+    .lb-footer__col--social { border-left: 1px solid rgba(16, 41, 79, .3); padding-left: calc(48 * var(--u)); margin-left: calc(10 * var(--u)); }
+    .lb-footer__col--social h2 { text-align: center; }
+}
+
+/* ----- Tombol melayang lebih ramping seperti desain ----- */
+.lb-fab { height: 44px; font-size: 13.5px; padding: 0 20px 0 7px; }
+.lb-fab__ico { width: 32px; height: 32px; font-size: 20px; }
+.lb-fab--wa { background: linear-gradient(180deg, #46c24f, #2f9e3f); box-shadow: 0 12px 24px rgba(47, 158, 63, .35); }
+.lb-fab__robot { width: 50px; height: 31px; margin-top: -26px; }
+.lb-float { gap: 14px; }
+@media (max-width: 559.98px) { .lb-fab { width: 52px; height: 52px; padding: 0; } .lb-fab--wa .lb-fab__ico { font-size: 28px; } }
+
+.lb-dash .lb-cov { grid-template-columns: 108px minmax(0, 1fr); }
+.lb-dash .lb-cov__list li { white-space: nowrap; min-width: 0; }
+.lb-dash .lb-cov__list { font-size: 11.5px; }
+@media (min-width: 1400px) { .lb-hero__script { right: 4.4%; font-size: calc(34 * var(--u)); } }
+
+/* ----- perapihan layar menengah (900–1399px) & header ----- */
+@media (min-width: 900px) and (max-width: 1399.98px) {
+    .lb-hero__art { width: min(62%, 900px); }
+    .lb-hero__text { max-width: min(440px, 40vw); }
+}
+
+/* ======================================================================
+ * 17. PERAPIAN LANJUTAN: bar navigasi, kolom AI, footer, tombol AI Chat
+ * ====================================================================== */
+@media (max-width: 1299.98px) { .lb-nav__list { position: relative; } }
+
+/* ----- Kolom kanan beranda terisi penuh (kartu AI memanjang sampai dasar baris) ----- */
+.lb-dash { padding-bottom: 84px; }
+@media (min-width: 1100px) {
+    .lb-dash__ai { position: relative; align-self: stretch; min-height: 580px; }
+    .lb-dash__ai .lb-ai { position: absolute; inset: 0; }
+    .lb-dash .lb-ai__scene { flex: 1 1 0; min-height: 0; }
+}
+
+/* ----- Footer rapi: satu baris, sejajar, pemisah sama tinggi ----- */
+.lb-footer { margin-top: 0; }
+.lb-footer__col ul { gap: 6px; }
+.lb-footer__col h2 { margin-bottom: 9px; }
+@media (min-width: 1100px) {
+    .lb-footer__inner { display: flex; align-items: stretch; justify-content: center; gap: 0; max-width: 1400px; margin-inline: auto; padding: 30px 28px 22px; }
+    .lb-footer__brand { display: flex; align-items: stretch; gap: 0; padding: 0; border: 0; min-height: 0; flex: none; }
+    .lb-footer__brand .lb-brand { align-self: center; }
+    .lb-footer__slogan { display: flex; flex-direction: column; justify-content: center; margin-left: 28px; padding-left: 22px; border-left: 1px solid rgba(16, 41, 79, .28); }
+    .lb-footer__cols { display: flex; flex: 1; align-items: stretch; justify-content: space-between; gap: 28px; margin-left: 28px; padding-left: 30px; border-left: 1px solid rgba(16, 41, 79, .28); }
+    .lb-footer__cols > .lb-footer__col:first-child { border-left: 0; padding-left: 0; }
+    .lb-footer__col--social { border-left: 1px solid rgba(16, 41, 79, .28); padding-left: 34px; margin-left: 0; }
+    .lb-footer__col--social h2 { text-align: left; }
+    .lb-footer__basket { top: -92px; right: max(24px, calc((100% - 1400px) / 2 + 40px)); }
+}
+@media (max-width: 1099.98px) {
+    .lb-footer__inner { padding-top: 34px; text-align: left; }
+    .lb-footer__brand { padding-bottom: 6px; border-bottom: 1px solid rgba(16, 41, 79, .18); }
+}
+
+/* ----- Tombol AI Chat: maskot lebih besar, ukuran & bentuk tombol tetap ----- */
+.lb-float { gap: 30px; }
+.lb-fab--ai { padding-left: 68px; }
+.lb-fab__robot { position: absolute; left: 2px; bottom: 21px; width: 74px; height: auto; margin: 0; z-index: 2; filter: drop-shadow(0 8px 10px rgba(10, 50, 90, .42)); transition: transform .25s ease; }
+.lb-fab__robot img { display: block; width: 100%; height: auto; }
+.lb-fab__robot::before { inset: -6% -8% -2%; background: radial-gradient(circle, rgba(110, 232, 255, .75), rgba(110, 232, 255, 0) 68%); }
+.lb-fab__robot::after { content: ""; position: absolute; right: -4px; top: -4px; width: 12px; height: 12px; background: #fff; filter: drop-shadow(0 0 5px #8fe3ff); clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%); animation: lb-twinkle 2.4s ease-in-out infinite; }
+.lb-fab--ai:hover .lb-fab__robot { transform: scale(1.08) rotate(-4deg); }
+.lb-fab__label { position: relative; z-index: 1; }
+@keyframes lb-twinkle { 0%, 100% { opacity: .25; transform: scale(.6) rotate(0); } 50% { opacity: 1; transform: scale(1.1) rotate(25deg); } }
+@media (max-width: 559.98px) {
+    .lb-float { gap: 26px; }
+    .lb-fab--ai { padding: 0; }
+    .lb-fab__robot { left: -6px; bottom: 12px; width: 64px; }
+}
+@media (max-width: 559.98px) {
+    .lb-header .lb-header__cta { min-height: 36px; padding: 0 13px; font-size: 12px; gap: 6px; }
+    .lb-header .lb-header__cta .lb-i { font-size: 15px; }
+    .lb-header .lb-brand__text strong { font-size: 18px; }
+    .lb-header .lb-brand__logo { width: 42px; }
+}
+@media (max-width: 439.98px) { .lb-header .lb-brand__text small { display: none; } }
+@media (max-width: 379.98px) {
+    .lb-header .lb-header__inner { padding-inline: 10px; gap: 6px; }
+    .lb-header .lb-header__cta { padding: 0 10px; font-size: 11px; gap: 5px; }
+    .lb-header .lb-brand { gap: 6px; }
+    .lb-header .lb-brand__logo { width: 36px; }
+    .lb-header .lb-brand__text strong { font-size: 16px; }
+}

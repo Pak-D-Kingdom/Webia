@@ -128,6 +128,30 @@ class EmailNotificationTest extends TestCase
         $this->assertStringContainsString(route('orders.show', $order), $html);
     }
 
+    public function test_new_account_email_shows_login_email_and_password(): void
+    {
+        $order = WebiaOrder::factory()->create(['user_id' => null, 'guest_email' => 'pelanggan@example.com']);
+
+        $html = (new AccountCredentialsMail($order, 'Rahasia-123'))->render();
+
+        $this->assertStringContainsString('Email masuk', $html);
+        $this->assertStringContainsString('pelanggan@example.com', $html);
+        $this->assertStringContainsString('Password', $html);
+        $this->assertStringContainsString('Rahasia-123', $html);
+    }
+
+    public function test_existing_account_email_shows_login_email_without_password(): void
+    {
+        $order = WebiaOrder::factory()->create();
+
+        $html = (new AccountCredentialsMail($order, null))->render();
+
+        $this->assertStringContainsString('Email masuk', $html);
+        $this->assertStringContainsString($order->user->email, $html);
+        $this->assertStringContainsString('Gunakan password akun WEBIA yang sudah ada.', $html);
+        $this->assertStringNotContainsString('Password:', $html);
+    }
+
     private function signature(array $payload): string
     {
         return hash('sha512', $payload['order_id'].$payload['status_code'].$payload['gross_amount'].'SB-Mid-server-test-key');

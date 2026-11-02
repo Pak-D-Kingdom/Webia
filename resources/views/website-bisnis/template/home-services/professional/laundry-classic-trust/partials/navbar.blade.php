@@ -6,31 +6,34 @@
         </a>
 
         <nav class="nb__menu" id="menu" aria-label="Navigasi utama">
-            <ul>
+            <ul class="nb__list">
                 @foreach ($c['nav'] as $n)
                     @php
                         $has = ! empty($n['children']);
                         $on  = $page === $n['key'] || ($has && collect($n['children'])->contains('key', $page));
                     @endphp
-                    <li class="{{ $has ? 'has-sub' : '' }}">
-                        <a href="{{ $url($n['key']) }}" class="{{ $on ? 'is-active' : '' }}" @if ($on) aria-current="page" @endif>{{ $n['label'] }}</a>
+                    <li class="nb__item {{ $has ? 'has-sub' : '' }}">
+                        <a class="nb__link {{ $on ? 'is-active' : '' }}" href="{{ $url($n['key']) }}" @if ($on) aria-current="page" @endif>{{ $n['label'] }}</a>
                         @if ($has)
-                            <button type="button" class="sub-btn" aria-expanded="false" aria-label="Buka submenu {{ $n['label'] }}"><svg class="ic"><use href="#i-chev"/></svg></button>
-                            <ul class="sub">
+                            <button type="button" class="sub-btn" aria-expanded="false" aria-haspopup="true" aria-label="Buka submenu {{ $n['label'] }}"><svg class="ic"><use href="#i-chev"/></svg></button>
+                            <div class="drop">
                                 @foreach ($n['children'] as $ch)
-                                    <li><a href="{{ $url($ch['key']) }}" class="{{ $page === $ch['key'] ? 'is-active' : '' }}">{{ $ch['label'] }}</a></li>
+                                    <a class="drop__item {{ $page === $ch['key'] ? 'is-active' : '' }}" href="{{ $url($ch['key']) }}">
+                                        <span class="bub"><svg class="ic"><use href="#i-{{ $ch['icon'] }}"/></svg></span>
+                                        <span><strong>{{ $ch['label'] }}</strong><small>{{ $ch['desc'] }}</small></span>
+                                    </a>
                                 @endforeach
-                            </ul>
+                            </div>
                         @endif
                     </li>
                 @endforeach
             </ul>
-            <a class="btn btn--navy nb__cta nb__cta--m" href="{{ $url('contact') }}">Order Now <svg class="ic"><use href="#i-arrow"/></svg></a>
+            <a class="btn btn--navy nb__cta--m" href="{{ $url('contact') }}">Order Now <svg class="ic"><use href="#i-arrow"/></svg></a>
         </nav>
 
         <div class="nb__tools">
             <button type="button" class="nb__icon" data-search-open aria-label="Cari harga"><svg class="ic"><use href="#i-search"/></svg></button>
-            <a class="btn btn--navy nb__cta" href="{{ $url('contact') }}">Order Now <svg class="ic"><use href="#i-arrow"/></svg></a>
+            <a class="btn btn--navy btn--sm nb__cta" href="{{ $url('contact') }}">Order Now <svg class="ic"><use href="#i-arrow"/></svg></a>
             <button type="button" class="nb__icon nb__burger" data-nav-toggle aria-expanded="false" aria-controls="menu" aria-label="Buka menu"><svg class="ic"><use href="#i-menu"/></svg></button>
         </div>
     </div>

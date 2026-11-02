@@ -1,6 +1,6 @@
 <section class="card b-inq" aria-labelledby="pv-inq">
     <header class="card__head card__head--ic">
-        <span class="round"><svg class="ic"><use href="#i-form"/></svg></span>
+        <span class="bub bub--sm bub--dark"><svg class="ic"><use href="#i-form"/></svg></span>
         <div><h2 id="pv-inq">Order Inquiry</h2><p>Hubungi kami untuk informasi &amp; pemesanan.</p></div>
     </header>
     <ul class="inq">

@@ -1,0 +1,99 @@
+@theme {
+    --font-candy-display: 'Fredoka', cursive, sans-serif;
+    --font-candy-body: 'Quicksand', sans-serif;
+    --color-candy-pink: #ff75a0;
+    --color-candy-pink-light: #fff0f6;
+    --color-candy-lilac: #a78bfa;
+    --color-candy-lilac-light: #f5f0ff;
+    --color-candy-cyan: #38bdf8;
+    --color-candy-cyan-light: #e8fafc;
+    --color-candy-lemon: #fde047;
+    --color-candy-lemon-light: #fffdeb;
+    --color-candy-dark: #1e1b4b;
+    --color-candy-soft-dark: #312e81;
+
+    --font-sunshine-editorial-serif: 'Playfair Display', Georgia, serif;
+    --font-sunshine-editorial-sans: 'Plus Jakarta Sans', sans-serif;
+    --color-sunshine-50: #fffdf0;
+    --color-sunshine-100: #fff9c2;
+    --color-sunshine-200: #fff085;
+    --color-sunshine-300: #ffe247;
+    --color-sunshine-400: #ffd314;
+    --color-sunshine-500: #f59e0b;
+    --color-sunshine-600: #d97706;
+    --color-sunshine-700: #b45309;
+    --color-sunshine-800: #78350f;
+    --color-sunshine-900: #451a03;
+    --color-sunshine-parchment: #fdfbf7;
+    --color-sunshine-editorial-beige: #f7f3e9;
+    --color-sunshine-warm-stone: #292524;
+}
+
+@keyframes candy-float-slow {
+    0%,
+    100% {
+        transform: translateY(0) rotate(0);
+    }
+
+    50% {
+        transform: translateY(-10px) rotate(1.5deg);
+    }
+}
+
+@keyframes candy-pulse-glow {
+    0%,
+    100% {
+        opacity: 0.5;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.85;
+        transform: scale(1.06);
+    }
+}
+
+.animate-candy-float {
+    animation: candy-float-slow 5.5s ease-in-out infinite;
+}
+
+.animate-candy-float-delayed {
+    animation: candy-float-slow 6.5s ease-in-out 1.8s infinite;
+}
+
+.animate-candy-pulse-glow {
+    animation: candy-pulse-glow 4s ease-in-out infinite;
+}
+
+.candy-blob-1 {
+    border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
+}
+
+.candy-blob-2 {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+}
+
+.candy-blob-card {
+    border-radius: 32px 48px 36px 54px;
+}
+
+.sunshine-glass-nav {
+    background: rgba(253, 251, 247, 0.88);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+.sunshine-text-gold-gradient {
+    background: linear-gradient(135deg, #b45309 0%, #d97706 40%, #78350f 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.sunshine-custom-scroll::-webkit-scrollbar {
+    width: 5px;
+}
+
+.sunshine-custom-scroll::-webkit-scrollbar-thumb {
+    background: #e5e0d5;
+    border-radius: 9999px;
+}

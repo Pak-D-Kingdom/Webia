@@ -424,54 +424,58 @@ const themes = {
         applyFilters();
     }
 
-    /* ---------- Dialog pilih paket: data paket nyata, lanjut ke halaman Buat Pesanan ---------- */
-    const packagePicker = document.getElementById('webia-package-picker');
-    const packageOptionsRoot = packagePicker?.querySelector('.webia-package-options');
-    const createBaseUrl = packagePicker?.dataset.createUrl || '/orders/create';
-    let activeTemplate = null;
-
-    const openDialog = (dialog) => { if (dialog && !dialog.open) dialog.showModal(); };
-    const closeDialog = (dialog) => { if (dialog?.open) dialog.close(); };
-
-    cards.forEach((card) => {
-        const addButton = card.querySelector('[data-template-add]');
-        addButton?.addEventListener('click', () => {
-            activeTemplate = {
-                id: card.dataset.templateId,
-                name: card.querySelector('.webia-template-meta h3')?.textContent.trim() || 'Template Website',
-            };
-            if (!activeTemplate.id) return;
-            document.getElementById('webia-package-template-name').textContent = `Template: ${activeTemplate.name}`;
-            packageOptionsRoot?.querySelectorAll('[data-package-slug]').forEach((link) => {
-                const url = new URL(createBaseUrl, window.location.origin);
-                url.searchParams.set('template', activeTemplate.id);
-                url.searchParams.set('package', link.dataset.packageSlug);
-                link.href = url.toString();
-            });
-            openDialog(packagePicker);
+    let orderDialogScrollY = 0;
+    let orderDialogBodyStyle = null;
+    const openDialog = (dialog) => {
+        if (!dialog || dialog.open) return;
+        orderDialogScrollY = window.scrollY;
+        orderDialogBodyStyle = {
+            position: document.body.style.position,
+            top: document.body.style.top,
+            left: document.body.style.left,
+            right: document.body.style.right,
+            width: document.body.style.width,
+            overflow: document.body.style.overflow,
+        };
+        Object.assign(document.body.style, {
+            position: 'fixed',
+            top: `-${orderDialogScrollY}px`,
+            left: '0',
+            right: '0',
+            width: '100%',
+            overflow: 'hidden',
         });
-    });
-
-    document.querySelectorAll('[data-close-dialog]').forEach((button) => {
-        button.addEventListener('click', () => closeDialog(button.closest('dialog')));
-    });
-    packagePicker?.addEventListener('click', (event) => { if (event.target === packagePicker) closeDialog(packagePicker); });
-
-    /* ---------- Modal Buat Pesanan: form dari halaman /orders/create dimuat & disubmit via fetch ---------- */
+        dialog.showModal();
+    };
+    const closeDialog = (dialog) => {
+        if (dialog?.open) dialog.close();
+    };
     const orderDialog = document.getElementById('webia-order-dialog');
     const orderDialogBody = document.getElementById('webia-order-dialog-body');
     const orderDialogTitle = document.getElementById('webia-order-dialog-title');
     const orderDialogTemplate = document.getElementById('webia-order-dialog-template');
+    const createBaseUrl = orderDialog?.dataset.createUrl || '/orders/create';
+    let activeTemplate = null;
     let paymentPollTimer = null;
     let paymentStatusController = null;
     let orderFormController = null;
+    let paymentExpiryTimer = null;
     let paymentGeneration = 0;
-    // Snap harus tampil paling depan: dialog webia ditutup sementara saat popup pembayaran terbuka.
-    let snapTakesStage = false;
+    let isOrderDialogLocked = false;
+
+    const formatRupiah = (value) => `Rp${(Number(value) || 0).toLocaleString('id-ID')}`;
+
+    const setOrderDialogLocked = (locked) => {
+        isOrderDialogLocked = locked;
+        const closeButton = orderDialog?.querySelector('[data-close-dialog]');
+        if (closeButton) closeButton.disabled = locked;
+    };
 
     const stopPaymentPolling = () => {
         if (paymentPollTimer) window.clearInterval(paymentPollTimer);
+        if (paymentExpiryTimer) window.clearInterval(paymentExpiryTimer);
         paymentPollTimer = null;
+        paymentExpiryTimer = null;
         paymentStatusController?.abort();
         paymentStatusController = null;
         orderFormController?.abort();
@@ -479,14 +483,18 @@ const themes = {
         paymentGeneration++;
     };
 
-    const reopenPaymentDialog = () => {
-        snapTakesStage = false;
-        if (orderDialog && !orderDialog.open) openDialog(orderDialog);
+    const showPaymentPanel = () => {
+        const paymentPanel = orderDialogBody.querySelector('[data-payment-panel]');
+        const snapPanel = orderDialogBody.querySelector('[data-snap-panel]');
+        if (paymentPanel) paymentPanel.hidden = false;
+        if (snapPanel) snapPanel.hidden = true;
     };
 
-    const closePaymentDialogForSnap = () => {
-        snapTakesStage = true;
-        if (orderDialog?.open) orderDialog.close();
+    const showSnapPanel = () => {
+        const paymentPanel = orderDialogBody.querySelector('[data-payment-panel]');
+        const snapPanel = orderDialogBody.querySelector('[data-snap-panel]');
+        if (paymentPanel) paymentPanel.hidden = true;
+        if (snapPanel) snapPanel.hidden = false;
     };
 
     const updatePaymentStatus = (payload) => {
@@ -495,51 +503,76 @@ const themes = {
         const statusText = panel?.querySelector('[data-payment-status]');
         const note = panel?.querySelector('[data-payment-note]');
         const payButton = panel?.querySelector('[data-pay-button]');
+        const checkButton = panel?.querySelector('[data-check-status]');
         const loginLink = panel?.querySelector('[data-login-link]');
+        const expiryWrap = panel?.querySelector('[data-payment-expiry-wrap]');
         const icon = panel?.querySelector('.material-symbols-outlined');
         if (!panel || !statusText || !note) return;
 
+        panel.classList.remove('is-provisioning', 'is-paid', 'is-failed');
+        panel.setAttribute('aria-busy', String(
+            payload.status === 'paid' && !['sent', 'failed'].includes(payload.credential_status),
+        ));
+
         if (payload.status === 'paid') {
-            panel.classList.add('is-paid');
+            showPaymentPanel();
+            window.snap?.hide?.();
             orderDialogTitle.textContent = 'Pembayaran Berhasil';
             if (panelTitle) panelTitle.textContent = 'Pembayaran kamu sudah diterima';
-            if (icon) icon.textContent = 'task_alt';
             if (payButton) payButton.hidden = true;
+            if (checkButton) checkButton.hidden = true;
+            if (expiryWrap) expiryWrap.hidden = true;
 
             if (payload.credential_status === 'sent') {
+                panel.classList.add('is-paid');
+                setOrderDialogLocked(false);
                 stopPaymentPolling();
                 statusText.textContent = 'Akun siap & kredensial terkirim';
                 note.textContent = `Akun WEBIA dibuat dan kredensial telah dikirim ke ${payload.email || 'email kamu'}.`;
+                if (icon) icon.textContent = 'verified';
                 if (loginLink) loginLink.hidden = false;
                 return;
             }
 
             if (payload.credential_status === 'failed') {
+                panel.classList.add('is-failed');
+                setOrderDialogLocked(false);
                 stopPaymentPolling();
                 statusText.textContent = 'Email kredensial gagal dikirim';
                 note.textContent = 'Pembayaran berhasil dan akunnya sudah dibuat, tetapi email kredensial gagal terkirim. Hubungi tim WEBIA agar dikirim ulang.';
+                if (icon) icon.textContent = 'error';
                 if (loginLink) loginLink.hidden = false;
                 return;
             }
 
-            // 'pending/queued': pembayaran lunas tapi akun/email belum final — terus pantau.
-            statusText.textContent = 'Sudah dibayar';
-            note.textContent = 'Pembayaran terkonfirmasi. Akun WEBIA sedang disiapkan lalu kredensialnya dikirim ke email kamu.';
+            panel.classList.add('is-provisioning');
+            setOrderDialogLocked(true);
+            statusText.textContent = 'Pembayaran berhasil. Akun WEBIA sedang disiapkan';
+            note.textContent = 'Jangan tutup modal ini. Kredensial akan dikirim ke email kamu setelah akun siap.';
+            if (icon) icon.textContent = 'manage_accounts';
             return;
         }
 
         if (payload.status === 'failed' || payload.status === 'expired') {
+            setOrderDialogLocked(false);
             stopPaymentPolling();
+            showPaymentPanel();
+            window.snap?.hide?.();
+            panel.classList.add('is-failed');
             statusText.textContent = payload.status === 'expired' ? 'Pembayaran kedaluwarsa' : 'Pembayaran gagal';
-            note.textContent = 'Masuk ke portal untuk membuat pembayaran baru.';
+            note.textContent = 'Tutup modal ini lalu buat pesanan baru untuk mencoba pembayaran lagi.';
             if (icon) icon.textContent = 'error';
             if (payButton) payButton.hidden = true;
-            if (loginLink) loginLink.hidden = false;
+            if (checkButton) checkButton.hidden = true;
+            if (expiryWrap) expiryWrap.hidden = true;
             return;
         }
 
-        statusText.textContent = 'Menunggu pembayaran';
-        note.textContent = 'Status diperiksa otomatis. Modal ini boleh ditutup setelah pembayaran selesai.';
+        setOrderDialogLocked(false);
+        statusText.textContent = payload.status === 'pending' ? 'Pembayaran sedang diproses' : 'Menunggu pembayaran';
+        note.textContent = payload.status === 'pending'
+            ? 'Midtrans sedang memproses pembayaran. Status akan diperbarui otomatis.'
+            : 'Status diperiksa otomatis. Modal ini boleh ditutup sebelum pembayaran selesai.';
     };
 
     const checkPaymentStatus = async (url, generation) => {
@@ -556,7 +589,7 @@ const themes = {
             const result = await response.json();
             if (generation !== paymentGeneration) return;
             updatePaymentStatus(result);
-            if (result.sync_failed) {
+            if (result.sync_failed && result.status !== 'paid') {
                 const note = orderDialogBody.querySelector('[data-payment-note]');
                 if (note) note.textContent = 'Konfirmasi Midtrans tertunda. Sistem akan mencoba lagi otomatis.';
             }
@@ -571,63 +604,129 @@ const themes = {
 
     const renderPayment = (payment) => {
         stopPaymentPolling();
+        setOrderDialogLocked(false);
         const generation = paymentGeneration;
+        const addons = Array.isArray(payment.addons) ? payment.addons : [];
+        orderDialog?.classList.add('is-payment');
+        const addonRows = addons.map((addon) => `
+            <div><span>${escapeHtml(addon.name)}</span><strong>${formatRupiah(addon.price)}</strong></div>`).join('');
         orderDialogTitle.textContent = 'Pembayaran';
-        orderDialogTemplate.textContent = `Pesanan ${payment.order_number}`;
+        orderDialogTemplate.textContent = '';
         orderDialogBody.innerHTML = `
-            <section class="customer-create-card customer-verify-panel webia-payment-panel" data-payment-panel aria-labelledby="webia-payment-title">
-                <span class="customer-verify-icon" aria-hidden="true"><span class="material-symbols-outlined">payments</span></span>
-                <h2 id="webia-payment-title" data-payment-title>Pesanan kamu sudah dibuat</h2>
-                <p>Nomor pesanan <strong>${escapeHtml(payment.order_number)}</strong> sedang menunggu pembayaran.</p>
-                <p>Setelah pembayaran terkonfirmasi, akun WEBIA otomatis dibuat dan kredensial dikirim ke <strong>${escapeHtml(payment.email)}</strong>.</p>
-                <div class="customer-verify-meta" role="status" aria-live="polite">
-                    <span>Status pembayaran</span><strong data-payment-status>Menunggu pembayaran</strong>
+            <section class="webia-payment-panel" data-payment-panel aria-labelledby="webia-payment-title">
+                <div class="webia-payment-heading">
+                    <span class="customer-verify-icon" aria-hidden="true"><span class="material-symbols-outlined">account_balance_wallet</span></span>
+                    <h2 id="webia-payment-title" data-payment-title>Pesanan siap dibayar</h2>
+                    <div class="webia-order-number"><span>Nomor pesanan</span><strong>${escapeHtml(payment.order_number)}</strong><button type="button" data-copy-order aria-label="Salin nomor pesanan"><span class="material-symbols-outlined" aria-hidden="true">content_copy</span></button></div>
                 </div>
-                <div class="customer-create-submit webia-payment-actions">
+                <div class="customer-verify-meta" role="status" aria-live="polite">
+                    <div><span>Status pembayaran</span><strong data-payment-status>Menunggu pembayaran</strong></div>
+                    <div class="webia-payment-expiry" data-payment-expiry-wrap><span>Batas waktu bayar</span><strong data-payment-expiry>Menghitung…</strong></div>
+                </div>
+                <div class="webia-payment-summary">
+                    <div><span>Paket</span><strong>${escapeHtml(payment.package_name || '-')}</strong></div>
+                    ${addonRows}
+                    <div class="webia-payment-total"><span>Total tagihan</span><strong>${formatRupiah(payment.total_price)}</strong></div>
+                </div>
+                <div class="webia-payment-actions">
                     <button class="account-submit customer-create-submit-btn" type="button" data-pay-button>Bayar sekarang</button>
+                    <button class="customer-detail-secondary" type="button" data-check-status><span class="material-symbols-outlined" aria-hidden="true">refresh</span>Periksa status pembayaran</button>
                     <a class="customer-detail-secondary" href="${escapeHtml(payment.login_url)}" data-login-link hidden>Masuk ke portal</a>
                 </div>
-                <p class="customer-verify-note" data-payment-note>Status diperiksa otomatis. Modal ini boleh ditutup setelah pembayaran selesai.</p>
+                <p class="customer-verify-note" data-payment-note>Status diperiksa otomatis. Modal ini boleh ditutup sebelum pembayaran selesai.</p>
+            </section>
+            <section class="webia-snap-panel" data-snap-panel hidden aria-label="Metode pembayaran Midtrans">
+                <div class="webia-snap-container" id="webia-snap-container"></div>
             </section>`;
-        orderDialogBody.scrollTop = 0;
 
         const payButton = orderDialogBody.querySelector('[data-pay-button]');
+        const checkButton = orderDialogBody.querySelector('[data-check-status]');
+        const copyButton = orderDialogBody.querySelector('[data-copy-order]');
         const loginLink = orderDialogBody.querySelector('[data-login-link]');
+        const expiry = payment.expires_at ? new Date(payment.expires_at) : null;
+        const expiryText = orderDialogBody.querySelector('[data-payment-expiry]');
+        const expiryWrap = orderDialogBody.querySelector('[data-payment-expiry-wrap]');
+        const updateExpiry = () => {
+            if (!expiryText || !expiry || Number.isNaN(expiry.getTime())) {
+                if (expiryWrap) expiryWrap.hidden = true;
+                return;
+            }
+            const remainingSeconds = Math.max(0, Math.floor((expiry.getTime() - Date.now()) / 1000));
+            const hours = Math.floor(remainingSeconds / 3600);
+            const minutes = Math.floor((remainingSeconds % 3600) / 60);
+            expiryText.textContent = remainingSeconds > 0 ? `${hours} jam ${minutes} menit` : 'Kedaluwarsa';
+        };
+        updateExpiry();
+        paymentExpiryTimer = window.setInterval(updateExpiry, 60000);
+
+        copyButton?.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(payment.order_number);
+                const icon = copyButton.querySelector('.material-symbols-outlined');
+                if (icon) icon.textContent = 'check';
+                copyButton.setAttribute('aria-label', 'Nomor pesanan tersalin');
+                window.setTimeout(() => {
+                    if (!copyButton.isConnected) return;
+                    if (icon) icon.textContent = 'content_copy';
+                    copyButton.setAttribute('aria-label', 'Salin nomor pesanan');
+                }, 2000);
+            } catch {
+                copyButton.setAttribute('aria-label', 'Gagal menyalin nomor pesanan');
+            }
+        });
+        checkButton?.addEventListener('click', async () => {
+            checkButton.disabled = true;
+            const label = checkButton.lastChild;
+            if (label) label.textContent = 'Memeriksa transaksi…';
+            await checkPaymentStatus(payment.payment_status_url, generation);
+            if (checkButton.isConnected && !checkButton.hidden) {
+                checkButton.disabled = false;
+                if (label) label.textContent = 'Periksa status pembayaran';
+            }
+        });
+
         if (!payment.payment_ready) {
-            payButton.hidden = true;
-            loginLink.hidden = false;
+            if (payButton) payButton.hidden = true;
+            if (checkButton) checkButton.hidden = true;
             const statusText = orderDialogBody.querySelector('[data-payment-status]');
             const note = orderDialogBody.querySelector('[data-payment-note]');
             if (statusText) statusText.textContent = 'Pembayaran belum tersedia';
-            if (note) note.textContent = 'Pembayaran gagal dibuat. Masuk ke portal lalu coba bayar lagi dari detail pesanan.';
+            if (note) note.textContent = 'Pembayaran gagal dibuat. Tutup modal ini lalu buat pesanan baru atau hubungi tim WEBIA.';
             return;
         }
 
         let snapOpened = false;
         const openPayment = () => {
-            if (payment.snap_token && window.snap) {
+            showSnapPanel();
+
+            if (payment.snap_token && typeof window.snap?.embed === 'function') {
                 if (snapOpened) return;
                 snapOpened = true;
-                // Dialog native ada di top layer browser; lepas dulu agar popup Snap tampil paling depan.
-                closePaymentDialogForSnap();
-                window.snap.pay(payment.snap_token, {
-                    onSuccess: () => {
-                        snapOpened = false;
-                        reopenPaymentDialog();
-                        checkPaymentStatus(payment.payment_status_url, generation);
-                    },
-                    onPending: () => {
-                        snapOpened = false;
-                        reopenPaymentDialog();
-                        checkPaymentStatus(payment.payment_status_url, generation);
-                    },
+                if (payButton) {
+                    payButton.disabled = true;
+                    payButton.textContent = 'Memuat metode pembayaran…';
+                }
+                window.snap.embed(payment.snap_token, {
+                    embedId: 'webia-snap-container',
+                    onSuccess: () => checkPaymentStatus(payment.payment_status_url, generation),
+                    onPending: () => checkPaymentStatus(payment.payment_status_url, generation),
                     onError: () => {
                         snapOpened = false;
-                        reopenPaymentDialog();
+                        showPaymentPanel();
+                        if (payButton) {
+                            payButton.disabled = false;
+                            payButton.textContent = 'Coba bayar lagi';
+                        }
+                        const note = orderDialogBody.querySelector('[data-payment-note]');
+                        if (note) note.textContent = 'Midtrans belum bisa memproses pembayaran. Coba lagi atau gunakan halaman pembayaran.';
                     },
                     onClose: () => {
                         snapOpened = false;
-                        reopenPaymentDialog();
+                        showPaymentPanel();
+                        if (payButton) {
+                            payButton.disabled = false;
+                            payButton.textContent = 'Bayar sekarang';
+                        }
                     },
                 });
                 return;
@@ -659,6 +758,7 @@ const themes = {
         const generation = paymentGeneration;
         const controller = new AbortController();
         orderFormController = controller;
+        orderDialog?.classList.remove('is-payment');
         orderDialogTitle.textContent = 'Buat Pesanan';
         orderDialogTemplate.textContent = `Template: ${activeTemplate?.name ?? ''}`;
         orderDialogBody.innerHTML = '<p class="webia-cart-note">Memuat formulir pesanan…</p>';
@@ -668,6 +768,7 @@ const themes = {
                 headers: { 'X-Requested-With': 'XMLHttpRequest' },
                 signal: controller.signal,
             });
+            if (!response.ok) throw new Error('Order form request failed');
             const doc = new DOMParser().parseFromString(await response.text(), 'text/html');
             if (generation === paymentGeneration) mountOrderForm(doc);
         } catch (error) {
@@ -741,18 +842,41 @@ const themes = {
         }
     }
 
-    packageOptionsRoot?.querySelectorAll('[data-package-slug]').forEach((link) => {
-        link.addEventListener('click', (event) => {
-            event.preventDefault();
-            closeDialog(packagePicker);
-            loadOrderForm(link.href);
+    cards.forEach((card) => {
+        card.querySelector('[data-template-add]')?.addEventListener('click', () => {
+            activeTemplate = {
+                id: card.dataset.templateId,
+                name: card.querySelector('.webia-template-meta h3')?.textContent.trim() || 'Template Website',
+            };
+            if (!activeTemplate.id) return;
+            const url = new URL(createBaseUrl, window.location.origin);
+            url.searchParams.set('template', activeTemplate.id);
+            loadOrderForm(url.toString());
         });
     });
 
-    orderDialog?.addEventListener('click', (event) => { if (event.target === orderDialog) closeDialog(orderDialog); });
+    document.querySelectorAll('[data-close-dialog]').forEach((button) => {
+        button.addEventListener('click', () => {
+            if (!isOrderDialogLocked) closeDialog(button.closest('dialog'));
+        });
+    });
+    orderDialog?.addEventListener('click', (event) => {
+        if (event.target === orderDialog && !isOrderDialogLocked) closeDialog(orderDialog);
+    });
+    orderDialog?.addEventListener('cancel', (event) => {
+        if (isOrderDialogLocked) event.preventDefault();
+    });
     orderDialog?.addEventListener('close', () => {
-        // Ditutup sementara karena Snap terbuka: polling tetap jalan sampai Snap selesai.
-        if (!snapTakesStage) stopPaymentPolling();
+        setOrderDialogLocked(false);
+        orderDialog.classList.remove('is-payment');
+        if (orderDialogBodyStyle) {
+            const scrollY = orderDialogScrollY;
+            Object.assign(document.body.style, orderDialogBodyStyle);
+            orderDialogBodyStyle = null;
+            window.requestAnimationFrame(() => window.scrollTo(0, scrollY));
+        }
+        window.snap?.hide?.();
+        stopPaymentPolling();
     });
 
 });

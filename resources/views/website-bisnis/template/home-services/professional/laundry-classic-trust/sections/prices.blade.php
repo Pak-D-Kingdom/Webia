@@ -1,5 +1,5 @@
 <section class="sec">
-    <div class="lw-wrap">
+    <div class="lw-wrap pgrid">
         <div class="card card--pad" data-tabs>
             <div class="toolbar">
                 <div class="seg" role="tablist" aria-label="Jenis harga">
@@ -10,14 +10,14 @@
                     <input type="search" data-price-filter placeholder="Cari layanan atau item..." aria-label="Cari harga"></label>
             </div>
 
-            @foreach (['item' => 'Satuan', 'kg' => 'Kiloan'] as $mode => $unit)
+            @foreach (['item', 'kg'] as $mode)
                 <div role="tabpanel" data-panel="{{ $mode }}" @if ($mode === 'kg') hidden @endif>
                     <table class="ptable">
                         <thead><tr><th scope="col">{{ $mode === 'item' ? 'Item' : 'Layanan' }}</th><th scope="col" class="r">{{ $mode === 'item' ? 'Harga / item' : 'Harga / kg' }}</th></tr></thead>
                         <tbody>
                             @foreach ($c['prices'][$mode] as $p)
                                 <tr data-name="{{ strtolower($p['name']) }}">
-                                    <td><svg class="ic"><use href="#i-{{ $p['icon'] }}"/></svg>{{ $p['name'] }}</td>
+                                    <td><div class="prow"><span class="bub bub--sm"><svg class="ic"><use href="#i-{{ $p['icon'] }}"/></svg></span>{{ $p['name'] }}</div></td>
                                     <td class="r"><b>{{ $rp($p['price']) }}</b></td>
                                 </tr>
                             @endforeach
@@ -26,9 +26,14 @@
                     <p class="empty" data-empty hidden>Tidak ada hasil. Coba kata kunci lain atau <a href="{{ $wa('Halo FreshWash, saya ingin menanyakan harga laundry.') }}" target="_blank" rel="noopener">tanya via WhatsApp</a>.</p>
                 </div>
             @endforeach
-
-            <p class="note"><svg class="ic"><use href="#i-shield"/></svg>{{ $c['prices']['note'] }}</p>
-            <div class="svc__act"><a class="btn btn--navy" href="{{ $url('contact') }}">Pesan Sekarang <svg class="ic"><use href="#i-arrow"/></svg></a><a class="link" href="{{ $url('options') }}">Lihat service options</a></div>
         </div>
+
+        <aside class="pside" aria-label="Informasi harga">
+            <div class="card"><h2>Catatan harga</h2><p>{{ $c['prices']['note'] }}</p><a class="btn btn--navy btn--block" href="{{ $url('contact') }}">Pesan Sekarang <svg class="ic"><use href="#i-arrow"/></svg></a></div>
+            <div class="card"><h2>Bingung memilih layanan?</h2><p>Tanyakan ke FreshBot atau langsung ke tim kami lewat WhatsApp.</p>
+                <button type="button" class="btn btn--ghost btn--block" data-bot-open><svg class="ic"><use href="#i-chat"/></svg>Tanya FreshBot</button>
+                <a class="btn btn--wa btn--block" href="{{ $wa('Halo FreshWash, saya ingin menanyakan harga laundry.') }}" target="_blank" rel="noopener"><svg class="ic"><use href="#i-whatsapp"/></svg>Chat WhatsApp</a></div>
+            <div class="card"><h2>Ingin hasil lebih maksimal?</h2><p>Tambahkan pengharum, packing vakum, atau perawatan khusus.</p><a class="btn btn--ghost btn--block" href="{{ $url('options') }}">Lihat Service Options</a></div>
+        </aside>
     </div>
 </section>

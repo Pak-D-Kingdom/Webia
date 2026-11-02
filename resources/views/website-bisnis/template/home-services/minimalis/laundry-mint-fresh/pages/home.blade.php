@@ -12,17 +12,15 @@
 @section('content')
     {{-- ===== HERO BANNER ===== --}}
     <section class="lw-hero" aria-labelledby="lw-hero-title">
-        <img class="lw-hero__img" src="{{ $img($c['img']['hero']) }}" alt="" fetchpriority="high">
-        <img class="lw-hero__leaf lw-hero__leaf--l" src="{{ $img($c['img']['leaf_l']) }}" alt="" aria-hidden="true">
-        <img class="lw-hero__leaf lw-hero__leaf--r" src="{{ $img($c['img']['leaf_r']) }}" alt="" aria-hidden="true">
+        <img class="lw-hero__img" src="{{ $img($c['img']['hero']) }}" alt="Mesin cuci, handuk bersih, dan keranjang laundry FreshWash" width="3072" height="492" fetchpriority="high">
 
-        <div class="lw-container lw-hero__in">
+        <div class="lw-hero__in">
             <div class="lw-hero__copy">
                 <span class="lw-pill">{{ $c['hero']['badge'] }}</span>
-                <h1 class="lw-h1 lw-hero__title" id="lw-hero-title">
+                <h1 class="lw-hero__title" id="lw-hero-title">
                     {{ $c['hero']['title_1'] }}<br><span>{{ $c['hero']['title_2'] }}</span>
                 </h1>
-                <p class="lw-lead">{{ $c['hero']['text'] }}</p>
+                <p class="lw-hero__text">{{ $c['hero']['text'] }}</p>
 
                 <ul class="lw-feats">
                     @foreach ($c['hero']['features'] as $f)
@@ -35,11 +33,6 @@
 
                 <a class="lw-btn lw-btn--lg" href="{{ $r('inquiry') }}">{{ $c['hero']['cta'] }} <svg class="lw-i"><use href="#i-arrow"/></svg></a>
             </div>
-
-            <p class="lw-script lw-hero__script" aria-hidden="true">
-                @foreach ($c['hero']['script'] as $w)<span>{{ $w }}</span>@endforeach
-                <svg class="lw-i"><use href="#i-leaf"/></svg>
-            </p>
         </div>
     </section>
 

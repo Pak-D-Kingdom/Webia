@@ -44,6 +44,27 @@ class MidtransPaymentTest extends TestCase
             ->assertJson(['status' => 'created', 'sync_failed' => true]);
     }
 
+    public function test_guest_payment_status_reports_pending_midtrans_transaction(): void
+    {
+        $order = WebiaOrder::factory()->create(['status' => 'awaiting_payment']);
+        $payment = WebiaPayment::factory()->create([
+            'webia_order_id' => $order->id,
+            'midtrans_order_id' => 'WEB-'.$order->id.'-01',
+            'status' => 'created',
+        ]);
+        Http::fake([
+            'api.sandbox.midtrans.com/v2/'.$payment->midtrans_order_id.'/status' => Http::response([
+                'transaction_status' => 'pending',
+            ]),
+        ]);
+
+        $this->getJson($this->paymentStatusUrl($order))
+            ->assertOk()
+            ->assertJson(['status' => 'pending', 'terminal' => false]);
+
+        $this->assertSame('created', $payment->fresh()->status);
+    }
+
     public function test_guest_payment_status_syncs_midtrans_and_marks_order_paid(): void
     {
         $order = WebiaOrder::factory()->create(['status' => 'awaiting_payment']);
@@ -447,6 +468,45 @@ class MidtransPaymentTest extends TestCase
         $payload = ['order_id' => 'WEB-999-01', 'status_code' => '200', 'gross_amount' => '499000', 'transaction_status' => 'settlement'];
 
         $this->postJson(route('payments.midtrans.notify'), $payload + ['signature_key' => $this->signature($payload, 'SB-Mid-server-test-key')])->assertNotFound();
+    }
+
+    public function test_order_detail_polls_payment_status_without_manual_check_button(): void
+    {
+        $order = WebiaOrder::factory()->create(['status' => 'awaiting_payment']);
+        WebiaPayment::factory()->create(['webia_order_id' => $order->id]);
+
+        $this->actingAs($order->user)
+            ->get(route('orders.show', $order))
+            ->assertOk()
+            ->assertSee('data-payment-status-url="', false)
+            ->assertDontSee('Cek status pembayaran');
+    }
+
+    public function test_authenticated_payment_status_syncs_midtrans_and_marks_order_paid(): void
+    {
+        $order = WebiaOrder::factory()->create(['status' => 'awaiting_payment']);
+        WebiaPayment::factory()->create(['webia_order_id' => $order->id, 'midtrans_order_id' => 'WEB-'.$order->id.'-01']);
+
+        Http::fake([
+            'api.sandbox.midtrans.com/v2/WEB-'.$order->id.'-01/status' => Http::response(['transaction_status' => 'settlement', 'status_code' => '200', 'gross_amount' => '499000'], 200),
+        ]);
+
+        $this->actingAs($order->user)
+            ->getJson(route('orders.payment-status.authenticated', $order))
+            ->assertOk()
+            ->assertJson(['status' => 'paid', 'terminal' => true]);
+
+        $this->assertSame('paid', $order->fresh()->status);
+    }
+
+    public function test_authenticated_payment_status_requires_ownership(): void
+    {
+        $order = WebiaOrder::factory()->create(['status' => 'awaiting_payment']);
+        WebiaPayment::factory()->create(['webia_order_id' => $order->id]);
+
+        $this->actingAs(User::factory()->create())
+            ->getJson(route('orders.payment-status.authenticated', $order))
+            ->assertNotFound();
     }
 
     public function test_check_status_confirms_paid_order_via_status_api(): void
