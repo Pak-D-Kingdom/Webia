@@ -98,8 +98,8 @@
                 st.classList.toggle('is-open', isOpen);
                 st.classList.toggle('is-closed', !isOpen);
                 tx.textContent = isOpen
-                    ? 'Buka sekarang · tutup pukul ' + pad(close) + '.00 WIB'
-                    : 'Tutup · buka pukul ' + pad(open) + '.00 WIB';
+                    ? 'Buka · tutup ' + pad(close) + '.00'
+                    : 'Tutup · buka ' + pad(open) + '.00';
             });
             if (week) $$('li', week).forEach(function (li) { li.classList.toggle('is-today', +li.dataset.day === now.day); });
         }

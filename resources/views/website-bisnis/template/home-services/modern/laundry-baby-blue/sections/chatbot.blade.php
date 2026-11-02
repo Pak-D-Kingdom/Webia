@@ -7,11 +7,11 @@
 <article class="lb-card lb-ai" aria-labelledby="lb-ai-title">
     <div class="lb-ai__bubble">
         <svg class="lb-ai__heart lb-i" aria-hidden="true"><use href="#i-heart"/></svg>
-        <h2 id="lb-ai-title">{{ $laundry['chatbot']['name'] }}</h2>
+        <h2 id="lb-ai-title"><a href="{{ route('webia.laundry-baby-blue.ai-chatbot') }}">{{ $laundry['chatbot']['name'] }}</a></h2>
         <p>{{ $laundry['chatbot']['sub'] }}</p>
     </div>
     <div class="lb-ai__scene">
-        <img src="{{ $lbAsset('img', 'ai-mascot-scene.webp') }}" alt="Maskot robot AI BlueLaundry dengan laptop, deterjen, dan setrika" width="262" height="168" loading="lazy">
+        <img src="{{ asset($laundry['assets']['img'] . '/ai-mascot-scene.webp') }}" alt="Maskot robot AI BlueLaundry dengan laptop, deterjen, dan setrika" width="262" height="168" loading="lazy">
     </div>
     <ul class="lb-ai__chips">
         @foreach ($quick as $f)
@@ -23,13 +23,12 @@
         <input id="lbAiPreviewInput" name="q" type="text" maxlength="200" placeholder="Tulis pertanyaan Anda...">
         <button type="submit" aria-label="Kirim pertanyaan"><svg class="lb-i" aria-hidden="true"><use href="#i-send"/></svg></button>
     </form>
-    <a class="lb-ai__more" href="{{ $lbRoute('ai-chatbot') }}">Buka halaman AI Chatbot <svg class="lb-i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
 </article>
 @else
 <section class="lb-section" aria-label="AI chatbot FAQ harga dan proses laundry">
     <div class="lb-container lb-split lb-split--chat">
         <div class="lb-chat-stage">
-            <img class="lb-chat-stage__art" src="{{ $lbAsset('img', 'ai-mascot-scene.webp') }}" alt="" aria-hidden="true" width="262" height="168" loading="lazy">
+            <img class="lb-chat-stage__art" src="{{ asset($laundry['assets']['img'] . '/ai-mascot-scene.webp') }}" alt="" aria-hidden="true" width="262" height="168" loading="lazy">
             @include('website-bisnis.template.home-services.modern.laundry-baby-blue.partials.chat-panel', ['embed' => true])
         </div>
         <div class="lb-faq" aria-label="Pertanyaan yang sering diajukan">
@@ -40,7 +39,7 @@
                     <div class="lb-faq__body">
                         <p>{{ $f['a'] }}</p>
                         @if (!empty($f['cta']))
-                            <a class="lb-btn lb-btn--ghost lb-btn--sm" href="{{ $lbRoute($f['cta']['route']) }}">{{ $f['cta']['label'] }} <svg class="lb-i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                            <a class="lb-btn lb-btn--ghost lb-btn--sm" href="{{ route('webia.laundry-baby-blue.' . $f['cta']['route']) }}">{{ $f['cta']['label'] }} <svg class="lb-i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
                         @endif
                     </div>
                 </details>

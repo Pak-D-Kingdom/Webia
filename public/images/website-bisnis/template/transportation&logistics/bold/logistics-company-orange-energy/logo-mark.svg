@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="Energi Cargo">
+  <defs>
+    <linearGradient id="eg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffa347"/>
+      <stop offset="1" stop-color="#ff5a00"/>
+    </linearGradient>
+  </defs>
+  <path d="M29 2 10 27h10.5L15.5 46 39 19.5H27.5L29 2z" fill="url(#eg)"/>
+  <path d="M5 31l9-2-3.2 6.2z M3 39l6.4-1.2-2 5z" fill="#ff8a1f" opacity=".85"/>
+  <path d="M33 7.5c6 2.2 10 7.2 11 13.5" fill="none" stroke="#ff8a1f" stroke-width="2.6" stroke-linecap="round" opacity=".75"/>
+</svg>

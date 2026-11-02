@@ -12,7 +12,13 @@
                     <li><a href="{{ $s['url'] }}" aria-label="{{ $s['label'] }}" target="_blank" rel="noopener"><svg class="ic"><use href="#i-{{ $s['icon'] }}"/></svg></a></li>
                 @endforeach
             </ul>
-            <span class="tb__lang" aria-label="Bahasa">ID <svg class="ic"><use href="#i-chev"/></svg></span>
+            <div class="lang" data-dropdown>
+                <button type="button" class="lang__btn" aria-expanded="false" aria-haspopup="true" aria-label="Pilih bahasa">ID <svg class="ic"><use href="#i-chev"/></svg></button>
+                <ul class="lang__menu">
+                    <li aria-current="true"><span>Bahasa Indonesia</span><svg class="ic"><use href="#i-check"/></svg></li>
+                    <li aria-disabled="true"><span>English</span><small>Segera</small></li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>

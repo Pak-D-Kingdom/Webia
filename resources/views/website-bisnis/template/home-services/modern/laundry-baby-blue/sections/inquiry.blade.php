@@ -5,7 +5,7 @@
 <article class="lb-card lb-inquiry {{ $mode === 'full' ? 'lb-card--lg' : '' }}" aria-labelledby="{{ $uid }}-title">
     <header class="lb-card__head">
         <span class="lb-card__icon"><svg class="lb-i" aria-hidden="true"><use href="#i-chat"/></svg></span>
-        <div><h2 class="lb-card__title" id="{{ $uid }}-title">Order Inquiry</h2><p class="lb-card__sub">Konsultasi atau konfirmasi order Anda.</p></div>
+        <div><h2 class="lb-card__title" id="{{ $uid }}-title">@if ($mode === 'preview')<a href="{{ route('webia.laundry-baby-blue.order-inquiry') }}">Order Inquiry</a>@else Order Inquiry @endif</h2><p class="lb-card__sub">Konsultasi atau konfirmasi order Anda.</p></div>
     </header>
 
     <form class="lb-form lb-form--{{ $mode }}" data-lb-inquiry novalidate>

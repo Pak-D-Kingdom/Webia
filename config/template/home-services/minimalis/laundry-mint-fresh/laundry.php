@@ -59,16 +59,17 @@ return [
     ],
 
     // ---------- Gambar (nama file di folder images template) ----------
+    // hero, area, clock, bot_left, bot_right diambil langsung dari desain UI.
     'img' => [
         'logo'      => 'logo.svg',
-        'hero'      => 'hero-scene.svg',
+        'hero'      => 'hero.webp',
+        'area'      => 'area-art.webp',
+        'clock'     => 'clock-art.webp',
+        'bot_left'  => 'bot-left.webp',
+        'bot_right' => 'bot-right.webp',
+        'robot'     => 'chatbot-robot.svg',
         'leaf_l'    => 'leaf-left.svg',
         'leaf_r'    => 'leaf-right.svg',
-        'truck'     => 'delivery-truck.svg',
-        'clock'     => 'clock-calendar.svg',
-        'robot'     => 'chatbot-robot.svg',
-        'robot_big' => 'chatbot-banner.svg',
-        'faq_art'   => 'faq-basket.svg',
     ],
 
     // ---------- Hero ----------
@@ -78,7 +79,6 @@ return [
         'title_2'  => 'Hidup Lebih Segar',
         'text'     => 'Layanan laundry profesional dengan hasil bersih, wangi, dan rapi. Kami siap menjaga pakaian kesayangan Anda.',
         'cta'      => 'Pesan Sekarang',
-        'script'   => ['Fresh', 'Clean', 'Happy'],
         'features' => [
             ['icon' => 'drop',   'l1' => 'Bersih',            'l2' => '& Higienis'],
             ['icon' => 'shield', 'l1' => 'Aman untuk',        'l2' => 'Semua Jenis Kain'],
