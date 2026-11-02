@@ -9,17 +9,16 @@
  * Data bersifat contoh (dummy) — cukup ganti isi file ini, Blade tidak perlu diubah.
  * Murni statis: tidak ada query database / controller.
  */
-
 $base = 'website-bisnis/template/healthcare/professional/klinik-kecantikan-clean-white';
 
 return [
 
     /* ------------------------------------------------------------------ */
-    /* Path asset (relatif terhadap /public)                               */
+    /* Path asset (relatif terhadap /public) */
     /* ------------------------------------------------------------------ */
     'paths' => [
-        'css'    => "css/{$base}/klinik-kecantikan.css",
-        'js'     => "js/{$base}/klinik-kecantikan.js",
+        'css' => "css/{$base}/klinik-kecantikan.css",
+        'js' => "js/{$base}/klinik-kecantikan.js",
         'images' => "images/{$base}",
     ],
 
@@ -28,19 +27,19 @@ return [
     ],
 
     'brand' => [
-        'name'    => 'GlowAesthetics',
+        'name' => 'GlowAesthetics',
         'tagline' => 'Beauty & Aesthetic Clinic',
-        'slogan'  => 'Kulit Sehat, Hidup Lebih Percaya Diri',
+        'slogan' => 'Kulit Sehat, Hidup Lebih Percaya Diri',
     ],
 
     'contact' => [
-        'phone'      => '+62 895 6303 00345',
-        'whatsapp'   => '62895630300345', // 0895630300345 → format internasional tanpa + / spasi
-        'email'      => 'info@glowaesthetics.id',
-        'address'    => 'Jl. Melati No. 28, Jakarta Selatan',
-        'hours'      => 'Buka Setiap Hari 08:00 - 20:00',
-        'hours_short'=> 'Setiap hari, 08:00 - 20:00',
-        'maps_link'  => 'https://www.google.com/maps/search/?api=1&query=Jl.+Melati+No.+28+Jakarta+Selatan',
+        'phone' => '+62 895 6303 00345',
+        'whatsapp' => '62895630300345', // 0895630300345 → format internasional tanpa + / spasi
+        'email' => 'info@glowaesthetics.id',
+        'address' => 'Jl. Melati No. 28, Jakarta Selatan',
+        'hours' => 'Buka Setiap Hari 08:00 - 20:00',
+        'hours_short' => 'Setiap hari, 08:00 - 20:00',
+        'maps_link' => 'https://www.google.com/maps/search/?api=1&query=Jl.+Melati+No.+28+Jakarta+Selatan',
         'maps_embed' => 'https://www.google.com/maps?q=Jl.+Melati+No.+28+Jakarta+Selatan&output=embed',
     ],
 
@@ -52,7 +51,7 @@ return [
     ],
 
     /* ------------------------------------------------------------------ */
-    /* Navigasi (Lokasi = anchor di beranda, tidak punya halaman sendiri)  */
+    /* Navigasi (Lokasi = anchor di beranda, tidak punya halaman sendiri) */
     /* ------------------------------------------------------------------ */
     'nav' => [
         ['label' => 'Beranda',        'route' => 'klinik-kecantikan.home',     'hash' => null],
@@ -85,15 +84,15 @@ return [
     ],
 
     /* ------------------------------------------------------------------ */
-    /* Hero                                                                */
+    /* Hero */
     /* ------------------------------------------------------------------ */
     'hero' => [
         'eyebrow' => 'Klinik Kecantikan & Aesthetic',
-        'title'   => ['Cantik Alami,', 'Percaya Diri Setiap Hari'],
-        'text'    => 'Perawatan kulit dan aesthetic profesional dengan teknologi modern dan ditangani oleh dokter ahli berpengalaman.',
-        'image'   => 'hero-skin.jpg',
-        'alt'     => 'Wanita dengan kulit sehat bercahaya di antara bunga teratai',
-        'trust'   => [
+        'title' => ['Cantik Alami,', 'Percaya Diri Setiap Hari'],
+        'text' => 'Perawatan kulit dan aesthetic profesional dengan teknologi modern dan ditangani oleh dokter ahli berpengalaman.',
+        'image' => 'hero-skin.jpg',
+        'alt' => 'Wanita dengan kulit sehat bercahaya di antara bunga teratai',
+        'trust' => [
             ['icon' => 'user-round',   'label' => 'Dokter Berpengalaman'],
             ['icon' => 'settings',     'label' => 'Teknologi Modern'],
             ['icon' => 'shield-check', 'label' => 'Produk Original'],
@@ -102,127 +101,127 @@ return [
     ],
 
     /* ------------------------------------------------------------------ */
-    /* Layanan                                                             */
+    /* Layanan */
     /* ------------------------------------------------------------------ */
     'services' => [
         [
-            'slug'       => 'facial-treatment',
-            'name'       => 'Facial Treatment',
-            'short'      => 'Membersihkan & menyegarkan kulit',
-            'image'      => 'service-1.jpg',
-            'desc'       => 'Perawatan wajah untuk mengangkat kotoran, sel kulit mati, dan minyak berlebih agar kulit tampak bersih, lembap, dan segar.',
+            'slug' => 'facial-treatment',
+            'name' => 'Facial Treatment',
+            'short' => 'Membersihkan & menyegarkan kulit',
+            'image' => 'service-1.jpg',
+            'desc' => 'Perawatan wajah untuk mengangkat kotoran, sel kulit mati, dan minyak berlebih agar kulit tampak bersih, lembap, dan segar.',
             'treatments' => ['Deep Cleansing Facial', 'Hydrating Facial', 'Brightening Facial', 'Chemical Peeling'],
-            'price'      => 'Mulai Rp 250.000',
-            'duration'   => '60 menit',
+            'price' => 'Mulai Rp 250.000',
+            'duration' => '60 menit',
         ],
         [
-            'slug'       => 'anti-aging',
-            'name'       => 'Anti Aging',
-            'short'      => 'Mengurangi tanda penuaan dini',
-            'image'      => 'service-2.jpg',
-            'desc'       => 'Rangkaian perawatan untuk membantu menyamarkan garis halus dan kerutan serta menjaga kekenyalan kulit.',
+            'slug' => 'anti-aging',
+            'name' => 'Anti Aging',
+            'short' => 'Mengurangi tanda penuaan dini',
+            'image' => 'service-2.jpg',
+            'desc' => 'Rangkaian perawatan untuk membantu menyamarkan garis halus dan kerutan serta menjaga kekenyalan kulit.',
             'treatments' => ['Konsultasi Anti Aging', 'Microneedling', 'Radiofrequency Lifting', 'Skin Tightening'],
-            'price'      => 'Mulai Rp 650.000',
-            'duration'   => '60 - 90 menit',
+            'price' => 'Mulai Rp 650.000',
+            'duration' => '60 - 90 menit',
         ],
         [
-            'slug'       => 'acne-treatment',
-            'name'       => 'Acne Treatment',
-            'short'      => 'Merawat kulit berjerawat',
-            'image'      => 'service-3.jpg',
-            'desc'       => 'Penanganan jerawat dan bekasnya berdasarkan pemeriksaan kondisi kulit oleh dokter.',
+            'slug' => 'acne-treatment',
+            'name' => 'Acne Treatment',
+            'short' => 'Merawat kulit berjerawat',
+            'image' => 'service-3.jpg',
+            'desc' => 'Penanganan jerawat dan bekasnya berdasarkan pemeriksaan kondisi kulit oleh dokter.',
             'treatments' => ['Acne Facial', 'Ekstraksi Komedo', 'Peeling Jerawat', 'Perawatan Bekas Jerawat'],
-            'price'      => 'Mulai Rp 300.000',
-            'duration'   => '45 - 60 menit',
+            'price' => 'Mulai Rp 300.000',
+            'duration' => '45 - 60 menit',
         ],
         [
-            'slug'       => 'skin-booster',
-            'name'       => 'Skin Booster',
-            'short'      => 'Meningkatkan elastisitas & kelembapan kulit',
-            'image'      => 'service-4.jpg',
-            'desc'       => 'Nutrisi dan hidrasi intensif ke lapisan kulit untuk tampilan lebih kenyal, halus, dan bercahaya.',
+            'slug' => 'skin-booster',
+            'name' => 'Skin Booster',
+            'short' => 'Meningkatkan elastisitas & kelembapan kulit',
+            'image' => 'service-4.jpg',
+            'desc' => 'Nutrisi dan hidrasi intensif ke lapisan kulit untuk tampilan lebih kenyal, halus, dan bercahaya.',
             'treatments' => ['Hyaluronic Skin Booster', 'Polynucleotide Booster', 'Hydra Booster'],
-            'price'      => 'Mulai Rp 1.200.000',
-            'duration'   => '45 menit',
+            'price' => 'Mulai Rp 1.200.000',
+            'duration' => '45 menit',
         ],
         [
-            'slug'       => 'laser-treatment',
-            'name'       => 'Laser Treatment',
-            'short'      => 'Mencerahkan & meratakan warna kulit',
-            'image'      => 'service-5.jpg',
-            'desc'       => 'Teknologi laser untuk membantu meratakan warna kulit, menyamarkan noda, dan memperbaiki tekstur.',
+            'slug' => 'laser-treatment',
+            'name' => 'Laser Treatment',
+            'short' => 'Mencerahkan & meratakan warna kulit',
+            'image' => 'service-5.jpg',
+            'desc' => 'Teknologi laser untuk membantu meratakan warna kulit, menyamarkan noda, dan memperbaiki tekstur.',
             'treatments' => ['Laser Toning', 'Laser Rejuvenation', 'Laser Bekas Jerawat', 'Laser Pigmentasi'],
-            'price'      => 'Mulai Rp 800.000',
-            'duration'   => '45 - 60 menit',
+            'price' => 'Mulai Rp 800.000',
+            'duration' => '45 - 60 menit',
         ],
         [
-            'slug'       => 'body-contouring',
-            'name'       => 'Body Contouring',
-            'short'      => 'Membentuk tubuh lebih ideal',
-            'image'      => 'service-6.jpg',
-            'desc'       => 'Perawatan pembentukan tubuh non-bedah untuk membantu mengencangkan dan merapikan kontur tubuh.',
+            'slug' => 'body-contouring',
+            'name' => 'Body Contouring',
+            'short' => 'Membentuk tubuh lebih ideal',
+            'image' => 'service-6.jpg',
+            'desc' => 'Perawatan pembentukan tubuh non-bedah untuk membantu mengencangkan dan merapikan kontur tubuh.',
             'treatments' => ['Body Slimming', 'Cellulite Treatment', 'Body Shaping RF', 'Konsultasi Program Tubuh'],
-            'price'      => 'Mulai Rp 900.000',
-            'duration'   => '60 - 90 menit',
+            'price' => 'Mulai Rp 900.000',
+            'duration' => '60 - 90 menit',
         ],
     ],
 
     /* ------------------------------------------------------------------ */
-    /* Dokter & Staff                                                      */
+    /* Dokter & Staff */
     /* ------------------------------------------------------------------ */
     'doctors' => [
         [
-            'id'         => 'aulia',
-            'name'       => 'dr. Aulia Rahma, Sp.KK',
-            'role'       => 'Spesialis Kulit & Kelamin',
-            'badge'      => 'Dokter Spesialis',
-            'photo'      => 'doctor-1.jpg',
+            'id' => 'aulia',
+            'name' => 'dr. Aulia Rahma, Sp.KK',
+            'role' => 'Spesialis Kulit & Kelamin',
+            'badge' => 'Dokter Spesialis',
+            'photo' => 'doctor-1.jpg',
             'experience' => '10+ tahun pengalaman',
-            'days'       => 'Senin - Sabtu',
-            'focus'      => ['Acne & bekas jerawat', 'Anti aging', 'Laser'],
-            'bio'        => 'Berpengalaman menangani masalah kulit wajah dan perawatan laser dengan pendekatan yang aman dan personal.',
+            'days' => 'Senin - Sabtu',
+            'focus' => ['Acne & bekas jerawat', 'Anti aging', 'Laser'],
+            'bio' => 'Berpengalaman menangani masalah kulit wajah dan perawatan laser dengan pendekatan yang aman dan personal.',
         ],
         [
-            'id'         => 'bima',
-            'name'       => 'dr. Bima Santosa, Sp.AK',
-            'role'       => 'Spesialis Aesthetic',
-            'badge'      => 'Dokter Spesialis',
-            'photo'      => 'doctor-2.jpg',
+            'id' => 'bima',
+            'name' => 'dr. Bima Santosa, Sp.AK',
+            'role' => 'Spesialis Aesthetic',
+            'badge' => 'Dokter Spesialis',
+            'photo' => 'doctor-2.jpg',
             'experience' => '8+ tahun pengalaman',
-            'days'       => 'Senin - Jumat',
-            'focus'      => ['Skin booster', 'Body contouring', 'Peremajaan kulit'],
-            'bio'        => 'Fokus pada tindakan aesthetic non-bedah untuk hasil yang natural dan proporsional.',
+            'days' => 'Senin - Jumat',
+            'focus' => ['Skin booster', 'Body contouring', 'Peremajaan kulit'],
+            'bio' => 'Fokus pada tindakan aesthetic non-bedah untuk hasil yang natural dan proporsional.',
         ],
         [
-            'id'         => 'nadya',
-            'name'       => 'Nadya Putri',
-            'role'       => 'Aesthetic Nurse',
-            'badge'      => 'Perawat',
-            'photo'      => 'doctor-3.jpg',
+            'id' => 'nadya',
+            'name' => 'Nadya Putri',
+            'role' => 'Aesthetic Nurse',
+            'badge' => 'Perawat',
+            'photo' => 'doctor-3.jpg',
             'experience' => '6+ tahun pengalaman',
-            'days'       => 'Senin - Sabtu',
-            'focus'      => ['Pendampingan tindakan', 'Perawatan pasca tindakan'],
-            'bio'        => 'Mendampingi dokter selama tindakan dan memberi arahan perawatan lanjutan di rumah.',
+            'days' => 'Senin - Sabtu',
+            'focus' => ['Pendampingan tindakan', 'Perawatan pasca tindakan'],
+            'bio' => 'Mendampingi dokter selama tindakan dan memberi arahan perawatan lanjutan di rumah.',
         ],
         [
-            'id'         => 'salsa',
-            'name'       => 'Salsa Febriani',
-            'role'       => 'Beauty Therapist',
-            'badge'      => 'Therapist',
-            'photo'      => 'doctor-4.jpg',
+            'id' => 'salsa',
+            'name' => 'Salsa Febriani',
+            'role' => 'Beauty Therapist',
+            'badge' => 'Therapist',
+            'photo' => 'doctor-4.jpg',
             'experience' => '5+ tahun pengalaman',
-            'days'       => 'Selasa - Minggu',
-            'focus'      => ['Facial treatment', 'Body treatment'],
-            'bio'        => 'Terampil dalam facial dan body treatment yang nyaman serta higienis.',
+            'days' => 'Selasa - Minggu',
+            'focus' => ['Facial treatment', 'Body treatment'],
+            'bio' => 'Terampil dalam facial dan body treatment yang nyaman serta higienis.',
         ],
     ],
 
     /* ------------------------------------------------------------------ */
-    /* Jadwal praktik — kunci 0 = Minggu … 6 = Sabtu                       */
-    /* status: available | full                                            */
+    /* Jadwal praktik — kunci 0 = Minggu … 6 = Sabtu */
+    /* status: available | full */
     /* ------------------------------------------------------------------ */
     'weekdays' => ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'],
-    'months'   => ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
+    'months' => ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
 
     'schedule' => [
         0 => [
@@ -271,7 +270,7 @@ return [
     ],
 
     /* ------------------------------------------------------------------ */
-    /* Appointment                                                         */
+    /* Appointment */
     /* ------------------------------------------------------------------ */
     'appointment' => [
         'times' => ['08:00', '09:00', '10:00', '11:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00'],
@@ -288,34 +287,34 @@ return [
     ],
 
     /* ------------------------------------------------------------------ */
-    /* FAQ                                                                 */
+    /* FAQ */
     /* ------------------------------------------------------------------ */
     'faqs' => [
         ['q' => 'Bagaimana cara membuat janji temu?',
-         'a' => 'Buka halaman Appointment, isi formulir, lalu kirim. Data Anda akan diteruskan ke admin klinik melalui WhatsApp untuk dikonfirmasi.'],
+            'a' => 'Buka halaman Appointment, isi formulir, lalu kirim. Data Anda akan diteruskan ke admin klinik melalui WhatsApp untuk dikonfirmasi.'],
         ['q' => 'Apakah perlu konsultasi sebelum melakukan perawatan?',
-         'a' => 'Ya. Konsultasi awal membantu dokter menilai kondisi kulit dan menentukan perawatan yang paling sesuai dan aman untuk Anda.'],
+            'a' => 'Ya. Konsultasi awal membantu dokter menilai kondisi kulit dan menentukan perawatan yang paling sesuai dan aman untuk Anda.'],
         ['q' => 'Berapa lama durasi satu kali perawatan?',
-         'a' => 'Durasi bervariasi, umumnya 45 - 90 menit tergantung jenis perawatan. Detail durasi tersedia di halaman Layanan.'],
+            'a' => 'Durasi bervariasi, umumnya 45 - 90 menit tergantung jenis perawatan. Detail durasi tersedia di halaman Layanan.'],
         ['q' => 'Apakah perawatan di GlowAesthetics aman?',
-         'a' => 'Seluruh tindakan dilakukan oleh dokter dan tenaga terlatih dengan produk original serta prosedur kebersihan yang ketat.'],
+            'a' => 'Seluruh tindakan dilakukan oleh dokter dan tenaga terlatih dengan produk original serta prosedur kebersihan yang ketat.'],
         ['q' => 'Apakah saya bisa mengubah atau membatalkan jadwal?',
-         'a' => 'Bisa. Hubungi admin melalui WhatsApp minimal 24 jam sebelum jadwal agar slot dapat diberikan kepada pasien lain.'],
+            'a' => 'Bisa. Hubungi admin melalui WhatsApp minimal 24 jam sebelum jadwal agar slot dapat diberikan kepada pasien lain.'],
         ['q' => 'Metode pembayaran apa yang tersedia?',
-         'a' => 'Pembayaran dapat dilakukan di klinik melalui tunai, transfer bank, atau kartu debit/kredit.'],
+            'a' => 'Pembayaran dapat dilakukan di klinik melalui tunai, transfer bank, atau kartu debit/kredit.'],
         ['q' => 'Apakah ada efek samping setelah perawatan?',
-         'a' => 'Sebagian perawatan dapat menimbulkan kemerahan ringan yang biasanya mereda dalam waktu singkat. Dokter akan menjelaskan risiko dan perawatan lanjutan sebelum tindakan.'],
+            'a' => 'Sebagian perawatan dapat menimbulkan kemerahan ringan yang biasanya mereda dalam waktu singkat. Dokter akan menjelaskan risiko dan perawatan lanjutan sebelum tindakan.'],
         ['q' => 'Bagaimana jika saya datang terlambat?',
-         'a' => 'Mohon datang 10 - 15 menit lebih awal. Keterlambatan dapat memengaruhi durasi perawatan atau memerlukan penjadwalan ulang.'],
+            'a' => 'Mohon datang 10 - 15 menit lebih awal. Keterlambatan dapat memengaruhi durasi perawatan atau memerlukan penjadwalan ulang.'],
     ],
 
     /* ------------------------------------------------------------------ */
-    /* Kebijakan                                                           */
+    /* Kebijakan */
     /* ------------------------------------------------------------------ */
     'policies' => [
         [
-            'slug'  => 'privasi',
-            'icon'  => 'lock',
+            'slug' => 'privasi',
+            'icon' => 'lock',
             'title' => 'Kebijakan Privasi',
             'short' => 'Cara kami mengumpulkan, menggunakan, dan melindungi data pribadi Anda.',
             'items' => [
@@ -326,8 +325,8 @@ return [
             ],
         ],
         [
-            'slug'  => 'syarat-ketentuan',
-            'icon'  => 'file-text',
+            'slug' => 'syarat-ketentuan',
+            'icon' => 'file-text',
             'title' => 'Syarat & Ketentuan',
             'short' => 'Ketentuan penggunaan layanan dan website GlowAesthetics.',
             'items' => [
@@ -338,8 +337,8 @@ return [
             ],
         ],
         [
-            'slug'  => 'pembatalan',
-            'icon'  => 'refresh',
+            'slug' => 'pembatalan',
+            'icon' => 'refresh',
             'title' => 'Pembatalan & Jadwal Ulang',
             'short' => 'Aturan perubahan dan pembatalan janji temu.',
             'items' => [
@@ -350,8 +349,8 @@ return [
             ],
         ],
         [
-            'slug'  => 'keamanan',
-            'icon'  => 'shield-check',
+            'slug' => 'keamanan',
+            'icon' => 'shield-check',
             'title' => 'Keamanan & Keselamatan',
             'short' => 'Standar kebersihan, produk, dan keselamatan pasien.',
             'items' => [
@@ -364,17 +363,17 @@ return [
     ],
 
     /* ------------------------------------------------------------------ */
-    /* AI Information Assistant (rule-based, statis, tanpa backend)        */
+    /* AI Information Assistant (rule-based, statis, tanpa backend) */
     /* ------------------------------------------------------------------ */
     'assistant' => [
-        'name'      => 'AI - Beauty Assistant',
-        'subtitle'  => 'Siap membantu pertanyaan seputar perawatan, layanan, jadwal, dan informasi klinik.',
-        'greeting'  => 'Halo! 👋 Ada yang bisa saya bantu hari ini?',
+        'name' => 'AI - Beauty Assistant',
+        'subtitle' => 'Siap membantu pertanyaan seputar perawatan, layanan, jadwal, dan informasi klinik.',
+        'greeting' => 'Halo! 👋 Ada yang bisa saya bantu hari ini?',
         'placeholder' => 'Tulis pertanyaanmu...',
-        'disclaimer'  => 'Informasi umum, bukan pengganti konsultasi dokter.',
-        'avatar'    => 'chat-avatar.jpg',
-        'mascot'    => 'assistant-mascot.jpg',
-        'chips'     => [
+        'disclaimer' => 'Informasi umum, bukan pengganti konsultasi dokter.',
+        'avatar' => 'chat-avatar.jpg',
+        'mascot' => 'assistant-mascot.jpg',
+        'chips' => [
             ['icon' => 'tag',      'label' => 'Info layanan & harga', 'intent' => 'services'],
             ['icon' => 'sparkles', 'label' => 'Tips perawatan kulit', 'intent' => 'tips'],
             ['icon' => 'calendar', 'label' => 'Jadwal dokter',        'intent' => 'schedule'],
@@ -388,7 +387,7 @@ return [
             ['icon' => 'calendar', 'label' => 'Booking',         'intent' => 'booking'],
             ['icon' => 'heart',    'label' => 'Kebijakan',       'intent' => 'policy'],
             ['icon' => 'lotus',    'label' => 'Layanan',         'intent' => 'services'],
-            ['icon' => 'user-round','label' => 'Dokter',         'intent' => 'doctors'],
+            ['icon' => 'user-round', 'label' => 'Dokter',         'intent' => 'doctors'],
         ],
         'tips' => [
             'Bersihkan wajah 2x sehari dengan pembersih yang lembut.',

@@ -3,7 +3,7 @@
 
 @section('content')
     <section class="page-hero"><div class="container">
-        <p class="crumbs"><a href="{{ route('webia.fnb.minimalis.home') }}">Beranda</a> / Menu</p>
+        <p class="crumbs"><a href="{{ $pageUrl('home') }}">Beranda</a> / Menu</p>
         <h1>Menu {{ config('cafe.name') }}</h1>
         <p>Kopi, minuman segar, makanan, dan camilan favorit — dibuat fresh setiap hari.</p>
     </div></section>
@@ -31,7 +31,7 @@
 
         <div class="cta-band">
             <div><h2>Mau datang bersama keluarga atau tim?</h2><p>Pesan meja lebih dulu supaya tempat Anda terjamin.</p></div>
-            <a class="btn btn--light" href="{{ route('webia.fnb.minimalis.reservasi') }}"><svg class="i" aria-hidden="true"><use href="#i-calendar"/></svg> Reservasi Meja</a>
+            <a class="btn btn--light" href="{{ $pageUrl('reservasi') }}"><svg class="i" aria-hidden="true"><use href="#i-calendar"/></svg> Reservasi Meja</a>
         </div>
     </section>
 @endsection

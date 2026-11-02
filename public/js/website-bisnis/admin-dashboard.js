@@ -153,8 +153,10 @@ function initializeAdminPage() {
   const tabRevenue = document.getElementById('tabRevenue');
   const tabVolume = document.getElementById('tabVolume');
   const svgs = document.querySelectorAll('.is-chart-svg');
+  let chartMode = 'revenue';
 
   function showChart(name) {
+    chartMode = name;
     svgs.forEach((svg) => svg.classList.toggle('hidden', svg.dataset.chart !== name));
   }
 
@@ -169,6 +171,51 @@ function initializeAdminPage() {
     tabRevenue.className = 'rounded px-3 py-1 font-label-sm text-label-sm transition-all text-on-surface-variant hover:text-on-surface';
     showChart('volume');
   }, listenerOptions);
+
+  // Hover riwayat harian: tooltip + garis panduan mengikuti titik data terdekat.
+  const chartArea = document.querySelector('.is-chart-svg')?.parentElement;
+  if (chartArea && Array.isArray(window.__adminChart) && window.__adminChart.length === 30) {
+    const hoverTip = document.getElementById('chartHoverTip');
+    const hoverLine = document.getElementById('chartHoverLine');
+    const hoverDate = document.getElementById('chartHoverDate');
+    const hoverValue = document.getElementById('chartHoverValue');
+    const hoverCount = document.getElementById('chartHoverCount');
+    const peakTip = document.getElementById('peakTip');
+
+    const hideChartHover = () => {
+      hoverTip?.classList.add('hidden');
+      hoverTip?.classList.remove('flex');
+      hoverLine?.classList.add('hidden');
+      peakTip?.classList.remove('hidden');
+    };
+
+    chartArea.addEventListener('mousemove', (event) => {
+      if (!hoverTip || !hoverLine || !hoverDate || !hoverValue || !hoverCount) return;
+      const rect = chartArea.getBoundingClientRect();
+      const idx = Math.min(29, Math.max(0, Math.round(((event.clientX - rect.left) / rect.width) * 29)));
+      const point = window.__adminChart[idx];
+      const leftPct = (idx * 100) / 29;
+      peakTip?.classList.add('hidden');
+      hoverTip.classList.remove('hidden');
+      hoverTip.classList.add('flex');
+      hoverTip.style.left = `${Math.min(92, Math.max(8, leftPct))}%`;
+      hoverLine.classList.remove('hidden');
+      hoverLine.style.left = `${leftPct}%`;
+      hoverDate.textContent = point.d;
+      if (point.count === 0) {
+        hoverValue.textContent = '—';
+        hoverCount.textContent = 'Tidak ada transaksi';
+        return;
+      }
+      hoverValue.textContent = chartMode === 'revenue'
+        ? `Rp ${point.total.toLocaleString('id-ID')}`
+        : `${point.count} Pesanan`;
+      hoverCount.textContent = chartMode === 'revenue'
+        ? `${point.count} Pesanan Lunas`
+        : `Rp ${point.total.toLocaleString('id-ID')}`;
+    }, listenerOptions);
+    chartArea.addEventListener('mouseleave', hideChartHover, listenerOptions);
+  }
 
   // Verifikasi: helper fetch POST (CSRF dari form antrean).
   async function postVerify(url, action, note) {
@@ -370,7 +417,7 @@ function initializeAdminPage() {
 
     tableRows.forEach((row) => {
       const matchesQuery = !query || row.innerText.toLowerCase().includes(query);
-      const matchesStatus = currentFilter === 'all' || row.getAttribute('data-status') === currentFilter;
+      const matchesStatus = currentFilter === 'all' || currentFilter === '' || row.getAttribute('data-status') === currentFilter;
       const matchesDelivery = currentDeliveryFilter === '' || row.getAttribute('data-delivery') === currentDeliveryFilter;
       const visible = matchesQuery && matchesStatus && matchesDelivery;
       row.style.display = visible ? '' : 'none';
@@ -492,6 +539,598 @@ function initializeAdminPage() {
     URL.revokeObjectURL(a.href);
     showToast(lines.length - 1 + ' pesanan diekspor ke CSV');
   }, listenerOptions);
+
+  // ===== Halaman Paket & Lisensi =====
+  const packageTable = document.getElementById('packagesTable');
+  if (packageTable) {
+    const pkgTbody = packageTable.tBodies[0];
+    const pkgRows = Array.from(pkgTbody.querySelectorAll('tr[data-package-id]'));
+    const pkgSearch = document.getElementById('packageSearch');
+    const pkgFilterStatus = document.getElementById('packageFilterStatus');
+    const pkgSortBy = document.getElementById('packageSortBy');
+    const pkgCounter = document.getElementById('packagesVisibleCount');
+    const pkgTotal = document.getElementById('packagesTotalCount');
+    const pkgEmpty = document.getElementById('packagesEmptyState');
+    const pkgDrawerRoot = document.getElementById('packageDrawerRoot');
+    const pkgDrawer = document.getElementById('packageDrawer');
+    const pkgForm = document.getElementById('packageForm');
+    const pkgFormMethod = document.getElementById('packageFormMethod');
+    const pkgFeatureList = document.getElementById('packageFeatureList');
+    const pkgFeatureCount = document.getElementById('packageFeatureCount');
+    const pkgDeleteModal = document.getElementById('packageDeleteModal');
+    let pkgDrawerReturnFocus = null;
+    let pkgDeleteReturnFocus = null;
+
+    // Filter + pencarian instan.
+    function applyPackagesFilter() {
+      const query = (pkgSearch?.value || '').toLowerCase().trim();
+      const status = pkgFilterStatus?.value || 'all';
+      let visible = 0;
+      pkgRows.forEach((row) => {
+        const matchesQuery = !query || row.innerText.toLowerCase().includes(query);
+        const matchesStatus = status === 'all' || row.dataset.active === status;
+        const show = matchesQuery && matchesStatus;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (pkgCounter) pkgCounter.innerText = visible;
+      if (pkgEmpty) pkgEmpty.classList.toggle('hidden', visible !== 0);
+      if (pkgTotal) pkgTotal.classList.toggle('hidden', Boolean(query) || status !== 'all');
+    }
+    pkgSearch?.addEventListener('input', applyPackagesFilter, listenerOptions);
+    pkgFilterStatus?.addEventListener('change', applyPackagesFilter, listenerOptions);
+
+    // Urutkan ulang baris menurut kriteria terpilih.
+    const pkgSorters = {
+      order: (a, b) => a.dataset.sortOrder - b.dataset.sortOrder,
+      price_asc: (a, b) => a.dataset.price - b.dataset.price,
+      price_desc: (a, b) => b.dataset.price - a.dataset.price,
+      orders: (a, b) => b.dataset.orders - a.dataset.orders,
+    };
+    pkgSortBy?.addEventListener('change', () => {
+      const sorter = pkgSorters[pkgSortBy.value];
+      if (!sorter) return;
+      pkgEmpty?.remove();
+      pkgRows.sort(sorter).forEach((row) => pkgTbody.appendChild(row));
+      if (pkgEmpty) pkgTbody.appendChild(pkgEmpty);
+    }, listenerOptions);
+
+    // Toggle aktif/nonaktif via fetch — update row & KPI tanpa reload.
+    document.querySelectorAll('form[data-package-toggle]').forEach((form) => {
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const button = form.querySelector('button[type="submit"]');
+        if (!button || button.disabled) return;
+        button.disabled = true;
+        try {
+          const res = await fetch(form.action, {
+            method: 'POST',
+            headers: { 'X-Requested-With': 'XMLHttpRequest', Accept: 'application/json' },
+            body: new FormData(form),
+          });
+          const json = await res.json();
+          if (!res.ok) throw new Error();
+          const row = form.closest('tr[data-package-id]');
+          const active = Boolean(json.is_active);
+          row.dataset.active = active ? '1' : '0';
+          const track = form.querySelector('span.relative');
+          const knob = track.querySelector('span');
+          const label = form.querySelector('span.font-label-sm');
+          track.classList.toggle('bg-secondary', active);
+          track.classList.toggle('bg-surface-container-highest', !active);
+          knob.classList.toggle('translate-x-4', active);
+          label.innerText = active ? 'Aktif' : 'Nonaktif';
+          label.classList.toggle('text-secondary', active);
+          label.classList.toggle('text-on-surface-variant', !active);
+          form.setAttribute('title', active ? 'Nonaktifkan paket' : 'Aktifkan paket');
+          const iconWrap = row.querySelector('td .h-9.w-9');
+          if (iconWrap) {
+            iconWrap.classList.toggle('bg-primary-fixed', active);
+            iconWrap.classList.toggle('text-primary', active);
+            iconWrap.classList.toggle('bg-surface-container', !active);
+            iconWrap.classList.toggle('text-outline', !active);
+          }
+          const nameSpan = row.querySelector('td span.font-label-lg');
+          if (nameSpan) {
+            nameSpan.classList.toggle('text-on-surface', active);
+            nameSpan.classList.toggle('text-on-surface-variant', !active);
+          }
+          const descSpan = row.querySelector('td span.font-caption');
+          if (descSpan) {
+            descSpan.classList.toggle('text-on-surface-variant', active);
+            descSpan.classList.toggle('text-outline', !active);
+          }
+          const packageRows = Array.from(document.querySelectorAll('#packagesTable tbody tr[data-package-id]'));
+          const activeCount = packageRows.filter((r) => r.dataset.active === '1').length;
+          document.getElementById('packagesActiveBadge').innerText = activeCount + ' Paket Aktif';
+          document.getElementById('kpiActiveCount').innerText = activeCount;
+          document.getElementById('kpiInactiveCount').innerText = packageRows.length - activeCount;
+          applyPackagesFilter();
+          showToast(json.message);
+        } catch {
+          showToast('Gagal mengubah status paket');
+        } finally {
+          button.disabled = false;
+        }
+      }, listenerOptions);
+    });
+
+    // Drawer tambah/edit.
+    function createFeatureInput(value = '') {
+      const item = document.createElement('div');
+      item.className = 'flex items-center gap-2 rounded-lg bg-surface-container-low p-2 shadow-sm';
+      item.innerHTML =
+        '<span aria-hidden="true" class="material-symbols-outlined select-none text-lg text-outline">menu</span>' +
+        '<input type="text" data-feature-input aria-label="Isi fitur paket" placeholder="Tuliskan fitur yang diperoleh klien..." class="min-w-0 flex-1 bg-transparent font-body-sm text-body-sm text-on-surface focus:outline-none">' +
+        '<button type="button" aria-label="Hapus fitur" title="Hapus fitur" class="rounded p-1 text-outline transition-colors hover:text-error"><span class="material-symbols-outlined text-base">close</span></button>';
+      if (value) item.querySelector('input').value = value;
+      item.querySelector('input').addEventListener('input', updateFeatureCount, listenerOptions);
+      item.querySelector('button').addEventListener('click', () => {
+        item.remove();
+        updateFeatureCount();
+      }, listenerOptions);
+      return item;
+    }
+
+    function updateFeatureCount() {
+      if (!pkgFeatureCount || !pkgFeatureList) return;
+      pkgFeatureCount.innerText = pkgFeatureList.querySelectorAll('input[data-feature-input]').length + ' fitur terdaftar';
+    }
+
+    function openPackageDrawer(mode, row) {
+      const isEdit = mode === 'edit' && row;
+      pkgForm.action = isEdit ? row.dataset.updateUrl : pkgForm.dataset.storeUrl;
+      pkgFormMethod.value = isEdit ? 'PUT' : 'POST';
+      const title = document.getElementById('packageDrawerTitle');
+      const subtitle = document.getElementById('packageDrawerSubtitle');
+      if (title) title.innerText = isEdit ? 'Edit Paket: ' + row.dataset.name : 'Tambah Paket Baru';
+      if (subtitle) subtitle.innerText = isEdit
+        ? 'ID: #' + row.dataset.packageId + ' · digunakan di ' + row.dataset.orders + ' pesanan'
+        : 'Paket baru tersedia saat pemesanan';
+      if (isEdit) {
+        document.getElementById('packageName').value = row.dataset.name;
+        document.getElementById('packageSlug').value = row.dataset.slug;
+        document.getElementById('packageDescription').value = row.dataset.description;
+        document.getElementById('packagePrice').value = row.dataset.price;
+        document.getElementById('packageOldPrice').value = row.dataset.oldPrice;
+        document.getElementById('packageQuota').value = row.dataset.quota;
+        document.getElementById('packageSort').value = row.dataset.sortOrder;
+        document.getElementById('packageCmsEnabled').checked = row.dataset.cms === '1';
+        document.getElementById('packagePublishActive').checked = row.dataset.active === '1';
+        document.getElementById('packagePublishDraft').checked = row.dataset.active !== '1';
+      } else {
+        pkgForm.reset();
+        document.getElementById('packagePublishActive').checked = true;
+        document.getElementById('packageSort').value = String(pkgRows.reduce((max, r) => Math.max(max, Number(r.dataset.sortOrder)), 0) + 1);
+      }
+      pkgFeatureList.replaceChildren();
+      const features = isEdit ? row.dataset.features.split('\n').map((s) => s.trim()).filter(Boolean) : [''];
+      features.forEach((feature) => pkgFeatureList.appendChild(createFeatureInput(feature)));
+      document.getElementById('packageFormErrors').classList.add('hidden');
+      updateFeatureCount();
+      pkgDrawerReturnFocus = document.querySelector('[data-package-drawer-create]');
+      pkgDrawerRoot.classList.remove('hidden');
+      requestAnimationFrame(() => pkgDrawer.classList.remove('translate-x-full'));
+      document.getElementById('packageName').focus();
+    }
+
+    function closePackageDrawer() {
+      if (!pkgDrawerRoot || pkgDrawerRoot.classList.contains('hidden')) return;
+      if (document.activeElement && pkgDrawer.contains(document.activeElement)) pkgDrawerReturnFocus?.focus();
+      pkgDrawer.classList.add('translate-x-full');
+      setTimeout(() => pkgDrawerRoot.classList.add('hidden'), 300);
+    }
+
+    document.querySelector('[data-package-drawer-create]')?.addEventListener('click', () => openPackageDrawer('create'), listenerOptions);
+    document.querySelectorAll('[data-package-edit]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const row = btn.closest('tr[data-package-id]');
+        if (row) openPackageDrawer('edit', row);
+      }, listenerOptions);
+    });
+    pkgDrawerRoot?.querySelectorAll('[data-package-drawer-close]').forEach((el) => {
+      el.addEventListener('click', closePackageDrawer, listenerOptions);
+    });
+
+    document.getElementById('btnAddPackageFeature')?.addEventListener('click', () => {
+      const input = createFeatureInput();
+      pkgFeatureList.appendChild(input);
+      input.querySelector('input').focus();
+    }, listenerOptions);
+
+    // Simpan paket via fetch agar validasi tetap tampil di dalam drawer.
+    function showPackageFormErrors(errors) {
+      const box = document.getElementById('packageFormErrors');
+      if (!box) return;
+      box.replaceChildren();
+      const list = errors && typeof errors === 'object' && Object.keys(errors).length ? errors : { form: ['Gagal menyimpan paket, coba lagi.'] };
+      Object.entries(list).forEach(([field, messages]) => {
+        messages.forEach((message) => {
+          const p = document.createElement('p');
+          p.className = 'font-label-md font-semibold text-label-md';
+          p.innerText = field.charAt(0).toUpperCase() + field.slice(1) + ': ' + message;
+          box.appendChild(p);
+        });
+      });
+      box.classList.remove('hidden');
+      box.scrollIntoView({ block: 'nearest' });
+    }
+
+    pkgForm?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const featureValues = Array.from(pkgFeatureList.querySelectorAll('input[data-feature-input]')).map((i) => i.value.trim()).filter(Boolean);
+      if (featureValues.length === 0) {
+        showPackageFormErrors({ features: ['Isi minimal satu fitur paket.'] });
+        return;
+      }
+      document.getElementById('packageFeaturesValue').value = featureValues.join('\n');
+      const saveBtn = document.getElementById('btnSavePackage');
+      saveBtn.disabled = true;
+      try {
+        const res = await fetch(pkgForm.action, {
+          method: 'POST',
+          headers: { 'X-Requested-With': 'XMLHttpRequest', Accept: 'application/json' },
+          body: new FormData(pkgForm),
+        });
+        if (res.ok) {
+          showToast('Paket berhasil disimpan');
+          setTimeout(() => location.reload(), 700);
+          return;
+        }
+        let json = null;
+        try {
+          json = await res.json();
+        } catch {}
+        showPackageFormErrors(json?.errors);
+      } catch {
+        showPackageFormErrors(null);
+      } finally {
+        saveBtn.disabled = false;
+      }
+    }, listenerOptions);
+
+    // Modal konfirmasi hapus.
+    let pkgDeleteUrl = '';
+    function openPackageDelete(row) {
+      pkgDeleteUrl = row.dataset.deleteUrl;
+      document.getElementById('packageDeleteName').innerText = '"' + row.dataset.name + '"';
+      const count = Number(row.dataset.orders);
+      document.getElementById('packageDeleteImpact').innerText = count > 0
+        ? count + ' pesanan terkait menggunakan tier paket ini.'
+        : 'Belum ada pesanan yang memakai paket ini.';
+      pkgDeleteReturnFocus = row;
+      pkgDeleteModal.classList.remove('hidden');
+      pkgDeleteModal.classList.add('flex');
+      document.getElementById('btnCancelPackageDelete')?.focus();
+    }
+
+    function closePackageDelete() {
+      if (!pkgDeleteModal || pkgDeleteModal.classList.contains('hidden')) return;
+      pkgDeleteModal.classList.add('hidden');
+      pkgDeleteModal.classList.remove('flex');
+      pkgDeleteReturnFocus?.focus();
+      pkgDeleteReturnFocus = null;
+    }
+
+    document.querySelectorAll('[data-package-delete]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const row = btn.closest('tr[data-package-id]');
+        if (row) openPackageDelete(row);
+      }, listenerOptions);
+    });
+    pkgDeleteModal?.querySelectorAll('[data-package-delete-close]').forEach((el) => {
+      el.addEventListener('click', closePackageDelete, listenerOptions);
+    });
+
+    document.getElementById('packageDeleteForm')?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const confirmBtn = document.getElementById('btnConfirmPackageDelete');
+      confirmBtn.disabled = true;
+      try {
+        const res = await fetch(pkgDeleteUrl, {
+          method: 'POST',
+          headers: { 'X-Requested-With': 'XMLHttpRequest', Accept: 'application/json' },
+          body: new FormData(event.currentTarget),
+        });
+        if (res.ok) {
+          closePackageDelete();
+          showToast('Paket berhasil dihapus');
+          setTimeout(() => location.reload(), 700);
+          return;
+        }
+        let json = null;
+        try {
+          json = await res.json();
+        } catch {}
+        closePackageDelete();
+        showToast(json?.errors?.package?.[0] || json?.message || 'Paket tidak dapat dihapus.');
+      } catch {
+        showToast('Gagal menghapus paket, coba lagi.');
+      } finally {
+        confirmBtn.disabled = false;
+      }
+    }, listenerOptions);
+
+    // Escape menutup modal hapus lalu drawer (diutamakan modal di atas).
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape') return;
+      if (pkgDeleteModal && !pkgDeleteModal.classList.contains('hidden')) {
+        closePackageDelete();
+        return;
+      }
+      if (pkgDrawerRoot && !pkgDrawerRoot.classList.contains('hidden')) closePackageDrawer();
+    }, listenerOptions);
+  }
+
+  // ===== Halaman Add-on Layanan =====
+  const addonTable = document.getElementById('addonsTable');
+  if (addonTable) {
+    const addonTbody = addonTable.tBodies[0];
+    const addonRows = Array.from(addonTbody.querySelectorAll('tr[data-addon-id]'));
+    const addonSearch = document.getElementById('addonSearch');
+    const addonFilterStatus = document.getElementById('addonFilterStatus');
+    const addonSortBy = document.getElementById('addonSortBy');
+    const addonCounter = document.getElementById('addonsVisibleCount');
+    const addonEmpty = document.getElementById('addonsEmptyState');
+    const addonDrawerRoot = document.getElementById('addonDrawerRoot');
+    const addonDrawer = document.getElementById('addonDrawer');
+    const addonForm = document.getElementById('addonForm');
+    const addonFormMethod = document.getElementById('addonFormMethod');
+    const addonDeleteModal = document.getElementById('addonDeleteModal');
+    let addonDrawerReturnFocus = null;
+    let addonDeleteReturnFocus = null;
+
+    // Filter + pencarian instan.
+    function applyAddonsFilter() {
+      const query = (addonSearch?.value || '').toLowerCase().trim();
+      const status = addonFilterStatus?.value || 'all';
+      let visible = 0;
+      addonRows.forEach((row) => {
+        const matchesQuery = !query || row.innerText.toLowerCase().includes(query);
+        const matchesStatus = status === 'all' || row.dataset.active === status;
+        const show = matchesQuery && matchesStatus;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (addonCounter) addonCounter.innerText = visible;
+      if (addonEmpty) addonEmpty.classList.toggle('hidden', visible !== 0);
+    }
+    addonSearch?.addEventListener('input', applyAddonsFilter, listenerOptions);
+    addonFilterStatus?.addEventListener('change', applyAddonsFilter, listenerOptions);
+
+    // Urutkan ulang baris menurut kriteria terpilih.
+    const addonSorters = {
+      popular: (a, b) => b.dataset.orders - a.dataset.orders,
+      price_asc: (a, b) => (Number(a.dataset.price) || 0) - (Number(b.dataset.price) || 0),
+      price_desc: (a, b) => (Number(b.dataset.price) || 0) - (Number(a.dataset.price) || 0),
+      name: (a, b) => a.dataset.name.localeCompare(b.dataset.name, 'id'),
+    };
+    addonSortBy?.addEventListener('change', () => {
+      const sorter = addonSorters[addonSortBy.value];
+      if (!sorter) return;
+      addonEmpty?.remove();
+      addonRows.sort(sorter).forEach((row) => addonTbody.appendChild(row));
+      if (addonEmpty) addonTbody.appendChild(addonEmpty);
+    }, listenerOptions);
+
+    // Drawer tambah/edit.
+    function openAddonDrawer(mode, row) {
+      const isEdit = mode === 'edit' && row;
+      addonForm.action = isEdit ? row.dataset.updateUrl : addonForm.dataset.storeUrl;
+      addonFormMethod.value = isEdit ? 'PUT' : 'POST';
+      const title = document.getElementById('addonDrawerTitle');
+      const subtitle = document.getElementById('addonDrawerSubtitle');
+      if (title) title.innerText = isEdit ? 'Edit Add-on: ' + row.dataset.name : 'Tambah Add-on Baru';
+      if (subtitle) subtitle.innerText = isEdit
+        ? 'ID: #' + row.dataset.addonId + ' · digunakan di ' + row.dataset.orders + ' pesanan'
+        : 'Add-on baru langsung tersedia saat pemesanan';
+      if (isEdit) {
+        document.getElementById('addonName').value = row.dataset.name;
+        document.getElementById('addonDescription').value = row.dataset.description;
+        document.getElementById('addonPrice').value = row.dataset.price;
+        document.getElementById('addonPublishActive').checked = row.dataset.active === '1';
+        document.getElementById('addonPublishDraft').checked = row.dataset.active !== '1';
+      } else {
+        addonForm.reset();
+        document.getElementById('addonPublishActive').checked = true;
+      }
+      document.getElementById('addonFormErrors').classList.add('hidden');
+      addonDrawerReturnFocus = document.querySelector('[data-addon-drawer-create]');
+      addonDrawerRoot.classList.remove('hidden');
+      requestAnimationFrame(() => addonDrawer.classList.remove('translate-x-full'));
+      document.getElementById('addonName').focus();
+    }
+
+    function closeAddonDrawer() {
+      if (!addonDrawerRoot || addonDrawerRoot.classList.contains('hidden')) return;
+      if (document.activeElement && addonDrawer.contains(document.activeElement)) addonDrawerReturnFocus?.focus();
+      addonDrawer.classList.add('translate-x-full');
+      setTimeout(() => addonDrawerRoot.classList.add('hidden'), 300);
+    }
+
+    document.querySelector('[data-addon-drawer-create]')?.addEventListener('click', () => openAddonDrawer('create'), listenerOptions);
+    document.querySelectorAll('[data-addon-edit]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const row = btn.closest('tr[data-addon-id]');
+        if (row) openAddonDrawer('edit', row);
+      }, listenerOptions);
+    });
+    addonDrawerRoot?.querySelectorAll('[data-addon-drawer-close]').forEach((el) => {
+      el.addEventListener('click', closeAddonDrawer, listenerOptions);
+    });
+
+    // Simpan add-on via fetch agar validasi tetap tampil di dalam drawer.
+    function showAddonFormErrors(errors) {
+      const box = document.getElementById('addonFormErrors');
+      if (!box) return;
+      box.replaceChildren();
+      const list = errors && typeof errors === 'object' && Object.keys(errors).length ? errors : { form: ['Gagal menyimpan add-on, coba lagi.'] };
+      Object.entries(list).forEach(([field, messages]) => {
+        messages.forEach((message) => {
+          const p = document.createElement('p');
+          p.className = 'font-label-md font-semibold text-label-md';
+          p.innerText = field.charAt(0).toUpperCase() + field.slice(1) + ': ' + message;
+          box.appendChild(p);
+        });
+      });
+      box.classList.remove('hidden');
+      box.scrollIntoView({ block: 'nearest' });
+    }
+
+    addonForm?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const saveBtn = document.getElementById('btnSaveAddon');
+      saveBtn.disabled = true;
+      try {
+        const res = await fetch(addonForm.action, {
+          method: 'POST',
+          headers: { 'X-Requested-With': 'XMLHttpRequest', Accept: 'application/json' },
+          body: new FormData(addonForm),
+        });
+        if (res.ok) {
+          showToast('Add-on berhasil disimpan');
+          setTimeout(() => location.reload(), 700);
+          return;
+        }
+        let json = null;
+        try {
+          json = await res.json();
+        } catch {}
+        showAddonFormErrors(json?.errors);
+      } catch {
+        showAddonFormErrors(null);
+      } finally {
+        saveBtn.disabled = false;
+      }
+    }, listenerOptions);
+
+    // Toggle aktif/nonaktif via fetch — update row & KPI tanpa reload.
+    document.querySelectorAll('form[data-addon-toggle]').forEach((form) => {
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const button = form.querySelector('button[type="submit"]');
+        if (!button || button.disabled) return;
+        button.disabled = true;
+        try {
+          const res = await fetch(form.action, {
+            method: 'POST',
+            headers: { 'X-Requested-With': 'XMLHttpRequest', Accept: 'application/json' },
+            body: new FormData(form),
+          });
+          const json = await res.json();
+          if (!res.ok) throw new Error();
+          const row = form.closest('tr[data-addon-id]');
+          const active = Boolean(json.is_active);
+          row.dataset.active = active ? '1' : '0';
+          const track = form.querySelector('span.relative');
+          const knob = track.querySelector('span');
+          const label = form.querySelector('span.font-label-sm');
+          track.classList.toggle('bg-secondary', active);
+          track.classList.toggle('bg-surface-container-highest', !active);
+          knob.classList.toggle('translate-x-4', active);
+          label.innerText = active ? 'Aktif' : 'Nonaktif';
+          label.classList.toggle('text-secondary', active);
+          label.classList.toggle('text-on-surface-variant', !active);
+          form.setAttribute('title', active ? 'Nonaktifkan add-on' : 'Aktifkan add-on');
+          const nameSpan = row.querySelector('td span.font-label-lg');
+          if (nameSpan) {
+            nameSpan.classList.toggle('text-on-surface', active);
+            nameSpan.classList.toggle('text-on-surface-variant', !active);
+          }
+          const descSpan = row.querySelector('td span.line-clamp-1');
+          const priceCell = row.querySelector('td .font-mono');
+          [descSpan, priceCell].forEach((el) => {
+            if (!el) return;
+            el.classList.toggle('text-on-surface-variant', active);
+            el.classList.toggle('text-outline', !active);
+          });
+          const tableRows = Array.from(document.querySelectorAll('#addonsTable tbody tr[data-addon-id]'));
+          const activeCount = tableRows.filter((r) => r.dataset.active === '1').length;
+          document.getElementById('addonsActiveBadge').innerText = activeCount + ' Add-on Aktif';
+          document.getElementById('addonsActiveCount').innerText = activeCount;
+          document.getElementById('addonsInactiveCount').innerText = tableRows.length - activeCount;
+          applyAddonsFilter();
+          showToast(json.message);
+        } catch {
+          showToast('Gagal mengubah status add-on');
+        } finally {
+          button.disabled = false;
+        }
+      }, listenerOptions);
+    });
+
+    // Modal konfirmasi hapus.
+    let addonDeleteUrl = '';
+    function openAddonDelete(row) {
+      addonDeleteUrl = row.dataset.deleteUrl;
+      document.getElementById('addonDeleteName').innerText = '"' + row.dataset.name + '"';
+      const count = Number(row.dataset.orders);
+      document.getElementById('addonDeleteImpact').innerText = count > 0
+        ? count + ' pesanan terkait menggunakan add-on ini.'
+        : 'Belum ada pesanan yang memakai add-on ini.';
+      addonDeleteReturnFocus = row;
+      addonDeleteModal.classList.remove('hidden');
+      addonDeleteModal.classList.add('flex');
+      document.getElementById('btnCancelAddonDelete')?.focus();
+    }
+
+    function closeAddonDelete() {
+      if (!addonDeleteModal || addonDeleteModal.classList.contains('hidden')) return;
+      addonDeleteModal.classList.add('hidden');
+      addonDeleteModal.classList.remove('flex');
+      addonDeleteReturnFocus?.focus();
+      addonDeleteReturnFocus = null;
+    }
+
+    document.querySelectorAll('[data-addon-delete]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const row = btn.closest('tr[data-addon-id]');
+        if (row) openAddonDelete(row);
+      }, listenerOptions);
+    });
+    addonDeleteModal?.querySelectorAll('[data-addon-delete-close]').forEach((el) => {
+      el.addEventListener('click', closeAddonDelete, listenerOptions);
+    });
+
+    document.getElementById('addonDeleteForm')?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const confirmBtn = document.getElementById('btnConfirmAddonDelete');
+      confirmBtn.disabled = true;
+      try {
+        const res = await fetch(addonDeleteUrl, {
+          method: 'POST',
+          headers: { 'X-Requested-With': 'XMLHttpRequest', Accept: 'application/json' },
+          body: new FormData(event.currentTarget),
+        });
+        if (res.ok) {
+          closeAddonDelete();
+          showToast('Add-on berhasil dihapus');
+          setTimeout(() => location.reload(), 700);
+          return;
+        }
+        let json = null;
+        try {
+          json = await res.json();
+        } catch {}
+        closeAddonDelete();
+        showToast(json?.errors?.addon?.[0] || json?.message || 'Add-on tidak dapat dihapus.');
+      } catch {
+        showToast('Gagal menghapus add-on, coba lagi.');
+      } finally {
+        confirmBtn.disabled = false;
+      }
+    }, listenerOptions);
+
+    // Escape menutup modal hapus lalu drawer.
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape') return;
+      if (addonDeleteModal && !addonDeleteModal.classList.contains('hidden')) {
+        closeAddonDelete();
+        return;
+      }
+      if (addonDrawerRoot && !addonDrawerRoot.classList.contains('hidden')) closeAddonDrawer();
+    }, listenerOptions);
+  }
 }
 
 document.addEventListener('DOMContentLoaded', initializeAdminPage);

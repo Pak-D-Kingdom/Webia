@@ -38,6 +38,35 @@ class DashboardTest extends TestCase
             ->assertViewHas('activeOrder', fn (?WebiaOrder $order): bool => $order?->is($activeOrder));
     }
 
+    public function test_customer_dashboard_shows_delivered_site_card_with_real_url(): void
+    {
+        $customer = User::factory()->create();
+        WebiaOrder::factory()->for($customer)->create([
+            'order_number' => 'WEB-SITE',
+            'status' => 'paid',
+            'delivery_status' => 'delivered',
+            'site_slug' => 'kopi-kawan',
+        ]);
+
+        $this->actingAs($customer)
+            ->get(route('dashboard'))
+            ->assertOk()
+            ->assertSee('Website selesai')
+            ->assertSee('kopi-kawan');
+    }
+
+    public function test_customer_portal_shell_shows_sidebar_navigation_after_login(): void
+    {
+        $customer = User::factory()->create();
+
+        $this->actingAs($customer)
+            ->get(route('dashboard'))
+            ->assertOk()
+            ->assertSee('Pesanan Saya', false)
+            ->assertSee('Keluar', false)
+            ->assertDontSee('Pilih Template</a>', false);
+    }
+
     public function test_admin_dashboard_shows_real_operational_counts_and_attention_queue(): void
     {
         $admin = User::factory()->admin()->create();

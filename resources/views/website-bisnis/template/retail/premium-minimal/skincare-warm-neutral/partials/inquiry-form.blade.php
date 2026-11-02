@@ -1,5 +1,5 @@
 @php $compact = $compact ?? false; $p = $fid ?? 'iq'; @endphp
-<form class="form" data-wa-form data-wa-title="Halo {{ $skin['name'] }}, saya ingin inquiry produk." novalidate>
+<form class="form" data-wa-form data-prefill data-wa-title="Halo {{ $skin['name'] }}, saya ingin inquiry & konsultasi produk." novalidate>
     <div class="form__grid">
         <div class="field">
             <label for="{{ $p }}-nama">Nama lengkap <em>*</em></label>

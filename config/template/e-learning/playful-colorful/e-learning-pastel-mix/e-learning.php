@@ -14,17 +14,17 @@ $base = 'website-bisnis/template/e-learning/playful-colorful/e-learning-pastel-m
 return [
 
     'meta' => [
-        'title'       => 'EduPlus — Belajar Jadi Lebih Mudah, Masa Depan Lebih Cerah',
+        'title' => 'EduPlus — Belajar Jadi Lebih Mudah, Masa Depan Lebih Cerah',
         'description' => 'EduPlus: program kursus online berkualitas bersama mentor profesional dan materi interaktif.',
     ],
 
     // Dipakai oleh route() & @include di seluruh view.
     'route_prefix' => 'website-bisnis.template.e-learning.playful-colorful.e-learning-pastel-mix.',
-    'view'         => 'website-bisnis.template.e-learning.playful-colorful.e-learning-pastel-mix',
+    'view' => 'website-bisnis.template.e-learning.playful-colorful.e-learning-pastel-mix',
 
     'assets' => [
-        'css'    => "css/{$base}/e-learning.css",
-        'js'     => "js/{$base}/e-learning.js",
+        'css' => "css/{$base}/e-learning.css",
+        'js' => "js/{$base}/e-learning.js",
         'images' => "images/{$base}",
     ],
 
@@ -34,21 +34,21 @@ return [
     ],
 
     'brand' => [
-        'name'    => 'EduPlus',
+        'name' => 'EduPlus',
         'tagline' => 'Learn Today, Build Tomorrow',
-        'credit'  => '© 2026 WEBIA by D-KREASI. Seluruh hak cipta dilindungi.',
+        'credit' => '© 2026 WEBIA by D-KREASI. Seluruh hak cipta dilindungi.',
     ],
 
     'contact' => [
-        'address'  => 'Jl. Pendidikan No. 88, Bandung, Jawa Barat',
-        'email'    => 'hello@eduplus.id',
-        'hours'    => 'Sen - Jum 08:00 - 17:00',
-        'phone'    => '+62 812 3456 7890',
+        'address' => 'Jl. Pendidikan No. 88, Bandung, Jawa Barat',
+        'email' => 'hello@eduplus.id',
+        'hours' => 'Sen - Jum 08:00 - 17:00',
+        'phone' => '+62 812 3456 7890',
         'phone_e164' => '+6281234567890',
         'whatsapp' => '6281234567890',
         'whatsapp_text' => 'Halo EduPlus, saya ingin bertanya tentang program kursus.',
         // Tujuan semua form kirim/submit (kecuali login). Format internasional tanpa +/0 di depan.
-        'form_whatsapp'         => '62895630300345',
+        'form_whatsapp' => '62895630300345',
         'form_whatsapp_display' => '0895630300345',
     ],
 
@@ -80,7 +80,7 @@ return [
         'stats' => [
             ['icon' => 'bi-award-fill',   'tone' => 'pink',   'title' => '100+',     'text' => 'Kursus Pilihan'],
             ['icon' => 'bi-person-fill',  'tone' => 'blue',   'title' => 'Mentor',   'text' => 'Profesional'],
-            ['icon' => 'bi-clock-fill',   'tone' => 'rose',   'title' => 'Fleksibel','text' => 'Belajar Kapan Saja'],
+            ['icon' => 'bi-clock-fill',   'tone' => 'rose',   'title' => 'Fleksibel', 'text' => 'Belajar Kapan Saja'],
             ['icon' => 'bi-display-fill', 'tone' => 'violet', 'title' => 'Online',   'text' => 'Akses di Semua Perangkat'],
         ],
     ],
@@ -89,38 +89,38 @@ return [
     'popular' => [
         ['title' => 'Web Development', 'category' => 'web',       'tone' => 'blue',   'image' => 'pop-web.jpg'],
         ['title' => 'UI/UX Design',    'category' => 'uiux',      'tone' => 'yellow', 'image' => 'pop-uiux.jpg'],
-        ['title' => 'Digital Marketing','category' => 'marketing','tone' => 'violet', 'image' => 'pop-marketing.jpg'],
+        ['title' => 'Digital Marketing', 'category' => 'marketing', 'tone' => 'violet', 'image' => 'pop-marketing.jpg'],
         ['title' => 'Data Science',    'category' => 'data',      'tone' => 'green',  'image' => 'pop-data.jpg'],
         ['title' => 'Bahasa Inggris',  'category' => 'english',   'tone' => 'indigo', 'image' => 'pop-english.jpg'],
-        ['title' => 'Business & Finance','category' => 'business','tone' => 'peach',  'image' => 'pop-business.jpg'],
+        ['title' => 'Business & Finance', 'category' => 'business', 'tone' => 'peach',  'image' => 'pop-business.jpg'],
     ],
 
     // image = null → kartu memakai ilustrasi ikon (fallback) sehingga tidak ada gambar rusak.
     'programs' => [
         ['slug' => 'web-development-fundamentals', 'title' => 'Web Development Fundamentals', 'category' => 'web',
-         'level' => 'Beginner', 'modules' => 12, 'hours' => 8, 'price' => 299000, 'image' => 'program-1.jpg', 'tone' => 'blue', 'icon' => 'bi-code-slash'],
+            'level' => 'Beginner', 'modules' => 12, 'hours' => 8, 'price' => 299000, 'image' => 'program-1.jpg', 'tone' => 'blue', 'icon' => 'bi-code-slash'],
         ['slug' => 'ui-ux-design-professional', 'title' => 'UI/UX Design Professional', 'category' => 'uiux',
-         'level' => 'Intermediate', 'modules' => 14, 'hours' => 12, 'price' => 399000, 'image' => 'program-2.jpg', 'tone' => 'pink', 'icon' => 'bi-palette-fill'],
+            'level' => 'Intermediate', 'modules' => 14, 'hours' => 12, 'price' => 399000, 'image' => 'program-2.jpg', 'tone' => 'pink', 'icon' => 'bi-palette-fill'],
         ['slug' => 'digital-marketing-strategy', 'title' => 'Digital Marketing Strategy', 'category' => 'marketing',
-         'level' => 'Beginner', 'modules' => 10, 'hours' => 8, 'price' => 349000, 'image' => 'program-3.jpg', 'tone' => 'mint', 'icon' => 'bi-megaphone-fill'],
+            'level' => 'Beginner', 'modules' => 10, 'hours' => 8, 'price' => 349000, 'image' => 'program-3.jpg', 'tone' => 'mint', 'icon' => 'bi-megaphone-fill'],
         ['slug' => 'data-science-for-beginners', 'title' => 'Data Science for Beginners', 'category' => 'data',
-         'level' => 'Advanced', 'modules' => 16, 'hours' => 10, 'price' => 349000, 'image' => 'program-4.jpg', 'tone' => 'sky', 'icon' => 'bi-bar-chart-fill'],
+            'level' => 'Advanced', 'modules' => 16, 'hours' => 10, 'price' => 349000, 'image' => 'program-4.jpg', 'tone' => 'sky', 'icon' => 'bi-bar-chart-fill'],
         ['slug' => 'english-for-career', 'title' => 'English for Career & Communication', 'category' => 'english',
-         'level' => 'Beginner', 'modules' => 8, 'hours' => 6, 'price' => 249000, 'image' => null, 'tone' => 'violet', 'icon' => 'bi-chat-dots-fill'],
+            'level' => 'Beginner', 'modules' => 8, 'hours' => 6, 'price' => 249000, 'image' => null, 'tone' => 'violet', 'icon' => 'bi-chat-dots-fill'],
         ['slug' => 'business-finance-essentials', 'title' => 'Business & Finance Essentials', 'category' => 'business',
-         'level' => 'Intermediate', 'modules' => 10, 'hours' => 9, 'price' => 329000, 'image' => null, 'tone' => 'peach', 'icon' => 'bi-graph-up-arrow'],
+            'level' => 'Intermediate', 'modules' => 10, 'hours' => 9, 'price' => 329000, 'image' => null, 'tone' => 'peach', 'icon' => 'bi-graph-up-arrow'],
     ],
 
     // Slug guru dipakai oleh jadwal. rating/ulasan mengikuti desain.
     'teachers' => [
         ['slug' => 'rizky', 'name' => 'Rizky Pratama', 'role' => 'Web Developer',    'rating' => '4.9', 'reviews' => '1.2k', 'image' => 'teacher-1.jpg',
-         'bio' => 'Membimbing ratusan pemula membangun website pertama mereka dengan pendekatan praktik langsung.', 'skills' => ['HTML & CSS', 'JavaScript', 'Laravel']],
+            'bio' => 'Membimbing ratusan pemula membangun website pertama mereka dengan pendekatan praktik langsung.', 'skills' => ['HTML & CSS', 'JavaScript', 'Laravel']],
         ['slug' => 'sinta', 'name' => 'Sinta Dewi',    'role' => 'UI/UX Designer',   'rating' => '4.8', 'reviews' => '980',  'image' => 'teacher-2.jpg',
-         'bio' => 'Merancang antarmuka yang ramah pengguna dan mengajarkan proses desain dari riset sampai prototipe.', 'skills' => ['Figma', 'User Research', 'Prototyping']],
+            'bio' => 'Merancang antarmuka yang ramah pengguna dan mengajarkan proses desain dari riset sampai prototipe.', 'skills' => ['Figma', 'User Research', 'Prototyping']],
         ['slug' => 'andi',  'name' => 'Andi Saputra',  'role' => 'Digital Marketer', 'rating' => '4.8', 'reviews' => '756',  'image' => 'teacher-3.jpg',
-         'bio' => 'Berpengalaman menyusun strategi pemasaran digital untuk brand lokal hingga nasional.', 'skills' => ['SEO', 'Social Media', 'Ads']],
+            'bio' => 'Berpengalaman menyusun strategi pemasaran digital untuk brand lokal hingga nasional.', 'skills' => ['SEO', 'Social Media', 'Ads']],
         ['slug' => 'dewi',  'name' => 'Dewi Lestari',  'role' => 'Data Scientist',   'rating' => '4.9', 'reviews' => '1.1k', 'image' => 'teacher-4.jpg',
-         'bio' => 'Mengubah data menjadi insight dengan penjelasan yang sederhana dan mudah dipraktikkan.', 'skills' => ['Python', 'Statistik', 'Visualisasi']],
+            'bio' => 'Mengubah data menjadi insight dengan penjelasan yang sederhana dan mudah dipraktikkan.', 'skills' => ['Python', 'Statistik', 'Visualisasi']],
     ],
 
     // Tiga grup: today, week, upcoming. 'label' opsional (hari / tanggal).
@@ -152,11 +152,11 @@ return [
 
     'plans' => [
         ['key' => 'basic',   'name' => 'Basic',   'tagline' => 'Akses 1 kursus',                 'price' => 199000, 'period' => '/bulan', 'popular' => false, 'tone' => 'blue',
-         'features' => ['Akses 1 kursus pilihan', 'Materi video & modul', 'Forum diskusi kelas', 'Akses di semua perangkat']],
+            'features' => ['Akses 1 kursus pilihan', 'Materi video & modul', 'Forum diskusi kelas', 'Akses di semua perangkat']],
         ['key' => 'pro',     'name' => 'Pro',     'tagline' => 'Akses semua kursus dasar',       'price' => 349000, 'period' => '/bulan', 'popular' => true,  'tone' => 'green',
-         'features' => ['Semua kursus level dasar', 'Materi video & modul', 'Forum diskusi kelas', 'Kelas live bersama mentor', 'Akses di semua perangkat']],
-        ['key' => 'premium', 'name' => 'Premium', 'tagline' => 'Akses semua kursus + sertifikat','price' => 599000, 'period' => '/bulan', 'popular' => false, 'tone' => 'violet',
-         'features' => ['Semua kursus tanpa batas', 'Sertifikat kelulusan', 'Kelas live bersama mentor', 'Review proyek dari mentor', 'Akses di semua perangkat']],
+            'features' => ['Semua kursus level dasar', 'Materi video & modul', 'Forum diskusi kelas', 'Kelas live bersama mentor', 'Akses di semua perangkat']],
+        ['key' => 'premium', 'name' => 'Premium', 'tagline' => 'Akses semua kursus + sertifikat', 'price' => 599000, 'period' => '/bulan', 'popular' => false, 'tone' => 'violet',
+            'features' => ['Semua kursus tanpa batas', 'Sertifikat kelulusan', 'Kelas live bersama mentor', 'Review proyek dari mentor', 'Akses di semua perangkat']],
     ],
 
     // done = modul sudah diselesaikan. Progres dihitung otomatis di view.
@@ -179,43 +179,43 @@ return [
     ],
 
     'registration' => [
-        'title'  => 'Mulai Perjalanan Belajarmu Sekarang!',
-        'desc'   => 'Daftar sekarang dan dapatkan akses ke semua kursus premium kami.',
-        'cta'    => 'Daftar Sekarang',
+        'title' => 'Mulai Perjalanan Belajarmu Sekarang!',
+        'desc' => 'Daftar sekarang dan dapatkan akses ke semua kursus premium kami.',
+        'cta' => 'Daftar Sekarang',
         // Isi dengan URL POST dari backend. null = mode demo (validasi di sisi klien saja).
         'action' => null,
-        'slots'  => ['Pagi (09:00 - 10:30)', 'Siang (13:00 - 14:30)', 'Sore (16:00 - 17:30)', 'Malam (19:00 - 20:30)'],
-        'perks'  => ['Akses ke kelas live & rekaman', 'Mentor profesional di setiap kelas', 'Sertifikat untuk paket Premium'],
+        'slots' => ['Pagi (09:00 - 10:30)', 'Siang (13:00 - 14:30)', 'Sore (16:00 - 17:30)', 'Malam (19:00 - 20:30)'],
+        'perks' => ['Akses ke kelas live & rekaman', 'Mentor profesional di setiap kelas', 'Sertifikat untuk paket Premium'],
     ],
 
     'member' => [
         'title' => 'Member Area',
-        'desc'  => 'Akses materi kursus, sertifikat, dan fitur eksklusif lainnya.',
-        'cta'   => 'Masuk ke Member Area',
+        'desc' => 'Akses materi kursus, sertifikat, dan fitur eksklusif lainnya.',
+        'cta' => 'Masuk ke Member Area',
         'action' => null,
         'benefits' => [
             ['icon' => 'bi-play-circle-fill', 'tone' => 'blue',   'title' => 'Materi Kursus',  'text' => 'Lanjutkan video dan modul kapan saja, di perangkat apa saja.'],
             ['icon' => 'bi-patch-check-fill', 'tone' => 'green',  'title' => 'Sertifikat',     'text' => 'Unduh sertifikat kelulusan setelah menyelesaikan kursus.'],
-            ['icon' => 'bi-stars',            'tone' => 'violet', 'title' => 'Fitur Eksklusif','text' => 'Kelas live, review proyek, dan komunitas belajar khusus member.'],
+            ['icon' => 'bi-stars',            'tone' => 'violet', 'title' => 'Fitur Eksklusif', 'text' => 'Kelas live, review proyek, dan komunitas belajar khusus member.'],
         ],
     ],
 
     'ai' => [
-        'name'  => 'AI Learning Assistant',
+        'name' => 'AI Learning Assistant',
         'intro' => 'Tanya apa saja tentang kursus, materi, atau jadwal kelas, aku siap membantu!',
         'placeholder' => 'Tulis pertanyaan Anda...',
         'fallback' => 'Maaf, aku belum punya jawaban untuk itu. Kamu bisa menghubungi tim kami lewat WhatsApp ya!',
         'faq' => [
             ['q' => 'Kursus apa yang cocok untuk pemula?', 'keywords' => ['pemula', 'cocok', 'mulai', 'beginner'],
-             'a' => 'Untuk pemula, mulai dari Web Development Fundamentals, Digital Marketing Strategy, atau English for Career. Semuanya berlevel Beginner dan tidak butuh pengalaman.'],
+                'a' => 'Untuk pemula, mulai dari Web Development Fundamentals, Digital Marketing Strategy, atau English for Career. Semuanya berlevel Beginner dan tidak butuh pengalaman.'],
             ['q' => 'Bagaimana cara mendapatkan sertifikat?', 'keywords' => ['sertifikat', 'certificate'],
-             'a' => 'Selesaikan seluruh modul dan proyek akhir pada kursusmu. Sertifikat tersedia untuk paket Premium dan bisa diunduh di Member Area.'],
+                'a' => 'Selesaikan seluruh modul dan proyek akhir pada kursusmu. Sertifikat tersedia untuk paket Premium dan bisa diunduh di Member Area.'],
             ['q' => 'Kapan jadwal kelas berikutnya?', 'keywords' => ['jadwal', 'kelas', 'kapan', 'jam'],
-             'a' => 'Jadwal kelas hari ini dimulai pukul 09:00. Kamu bisa melihat jadwal hari ini, minggu ini, dan mendatang di halaman Schedules.'],
+                'a' => 'Jadwal kelas hari ini dimulai pukul 09:00. Kamu bisa melihat jadwal hari ini, minggu ini, dan mendatang di halaman Schedules.'],
             ['q' => 'Apa saja metode pembelajarannya?', 'keywords' => ['metode', 'belajar', 'cara', 'video', 'live'],
-             'a' => 'Kamu belajar lewat video interaktif, modul latihan, kelas live bersama mentor, dan proyek akhir. Semua bisa diakses online kapan saja.'],
+                'a' => 'Kamu belajar lewat video interaktif, modul latihan, kelas live bersama mentor, dan proyek akhir. Semua bisa diakses online kapan saja.'],
             ['q' => 'Berapa harga paketnya?', 'keywords' => ['harga', 'biaya', 'paket', 'bayar', 'price'],
-             'a' => 'Ada tiga paket: Basic Rp 199.000, Pro Rp 349.000, dan Premium Rp 599.000 per bulan. Detailnya ada di halaman Pricing.'],
+                'a' => 'Ada tiga paket: Basic Rp 199.000, Pro Rp 349.000, dan Premium Rp 599.000 per bulan. Detailnya ada di halaman Pricing.'],
         ],
         'quick' => [0, 1, 2, 3], // indeks faq yang tampil sebagai chip
     ],

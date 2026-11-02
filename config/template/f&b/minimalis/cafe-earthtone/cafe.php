@@ -1,13 +1,14 @@
 <?php
+
 // Satu sumber data konten. Nanti tinggal ganti dengan query database.
 return [
-    'name'       => 'Origins Cafe',
-    'tagline'    => 'Coffee • Food • Space',
-    'phone'      => '+62 895-6303-00345',
-    'whatsapp'   => '62895630300345',   // tujuan semua pesan form + tombol WhatsApp (format internasional, tanpa 0 / +)
-    'email'      => 'hello@originscafe.id',
-    'address'    => 'Jl. Raya Dharmahusada No. 88',
-    'city'       => 'Surabaya, Jawa Timur',
+    'name' => 'Origins Cafe',
+    'tagline' => 'Coffee • Food • Space',
+    'phone' => '+62 895-6303-00345',
+    'whatsapp' => '62895630300345',   // tujuan semua pesan form + tombol WhatsApp (format internasional, tanpa 0 / +)
+    'email' => 'hello@originscafe.id',
+    'address' => 'Jl. Raya Dharmahusada No. 88',
+    'city' => 'Surabaya, Jawa Timur',
     'city_short' => 'Surabaya',
 
     // [label, nama icon di partials/icons.blade.php, url]
@@ -15,11 +16,11 @@ return [
 
     // [label, nama route (home|menu|reservasi), anchor]
     'nav' => [['Beranda', 'home', '#beranda'], ['Menu', 'menu', ''], ['Produk & Layanan', 'home', '#layanan'],
-              ['Promo', 'home', '#promo'], ['Reservasi', 'reservasi', ''], ['Lokasi', 'home', '#lokasi'], ['FAQ AI', 'home', '#faq']],
+        ['Promo', 'home', '#promo'], ['Reservasi', 'reservasi', ''], ['Lokasi', 'home', '#lokasi'], ['FAQ AI', 'home', '#faq']],
 
     // Menu navbar (bagian atas). Menu & Reservasi sengaja tidak ada: dibuka lewat tombol di beranda.
     'nav_top' => [['Beranda', 'home', '#beranda'], ['Produk & Layanan', 'home', '#layanan'], ['Promo', 'home', '#promo'],
-                  ['Lokasi', 'home', '#lokasi'], ['FAQ AI', 'home', '#faq']],
+        ['Lokasi', 'home', '#lokasi'], ['FAQ AI', 'home', '#faq']],
 
     // ===== PROMO =====
     // promo_mode     : 'slider' = tampil bergantian | 'grid' = semua promo tampil bersamaan
@@ -27,7 +28,7 @@ return [
     // promo_autoplay : (slider) pindah otomatis tiap N milidetik. 0 = mati.
     // Tambah / hapus promo cukup dengan menambah / menghapus satu baris di 'promos'.
     // tone: dark | brown | sand.  img = foto di folder gambar (opsional).  icon = emoji (opsional).
-    'promo_mode'     => 'slider',
+    'promo_mode' => 'slider',
     'promo_per_view' => 2,
     'promo_autoplay' => 5000,
     'promos' => [
@@ -40,8 +41,8 @@ return [
 
     // [icon, judul, deskripsi]
     'features' => [['bean', 'Kopi Premium', 'Biji kopi pilihan'], ['chef', 'Makanan Lezat', 'Menu fresh setiap hari'],
-                   ['leaf', 'Tempat Nyaman', 'Modern & cozy'], ['wifi', 'Wi-Fi Gratis', 'Untuk bekerja & belajar'],
-                   ['users', 'Ruang Acara', 'Meeting & private event']],
+        ['leaf', 'Tempat Nyaman', 'Modern & cozy'], ['wifi', 'Wi-Fi Gratis', 'Untuk bekerja & belajar'],
+        ['users', 'Ruang Acara', 'Meeting & private event']],
 
     'categories' => ['all' => 'Semua', 'kopi' => 'Kopi', 'nonkopi' => 'Minuman Non-Kopi', 'makanan' => 'Makanan', 'snack' => 'Snack'],
 
@@ -60,12 +61,12 @@ return [
 
     // [icon, judul, deskripsi, foto]
     'services' => [['utensils', 'Dine In', 'Makan di tempat suasana nyaman', 'dine-in.jpg'],
-                   ['bag', 'Take Away', 'Pesan praktis bawa pulang', 'take-away.jpg'],
-                   ['cake', 'Catering', 'Pesanan kue & menu untuk acara', 'catering.jpg'],
-                   ['sparkles', 'Private Event', 'Ruangan untuk meeting & gathering', 'private-event.jpg']],
+        ['bag', 'Take Away', 'Pesan praktis bawa pulang', 'take-away.jpg'],
+        ['cake', 'Catering', 'Pesanan kue & menu untuk acara', 'catering.jpg'],
+        ['sparkles', 'Private Event', 'Ruangan untuk meeting & gathering', 'private-event.jpg']],
 
-    'hours'  => ['Senin – Kamis' => '08.00 – 22.00', 'Jumat – Sabtu' => '08.00 – 23.00', 'Minggu' => '09.00 – 22.00'],
-    'times'  => ['08.00', '10.00', '12.00', '14.00', '16.00', '18.00', '20.00'],
+    'hours' => ['Senin – Kamis' => '08.00 – 22.00', 'Jumat – Sabtu' => '08.00 – 23.00', 'Minggu' => '09.00 – 22.00'],
+    'times' => ['08.00', '10.00', '12.00', '14.00', '16.00', '18.00', '20.00'],
     'guests' => ['1', '2', '3', '4', '5', '6', '8', '10+'],
     'faq_chips' => ['menu' => 'Lihat Menu', 'promo' => 'Cek Promo', 'reservasi' => 'Cara Reservasi', 'jam' => 'Jam Buka', 'lokasi' => 'Lokasi'],
 ];

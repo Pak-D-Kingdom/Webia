@@ -23,11 +23,10 @@
                     </ul>
                 </div>
 
-                <form class="gl-appt__mini" data-gl-wa-mini action="https://wa.me/{{ $clinic['contact']['whatsapp'] }}" method="get" target="_blank" novalidate>
+                <form class="gl-appt__mini" action="{{ route('klinik-kecantikan.appointment') }}" method="get">
                     <div class="gl-field">
                         <label for="gl-mini-nama">Nama lengkap</label>
                         <input id="gl-mini-nama" type="text" name="nama" placeholder="Nama Anda" autocomplete="name" required>
-                        <p class="gl-field__error" data-error-for="nama" role="alert"></p>
                     </div>
                     <div class="gl-field">
                         <label for="gl-mini-layanan">Layanan</label>
@@ -37,18 +36,11 @@
                                 <option value="{{ $s['slug'] }}">{{ $s['name'] }}</option>
                             @endforeach
                         </select>
-                        <p class="gl-field__error" data-error-for="layanan" role="alert"></p>
-                    </div>
-                    <div class="gl-field">
-                        <label for="gl-mini-tanggal">Tanggal</label>
-                        <input id="gl-mini-tanggal" type="date" name="tanggal" min="{{ $min }}" required>
-                        <p class="gl-field__error" data-error-for="tanggal" role="alert"></p>
                     </div>
                     <button type="submit" class="gl-btn gl-btn--primary gl-btn--block">
-                        <svg class="gl-ic" aria-hidden="true"><use href="#gl-i-whatsapp"/></svg>
-                        Booking Sekarang via WhatsApp
+                        <svg class="gl-ic" aria-hidden="true"><use href="#gl-i-calendar"/></svg>
+                        Lanjut Booking
                     </button>
-                    <p class="gl-form__status" data-gl-form-status role="status" hidden></p>
                 </form>
             </div>
         </div>

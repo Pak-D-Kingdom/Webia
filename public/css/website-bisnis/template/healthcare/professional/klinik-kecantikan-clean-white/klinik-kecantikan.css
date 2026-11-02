@@ -669,8 +669,8 @@ body.gl-modal-open { overflow: hidden; }
     .gl-pagehero__inner { grid-template-columns: 1.1fr 0.9fr; }
     .gl-pagehero__visual { height: 230px; }
     .gl-pagehero__visual--gallery { height: auto; gap: 0.6rem; }
-    .gl-pagehero__visual--gallery img:nth-child(even) { transform: translateY(14px); }
     .gl-appt__box { grid-template-columns: 1.1fr 0.9fr; }
+    .gl-pagehero__visual--gallery img:nth-child(even) { transform: translateY(14px); }
     .gl-footer__grid { grid-template-columns: 1.4fr 1fr 1fr; }
     .gl-footer__brand { grid-column: auto; }
     .gl-panel { grid-template-columns: minmax(170px, 0.8fr) 1.4fr; }
@@ -678,8 +678,8 @@ body.gl-modal-open { overflow: hidden; }
 }
 
 @media (min-width: 1024px) {
-    .gl-split { grid-template-columns: minmax(230px, 280px) 1fr; gap: 2rem; }
     .gl-duo { grid-template-columns: 1.15fr 1fr; }
+    .gl-split { grid-template-columns: minmax(230px, 280px) 1fr; gap: 2rem; }
     .gl-panel { grid-template-columns: 1fr; align-content: start; }
     .gl-location.gl-panel { grid-template-columns: minmax(150px, 0.9fr) 1fr; }
     .gl-schedule.gl-panel { grid-template-columns: minmax(160px, 0.75fr) 1.5fr; }

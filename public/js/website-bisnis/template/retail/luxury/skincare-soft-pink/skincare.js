@@ -50,22 +50,7 @@
             burger.setAttribute('aria-expanded', String(open));
         });
     }
-    $$('[data-dd]').forEach(function (dd) {
-        var btn = $('[data-dd-toggle]', dd);
-        btn.addEventListener('click', function (e) {
-            e.stopPropagation();
-            var open = dd.classList.toggle('is-open');
-            btn.setAttribute('aria-expanded', String(open));
-        });
-    });
-    function closeDropdowns() {
-        $$('[data-dd]').forEach(function (dd) {
-            dd.classList.remove('is-open');
-            $('[data-dd-toggle]', dd).setAttribute('aria-expanded', 'false');
-        });
-    }
     document.addEventListener('click', function (e) {
-        if (!e.target.closest('[data-dd]')) { closeDropdowns(); }
         if (menu && burger && !e.target.closest('[data-nav-menu]') && !e.target.closest('[data-nav-toggle]')) { closeMenu(); }
     });
 
@@ -90,7 +75,7 @@
         if (next > p.stock) { toast('Stok ' + p.name + ' tersisa ' + p.stock + ' unit.'); return; }
         cart[id] = next;
         saveCart();
-        toast(p.name + ' ditambahkan ke keranjang.');
+        if (next === 1) { toast(p.name + ' ditambahkan ke keranjang.'); }
     }
 
     function renderCart() {
@@ -100,6 +85,17 @@
         $$('[data-cart-count]').forEach(function (b) { b.textContent = count; b.hidden = count === 0; });
         $$('[data-cart-qty]').forEach(function (b) { b.textContent = count; });
         $$('[data-cart-total-text]').forEach(function (b) { b.textContent = rupiah(sub); });
+
+        // tombol "+ Keranjang" <-> stepper jumlah di setiap kartu/baris/produk
+        $$('[data-addctl]').forEach(function (ctl) {
+            var id = ctl.getAttribute('data-addctl'), qty = cart[id] || 0, p = BY_ID[id];
+            var addBtn = $('[data-add]', ctl), step = $('[data-stepper]', ctl);
+            addBtn.hidden = qty > 0;
+            step.hidden = qty === 0;
+            $('[data-step-qty]', step).textContent = qty;
+            var inc = $('[data-cart-inc]', step);
+            if (inc && p) { inc.disabled = qty >= p.stock; }
+        });
 
         var min = D.freeShipping || 0;
         var left = Math.max(0, min - sub);
@@ -238,7 +234,9 @@
 
     /* ---------- inquiry -> WhatsApp ---------- */
     $$('[data-inquiry-form]').forEach(function (form) {
-        var t = param('topic'), p = param('product');
+        var t = param('topic'), p = param('product'), n = param('name'), m = param('message');
+        if (n && form.elements.name) { form.elements.name.value = n; }
+        if (m && form.elements.message) { form.elements.message.value = m; }
         if (t && form.elements.topic) { form.elements.topic.value = t; }
         if (p && form.elements.product) { form.elements.product.value = p; }
         form.addEventListener('submit', function (e) {
@@ -357,8 +355,16 @@
         var t;
         if ((t = e.target.closest('[data-add]'))) { addToCart(Number(t.getAttribute('data-add'))); return; }
         if ((t = e.target.closest('[data-wish]'))) { toggleWish(Number(t.getAttribute('data-wish'))); return; }
-        if ((t = e.target.closest('[data-cart-inc]'))) { var id = t.getAttribute('data-cart-inc'); if (cart[id] < BY_ID[id].stock) { cart[id]++; saveCart(); } return; }
-        if ((t = e.target.closest('[data-cart-dec]'))) { var d = t.getAttribute('data-cart-dec'); cart[d]--; if (cart[d] <= 0) { delete cart[d]; } saveCart(); return; }
+        if ((t = e.target.closest('[data-cart-inc]'))) {
+            var id = t.getAttribute('data-cart-inc'), p = BY_ID[id];
+            if (p && (cart[id] || 0) < p.stock) { cart[id] = (cart[id] || 0) + 1; saveCart(); } else if (p) { toast('Stok ' + p.name + ' tersisa ' + p.stock + ' unit.'); }
+            return;
+        }
+        if ((t = e.target.closest('[data-cart-dec]'))) {
+            var d = t.getAttribute('data-cart-dec');
+            if (cart[d]) { cart[d]--; if (cart[d] <= 0) { delete cart[d]; } saveCart(); }
+            return;
+        }
         if ((t = e.target.closest('[data-cart-rm]'))) { delete cart[t.getAttribute('data-cart-rm')]; saveCart(); return; }
         if (e.target.closest('[data-cart-clear]')) { cart = {}; saveCart(); return; }
         if (e.target.closest('[data-cart-open]')) { openDrawer(); return; }
@@ -370,7 +376,7 @@
     });
     document.addEventListener('keydown', function (e) {
         if (e.key !== 'Escape') { return; }
-        closeDrawer(); closeChat(); closeDropdowns(); closeMenu();
+        closeDrawer(); closeChat(); closeMenu();
     });
 
     /* ---------- init ---------- */

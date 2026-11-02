@@ -25,7 +25,32 @@ class WebiaOrderTest extends TestCase
             ->get(route('orders.create', ['package' => 'pixel']))
             ->assertOk()
             ->assertSee('Pixel')
-            ->assertSee('Buat pesanan');
+            ->assertSee('Buat Pesanan');
+    }
+
+    public function test_guest_can_open_template_order_form_without_preselected_package(): void
+    {
+        WebiaPackage::factory()->create(['name' => 'Pixel']);
+        $template = WebiaTemplate::create([
+            'name' => 'Cafe Earthtone',
+            'slug' => 'cafe-earthtone',
+            'category_slug' => 'fnb',
+            'category_label' => 'F&B',
+            'business_types' => ['Cafe'],
+            'design_style' => 'Earthtone',
+            'description' => 'Template cafe.',
+            'is_active' => true,
+        ]);
+
+        $response = $this->get(route('orders.create', ['template' => $template]));
+
+        $response
+            ->assertOk()
+            ->assertSee('Cafe Earthtone')
+            ->assertSee('Pixel')
+            ->assertSee('name="package_id"', false)
+            ->assertSee('Pilih satu paket untuk melanjutkan pemesanan.');
+        $this->assertSame(0, preg_match('/name="package_id"[^>]*checked/', (string) $response->getContent()));
     }
 
     public function test_customer_can_create_order_from_active_package(): void
@@ -93,6 +118,68 @@ class WebiaOrderTest extends TestCase
         $this->actingAs($customer)
             ->get(route('orders.show', $otherOrder))
             ->assertNotFound();
+    }
+
+    public function test_customer_can_filter_orders_by_group(): void
+    {
+        $customer = User::factory()->create();
+        WebiaOrder::factory()->for($customer)->create(['order_number' => 'WEB-PENDING', 'status' => 'awaiting_payment']);
+        WebiaOrder::factory()->for($customer)->create(['order_number' => 'WEB-VERIFY', 'status' => 'payment_uploaded']);
+        WebiaOrder::factory()->for($customer)->create(['order_number' => 'WEB-WORKING', 'status' => 'paid', 'delivery_status' => 'in_progress']);
+        WebiaOrder::factory()->for($customer)->create(['order_number' => 'WEB-DONE', 'status' => 'paid', 'delivery_status' => 'delivered']);
+
+        $this->actingAs($customer)->get(route('orders.index', ['filter' => 'menunggu_pembayaran']))
+            ->assertOk()
+            ->assertSee('WEB-PENDING')
+            ->assertDontSee('WEB-VERIFY')
+            ->assertDontSee('WEB-WORKING')
+            ->assertDontSee('WEB-DONE');
+
+        $this->actingAs($customer)->get(route('orders.index', ['filter' => 'menunggu_verifikasi']))
+            ->assertOk()
+            ->assertSee('WEB-VERIFY')
+            ->assertDontSee('WEB-PENDING');
+
+        $this->actingAs($customer)->get(route('orders.index', ['filter' => 'dikerjakan']))
+            ->assertOk()
+            ->assertSee('WEB-WORKING')
+            ->assertDontSee('WEB-DONE');
+
+        $this->actingAs($customer)->get(route('orders.index', ['filter' => 'selesai']))
+            ->assertOk()
+            ->assertSee('WEB-DONE')
+            ->assertDontSee('WEB-WORKING');
+    }
+
+    public function test_order_form_shows_selected_template_name(): void
+    {
+        $customer = User::factory()->create();
+        $package = WebiaPackage::factory()->create();
+        $template = WebiaTemplate::create([
+            'name' => 'Cafe Earthtone',
+            'slug' => 'fnb-cafe-minimalis',
+            'category_slug' => 'fnb',
+            'category_label' => 'F&B',
+            'business_types' => ['Cafe & Eatery'],
+            'design_style' => 'Minimalist',
+            'description' => 'Template cafe.',
+            'is_active' => true,
+        ]);
+
+        $this->actingAs($customer)
+            ->get(route('orders.create', ['template' => $template->id, 'package' => $package->slug]))
+            ->assertOk()
+            ->assertSee('Cafe Earthtone');
+    }
+
+    public function test_order_detail_shows_verification_state(): void
+    {
+        $order = WebiaOrder::factory()->create(['status' => 'payment_uploaded']);
+
+        $this->actingAs($order->user)
+            ->get(route('orders.show', $order))
+            ->assertOk()
+            ->assertSee('Menunggu verifikasi');
     }
 
     public function test_customer_can_upload_payment_receipt(): void
@@ -205,6 +292,8 @@ class WebiaOrderTest extends TestCase
             'tagline' => 'Rapi dalam 30 menit',
             'whatsapp' => '+62 812-0000-0000',
             'description' => 'Nail art home service.',
+            'address' => 'Jl. Melati No. 8',
+            'city' => 'Bandung',
             'address_url' => 'https://maps.google.com/?q=salon-ayu',
             'instagram' => '@salonayu',
         ])->assertRedirect(route('orders.show', $order));
@@ -212,6 +301,8 @@ class WebiaOrderTest extends TestCase
         $order->refresh();
         $this->assertSame('Salon Ayu', $order->business_data['business_name']);
         $this->assertSame('Nail art home service.', $order->business_data['description']);
+        $this->assertSame('Jl. Melati No. 8', $order->business_data['address']);
+        $this->assertSame('Bandung', $order->business_data['city']);
     }
 
     public function test_business_data_is_rejected_before_payment_verified(): void

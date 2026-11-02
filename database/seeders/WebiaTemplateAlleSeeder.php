@@ -113,5 +113,194 @@ class WebiaTemplateAlleSeeder extends Seeder
                 'sort_order' => 37,
             ]
         );
+
+        WebiaTemplate::updateOrCreate(
+            ['slug' => 'apex-heritage-automotive-elegant'],
+            [
+                'name' => 'APEX Heritage — Elegant Automotive Collection',
+                'category_slug' => 'automotive',
+                'category_label' => 'Automotive',
+                'business_types' => ['Luxury Automotive Dealer'],
+                'design_style' => 'Elegant Luxury',
+                'color_theme' => 'Midnight Onyx & Heritage Gold',
+                'description' => 'Luxury automotive showroom with curated prestige vehicle inventory, vehicle categories and specifications, bespoke financing calculator, trade-in appraisal studio, private test-drive reservations, customer testimonials, FAQs, and AI concierge demo.',
+                'preview_style' => 'preview-apex-heritage-automotive-elegant',
+                'eyebrow' => 'THE PRIVATE AUTOMOTIVE COLLECTION',
+                'headline' => 'Curated Mastery on Wheels.',
+                'tag' => 'Automotive · Luxury Dealer · Elegant Heritage',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/apex-heritage-automotive-elegant',
+                'is_active' => true,
+                'sort_order' => 38,
+            ]
+        );
+
+        WebiaTemplate::updateOrCreate(
+            ['slug' => 'apex-scuderia-automotive-minimalist'],
+            [
+                'name' => 'APEX Scuderia — Minimalist Automotive Collection',
+                'category_slug' => 'automotive',
+                'category_label' => 'Automotive',
+                'business_types' => ['Luxury Sports Car Dealer'],
+                'design_style' => 'Minimalist Performance',
+                'color_theme' => 'Carbon Black & Racing Ruby',
+                'description' => 'Minimalist high-performance automotive showroom with a curated sports-car vault, vehicle specifications, Ferrari SF90 XX spotlight, portfolio gallery, structured financing calculator, trade-in appraisal, VIP viewing reservations, FAQs, and WhatsApp concierge.',
+                'preview_style' => 'preview-apex-scuderia-automotive-minimalist',
+                'eyebrow' => 'THE SCUDERIA PRIVATE MOTOR VAULT',
+                'headline' => 'Sculpted Velocity in Ruby & Carbon',
+                'tag' => 'Automotive · Luxury Sports Cars · Minimalist Performance',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/apex-scuderia-automotive-minimalist',
+                'is_active' => true,
+                'sort_order' => 39,
+            ]
+        );
+
+        WebiaTemplate::updateOrCreate(
+            ['slug' => 'denim-horizon-property-minimalist'],
+            [
+                'name' => 'Denim Horizon — Modern Japanese Sanctuary',
+                'category_slug' => 'property',
+                'category_label' => 'Property',
+                'business_types' => ['Property Developer'],
+                'design_style' => 'Modern Minimalist',
+                'color_theme' => 'Denim Blue, Periwinkle & Soft White',
+                'description' => 'Modern Japanese-inspired property showcase with an architectural concept, masterplan, residence catalog, technical specifications, day-and-night render switch, KPR calculator, bank-rate options, private viewing reservations, FAQs, and WhatsApp concierge.',
+                'preview_style' => 'preview-denim-horizon-property-minimalist',
+                'eyebrow' => 'MODERN JAPANESE SANCTUARY',
+                'headline' => 'Pure Form, Effortless Living: The Minimalist Precinct',
+                'tag' => 'Property · Residential Developer · Modern Minimalist',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/denim-horizon-property-minimalist',
+                'is_active' => true,
+                'sort_order' => 40,
+            ]
+        );
+
+        WebiaTemplate::updateOrCreate(
+            ['slug' => 'pusaka-asri-property-traditional'],
+            [
+                'name' => 'Pusaka Asri Residence — Nusantara Heritage Living',
+                'category_slug' => 'property',
+                'category_label' => 'Property',
+                'business_types' => ['Property Developer'],
+                'design_style' => 'Traditional Tropical Luxury',
+                'color_theme' => 'Heritage Forest Green, Warm Ivory & Gold',
+                'description' => 'Nusantara heritage residence showcase with architectural philosophy, site masterplan, house-type catalog and floorplan modal, material specifications, KPR calculator, financing options, private tour bookings, FAQs, and WhatsApp concierge.',
+                'preview_style' => 'preview-pusaka-asri-property-traditional',
+                'eyebrow' => 'NUSANTARA HERITAGE LIVING',
+                'headline' => 'Harmoni Arsitektur Pusaka Nusantara dalam Kemewahan Tropis Modern',
+                'tag' => 'Property · Residential Developer · Traditional Tropical Luxury',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/pusaka-asri-property-traditional',
+                'is_active' => true,
+                'sort_order' => 41,
+            ]
+        );
+
+        WebiaTemplate::updateOrCreate(
+            ['slug' => 'agriternak-organic-ethical-precision'],
+            [
+                'name' => 'AgriTernak — Organic Ethical Precision Farming',
+                'category_slug' => 'agriculture',
+                'category_label' => 'Agriculture & Livestock',
+                'business_types' => ['Organic Livestock Farm'],
+                'design_style' => 'Organic & Ethical',
+                'color_theme' => 'Forest Moss & Fresh Green',
+                'description' => 'Ethical organic livestock farm showcase featuring regenerative farming practices, animal welfare standards, herd and product information, farm visit booking, educational resources, FAQs, WhatsApp contact, and an AI assistant demo.',
+                'preview_style' => 'preview-agriternak-organic-ethical-precision',
+                'eyebrow' => 'ETHICAL ORGANIC LIVESTOCK',
+                'headline' => 'Peternakan Organik Beretika: Merawat Harmoni Alam untuk Kualitas Ternak Terbaik',
+                'tag' => 'Agriculture & Livestock · Organic Farm · Ethical',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/agriternak-organic-ethical-precision',
+                'is_active' => true,
+                'sort_order' => 42,
+            ]
+        );
+
+        WebiaTemplate::updateOrCreate(
+            ['slug' => 'agriternak-futuristic-iot'],
+            [
+                'name' => 'AgriTernak — Arctic Frost AI & IoT Livestock Platform',
+                'category_slug' => 'agriculture',
+                'category_label' => 'Agriculture & Livestock',
+                'business_types' => ['Smart Livestock Farm'],
+                'design_style' => 'Futuristic Precision Technology',
+                'color_theme' => 'Arctic Frost Blue & Deep Slate',
+                'description' => 'Futuristic livestock platform showcasing AI and IoT pasture monitoring, real-time herd health and environmental telemetry, precision farming insights, technology capabilities, demo requests, FAQs, and AI assistant.',
+                'preview_style' => 'preview-agriternak-futuristic-iot',
+                'eyebrow' => 'AI & IoT PRECISION LIVESTOCK',
+                'headline' => 'Platform AI & IoT Peternakan: Automasi Presisi Tanpa Kompromi',
+                'tag' => 'Agriculture & Livestock · Smart Farming · AI & IoT',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/agriternak-futuristic-iot',
+                'is_active' => true,
+                'sort_order' => 43,
+            ]
+        );
+
+        WebiaTemplate::updateOrCreate(
+            ['slug' => 'agriternak-bold-livestock'],
+            [
+                'name' => 'AgriTernak — Bold Precision Livestock & Smart Pasture',
+                'category_slug' => 'agriculture',
+                'category_label' => 'Agriculture & Livestock',
+                'business_types' => ['Modern Livestock Farm'],
+                'design_style' => 'Bold & High-Impact',
+                'color_theme' => 'Deep Forest Green, Black & Mint Neon',
+                'description' => 'Bold modern livestock business showcase with smart pasture operations, herd and farm capabilities, precision livestock management, AI assistant, WhatsApp contact, and business inquiry tools.',
+                'preview_style' => 'preview-agriternak-bold-livestock',
+                'eyebrow' => 'PRECISION LIVESTOCK & SMART PASTURE',
+                'headline' => 'Revolusi Peternakan Modern: Produktivitas Tinggi, Hasil Maksimal.',
+                'tag' => 'Agriculture & Livestock · Modern Farm · Bold',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/agriternak-bold-livestock',
+                'is_active' => true,
+                'sort_order' => 44,
+            ]
+        );
+
+        WebiaTemplate::updateOrCreate(
+            ['slug' => 'petit-wonder-candy-cloud'],
+            [
+                'name' => 'Petit Wonder — Candy Cloud Kids Boutique',
+                'category_slug' => 'retail',
+                'category_label' => 'Retail',
+                'business_types' => ['Baby & Kids Boutique'],
+                'design_style' => 'Playful Pastel',
+                'color_theme' => 'Pastel Pink, Lilac & Sky Blue',
+                'description' => 'Playful baby and kids boutique with a pastel product catalog, category filters, cart drawer, WhatsApp checkout, product search, safety and quality highlights, customer reviews, FAQs, newsletter signup, and an AI shopping assistant demo.',
+                'preview_style' => 'preview-petit-wonder-candy-cloud',
+                'eyebrow' => 'PREMIUM BABY & KIDS BOUTIQUE',
+                'headline' => 'Tumbuh Bahagia dalam Pelukan Manis Awan Permen!',
+                'tag' => 'Retail · Baby & Kids Boutique · Playful Pastel',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/petit-wonder-candy-cloud',
+                'is_active' => true,
+                'sort_order' => 45,
+            ]
+        );
+
+        WebiaTemplate::updateOrCreate(
+            ['slug' => 'aurora-petit-yellow-sunshine'],
+            [
+                'name' => 'Aurora & Petit — Yellow Sunshine Baby Boutique',
+                'category_slug' => 'retail',
+                'category_label' => 'Retail',
+                'business_types' => ['Luxury Baby & Kids Boutique'],
+                'design_style' => 'Parisian Editorial Luxury',
+                'color_theme' => 'Butter Yellow, Warm Parchment & Amber',
+                'description' => 'Parisian editorial baby boutique with curated organic clothing and nursery products, product filters, quick-buy and wishlist interactions, cart drawer, live search, WhatsApp checkout, boutique information, FAQs, and an AI concierge demo.',
+                'preview_style' => 'preview-aurora-petit-yellow-sunshine',
+                'eyebrow' => 'MAISON DE BÉBÉ · PARIS & JAKARTA',
+                'headline' => 'Kelembutan Sejati untuk Buah Hati Tercinta.',
+                'tag' => 'Retail · Luxury Baby & Kids Boutique · Parisian Editorial',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/aurora-petit-yellow-sunshine',
+                'is_active' => true,
+                'sort_order' => 46,
+            ]
+        );
     }
 }

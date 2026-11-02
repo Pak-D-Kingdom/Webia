@@ -56,6 +56,8 @@ class OrderStatusMail extends Mailable
 
     public function content(): Content
     {
+        $isSiteLink = $this->type === 'delivered' && $this->order->site_slug;
+
         return new Content(
             view: 'emails.order-status',
             with: [
@@ -63,7 +65,10 @@ class OrderStatusMail extends Mailable
                 'intro' => self::TYPES[$this->type]['intro'],
                 'url' => in_array($this->type, ['admin_verify'], true)
                     ? route('admin.orders.show', $this->order)
-                    : route('orders.show', $this->order),
+                    : ($isSiteLink
+                        ? route('sites.show', ['order' => $this->order->site_slug])
+                        : route('orders.show', $this->order)),
+                'urlLabel' => $isSiteLink ? 'Buka website' : 'Lihat pesanan',
             ],
         );
     }

@@ -1,7 +1,7 @@
 <section id="reservasi-cepat" class="panel" aria-labelledby="t-book">
     <h2 id="t-book"><svg class="i" aria-hidden="true"><use href="#i-calendar"/></svg> Reservasi / Booking</h2>
     {{-- Form singkat: kirim pilihan ke halaman Reservasi (GET) --}}
-    <form action="{{ route('webia.fnb.minimalis.reservasi') }}" method="GET">
+    <form action="{{ $pageUrl('reservasi') }}" method="GET">
         <div class="field"><label class="sr" for="q-date">Pilih Tanggal</label>
             <div class="input"><svg class="i" aria-hidden="true"><use href="#i-calendar"/></svg><input id="q-date" name="date" type="date" required></div></div>
         <div class="field"><label class="sr" for="q-time">Pilih Waktu</label>

@@ -15,36 +15,36 @@ $img = 'images/website-bisnis/template/property/professional/real-estate-agency-
 return [
 
     'meta' => [
-        'title'       => 'Coral Homes — Rumah Modern untuk Kehidupan Lebih Baik',
+        'title' => 'Coral Homes — Rumah Modern untuk Kehidupan Lebih Baik',
         'description' => 'Coral Homes: properti residensial premium di Surabaya, Sidoarjo, Malang dan Batu dengan desain modern, fasilitas lengkap, dan lingkungan nyaman.',
     ],
 
     'brand' => [
-        'name'    => 'Coral Homes',
-        'upper'   => 'CORAL HOMES',
+        'name' => 'Coral Homes',
+        'upper' => 'CORAL HOMES',
         'tagline' => 'Your Dream Home, Our Priority',
     ],
 
     'assets' => [
         'css' => 'css/website-bisnis/template/property/professional/real-estate-agency-coral-peach/real-estate-agency.css',
-        'js'  => 'js/website-bisnis/template/property/professional/real-estate-agency-coral-peach/real-estate-agency.js',
+        'js' => 'js/website-bisnis/template/property/professional/real-estate-agency-coral-peach/real-estate-agency.js',
         'img' => $img,
     ],
 
     'contact' => [
-        'address'       => 'Jl. Melati No. 15, Surabaya, Jawa Timur',
+        'address' => 'Jl. Melati No. 15, Surabaya, Jawa Timur',
         'address_line1' => 'Jl. Melati No. 15',
         'address_line2' => 'Surabaya, Jawa Timur',
-        'email'         => 'info@coralhomes.id',
-        'email_extra'   => 'info@coralhomes.id',
-        'hours'         => 'Mon - Sat 09:00 - 18:00',
-        'phone'         => '+62 812 3456 7890',
-        'phone_link'    => '+6281234567890',
-        'whatsapp'      => '6281234567890',
+        'email' => 'info@coralhomes.id',
+        'email_extra' => 'info@coralhomes.id',
+        'hours' => 'Mon - Sat 09:00 - 18:00',
+        'phone' => '+62 812 3456 7890',
+        'phone_link' => '+6281234567890',
+        'whatsapp' => '6281234567890',
         // Nomor tujuan form Inquiry & Booking (format internasional tanpa +): 0895630300345
         'whatsapp_leads' => '62895630300345',
         'whatsapp_text' => 'Halo Coral Homes, saya tertarik dengan properti Anda dan ingin bertanya lebih lanjut.',
-        'maps_url'      => 'https://www.google.com/maps/search/?api=1&query=Jl.+Melati+No.+15+Surabaya+Jawa+Timur',
+        'maps_url' => 'https://www.google.com/maps/search/?api=1&query=Jl.+Melati+No.+15+Surabaya+Jawa+Timur',
     ],
 
     'socials' => [
@@ -66,22 +66,22 @@ return [
 
     // Gambar banner pada header setiap halaman dalam (file ada di folder images template).
     'page_images' => [
-        'property'      => 'banner-house.jpg',
+        'property' => 'banner-house.jpg',
         'specification' => 'property-5.jpg',
-        'price'         => 'property-2.jpg',
-        'about'         => 'about-house.jpg',
-        'gallery'       => 'gallery-main.jpg',
-        'booking'       => 'property-6.jpg',
-        'blog'          => 'property-1.jpg',
-        'contact'       => 'property-4.jpg',
+        'price' => 'property-2.jpg',
+        'about' => 'about-house.jpg',
+        'gallery' => 'gallery-main.jpg',
+        'booking' => 'property-6.jpg',
+        'blog' => 'property-1.jpg',
+        'contact' => 'property-4.jpg',
     ],
 
     'hero' => [
         'eyebrow' => 'PREMIUM RESIDENTIAL PROPERTY',
         'title_1' => 'Rumah Modern',
         'title_2' => 'untuk Kehidupan Lebih Baik',
-        'text'    => 'Dapatkan hunian impian Anda di lokasi strategis dengan desain modern, fasilitas lengkap, dan lingkungan yang nyaman.',
-        'image'   => 'hero-house.jpg',
+        'text' => 'Dapatkan hunian impian Anda di lokasi strategis dengan desain modern, fasilitas lengkap, dan lingkungan yang nyaman.',
+        'image' => 'hero-house.jpg',
         'features' => [
             ['icon' => 'home',     'title' => '3 Bedrooms',  'sub' => '(3 Kamar Tidur)'],
             ['icon' => 'bath',     'title' => '2 Bathrooms', 'sub' => '(2 Kamar Mandi)'],
@@ -130,7 +130,7 @@ return [
 
     'gallery' => [
         'total_extra' => 13,
-        'video'       => null, // isi URL mp4 bila tersedia; null = tampilkan foto pada lightbox
+        'video' => null, // isi URL mp4 bila tersedia; null = tampilkan foto pada lightbox
         'items' => [
             ['file' => 'gallery-main.jpg', 'cat' => 'interior',  'alt' => 'Ruang keluarga modern dengan jendela besar'],
             ['file' => 'gallery-2.jpg',    'cat' => 'interior',  'alt' => 'Ruang tamu dengan sofa dan pencahayaan hangat'],
@@ -181,20 +181,20 @@ return [
     ],
 
     'location' => [
-        'title'    => 'Lokasi & Akses',
+        'title' => 'Lokasi & Akses',
         'subtitle' => 'Lokasi strategis dengan akses mudah',
-        'map'      => 'map.jpg', // gambar cadangan saat peta interaktif belum termuat
+        'map' => 'map.jpg', // gambar cadangan saat peta interaktif belum termuat
         'embed_url' => 'https://www.google.com/maps?q=Jl.+Melati+No.+15,+Surabaya,+Jawa+Timur&output=embed',
-        'points'   => ['5 menit ke tol', '10 menit ke pusat kota', 'Dekat dengan sekolah & rumah sakit'],
+        'points' => ['5 menit ke tol', '10 menit ke pusat kota', 'Dekat dengan sekolah & rumah sakit'],
     ],
 
     'booking' => [
-        'title'    => 'Jadwal Booking / Viewing',
+        'title' => 'Jadwal Booking / Viewing',
         'subtitle' => 'Pilih tanggal dan waktu kunjungan Anda',
         'home_text' => 'Lihat langsung hunian impian Anda bersama konsultan kami. Cukup satu ketukan, jadwal viewing kami konfirmasi lewat WhatsApp.',
-        'wa_text'  => 'Halo Coral Homes, saya ingin booking viewing properti. Mohon info jadwal yang tersedia.',
+        'wa_text' => 'Halo Coral Homes, saya ingin booking viewing properti. Mohon info jadwal yang tersedia.',
         'closed_weekdays' => [0], // 0 = Minggu (tutup)
-        'slots'    => ['09:00', '10:00', '11:00', '13:00', '14:00', '15:00', '16:00', '17:00'],
+        'slots' => ['09:00', '10:00', '11:00', '13:00', '14:00', '15:00', '16:00', '17:00'],
         'steps' => [
             ['title' => 'Ajukan Jadwal',      'text' => 'Kirim permintaan viewing Anda lewat WhatsApp.'],
             ['title' => 'Konfirmasi Tim',     'text' => 'Tim kami membalas untuk mengonfirmasi tanggal & waktu.'],
@@ -203,9 +203,9 @@ return [
     ],
 
     'about' => [
-        'title'    => 'Tentang Coral Homes',
+        'title' => 'Tentang Coral Homes',
         'subtitle' => 'Mitra tepercaya untuk menemukan hunian impian Anda',
-        'text'     => [
+        'text' => [
             'Coral Homes adalah agensi properti residensial yang berfokus pada hunian modern berkualitas di Jawa Timur. Kami memadukan desain kontemporer, lokasi strategis, dan lingkungan yang nyaman agar setiap keluarga dapat tumbuh dengan lebih baik.',
             'Dengan tim konsultan yang berpengalaman, kami mendampingi Anda mulai dari memilih unit, simulasi pembayaran, hingga serah terima kunci — transparan, cepat, dan tanpa ribet.',
         ],
@@ -224,7 +224,7 @@ return [
     ],
 
     'blog' => [
-        'title'    => 'Blog & Tips Properti',
+        'title' => 'Blog & Tips Properti',
         'subtitle' => 'Panduan, tips, dan insight seputar membeli hunian impian',
         'categories' => [
             ['value' => 'all',    'label' => 'Semua'],
@@ -236,7 +236,7 @@ return [
             [
                 'slug' => 'tips-memilih-rumah-pertama', 'cat' => 'tips', 'cat_label' => 'Tips Membeli', 'date' => '12 Okt 2026', 'read' => '5 menit', 'author' => 'Tim Coral Homes',
                 'image' => 'property-1.jpg', 'cover' => 'banner-house.jpg',
-                'title'   => '7 Tips Memilih Rumah Pertama agar Tidak Menyesal',
+                'title' => '7 Tips Memilih Rumah Pertama agar Tidak Menyesal',
                 'excerpt' => 'Mulai dari lokasi, legalitas, hingga akses transportasi: inilah hal penting yang perlu dicek sebelum menandatangani akad.',
                 'content' => [
                     ['type' => 'p', 'text' => 'Membeli rumah pertama adalah keputusan besar. Nilainya tinggi, tenornya panjang, dan rumah itu akan menjadi tempat keluarga Anda tumbuh selama bertahun-tahun. Agar tidak menyesal di kemudian hari, pastikan tujuh hal berikut sudah Anda cek sebelum menandatangani akad.'],
@@ -264,7 +264,7 @@ return [
             [
                 'slug' => 'desain-rumah-modern-tropis', 'cat' => 'desain', 'cat_label' => 'Desain & Interior', 'date' => '05 Okt 2026', 'read' => '4 menit', 'author' => 'Tim Coral Homes',
                 'image' => 'gallery-main.jpg', 'cover' => 'gallery-main.jpg',
-                'title'   => 'Desain Rumah Modern Tropis: Terang, Sejuk, dan Hangat',
+                'title' => 'Desain Rumah Modern Tropis: Terang, Sejuk, dan Hangat',
                 'excerpt' => 'Jendela besar, material kayu, dan tanaman hijau membuat hunian terasa lapang tanpa bergantung pada pendingin ruangan.',
                 'content' => [
                     ['type' => 'p', 'text' => 'Iklim tropis menuntut rumah yang pandai mengelola cahaya, panas, dan hujan. Desain modern tropis menjawabnya dengan garis bangunan yang bersih, bukaan yang lebar, dan material alami sehingga hunian terasa lapang, sejuk, dan tetap hangat secara visual.'],
@@ -286,7 +286,7 @@ return [
             [
                 'slug' => 'properti-sebagai-investasi', 'cat' => 'invest', 'cat_label' => 'Investasi', 'date' => '28 Sep 2026', 'read' => '6 menit', 'author' => 'Tim Coral Homes',
                 'image' => 'property-2.jpg', 'cover' => 'about-house.jpg',
-                'title'   => 'Kenapa Properti Residensial Masih Jadi Investasi Favorit',
+                'title' => 'Kenapa Properti Residensial Masih Jadi Investasi Favorit',
                 'excerpt' => 'Nilai aset yang cenderung naik dan potensi sewa menjadikan rumah pilihan investasi jangka panjang yang stabil.',
                 'content' => [
                     ['type' => 'p', 'text' => 'Di tengah banyaknya pilihan instrumen investasi, properti residensial tetap diminati karena wujudnya nyata, dapat dimanfaatkan, dan umumnya bernilai stabil dalam jangka panjang. Berikut alasan serta hal yang perlu Anda perhatikan sebelum memulai.'],
@@ -310,7 +310,7 @@ return [
     'faq' => [
         'greeting' => 'Halo! Saya AI Assistant dari Coral Homes. Ada yang bisa saya bantu?',
         'fallback' => 'Maaf, saya belum menemukan jawaban yang pas. Anda bisa menghubungi tim kami langsung melalui WhatsApp untuk bantuan lebih lanjut.',
-        'quick'    => [
+        'quick' => [
             ['label' => 'Info properti',     'key' => 'properti'],
             ['label' => 'Harga & promo',     'key' => 'harga'],
             ['label' => 'Jadwal viewing',    'key' => 'viewing'],
@@ -319,22 +319,22 @@ return [
         ],
         'items' => [
             ['key' => 'properti', 'keywords' => ['properti', 'rumah', 'unit', 'tipe', 'kamar', 'spesifikasi', 'luas', 'sertifikat'],
-             'answer' => 'Kami menawarkan hunian modern bertipe 3–5 kamar tidur dengan luas tanah mulai 120 m², sertifikat SHM, listrik 2200 VA, dan carport untuk 2 mobil di Surabaya, Sidoarjo, Malang, dan Batu.'],
+                'answer' => 'Kami menawarkan hunian modern bertipe 3–5 kamar tidur dengan luas tanah mulai 120 m², sertifikat SHM, listrik 2200 VA, dan carport untuk 2 mobil di Surabaya, Sidoarjo, Malang, dan Batu.'],
             ['key' => 'harga', 'keywords' => ['harga', 'biaya', 'promo', 'diskon', 'dp', 'kpr', 'cicilan', 'bayar', 'cash'],
-             'answer' => 'Harga mulai Rp 1.650.000.000. Tersedia skema Cash Keras, Cash Bertahap, dan KPR bank mitra. Hubungi tim kami untuk promo terbaru bulan ini.'],
+                'answer' => 'Harga mulai Rp 1.650.000.000. Tersedia skema Cash Keras, Cash Bertahap, dan KPR bank mitra. Hubungi tim kami untuk promo terbaru bulan ini.'],
             ['key' => 'viewing', 'keywords' => ['viewing', 'kunjungan', 'jadwal', 'survey', 'booking', 'lihat', 'datang'],
-             'answer' => 'Viewing tersedia Senin–Sabtu pukul 09:00–18:00. Silakan pilih tanggal dan waktu pada form Booking / Viewing, tim kami akan mengonfirmasi jadwal Anda.'],
+                'answer' => 'Viewing tersedia Senin–Sabtu pukul 09:00–18:00. Silakan pilih tanggal dan waktu pada form Booking / Viewing, tim kami akan mengonfirmasi jadwal Anda.'],
             ['key' => 'proses', 'keywords' => ['proses', 'beli', 'pembelian', 'akad', 'langkah', 'cara', 'dokumen'],
-             'answer' => 'Prosesnya: 1) pilih unit & viewing, 2) booking fee, 3) pilih skema pembayaran, 4) akad & penandatanganan, 5) serah terima kunci. Konsultan kami mendampingi di setiap tahap.'],
+                'answer' => 'Prosesnya: 1) pilih unit & viewing, 2) booking fee, 3) pilih skema pembayaran, 4) akad & penandatanganan, 5) serah terima kunci. Konsultan kami mendampingi di setiap tahap.'],
             ['key' => 'lokasi', 'keywords' => ['lokasi', 'alamat', 'akses', 'tol', 'dekat', 'maps', 'peta', 'jarak'],
-             'answer' => 'Kantor kami di Jl. Melati No. 15, Surabaya, Jawa Timur. Akses tol hanya 5 menit, pusat kota 10 menit, dan dekat sekolah serta rumah sakit.'],
+                'answer' => 'Kantor kami di Jl. Melati No. 15, Surabaya, Jawa Timur. Akses tol hanya 5 menit, pusat kota 10 menit, dan dekat sekolah serta rumah sakit.'],
             ['key' => 'jam', 'keywords' => ['jam', 'buka', 'operasional', 'kontak', 'telepon', 'whatsapp', 'wa', 'hubungi'],
-             'answer' => 'Jam operasional Senin–Sabtu 09:00–18:00. Hubungi kami di +62 812 3456 7890 atau info@coralhomes.id.'],
+                'answer' => 'Jam operasional Senin–Sabtu 09:00–18:00. Hubungi kami di +62 812 3456 7890 atau info@coralhomes.id.'],
         ],
     ],
 
     'footer' => [
         'about_text' => 'Hunian modern di lokasi strategis untuk kehidupan yang lebih baik.',
-        'credit'     => '© 2026 WEBIA by D-KREASI. Seluruh hak cipta dilindungi.',
+        'credit' => '© 2026 WEBIA by D-KREASI. Seluruh hak cipta dilindungi.',
     ],
 ];

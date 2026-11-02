@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Mail\AccountCredentialsMail;
 use App\Mail\OrderStatusMail;
 use App\Models\User;
 use App\Models\WebiaOrder;
@@ -25,7 +26,7 @@ class EmailNotificationTest extends TestCase
         $this->admin = User::factory()->create(['role' => 'admin']);
     }
 
-    public function test_midtrans_settlement_emails_customer_paid(): void
+    public function test_midtrans_settlement_emails_customer_credentials(): void
     {
         Mail::fake();
         $order = WebiaOrder::factory()->create(['status' => 'awaiting_payment']);
@@ -34,8 +35,10 @@ class EmailNotificationTest extends TestCase
         $payload = ['order_id' => 'WEB-'.$order->id.'-01', 'status_code' => '200', 'gross_amount' => '499000', 'transaction_status' => 'settlement'];
         $this->postJson(route('payments.midtrans.notify'), $payload + ['signature_key' => $this->signature($payload)])->assertOk();
 
-        Mail::assertSent(fn (OrderStatusMail $mail): bool => $mail->type === 'paid'
-            && str_contains($mail->envelope()->subject, $order->order_number));
+        // Lunas: kredensial dikirim via email, tanpa password baru untuk akun lama.
+        Mail::assertSent(fn (AccountCredentialsMail $mail): bool => $mail->plainPassword === null
+            && $mail->hasTo($order->user->email));
+        $this->assertSame('sent', $order->fresh()->credential_status);
     }
 
     public function test_duplicate_settlement_does_not_email_again(): void
@@ -71,7 +74,7 @@ class EmailNotificationTest extends TestCase
         $this->postJson(route('payments.midtrans.notify'), $newPayload + ['signature_key' => $this->signature($newPayload)])->assertOk();
 
         Mail::assertSentCount(1);
-        Mail::assertSent(fn (OrderStatusMail $mail): bool => $mail->type === 'paid');
+        Mail::assertSent(AccountCredentialsMail::class);
     }
 
     public function test_uploading_receipt_notifies_admins(): void
@@ -92,9 +95,10 @@ class EmailNotificationTest extends TestCase
         Mail::fake();
         $order = WebiaOrder::factory()->create(['status' => 'payment_uploaded', 'payment_receipt_path' => 'payment-receipts/x.jpg']);
 
-        // Approve → email 'paid' ke customer.
+        // Approve → email kredensial/pemberitahuan ke customer (akun lama tetap dipakai).
         $this->actingAs($this->admin)->post(route('admin.orders.verify', $order), ['action' => 'approve'])->assertRedirect();
-        Mail::assertSent(fn (OrderStatusMail $mail): bool => $mail->type === 'paid' && $mail->hasTo($order->user->email));
+        Mail::assertSent(fn (AccountCredentialsMail $mail): bool => $mail->hasTo($order->user->email));
+        $this->assertSame('sent', $order->fresh()->credential_status);
 
         // Reject → email 'rejected' setelah admin mengembalikan status.
         WebiaOrder::whereKey($order->id)->update(['status' => 'payment_uploaded', 'paid_at' => null]);

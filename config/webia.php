@@ -23,6 +23,8 @@ return [
     'midtrans' => [
         'merchant_id' => env('MIDTRANS_MERCHANT_ID'),
         'server_key' => env('MIDTRANS_SERVER_KEY'),
+        // Client key dibutuhkan snap.js untuk popup pembayaran inline di halaman kita.
+        'client_key' => env('MIDTRANS_CLIENT_KEY'),
         'is_production' => env('MIDTRANS_ENV', 'sandbox') === 'production',
     ],
 ];
