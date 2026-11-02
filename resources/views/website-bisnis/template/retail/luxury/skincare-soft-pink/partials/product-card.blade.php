@@ -21,8 +21,6 @@
             <span class="rate"><i class="bi bi-star-fill" aria-hidden="true"></i> {{ $p['rating'] }} ({{ $p['reviews'] }})</span>
             <span class="stock stock--{{ $p['status'] }}"><i class="bi bi-circle-fill" aria-hidden="true"></i> {{ $p['status_label'] }}</span>
         </p>
-        <button class="btn btn--rose btn--block" type="button" data-add="{{ $p['id'] }}" @disabled($p['status'] === 'out')>
-            @if ($p['status'] === 'out') Habis @else <i class="bi bi-plus-lg" aria-hidden="true"></i> Keranjang @endif
-        </button>
+        @include($ns . '.partials.add-control', ['p' => $p, 'mode' => 'block'])
     </div>
 </article>

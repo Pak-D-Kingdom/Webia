@@ -17,32 +17,32 @@ return [
     /* Path aset & view (dipakai Blade agar tidak hardcode di banyak tempat) */
     'paths' => [
         'views' => 'website-bisnis.template.f&b.vintage.cafe-earthtone',
-        'img'   => 'images/website-bisnis/template/f&b/vintage/cafe-earthtone',
-        'css'   => 'css/website-bisnis/template/f&b/vintage/cafe-earthtone',
-        'js'    => 'js/website-bisnis/template/f&b/vintage/cafe-earthtone',
+        'img' => 'images/website-bisnis/template/f&b/vintage/cafe-earthtone',
+        'css' => 'css/website-bisnis/template/f&b/vintage/cafe-earthtone',
+        'js' => 'js/website-bisnis/template/f&b/vintage/cafe-earthtone',
     ],
 
     /* Nama route (lihat routes/web.php) */
     'routes' => [
-        'home'      => 'webia.fnb.vintage.home',
-        'menu'      => 'webia.fnb.vintage.menu',
+        'home' => 'webia.fnb.vintage.home',
+        'menu' => 'webia.fnb.vintage.menu',
         'reservasi' => 'webia.fnb.vintage.reservasi',
     ],
 
     'brand' => [
-        'name'        => 'Kopi Lembang',
-        'tagline'     => 'Café & Eatery',
-        'slogan'      => 'Good Coffee, Good Mood',
+        'name' => 'Kopi Lembang',
+        'tagline' => 'Café & Eatery',
+        'slogan' => 'Good Coffee, Good Mood',
         'description' => 'Kopi Lembang Café & Eatery — kopi berkualitas, makanan lezat, dan suasana vintage yang hangat di Lembang, Bandung.',
     ],
 
     'contact' => [
-        'phone'     => '+62 812 3456 7890',
+        'phone' => '+62 812 3456 7890',
         'wa_number' => '62895630300345', // WhatsApp tujuan semua pesan form (0895630300345). Format internasional tanpa + atau spasi
-        'email'     => 'hello@kopilembang.id',
-        'address'   => 'Jl. Kenangan No. 8, Lembang, Bandung, Jawa Barat 40391',
+        'email' => 'hello@kopilembang.id',
+        'address' => 'Jl. Kenangan No. 8, Lembang, Bandung, Jawa Barat 40391',
         'address_short' => 'Jl. Kenangan No. 8, Bandung',
-        'maps_url'  => 'https://www.google.com/maps/search/?api=1&query=Jl.+Kenangan+No.+8+Lembang+Bandung',
+        'maps_url' => 'https://www.google.com/maps/search/?api=1&query=Jl.+Kenangan+No.+8+Lembang+Bandung',
     ],
 
     'socials' => [
@@ -72,12 +72,12 @@ return [
     'nav_cta' => ['label' => 'Pesan Sekarang', 'route' => 'reservasi'],
 
     'hero' => [
-        'greeting'  => 'Selamat Datang di',
-        'title'     => 'Kopi Lembang',
-        'subtitle'  => 'Café & Eatery',
-        'text'      => 'Tempat sempurna untuk menikmati kopi berkualitas, makanan lezat, dan suasana vintage yang hangat.',
-        'script'    => 'More Than Just Coffee',
-        'cta_primary'   => ['label' => 'Lihat Menu', 'route' => 'menu', 'icon' => 'arrow-right'],
+        'greeting' => 'Selamat Datang di',
+        'title' => 'Kopi Lembang',
+        'subtitle' => 'Café & Eatery',
+        'text' => 'Tempat sempurna untuk menikmati kopi berkualitas, makanan lezat, dan suasana vintage yang hangat.',
+        'script' => 'More Than Just Coffee',
+        'cta_primary' => ['label' => 'Lihat Menu', 'route' => 'menu', 'icon' => 'arrow-right'],
         'cta_secondary' => ['label' => 'Reservasi Meja', 'route' => 'reservasi', 'icon' => 'calendar'],
         'image_alt' => 'Suasana interior Kopi Lembang dengan meja kayu, lampu hangat, dan secangkir latte',
     ],
@@ -96,9 +96,9 @@ return [
      | Tambah atau kurangi item sesuka Anda — grid menyesuaikan otomatis.
      */
     'services' => [
-        'title'    => 'Produk & Layanan',
+        'title' => 'Produk & Layanan',
         'subtitle' => 'Kopi, hidangan, dan layanan terbaik kami untuk setiap momen Anda.',
-        'items'    => [
+        'items' => [
             ['type' => 'Produk',  'title' => 'Kopi Pilihan',      'text' => 'Biji kopi pilihan yang diseduh dengan teliti, dari espresso klasik sampai kopi susu khas kami.', 'image' => 'latte.jpg',         'alt' => 'Caffe latte dengan latte art di atas meja kayu'],
             ['type' => 'Produk',  'title' => 'Dessert & Pastry',  'text' => 'Tiramisu, kue, dan hidangan manis buatan sendiri untuk menemani kopi sore Anda.',                 'image' => 'tiramisu.jpg',      'alt' => 'Sepotong tiramisu dengan topping stroberi'],
             ['type' => 'Layanan', 'title' => 'Dine In',           'text' => 'Duduk santai di ruangan bernuansa vintage dengan WiFi gratis dan area parkir luas.',               'image' => 'dine-in.jpg',       'alt' => 'Tampak depan Kopi Lembang dengan kanopi hijau'],
@@ -114,18 +114,18 @@ return [
      | dan harga sebenarnya. Harga dalam rupiah (integer).
      */
     'menu' => [
-        'title'      => 'Menu Andalan Kami',
-        'subtitle'   => 'Rasakan cita rasa terbaik dari setiap hidangan dan minuman kami.',
-        'cta'        => 'Lihat Semua Menu',
+        'title' => 'Menu Andalan Kami',
+        'subtitle' => 'Rasakan cita rasa terbaik dari setiap hidangan dan minuman kami.',
+        'cta' => 'Lihat Semua Menu',
         'preview_limit' => 5, // jumlah menu (preview => true) yang tampil di beranda
         'page_title' => 'Menu Kami',
-        'page_text'  => 'Kopi, minuman segar, makanan, dan dessert — dibuat dengan bahan pilihan dan disajikan hangat.',
+        'page_text' => 'Kopi, minuman segar, makanan, dan dessert — dibuat dengan bahan pilihan dan disajikan hangat.',
         'categories' => [
-            'semua'    => 'Semua',
-            'kopi'     => 'Kopi',
+            'semua' => 'Semua',
+            'kopi' => 'Kopi',
             'non-kopi' => 'Non Kopi',
-            'makanan'  => 'Makanan',
-            'dessert'  => 'Dessert',
+            'makanan' => 'Makanan',
+            'dessert' => 'Dessert',
         ],
         'items' => [
             ['name' => 'Caffe Latte',        'category' => 'kopi',     'price' => 28000, 'image' => 'latte.jpg',       'preview' => true,  'desc' => 'Espresso dengan susu steamed dan latte art yang lembut.'],
@@ -152,11 +152,11 @@ return [
      | Isi item di bawah hanya contoh (kecuali promo pertama dari desain) — ganti sesuai promo asli.
      */
     'promo' => [
-        'layout'   => 'slider',
+        'layout' => 'slider',
         'per_view' => 2,
         'autoplay' => true,
         'interval' => 5500,
-        'items'    => [
+        'items' => [
             [
                 'badge' => 'Promo Spesial', 'title' => 'Diskon 20%', 'subtitle' => 'untuk Semua Menu Makanan',
                 'period' => '1 – 31 Oktober 2025', 'tone' => 'red',
@@ -177,7 +177,7 @@ return [
 
     'hours' => [
         'title' => 'Jam Operasional',
-        'rows'  => [
+        'rows' => [
             ['day' => 'Senin - Jumat', 'time' => '07.00 - 22.00'],
             ['day' => 'Sabtu',         'time' => '07.00 - 23.00'],
             ['day' => 'Minggu',        'time' => '07.00 - 23.00'],
@@ -187,17 +187,17 @@ return [
     'location' => [
         'title' => 'Lokasi Kami',
         'map_image' => 'map.jpg',
-        'map_alt'   => 'Peta lokasi Kopi Lembang di Lembang, Bandung',
+        'map_alt' => 'Peta lokasi Kopi Lembang di Lembang, Bandung',
         // URL "embed" Google Maps (Share → Embed a map → salin isi src). null = pakai gambar map_image.
-        'embed'     => 'https://maps.google.com/maps?q=Lembang,+Bandung&z=15&output=embed',
-        'cta'       => 'Buka di Google Maps',
+        'embed' => 'https://maps.google.com/maps?q=Lembang,+Bandung&z=15&output=embed',
+        'cta' => 'Buka di Google Maps',
         'cta_directions' => 'Petunjuk Arah',
     ],
 
     'whatsapp' => [
-        'title'   => 'Hubungi Kami',
-        'text'    => 'Chat dengan kami untuk informasi lebih lanjut.',
-        'cta'     => 'Chat via WhatsApp',
+        'title' => 'Hubungi Kami',
+        'text' => 'Chat dengan kami untuk informasi lebih lanjut.',
+        'cta' => 'Chat via WhatsApp',
         'message' => 'Halo Kopi Lembang, saya ingin bertanya.',
     ],
 
@@ -207,68 +207,68 @@ return [
      | Saat backend AI siap, ganti 'endpoint' dan JS akan memakainya.
      */
     'faq' => [
-        'label'       => 'AI FAQ',
-        'title'       => 'Tanya Apa Saja',
-        'text'        => 'Dapatkan jawaban cepat seputar menu, reservasi, lokasi, promo, dan lainnya.',
+        'label' => 'AI FAQ',
+        'title' => 'Tanya Apa Saja',
+        'text' => 'Dapatkan jawaban cepat seputar menu, reservasi, lokasi, promo, dan lainnya.',
         'placeholder' => 'Tulis pertanyaan Anda di sini...',
-        'endpoint'    => null,
-        'chips'       => ['Menu favorit apa?', 'Berapa harga menu?', 'Bagaimana cara reservasi?', 'Apakah ada promo hari ini?'],
-        'fallback'    => 'Maaf, saya belum menemukan jawabannya. Tanyakan langsung ke tim kami lewat WhatsApp ya.',
-        'items'       => [
+        'endpoint' => null,
+        'chips' => ['Menu favorit apa?', 'Berapa harga menu?', 'Bagaimana cara reservasi?', 'Apakah ada promo hari ini?'],
+        'fallback' => 'Maaf, saya belum menemukan jawabannya. Tanyakan langsung ke tim kami lewat WhatsApp ya.',
+        'items' => [
             [
                 'keywords' => ['favorit', 'andalan', 'rekomendasi', 'terlaris', 'best seller'],
-                'answer'   => 'Favorit pengunjung: Caffe Latte, Nasi Goreng Spesial, dan Tiramisu. Daftar lengkapnya ada di halaman Menu.',
-                'link'     => ['label' => 'Lihat Menu', 'route' => 'menu'],
+                'answer' => 'Favorit pengunjung: Caffe Latte, Nasi Goreng Spesial, dan Tiramisu. Daftar lengkapnya ada di halaman Menu.',
+                'link' => ['label' => 'Lihat Menu', 'route' => 'menu'],
             ],
             [
                 'keywords' => ['harga', 'berapa', 'biaya', 'murah'],
-                'answer'   => 'Minuman kopi mulai dari Rp 22.000, makanan mulai dari Rp 45.000, dan dessert mulai dari Rp 32.000. Harga lengkap ada di halaman Menu.',
-                'link'     => ['label' => 'Lihat Menu', 'route' => 'menu'],
+                'answer' => 'Minuman kopi mulai dari Rp 22.000, makanan mulai dari Rp 45.000, dan dessert mulai dari Rp 32.000. Harga lengkap ada di halaman Menu.',
+                'link' => ['label' => 'Lihat Menu', 'route' => 'menu'],
             ],
             [
                 'keywords' => ['reservasi', 'booking', 'pesan meja', 'book', 'meja'],
-                'answer'   => 'Isi formulir di halaman Reservasi (nama, tanggal, jam, dan jumlah tamu). Tim kami akan mengonfirmasi lewat WhatsApp.',
-                'link'     => ['label' => 'Reservasi Meja', 'route' => 'reservasi'],
+                'answer' => 'Isi formulir di halaman Reservasi (nama, tanggal, jam, dan jumlah tamu). Tim kami akan mengonfirmasi lewat WhatsApp.',
+                'link' => ['label' => 'Reservasi Meja', 'route' => 'reservasi'],
             ],
             [
                 'keywords' => ['promo', 'diskon', 'potongan', 'hari ini'],
-                'answer'   => 'Saat ini ada Diskon 20% untuk semua menu makanan (1 – 31 Oktober 2025), Beli 2 Gratis 1 untuk kopi pilihan setiap akhir pekan, dan Paket Hemat Pasta + Minuman.',
+                'answer' => 'Saat ini ada Diskon 20% untuk semua menu makanan (1 – 31 Oktober 2025), Beli 2 Gratis 1 untuk kopi pilihan setiap akhir pekan, dan Paket Hemat Pasta + Minuman.',
             ],
             [
                 'keywords' => ['jam', 'buka', 'tutup', 'operasional'],
-                'answer'   => 'Kami buka Senin – Jumat pukul 07.00 – 22.00, serta Sabtu dan Minggu pukul 07.00 – 23.00.',
+                'answer' => 'Kami buka Senin – Jumat pukul 07.00 – 22.00, serta Sabtu dan Minggu pukul 07.00 – 23.00.',
             ],
             [
                 'keywords' => ['lokasi', 'alamat', 'dimana', 'di mana', 'maps', 'arah'],
-                'answer'   => 'Kopi Lembang ada di Jl. Kenangan No. 8, Lembang, Bandung, Jawa Barat 40391.',
+                'answer' => 'Kopi Lembang ada di Jl. Kenangan No. 8, Lembang, Bandung, Jawa Barat 40391.',
             ],
             [
                 'keywords' => ['wifi', 'parkir', 'fasilitas'],
-                'answer'   => 'Kami menyediakan WiFi gratis yang tetap terhubung dan area parkir luas yang aman.',
+                'answer' => 'Kami menyediakan WiFi gratis yang tetap terhubung dan area parkir luas yang aman.',
             ],
             [
                 'keywords' => ['whatsapp', 'wa', 'kontak', 'telepon', 'hubungi', 'nomor'],
-                'answer'   => 'Hubungi kami di +62 812 3456 7890 atau chat langsung lewat tombol WhatsApp bulat di pojok kanan bawah layar.',
+                'answer' => 'Hubungi kami di +62 812 3456 7890 atau chat langsung lewat tombol WhatsApp bulat di pojok kanan bawah layar.',
             ],
         ],
     ],
 
     'reservation' => [
-        'title'     => 'Reservasi Meja',
-        'text'      => 'Pesan meja untuk pengalaman bersantap yang lebih nyaman.',
+        'title' => 'Reservasi Meja',
+        'text' => 'Pesan meja untuk pengalaman bersantap yang lebih nyaman.',
         'page_title' => 'Reservasi Meja',
-        'page_text'  => 'Isi data di bawah ini. Tim kami akan mengonfirmasi reservasi Anda lewat WhatsApp.',
+        'page_text' => 'Isi data di bawah ini. Tim kami akan mengonfirmasi reservasi Anda lewat WhatsApp.',
         // 'whatsapp' = data form dikirim sebagai pesan ke contact.wa_number (WhatsApp terbuka otomatis).
         // 'server'   = form dikirim ke 'action' di bawah (isi dengan route backend). '#' = mode demo.
-        'send_to'   => 'whatsapp',
-        'wa_title'  => 'Halo Kopi Lembang, saya ingin reservasi meja:',
-        'action'    => '#',
-        'method'    => 'POST',
+        'send_to' => 'whatsapp',
+        'wa_title' => 'Halo Kopi Lembang, saya ingin reservasi meja:',
+        'action' => '#',
+        'method' => 'POST',
         'max_guests' => 20,
-        'time_min'  => '07:00',
-        'time_max'  => '21:00',
-        'submit'    => 'Kirim Reservasi',
-        'success'   => 'Terima kasih! WhatsApp akan terbuka dengan pesan reservasi Anda. Tekan tombol Kirim di WhatsApp untuk menyelesaikan reservasi.',
+        'time_min' => '07:00',
+        'time_max' => '21:00',
+        'submit' => 'Kirim Reservasi',
+        'success' => 'Terima kasih! WhatsApp akan terbuka dengan pesan reservasi Anda. Tekan tombol Kirim di WhatsApp untuk menyelesaikan reservasi.',
         'success_link' => 'Buka WhatsApp lagi',
     ],
 
@@ -283,6 +283,6 @@ return [
             ['label' => 'FAQ',          'route' => 'home', 'anchor' => 'faq'],
         ],
         'copyright' => 'Kopi Lembang. All rights reserved.',
-        'credit'    => '© 2026 WEBIA by D-KREASI. Seluruh hak cipta dilindungi.',
+        'credit' => '© 2026 WEBIA by D-KREASI. Seluruh hak cipta dilindungi.',
     ],
 ];

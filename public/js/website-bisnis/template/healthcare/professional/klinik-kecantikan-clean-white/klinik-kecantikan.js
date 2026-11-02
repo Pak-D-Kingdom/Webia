@@ -344,49 +344,6 @@
         });
     }
 
-    /* ---------- 5b. Form booking singkat di beranda → WhatsApp ---------- */
-    function initMiniForm() {
-        var form = $('[data-gl-wa-mini]');
-        if (!form) { return; }
-        var status = $('[data-gl-form-status]', form);
-
-        function setError(name, message) {
-            var box = $('[data-error-for="' + name + '"]', form);
-            var field = form.elements[name];
-            if (box) { box.textContent = message || ''; }
-            if (field) { if (message) { field.setAttribute('aria-invalid', 'true'); } else { field.removeAttribute('aria-invalid'); } }
-        }
-
-        form.addEventListener('submit', function (e) {
-            e.preventDefault();
-            var f = form.elements, ok = true, firstBad = null;
-            function bad(n, m) { setError(n, m); ok = false; if (!firstBad) { firstBad = f[n]; } }
-            ['nama', 'layanan', 'tanggal'].forEach(function (n) { setError(n, ''); });
-
-            if (f.nama.value.trim().length < 2) { bad('nama', 'Nama wajib diisi.'); }
-            if (!f.layanan.value) { bad('layanan', 'Pilih layanan.'); }
-            var date = parseISO(f.tanggal.value);
-            var today = new Date(); today.setHours(0, 0, 0, 0);
-            if (!date) { bad('tanggal', 'Pilih tanggal.'); }
-            else if (date < today) { bad('tanggal', 'Tanggal tidak boleh sebelum hari ini.'); }
-            if (!ok) { if (firstBad) { firstBad.focus(); } return; }
-
-            var text = [
-                'Halo ' + (DATA.brand || 'klinik') + ', saya ingin booking sekarang.',
-                '',
-                'Nama: ' + f.nama.value.trim(),
-                'Layanan: ' + f.layanan.options[f.layanan.selectedIndex].text,
-                'Tanggal: ' + fmtDate(date)
-            ].join('\n');
-
-            var win = window.open(waLink(text), '_blank', 'noopener');
-            if (!win) { window.location.href = waLink(text); }
-            if (status) { status.hidden = false; status.textContent = 'WhatsApp admin dibuka. Kirim pesan tersebut untuk menyelesaikan booking.'; }
-        });
-
-        form.addEventListener('input', function (e) { if (e.target && e.target.name) { setError(e.target.name, ''); } });
-    }
-
     /* ---------- 6. Accordion FAQ (fallback untuk browser tanpa <details name>) ---------- */
     function initAccordion() {
         $$('[data-gl-accordion]').forEach(function (acc) {
@@ -646,7 +603,6 @@
         initSchedule();
         initModal();
         initAppointmentForm();
-        initMiniForm();
         initAccordion();
         initPolicyNav();
         initAssistant();

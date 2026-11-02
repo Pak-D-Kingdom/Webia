@@ -14,6 +14,7 @@ class E2ETestSeeder extends Seeder
             WebiaAddonSeeder::class,
             WebiaTemplateSeeder::class,
             WebiaTemplateSeederAthiya::class,
+            WebiaTemplateAqilaSeeder::class,
         ]);
 
         $admin = User::firstOrNew(['email' => 'admin@webia.test']);

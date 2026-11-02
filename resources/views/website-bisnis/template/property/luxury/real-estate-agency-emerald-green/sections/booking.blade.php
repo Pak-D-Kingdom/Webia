@@ -2,7 +2,7 @@
 @php $isPreview = $preview ?? false; @endphp
 
 @if ($isPreview)
-    {{-- Preview: banner cepat. Tanggal & jam dibawa ke halaman Booking lewat query string. --}}
+    {{-- Preview beranda: banner ringkas tanpa pilihan tanggal & jam. Pemilihan dilakukan di halaman Booking. --}}
     <section class="rea-section rea-section--tight" id="booking" aria-labelledby="booking-title">
         <div class="rea-container rea-booking-wrap">
             <div class="rea-booking">
@@ -14,24 +14,13 @@
                     <h2 id="booking-title">{{ $pages['booking']['title'] }}</h2>
                     <p>{{ $pages['booking']['subtitle'] }}</p>
                 </div>
-                <form class="rea-booking__form" method="get" action="{{ $route('booking') }}">
-                    <div class="rea-field rea-field--icon">
-                        <label class="rea-sr" for="quick-date">Select date</label>
-                        {{ $icon('calendar') }}
-                        <input id="quick-date" type="date" name="date" required data-min-today>
-                    </div>
-                    <div class="rea-field rea-field--icon">
-                        <label class="rea-sr" for="quick-time">Select time</label>
-                        {{ $icon('clock') }}
-                        <select id="quick-time" name="time" required>
-                            <option value="" selected disabled>Select Time</option>
-                            @foreach ($timeSlots as $slot)
-                                <option value="{{ $slot }}">{{ $slot }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <button class="rea-btn rea-btn--gold" type="submit">Book a Viewing {{ $icon('arrow') }}</button>
-                </form>
+                <div class="rea-booking__cta">
+                    <ul class="rea-booking__points">
+                        <li>{{ $icon('calendar') }}<span>Private, guided tour</span></li>
+                        <li>{{ $icon('clock') }}<span>Open {{ $site['hours'] }}</span></li>
+                    </ul>
+                    <a class="rea-btn rea-btn--gold" href="{{ $route('booking') }}">Book a Viewing {{ $icon('arrow') }}</a>
+                </div>
             </div>
         </div>
     </section>
@@ -40,6 +29,7 @@
     <section class="rea-section rea-section--alt" id="booking" aria-label="{{ $pages['booking']['title'] }}">
         <div class="rea-container rea-bookpage">
             <div class="rea-bookinfo">
+                <img class="rea-bookinfo__photo" src="{{ $property['gallery'][3]['src'] }}" alt="{{ $property['gallery'][3]['alt'] }}" loading="lazy">
                 <p class="rea-eyebrow">BOOKING &amp; VIEWING</p>
                 <h2>How it works</h2>
                 <ol class="rea-steps">
@@ -55,40 +45,41 @@
 
             <div class="rea-bookform">
                 <h2>Request a Viewing</h2>
-                <p>Fill in the form and our team will confirm your appointment shortly.</p>
+                <p>Fill in the form and send it to our team on WhatsApp to confirm your appointment.</p>
 
-                <form method="post" action="#" novalidate data-form="booking" data-endpoint="">
+                <form method="post" action="#" novalidate data-form="booking" data-endpoint=""
+                      data-wa-number="{{ $whatsapp['number'] }}" data-wa-intro="{{ $whatsapp['booking_intro'] }}">
                     @csrf
-                    <input type="hidden" name="property" value="{{ $property['place_name'] }}">
+                    <input type="hidden" name="property" value="{{ $property['title'] }} - {{ $property['place_name'] }}">
 
                     <div class="rea-field rea-field--icon rea-field--wide">
                         <label class="rea-sr" for="book-name">Full name</label>
                         {{ $icon('user') }}
-                        <input id="book-name" type="text" name="name" placeholder="Full Name" autocomplete="name" required aria-describedby="book-name-error">
+                        <input id="book-name" data-wa-label="Nama" type="text" name="name" placeholder="Full Name" autocomplete="name" required aria-describedby="book-name-error">
                         <p class="rea-field__error" id="book-name-error" role="alert"></p>
                     </div>
                     <div class="rea-field rea-field--icon">
                         <label class="rea-sr" for="book-email">Email address</label>
                         {{ $icon('mail') }}
-                        <input id="book-email" type="email" name="email" placeholder="Email Address" autocomplete="email" required aria-describedby="book-email-error">
+                        <input id="book-email" data-wa-label="Email" type="email" name="email" placeholder="Email Address" autocomplete="email" required aria-describedby="book-email-error">
                         <p class="rea-field__error" id="book-email-error" role="alert"></p>
                     </div>
                     <div class="rea-field rea-field--icon">
                         <label class="rea-sr" for="book-phone">Phone number</label>
                         {{ $icon('phone') }}
-                        <input id="book-phone" type="tel" name="phone" placeholder="Phone Number" autocomplete="tel" inputmode="tel" required aria-describedby="book-phone-error">
+                        <input id="book-phone" data-wa-label="Telepon" type="tel" name="phone" placeholder="Phone Number" autocomplete="tel" inputmode="tel" required aria-describedby="book-phone-error">
                         <p class="rea-field__error" id="book-phone-error" role="alert"></p>
                     </div>
                     <div class="rea-field rea-field--icon">
                         <label class="rea-sr" for="booking-date">Select date</label>
                         {{ $icon('calendar') }}
-                        <input id="booking-date" type="date" name="date" required data-min-today aria-describedby="booking-date-error">
+                        <input id="booking-date" data-wa-label="Tanggal" type="date" name="date" required data-min-today aria-describedby="booking-date-error">
                         <p class="rea-field__error" id="booking-date-error" role="alert"></p>
                     </div>
                     <div class="rea-field rea-field--icon">
                         <label class="rea-sr" for="booking-time">Select time</label>
                         {{ $icon('clock') }}
-                        <select id="booking-time" name="time" required aria-describedby="booking-time-error">
+                        <select id="booking-time" data-wa-label="Jam" name="time" required aria-describedby="booking-time-error">
                             <option value="" selected disabled>Select Time</option>
                             @foreach ($timeSlots as $slot)
                                 <option value="{{ $slot }}">{{ $slot }}</option>
@@ -98,7 +89,7 @@
                     </div>
 
                     <div class="rea-field--wide">
-                        <button class="rea-btn rea-btn--dark rea-btn--block" type="submit">Book a Viewing {{ $icon('arrow') }}</button>
+                        <button class="rea-btn rea-btn--dark rea-btn--block" type="submit">Send via WhatsApp {{ $icon('whatsapp', 'rea-icon--fill') }}</button>
                         <p class="rea-form-status" role="status" data-form-status></p>
                     </div>
                 </form>

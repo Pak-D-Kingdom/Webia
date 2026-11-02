@@ -45,7 +45,7 @@
                         <td data-label="Hemat">@if ($p['discount'])<span class="save">-{{ $p['discount'] }}%</span>@else - @endif</td>
                         <td data-label="Stok"><span class="stock stock--{{ $p['status'] }}"><i class="bi bi-circle-fill" aria-hidden="true"></i> {{ $p['status_label'] }}</span></td>
                         <td class="ptable__act">
-                            <button class="btn btn--rose btn--sm" type="button" data-add="{{ $p['id'] }}" @disabled($p['status'] === 'out')><i class="bi bi-plus-lg" aria-hidden="true"></i> Keranjang</button>
+                            @include($ns . '.partials.add-control', ['p' => $p, 'mode' => 'sm'])
                             <a class="btn btn--ghost btn--sm" href="{{ route($rp . 'inquiry', ['topic' => 'harga', 'product' => $p['slug']]) }}" aria-label="Tanya harga {{ $p['name'] }}"><i class="bi bi-chat-heart" aria-hidden="true"></i> Tanya</a>
                         </td>
                     </tr>

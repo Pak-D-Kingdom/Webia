@@ -12,6 +12,11 @@
             </header>
         @endif
 
+        <div class="rea-specwrap">
+            <figure class="rea-specwrap__photo">
+                <img src="{{ $property['gallery'][1]['src'] }}" alt="{{ $property['gallery'][1]['alt'] }}" loading="lazy">
+                <figcaption>{{ $property['place_name'] }}</figcaption>
+            </figure>
         <div class="rea-speccard">
             <dl class="rea-specs">
                 @foreach ($property['specs'] as $spec)
@@ -21,6 +26,7 @@
                     </div>
                 @endforeach
             </dl>
+        </div>
         </div>
 
         <div class="rea-facilities">

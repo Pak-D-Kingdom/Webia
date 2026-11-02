@@ -71,8 +71,9 @@ class MidtransController extends Controller
 
     public function simulateShow(Request $request, WebiaPayment $payment): View
     {
+        // Dev tanpa kredensial Midtrans: guest dari checkout publik boleh membuka halaman simulasi.
         $this->ensureSimulatable();
-        abort_unless($payment->order->user_id === $request->user()->id, 404);
+        abort_if($request->user() !== null && $payment->order->user_id !== $request->user()->id, 404);
 
         return view('payments.simulate', ['payment' => $payment]);
     }
@@ -80,7 +81,7 @@ class MidtransController extends Controller
     public function simulatePay(Request $request, WebiaPayment $payment): RedirectResponse
     {
         $this->ensureSimulatable();
-        abort_unless($payment->order->user_id === $request->user()->id, 404);
+        abort_if($request->user() !== null && $payment->order->user_id !== $request->user()->id, 404);
 
         $this->midtrans->applyNotification($payment, [
             'order_id' => $payment->midtrans_order_id,
@@ -90,7 +91,9 @@ class MidtransController extends Controller
             'simulated' => true,
         ]);
 
-        return redirect()->route('orders.show', $payment->webia_order_id)->with('status', 'Pembayaran simulasi berhasil dikonfirmasi.');
+        return $request->user() !== null
+            ? redirect()->route('orders.show', $payment->webia_order_id)->with('status', 'Pembayaran simulasi berhasil dikonfirmasi.')
+            : redirect()->route('orders.success');
     }
 
     private function ensureSimulatable(): void

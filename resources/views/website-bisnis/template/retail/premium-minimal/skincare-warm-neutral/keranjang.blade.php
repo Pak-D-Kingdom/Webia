@@ -42,6 +42,7 @@
                             <div class="field field--full"><label for="co-catatan">Catatan</label>
                                 <textarea id="co-catatan" name="catatan" data-label="Catatan" rows="2" placeholder="Opsional"></textarea></div>
                         </div>
+                        <button type="submit" class="btn btn--block btn--lg" data-cart-submit><i class="bi bi-whatsapp"></i> Checkout via WhatsApp</button>
                         <p class="form-msg" data-form-msg hidden></p>
                     </form>
                 </div>

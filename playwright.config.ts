@@ -46,6 +46,7 @@ export default defineConfig({
             // E2E tanpa kredensial Midtrans: paksa mode simulasi meski .env dev punya server key.
             MIDTRANS_SERVER_KEY: '',
             MIDTRANS_MERCHANT_ID: '',
+            MIDTRANS_CLIENT_KEY: 'SB-Mid-client-e2e',
         },
     },
 });

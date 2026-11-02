@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\WebiaPackage;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -14,7 +15,20 @@ class WebiaPackageController extends Controller
 {
     public function index(): View
     {
-        return view('admin.packages.index', ['packages' => WebiaPackage::orderBy('sort_order')->get()]);
+        return view('admin.packages.index', ['packages' => WebiaPackage::query()->withCount('orders')->orderBy('sort_order')->get()]);
+    }
+
+    public function toggle(Request $request, WebiaPackage $package): RedirectResponse|JsonResponse
+    {
+        $package->update(['is_active' => ! $package->is_active]);
+
+        $message = $package->is_active ? 'Paket berhasil diaktifkan.' : 'Paket berhasil dinonaktifkan.';
+
+        if ($request->expectsJson()) {
+            return response()->json(['message' => $message, 'is_active' => $package->is_active]);
+        }
+
+        return redirect()->route('admin.packages.index')->with('status', $message);
     }
 
     public function create(): View
