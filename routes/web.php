@@ -13,6 +13,7 @@ use App\Http\Controllers\WebiaOrderController;
 use App\Http\Controllers\WebsiteBisnis\TemplateCollectionController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\HtmlString;
+use Illuminate\Support\Facades\View;
 
 // WEBIA — Homepage utama
 Route::view('/', 'website-bisnis.index')->name('home');
@@ -1202,6 +1203,18 @@ Route::prefix('webia/template')->group(function () {
         '/pebble-sprouts-baby-kids',
         'website-bisnis.templates.retail.baby-kids-products.pebble-sprouts.pebble-sprouts'
     )->name('webia.template.pebble-sprouts-baby-kids');
+});
+
+Route::prefix('webia/template')->group(function () {
+    Route::view(
+        '/petit-wonder-candy-cloud',
+        'website-bisnis.templates.retail.baby-kids-products.petit-wonder-candy-cloud'
+    )->name('webia.template.retail.petit-wonder-candy-cloud');
+
+    Route::view(
+        '/aurora-petit-yellow-sunshine',
+        'website-bisnis.templates.retail.baby-kids-products.aurora-petit-yellow-sunshine'
+    )->name('webia.template.retail.aurora-petit-yellow-sunshine');
 });
 
 Route::prefix('webia/template')->group(function () {
