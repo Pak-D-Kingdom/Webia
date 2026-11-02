@@ -97,7 +97,6 @@
         </div>
 
         <div class="webia-gallery-grid" id="webia-gallery-grid">
-
             @foreach ($templates as $template)
                 @php
                     $previewImages = [];

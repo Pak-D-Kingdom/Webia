@@ -395,8 +395,6 @@ const themes = {
     grid.addEventListener('click', (event) => {
         const button = event.target.closest('.webia-explore-trigger');
         if (!button || !grid.contains(button)) return;
-        // Automotive cards open their real website template instead of the generic modal.
-        if (button.tagName === 'A' && button.href) return;
         event.preventDefault();
         event.stopPropagation();
         const card = button.closest('.webia-gallery-card');
@@ -408,13 +406,6 @@ const themes = {
             }
             openGallery(card, button);
         }
-    });
-
-    grid.addEventListener('click', (event) => {
-        const card = event.target.closest('.webia-gallery-card');
-        if (!card || card.dataset.category !== 'automotive' || event.target.closest('a, button')) return;
-        const templateUrl = card.dataset.templateUrl;
-        if (templateUrl) window.location.assign(templateUrl);
     });
 
     modal.addEventListener('click', (event) => {
