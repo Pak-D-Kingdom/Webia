@@ -29,7 +29,7 @@
             </div>
 
             <aside class="lw-card lw-checker" data-lw-area-check data-wa="{{ $c['contact']['whatsapp'] }}">
-                <img class="lw-area-art" src="{{ $img($c['img']['truck']) }}" alt="Mobil jemput dan antar FreshWash" width="380" height="240">
+                <img class="lw-area-art" src="{{ $img($c['img']['area']) }}" alt="Mobil jemput dan antar FreshWash" width="450" height="468">
                 <span class="lw-badge">{{ $c['coverage']['badge'] }}</span>
                 <p>{{ $c['coverage']['min'] }}</p>
                 <form class="lw-form" novalidate>
@@ -37,7 +37,7 @@
                     <select id="lw-ck-area" name="area" required>
                         <option value="">Pilih kota…</option>
                         @foreach ($c['coverage']['areas'] as $a)
-                            <option value="{{ $a['name'] }}" data-list="{{ implode('|', $a['list']) }}" data-all="{{ str_contains(strtolower($a['scope']), 'seluruh') ? 1 : 0 }}" data-scope="{{ $a['scope'] }}">{{ $a['name'] }} ({{ $a['scope'] }})</option>
+                            <option value="{{ $a['name'] }}" data-list="{{ implode('|', $a['list']) }}" data-all="{{ stripos($a['scope'], 'seluruh') !== false ? 1 : 0 }}" data-scope="{{ $a['scope'] }}">{{ $a['name'] }} ({{ $a['scope'] }})</option>
                         @endforeach
                     </select>
                     <label for="lw-ck-kec">Kecamatan / area</label>

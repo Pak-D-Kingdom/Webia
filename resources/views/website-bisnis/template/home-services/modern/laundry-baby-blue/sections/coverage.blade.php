@@ -6,14 +6,14 @@
         <div><h2 class="lb-card__title" id="lb-cov-title">Area Pickup &amp; Delivery</h2><p class="lb-card__sub">Layanan antar–jemput laundry.</p></div>
     </header>
     <div class="lb-cov">
-        <img class="lb-cov__map" src="{{ $lbAsset('img', 'coverage-map.webp') }}" alt="Peta area antar-jemput Surabaya dengan kurir BlueLaundry" width="432" height="462" loading="lazy">
+        <img class="lb-cov__map" src="{{ asset($laundry['assets']['img'] . '/coverage-map.webp') }}" alt="Peta area antar-jemput Surabaya dengan kurir BlueLaundry" width="432" height="462" loading="lazy">
         <ul class="lb-cov__list">
             @foreach ($laundry['areas'] as $a)
                 <li><svg class="lb-i" aria-hidden="true"><use href="#i-pin"/></svg>{{ $a['name'] }}</li>
             @endforeach
         </ul>
     </div>
-    <a class="lb-btn lb-btn--outline lb-btn--sm lb-btn--block" href="{{ $lbRoute('area') }}">Cek Jangkauan Area <svg class="lb-i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+    <a class="lb-btn lb-btn--outline lb-btn--sm lb-btn--block" href="{{ route('webia.laundry-baby-blue.area') }}">Cek Jangkauan Area <svg class="lb-i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
 </article>
 @else
 <section class="lb-section" aria-label="Area pickup dan delivery">
@@ -23,7 +23,7 @@
                 <span class="lb-card__icon"><svg class="lb-i" aria-hidden="true"><use href="#i-truck"/></svg></span>
                 <div><h2 class="lb-card__title" id="lb-chk-title">Cek Jangkauan Area</h2><p class="lb-card__sub">Pilih area Anda untuk melihat ketentuan antar–jemput.</p></div>
             </header>
-            <img class="lb-checker__map" src="{{ $lbAsset('img', 'coverage-map.webp') }}" alt="Peta area antar-jemput Surabaya dengan kurir BlueLaundry" width="432" height="462" loading="lazy">
+            <img class="lb-checker__map" src="{{ asset($laundry['assets']['img'] . '/coverage-map.webp') }}" alt="Peta area antar-jemput Surabaya dengan kurir BlueLaundry" width="432" height="462" loading="lazy">
             <label class="lb-label">Area Anda
                 <span class="lb-field lb-field--select">
                     <svg class="lb-i lb-field__ico" aria-hidden="true"><use href="#i-pin"/></svg>
@@ -35,7 +35,7 @@
                 </span>
             </label>
             <div class="lb-checker__result" data-lb-area-result aria-live="polite">Pilih area untuk melihat biaya dan estimasi penjemputan.</div>
-            <a class="lb-btn lb-btn--primary lb-btn--block" href="{{ $lbRoute('order-inquiry') }}">Jadwalkan Jemput</a>
+            <a class="lb-btn lb-btn--primary lb-btn--block" href="{{ route('webia.laundry-baby-blue.order-inquiry') }}">Jadwalkan Jemput</a>
         </article>
 
         <ul class="lb-area-grid">

@@ -1,10 +1,11 @@
 <section class="sec">
     <div class="lw-wrap inqp">
         <div class="inqp__side">
-            <a class="card card--pad cbox" href="{{ $wa() }}" target="_blank" rel="noopener"><span class="round"><svg class="ic"><use href="#i-whatsapp"/></svg></span><div><strong>WhatsApp</strong><span>{{ $c['contact']['phone'] }}</span></div></a>
-            <a class="card card--pad cbox" href="tel:{{ $c['contact']['phone_tel'] }}"><span class="round"><svg class="ic"><use href="#i-phone"/></svg></span><div><strong>Telepon</strong><span>{{ $c['contact']['phone'] }}</span></div></a>
-            <a class="card card--pad cbox" href="mailto:{{ $c['contact']['email'] }}"><span class="round"><svg class="ic"><use href="#i-mail"/></svg></span><div><strong>Email</strong><span>{{ $c['contact']['email'] }}</span></div></a>
-            <div class="card card--pad cbox"><span class="round"><svg class="ic"><use href="#i-pin"/></svg></span><div><strong>Alamat</strong><span>{{ $c['contact']['address'] }}</span></div></div>
+            <a class="card card--pad cbox" href="{{ $wa() }}" target="_blank" rel="noopener"><span class="bub bub--sm bub--dark"><svg class="ic"><use href="#i-whatsapp"/></svg></span><div><strong>WhatsApp</strong><span>{{ $c['contact']['phone'] }}</span></div></a>
+            <a class="card card--pad cbox" href="tel:{{ $c['contact']['phone_tel'] }}"><span class="bub bub--sm bub--dark"><svg class="ic"><use href="#i-phone"/></svg></span><div><strong>Telepon</strong><span>{{ $c['contact']['phone'] }}</span></div></a>
+            <a class="card card--pad cbox" href="mailto:{{ $c['contact']['email'] }}"><span class="bub bub--sm bub--dark"><svg class="ic"><use href="#i-mail"/></svg></span><div><strong>Email</strong><span>{{ $c['contact']['email'] }}</span></div></a>
+            <div class="card card--pad cbox"><span class="bub bub--sm bub--dark"><svg class="ic"><use href="#i-pin"/></svg></span><div><strong>Alamat</strong><span>{{ $c['contact']['address'] }}</span></div></div>
+            <div class="mascot"><img src="{{ $img('bunny-freshbot.png') }}" alt="" loading="lazy"></div>
         </div>
 
         <form class="card card--pad form" data-wa-form data-wa="{{ $c['whatsapp']['number'] }}" novalidate>

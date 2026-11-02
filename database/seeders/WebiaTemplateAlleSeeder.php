@@ -260,5 +260,47 @@ class WebiaTemplateAlleSeeder extends Seeder
                 'sort_order' => 44,
             ]
         );
+
+        WebiaTemplate::updateOrCreate(
+            ['slug' => 'petit-wonder-candy-cloud'],
+            [
+                'name' => 'Petit Wonder — Candy Cloud Kids Boutique',
+                'category_slug' => 'retail',
+                'category_label' => 'Retail',
+                'business_types' => ['Baby & Kids Boutique'],
+                'design_style' => 'Playful Pastel',
+                'color_theme' => 'Pastel Pink, Lilac & Sky Blue',
+                'description' => 'Playful baby and kids boutique with a pastel product catalog, category filters, cart drawer, WhatsApp checkout, product search, safety and quality highlights, customer reviews, FAQs, newsletter signup, and an AI shopping assistant demo.',
+                'preview_style' => 'preview-petit-wonder-candy-cloud',
+                'eyebrow' => 'PREMIUM BABY & KIDS BOUTIQUE',
+                'headline' => 'Tumbuh Bahagia dalam Pelukan Manis Awan Permen!',
+                'tag' => 'Retail · Baby & Kids Boutique · Playful Pastel',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/petit-wonder-candy-cloud',
+                'is_active' => true,
+                'sort_order' => 45,
+            ]
+        );
+
+        WebiaTemplate::updateOrCreate(
+            ['slug' => 'aurora-petit-yellow-sunshine'],
+            [
+                'name' => 'Aurora & Petit — Yellow Sunshine Baby Boutique',
+                'category_slug' => 'retail',
+                'category_label' => 'Retail',
+                'business_types' => ['Luxury Baby & Kids Boutique'],
+                'design_style' => 'Parisian Editorial Luxury',
+                'color_theme' => 'Butter Yellow, Warm Parchment & Amber',
+                'description' => 'Parisian editorial baby boutique with curated organic clothing and nursery products, product filters, quick-buy and wishlist interactions, cart drawer, live search, WhatsApp checkout, boutique information, FAQs, and an AI concierge demo.',
+                'preview_style' => 'preview-aurora-petit-yellow-sunshine',
+                'eyebrow' => 'MAISON DE BÉBÉ · PARIS & JAKARTA',
+                'headline' => 'Kelembutan Sejati untuk Buah Hati Tercinta.',
+                'tag' => 'Retail · Luxury Baby & Kids Boutique · Parisian Editorial',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/aurora-petit-yellow-sunshine',
+                'is_active' => true,
+                'sort_order' => 46,
+            ]
+        );
     }
 }

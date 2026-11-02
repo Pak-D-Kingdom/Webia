@@ -45,8 +45,8 @@ return [
         ['key' => 'services',     'label' => 'Laundry Services'],
         ['key' => 'prices',       'label' => 'Price List'],
         ['key' => 'options',      'label' => 'Service Options', 'children' => [
-            ['key' => 'options',    'label' => 'Service Options'],
-            ['key' => 'turnaround', 'label' => 'Estimasi Waktu Pengerjaan'],
+            ['key' => 'options',    'label' => 'Service Options',            'icon' => 'spark', 'desc' => 'Layanan tambahan untuk hasil lebih maksimal'],
+            ['key' => 'turnaround', 'label' => 'Estimasi Waktu Pengerjaan', 'icon' => 'timer', 'desc' => 'Perkiraan lama proses tiap layanan'],
         ]],
         ['key' => 'coverage',     'label' => 'Coverage'],
         ['key' => 'instructions', 'label' => 'Instructions'],
@@ -117,10 +117,10 @@ return [
     ],
 
     'turnaround' => [
-        ['icon' => 'calendar', 'name' => 'Reguler',       'time' => '1 - 2 hari', 'desc' => 'Untuk cucian harian. Pakaian diterima pagi, selesai maksimal 2 hari.'],
-        ['icon' => 'timer',    'name' => 'Express',       'time' => '3 - 6 jam',  'desc' => 'Pesanan masuk sebelum pukul 14.00 selesai di hari yang sama.'],
-        ['icon' => 'shield',   'name' => 'Premium',       'time' => '1 - 2 hari', 'desc' => 'Pengerjaan lebih teliti dengan pengecekan manual tiap pakaian.'],
-        ['icon' => 'bed',      'name' => 'Bed & Blanket', 'time' => '2 - 3 hari', 'desc' => 'Butuh waktu pengeringan ekstra agar bersih, lembut, dan tidak lembap.'],
+        ['icon' => 'calendar', 'name' => 'Reguler',       'time' => '1 - 2 hari', 'bar' => 50, 'desc' => 'Untuk cucian harian. Pakaian diterima pagi, selesai maksimal 2 hari.'],
+        ['icon' => 'timer',    'name' => 'Express',       'time' => '3 - 6 jam',  'bar' => 22, 'desc' => 'Pesanan masuk sebelum pukul 14.00 selesai di hari yang sama.'],
+        ['icon' => 'shield',   'name' => 'Premium',       'time' => '1 - 2 hari', 'bar' => 50, 'desc' => 'Pengerjaan lebih teliti dengan pengecekan manual tiap pakaian.'],
+        ['icon' => 'bed',      'name' => 'Bed & Blanket', 'time' => '2 - 3 hari', 'bar' => 75, 'desc' => 'Butuh waktu pengeringan ekstra agar bersih, lembut, dan tidak lembap.'],
     ],
 
     // x / y = posisi pin pada peta (persen)

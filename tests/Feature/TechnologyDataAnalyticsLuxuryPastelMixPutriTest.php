@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\WebiaTemplate;
-use Database\Seeders\seedersputri;
+use Database\Seeders\WebiaTemplatePutriSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
@@ -29,13 +29,13 @@ class TechnologyDataAnalyticsLuxuryPastelMixPutriTest extends TestCase
     public function test_seeder_places_data_analytics_template_in_collection_and_is_idempotent(): void
     {
         Artisan::call('db:seed', [
-            '--class' => seedersputri::class,
+            '--class' => WebiaTemplatePutriSeeder::class,
             '--force' => true,
             '--no-interaction' => true,
         ]);
 
         Artisan::call('db:seed', [
-            '--class' => seedersputri::class,
+            '--class' => WebiaTemplatePutriSeeder::class,
             '--force' => true,
             '--no-interaction' => true,
         ]);

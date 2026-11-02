@@ -1,6 +1,6 @@
-<section class="card card--bot b-chat" aria-labelledby="pv-chat">
+<section class="card card--bot" aria-labelledby="pv-chat">
+    <img class="card--bot__img" src="{{ $img('robot-freshbot.png') }}" alt="{{ $c['chatbot']['name'] }}, robot asisten laundry" loading="lazy">
     <p class="bubble" id="pv-chat">Halo! Aku {{ $c['chatbot']['name'] }}<br>si asisten laundry kamu!</p>
-    <img class="card--bot__img" src="{{ $img('robot.svg') }}" alt="{{ $c['chatbot']['name'] }}, robot asisten laundry" loading="lazy">
     <div class="card--bot__txt">
         <p>Tanya aku tentang:</p>
         <ul>@foreach ($c['chatbot']['topics'] as $t)<li>{{ $t }}</li>@endforeach</ul>
