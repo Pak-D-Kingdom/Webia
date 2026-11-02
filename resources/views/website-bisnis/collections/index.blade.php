@@ -190,35 +190,8 @@
         </div>
     </section>
 
-    {{-- Dialog pilih paket memakai data paket nyata dari DB; lanjut ke halaman Buat Pesanan --}}
-    <dialog class="webia-cart-dialog" id="webia-package-picker" aria-labelledby="webia-package-picker-title"
+    <dialog class="webia-cart-dialog webia-order-dialog" id="webia-order-dialog" aria-labelledby="webia-order-dialog-title"
         data-create-url="{{ route('orders.create') }}">
-        <div class="webia-cart-dialog-head">
-            <div><span class="website-eyebrow">PERSONALIZE YOUR WEBSITE</span>
-                <h2 id="webia-package-picker-title">Pilih Paket Website</h2>
-                <p id="webia-package-template-name">Template pilihan</p>
-            </div>
-            <button type="button" class="webia-cart-close" data-close-dialog aria-label="Tutup">×</button>
-        </div>
-        <div class="webia-package-options">
-            @forelse ($packages as $package)
-                <a class="webia-package-option" href="{{ route('orders.create', ['package' => $package['slug']]) }}"
-                    data-package-slug="{{ $package['slug'] }}">
-                    <strong>{{ $package['name'] }}</strong>
-                    <del></del>
-                    <span class="webia-option-price">Rp{{ number_format($package['price'], 0, ',', '.') }}</span>
-                    <small>{{ $package['description'] }}{{ $package['features'] ? ' · ' . implode(' · ', $package['features']) : '' }}</small>
-                    <em>Pilih paket ini +</em>
-                </a>
-            @empty
-                <p class="webia-cart-note">Belum ada paket aktif. Hubungi tim WEBIA.</p>
-            @endforelse
-        </div>
-        <p class="webia-cart-note">Data pemesan dan pembayaran QRIS, virtual account, e-wallet, atau transfer diproses langsung di halaman ini.</p>
-    </dialog>
-
-    {{-- Form Buat Pesanan dimuat ke modal ini dari halaman /orders/create --}}
-    <dialog class="webia-cart-dialog webia-order-dialog" id="webia-order-dialog" aria-labelledby="webia-order-dialog-title">
         <div class="webia-cart-dialog-head">
             <div><span class="website-eyebrow">PESAN WEBSITE</span>
                 <h2 id="webia-order-dialog-title">Buat Pesanan</h2>
@@ -231,7 +204,6 @@
 @endsection
 
 @push('styles')
-    {{-- Form pesanan memakai ulang markup + style halaman Buat Pesanan; layer agar tidak menimpa style koleksi --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0,0&display=block" rel="stylesheet">

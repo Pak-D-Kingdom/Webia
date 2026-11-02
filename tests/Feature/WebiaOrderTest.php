@@ -28,6 +28,31 @@ class WebiaOrderTest extends TestCase
             ->assertSee('Buat Pesanan');
     }
 
+    public function test_guest_can_open_template_order_form_without_preselected_package(): void
+    {
+        WebiaPackage::factory()->create(['name' => 'Pixel']);
+        $template = WebiaTemplate::create([
+            'name' => 'Cafe Earthtone',
+            'slug' => 'cafe-earthtone',
+            'category_slug' => 'fnb',
+            'category_label' => 'F&B',
+            'business_types' => ['Cafe'],
+            'design_style' => 'Earthtone',
+            'description' => 'Template cafe.',
+            'is_active' => true,
+        ]);
+
+        $response = $this->get(route('orders.create', ['template' => $template]));
+
+        $response
+            ->assertOk()
+            ->assertSee('Cafe Earthtone')
+            ->assertSee('Pixel')
+            ->assertSee('name="package_id"', false)
+            ->assertSee('Pilih satu paket untuk melanjutkan pemesanan.');
+        $this->assertSame(0, preg_match('/name="package_id"[^>]*checked/', (string) $response->getContent()));
+    }
+
     public function test_customer_can_create_order_from_active_package(): void
     {
         $customer = User::factory()->create();

@@ -7166,66 +7166,6 @@ html {
     cursor: pointer
 }
 
-.webia-package-options {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-    padding: 22px 26px
-}
-
-.webia-package-option {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 9px;
-    padding: 17px;
-    border: 1px solid rgb(167 139 250 / 25%);
-    border-radius: 17px;
-    background: #fff;
-    color: inherit;
-    text-decoration: none;
-    text-align: left;
-    cursor: pointer;
-    transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease
-}
-
-.webia-package-option:hover {
-    transform: translateY(-3px);
-    border-color: #b7a0fa;
-    box-shadow: 0 12px 25px rgb(91 73 143 / 9%)
-}
-
-.webia-package-option strong {
-    color: #443965;
-    font-size: 17px
-}
-
-.webia-package-option .webia-option-price {
-    color: #735bb0;
-    font-size: 20px;
-    font-weight: 900
-}
-
-.webia-package-option del {
-    color: #aaa2bf;
-    font-size: 11px
-}
-
-.webia-package-option small {
-    color: #777493;
-    font-size: 11px;
-    line-height: 1.7
-}
-
-.webia-package-option em {
-    margin-top: auto;
-    color: #8c68c6;
-    font-size: 11px;
-    font-style: normal;
-    font-weight: 800
-}
-
-/* Modal Buat Pesanan: menampung form dari halaman /orders/create */
 .webia-order-dialog {
     width: min(58rem, 94vw)
 }
@@ -7274,8 +7214,44 @@ html {
     text-decoration: none
 }
 
-.webia-payment-actions [hidden] {
+.webia-payment-actions [hidden],
+.webia-snap-panel[hidden] {
     display: none
+}
+
+.webia-snap-panel {
+    width: min(100%, 42rem);
+    margin: 1.25rem auto 0;
+    overflow: hidden;
+    border: 1px solid rgb(167 139 250 / 24%);
+    border-radius: 1.25rem;
+    background: #fff
+}
+
+.webia-snap-panel-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid rgb(167 139 250 / 18%);
+    background: #faf8ff
+}
+
+.webia-snap-panel-head h3 {
+    margin: .35rem 0 0;
+    color: #3c3068;
+    font-size: 1rem
+}
+
+.webia-snap-panel-head>span {
+    color: #777493;
+    font-size: .7rem
+}
+
+.webia-snap-container {
+    min-width: 320px;
+    min-height: 560px
 }
 
 .webia-cart-note {
@@ -7453,9 +7429,31 @@ html {
         padding: 12px 14px
     }
 
-    .webia-package-options {
-        grid-template-columns: 1fr;
-        padding: 16px
+    .webia-order-dialog {
+        width: 100%;
+        max-width: 100%;
+        max-height: 100dvh;
+        margin: 0;
+        border-radius: 0
+    }
+
+    .webia-order-dialog-body {
+        max-height: calc(100dvh - 6.75rem);
+        padding: 1rem
+    }
+
+    .webia-snap-panel {
+        width: calc(100% + 2rem);
+        margin-right: -1rem;
+        margin-left: -1rem;
+        border-right: 0;
+        border-left: 0;
+        border-radius: 0
+    }
+
+    .webia-snap-panel-head {
+        align-items: flex-start;
+        flex-direction: column
     }
 
     .webia-cart-dialog-head {
@@ -7488,8 +7486,7 @@ html {
 
 @media(prefers-reduced-motion:reduce) {
 
-    .webia-add-to-cart,
-    .webia-package-option {
+    .webia-add-to-cart {
         transition: none
     }
 }
