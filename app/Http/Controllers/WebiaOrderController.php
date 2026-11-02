@@ -110,6 +110,10 @@ class WebiaOrderController extends Controller
                     'payment_ready' => $payment->snap_token !== null || $payment->snap_redirect_url !== null,
                     'payment_status_url' => URL::temporarySignedRoute('orders.payment-status', now()->addDay(), ['order' => $order]),
                     'login_url' => route('login'),
+                    'package_name' => $order->package_snapshot['name'],
+                    'addons' => $order->addon_snapshot,
+                    'total_price' => $order->total_price,
+                    'expires_at' => $payment->expires_at?->toISOString(),
                 ], 201);
             }
         }
@@ -272,7 +276,11 @@ class WebiaOrderController extends Controller
             }
         }
 
-        $status = $order->status === 'paid' ? 'paid' : $payment->status;
+        $status = match (true) {
+            $order->status === 'paid' => 'paid',
+            $payment->status === 'created' && data_get($payment->payload, 'transaction_status') === 'pending' => 'pending',
+            default => $payment->status,
+        };
 
         return response()->json([
             'status' => $status,

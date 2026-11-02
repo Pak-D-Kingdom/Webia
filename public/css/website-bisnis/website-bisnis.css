@@ -7168,8 +7168,8 @@ html {
 
 .webia-cart-close {
     flex: 0 0 auto;
-    width: 38px;
-    height: 38px;
+    width: 44px;
+    height: 44px;
     border: 1px solid #e9ddf7;
     border-radius: 12px;
     background: #fff;
@@ -7178,8 +7178,38 @@ html {
     cursor: pointer
 }
 
+.webia-cart-close:focus-visible {
+    outline: 3px solid #7656b3;
+    outline-offset: 2px
+}
+
+.webia-cart-close:disabled {
+    color: #918ca0;
+    background: #eeecf1;
+    border-color: #d7d3dd;
+    cursor: not-allowed
+}
+
 .webia-order-dialog {
     width: min(58rem, 94vw)
+}
+
+.webia-order-dialog.is-payment {
+    width: min(38rem, 94vw)
+}
+
+.webia-order-dialog.is-payment .webia-cart-dialog-head {
+    position: absolute;
+    top: .75rem;
+    right: .75rem;
+    z-index: 2;
+    padding: 0;
+    border: 0;
+    background: transparent
+}
+
+.webia-order-dialog.is-payment .webia-cart-dialog-head>div {
+    display: none
 }
 
 .webia-order-dialog-body {
@@ -7193,37 +7223,241 @@ html {
 }
 
 .webia-payment-panel {
-    min-height: 25rem
+    display: grid;
+    gap: 1rem;
+    width: min(100%, 34rem);
+    margin: 0 auto;
+    padding: 1.5rem;
+    border: 1px solid #e0e3e5;
+    border-radius: 1rem;
+    background: #fff;
+    box-shadow: 0 1rem 3rem rgb(26 20 107 / 10%)
+}
+
+.webia-payment-heading {
+    display: grid;
+    justify-items: center;
+    gap: .75rem;
+    text-align: center
+}
+
+.webia-payment-heading h2 {
+    margin: 0;
+    color: #191c1e;
+    font-size: clamp(1.35rem, 4vw, 1.75rem)
+}
+
+.webia-payment-panel[hidden] {
+    display: none
+}
+
+.webia-payment-panel .customer-verify-icon {
+    width: 4rem;
+    height: 4rem;
+    color: #4e3a83;
+    background: #f7f3ff;
+    border-color: #d8cbed
+}
+
+.webia-payment-panel .customer-verify-icon .material-symbols-outlined {
+    font-size: 2rem;
+    font-variation-settings: "FILL" 1, "wght" 500
+}
+
+.webia-order-number {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    min-height: 2.25rem;
+    padding: .35rem .5rem .35rem .75rem;
+    border: 1px solid #e0e3e5;
+    border-radius: 999px;
+    background: #f7f9fb;
+    color: #62646b;
+    font-size: .75rem
+}
+
+.webia-order-number strong {
+    color: #312e81
+}
+
+.webia-order-number button {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: #474651;
+    cursor: pointer
+}
+
+.webia-order-number button:focus-visible {
+    outline: 3px solid #8d88d8;
+    outline-offset: 1px
+}
+
+.webia-order-number .material-symbols-outlined {
+    font-size: 1.1rem
 }
 
 .webia-payment-panel .customer-verify-meta {
-    max-width: 24rem
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid #eadfbf;
+    border-radius: .75rem;
+    background: #fff8e7;
+    text-align: left
+}
+
+.webia-payment-panel .customer-verify-meta>div {
+    display: grid;
+    gap: .3rem
+}
+
+.webia-payment-panel .customer-verify-meta span {
+    color: #675b45;
+    font-size: .75rem;
+    font-weight: 700
 }
 
 .webia-payment-panel .customer-verify-meta strong {
-    color: #795b15
+    color: #72520d;
+    font-family: inherit;
+    font-size: clamp(1.2rem, 3.5vw, 1.6rem);
+    line-height: 1.2
+}
+
+.webia-payment-expiry {
+    flex: 0 0 auto;
+    text-align: right
+}
+
+.webia-payment-expiry strong {
+    font-size: .8rem !important
+}
+
+.webia-payment-summary {
+    display: grid;
+    gap: .75rem;
+    padding: 1rem;
+    border: 1px solid #e0e3e5;
+    border-radius: .75rem;
+    background: #f7f9fb
+}
+
+.webia-payment-summary>div {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    color: #62646b;
+    font-size: .75rem
+}
+
+.webia-payment-summary>div strong {
+    color: #191c1e;
+    text-align: right
+}
+
+.webia-payment-summary .webia-payment-total {
+    align-items: center;
+    padding-top: .75rem;
+    border-top: 1px solid #e0e3e5
+}
+
+.webia-payment-summary .webia-payment-total strong {
+    color: #1a146b;
+    font-size: 1.35rem
+}
+
+.webia-payment-panel.is-provisioning .customer-verify-icon,
+.webia-payment-panel.is-provisioning .customer-verify-meta {
+    color: #4e3a83;
+    border-color: #d8cbed;
+    background: #f7f3ff
+}
+
+.webia-payment-panel.is-provisioning .customer-verify-meta strong {
+    color: #4e3a83
 }
 
 .webia-payment-panel.is-paid .customer-verify-icon {
-    color: #1f7249;
-    background: #edf9f2;
+    color: #265f43;
+    background: #effaf4;
     border-color: #b9e2ca
 }
 
+.webia-payment-panel.is-paid .customer-verify-meta {
+    border-color: #b9e2ca;
+    background: #effaf4
+}
+
 .webia-payment-panel.is-paid .customer-verify-meta strong {
-    color: #1f7249
+    color: #265f43
+}
+
+.webia-payment-panel.is-failed .customer-verify-icon {
+    color: #9f2f3f;
+    background: #fff2f4;
+    border-color: #efbdc5
+}
+
+.webia-payment-panel.is-failed .customer-verify-meta {
+    border-color: #efbdc5;
+    background: #fff2f4
+}
+
+.webia-payment-panel.is-failed .customer-verify-meta strong {
+    color: #9f2f3f
 }
 
 .webia-payment-actions {
+    display: grid;
+    gap: .5rem;
+    width: 100%
+}
+
+.webia-payment-actions .customer-create-submit-btn,
+.webia-payment-actions .customer-detail-secondary {
     width: 100%;
-    max-width: 20rem
+    min-height: 48px
 }
 
 .webia-payment-actions .customer-detail-secondary {
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: .4rem;
     text-decoration: none
+}
+
+.webia-payment-actions button:focus-visible,
+.webia-payment-actions a:focus-visible {
+    outline: 3px solid #7656b3;
+    outline-offset: 2px
+}
+
+.webia-payment-actions .customer-detail-secondary:disabled {
+    color: #62646b;
+    background: #eeecf1;
+    cursor: wait
+}
+
+.webia-payment-actions .material-symbols-outlined {
+    font-size: 1.1rem
+}
+
+.webia-payment-panel .customer-verify-note {
+    margin: 0;
+    text-align: center;
+    font-style: normal;
+    line-height: 1.6
 }
 
 .webia-payment-actions [hidden],
@@ -7233,35 +7467,17 @@ html {
 
 .webia-snap-panel {
     width: min(100%, 42rem);
-    margin: 1.25rem auto 0;
+    margin: 0 auto;
     overflow: hidden;
     border: 1px solid rgb(167 139 250 / 24%);
     border-radius: 1.25rem;
     background: #fff
 }
 
-.webia-snap-panel-head {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 1rem 1.25rem;
-    border-bottom: 1px solid rgb(167 139 250 / 18%);
-    background: #faf8ff
-}
-
-.webia-snap-panel-head h3 {
-    margin: .35rem 0 0;
-    color: #3c3068;
-    font-size: 1rem
-}
-
-.webia-snap-panel-head>span {
-    color: #777493;
-    font-size: .7rem
-}
-
 .webia-snap-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
     min-width: 320px;
     min-height: 560px
 }
@@ -7449,6 +7665,11 @@ html {
         border-radius: 0
     }
 
+    .webia-order-dialog.is-payment {
+        width: 100%;
+        max-width: 100%
+    }
+
     .webia-order-dialog-body {
         max-height: calc(100dvh - 6.75rem);
         padding: 1rem
@@ -7463,9 +7684,19 @@ html {
         border-radius: 0
     }
 
-    .webia-snap-panel-head {
-        align-items: flex-start;
+    .webia-payment-panel {
+        padding: 1.25rem 1rem
+    }
+
+    .webia-payment-panel .customer-verify-meta {
+        align-items: stretch;
         flex-direction: column
+    }
+
+    .webia-payment-expiry {
+        padding-top: .75rem;
+        border-top: 1px solid #eadfbf;
+        text-align: left
     }
 
     .webia-cart-dialog-head {

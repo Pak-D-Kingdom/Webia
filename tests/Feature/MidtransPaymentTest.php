@@ -44,6 +44,27 @@ class MidtransPaymentTest extends TestCase
             ->assertJson(['status' => 'created', 'sync_failed' => true]);
     }
 
+    public function test_guest_payment_status_reports_pending_midtrans_transaction(): void
+    {
+        $order = WebiaOrder::factory()->create(['status' => 'awaiting_payment']);
+        $payment = WebiaPayment::factory()->create([
+            'webia_order_id' => $order->id,
+            'midtrans_order_id' => 'WEB-'.$order->id.'-01',
+            'status' => 'created',
+        ]);
+        Http::fake([
+            'api.sandbox.midtrans.com/v2/'.$payment->midtrans_order_id.'/status' => Http::response([
+                'transaction_status' => 'pending',
+            ]),
+        ]);
+
+        $this->getJson($this->paymentStatusUrl($order))
+            ->assertOk()
+            ->assertJson(['status' => 'pending', 'terminal' => false]);
+
+        $this->assertSame('created', $payment->fresh()->status);
+    }
+
     public function test_guest_payment_status_syncs_midtrans_and_marks_order_paid(): void
     {
         $order = WebiaOrder::factory()->create(['status' => 'awaiting_payment']);

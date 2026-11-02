@@ -5,19 +5,18 @@ const customerEmail = 'order-customer@webia.test';
 const customerPassword = 'password123';
 
 async function registerCustomer(page: import('@playwright/test').Page): Promise<void> {
-    await page.goto('/register');
-    await page.getByLabel('Nama').fill('Order Customer');
+    // /register tak ada lagi; customer dibuat E2ETestSeeder.
+    await page.goto('/login');
     await page.getByLabel('Email').fill(customerEmail);
-    await page.getByLabel('Password', { exact: true }).fill(customerPassword);
-    await page.getByLabel('Ulangi password').fill(customerPassword);
-    await page.getByRole('button', { name: 'Buat akun' }).click();
+    await page.getByLabel('Kata Sandi').fill(customerPassword);
+    await page.getByRole('button', { name: 'Masuk' }).click();
     await expect(page).toHaveURL(/\/dashboard$/);
 }
 
 async function login(page: import('@playwright/test').Page, email: string, password: string): Promise<void> {
     await page.goto('/login');
     await page.getByLabel('Email').fill(email);
-    await page.getByLabel('Password').fill(password);
+    await page.getByLabel('Kata Sandi').fill(password);
     await page.getByRole('button', { name: 'Masuk' }).click();
 }
 
@@ -27,12 +26,15 @@ async function logout(page: import('@playwright/test').Page): Promise<void> {
 }
 
 test('template checkout opens order form directly and embeds Midtrans without page scroll', async ({ page }) => {
+    test.setTimeout(60_000);
     await page.route('**/snap/snap.js', async (route) => {
         await route.fulfill({
             contentType: 'application/javascript',
             body: `window.snap = { embed(token, options) {
                 window.__snapToken = token;
                 window.__snapEmbedId = options.embedId;
+                window.__snapOptions = options;
+                window.scrollTo(0, 0);
                 document.getElementById(options.embedId).innerHTML = '<div data-testid="snap-payment-methods">Metode pembayaran Midtrans</div>';
             }};`,
         });
@@ -55,6 +57,10 @@ test('template checkout opens order form directly and embeds Midtrans without pa
                 payment_ready: true,
                 payment_status_url: '/orders/999/payment-status?signature=e2e',
                 login_url: '/login',
+                package_name: 'Website Bisnis Pro',
+                addons: [{ name: 'SEO Dasar', price: 150000 }],
+                total_price: 2499000,
+                expires_at: new Date(Date.now() + 86_400_000).toISOString(),
             }),
         });
     });
@@ -62,26 +68,71 @@ test('template checkout opens order form directly and embeds Midtrans without pa
         await route.fulfill({ json: { status: 'created', terminal: false, sync_failed: false } });
     });
     await page.goto('/webia/koleksi');
+    await page.request.get('/orders/create?template=4&category=automotive');
 
     const orderButton = page.getByRole('button', { name: /Pesan template/ }).first();
     await orderButton.scrollIntoViewIfNeeded();
     await orderButton.click();
 
-    const dialog = page.getByRole('dialog', { name: 'Buat Pesanan' });
-    await expect(dialog).toBeVisible();
-    await expect(dialog.locator('input[name="package_id"]').first()).toBeVisible();
+    const dialog = page.locator('#webia-order-dialog');
+    await expect(page.getByRole('dialog', { name: 'Buat Pesanan' })).toBeVisible();
+    await expect(dialog.locator('input[name="package_id"]').first()).toBeVisible({ timeout: 15_000 });
     await expect(page.getByText('Pilih Paket Website')).toHaveCount(0);
 
     await page.getByLabel('Nama lengkap').fill('Checkout Guest');
     await page.getByLabel('Email').fill('checkout-guest@webia.test');
     await page.locator('input[name="package_id"]').first().check();
     await page.getByRole('button', { name: 'Lanjut ke pembayaran' }).click();
+    await expect(page.getByRole('heading', { name: 'Pesanan siap dibayar' })).toBeVisible();
+    await expect(dialog.locator('.customer-verify-icon .material-symbols-outlined')).toHaveText('account_balance_wallet');
+    await expect(dialog.getByText(/akun WEBIA otomatis dibuat/i)).toHaveCount(0);
+    await expect(dialog.getByText('Website Bisnis Pro')).toBeVisible();
+    await expect(dialog.getByText('SEO Dasar')).toBeVisible();
+    await expect(dialog.getByText('Rp2.499.000')).toBeVisible();
+    await expect(dialog.getByText('Batas waktu bayar')).toBeVisible();
     await expect(page.getByRole('button', { name: 'Bayar sekarang' })).toBeVisible();
+    const copyButton = dialog.locator('[data-copy-order]');
+    const checkStatusButton = dialog.locator('[data-check-status]');
+    await expect(copyButton).toBeVisible();
+    await expect(checkStatusButton).toBeVisible();
+    await page.evaluate(() => {
+        Object.defineProperty(navigator, 'clipboard', {
+            configurable: true,
+            value: { writeText: (value: string) => { (window as typeof window & { __copiedOrder?: string }).__copiedOrder = value; return Promise.resolve(); } },
+        });
+    });
+    await copyButton.click();
+    await expect(copyButton).toHaveAttribute('aria-label', 'Nomor pesanan tersalin');
+    expect(await page.evaluate(() => (window as typeof window & { __copiedOrder?: string }).__copiedOrder)).toBe('WEB-E2E-001');
 
-    const scrollBeforePayment = await page.evaluate(() => window.scrollY);
+    let statusChecks = 0;
+    await page.route('**/orders/999/payment-status?signature=e2e', async (route) => {
+        statusChecks++;
+        await new Promise((resolve) => setTimeout(resolve, 400));
+        await route.fulfill({ json: { status: 'pending', terminal: false, sync_failed: false } });
+    });
+    await checkStatusButton.click();
+    await expect(checkStatusButton).toBeDisabled();
+    await expect(checkStatusButton).toContainText('Memeriksa transaksi…');
+    await expect(dialog.getByText('Pembayaran sedang diproses')).toBeVisible();
+    await expect(checkStatusButton).toBeEnabled();
+    expect(statusChecks).toBeGreaterThan(0);
+
+    const scrollBeforePayment = await page.evaluate(() => Math.abs(Number.parseFloat(document.body.style.top)));
+    expect(scrollBeforePayment).toBeGreaterThan(0);
     await page.getByRole('button', { name: 'Bayar sekarang' }).click();
     await expect(page.getByTestId('snap-payment-methods')).toBeVisible();
-    const scrollAfterPayment = await page.evaluate(() => window.scrollY);
+    await expect(dialog.locator('[data-payment-panel]')).toBeHidden();
+    const snapPanel = dialog.locator('[data-snap-panel]');
+    await expect(snapPanel).toBeVisible();
+    await expect(dialog.getByText('PEMBAYARAN AMAN')).toHaveCount(0);
+    await expect(dialog.getByRole('heading', { name: 'Pilih metode pembayaran' })).toHaveCount(0);
+    await expect(dialog.getByText('Diproses oleh Midtrans')).toHaveCount(0);
+    const [dialogBox, snapBox] = await Promise.all([dialog.boundingBox(), snapPanel.boundingBox()]);
+    expect(dialogBox).not.toBeNull();
+    expect(snapBox).not.toBeNull();
+    expect(Math.abs((snapBox!.x + snapBox!.width / 2) - (dialogBox!.x + dialogBox!.width / 2))).toBeLessThan(2);
+    const scrollAfterPayment = await page.evaluate(() => Math.abs(Number.parseFloat(document.body.style.top)));
     expect(scrollAfterPayment).toBe(scrollBeforePayment);
 
     const [embeddedToken, embeddedId] = await page.evaluate(() => [
@@ -90,6 +141,45 @@ test('template checkout opens order form directly and embeds Midtrans without pa
     ]);
     expect(embeddedToken).not.toBe('');
     expect(embeddedId).toBe('webia-snap-container');
+
+    await page.route('**/orders/999/payment-status?signature=e2e', async (route) => {
+        await route.fulfill({ json: { status: 'paid', terminal: false, credential_status: 'pending', sync_failed: false } });
+    });
+    await page.evaluate(() => {
+        const snapOptions = (window as typeof window & { __snapOptions?: { onSuccess?: () => void } }).__snapOptions;
+        snapOptions?.onSuccess?.();
+    });
+    await expect(page.getByRole('heading', { name: 'Pembayaran kamu sudah diterima' })).toBeVisible();
+    const provisioningStatus = dialog.getByText('Pembayaran berhasil. Akun WEBIA sedang disiapkan');
+    await expect(provisioningStatus).toBeVisible();
+    await expect(dialog.locator('.customer-verify-icon .material-symbols-outlined')).toHaveText('manage_accounts');
+    expect(await provisioningStatus.evaluate((element) => Number.parseFloat(getComputedStyle(element).fontSize))).toBeGreaterThanOrEqual(20);
+    await expect(snapPanel).toBeHidden();
+    const closeButton = dialog.getByRole('button', { name: 'Tutup' });
+    await expect(closeButton).toBeDisabled();
+    await expect(page.getByRole('button', { name: 'Periksa status pembayaran' })).toBeHidden();
+    await dialog.press('Escape');
+    await expect(dialog).toBeVisible();
+    await dialog.click({ position: { x: 1, y: 1 } });
+    await expect(dialog).toBeVisible();
+    await page.setViewportSize({ width: 375, height: 812 });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(375);
+
+    await page.route('**/orders/999/payment-status?signature=e2e', async (route) => {
+        await route.fulfill({ json: { status: 'paid', terminal: true, credential_status: 'sent', email: 'checkout-guest@webia.test', sync_failed: false } });
+    });
+    await page.evaluate(() => {
+        const snapOptions = (window as typeof window & { __snapOptions?: { onSuccess?: () => void } }).__snapOptions;
+        snapOptions?.onSuccess?.();
+    });
+    await expect(dialog.getByText('Akun siap & kredensial terkirim')).toBeVisible();
+    await expect(dialog.getByText('checkout-guest@webia.test')).toBeVisible();
+    await expect(dialog.locator('.customer-verify-icon .material-symbols-outlined')).toHaveText('verified');
+    await expect(closeButton).toBeEnabled();
+
+    await closeButton.click();
+    await expect(dialog).toBeHidden();
+    await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(scrollBeforePayment);
 });
 
 test('customer order can be rejected, reuploaded, and approved by admin', async ({ page }) => {
@@ -97,8 +187,7 @@ test('customer order can be rejected, reuploaded, and approved by admin', async 
     await registerCustomer(page);
 
     await page.goto('/orders/create?package=pixel');
-    await expect(page.getByLabel('Paket website')).toHaveValue(/.+/);
-    await page.getByLabel('Kategori bisnis (opsional)').fill('beauty');
+    await expect(page.locator('input[name="package_id"]').first()).toBeChecked();
     await page.getByRole('button', { name: 'Lanjut ke pembayaran' }).click();
 
     await expect(page.getByRole('heading', { name: 'Pixel' })).toBeVisible();
@@ -127,5 +216,5 @@ test('customer order can be rejected, reuploaded, and approved by admin', async 
     await login(page, 'admin@webia.test', 'password');
     await page.goto(`/admin/orders/${orderId}`);
     await page.getByRole('button', { name: 'Terima pembayaran' }).click();
-    await expect(page.getByText('paid', { exact: true })).toBeVisible();
+    await expect(page.getByText('Lunas', { exact: true }).first()).toBeVisible();
 });

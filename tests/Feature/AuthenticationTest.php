@@ -78,7 +78,7 @@ class AuthenticationTest extends TestCase
                 'redirect_url' => 'https://app.sandbox.midtrans.com/snap/pay',
             ]),
         ]);
-        $package = WebiaPackage::factory()->create(['price' => 499000]);
+        $package = WebiaPackage::factory()->create(['name' => 'Website Bisnis Pro', 'price' => 499000]);
 
         $response = $this->postJson(route('orders.store'), [
             'package_id' => $package->id,
@@ -92,7 +92,11 @@ class AuthenticationTest extends TestCase
             'email' => 'zainul@example.com',
             'status' => 'awaiting_payment',
             'snap_token' => 'snap-modal-token',
+            'package_name' => 'Website Bisnis Pro',
+            'addons' => [],
+            'total_price' => 499000,
         ]);
+        $response->assertJsonPath('expires_at', $order->payments()->firstOrFail()->expires_at->toISOString());
         $response->assertSessionHas('guest_order.order_id', $order->id);
         $statusUrl = $response->json('payment_status_url');
         $this->assertIsString($statusUrl);

@@ -22,5 +22,11 @@ class E2ETestSeeder extends Seeder
         $admin->password = 'password';
         $admin->role = 'admin';
         $admin->save();
+
+        $customer = User::firstOrNew(['email' => 'order-customer@webia.test']);
+        $customer->name = 'Order Customer';
+        $customer->password = 'password123';
+        $customer->role = 'customer';
+        $customer->save();
     }
 }
