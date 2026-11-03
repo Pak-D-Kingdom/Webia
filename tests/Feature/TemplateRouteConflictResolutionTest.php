@@ -22,7 +22,7 @@ class TemplateRouteConflictResolutionTest extends TestCase
 
     public function test_aurelia_route_renders_the_template(): void
     {
-        $this->get('/webia/template/aurelia-home-renovation')
+        $this->get(route('webia.template.aurelia-home-renovation'))
             ->assertOk()
             ->assertViewIs('website-bisnis.templates.home-services.home-renovation-repair.aurelia.aurelia');
     }
