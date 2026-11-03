@@ -428,6 +428,10 @@ Route::get('/webia/template/spark-academy-maximum-impact', function () {
     return response()->file(public_path('website-bisnis/templates/education/spark-academy-maximum-impact.html'));
 })->name('webia.template.education.spark-academy');
 
+Route::get('/webia/template/ruby-academy-classic-school', function () {
+    return response()->file(public_path('website-bisnis/templates/education/ruby-academy-classic-school.html'));
+})->name('webia.template.education.ruby-academy-classic-school');
+
 Route::view(
     '/webia/template/education/preschool-daycare-jeli-kecil',
     'website-bisnis.template.education.preschool-daycare-jeli-kecil.index'
