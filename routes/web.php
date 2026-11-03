@@ -1268,24 +1268,6 @@ Route::prefix('webia/template')->group(function () {
     )->name('webia.template.aria-thorne-author-writer');
 });
 
-// Template dari adinda-fe (PR #34)
-Route::prefix('webia/template')->group(function () {
-    Route::view(
-        '/nantara-architecture-traditional-cultural',
-        'website-bisnis.templates.interior-architecture.architecture-building-design.nantara-architecture.nantara-architecture'
-    )->name('webia.template.nantara-architecture-traditional-cultural');
-
-    Route::view(
-        '/aurelia-home-renovation',
-        'website-bisnis.templates.home-services.home-renovation-repair.aurelia.aurelia'
-    )->name('webia.template.aurelia-home-renovation');
-
-    Route::view(
-        '/matcha-clean-organic-deep-cleaning',
-        'website-bisnis.templates.home-services.home-cleaning-deep-cleaning.matcha-clean.matcha-clean'
-    )->name('webia.template.matcha-clean-organic-deep-cleaning');
-});
-
 Route::view(
     'webia/template/fnb/restaurant/little-corner',
     'website-bisnis.templates.fnb.little-corner'
