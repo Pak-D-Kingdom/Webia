@@ -1,0 +1,189 @@
+/* CANDY CLOUD STUDIO — custom styles extracted from the supplied reference.
+   Tailwind CDN, Google Fonts and FontAwesome remain loaded by the Blade view. */
+/* Floating Animations */
+@keyframes floatSlow {
+
+    0%,
+    100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(-14px) rotate(3deg);
+    }
+}
+
+@keyframes floatReverse {
+
+    0%,
+    100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(14px) rotate(-4deg);
+    }
+}
+
+@keyframes bounceCandy {
+
+    0%,
+    100% {
+        transform: translateY(0) scale(1);
+    }
+
+    50% {
+        transform: translateY(-8px) scale(1.05);
+    }
+}
+
+@keyframes marquee {
+    0% {
+        transform: translateX(0%);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+@keyframes floatHeart {
+    0% {
+        transform: translateY(0) scale(0.8);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-50px) scale(1.2);
+        opacity: 0;
+    }
+}
+
+.animate-float {
+    animation: floatSlow 5s ease-in-out infinite;
+}
+
+.animate-float-reverse {
+    animation: floatReverse 6s ease-in-out infinite;
+}
+
+.animate-bounce-candy {
+    animation: bounceCandy 2.5s ease-in-out infinite;
+}
+
+.animate-heart-1 {
+    animation: floatHeart 2.5s ease-out infinite;
+}
+
+.animate-heart-2 {
+    animation: floatHeart 3s ease-out 0.8s infinite;
+}
+
+/* =========================================
+   CANDY CLOUD — SEAMLESS INFINITE MARQUEE
+========================================= */
+
+.marquee-ticker {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    background: #2D1E2F;
+    border-top: 2px solid #FF94B9;
+    border-bottom: 2px solid #FF94B9;
+}
+
+.animate-marquee {
+    display: flex;
+    flex-wrap: nowrap;
+    width: max-content;
+    animation: candy-marquee 28s linear infinite;
+    will-change: transform;
+}
+
+.marquee-group {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex: 0 0 max-content;
+    min-width: 100vw;
+    gap: 28px;
+    padding: 12px 14px;
+    box-sizing: border-box;
+}
+
+.marquee-group span {
+    display: inline-block;
+    flex: 0 0 auto;
+    white-space: nowrap;
+}
+
+@keyframes candy-marquee {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .animate-marquee {
+        animation-duration: 22s;
+    }
+
+    .marquee-group {
+        gap: 20px;
+        min-width: 100vw;
+    }
+}
+
+/* Glassmorphism Cards */
+.glass-candy {
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 2px solid rgba(255, 255, 255, 0.95);
+    box-shadow: 0 15px 35px rgba(232, 213, 245, 0.3);
+}
+
+/* Washi Tape Style */
+.washi-tape {
+    background: repeating-linear-gradient(45deg, rgba(255, 239, 159, 0.9), rgba(255, 239, 159, 0.9) 10px, rgba(255, 230, 120, 0.9) 10px, rgba(255, 230, 120, 0.9) 20px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+}
+
+/* Cursor Sparkle Particles */
+.cursor-sparkle {
+    pointer-events: none;
+    position: fixed;
+    font-size: 14px;
+    animation: fadeOutParticle 0.8s forwards ease-out;
+    z-index: 9999;
+}
+
+@keyframes fadeOutParticle {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1) rotate(0deg);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -70%) scale(0.3) rotate(45deg);
+    }
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #FFF7FA;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #FF94B9;
+    border-radius: 99px;
+}
