@@ -8,5 +8,5 @@
         <li><svg class="ic"><use href="#i-phone"/></svg><span>Telepon</span><a href="tel:{{ $c['contact']['phone_tel'] }}">{{ $c['contact']['phone'] }}</a></li>
         <li><svg class="ic"><use href="#i-mail"/></svg><span>Email</span><a href="mailto:{{ $c['contact']['email'] }}">{{ $c['contact']['email'] }}</a></li>
     </ul>
-    <a class="btn btn--navy btn--sm" href="{{ $url('contact') }}">Hubungi Kami <svg class="ic"><use href="#i-arrow"/></svg></a>
+    <a class="btn btn--navy btn--sm" style="margin-top:auto;align-self:flex-start" href="{{ $url('contact') }}">Hubungi Kami <svg class="ic"><use href="#i-arrow"/></svg></a>
 </section>

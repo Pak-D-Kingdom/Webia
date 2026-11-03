@@ -20,7 +20,8 @@
                                 @foreach ($n['children'] as $ch)
                                     <a class="drop__item {{ $page === $ch['key'] ? 'is-active' : '' }}" href="{{ $url($ch['key']) }}">
                                         <span class="bub"><svg class="ic"><use href="#i-{{ $ch['icon'] }}"/></svg></span>
-                                        <span><strong>{{ $ch['label'] }}</strong><small>{{ $ch['desc'] }}</small></span>
+                                        <span class="drop__txt"><strong>{{ $ch['label'] }}</strong><small>{{ $ch['desc'] }}</small></span>
+                                        <svg class="ic drop__go"><use href="#i-arrow"/></svg>
                                     </a>
                                 @endforeach
                             </div>

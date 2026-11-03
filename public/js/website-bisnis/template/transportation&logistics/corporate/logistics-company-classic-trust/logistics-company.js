@@ -314,6 +314,8 @@
             if (!field || !err) { return; }
             field.classList.toggle('is-invalid', !!text);
             form.elements[name].setAttribute('aria-invalid', text ? 'true' : 'false');
+            var customBtn = $('.select__btn', field);
+            if (customBtn) { customBtn.setAttribute('aria-invalid', text ? 'true' : 'false'); }
             err.textContent = text || '';
             err.hidden = !text;
         }
@@ -334,7 +336,7 @@
             if (emailBad) { ok = false; }
             if (!ok) {
                 msg.className = 'form-msg'; msg.textContent = 'Mohon lengkapi data yang ditandai.'; msg.hidden = false;
-                var firstBad = $('.is-invalid input, .is-invalid select', form);
+                var firstBad = $('.is-invalid .select__btn, .is-invalid input', form) || $('.is-invalid select', form);
                 if (firstBad) { firstBad.focus(); }
                 return;
             }
@@ -361,6 +363,160 @@
         $$('input, select', form).forEach(function (n) {
             n.addEventListener('input', function () { if (required[n.name] || n.name === 'email') { setError(n.name, ''); } });
         });
+    }
+
+
+    /* ---------- Dropdown kustom (menggantikan tampilan <select> bawaan) ---------- */
+    function initSelects() {
+        var uid = 0;
+        var instances = [];
+        $$('select[data-select]').forEach(function (sel) {
+            uid += 1;
+            var wrap = el('div', 'select');
+            sel.parentNode.insertBefore(wrap, sel);
+            wrap.appendChild(sel);
+            sel.classList.add('select__native');
+            sel.tabIndex = -1;
+            sel.setAttribute('aria-hidden', 'true');
+
+            var placeholder = '';
+            var opts = [];
+            $$('option', sel).forEach(function (o) {
+                if (o.value === '') { placeholder = o.textContent; } else { opts.push(o); }
+            });
+
+            var btn = el('button', 'select__btn');
+            btn.type = 'button';
+            btn.setAttribute('aria-haspopup', 'listbox');
+            btn.setAttribute('aria-expanded', 'false');
+            var label = el('span', 'select__label');
+            btn.appendChild(label);
+            btn.insertAdjacentHTML('beforeend', icon('i-chevron-down', 'select__chev'));
+
+            var panel = el('ul', 'select__panel');
+            panel.id = 'select-panel-' + uid;
+            panel.setAttribute('role', 'listbox');
+            panel.hidden = true;
+            btn.setAttribute('aria-controls', panel.id);
+
+            var lab = sel.id ? document.querySelector('label[for="' + sel.id + '"]') : null;
+            if (lab) {
+                lab.id = lab.id || ('select-label-' + uid);
+                btn.setAttribute('aria-labelledby', lab.id);
+                panel.setAttribute('aria-labelledby', lab.id);
+                lab.addEventListener('click', function (e) { e.preventDefault(); btn.focus(); });
+            }
+
+            var items = opts.map(function (o, i) {
+                var li = el('li', 'select__opt');
+                li.id = 'select-' + uid + '-opt-' + i;
+                li.setAttribute('role', 'option');
+                li.setAttribute('data-value', o.value);
+                li.appendChild(el('span', '', o.textContent));
+                li.insertAdjacentHTML('beforeend', icon('i-check'));
+                panel.appendChild(li);
+                return li;
+            });
+            wrap.appendChild(btn);
+            wrap.appendChild(panel);
+
+            var active = -1;
+            var typed = '';
+            var typedTimer = null;
+
+            function selectedIndex() {
+                for (var i = 0; i < items.length; i++) { if (items[i].getAttribute('data-value') === sel.value) { return i; } }
+                return -1;
+            }
+            function sync() {
+                var idx = selectedIndex();
+                label.textContent = idx > -1 ? items[idx].firstChild.textContent : placeholder;
+                btn.classList.toggle('is-placeholder', idx === -1);
+                items.forEach(function (li, i) { li.setAttribute('aria-selected', i === idx ? 'true' : 'false'); });
+            }
+            function setActive(i, scroll) {
+                if (!items.length) { return; }
+                active = Math.max(0, Math.min(items.length - 1, i));
+                items.forEach(function (li, k) { li.classList.toggle('is-active', k === active); });
+                btn.setAttribute('aria-activedescendant', items[active].id);
+                if (scroll !== false) {
+                    var it = items[active];
+                    if (it.offsetTop < panel.scrollTop) { panel.scrollTop = it.offsetTop - 6; }
+                    else if (it.offsetTop + it.offsetHeight > panel.scrollTop + panel.clientHeight) { panel.scrollTop = it.offsetTop + it.offsetHeight - panel.clientHeight + 6; }
+                }
+            }
+            function isOpen() { return !panel.hidden; }
+            function open() {
+                if (isOpen() || !items.length) { return; }
+                instances.forEach(function (o) { if (o !== api) { o.close(); } });
+                panel.hidden = false;
+                wrap.classList.add('is-open');
+                btn.setAttribute('aria-expanded', 'true');
+                var rect = btn.getBoundingClientRect();
+                var need = Math.min(panel.scrollHeight, 280) + 16;
+                var below = window.innerHeight - rect.bottom;
+                wrap.classList.toggle('is-up', below < need && rect.top > below);
+                var idx = selectedIndex();
+                setActive(idx > -1 ? idx : 0);
+            }
+            function close() {
+                if (!isOpen()) { return; }
+                panel.hidden = true;
+                wrap.classList.remove('is-open');
+                btn.setAttribute('aria-expanded', 'false');
+                btn.removeAttribute('aria-activedescendant');
+            }
+            function choose(i) {
+                sel.value = items[i].getAttribute('data-value');
+                sel.dispatchEvent(new Event('input', { bubbles: true }));
+                sel.dispatchEvent(new Event('change', { bubbles: true }));
+                sync();
+                close();
+                btn.focus();
+            }
+            var api = { close: close, wrap: wrap };
+            instances.push(api);
+
+            btn.addEventListener('click', function () { isOpen() ? close() : open(); });
+            items.forEach(function (li, i) {
+                li.addEventListener('click', function () { choose(i); });
+                li.addEventListener('mousemove', function () { if (active !== i) { setActive(i, false); } });
+            });
+            btn.addEventListener('keydown', function (e) {
+                var k = e.key;
+                if (k === 'ArrowDown' || k === 'ArrowUp') {
+                    e.preventDefault();
+                    if (!isOpen()) { open(); return; }
+                    setActive(active + (k === 'ArrowDown' ? 1 : -1));
+                } else if (k === 'Home' && isOpen()) { e.preventDefault(); setActive(0); }
+                else if (k === 'End' && isOpen()) { e.preventDefault(); setActive(items.length - 1); }
+                else if (k === 'Enter' || k === ' ') {
+                    if (isOpen()) { e.preventDefault(); if (active > -1) { choose(active); } }
+                    else if (k === ' ') { e.preventDefault(); open(); }
+                }
+                else if (k === 'Escape' && isOpen()) { e.preventDefault(); e.stopPropagation(); close(); }
+                else if (k === 'Tab') { close(); }
+                else if (k.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
+                    typed += k.toLowerCase();
+                    window.clearTimeout(typedTimer);
+                    typedTimer = window.setTimeout(function () { typed = ''; }, 600);
+                    for (var n = 0; n < items.length; n++) {
+                        if (items[n].firstChild.textContent.toLowerCase().indexOf(typed) === 0) {
+                            if (!isOpen()) { open(); }
+                            setActive(n);
+                            break;
+                        }
+                    }
+                }
+            });
+            sel.addEventListener('change', sync);
+            sync();
+        });
+        if (instances.length) {
+            document.addEventListener('mousedown', function (e) {
+                instances.forEach(function (o) { if (!o.wrap.contains(e.target)) { o.close(); } });
+            });
+        }
     }
 
     /* ---------- Chatbot Nusa AI ---------- */
@@ -544,6 +700,7 @@
         initCarousels();
         initTracking();
         initQuoteForm();
+        initSelects();
         initChatUI();
     }
     if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); } else { init(); }

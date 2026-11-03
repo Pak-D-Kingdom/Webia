@@ -17,6 +17,7 @@
             <li><a class="tile" href="{{ $url('services') }}#{{ $s['slug'] }}">
                 <span class="bub"><svg class="ic"><use href="#i-{{ $s['icon'] }}"/></svg></span>
                 <strong>{{ $s['name'] }}</strong><small>({{ $s['variant'] }})</small>
+                <span class="tile__from">Mulai {{ $s['from'] }}</span>
             </a></li>
         @endforeach
     </ul>

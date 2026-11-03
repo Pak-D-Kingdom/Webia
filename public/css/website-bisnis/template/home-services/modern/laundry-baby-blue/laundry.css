@@ -202,26 +202,29 @@ body.lb-body {
 .lb-nav__link.is-active { color: #fff; background: linear-gradient(180deg, #6db1e2, #4a93c8); box-shadow: 0 6px 14px rgba(74, 147, 200, .38); }
 .lb-header__cta { flex: none; }
 
-/* Layar < 1300px: tidak ada hamburger. Navigasi tampil sebagai bar atas (strip tautan)
-   yang bisa digeser horizontal, tepat di bawah logo + tombol Order. */
+/* Layar < 1300px: tidak ada hamburger. Navigasi tampil sebagai bar atas (strip tautan geser)
+   yang berada DI SEBELAH tombol Order Sekarang pada satu baris. */
 @media (max-width: 1299.98px) {
-    .lb-header .lb-header__inner { flex-wrap: wrap; row-gap: 0; padding-block: 8px 0; gap: 10px; padding-inline: 14px; }
-    .lb-brand { order: 1; }
-    .lb-header__cta { order: 2; margin-left: auto; min-height: 38px; padding: 0 18px; }
-    .lb-nav { order: 3; flex: 0 0 100%; width: 100%; margin: 6px 0 0; border-top: 1px solid var(--lb-line); }
+    .lb-header .lb-header__inner { flex-wrap: nowrap; padding-block: 0; gap: 12px; padding-inline: 16px; }
+    .lb-brand { order: 1; flex: none; }
+    .lb-nav { order: 2; flex: 1 1 0; min-width: 0; width: auto; margin: 0; border: 0; }
     .lb-nav__list {
-        display: flex; flex-wrap: nowrap; align-items: center; gap: 4px; padding: 8px 4px 9px;
+        display: flex; flex-wrap: nowrap; align-items: center; gap: 2px; padding: 6px 4px;
         overflow-x: auto; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; scrollbar-width: none; scroll-snap-type: x proximity;
         -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 26px), transparent 100%);
         mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 26px), transparent 100%);
     }
     .lb-nav__list::-webkit-scrollbar { display: none; }
     .lb-nav__list li { flex: none; scroll-snap-align: center; }
-    .lb-nav__link { padding: 8px 14px; font-size: 13px; }
+    .lb-nav__link { padding: 8px 13px; font-size: 13px; }
+    .lb-header__cta { order: 3; flex: none; margin-left: 0; min-height: 38px; padding: 0 18px; }
 }
-@media (max-width: 559.98px) {
-    .lb-header__cta { min-height: 34px; padding: 0 12px; font-size: 12px; gap: 6px; }
-    .lb-header__cta .lb-i { font-size: 15px; }
+/* Layar < 900px: baris 1 = logo, baris 2 = bar navigasi + tombol Order Sekarang */
+@media (max-width: 899.98px) {
+    .lb-header .lb-header__inner { flex-wrap: wrap; row-gap: 4px; padding-block: 8px 6px; gap: 8px; }
+    .lb-brand { flex: 0 0 100%; }
+    .lb-nav { flex: 1 1 0; }
+    .lb-nav__list { padding-left: 0; }
 }
 
 /* ============================== 6. HERO ============================== */
@@ -274,10 +277,10 @@ body.lb-body {
 .lb-dash__row--3 > .lb-steps-card { grid-column: 1 / -1; }
 .lb-dash__row > .lb-card { display: flex; flex-direction: column; }
 @media (max-width: 699.98px) { .lb-dash__row--4, .lb-dash__row--3 { grid-template-columns: minmax(0, 1fr); } }
-@media (min-width: 1100px) {
+@media (min-width: 1400px) {
     .lb-dash { grid-template-columns: minmax(0, 1fr) 288px; grid-template-areas: "svc ai" "r4 ai" "r3 ai"; }
 }
-@media (min-width: 1380px) {
+@media (min-width: 1100px) {
     .lb-dash__row--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     .lb-dash__row--3 { grid-template-columns: 1.6fr 1fr 1.2fr; }
     .lb-dash__row--3 > .lb-steps-card { grid-column: auto; }
@@ -462,7 +465,7 @@ body.lb-body {
 .lb-ai__form button:hover, .lb-chat__form button:hover { transform: scale(1.08); }
 .lb-ai__more { display: inline-flex; align-items: center; justify-content: center; gap: 6px; font: 600 12px var(--lb-head); color: var(--lb-primary-d); padding: 2px 0; }
 .lb-ai__more:hover { text-decoration: underline; }
-@media (min-width: 700px) and (max-width: 1099.98px) { .lb-dash__ai .lb-ai { max-width: 560px; margin-inline: auto; } }
+@media (min-width: 700px) and (max-width: 1399.98px) { .lb-dash__ai .lb-ai { max-width: 560px; margin-inline: auto; } }
 
 /* jendela chat */
 .lb-chat {
@@ -865,12 +868,18 @@ body.lb-body {
  * ====================================================================== */
 @media (max-width: 1299.98px) { .lb-nav__list { position: relative; } }
 
-/* ----- Kolom kanan beranda terisi penuh (kartu AI memanjang sampai dasar baris) ----- */
-.lb-dash { padding-bottom: 84px; }
-@media (min-width: 1100px) {
-    .lb-dash__ai { position: relative; align-self: stretch; min-height: 580px; }
-    .lb-dash__ai .lb-ai { position: absolute; inset: 0; }
-    .lb-dash .lb-ai__scene { flex: 1 1 0; min-height: 0; }
+/* ----- Kolom kanan beranda: kartu AI tetap ukuran aslinya; sisa ruang diisi dekorasi ----- */
+.lb-dash { padding-bottom: 64px; }
+.lb-dash__deco { display: none; }
+@media (min-width: 1400px) {
+    .lb-dash__ai { display: flex; flex-direction: column; gap: 10px; align-self: stretch; }
+    .lb-dash__ai > .lb-ai { flex: none; }
+    .lb-dash__deco { display: block; position: relative; flex: 1 1 0; min-height: 0; overflow: hidden; pointer-events: none; }
+    .lb-dash__deco img { position: absolute; left: 50%; bottom: 0; height: 100%; max-height: 132px; width: auto; transform: translateX(-50%); object-fit: contain; object-position: center bottom; }
+    .lb-dash__deco .lb-bubble { animation-duration: 9s; }
+    .lb-dash__deco .lb-bubble--d1 { width: 34px; height: 34px; left: 10%; bottom: 36%; left: 12%; top: auto; }
+    .lb-dash__deco .lb-bubble--d2 { width: 22px; height: 22px; right: 14%; bottom: 14%; left: auto; top: auto; animation-delay: -3s; }
+    .lb-dash__deco .lb-bubble--d3 { width: 48px; height: 48px; right: 6%; bottom: 40%; left: auto; top: auto; animation-delay: -6s; }
 }
 
 /* ----- Footer rapi: satu baris, sejajar, pemisah sama tinggi ----- */
@@ -886,7 +895,6 @@ body.lb-body {
     .lb-footer__cols > .lb-footer__col:first-child { border-left: 0; padding-left: 0; }
     .lb-footer__col--social { border-left: 1px solid rgba(16, 41, 79, .28); padding-left: 34px; margin-left: 0; }
     .lb-footer__col--social h2 { text-align: left; }
-    .lb-footer__basket { top: -92px; right: max(24px, calc((100% - 1400px) / 2 + 40px)); }
 }
 @media (max-width: 1099.98px) {
     .lb-footer__inner { padding-top: 34px; text-align: left; }
@@ -921,4 +929,98 @@ body.lb-body {
     .lb-header .lb-brand { gap: 6px; }
     .lb-header .lb-brand__logo { width: 36px; }
     .lb-header .lb-brand__text strong { font-size: 16px; }
+}
+
+/* ======================================================================
+ * 18. DROPDOWN KUSTOM & PEMILIH TANGGAL / JAM
+ *     (<select> dan <input type="datetime-local"> asli disembunyikan oleh JS
+ *      tetapi tetap dipakai untuk nilai form; tanpa JS tampilan bawaan browser.)
+ * ====================================================================== */
+.lb-label__t { font-size: 13px; font-weight: 700; color: var(--lb-ink-2); }
+.lb-native { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: 0; border: 0; opacity: 0; pointer-events: none; overflow: hidden; clip: rect(0 0 0 0); }
+.lb-field--dd { cursor: pointer; }
+.lb-field--dd .lb-dd__btn {
+    flex: 1; min-width: 0; display: flex; align-items: center; gap: 8px; margin: 0; padding: 10px 24px 10px 0;
+    border: 0; background: none; text-align: left; font: inherit; color: inherit; cursor: pointer; overflow: hidden; outline: 0;
+}
+.lb-dd__label { display: block; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lb-dd__label.is-placeholder { color: #6b87a6; }
+.lb-field--dd .lb-field__chev { transition: transform .2s ease; }
+.lb-field--dd.is-open { border-color: var(--lb-primary); box-shadow: 0 0 0 4px rgba(90, 169, 221, .22); }
+.lb-field--dd.is-open .lb-field__chev { transform: rotate(180deg); color: var(--lb-primary-d); }
+.lb-card--lift { position: relative; z-index: 30; }
+
+/* popover umum */
+.lb-pop {
+    position: fixed; z-index: 200; left: 0; top: 0; box-sizing: border-box; overflow: auto; overscroll-behavior: contain;
+    background: #fff; color: var(--lb-ink); font-family: var(--lb-font); border: 1px solid var(--lb-line); border-radius: 20px;
+    box-shadow: 0 26px 60px rgba(30, 80, 130, .3), 0 2px 8px rgba(30, 80, 130, .08);
+    opacity: 0; transform: translateY(-6px) scale(.98); transform-origin: top left; transition: opacity .16s ease, transform .16s ease;
+}
+.lb-pop.is-up { transform-origin: bottom left; transform: translateY(6px) scale(.98); }
+.lb-pop.is-open { opacity: 1; transform: none; }
+.lb-pop[hidden] { display: none; }
+.lb-pop-backdrop { display: none; }
+
+/* daftar pilihan */
+.lb-dd__list { margin: 0; padding: 6px; list-style: none; max-height: 320px; }
+.lb-dd__opt { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 12px; border-radius: 13px; font: 600 13.5px/1.3 var(--lb-head); color: var(--lb-ink); cursor: pointer; outline: 0; transition: background .12s; }
+.lb-dd__opt + .lb-dd__opt { margin-top: 2px; }
+.lb-dd__opt:hover, .lb-dd__opt:focus { background: var(--lb-sky-2); }
+.lb-dd__opt[aria-selected="true"] { background: linear-gradient(180deg, #e9f4fd, #dcecf9); color: var(--lb-primary-d); }
+.lb-dd__opt.is-placeholder { color: var(--lb-muted); font-weight: 500; }
+.lb-dd__tick { flex: none; font-size: 16px; color: var(--lb-primary); stroke-width: 2.7; opacity: 0; }
+.lb-dd__opt[aria-selected="true"] .lb-dd__tick { opacity: 1; }
+
+/* tanggal & jam */
+.lb-dt { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); column-gap: 20px; padding: 16px 18px 14px; width: 560px; max-width: calc(100vw - 16px); }
+.lb-dt__foot { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--lb-line); }
+.lb-dt__head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+.lb-dt__title { font: 600 15px var(--lb-head); color: var(--lb-ink); }
+.lb-dt__nav { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--lb-line); background: #fff; color: var(--lb-primary-d); font-size: 16px; cursor: pointer; transition: background .12s; }
+.lb-dt__nav:hover:not(:disabled) { background: var(--lb-sky-2); }
+.lb-dt__nav:disabled { opacity: .3; cursor: not-allowed; }
+.lb-dt__arrow--l { transform: rotate(180deg); }
+.lb-dt__dow, .lb-dt__grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 2px; }
+.lb-dt__dow span { padding: 4px 0; text-align: center; font: 600 11px var(--lb-head); color: var(--lb-muted); }
+.lb-dt__day { display: grid; place-items: center; aspect-ratio: 1; border: 0; border-radius: 12px; background: none; font: 600 13px var(--lb-head); color: var(--lb-ink); cursor: pointer; transition: background .12s; }
+.lb-dt__day:hover:not(:disabled) { background: var(--lb-sky-2); }
+.lb-dt__day.is-today { box-shadow: inset 0 0 0 1.5px var(--lb-primary-l); }
+.lb-dt__day.is-selected { color: #fff; background: linear-gradient(180deg, #3b95cc, #1f6a9e); box-shadow: 0 6px 12px rgba(31, 106, 158, .35); }
+.lb-dt__day:disabled { opacity: .28; cursor: not-allowed; }
+.lb-dt__label { margin: 4px 0 8px; font: 600 13px var(--lb-head); color: var(--lb-ink); }
+.lb-dt__label small { color: var(--lb-muted); font-weight: 500; }
+.lb-dt__slots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; max-height: 240px; overflow-y: auto; padding: 1px 2px 2px 1px; align-content: start; }
+.lb-dt__slot { padding: 8px 0; border-radius: 12px; border: 1px solid var(--lb-line); background: #fff; font: 600 12.5px var(--lb-head); color: var(--lb-ink); cursor: pointer; transition: background .12s; }
+.lb-dt__slot:hover:not(:disabled) { background: var(--lb-sky-2); }
+.lb-dt__slot.is-selected { color: #fff; border-color: transparent; background: linear-gradient(180deg, #3b95cc, #1f6a9e); box-shadow: 0 5px 10px rgba(31, 106, 158, .3); }
+.lb-dt__slot:disabled { opacity: .3; cursor: not-allowed; }
+.lb-dt__hint { grid-column: 1 / -1; margin: 0; font-size: 12.5px; color: var(--lb-muted); }
+.lb-dt__clear { padding: 8px 6px; border: 0; background: none; font: 600 13px var(--lb-head); color: var(--lb-primary-d); cursor: pointer; }
+.lb-dt__clear:hover { text-decoration: underline; }
+@media (max-width: 639.98px) {
+    .lb-dt { grid-template-columns: minmax(0, 1fr); }
+    .lb-dt__time { margin-top: 12px; }
+    .lb-dt__slots { max-height: none; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+/* layar kecil: tampil sebagai lembar bawah */
+@media (max-width: 559.98px) {
+    .lb-pop-backdrop { display: block; position: fixed; inset: 0; z-index: 190; background: rgba(18, 49, 80, .42); opacity: 0; transition: opacity .2s; }
+    .lb-pop-backdrop.is-open { opacity: 1; }
+    .lb-pop { left: 8px !important; right: 8px; top: auto !important; bottom: calc(8px + env(safe-area-inset-bottom)); width: auto !important; min-width: 0 !important; max-height: 80vh !important; border-radius: 24px; transform: translateY(28px); transform-origin: bottom center; }
+    .lb-pop.is-open { transform: none; }
+    .lb-dd__opt { padding: 14px 14px; font-size: 14.5px; }
+    .lb-dt__day { font-size: 14px; }
+    .lb-dt__slot { padding: 10px 0; }
+}
+html.lb-pop-open { overflow: hidden; }
+.lb-dt__day.is-selected, .lb-dt__day.is-selected:hover:not(:disabled) { color: #fff; background: linear-gradient(180deg, #3b95cc, #1f6a9e); }
+.lb-dt__slot.is-selected, .lb-dt__slot.is-selected:hover:not(:disabled) { color: #fff; background: linear-gradient(180deg, #3b95cc, #1f6a9e); }
+.lb-dt__slots { max-height: 292px; }
+.lb-dt__foot { position: sticky; bottom: -14px; z-index: 2; margin-bottom: -14px; padding-bottom: 14px; background: #fff; }
+@media (max-width: 559.98px) {
+    .lb-dt { padding-bottom: 12px; }
+    .lb-dt__day { aspect-ratio: 1.25; }
+    .lb-dt__slot { padding: 8px 0; }
+    .lb-dt__foot { bottom: -12px; margin-bottom: -12px; padding-bottom: 12px; }
 }

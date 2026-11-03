@@ -10,6 +10,7 @@
             @foreach ($c['social'] as $s)
                 <li><a href="{{ $s['url'] }}" aria-label="{{ $s['label'] }}" target="_blank" rel="noopener"><svg class="lw-i"><use href="#i-{{ $s['icon'] }}"/></svg></a></li>
             @endforeach
+            <li><button type="button" class="lw-topbar__search" data-lw-chat-open aria-label="Cari bantuan: tanya {{ $c['chatbot']['name'] }}"><svg class="lw-i"><use href="#i-search"/></svg></button></li>
         </ul>
     </div>
 </div>

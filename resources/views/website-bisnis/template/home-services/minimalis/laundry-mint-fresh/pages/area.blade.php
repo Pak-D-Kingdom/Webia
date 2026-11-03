@@ -10,7 +10,7 @@
 @section('title', 'Area Jemput & Antar — ' . $c['brand']['name'])
 
 @section('content')
-    @include($v . '.partials.page-header', ['title' => $c['coverage']['title'], 'sub' => $c['coverage']['sub']])
+    @include($v . '.partials.page-header', ['title' => $c['coverage']['title'], 'sub' => $c['coverage']['sub'], 'icon' => 'truck'])
 
     <div class="lw-container lw-page">
         <div class="lw-split lw-split--area">
@@ -18,8 +18,11 @@
                 @foreach ($c['coverage']['areas'] as $a)
                     <article class="lw-card lw-area-card">
                         <header>
-                            <h2 class="lw-card__title lw-card__title--sm"><svg class="lw-i"><use href="#i-pin"/></svg>{{ $a['name'] }}</h2>
-                            <span class="lw-badge">{{ $a['scope'] }}</span>
+                            <span class="lw-ico"><svg class="lw-i"><use href="#i-pin"/></svg></span>
+                            <div>
+                                <h2 class="lw-card__title lw-card__title--sm">{{ $a['name'] }}</h2>
+                                <span class="lw-badge">{{ $a['scope'] }}</span>
+                            </div>
                         </header>
                         <ul class="lw-chips">
                             @foreach ($a['list'] as $k)<li>{{ $k }}</li>@endforeach
@@ -29,7 +32,7 @@
             </div>
 
             <aside class="lw-card lw-checker" data-lw-area-check data-wa="{{ $c['contact']['whatsapp'] }}">
-                <img class="lw-area-art" src="{{ $img($c['img']['area']) }}" alt="Mobil jemput dan antar FreshWash" width="450" height="468">
+                <img class="lw-checker__art" src="{{ $img($c['img']['area']) }}" alt="Mobil jemput dan antar FreshWash" width="450" height="468" loading="lazy">
                 <span class="lw-badge">{{ $c['coverage']['badge'] }}</span>
                 <p>{{ $c['coverage']['min'] }}</p>
                 <form class="lw-form" novalidate>
@@ -48,4 +51,6 @@
             </aside>
         </div>
     </div>
+
+    @include($v . '.partials.cta')
 @endsection

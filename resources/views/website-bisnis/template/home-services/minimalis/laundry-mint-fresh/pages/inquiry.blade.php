@@ -10,11 +10,11 @@
 @section('title', 'Order Inquiry — ' . $c['brand']['name'])
 
 @section('content')
-    @include($v . '.partials.page-header', ['title' => $c['inquiry']['title'], 'sub' => $c['inquiry']['sub']])
+    @include($v . '.partials.page-header', ['title' => $c['inquiry']['title'], 'sub' => $c['inquiry']['sub'], 'icon' => 'chat'])
 
     <div class="lw-container lw-page">
         <div class="lw-split lw-split--form">
-            <article class="lw-card">
+            <article class="lw-card lw-card--full">
                 {{-- Tanpa backend: form membuka WhatsApp dengan pesan yang sudah terisi --}}
                 <form class="lw-form" data-lw-order-form action="https://wa.me/{{ $c['contact']['whatsapp'] }}" method="get" target="_blank" novalidate>
                     <input type="hidden" name="text" value="">
@@ -59,7 +59,21 @@
             </article>
 
             <div class="lw-stack">
-                @include($v . '.sections.inquiry')
+                <a class="lw-card lw-ccard" href="https://wa.me/{{ $c['contact']['whatsapp'] }}" target="_blank" rel="noopener">
+                    <span class="lw-ico lw-ico--wa"><svg class="lw-i"><use href="#i-whatsapp"/></svg></span>
+                    <span><small>WhatsApp</small><b>{{ $c['contact']['phone'] }}</b></span>
+                    <svg class="lw-i"><use href="#i-arrow"/></svg>
+                </a>
+                <a class="lw-card lw-ccard" href="tel:{{ preg_replace('/\s+/', '', $c['contact']['phone']) }}">
+                    <span class="lw-ico lw-ico--wa"><svg class="lw-i"><use href="#i-phone"/></svg></span>
+                    <span><small>Telepon</small><b>{{ $c['contact']['phone'] }}</b></span>
+                    <svg class="lw-i"><use href="#i-arrow"/></svg>
+                </a>
+                <a class="lw-card lw-ccard" href="mailto:{{ $c['contact']['email'] }}">
+                    <span class="lw-ico lw-ico--wa"><svg class="lw-i"><use href="#i-mail"/></svg></span>
+                    <span><small>Email</small><b>{{ $c['contact']['email'] }}</b></span>
+                    <svg class="lw-i"><use href="#i-arrow"/></svg>
+                </a>
                 @include($v . '.sections.jam')
             </div>
         </div>
