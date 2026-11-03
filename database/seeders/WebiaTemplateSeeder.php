@@ -540,6 +540,24 @@ class WebiaTemplateSeeder extends Seeder
                 'is_active' => true,
                 'sort_order' => 32,
             ],
+            [
+                'name' => 'REVOLT // IMPACT',
+                'slug' => 'revolt-impact-social-organization',
+                'category_slug' => 'nonprofit-community',
+                'category_label' => 'Nonprofit & Community',
+                'business_types' => ['Social Organization'],
+                'design_style' => 'Premium Minimal',
+                'color_theme' => 'Neon Explosion',
+                'description' => 'Bold social movement website with live impact counters, interactive issue radar, cause selector, action wall, challenge generator, transparent donation allocation, and volunteer registration via WhatsApp.',
+                'preview_style' => 'preview-neon',
+                'eyebrow' => 'SOCIAL ORGANIZATION · NEON EXPLOSION',
+                'headline' => 'Break Silence. Ignite the Revolt.',
+                'tag' => 'Social Organization · Premium Minimal Neon Explosion',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/revolt-impact-social-organization',
+                'is_active' => true,
+                'sort_order' => 32,
+            ],
 
         ];
 

@@ -1314,7 +1314,5 @@
             updateCalculator();
         }
     </script>
-
-<script src="{{ asset('js/website-bisnis/templates/interior-architecture/architecture-building-design/nantara-architecture/nantara-architecture.js') }}?v=1"></script>
 </body>
 </html>
