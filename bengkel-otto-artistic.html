@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bengkel Otto – Servis Kendaraan yang Bikin Senyum</title>
+<link href="https://fonts.googleapis.com/css2?family=Shrikhand&family=Karla:wght@400;500;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--cr:#F6EBD9;--ink:#1D1B2F;--rd:#E8452E;--tl:#1E8C8F;--mu:#F3B72F;--pk:#F2A7A0;--sh:'Shrikhand',Georgia,serif;--k:'Karla',system-ui,sans-serif;--c:'Caveat',cursive;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{margin:0;background:var(--cr);color:var(--ink);font:400 17px/1.6 var(--k);overflow-x:hidden;background-image:radial-gradient(rgba(29,27,47,.13) 1.2px,transparent 1.6px);background-size:10px 10px}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:200;opacity:.18;mix-blend-mode:multiply;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
+a{color:inherit;text-decoration:none}
+h1,h2,h3,p{margin:0}
+.wob{filter:url(#wob)}
+.btn{display:inline-block;padding:14px 28px;background:var(--rd);color:#fff;border:3px solid var(--ink);border-radius:99px;font:700 16px var(--k);box-shadow:5px 5px 0 var(--ink);cursor:pointer;transition:.15s}
+.btn:hover,.btn:focus-visible{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--ink);outline:none}
+.btn.t{background:var(--tl)}.btn.m{background:var(--mu);color:var(--ink)}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:60;display:flex;align-items:center;justify-content:space-between;padding:14px 4vw;background:var(--cr);border-bottom:3px solid var(--ink)}
+.lg{font:400 26px var(--sh);color:var(--rd);text-shadow:2px 2px 0 var(--tl);transform:rotate(-2deg)}
+nav ul{display:flex;gap:26px;list-style:none;margin:0;padding:0;font:700 21px var(--c)}
+nav ul a:hover{color:var(--rd)}
+nav .btn{padding:9px 20px;font-size:14px}
+@media(max-width:800px){nav ul{display:none}}
+/* hero */
+.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:20px;align-items:center;padding:60px 4vw 100px;min-height:84vh}
+.hero .n{font:700 30px var(--c);color:var(--tl);transform:rotate(-3deg);display:inline-block}
+.hero h1{font:400 clamp(70px,13vw,210px)/.86 var(--sh);color:var(--rd);text-shadow:6px 6px 0 var(--tl);margin:6px 0 14px}
+.hero h2{font:700 clamp(26px,3.4vw,46px)/1.1 var(--k);letter-spacing:-.02em;max-width:520px}
+.hero h2 mark{background:var(--mu);padding:0 8px;transform:rotate(-1deg);display:inline-block}
+.hero p{max-width:460px;margin:18px 0 28px;font-size:18px}
+.il{position:relative}
+.il svg{width:100%;display:block;overflow:visible}
+.spin{animation:sp 14s linear infinite;transform-origin:center;transform-box:fill-box}
+@keyframes sp{to{transform:rotate(360deg)}}
+.bob{animation:bb 4s ease-in-out infinite}@keyframes bb{50%{transform:translateY(-10px) rotate(-1deg)}}
+.in{opacity:0;transform:translateY(30px) rotate(-1deg);animation:in .9s cubic-bezier(.2,.8,.2,1) forwards}
+.d1{animation-delay:.15s}.d2{animation-delay:.3s}.d3{animation-delay:.45s}
+@keyframes in{to{opacity:1;transform:none}}
+@media(max-width:860px){.hero{grid-template-columns:1fr;padding-top:36px}}
+.tape{background:var(--ink);color:var(--cr);transform:rotate(-2.4deg);margin:0 -3vw;overflow:hidden;white-space:nowrap;padding:14px 0;border-block:4px solid var(--mu)}
+.tape div{display:inline-block;animation:mq 36s linear infinite;font:400 30px var(--sh)}
+.tape i{color:var(--mu);font-style:normal;margin:0 .6em}
+@keyframes mq{to{transform:translateX(-50%)}}
+section{padding:110px 4vw 40px}
+.sn{font:700 30px var(--c);color:var(--tl);transform:rotate(-2deg);display:inline-block}
+h2.t{font:400 clamp(40px,6.4vw,94px)/.95 var(--sh);margin:4px 0 12px;max-width:900px}
+h2.t span{color:var(--rd)}
+.sb{max-width:540px;font-size:18px}
+/* deck */
+.dk{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:50px}
+.cd{perspective:1100px;min-height:400px;cursor:pointer;outline-offset:6px}
+.cd>div{position:relative;width:100%;height:100%;min-height:400px;transition:transform .8s cubic-bezier(.3,1.3,.4,1);transform-style:preserve-3d}
+.cd.f>div{transform:rotateY(180deg)}
+.cd:hover:not(.f)>div{transform:rotate(-2deg) translateY(-6px)}
+.fc,.bc{position:absolute;inset:0;border:4px solid var(--ink);border-radius:26px;box-shadow:7px 7px 0 var(--ink);backface-visibility:hidden;-webkit-backface-visibility:hidden;padding:26px;display:flex;flex-direction:column}
+.fc{align-items:center;justify-content:center;text-align:center;gap:14px;background:var(--c1)}
+.fc svg{width:56%;stroke:var(--ink);fill:none;stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
+.fc h3{font:400 30px/1 var(--sh)}.fc small{font:700 22px var(--c)}
+.fc::before{content:"";position:absolute;inset:12px;border:2px dashed var(--ink);border-radius:16px;opacity:.5}
+.bc{background:#fff;transform:rotateY(180deg);gap:10px;font-size:15.5px;overflow:auto}
+.bc h3{font:400 25px/1.05 var(--sh)}
+.bc ul{margin:0;padding-left:20px}
+.st{align-self:flex-start;font:400 17px var(--sh);padding:3px 16px;border:3px solid var(--ink);border-radius:8px;transform:rotate(-4deg);background:var(--cl)}
+.bc .btn{margin-top:auto;padding:10px 18px;font-size:14px;text-align:center}
+.nt{font-size:13px;margin-top:26px;color:#5a5870;max-width:760px}
+@media(max-width:900px){.dk{grid-template-columns:1fr 1fr}}@media(max-width:560px){.dk{grid-template-columns:1fr}}
+/* odometer */
+.od{display:grid;grid-template-columns:1.1fr .9fr;gap:5vw;margin-top:48px;align-items:center}
+.dg{display:flex;gap:8px;justify-content:center;background:var(--ink);padding:22px 20px;border-radius:22px;border:4px solid var(--ink);box-shadow:8px 8px 0 var(--tl);width:fit-content;margin:auto}
+.dg>div{width:clamp(36px,7vw,62px);height:clamp(54px,10vw,90px);background:var(--cr);border-radius:10px;overflow:hidden;font:400 clamp(40px,7.6vw,72px)/clamp(54px,10vw,90px) var(--sh);text-align:center;box-shadow:inset 0 -10px 12px rgba(0,0,0,.2)}
+.dg>div>div{transition:transform .7s cubic-bezier(.3,1.2,.4,1)}
+.dg>div>div span{display:block;height:clamp(54px,10vw,90px)}
+.dg em{align-self:flex-end;color:var(--mu);font:700 22px var(--c);margin-left:4px;font-style:normal}
+.od input[type=range]{width:100%;accent-color:var(--rd);margin:30px 0 4px;height:30px}
+.od .tk{display:flex;justify-content:space-between;font:700 18px var(--c);color:#5a5870}
+.pk{background:#fff;border:4px solid var(--ink);border-radius:26px;padding:28px;box-shadow:8px 8px 0 var(--mu);position:relative}
+.pk .nm{font:400 36px/1 var(--sh);color:var(--rd);margin:6px 0 10px}
+.pk ul{padding-left:20px;margin:10px 0 16px}
+.pk .pr{font:700 26px var(--k)}
+.pk .nx{font:700 22px var(--c);color:var(--tl)}
+@media(max-width:860px){.od{grid-template-columns:1fr}}
+/* patches */
+.pt{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:22px;margin-top:46px}
+.pa{background:none;border:0;padding:0;cursor:pointer;font:inherit;color:var(--ink);text-align:center}
+.pa .ring{width:150px;aspect-ratio:1;margin:auto;border-radius:50%;background:var(--c1);border:4px dashed var(--ink);outline:6px solid var(--c1);display:grid;place-items:center;padding:16px;transition:.3s;position:relative;font:400 20px/1.05 var(--sh)}
+.pa:hover .ring{transform:rotate(-8deg) scale(1.06)}
+.pa[aria-pressed=true] .ring{border-style:solid;box-shadow:6px 6px 0 var(--ink);transform:rotate(4deg)}
+.pa[aria-pressed=true] .ring::after{content:"✓";position:absolute;right:-6px;top:-6px;width:36px;height:36px;border-radius:50%;background:var(--ink);color:var(--cr);font:700 20px/36px var(--k)}
+.pa small{display:block;font:700 20px var(--c);margin-top:12px}
+.fm{display:grid;grid-template-columns:1fr 1fr;gap:34px;margin-top:56px;align-items:start}
+.bx{background:#fff;border:4px solid var(--ink);border-radius:26px;padding:30px;box-shadow:8px 8px 0 var(--ink)}
+.bx label{display:block;font:700 22px var(--c);margin:12px 0 2px}
+.bx input,.bx select{width:100%;padding:12px 14px;border:3px solid var(--ink);border-radius:14px;background:var(--cr);font:500 16px var(--k);outline:none}
+.bx input:focus,.bx select:focus{background:#fff;border-color:var(--rd)}
+.sm{font-size:16px}.sm .l{display:flex;justify-content:space-between;gap:10px;border-bottom:2px dotted var(--ink);padding:6px 0}
+.sm .tt{font:400 34px var(--sh);color:var(--rd);margin-top:16px}
+@media(max-width:860px){.fm{grid-template-columns:1fr}}
+footer{margin-top:90px;background:var(--ink);color:var(--cr);padding:70px 4vw 40px}
+footer h2{font:400 clamp(40px,7vw,100px)/.95 var(--sh);color:var(--mu)}
+footer .g{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;margin-top:34px;font-size:15px}
+footer .g b{font:700 22px var(--c);color:var(--pk);display:block}
+footer .cp{font-size:12.5px;opacity:.65;margin-top:34px;max-width:760px}
+@media(max-width:760px){footer .g{grid-template-columns:1fr}}
+/* chat */
+#fab{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:90;width:76px;height:76px;border-radius:50%;border:4px solid var(--ink);background:var(--mu);box-shadow:5px 5px 0 var(--ink);cursor:pointer;padding:0;transition:.2s}
+#fab:hover{transform:rotate(-8deg) scale(1.06)}
+#fab svg{width:100%;height:100%}
+#fab b{position:absolute;left:-84px;top:12px;font:700 22px var(--c);background:#fff;border:3px solid var(--ink);border-radius:14px 14px 4px 14px;padding:0 12px;white-space:nowrap;animation:bb 3s infinite}
+#chat{position:fixed;right:16px;bottom:calc(106px + env(safe-area-inset-bottom,0px));z-index:90;width:min(350px,calc(100vw - 32px));display:none;flex-direction:column;gap:10px}
+#chat.open{display:flex}
+#ms{display:flex;flex-direction:column;gap:10px;max-height:46vh;overflow-y:auto;padding:4px 4px 6px}
+.m{max-width:88%;padding:10px 16px;border:3px solid var(--ink);font-size:15.5px;line-height:1.4;animation:in .35s forwards;opacity:0}
+.m.b{background:#fff;border-radius:22px 22px 22px 4px;box-shadow:4px 4px 0 var(--tl);align-self:flex-start}
+.m.u{background:var(--mu);border-radius:22px 22px 4px 22px;box-shadow:4px 4px 0 var(--ink);align-self:flex-end;font-weight:700}
+.cs{display:flex;flex-wrap:wrap;gap:8px}
+.cs button{font:700 19px var(--c);padding:0 14px;background:var(--pk);border:3px solid var(--ink);border-radius:10px;cursor:pointer;color:var(--ink)}
+.cs button:nth-child(2n){transform:rotate(2deg);background:var(--cr)}.cs button:nth-child(3n){transform:rotate(-2deg);background:var(--mu)}
+.cs button:hover{background:var(--rd);color:#fff}
+#cf{display:flex;background:#fff;border:3px solid var(--ink);border-radius:99px;box-shadow:5px 5px 0 var(--ink);overflow:hidden}
+#cf input{flex:1;padding:13px 18px;border:0;background:none;font:500 16px var(--k);outline:none;min-width:0}
+#cf button{padding:0 20px;background:var(--rd);color:#fff;border:0;border-left:3px solid var(--ink);cursor:pointer;font-size:18px}
+#wa{font:700 21px var(--c);text-align:center;text-decoration:underline;background:var(--cr);border:3px solid var(--ink);border-radius:12px;padding:2px}
+:focus-visible{outline:3px solid var(--tl);outline-offset:3px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.in,.m{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="wob"><feTurbulence type="fractalNoise" baseFrequency=".018" numOctaves="2" seed="4"/><feDisplacementMap in="SourceGraphic" scale="6"/></filter></svg>
+
+<nav><a href="#top" class="lg">Bengkel Otto</a><ul><li><a href="#gejala">Kartu Gejala</a></li><li><a href="#km">Odometer</a></li><li><a href="#layanan">Layanan</a></li></ul><a class="btn" href="#layanan">Booking servis</a></nav>
+
+<header class="hero" id="top">
+<div><span class="n in">bengkel dengan hati dan oli bersih ♥</span><h1 class="in d1">Servis</h1><h2 class="in d2">yang bikin mobilmu <mark>tersenyum</mark> lagi.</h2><p class="in d3">Servis berkala, rem, AC, aki, sampai spooring. Dikerjakan teknisi yang menjelaskan dulu apa yang diperbaiki, dan kenapa.</p>
+<div class="in d3" style="display:flex;gap:14px;flex-wrap:wrap"><a class="btn" href="#layanan">Booking servis</a><a class="btn t" href="#gejala">Cek gejala mobilmu</a></div></div>
+<div class="il in d2 wob">
+<svg viewBox="0 0 600 460" aria-hidden="true">
+<circle cx="440" cy="140" r="100" fill="#F3B72F" style="mix-blend-mode:multiply"/>
+<path d="M0 360Q150 280 300 350T600 330V460H0Z" fill="#1E8C8F" style="mix-blend-mode:multiply"/>
+<path d="M0 420H600" stroke="#1D1B2F" stroke-width="5" stroke-dasharray="26 18"/>
+<g class="bob"><path d="M80 320C80 296 96 288 122 284L190 272C212 224 254 202 316 202H370C420 204 452 226 478 262L520 272C544 278 552 292 552 316V340H80Z" fill="#1D1B2F" transform="translate(10 10)" opacity=".25"/>
+<path d="M80 320C80 296 96 288 122 284L190 272C212 224 254 202 316 202H370C420 204 452 226 478 262L520 272C544 278 552 292 552 316V340H80Z" fill="#E8452E" stroke="#1D1B2F" stroke-width="6" stroke-linejoin="round"/>
+<path d="M206 270C224 234 258 218 316 216V270ZM336 216H368C404 220 432 238 450 270H336Z" fill="#F6EBD9" stroke="#1D1B2F" stroke-width="5"/>
+<circle cx="170" cy="342" r="44" fill="#1D1B2F"/><circle cx="170" cy="342" r="20" fill="#F6EBD9"/><circle cx="470" cy="342" r="44" fill="#1D1B2F"/><circle cx="470" cy="342" r="20" fill="#F6EBD9"/>
+<path d="M512 292q20 4 22 18" stroke="#1D1B2F" stroke-width="5" fill="none"/><path d="M300 330q20 14 40 0" stroke="#1D1B2F" stroke-width="5" fill="none" stroke-linecap="round"/></g>
+<g class="spin" style="transform-origin:90px 110px"><g transform="translate(90 110) rotate(40)"><rect x="-10" y="0" width="20" height="120" rx="10" fill="#F2A7A0" stroke="#1D1B2F" stroke-width="5"/><path d="M-26 -8a26 26 0 1 1 52 0l-14 0a12 12 0 1 0-24 0z" fill="#F2A7A0" stroke="#1D1B2F" stroke-width="5"/></g></g>
+<path d="M520 70l8 18 18 8-18 8-8 18-8-18-18-8 18-8z" fill="#1D1B2F"/>
+</svg></div>
+</header>
+<div class="tape" aria-hidden="true"><div id="tp"></div></div>
+
+<section id="gejala"><span class="sn">bagian 1</span><h2 class="t">Mobilmu lagi <span>ngomong</span> apa?</h2><p class="sb">Pilih satu kartu yang paling mirip keluhanmu, lalu balik untuk melihat kemungkinan penyebab dan saran langkahnya.</p>
+<div class="dk" id="dk"></div><p class="nt">Panduan awal, bukan diagnosis. Sebab sebenarnya hanya bisa dipastikan lewat pemeriksaan teknisi. Jika rem terasa blong, ada asap, atau bau gosong, hentikan kendaraan di tempat aman dan jangan dilanjutkan.</p></section>
+
+<section id="km"><span class="sn">bagian 2</span><h2 class="t">Sudah <span>sejauh</span> apa perjalananmu?</h2>
+<div class="od"><div><div class="dg" id="dg" aria-live="polite"></div><input type="range" id="kr" min="0" max="150000" step="500" value="24000" aria-label="Kilometer kendaraan saat ini"><div class="tk"><span>0 km</span><span>geser sesuai odometermu</span><span>150.000 km</span></div></div>
+<div class="pk" id="pk"></div></div><p class="nt">Interval servis di sini bersifat umum. Ikuti buku servis kendaraanmu untuk jadwal resmi. Teknisi kami akan menyesuaikannya.</p></section>
+
+<section id="layanan"><span class="sn">bagian 3</span><h2 class="t">Tempel <span>layanan</span> yang kamu butuh</h2><p class="sb">Klik emblem untuk memilih, boleh lebih dari satu. Harga mulai dari dan dikonfirmasi setelah pemeriksaan.</p>
+<div class="pt" id="pt"></div>
+<div class="fm"><div class="bx"><label for="bn">Nama</label><input id="bn" placeholder="Nama lengkap"><label for="bc">Kendaraan</label><input id="bc" placeholder="Contoh: Toyota Avanza 2018"><label for="bd">Tanggal</label><input id="bd" type="date"><label for="bj">Jam</label><select id="bj"><option>09:00</option><option>11:00</option><option>13:00</option><option>15:00</option></select></div>
+<div class="bx"><div class="sm" id="sm"></div><a class="btn" id="bb" href="#" target="_blank" rel="noopener" style="margin-top:20px">Kirim booking ke WhatsApp</a></div></div></section>
+
+<footer><h2>Sampai jumpa di bengkel!</h2><div class="g"><div><b>Alamat</b>Alamat bengkel (ganti dengan data Anda)</div><div><b>Jam buka</b>Senin sampai Sabtu, 08.00 sampai 17.00 (contoh)</div><div><b>Kontak</b>WhatsApp (ganti dengan nomor Anda)</div></div><p class="cp">Template contoh. Seluruh harga, jam, dan data adalah contoh dan perlu diganti. Panduan gejala dan interval servis bersifat umum, bukan diagnosis, dan dikonfirmasi teknisi.</p></footer>
+
+<div id="chat" role="dialog" aria-label="Asisten Bang Otto"><div id="ms"></div><div class="cs" id="cs"></div><a id="wa" href="#" target="_blank" rel="noopener">lanjut ngobrol di WhatsApp →</a><form id="cf"><input id="ci" placeholder="Tanya Bang Otto…" autocomplete="off" aria-label="Pertanyaan"><button aria-label="Kirim">➤</button></form></div>
+<button id="fab" aria-label="Tanya Bang Otto"><b>tanya aku!</b><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="58" r="30" fill="#F2A7A0" stroke="#1D1B2F" stroke-width="4"/><path d="M22 46Q50 8 78 46Z" fill="#1E8C8F" stroke="#1D1B2F" stroke-width="4" stroke-linejoin="round"/><rect x="16" y="44" width="68" height="8" rx="4" fill="#1E8C8F" stroke="#1D1B2F" stroke-width="4"/><circle cx="40" cy="62" r="4" fill="#1D1B2F"/><circle cx="60" cy="62" r="4" fill="#1D1B2F"/><path d="M38 74q12 10 24 0" fill="none" stroke="#1D1B2F" stroke-width="4" stroke-linecap="round"/><path d="M32 70q18-8 36 0" fill="none" stroke="#1D1B2F" stroke-width="3"/></svg></button>
+
+<script>
+/* ===== KONFIGURASI: nomor WA format internasional tanpa + dan tanpa 0 di depan ===== */
+const WA_NUMBER="6281234567890",BRAND="Bengkel Otto";
+const $=i=>document.getElementById(i),rp=n=>"Rp "+n.toLocaleString("id-ID"),wl=t=>"https://wa.me/"+WA_NUMBER+"?text="+encodeURIComponent(t);
+tp.innerHTML=("Servis berkala<i>✺</i>Tune-up<i>✺</i>Rem<i>✺</i>AC<i>✺</i>Aki<i>✺</i>Spooring<i>✺</i>Ganti oli<i>✺</i>").repeat(5);
+/* layanan */
+const SV=[["Servis ringan",450000,"#F3B72F"],["Servis sedang",850000,"#F2A7A0"],["Servis besar",1900000,"#1E8C8F"],["Ganti oli",350000,"#E8452E"],["Servis rem",600000,"#F3B72F"],["Servis AC",550000,"#1E8C8F"],["Spooring dan balancing",400000,"#F2A7A0"],["Aki dan kelistrikan",150000,"#E8452E"],["Scan diagnostik",250000,"#F3B72F"]];
+const SEL=new Set();
+pt.innerHTML=SV.map((s,i)=>`<button class="pa" data-i="${i}" aria-pressed="false" style="--c1:${s[2]}"><div class="ring">${s[0]}</div><small>mulai ${rp(s[1])}</small></button>`).join("");
+pt.onclick=e=>{const b=e.target.closest(".pa");if(b){const i=+b.dataset.i;SEL.has(i)?SEL.delete(i):SEL.add(i);bk()}};
+const dt=new Date();dt.setDate(dt.getDate()+1);bd.min=dt.toISOString().slice(0,10);
+function addSv(i,go){SEL.add(i);bk();if(go)$("layanan").scrollIntoView()}
+function bk(){pt.querySelectorAll(".pa").forEach(b=>b.setAttribute("aria-pressed",SEL.has(+b.dataset.i)));const ids=[...SEL].sort((a,b)=>a-b);let tot=0;
+sm.innerHTML=(ids.length?ids.map(i=>{tot+=SV[i][1];return `<div class="l"><span>${SV[i][0]}</span><span>${rp(SV[i][1])}</span></div>`}).join(""):`<p>Belum ada layanan dipilih. Klik emblem di atas.</p>`)+`<div class="tt">${rp(tot)}</div><small>estimasi mulai dari, final setelah pemeriksaan</small>`;
+const d=bd.value?new Date(bd.value+"T00:00").toLocaleDateString("id-ID",{weekday:"long",day:"numeric",month:"long"}):"(belum dipilih)";
+bb.href=wl(`Halo ${BRAND}, saya ${bn.value||"calon pelanggan"} dengan kendaraan ${bc.value||"(belum diisi)"}. Saya ingin booking servis: ${ids.length?ids.map(i=>SV[i][0]).join(", "):"konsultasi dulu"}. Jadwal: ${d}, ${bj.value}. Estimasi mulai ${rp(tot)}. Mohon konfirmasi.`)}
+[bn,bc,bd,bj].forEach(e=>e.oninput=bk);bk();
+/* kartu gejala */
+const IC=['<circle cx="40" cy="40" r="26"/><circle cx="40" cy="40" r="7"/><path d="M58 18c8 6 12 14 12 22"/>','<circle cx="40" cy="40" r="26"/><path d="M14 40h14M52 40h14M40 52v16"/><path d="M8 20q4-6 0-12M72 20q-4-6 0-12"/>','<rect x="10" y="26" width="60" height="34" rx="5"/><path d="M22 26v-6h10v6M48 26v-6h10v6M24 43h12M52 37v12M46 43h12"/>','<path d="M40 8v64M12 24l56 32M12 56l56-32"/><path d="M32 12l8 8 8-8M32 68l8-8 8 8"/>','<path d="M10 52h8l6-10h14l6 8h6l6-6h14M14 62h52"/><path d="M30 26h20M34 26v10M46 26v10"/>','<path d="M20 62c-10-8-6-22 6-26 0-12 14-16 22-8 10-4 20 6 14 16 6 6 4 16-6 18z"/><path d="M32 70v6M48 70v6"/>'];
+const CD=[
+{t:"Bunyi berdecit saat mengerem",c:"#F3B72F",u:["Segera",1],p:["Kampas rem mulai tipis","Piringan rem kotor atau tidak rata","Ada kotoran terjepit di kaliper"],s:"Jangan menunda. Rem adalah komponen keselamatan.",v:4},
+{t:"Setir bergetar di kecepatan tinggi",c:"#F2A7A0",u:["Minggu ini",2],p:["Roda perlu balancing","Spooring bergeser","Ban tidak rata atau benjol"],s:"Periksa ban dan lakukan balancing atau spooring.",v:6},
+{t:"Mesin susah dihidupkan",c:"#1E8C8F",u:["Segera",1],p:["Aki lemah","Busi atau sistem pengapian bermasalah","Sistem pengisian (alternator)"],s:"Cek aki dan kelistrikan sebelum kamu terjebak mati total.",v:7},
+{t:"AC kurang dingin",c:"#F6EBD9",u:["Terjadwal",0],p:["Freon berkurang","Filter kabin kotor","Kompresor atau kondensor bermasalah"],s:"Servis AC biasanya tidak mendesak, tapi jangan dibiarkan lama.",v:5},
+{t:"Lampu indikator mesin menyala",c:"#E8452E",u:["Segera",1],p:["Banyak kemungkinan, dari sensor sampai sistem bahan bakar","Pembacaan kode error diperlukan"],s:"Lakukan scan diagnostik agar penyebabnya jelas.",v:8},
+{t:"Bau gosong atau keluar asap",c:"#F3B72F",u:["Darurat",3],p:["Bisa terkait kelistrikan, oli, atau sistem pendingin"],s:"Hentikan kendaraan di tempat aman, matikan mesin, dan hubungi bengkel atau derek. Jangan dilanjutkan.",v:null}];
+const UC=["#BFE3D3","#F3B72F","#F2A7A0","#E8452E"];
+dk.innerHTML=CD.map((c,i)=>`<div class="cd" tabindex="0" role="button" aria-pressed="false" data-i="${i}" style="--c1:${c.c}"><div><div class="fc"><svg viewBox="0 0 80 80" aria-hidden="true">${IC[i]}</svg><h3>${c.t}</h3><small>klik untuk balik kartu</small></div><div class="bc"><span class="st" style="--cl:${UC[c.u[1]]};color:${c.u[1]===3?"#fff":"inherit"}">${c.u[0]}</span><h3>Kemungkinan penyebab</h3><ul>${c.p.map(x=>`<li>${x}</li>`).join("")}</ul><p><b>Saran:</b> ${c.s}</p>${c.v!==null?`<a class="btn t" href="#" data-v="${c.v}">Tambah ${SV[c.v][0]} ke booking</a>`:`<a class="btn" href="${wl("Halo "+BRAND+", kendaraan saya bau gosong atau berasap. Mohon bantuan.")}" target="_blank" rel="noopener">Hubungi bengkel sekarang</a>`}</div></div></div>`).join("");
+function flip(el){const f=el.classList.toggle("f");el.setAttribute("aria-pressed",f)}
+dk.onclick=e=>{const a=e.target.closest("[data-v]");if(a){e.preventDefault();e.stopPropagation();addSv(+a.dataset.v,true);return}if(e.target.closest("a"))return;const c=e.target.closest(".cd");if(c)flip(c)};
+dk.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){const c=e.target.closest(".cd");if(c&&e.target===c){e.preventDefault();flip(c)}}};
+/* odometer */
+dg.innerHTML=[0,1,2,3,4,5].map(()=>`<div><div>${[0,1,2,3,4,5,6,7,8,9].map(n=>`<span>${n}</span>`).join("")}</div></div>`).join("")+`<em>km</em>`;
+function od(){const k=+kr.value,s=String(k).padStart(6,"0");dg.querySelectorAll(":scope>div").forEach((d,i)=>d.firstChild.style.transform=`translateY(-${(+s[i])*10}%)`);
+const due=k%10000===0?k:Math.ceil(k/10000)*10000,left=due-k,tier=due===0?0:due%40000===0?2:due%20000===0?1:0;
+const PK=[["Servis ringan",["Ganti oli mesin","Ganti filter oli","Pemeriksaan umum 20 titik"]],["Servis sedang",["Semua paket servis ringan","Filter udara dan filter AC","Pemeriksaan rem dan suspensi"]],["Servis besar",["Semua paket servis sedang","Busi dan pembersihan throttle","Oli transmisi dan penggantian minyak rem"]]][tier];
+pk.innerHTML=`<span class="nx">${left===0?"waktunya servis sekarang":"servis berikutnya sekitar "+due.toLocaleString("id-ID")+" km"}</span><div class="nm">${PK[0]}</div><div style="color:#5a5870;font-size:14px">${left?`sekitar ${left.toLocaleString("id-ID")} km lagi`:"odometermu pas di titik servis"}</div><ul>${PK[1].map(x=>`<li>${x}</li>`).join("")}</ul><div class="pr">mulai ${rp(SV[tier][1])}</div><a class="btn m" href="#" id="ap" style="margin-top:16px">Tambah ke booking</a>`;
+$("ap").onclick=e=>{e.preventDefault();addSv(tier,true)}}
+kr.oninput=od;od();
+/* chat */
+const KB=[
+[/harga|biaya|berapa|tarif/,()=>"Harga mulai dari: servis ringan "+rp(450000)+", servis rem "+rp(600000)+", servis AC "+rp(550000)+", spooring dan balancing "+rp(400000)+". Harga final setelah pemeriksaan, ya.",["Servis berkala","Booking","Lanjut ke WhatsApp"]],
+[/berkala|km|kilometer|interval|ganti oli|oli/,()=>"Coba geser Odometer di halaman ini, nanti kelihatan paket servis yang biasanya sesuai. Untuk jadwal resmi, ikuti buku servis kendaraanmu.",["Harga","Booking"]],
+[/rem|berdecit|decit|blong/,()=>"Rem berdecit biasanya tanda kampas mulai tipis, dan sebaiknya segera dicek. Kalau rem terasa blong, hentikan kendaraan di tempat aman dan jangan dilanjutkan.",["Booking","Lanjut ke WhatsApp"]],
+[/ac|dingin|freon/,()=>"AC kurang dingin bisa karena freon, filter kabin, atau kompresor. Teknisi perlu memeriksanya dulu untuk memastikan.",["Harga","Booking"]],
+[/aki|starter|hidup|mati|susah/,()=>"Mesin susah hidup sering terkait aki, busi, atau pengisian. Sebaiknya segera dicek supaya tidak mogok di jalan.",["Booking"]],
+[/asap|gosong|darurat|derek/,()=>"Kalau ada asap atau bau gosong: hentikan kendaraan di tempat aman, matikan mesin, lalu hubungi bengkel atau derek. Jangan dilanjutkan.",["Lanjut ke WhatsApp"]],
+[/jam|buka|tutup|lokasi|alamat/,()=>"Jam buka dan alamat tertera di bagian bawah halaman. Nanti diganti sesuai data bengkel.",["Booking"]],
+[/lama|durasi|berapa jam|selesai/,()=>"Servis ringan biasanya selesai dalam beberapa jam, tapi pekerjaan lain bisa lebih lama. Teknisi memberi estimasi setelah pemeriksaan.",["Booking"]],
+[/garansi|klaim/,()=>"Ketentuan garansi berbeda tiap jenis pekerjaan. Tim kami menjelaskannya sebelum kamu setuju.",["Lanjut ke WhatsApp"]],
+[/booking|jadwal|reserv|daftar|antri/,()=>"Pilih emblem layanan di bagian Layanan, isi nama dan tanggal, lalu kirim ke WhatsApp. Gampang.",["Lanjut ke WhatsApp"]],
+[/halo|hai|hi\b|pagi|siang|malam/,()=>"Halo! Aku Bang Otto. Mobilmu ada keluhan apa?",["Rem berdecit","AC kurang dingin","Harga","Booking"]]];
+const lg=[];function say(t,c){const d=document.createElement("div");d.className="m "+c;d.textContent=t;ms.append(d);ms.scrollTop=1e9;if(c==="u")lg.push(t)}
+function chips(a){cs.innerHTML="";a.forEach(v=>{const b=document.createElement("button");b.textContent=v;b.onclick=()=>ask(v);cs.append(b)})}
+function waU(){wa.href=wl(`Halo ${BRAND}, saya menghubungi dari website.`+(lg.length?` Pertanyaan saya: ${lg.join("; ")}.`:" Saya ingin konsultasi servis."))}
+function ask(t){say(t,"u");if(/whatsapp|\bwa\b|admin|manusia|teknisi/i.test(t)){setTimeout(()=>{say("Siap! Klik tautan WhatsApp di bawah, pertanyaanmu ikut terkirim.","b");waU()},300);return}
+const m=KB.find(([r])=>r.test(t.toLowerCase()));setTimeout(()=>{if(m){say(m[1](),"b");chips(m[2])}else{say("Wah, ini lebih tepat dijawab teknisi kami. Klik WhatsApp di bawah, pertanyaanmu ikut terkirim.","b");chips(["Harga","Booking","Servis berkala"])}waU()},350)}
+cf.onsubmit=e=>{e.preventDefault();const v=ci.value.trim();if(v){ci.value="";ask(v)}};
+let fi=true;fab.onclick=()=>{chat.classList.toggle("open");const b=fab.querySelector("b");if(b)b.remove();if(chat.classList.contains("open")&&fi){fi=false;say("Halo! Aku Bang Otto, asisten virtual bengkel. Aku bisa bantu info harga, jadwal, dan keluhan umum. Aku tidak memberi diagnosis pasti ya.","b");chips(["Rem berdecit","AC kurang dingin","Harga","Booking"]);waU()}};
+</script>
+</body>
+</html>
