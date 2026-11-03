@@ -30,11 +30,19 @@
      <script src="{{ asset('js/website-bisnis/website-bisnis.js') }}" defer></script>
      @stack('scripts')
 
-     <script src="{{ asset('js/website-bisnis/ai-assistant.js') }}" defer></script>
+      {{-- Nonaktifkan komponen dummy frontend --}}
+    {{-- @include('website-bisnis.components.ai-assistant') --}}
 
-     @include('website-bisnis.components.ai-assistant')
-     @include('website-bisnis.components.whatsapp-fab')
-     @include('website-bisnis.components.portal-dkreasi')
+    {{-- Widget AI Assistant Webia yang sebenarnya --}}
+    <script 
+        src="http://localhost:8001/widget/widget.js" 
+        data-site-key="site_webia_public" 
+        data-layer="l3" 
+        defer>
+    </script>
+
+    @include('website-bisnis.components.whatsapp-fab')
+    @include('website-bisnis.components.portal-dkreasi')
  </body>
 
  </html>
