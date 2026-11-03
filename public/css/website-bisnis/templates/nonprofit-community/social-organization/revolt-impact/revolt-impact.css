@@ -1,0 +1,353 @@
+/* Custom Cursor Hide default */
+@media (pointer: fine) {
+    body {
+        cursor: none;
+    }
+}
+
+/* Custom Animated Cursor Elements */
+#cursor-dot {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 8px;
+    height: 8px;
+    background-color: #CCFF00;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width 0.15s, height 0.15s, background-color 0.15s;
+}
+
+#cursor-ring {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 36px;
+    height: 36px;
+    border: 2px solid #FF007F;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 15px #FF007F;
+    transition: transform 0.08s ease-out, width 0.2s, height 0.2s, border-color 0.2s;
+}
+
+/* Glitch Animation for Hero Text */
+.glitch-text {
+    position: relative;
+    display: inline-block;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.8;
+}
+
+.glitch-text::before {
+    left: 3px;
+    text-shadow: -2px 0 #FF007F;
+    clip: rect(24px, 550px, 90px, 0);
+    animation: glitch-anim-1 2s infinite linear alternate-reverse;
+}
+
+.glitch-text::after {
+    left: -3px;
+    text-shadow: -2px 0 #CCFF00;
+    clip: rect(85px, 550px, 140px, 0);
+    animation: glitch-anim-2 2.5s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim-1 {
+    0% {
+        clip: rect(10px, 9999px, 85px, 0);
+    }
+
+    20% {
+        clip: rect(65px, 9999px, 15px, 0);
+    }
+
+    40% {
+        clip: rect(30px, 9999px, 75px, 0);
+    }
+
+    60% {
+        clip: rect(80px, 9999px, 5px, 0);
+    }
+
+    80% {
+        clip: rect(25px, 9999px, 60px, 0);
+    }
+
+    100% {
+        clip: rect(50px, 9999px, 30px, 0);
+    }
+}
+
+@keyframes glitch-anim-2 {
+    0% {
+        clip: rect(70px, 9999px, 10px, 0);
+    }
+
+    20% {
+        clip: rect(15px, 9999px, 90px, 0);
+    }
+
+    40% {
+        clip: rect(85px, 9999px, 35px, 0);
+    }
+
+    60% {
+        clip: rect(20px, 9999px, 50px, 0);
+    }
+
+    80% {
+        clip: rect(60px, 9999px, 20px, 0);
+    }
+
+    100% {
+        clip: rect(40px, 9999px, 80px, 0);
+    }
+}
+
+/* Orbiting AI Button Rings */
+@keyframes orbitCW {
+    0% {
+        transform: rotate(0deg) translateX(34px) rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg) translateX(34px) rotate(-360deg);
+    }
+}
+
+@keyframes orbitCCW {
+    0% {
+        transform: rotate(360deg) translateX(34px) rotate(-360deg);
+    }
+
+    100% {
+        transform: rotate(0deg) translateX(34px) rotate(0deg);
+    }
+}
+
+.animate-orbit-1 {
+    animation: orbitCW 6s linear infinite;
+}
+
+.animate-orbit-2 {
+    animation: orbitCCW 4s linear infinite;
+}
+
+@keyframes neonPulseGlow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 20px rgba(204, 255, 0, 0.7), 0 0 40px rgba(255, 0, 127, 0.5);
+    }
+
+    50% {
+        box-shadow: 0 0 45px rgba(204, 255, 0, 1), 0 0 70px rgba(255, 0, 127, 0.9);
+    }
+}
+
+.neon-pulse {
+    animation: neonPulseGlow 2.5s infinite ease-in-out;
+}
+
+/* Ticker Animation */
+@keyframes tickerAnim {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+.ticker-track {
+    display: flex;
+    width: 200%;
+    animation: tickerAnim 20s linear infinite;
+}
+
+.ticker-track:hover {
+    animation-play-state: paused;
+}
+
+/* Glassmorphism Panels */
+.cyber-glass {
+    background: rgba(26, 15, 38, 0.75);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 0, 127, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.cyber-glass:hover {
+    border-color: rgba(204, 255, 0, 0.5);
+    box-shadow: 0 0 25px rgba(204, 255, 0, 0.2);
+}
+
+/* 3D Tilt Effect Container */
+.tilt-card {
+    transform-style: preserve-3d;
+    transition: transform 0.1s ease-out;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0A050E;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(#FF007F, #CCFF00);
+    border-radius: 3px;
+}
+
+/* WEBIA template polish */
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 90px;
+}
+
+body {
+    min-width: 320px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+    }
+}
+
+@media (pointer: coarse) {
+
+    #cursor-dot,
+    #cursor-ring {
+        display: none !important;
+    }
+
+    body {
+        cursor: auto !important;
+    }
+}
+
+
+/* RESPONSIVE MOBILE NAVIGATION */
+#mobileMenu {
+    position: relative;
+    z-index: 60;
+    width: 100%;
+    max-height: 75vh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+.mobile-nav-link {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 12px 14px;
+    color: #A090B0;
+    background: rgba(10, 5, 14, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    transition: all 0.25s ease;
+}
+
+.mobile-nav-link:hover,
+.mobile-nav-link:focus {
+    color: #CCFF00;
+    border-color: rgba(204, 255, 0, 0.5);
+    background: rgba(204, 255, 0, 0.07);
+    outline: none;
+}
+
+#mobileMenuBtn {
+    position: relative;
+    z-index: 70;
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+html {
+    scroll-padding-top: 100px;
+}
+
+@media (max-width: 1023px) {
+    header {
+        position: sticky;
+        top: 0;
+    }
+
+    #mobileMenu a,
+    #mobileMenu button {
+        pointer-events: auto;
+    }
+}
+
+
+/* NAVBAR RESPONSIVE SPACING FIX */
+
+/* Brand tidak boleh mengecil atau bertabrakan dengan menu */
+header .max-w-\[1500px\] > a:first-child {
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+/* Navigasi desktop */
+header nav {
+    min-width: 0;
+}
+
+header nav a {
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* Tombol CTA tidak boleh terpotong */
+header button[onclick*="openModal"] {
+    flex-shrink: 0;
+}
+
+/* Tablet dan laptop dengan ruang terbatas */
+@media (max-width: 1535px) {
+    header .max-w-\[1500px\] {
+        justify-content: space-between;
+    }
+
+    header nav {
+        display: none !important;
+    }
+}
+
+/* Layar besar */
+@media (min-width: 1536px) {
+    header nav {
+        gap: clamp(16px, 1.5vw, 28px);
+    }
+}
