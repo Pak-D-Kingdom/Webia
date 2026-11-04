@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -86,6 +86,15 @@
                         <a class="flex min-h-11 items-center gap-space-sm rounded-lg border-l-4 px-space-sm py-2 font-label-md text-label-md transition-colors {{ request()->routeIs('admin.addons.*') ? 'border-secondary-fixed bg-surface-container-lowest/10 text-on-primary' : 'border-transparent text-primary-fixed-dim/70 hover:bg-surface-container-lowest/5 hover:text-on-primary' }}" href="{{ route('admin.addons.index') }}" @if (request()->routeIs('admin.addons.*')) aria-current="page" @endif>
                             <span aria-hidden="true" class="material-symbols-outlined">extension</span>
                             Add-on
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <div class="px-space-sm pb-1 font-caption text-caption uppercase tracking-wider text-primary-fixed-dim/50">Layanan AI</div>
+                    <div class="space-y-0.5">
+                        <a class="flex min-h-11 items-center gap-space-sm rounded-lg border-l-4 px-space-sm py-2 font-label-md text-label-md transition-colors {{ request()->routeIs('admin.ai.*') ? 'border-secondary-fixed bg-surface-container-lowest/10 text-on-primary' : 'border-transparent text-primary-fixed-dim/70 hover:bg-surface-container-lowest/5 hover:text-on-primary' }}" href="{{ route('admin.ai.index') }}" @if (request()->routeIs('admin.ai.*')) aria-current="page" @endif>
+                            <span aria-hidden="true" class="material-symbols-outlined {{ request()->routeIs('admin.ai.*') ? 'text-secondary-fixed' : '' }}">smart_toy</span>
+                            Monitoring Kuota AI
                         </a>
                     </div>
                 </div>
@@ -198,6 +207,9 @@
                 </a>
                 <a href="{{ route('orders.index') }}" @if (request()->routeIs('orders.*')) aria-current="page" @endif>
                     <span aria-hidden="true" class="material-symbols-outlined">shopping_bag</span> Pesanan Saya
+                </a>
+                <a href="{{ route('customer.ai') }}" @if (request()->routeIs('customer.ai*')) aria-current="page" @endif>
+                    <span aria-hidden="true" class="material-symbols-outlined">smart_toy</span> Asisten AI &amp; Kuota
                 </a>
                 </nav>
             </div>
