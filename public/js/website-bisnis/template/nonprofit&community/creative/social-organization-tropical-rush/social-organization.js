@@ -79,6 +79,19 @@
     return ok;
   }
 
+  function waMsg(f) {
+    var rows = [], idx = {};
+    $$('input,textarea', f).forEach(function (c) {
+      if (!c.name || c.name === 'setuju') return;
+      if ((c.type === 'radio' || c.type === 'checkbox') && !c.checked) return;
+      var v = (c.value || '').trim(); if (!v) return;
+      var l = c.id ? $('label[for="' + c.id + '"]', f) : null, fs = c.closest('fieldset'), lg = fs ? $('legend', fs) : null;
+      var k = (l ? l.textContent : lg ? lg.textContent : c.name).trim();
+      if (idx[k] === undefined) { idx[k] = rows.length; rows.push({ k: k, v: [v] }); } else rows[idx[k]].v.push(v);
+    });
+    return '*' + (f.getAttribute('data-title') || 'Pesan dari website') + '*\n' + rows.map(function (r) { return r.k + ': ' + r.v.join(', '); }).join('\n') + '\n\nDikirim dari website Gerak Nusa';
+  }
+
   /* ---------- chatbot ---------- */
   var greeted = false;
   function msgs() { return $('[data-chat-msgs]'); }
@@ -123,6 +136,7 @@
   /* ---------- delegasi event ---------- */
   d.addEventListener('click', function (e) {
     var t = e.target, el;
+    if (t.closest('[data-top]')) { window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
     if ((el = t.closest('.so-burger'))) { setNav(!b.classList.contains('nav-open')); return; }
     if (t.closest('.so-menu a')) setNav(false);
     if ((el = t.closest('[data-filter]'))) {
@@ -157,7 +171,10 @@
       if (!validate(f)) { var bad = $('.has-err input,.has-err textarea', f); if (bad) bad.focus(); return; }
       // Hook untuk tim backend: dengarkan event ini untuk mengirim data ke server.
       f.dispatchEvent(new CustomEvent('so:submit', { bubbles: true, detail: new FormData(f) }));
-      toast(f.getAttribute('data-ok') || 'Terima kasih! Tim kami akan menghubungimu lewat WhatsApp.'); f.reset();
+      // Kirim isi formulir ke WhatsApp admin (nomor diambil dari data-wa pada <body>).
+      var a = d.createElement('a'); a.href = 'https://wa.me/' + b.getAttribute('data-wa') + '?text=' + encodeURIComponent(waMsg(f));
+      a.target = '_blank'; a.rel = 'noopener'; d.body.appendChild(a); a.click(); a.remove();
+      toast('Membuka WhatsApp… tekan kirim di WhatsApp untuk menyelesaikan.'); f.reset();
     }
   });
   d.addEventListener('keydown', function (e) {

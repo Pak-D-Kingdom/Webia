@@ -1,4 +1,4 @@
-<section class="values" id="tentang" aria-label="Komitmen AgroHarvest">
+<section class="values reveal" id="tentang" aria-label="Komitmen AgroHarvest">
     <img class="values__leaves" src="{{ $img }}/strip-leaves.png" alt="" aria-hidden="true" loading="lazy">
     <img class="values__bee" src="{{ $img }}/strip-bee.png" alt="" aria-hidden="true" loading="lazy">
     <blockquote class="values__quote">

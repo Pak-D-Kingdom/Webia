@@ -15,7 +15,7 @@
             <aside class="card card--flat aside">
                 <h2 class="card__title">Hubungi Kami</h2>
                 <ul class="contact">
-                    <li><svg class="ic" aria-hidden="true"><use href="#i-phone"/></svg><a href="tel:+{{ $cfg['site']['whatsapp'] }}">{{ $cfg['site']['phone'] }}</a></li>
+                    <li><svg class="ic" aria-hidden="true"><use href="#i-phone"/></svg><a href="tel:+{{ $cfg['site']['phone_raw'] }}">{{ $cfg['site']['phone'] }}</a></li>
                     <li><svg class="ic" aria-hidden="true"><use href="#i-mail"/></svg><a href="mailto:{{ $cfg['site']['email'] }}">{{ $cfg['site']['email'] }}</a></li>
                     <li><svg class="ic" aria-hidden="true"><use href="#i-pin"/></svg><span>{{ $cfg['site']['address'] }}</span></li>
                     <li><svg class="ic" aria-hidden="true"><use href="#i-clock"/></svg><span>{{ $cfg['site']['hours'] }}</span></li>

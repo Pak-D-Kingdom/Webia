@@ -1,4 +1,4 @@
-<article class="card card--specs" aria-labelledby="specPrevTitle">
+<article class="card card--specs reveal" style="--d:.06s" aria-labelledby="specPrevTitle">
     <div class="card__head">
         <div>
             <h2 id="specPrevTitle">{{ $data['specs']['title'] }}</h2>
@@ -9,7 +9,7 @@
     <ul class="spec-tiles">
         @foreach ($data['specs']['headline'] as $s)
             <li class="spec-tile">
-                <span class="spec-tile__icon"><svg class="ico"><use href="#i-{{ $s['icon'] }}"></use></svg></span>
+                <span class="spec-tile__icon"><svg class="ico"><use href="#i-{{ $s['icon'] }}"></use></svg><svg class="ico spec-tile__chev"><use href="#i-chev-right"></use></svg></span>
                 <strong>{{ $s['label'] }}</strong>
                 <span>{{ $s['value'] }}</span>
             </li>

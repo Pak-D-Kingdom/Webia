@@ -5,7 +5,6 @@
 
 @section('content')
     @include('website-bisnis.template.agriculture&farming.corporate.agribisnis-forest-moss.sections.hero')
-    @include('website-bisnis.template.agriculture&farming.corporate.agribisnis-forest-moss.sections.quick-links')
 
     <div class="container home-row home-row--a">
         @include('website-bisnis.template.agriculture&farming.corporate.agribisnis-forest-moss.previews.commodity')

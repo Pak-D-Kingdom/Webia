@@ -16,11 +16,11 @@
             </div>
         </div>
 
-        <p class="hero__script" aria-hidden="true">Dari Alam<br>untuk Dunia</p>
+        <p class="hero__script" aria-hidden="true"><span>Dari Alam</span><span>untuk Dunia</span></p>
 
         <aside class="ai-card" aria-label="{{ $data['hero']['ai_title'] }}">
             <div class="ai-card__art">
-                <img src="{{ $img }}/mascot-farmer.png" alt="Maskot petani AgroHarvest memegang tablet" width="206" height="138" loading="eager">
+                <img src="{{ $img }}/mascot-farmer.png" alt="Maskot petani AgroHarvest memegang tablet" width="206" height="138">
             </div>
             <h2>{{ $data['hero']['ai_title'] }}</h2>
             <p>{{ $data['hero']['ai_text'] }}</p>

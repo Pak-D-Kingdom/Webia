@@ -14,7 +14,7 @@
         <div class="inner__wrap">
             <ul class="cert-grid">
                 @foreach ($data['certifications']['items'] as $c)
-                    <li class="cert-card">
+                    <li class="cert-card reveal">
                         <div class="cert-card__logo"><img src="{{ $img }}/{{ $c['image'] }}" alt="Logo {{ $c['name'] }}" loading="lazy"></div>
                         <h2>{{ $c['name'] }}</h2>
                         <p>{{ $c['text'] }}</p>
@@ -30,4 +30,6 @@
             </aside>
         </div>
     </section>
+
+    @include($v . '.partials.explore', ['exploreKeys' => ['spesifikasi', 'b2b', 'chatbot']])
 @endsection

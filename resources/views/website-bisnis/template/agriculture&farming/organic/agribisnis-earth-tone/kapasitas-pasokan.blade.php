@@ -53,10 +53,12 @@
                         <div class="bar__track" role="img" aria-label="{{ $c['name'] }}: {{ number_format($c['capacity'], 0, ',', '.') }} ton per tahun">
                             <span class="bar__fill" style="--w: {{ round($c['capacity'] / $max * 100) }}%"></span>
                         </div>
-                        <span class="bar__value">{{ number_format($c['capacity'], 0, ',', '.') }} ton</span>
+                        <span class="bar__value" data-count="{{ $c['capacity'] }}" data-suffix=" ton">{{ number_format($c['capacity'], 0, ',', '.') }} ton</span>
                     </li>
                 @endforeach
             </ul>
         </div>
     </section>
+
+    @include($v . '.partials.explore', ['exploreKeys' => ['distribusi', 'moq', 'b2b']])
 @endsection

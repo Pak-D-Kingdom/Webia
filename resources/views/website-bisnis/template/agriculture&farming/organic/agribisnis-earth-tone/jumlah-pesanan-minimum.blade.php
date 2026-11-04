@@ -54,7 +54,7 @@
             <header class="inner__head inner__head--spaced"><h2>Pilihan Skema</h2></header>
             <ul class="feature-grid feature-grid--3">
                 @foreach ($data['moq']['tiers'] as $t)
-                    <li class="feature-card">
+                    <li class="feature-card reveal">
                         <span class="feature-card__tag">{{ $t['range'] }}</span>
                         <h3>{{ $t['name'] }}</h3>
                         <p>{{ $t['text'] }}</p>
@@ -80,4 +80,6 @@
             </div>
         </div>
     </section>
+
+    @include($v . '.partials.explore', ['exploreKeys' => ['kapasitas', 'penawaran', 'distribusi']])
 @endsection

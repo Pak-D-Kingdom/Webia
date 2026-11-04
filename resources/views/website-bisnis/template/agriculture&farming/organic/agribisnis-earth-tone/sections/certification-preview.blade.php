@@ -1,4 +1,4 @@
-<article class="card card--cert" aria-labelledby="certPrevTitle">
+<article class="card card--cert reveal" style="--d:.06s" aria-labelledby="certPrevTitle">
     <div class="card__titlerow">
         <span class="title-icon"><svg class="ico"><use href="#i-sprout"></use></svg></span>
         <div>

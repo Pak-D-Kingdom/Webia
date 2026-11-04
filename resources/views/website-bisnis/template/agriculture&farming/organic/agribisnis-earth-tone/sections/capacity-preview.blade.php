@@ -1,4 +1,4 @@
-<article class="card card--capacity" aria-labelledby="capPrevTitle">
+<article class="card card--capacity reveal" style="--d:.18s" aria-labelledby="capPrevTitle">
     <h2 id="capPrevTitle">{{ $data['capacity']['title'] }}</h2>
     <p>{{ $data['capacity']['text'] }}</p>
     <div class="metric">

@@ -1236,13 +1236,15 @@ Route::prefix('webia/template/agriculture-farming/corporate/agribisnis-forest-mo
     });
 
 Route::prefix('webia/template/agriculture-farming/organic/agribisnis-earth-tone')
-    ->name('agribisnis-earth-tone.')
+    ->name('webia.template.agribisnis-earth-tone.')
     ->group(function () {
 
+        $prefix    = 'webia/template/agriculture-farming/organic/agribisnis-earth-tone';
         $viewBase  = 'website-bisnis.template.agriculture&farming.organic.agribisnis-earth-tone';
         $assetBase = 'website-bisnis/template/agriculture&farming/organic/agribisnis-earth-tone';
 
-        $render = static function (string $page) use ($viewBase, $assetBase) {
+        // $view = nama file blade, $key = kunci halaman (untuk menu aktif & tautan)
+        $render = static function (string $view, string $key) use ($prefix, $viewBase, $assetBase) {
             // Data statis dibaca dari config/template/.../agribisnis.php (tanpa database)
             $data = config('template.agriculture&farming.organic.agribisnis-earth-tone.agribisnis');
 
@@ -1254,25 +1256,27 @@ Route::prefix('webia/template/agriculture-farming/organic/agribisnis-earth-tone'
             $waNumber = $data['contact']['whatsapp'] ?? '62895630300345';
             $waBase   = 'https://wa.me/' . $waNumber;
 
+            // Semua URL dibangun dari prefix sendiri (bukan route name) agar tidak bentrok.
             $urls = [
-                'home'            => route('agribisnis-earth-tone.home'),
-                'komoditas'       => route('agribisnis-earth-tone.komoditas'),
-                'panen'           => route('agribisnis-earth-tone.panen'),
-                'spesifikasi'     => route('agribisnis-earth-tone.spesifikasi'),
-                'moq'             => route('agribisnis-earth-tone.moq'),
-                'kapasitas'       => route('agribisnis-earth-tone.kapasitas'),
-                'distribusi'      => route('agribisnis-earth-tone.distribusi'),
-                'sertifikasi'     => route('agribisnis-earth-tone.sertifikasi'),
-                'b2b'             => route('agribisnis-earth-tone.b2b'),
-                'penawaran'       => route('agribisnis-earth-tone.penawaran'),
-                'chatbot'         => route('agribisnis-earth-tone.chatbot'),
-                'whatsapp'        => $waBase . '?text=' . rawurlencode($data['contact']['whatsapp_text'] ?? 'Halo AgroHarvest'),
-                'whatsapp_karir'  => $waBase . '?text=' . rawurlencode('Halo AgroHarvest, saya tertarik dengan informasi karir.'),
+                'home'           => url($prefix),
+                'komoditas'      => url($prefix . '/komoditas'),
+                'panen'          => url($prefix . '/informasi-panen'),
+                'spesifikasi'    => url($prefix . '/spesifikasi-produk'),
+                'moq'            => url($prefix . '/jumlah-pesanan-minimum'),
+                'kapasitas'      => url($prefix . '/kapasitas-pasokan'),
+                'distribusi'     => url($prefix . '/jangkauan-distribusi'),
+                'sertifikasi'    => url($prefix . '/sertifikasi'),
+                'b2b'            => url($prefix . '/inquiry-b2b'),
+                'penawaran'      => url($prefix . '/permintaan-penawaran'),
+                'chatbot'        => url($prefix . '/ai-chatbot'),
+                'whatsapp'       => $waBase . '?text=' . rawurlencode($data['contact']['whatsapp_text'] ?? 'Halo AgroHarvest'),
+                'whatsapp_karir' => $waBase . '?text=' . rawurlencode('Halo AgroHarvest, saya tertarik dengan informasi karir.'),
             ];
 
-            return view($viewBase . '.' . $page, [
+            return view($viewBase . '.' . $view, [
                 'data' => $data,
                 'u'    => $urls,
+                'page' => $key,
                 'v'    => $viewBase,
                 'css'  => asset('css/' . $assetBase . '/logistics-agribisnis.css'),
                 'js'   => asset('js/' . $assetBase . '/agribisnis.js'),
@@ -1280,17 +1284,66 @@ Route::prefix('webia/template/agriculture-farming/organic/agribisnis-earth-tone'
             ]);
         };
 
-        Route::get('/', fn () => $render('index'))->name('home');
-        Route::get('/komoditas', fn () => $render('komoditas'))->name('komoditas');
-        Route::get('/informasi-panen', fn () => $render('informasi-panen'))->name('panen');
-        Route::get('/spesifikasi-produk', fn () => $render('spesifikasi-produk'))->name('spesifikasi');
-        Route::get('/jumlah-pesanan-minimum', fn () => $render('jumlah-pesanan-minimum'))->name('moq');
-        Route::get('/kapasitas-pasokan', fn () => $render('kapasitas-pasokan'))->name('kapasitas');
-        Route::get('/jangkauan-distribusi', fn () => $render('jangkauan-distribusi'))->name('distribusi');
-        Route::get('/sertifikasi', fn () => $render('sertifikasi'))->name('sertifikasi');
-        Route::get('/inquiry-b2b', fn () => $render('inquiry-b2b'))->name('b2b');
-        Route::get('/permintaan-penawaran', fn () => $render('permintaan-penawaran'))->name('penawaran');
-        Route::get('/ai-chatbot', fn () => $render('ai-chatbot'))->name('chatbot');
+        Route::get('/', fn () => $render('index', 'home'))->name('home');
+        Route::get('/komoditas', fn () => $render('komoditas', 'komoditas'))->name('komoditas');
+        Route::get('/informasi-panen', fn () => $render('informasi-panen', 'panen'))->name('panen');
+        Route::get('/spesifikasi-produk', fn () => $render('spesifikasi-produk', 'spesifikasi'))->name('spesifikasi');
+        Route::get('/jumlah-pesanan-minimum', fn () => $render('jumlah-pesanan-minimum', 'moq'))->name('moq');
+        Route::get('/kapasitas-pasokan', fn () => $render('kapasitas-pasokan', 'kapasitas'))->name('kapasitas');
+        Route::get('/jangkauan-distribusi', fn () => $render('jangkauan-distribusi', 'distribusi'))->name('distribusi');
+        Route::get('/sertifikasi', fn () => $render('sertifikasi', 'sertifikasi'))->name('sertifikasi');
+        Route::get('/inquiry-b2b', fn () => $render('inquiry-b2b', 'b2b'))->name('b2b');
+        Route::get('/permintaan-penawaran', fn () => $render('permintaan-penawaran', 'penawaran'))->name('penawaran');
+        Route::get('/ai-chatbot', fn () => $render('ai-chatbot', 'chatbot'))->name('chatbot');
+    });
+
+    $agroConfigKey  = 'template.agriculture&farming.professional.agribisnis-classic-trust.agribisnis';
+$agroConfigFile = config_path('template/agriculture&farming/professional/agribisnis-classic-trust/agribisnis.php');
+$agroData       = config($agroConfigKey) ?: (is_file($agroConfigFile) ? require $agroConfigFile : []);
+$agroView       = 'website-bisnis.template.agriculture&farming.professional.agribisnis-classic-trust';
+
+Route::prefix('webia/template/agribisnis-classic-trust')
+    ->name('agribisnis.')
+    ->group(function () use ($agroData, $agroView) {
+        $data = ['agro' => $agroData, 'v' => $agroView];
+
+        Route::view('/', $agroView . '.index', $data)->name('home');
+        Route::view('/komoditas', $agroView . '.komoditas', $data)->name('komoditas');
+        Route::view('/informasi-panen', $agroView . '.panen', $data)->name('panen');
+        Route::view('/spesifikasi-produk', $agroView . '.spesifikasi', $data)->name('spesifikasi');
+        Route::view('/minimum-order', $agroView . '.minimum-order', $data)->name('minimum');
+        Route::view('/kapasitas-pasokan', $agroView . '.kapasitas', $data)->name('kapasitas');
+        Route::view('/jangkauan-distribusi', $agroView . '.distribusi', $data)->name('distribusi');
+        Route::view('/sertifikasi', $agroView . '.sertifikasi', $data)->name('sertifikasi');
+        Route::view('/b2b-inquiry', $agroView . '.b2b-inquiry', $data)->name('b2b');
+        Route::view('/quotation-request', $agroView . '.penawaran', $data)->name('penawaran');
+        Route::view('/ai-assistant', $agroView . '.ai-assistant', $data)->name('ai');
+    });
+
+Route::prefix('webia/template/nonprofit-community/professional/foundation-classic-trust')
+    ->name('foundation-classic-trust.')
+    ->group(function () {
+        $base = 'website-bisnis.template.nonprofit&community.professional.foundation-classic-trust';
+        $path = 'website-bisnis/template/nonprofit&community/professional/foundation-classic-trust';
+
+        $data = [
+            'fd'     => require config_path('template/nonprofit&community/professional/foundation-classic-trust/foundation.php'),
+            'fdBase' => $base,
+            'fdImg'  => 'images/' . $path,
+            'fdCss'  => 'css/' . $path . '/foundation.css',
+            'fdJs'   => 'js/' . $path . '/foundation.js',
+        ];
+
+        Route::view('/', $base . '.index', $data)->name('index');
+        Route::view('/tentang-kami', $base . '.mission-vision', $data)->name('mission');
+        Route::view('/program-kami', $base . '.programs', $data)->name('programs');
+        Route::view('/dampak', $base . '.impact', $data)->name('impact');
+        Route::view('/donasi', $base . '.donation', $data)->name('donation');
+        Route::view('/transparansi-keuangan', $base . '.financial-report', $data)->name('financial');
+        Route::view('/mitra-sponsor', $base . '.partners', $data)->name('partners');
+        Route::view('/relawan', $base . '.volunteer', $data)->name('volunteer');
+        Route::view('/berita-acara', $base . '.news-events', $data)->name('news');
+        Route::view('/chatbot', $base . '.chatbot', $data)->name('chatbot');
     });
 
 Route::prefix('webia/template/nonprofit-community/creative/social-organization-tropical-rush')
@@ -1315,6 +1368,36 @@ Route::prefix('webia/template/nonprofit-community/creative/social-organization-t
             Route::get($uri, fn () => view($view, ['page' => $name]))->name($name);
         }
     });
+
+Route::prefix('webia/template/nonprofit-community/bold/social-organization-citrus-pop')->group(function () {
+    $view = 'website-bisnis.template.nonprofit&community.bold.social-organization-citrus-pop.';
+    $dir  = 'website-bisnis/template/nonprofit&community/bold/social-organization-citrus-pop/';
+    $key  = 'template.nonprofit&community.bold.social-organization-citrus-pop.social-organization';
+
+    $ctx = function (string $page) use ($view, $dir, $key) {
+        $data = config($key) ?: require config_path('template/nonprofit&community/bold/social-organization-citrus-pop/social-organization.php');
+
+        return [
+            'd'     => $data,
+            'v'     => $view,
+            'page'  => $page,
+            'inc'   => $view . 'partials.' . $page,
+            'title' => $data['pages'][$page]['t'],
+            'base'  => rtrim(url('/webia/template/nonprofit-community/bold/social-organization-citrus-pop'), '/'),
+            'img'   => asset('images/' . $dir),
+            'css'   => asset('css/' . $dir . 'social-organization.css'),
+            'js'    => asset('js/' . $dir . 'social-organization.js'),
+        ];
+    };
+
+    Route::get('/', fn () => view($view . 'social-organization', $ctx('beranda')))->name('citrus.beranda');
+
+    foreach (['profil', 'program', 'galeri', 'kisah', 'event', 'daftar', 'mitra', 'kontak', 'chatbot'] as $page) {
+        Route::get('/' . $page, fn () => view($view . 'halaman', $ctx($page)))->name('citrus.' . $page);
+    }
+});
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Route::prefix('webia/template/transportation-logistics/delivery/logistics-company-emerald-express')->group(function () {
     $view = 'website-bisnis.template.transportation&logistics.delivery.logistics-company-emerald-express.';

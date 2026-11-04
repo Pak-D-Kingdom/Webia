@@ -68,4 +68,6 @@
             </div>
         </div>
     </section>
+
+    @include($v . '.partials.explore', ['exploreKeys' => ['moq', 'spesifikasi', 'b2b']])
 @endsection

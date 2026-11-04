@@ -1,5 +1,5 @@
-<article class="card card--harvest" aria-labelledby="harvestPrevTitle">
-    <img class="card--harvest__bg" src="{{ $img }}/harvest-bg.jpg" alt="Buah kopi merah matang di pohon" loading="lazy">
+<article class="card card--harvest reveal" aria-labelledby="harvestPrevTitle">
+    <img class="card__bgimg" src="{{ $img }}/harvest-bg.jpg" alt="Buah kopi merah matang di pohon" loading="lazy">
     <div class="card--harvest__shade" aria-hidden="true"></div>
     <div class="card--harvest__body">
         <h2 id="harvestPrevTitle">{{ $data['harvest']['title'] }}</h2>

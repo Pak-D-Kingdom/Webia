@@ -6,6 +6,7 @@
             <div class="msg__bub">{{ $cfg['chatbot']['welcome'] }}</div>
         </div>
     </div>
+    <p class="chatbox__label">Pertanyaan populer</p>
     <div class="chatbox__chips" data-chat-chips>
         @foreach($cfg['chatbot']['faqs'] as $faq)
             <button class="chip" type="button" data-chat-q="{{ $faq['q'] }}">{{ $faq['q'] }}</button>

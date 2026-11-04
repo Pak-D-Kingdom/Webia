@@ -10,6 +10,28 @@
 
 return [
 
+    // Daftar halaman (dipakai dropdown navbar, pencarian, dan kartu "Jelajahi")
+    'pages' => [
+        'komoditas'   => ['title' => 'Katalog Komoditas',            'desc' => '8 komoditas unggulan siap kirim',           'icon' => 'sprout',    'keywords' => 'katalog komoditas produk sawit kopi kakao karet lada sayuran buah padi beras'],
+        'panen'       => ['title' => 'Informasi Tanaman & Panen',    'desc' => 'Kalender tanam, panen, dan tips budidaya',  'icon' => 'calendar',  'keywords' => 'panen tanam musim budidaya kalender tips'],
+        'spesifikasi' => ['title' => 'Spesifikasi Produk',           'desc' => 'Kadar air, ukuran, kemurnian, kemasan',     'icon' => 'purity',    'keywords' => 'spesifikasi kualitas kadar air ukuran grade kemurnian kemasan mutu'],
+        'moq'         => ['title' => 'Jumlah Pesanan Minimum',       'desc' => 'Mulai dari 1 ton, skema fleksibel',         'icon' => 'package',   'keywords' => 'pesanan minimum moq minimal ton order'],
+        'kapasitas'   => ['title' => 'Kapasitas Pasokan',            'desc' => 'Lebih dari 10.000 ton per tahun',           'icon' => 'supply',    'keywords' => 'kapasitas pasokan stok supply volume tahunan'],
+        'distribusi'  => ['title' => 'Jangkauan Distribusi',         'desc' => 'Seluruh Indonesia & Asia',                  'icon' => 'globe',     'keywords' => 'distribusi pengiriman wilayah ekspor jangkauan peta logistik'],
+        'sertifikasi' => ['title' => 'Sertifikasi',                  'desc' => 'USDA Organic, Halal, ISO 22000, HACCP',     'icon' => 'quality',   'keywords' => 'sertifikasi sertifikat usda organic halal iso haccp'],
+        'b2b'         => ['title' => 'Inquiry B2B',                  'desc' => 'Jalin kemitraan bisnis dengan kami',        'icon' => 'handshake', 'keywords' => 'inquiry b2b kemitraan mitra partner kerja sama bisnis'],
+        'penawaran'   => ['title' => 'Permintaan Penawaran',         'desc' => 'Harga terbaik sesuai kebutuhan Anda',       'icon' => 'doc',       'keywords' => 'penawaran harga quotation quote tawar'],
+        'chatbot'     => ['title' => 'AI FAQ Komoditas & Kemitraan', 'desc' => 'Tanya jawab otomatis seputar komoditas',    'icon' => 'chat',      'keywords' => 'ai faq chatbot tanya jawab bantuan asisten'],
+    ],
+
+    // Struktur menu navbar (children = key pada daftar halaman di atas)
+    'menu' => [
+        ['label' => 'Beranda',      'key' => 'home'],
+        ['label' => 'Komoditas',    'key' => 'komoditas', 'children' => ['komoditas', 'panen', 'spesifikasi', 'moq', 'kapasitas', 'distribusi']],
+        ['label' => 'Kemitraan',    'key' => 'b2b',       'children' => ['b2b', 'penawaran', 'chatbot']],
+        ['label' => 'Sertifikasi',  'key' => 'sertifikasi'],
+    ],
+
     'brand' => [
         'name'     => 'AgroHarvest',
         'tagline'  => "Nature's Goodness, Global Reach",
@@ -254,9 +276,9 @@ return [
         'subtitle' => 'FAQ komoditas & kemitraan',
         'welcome'  => 'Halo! Saya asisten AgroHarvest. Tanyakan seputar komoditas, spesifikasi, pesanan minimum, pengiriman, sertifikasi, atau kemitraan bisnis.',
         'fallback' => 'Maaf, saya belum menemukan jawaban yang pas. Coba pilih salah satu topik di bawah, atau hubungi tim kami langsung melalui WhatsApp.',
-        'quick'    => ['Komoditas apa saja?', 'Pesanan minimum', 'Kapasitas pasokan', 'Sertifikasi', 'Cara kemitraan'],
+        'quick'    => ['Komoditas apa saja?', 'Pesanan minimum', 'Kapasitas pasokan', 'Sertifikasi', 'Wilayah pengiriman', 'Cara kemitraan'],
         'faq' => [
-            ['q' => 'Komoditas apa saja yang tersedia?', 'keywords' => ['komoditas', 'produk', 'tersedia', 'katalog', 'jenis', 'apa saja'],
+            ['q' => 'Komoditas apa saja yang tersedia?', 'keywords' => ['komoditas', 'tersedia', 'katalog', 'jenis komoditas', 'macam'],
              'a' => 'Kami menyediakan 8 komoditas unggulan: kelapa sawit, kopi, kakao, karet, lada, sayuran, buah-buahan, dan padi. Lihat detail lengkap di halaman Komoditas.', 'link' => 'komoditas', 'link_label' => 'Lihat Katalog Komoditas'],
             ['q' => 'Berapa pesanan minimum?', 'keywords' => ['minimum', 'moq', 'minimal', 'pesanan', 'min order', 'berapa ton'],
              'a' => 'Pesanan minimum mulai dari 1 ton, tergantung komoditas. Untuk kelapa sawit dan karet biasanya dimulai dari 5 ton. Tersedia juga skema reguler dan kontrak jangka panjang.', 'link' => 'moq', 'link_label' => 'Lihat Pesanan Minimum'],

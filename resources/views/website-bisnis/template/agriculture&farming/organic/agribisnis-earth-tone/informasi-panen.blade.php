@@ -58,7 +58,7 @@
             <ul class="tip-grid">
                 @foreach ($data['harvest']['calendar'] as $row)
                     @php $comm = collect($data['commodities'])->firstWhere('slug', $row['slug']); @endphp
-                    <li class="tip-card">
+                    <li class="tip-card reveal">
                         <img src="{{ $img }}/{{ $comm['image'] }}" alt="" width="56" height="56" loading="lazy">
                         <div>
                             <h3>{{ $comm['name'] }}</h3>
@@ -73,7 +73,7 @@
             </header>
             <ul class="feature-grid">
                 @foreach ($data['harvest']['tips'] as $t)
-                    <li class="feature-card">
+                    <li class="feature-card reveal">
                         <span class="feature-card__icon"><svg class="ico"><use href="#i-sprout"></use></svg></span>
                         <h3>{{ $t['title'] }}</h3>
                         <p>{{ $t['text'] }}</p>
@@ -82,4 +82,6 @@
             </ul>
         </div>
     </section>
+
+    @include($v . '.partials.explore', ['exploreKeys' => ['spesifikasi', 'kapasitas', 'penawaran']])
 @endsection
