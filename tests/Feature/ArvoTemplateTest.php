@@ -39,10 +39,7 @@ class ArvoTemplateTest extends TestCase
             ->firstOrFail();
 
         $this->assertSame('automotive', $template->category_slug);
-        $this->assertSame(
-            ['Modifikasi & Aksesori Kendaraan', 'Bengkel & Servis Kendaraan'],
-            $template->business_types
-        );
+        $this->assertSame(['Modifikasi & Aksesori Kendaraan'], $template->business_types);
         $this->assertSame('Modern', $template->design_style);
 
         $this->get(route('collections'))
