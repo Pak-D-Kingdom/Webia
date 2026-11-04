@@ -175,6 +175,24 @@ Route::view(
 )->name('webia.template.automotive.apex-scuderia-automotive-minimalist');
 
 Route::view(
+    '/webia/template/samudra-auto-detailing-artistic',
+    'website-bisnis.templates.automotive.samudra-auto-detailing-artistic'
+)->name('webia.template.automotive.samudra-auto-detailing-artistic');
+
+Route::view(
+    '/webia/template/noir-auto-detailing-luxury',
+    'website-bisnis.templates.automotive.noir-auto-detailing-luxury'
+)->name('webia.template.automotive.noir-auto-detailing-luxury');
+Route::view(
+    '/webia/template/aurum-premium-auto-detailing',
+    'website-bisnis.templates.automotive.aurum-premium-auto-detailing'
+)->name('webia.template.automotive.aurum-premium-auto-detailing');
+Route::view(
+    '/webia/template/otto-artistic-workshop',
+    'website-bisnis.templates.automotive.otto-artistic-workshop'
+)->name('webia.template.automotive.otto-artistic-workshop');
+
+Route::view(
     '/webia/template/denim-horizon-property-minimalist',
     'website-bisnis.templates.property.property-minimalist'
 )->name('webia.template.property.denim-horizon-property-minimalist');
@@ -1090,15 +1108,15 @@ Route::prefix('webia/template/home-services/minimalis/laundry-mint-fresh')
     ->group(function () {
         $v = 'website-bisnis.template.home-services.minimalis.laundry-mint-fresh.';
 
-        Route::view('/',                 $v . 'pages.index')->name('home');
-        Route::view('/layanan',          $v . 'pages.layanan')->name('layanan');
-        Route::view('/daftar-harga',     $v . 'pages.harga')->name('harga');
-        Route::view('/opsi-layanan',     $v . 'pages.opsi')->name('opsi');
-        Route::view('/estimasi-waktu',   $v . 'pages.estimasi')->name('estimasi');
-        Route::view('/area-jemput-antar', $v . 'pages.area')->name('area');
-        Route::view('/cara-pemesanan',   $v . 'pages.cara')->name('cara');
-        Route::view('/jam-operasional',  $v . 'pages.jam')->name('jam');
-        Route::view('/order-inquiry',    $v . 'pages.inquiry')->name('inquiry');
+        Route::view('/', $v.'pages.home')->name('home');
+        Route::view('/layanan', $v.'pages.layanan')->name('layanan');
+        Route::view('/daftar-harga', $v.'pages.harga')->name('harga');
+        Route::view('/opsi-layanan', $v.'pages.opsi')->name('opsi');
+        Route::view('/estimasi-waktu', $v.'pages.estimasi')->name('estimasi');
+        Route::view('/area-jemput-antar', $v.'pages.area')->name('area');
+        Route::view('/cara-pemesanan', $v.'pages.cara')->name('cara');
+        Route::view('/jam-operasional', $v.'pages.jam')->name('jam');
+        Route::view('/order-inquiry', $v.'pages.inquiry')->name('inquiry');
     });
 
 Route::prefix('webia/template/home-services/professional/laundry-classic-trust')
