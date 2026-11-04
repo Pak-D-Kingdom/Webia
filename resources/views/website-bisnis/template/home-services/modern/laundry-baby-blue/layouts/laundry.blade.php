@@ -1,16 +1,17 @@
-@php
-    $brand = $laundry['brand'];
-    $contact = $laundry['contact'];
 
+@php
+    $brand   = $laundry['brand'];
+    $contact = $laundry['contact'];
     $current = request()->route()?->getName() ?? '';
-    $slug = \Illuminate\Support\Str::afterLast($current, '.');
+    $slug    = \Illuminate\Support\Str::afterLast($current, '.');
 
     $ver = @filemtime(
         public_path($laundry['assets']['css'] . '/laundry.css')
     ) ?: 1;
 
-    // Daftar route halaman laundry.
-    $routes = [
+    $links = [];
+
+    foreach ([
         'home',
         'layanan',
         'harga',
@@ -20,40 +21,32 @@
         'cara-order',
         'jam',
         'order-inquiry',
-        'ai-chatbot',
-    ];
-
-    $links = [];
-
-    foreach ($routes as $r) {
+        'ai-chatbot'
+    ] as $r) {
         $links[$r] = route('webia.laundry-baby-blue.' . $r);
     }
 
-    // Menyiapkan data FAQ untuk JavaScript.
-    $faqJs = collect($laundry['faq'])
-        ->map(function ($f) use ($links) {
-            $cta = null;
+    $faqJs = collect($laundry['faq'])->map(function ($f) use ($links) {
 
-            if (isset($f['cta'])) {
-                $ctaRoute = $f['cta']['route'] ?? '#';
+        $cta = null;
 
-                $cta = [
-                    'label' => $f['cta']['label'] ?? '',
-                    'url' => $links[$ctaRoute] ?? '#',
-                ];
-            }
-
-            return [
-                'id' => $f['id'] ?? '',
-                'q' => $f['q'] ?? '',
-                'a' => $f['a'] ?? '',
-                'keywords' => $f['keywords'] ?? [],
-                'cta' => $cta,
+        if (isset($f['cta'])) {
+            $cta = [
+                'label' => $f['cta']['label'],
+                'url' => $links[$f['cta']['route']] ?? '#',
             ];
-        })
-        ->values();
+        }
 
-    // Konfigurasi untuk JavaScript.
+        return [
+            'id' => $f['id'],
+            'q' => $f['q'],
+            'a' => $f['a'],
+            'keywords' => $f['keywords'],
+            'cta' => $cta,
+        ];
+
+    })->values();
+
     $jsConfig = [
         'brand' => $brand['name'],
         'whatsapp' => $contact['whatsapp'],
@@ -83,47 +76,34 @@
 
 <!DOCTYPE html>
 <html lang="id" class="lb-root">
+
 <head>
     <meta charset="utf-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1, viewport-fit=cover"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
     <title>
         @yield('title', 'BlueLaundry — Pakaian Bersih, Wangi, Rapi & Terawat')
     </title>
 
-    <meta
-        name="description"
-        content="@yield('description', 'BlueLaundry: layanan laundry modern di Surabaya dengan antar-jemput, hasil bersih, wangi tahan lama, dan siap pakai.')"
-    >
+    <meta name="description"
+        content="@yield('description', 'BlueLaundry: layanan laundry modern di Surabaya dengan antar-jemput, hasil bersih, wangi tahan lama, dan siap pakai.')">
 
     <meta name="theme-color" content="#d6eafb">
 
-    <link
-        rel="icon"
+    <link rel="icon"
         type="image/png"
-        href="{{ asset($laundry['assets']['img'] . '/logo-cloud.png') }}"
-    >
+        href="{{ asset($laundry['assets']['img'] . '/logo-cloud.png') }}">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin
-    >
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <link
         href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Nunito:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap"
-        rel="stylesheet"
-    >
+        rel="stylesheet">
 
     <link
         rel="stylesheet"
-        href="{{ asset($laundry['assets']['css'] . '/laundry.css') }}?v={{ $ver }}"
-    >
+        href="{{ asset($laundry['assets']['css'] . '/laundry.css') }}?v={{ $ver }}">
 
     @stack('head')
 </head>
@@ -160,17 +140,17 @@
         id="lbToast"
         role="status"
         aria-live="polite"
-        hidden
-    ></div>
+        hidden>
+    </div>
 
     <script>
-        window.BLUELaundry = @json($jsConfig);
+        window.BLUELAUNDRY = @json($jsConfig);
     </script>
 
     <script
         src="{{ asset($laundry['assets']['js'] . '/laundry.js') }}?v={{ $ver }}"
-        defer
-    ></script>
+        defer>
+    </script>
 
     @stack('scripts')
 

@@ -10,32 +10,38 @@
 @section('title', 'Estimasi Waktu Pengerjaan — ' . $c['brand']['name'])
 
 @section('content')
-    @include($v . '.partials.page-header', ['title' => $c['turnaround']['title'], 'sub' => $c['turnaround']['sub']])
+    @include($v . '.partials.page-header', ['title' => $c['turnaround']['title'], 'sub' => $c['turnaround']['sub'], 'icon' => 'clock'])
 
     <div class="lw-container lw-page">
-        <div class="lw-split">
-            <article class="lw-card">
-                <img class="lw-time-art" src="{{ $img($c['img']['clock']) }}" alt="" width="366" height="174">
-                <ul class="lw-time-list lw-time-list--full">
-                    @foreach ($c['turnaround']['items'] as $t)
-                        <li><span class="lw-ico lw-ico--round"><svg class="lw-i"><use href="#i-{{ $t['icon'] }}"/></svg></span><span>{{ $t['name'] }}</span><b>{{ $t['time'] }}</b></li>
-                    @endforeach
-                </ul>
-                <p class="lw-note"><svg class="lw-i"><use href="#i-clock"/></svg>{{ $c['turnaround']['note'] }}</p>
-            </article>
+        <ul class="lw-stats">
+            @foreach ($c['turnaround']['items'] as $t)
+                <li class="lw-card lw-stat">
+                    <span class="lw-ico lw-ico--lg"><svg class="lw-i"><use href="#i-{{ $t['icon'] }}"/></svg></span>
+                    <b>{{ $t['time'] }}</b>
+                    <span>{{ $t['name'] }}</span>
+                </li>
+            @endforeach
+        </ul>
 
-            <article class="lw-card">
-                <h2 class="lw-card__title">{{ $c['turnaround']['process_title'] }}</h2>
-                <ol class="lw-timeline">
-                    @foreach ($c['turnaround']['process'] as $p)
-                        <li>
-                            <span class="lw-ico lw-ico--round"><svg class="lw-i"><use href="#i-{{ $p['icon'] }}"/></svg></span>
-                            <div><strong>{{ $p['name'] }}</strong><p>{{ $p['desc'] }}</p></div>
-                        </li>
-                    @endforeach
-                </ol>
-                <button class="lw-btn lw-btn--sm" type="button" data-lw-chat-topic="proses">Tanya Proses ke FreshBot</button>
-            </article>
-        </div>
+        <article class="lw-card lw-process">
+            <h2 class="lw-card__title">{{ $c['turnaround']['process_title'] }}</h2>
+            <ol class="lw-hsteps">
+                @foreach ($c['turnaround']['process'] as $p)
+                    <li>
+                        <span class="lw-ico lw-ico--lg"><svg class="lw-i"><use href="#i-{{ $p['icon'] }}"/></svg></span>
+                        <strong>{{ $loop->iteration }}. {{ $p['name'] }}</strong>
+                        <p>{{ $p['desc'] }}</p>
+                    </li>
+                @endforeach
+            </ol>
+        </article>
+
+        <article class="lw-card lw-card--row">
+            <img class="lw-time-art" src="{{ $img($c['img']['clock']) }}" alt="" width="366" height="174" loading="lazy">
+            <p class="lw-note"><svg class="lw-i"><use href="#i-clock"/></svg>{{ $c['turnaround']['note'] }}</p>
+            <button class="lw-btn lw-btn--sm" type="button" data-lw-chat-topic="proses">Tanya Proses ke FreshBot</button>
+        </article>
     </div>
+
+    @include($v . '.partials.cta')
 @endsection

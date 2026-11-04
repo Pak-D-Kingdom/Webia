@@ -24,8 +24,9 @@
                     <svg class="ic ic--xs" aria-hidden="true"><use href="#i-chevron-down"/></svg>
                 </button>
                 <ul class="lang__menu" data-lang-menu hidden>
-                    <li><span class="lang__opt is-current" aria-current="true">Bahasa Indonesia (ID)</span></li>
-                    <li><span class="lang__opt is-soon">English (EN) · segera hadir</span></li>
+                    <li class="lang__title" aria-hidden="true">Pilih bahasa</li>
+                    <li><span class="lang__opt is-current" aria-current="true">Bahasa Indonesia<svg class="ic" aria-hidden="true"><use href="#i-check"/></svg></span></li>
+                    <li><span class="lang__opt is-soon" aria-disabled="true">English<small>Segera hadir</small></span></li>
                 </ul>
             </li>
         </ul>

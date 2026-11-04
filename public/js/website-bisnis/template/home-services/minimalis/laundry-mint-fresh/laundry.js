@@ -11,26 +11,61 @@
     var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var brand = ($('.lw-brand__name') || {}).textContent || 'FreshWash';
 
-    /* ---------- 1. NAVBAR ---------- */
+    /* ---------- 1. NAVBAR + DROPDOWN ---------- */
     function initNav() {
         var nav = $('[data-lw-nav]');
         if (!nav) return;
         var toggle = $('[data-lw-menu-toggle]', nav);
         var more = $('[data-lw-more]', nav);
         var moreBtn = more && $('button', more);
+        var items = more ? $$('.lw-drop__item', more) : [];
+        var hoverMQ = window.matchMedia ? window.matchMedia('(min-width: 1024px) and (hover: hover)') : { matches: false };
+        var timer = null;
 
         function setMenu(open) {
             nav.classList.toggle('is-open', open);
             toggle.setAttribute('aria-expanded', String(open));
+            document.body.classList.toggle('lw-menu-open', open);
         }
-        function setMore(open) {
+        function setMore(open, focusFirst) {
             if (!more) return;
+            clearTimeout(timer);
             more.classList.toggle('is-open', open);
             moreBtn.setAttribute('aria-expanded', String(open));
+            if (open && focusFirst && items[0]) items[0].focus();
         }
+        function isOpen() { return more && more.classList.contains('is-open'); }
 
         toggle.addEventListener('click', function () { setMenu(!nav.classList.contains('is-open')); });
-        if (moreBtn) moreBtn.addEventListener('click', function () { setMore(!more.classList.contains('is-open')); });
+
+        if (more) {
+            moreBtn.addEventListener('click', function (e) {
+                // Mouse di desktop: hover sudah membuka panel, klik tidak boleh menutupnya lagi.
+                // Keyboard (detail = 0) dan layar sentuh/mobile: toggle biasa.
+                if (hoverMQ.matches && e.detail > 0) setMore(true);
+                else setMore(!isOpen());
+            });
+            moreBtn.addEventListener('keydown', function (e) {
+                if (e.key === 'ArrowDown') { e.preventDefault(); setMore(true, true); }
+            });
+            more.addEventListener('keydown', function (e) {
+                var i = items.indexOf(document.activeElement);
+                if (e.key === 'Escape' && isOpen()) { e.stopPropagation(); setMore(false); moreBtn.focus(); }
+                else if (e.key === 'ArrowDown' && i > -1) { e.preventDefault(); items[(i + 1) % items.length].focus(); }
+                else if (e.key === 'ArrowUp' && i > -1) { e.preventDefault(); (i === 0 ? moreBtn : items[i - 1]).focus(); }
+                else if (e.key === 'Home' && i > -1) { e.preventDefault(); items[0].focus(); }
+                else if (e.key === 'End' && i > -1) { e.preventDefault(); items[items.length - 1].focus(); }
+            });
+            // buka saat hover (hanya perangkat dengan mouse), tutup dengan jeda singkat
+            more.addEventListener('mouseenter', function () { if (hoverMQ.matches) setMore(true); });
+            more.addEventListener('mouseleave', function () {
+                if (hoverMQ.matches) { clearTimeout(timer); timer = setTimeout(function () { setMore(false); }, 160); }
+            });
+            // tutup saat fokus keluar dari dropdown
+            more.addEventListener('focusout', function (e) {
+                if (e.relatedTarget && !more.contains(e.relatedTarget)) setMore(false);
+            });
+        }
 
         document.addEventListener('click', function (e) {
             if (more && !more.contains(e.target)) setMore(false);
@@ -44,6 +79,15 @@
         var onScroll = function () { nav.classList.toggle('is-stuck', window.scrollY > 8); };
         onScroll();
         window.addEventListener('scroll', onScroll, { passive: true });
+    }
+
+    /* ---------- 1b. KEMBALI KE ATAS ---------- */
+    function initToTop() {
+        var btn = $('[data-lw-totop]');
+        if (!btn) return;
+        btn.addEventListener('click', function () {
+            window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+        });
     }
 
     /* ---------- 2. TABS (Per Item / Per Kg) ---------- */
@@ -328,7 +372,7 @@
 
     /* ---------- BOOT ---------- */
     function boot() {
-        initNav(); initTabs(); initHours(); initOrderForm(); initAreaCheck(); initChat();
+        initNav(); initToTop(); initTabs(); initHours(); initOrderForm(); initAreaCheck(); initChat();
     }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
     else boot();

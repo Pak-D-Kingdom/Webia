@@ -42,7 +42,7 @@
                     </div>
                     <div class="field">
                         <label for="q-layanan">Jenis layanan <span aria-hidden="true">*</span></label>
-                        <select id="q-layanan" name="layanan" required>
+                        <select id="q-layanan" name="layanan" required data-select>
                             <option value="">Pilih layanan</option>
                             @foreach ($c['quotation']['services'] as $o)
                                 <option value="{{ $o }}">{{ $o }}</option>
@@ -52,7 +52,7 @@
                     </div>
                     <div class="field">
                         <label for="q-barang">Jenis barang</label>
-                        <select id="q-barang" name="barang">
+                        <select id="q-barang" name="barang" data-select>
                             <option value="">Pilih jenis barang</option>
                             @foreach ($c['quotation']['cargo_types'] as $o)
                                 <option value="{{ $o }}">{{ $o }}</option>

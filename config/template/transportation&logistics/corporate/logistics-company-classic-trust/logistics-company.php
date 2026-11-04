@@ -51,7 +51,7 @@ return [
         'phone_href' => 'tel:+622150128888',
         'email' => 'info@nusalogistik.co.id',
         'address' => 'Jl. Industri No.88, Jakarta, Indonesia',
-        'whatsapp' => '6289563030345',
+        'whatsapp' => '62895630300345',
         'whatsapp_text' => 'Halo Nusa Logistik, saya ingin bertanya tentang layanan pengiriman.',
     ],
     'topbar' => [
@@ -114,14 +114,6 @@ return [
         [
             'label' => 'Klien Kami',
             'route' => 'klien',
-        ],
-        [
-            'label' => 'Tentang Kami',
-            'href' => '#tentang-kami',
-        ],
-        [
-            'label' => 'Kontak',
-            'href' => '#kontak',
         ],
     ],
     'search_index' => [

@@ -2,7 +2,6 @@
     <div class="lb-footer__wave" aria-hidden="true">
         <svg viewBox="0 0 1440 60" preserveAspectRatio="none"><path d="M0 28C180 58 320 4 520 20s340 40 520 14 280-30 400-6v32H0z"/></svg>
     </div>
-    <img class="lb-footer__basket" src="{{ asset($laundry['assets']['img'] . '/basket-towels.webp') }}" alt="" aria-hidden="true" width="408" height="288" loading="lazy">
     <div class="lb-container lb-footer__inner">
         <div class="lb-footer__brand">
             <a class="lb-brand lb-brand--footer" href="{{ route('webia.laundry-baby-blue.home') }}">

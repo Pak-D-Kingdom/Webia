@@ -135,7 +135,7 @@
         });
         if (bad.length) {
           err.hidden = false; err.textContent = 'Mohon lengkapi data yang bertanda merah' + (form.telp.closest('.is-bad') ? ' (nomor WhatsApp 8-16 digit).' : '.');
-          bad[0].focus(); return;
+          (bad[0]._btn || bad[0]).focus(); return;
         }
         err.hidden = true;
         var opt = form.layanan.options[form.layanan.selectedIndex];
@@ -148,6 +148,105 @@
         window.open('https://wa.me/' + num + '?text=' + encodeURIComponent(msg), '_blank', 'noopener');
       });
       form.addEventListener('input', function (e) { var f = e.target.closest('.field'); if (f) f.classList.remove('is-bad'); });
+    });
+  }
+
+  /* ---------- DROPDOWN FORM: select kustom ---------- */
+  var openSel = null;
+  function closeSel() { if (openSel) { openSel.wrap.classList.remove('is-open'); openSel.btn.setAttribute('aria-expanded', 'false'); openSel.btn.removeAttribute('aria-activedescendant'); openSel = null; } }
+  function initSelects() {
+    $$('.field select').forEach(function (sel, n) {
+      if (sel.dataset.enhanced) return; sel.dataset.enhanced = '1';
+      var wrap = document.createElement('div'); wrap.className = 'sel';
+      sel.parentNode.insertBefore(wrap, sel); wrap.appendChild(sel);
+      sel.tabIndex = -1; sel.setAttribute('aria-hidden', 'true');
+      var id = 'sel' + n, labelEl = sel.closest('.field').querySelector('span');
+      var btn = document.createElement('button'); btn.type = 'button'; btn.className = 'sel__btn'; btn.id = id + '-b';
+      btn.setAttribute('aria-haspopup', 'listbox'); btn.setAttribute('aria-expanded', 'false'); btn.setAttribute('aria-controls', id);
+      if (labelEl) { labelEl.id = labelEl.id || id + '-l'; btn.setAttribute('aria-labelledby', labelEl.id + ' ' + btn.id); labelEl.addEventListener('click', function (e) { e.preventDefault(); btn.focus(); }); }
+      var txt = document.createElement('span'); btn.appendChild(txt);
+      btn.insertAdjacentHTML('beforeend', '<svg class="ic" aria-hidden="true"><use href="#i-chev"/></svg>');
+      var list = document.createElement('ul'); list.className = 'sel__list'; list.id = id; list.setAttribute('role', 'listbox');
+      wrap.appendChild(btn); wrap.appendChild(list); sel._btn = btn;
+      var items = [], cur = 0, typed = '', typedAt = 0;
+      Array.prototype.forEach.call(sel.options, function (o, i) {
+        var li = document.createElement('li'); li.className = 'sel__opt' + (o.value === '' ? ' is-empty' : ''); li.id = id + '-o' + i;
+        li.setAttribute('role', 'option'); li.innerHTML = '<span></span><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>'; li.firstChild.textContent = o.text;
+        li.addEventListener('mousedown', function (e) { e.preventDefault(); });
+        li.addEventListener('click', function () { choose(i); });
+        li.addEventListener('mousemove', function () { setCur(i); });
+        list.appendChild(li); items.push(li);
+      });
+      function sync() {
+        var i = sel.selectedIndex < 0 ? 0 : sel.selectedIndex; txt.textContent = sel.options[i].text;
+        btn.classList.toggle('has-value', sel.value !== '');
+        items.forEach(function (li, k) { li.setAttribute('aria-selected', String(k === i)); li.lastChild.style.visibility = k === i && sel.value !== '' ? 'visible' : 'hidden'; });
+      }
+      function setCur(i) {
+        cur = Math.max(0, Math.min(items.length - 1, i));
+        items.forEach(function (li, k) { li.classList.toggle('is-active', k === cur); });
+        btn.setAttribute('aria-activedescendant', items[cur].id); items[cur].scrollIntoView({ block: 'nearest' });
+      }
+      function open() {
+        closeSel(); var r = btn.getBoundingClientRect();
+        wrap.classList.toggle('is-up', window.innerHeight - r.bottom < 280 && r.top > 300);
+        wrap.classList.add('is-open'); btn.setAttribute('aria-expanded', 'true'); openSel = { wrap: wrap, btn: btn };
+        setCur(sel.selectedIndex < 0 ? 0 : sel.selectedIndex);
+      }
+      function choose(i) {
+        sel.selectedIndex = i; sync(); closeSel(); btn.focus();
+        sel.dispatchEvent(new Event('input', { bubbles: true })); sel.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+      btn.addEventListener('click', function () { if (wrap.classList.contains('is-open')) closeSel(); else open(); });
+      btn.addEventListener('keydown', function (e) {
+        var isOpen = wrap.classList.contains('is-open'), k = e.key;
+        if (k === 'ArrowDown' || k === 'ArrowUp') { e.preventDefault(); if (!isOpen) open(); else setCur(cur + (k === 'ArrowDown' ? 1 : -1)); }
+        else if (k === 'Home' && isOpen) { e.preventDefault(); setCur(0); }
+        else if (k === 'End' && isOpen) { e.preventDefault(); setCur(items.length - 1); }
+        else if ((k === 'Enter' || k === ' ') && isOpen) { e.preventDefault(); choose(cur); }
+        else if (k === 'Escape' && isOpen) { e.preventDefault(); e.stopPropagation(); closeSel(); }
+        else if (k === 'Tab') closeSel();
+        else if (k.length === 1 && /\S/.test(k)) {
+          var now = Date.now(); typed = (now - typedAt > 700 ? '' : typed) + k.toLowerCase(); typedAt = now;
+          for (var i = 0; i < items.length; i++) { if (sel.options[i].text.toLowerCase().indexOf(typed) === 0) { if (!isOpen) open(); setCur(i); break; } }
+        }
+      });
+      sel.addEventListener('change', sync); sync();
+    });
+    document.addEventListener('click', function (e) { if (openSel && !openSel.wrap.contains(e.target)) closeSel(); });
+  }
+
+  /* ---------- SARAN AREA (cek area layanan) ---------- */
+  function initSuggest() {
+    var input = $('[data-area-check] input[name="area"]'); if (!input || !(D.areas || []).length) return;
+    input.removeAttribute('list'); var dl = $('#area-list'); if (dl) dl.remove();
+    input.setAttribute('autocomplete', 'off'); input.setAttribute('role', 'combobox'); input.setAttribute('aria-expanded', 'false'); input.setAttribute('aria-autocomplete', 'list');
+    var wrap = document.createElement('div'); wrap.className = 'sel'; input.parentNode.insertBefore(wrap, input); wrap.appendChild(input);
+    var list = document.createElement('ul'); list.className = 'sel__list'; list.id = 'area-suggest'; list.setAttribute('role', 'listbox'); wrap.appendChild(list); input.setAttribute('aria-controls', list.id);
+    var cur = -1, shown = [];
+    function render() {
+      var q = input.value.trim().toLowerCase(); shown = D.areas.filter(function (a) { return !q || a.toLowerCase().indexOf(q) > -1; });
+      list.innerHTML = ''; cur = -1;
+      if (!shown.length) { list.innerHTML = '<li class="sel__empty">Area belum terdaftar. Tekan "Cek Area" untuk bertanya ke tim kami.</li>'; }
+      shown.forEach(function (a, i) {
+        var li = document.createElement('li'); li.className = 'sel__opt'; li.setAttribute('role', 'option'); li.id = 'area-o' + i;
+        li.innerHTML = '<span></span><svg class="ic" aria-hidden="true"><use href="#i-pin"/></svg>'; li.firstChild.textContent = a;
+        li.addEventListener('mousedown', function (e) { e.preventDefault(); pick(i); });
+        list.appendChild(li);
+      });
+      wrap.classList.add('is-open'); input.setAttribute('aria-expanded', 'true');
+    }
+    function hide() { wrap.classList.remove('is-open'); input.setAttribute('aria-expanded', 'false'); input.removeAttribute('aria-activedescendant'); }
+    function mark(i) { cur = i; $$('.sel__opt', list).forEach(function (li, k) { li.classList.toggle('is-active', k === i); }); if (i > -1) { input.setAttribute('aria-activedescendant', 'area-o' + i); $$('.sel__opt', list)[i].scrollIntoView({ block: 'nearest' }); } }
+    function pick(i) { input.value = shown[i]; hide(); input.dispatchEvent(new Event('input', { bubbles: true })); }
+    input.addEventListener('focus', render); input.addEventListener('input', render);
+    input.addEventListener('blur', function () { setTimeout(hide, 120); });
+    input.addEventListener('keydown', function (e) {
+      var open = wrap.classList.contains('is-open');
+      if (e.key === 'ArrowDown') { e.preventDefault(); if (!open) render(); mark(Math.min(shown.length - 1, cur + 1)); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); mark(Math.max(0, cur - 1)); }
+      else if (e.key === 'Enter' && open && cur > -1) { e.preventDefault(); pick(cur); }
+      else if (e.key === 'Escape' && open) { e.stopPropagation(); hide(); }
     });
   }
 
@@ -227,9 +326,6 @@
       b.addEventListener('click', function () { if (panel.hidden) open(b.dataset.botAsk); else ask(b.dataset.botAsk); });
     });
     form.addEventListener('submit', function (e) { e.preventDefault(); var v = input.value; input.value = ''; ask(v); });
-    $$('[data-bot-inline]').forEach(function (f) {
-      f.addEventListener('submit', function (e) { e.preventDefault(); var i = $('input', f), v = i.value; i.value = ''; open(v || undefined); });
-    });
 
     // label petunjuk tombol melayang (sekali per sesi): WhatsApp dulu, lalu FreshBot
     var wa = $('[data-fl-wa]'), seen = safe(function () { return sessionStorage.getItem('fw-hint'); });
@@ -241,6 +337,6 @@
     if (!seen) { hint(wa, 1800, 5200); hint(fab, 6800, 12500); safe(function () { sessionStorage.setItem('fw-hint', '1'); }); }
   }
 
-  function init() { initNav(); initDropdowns(); initTabs(); initHours(); initForms(); initCoverage(); initBot(); }
+  function init() { initNav(); initDropdowns(); initTabs(); initHours(); initForms(); initSelects(); initCoverage(); initSuggest(); initBot(); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();

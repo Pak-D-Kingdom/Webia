@@ -21,29 +21,32 @@
                 <small class="lb-field__err" data-err-for="wa" hidden></small>
             </div>
             <div class="lb-form__cell">
-                <label class="lb-field lb-field--select" for="{{ $uid }}-layanan"><svg class="lb-i lb-field__ico" aria-hidden="true"><use href="#i-tag"/></svg>
+                <div class="lb-field lb-field--select"><svg class="lb-i lb-field__ico" aria-hidden="true"><use href="#i-tag"/></svg>
+                    <label class="lb-sr" for="{{ $uid }}-layanan">Pilih layanan</label>
                     <select id="{{ $uid }}-layanan" name="layanan" required>
                         <option value="">Pilih Layanan</option>
                         @foreach ($laundry['inquiry_services'] as $opt)<option value="{{ $opt }}">{{ $opt }}</option>@endforeach
-                    </select><svg class="lb-i lb-field__chev" aria-hidden="true"><use href="#i-chevron"/></svg></label>
+                    </select><svg class="lb-i lb-field__chev" aria-hidden="true"><use href="#i-chevron"/></svg></div>
                 <small class="lb-field__err" data-err-for="layanan" hidden></small>
             </div>
 
             @if ($mode === 'full')
                 <div class="lb-form__cell">
-                    <label class="lb-field lb-field--select" for="{{ $uid }}-area"><svg class="lb-i lb-field__ico" aria-hidden="true"><use href="#i-pin"/></svg>
+                    <div class="lb-field lb-field--select"><svg class="lb-i lb-field__ico" aria-hidden="true"><use href="#i-pin"/></svg>
+                        <label class="lb-sr" for="{{ $uid }}-area">Area penjemputan</label>
                         <select id="{{ $uid }}-area" name="area">
                             <option value="">Area Penjemputan (opsional)</option>
                             @foreach ($laundry['areas'] as $a)<option value="{{ $a['name'] }}">{{ $a['name'] }}</option>@endforeach
-                        </select><svg class="lb-i lb-field__chev" aria-hidden="true"><use href="#i-chevron"/></svg></label>
+                        </select><svg class="lb-i lb-field__chev" aria-hidden="true"><use href="#i-chevron"/></svg></div>
                 </div>
                 <div class="lb-form__cell lb-form__cell--full">
                     <label class="lb-field" for="{{ $uid }}-alamat"><svg class="lb-i lb-field__ico" aria-hidden="true"><use href="#i-truck"/></svg>
                         <input id="{{ $uid }}-alamat" name="alamat" type="text" placeholder="Alamat Penjemputan (opsional)" autocomplete="street-address" maxlength="160"></label>
                 </div>
                 <div class="lb-form__cell">
-                    <label class="lb-field" for="{{ $uid }}-tgl"><svg class="lb-i lb-field__ico" aria-hidden="true"><use href="#i-calendar"/></svg>
-                        <input id="{{ $uid }}-tgl" name="jadwal" type="datetime-local" aria-label="Jadwal jemput (opsional)"></label>
+                    <div class="lb-field lb-field--dt"><svg class="lb-i lb-field__ico" aria-hidden="true"><use href="#i-calendar"/></svg>
+                        <label class="lb-sr" for="{{ $uid }}-tgl">Jadwal jemput (opsional)</label>
+                        <input id="{{ $uid }}-tgl" name="jadwal" type="datetime-local" data-placeholder="Jadwal jemput (opsional)"></div>
                 </div>
                 <div class="lb-form__cell lb-form__cell--full">
                     <label class="lb-field lb-field--area" for="{{ $uid }}-catatan">

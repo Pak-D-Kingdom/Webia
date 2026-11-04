@@ -1,3 +1,11 @@
+@php
+    $moreActive = false;
+    foreach ($c['nav_more'] as $m) {
+        if (request()->routeIs($c['route'] . $m['route'])) {
+            $moreActive = true;
+        }
+    }
+@endphp
 <header class="lw-nav" data-lw-nav>
     <div class="lw-container lw-nav__in">
         <a class="lw-brand" href="{{ $r('home') }}" aria-label="{{ $c['brand']['name'] }} — beranda">
@@ -21,15 +29,24 @@
                         <a href="{{ $r($item['route']) }}" @if (request()->routeIs($c['route'] . $item['route'])) class="is-active" aria-current="page" @endif>{{ $item['label'] }}</a>
                     </li>
                 @endforeach
+
                 <li class="lw-nav__more" data-lw-more>
-                    <button type="button" aria-expanded="false" aria-haspopup="true">
-                        More <svg class="lw-i"><use href="#i-chevron"/></svg>
+                    <button type="button" id="lw-more-btn" aria-expanded="false" aria-haspopup="true" aria-controls="lw-more-panel" @if ($moreActive) class="is-active" @endif>
+                        <span>More</span> <svg class="lw-i"><use href="#i-chevron"/></svg>
                     </button>
-                    <ul class="lw-nav__sub">
-                        @foreach ($c['nav_more'] as $item)
-                            <li><a href="{{ $r($item['route']) }}" @if (request()->routeIs($c['route'] . $item['route'])) class="is-active" aria-current="page" @endif>{{ $item['label'] }}</a></li>
-                        @endforeach
-                    </ul>
+                    <div class="lw-drop" id="lw-more-panel" aria-labelledby="lw-more-btn">
+                        <ul class="lw-drop__list">
+                            @foreach ($c['nav_more'] as $m)
+                                <li>
+                                    <a class="lw-drop__item @if (request()->routeIs($c['route'] . $m['route'])) is-active @endif" href="{{ $r($m['route']) }}" @if (request()->routeIs($c['route'] . $m['route'])) aria-current="page" @endif>
+                                        <span class="lw-ico"><svg class="lw-i"><use href="#i-{{ $m['icon'] }}"/></svg></span>
+                                        <span class="lw-drop__txt"><strong>{{ $m['label'] }}</strong><small>{{ $m['desc'] }}</small></span>
+                                        <svg class="lw-i lw-drop__go"><use href="#i-arrow"/></svg>
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
                 </li>
             </ul>
             <a class="lw-btn lw-nav__cta" href="{{ $r('inquiry') }}">

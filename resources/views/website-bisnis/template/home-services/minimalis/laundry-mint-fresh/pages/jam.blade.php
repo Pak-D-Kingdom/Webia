@@ -10,14 +10,14 @@
 @section('title', 'Jam Operasional — ' . $c['brand']['name'])
 
 @section('content')
-    @include($v . '.partials.page-header', ['title' => $c['hours']['title'], 'sub' => $c['hours']['label'] . ' · ' . $c['hours']['time'] . ' WIB'])
+    @include($v . '.partials.page-header', ['title' => $c['hours']['title'], 'sub' => $c['hours']['label'] . ' · ' . $c['hours']['time'] . ' WIB', 'icon' => 'calendar'])
 
     <div class="lw-container lw-page lw-page--narrow">
         <div class="lw-split">
             @include($v . '.sections.jam')
 
             <article class="lw-card">
-                <h2 class="lw-card__title lw-card__title--sm">Jadwal Mingguan</h2>
+                <h2 class="lw-card__title lw-card__title--sm"><svg class="lw-i"><use href="#i-calendar"/></svg>Jadwal Mingguan</h2>
                 <ul class="lw-week" data-lw-week>
                     @foreach ($c['hours']['days'] as $d)
                         <li data-day="{{ $d['n'] }}"><span>{{ $d['d'] }}</span><b>{{ $c['hours']['time'] }}</b></li>
@@ -27,4 +27,6 @@
             </article>
         </div>
     </div>
+
+    @include($v . '.partials.cta')
 @endsection
