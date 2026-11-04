@@ -119,7 +119,13 @@
                     if (o.value === preset) { f.layanan.value = preset; return true; }
                     return false;
                 });
+                if (f.layanan._lbRefresh) { f.layanan._lbRefresh(); }
             }
+            form.addEventListener('reset', function () {
+                setTimeout(function () {
+                    Array.prototype.forEach.call(form.elements, function (el) { if (el._lbRefresh) { el._lbRefresh(); } });
+                }, 0);
+            });
 
             function setError(name, text) {
                 var el = $('[data-err-for="' + name + '"]', form);
@@ -154,7 +160,7 @@
                 if (data.nama.length < 2) { bad('nama', 'Nama lengkap wajib diisi.'); }
                 if (!validPhone(data.wa)) { bad('wa', 'Masukkan nomor WhatsApp yang valid (9–15 angka).'); }
                 if (!data.layanan) { bad('layanan', 'Pilih layanan terlebih dahulu.'); }
-                if (first) { first.focus(); return; }
+                if (first) { (first._lbFocus || first).focus(); return; }
 
                 var lines = [
                     'Halo BlueLaundry, saya ingin order / konsultasi laundry.',
@@ -445,10 +451,8 @@
         var when = $('[data-lb-est-when]', root);
         var out = $('[data-lb-est-result]', root);
 
-        var d = new Date();
-        d.setMinutes(0, 0, 0);
-        d.setHours(d.getHours() + 1);
-        when.value = d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + 'T' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+        when.value = toLocalValue(nextAvailable());
+        if (when._lbRefresh) { when._lbRefresh(); }
 
         function fmt(date) {
             try {
@@ -505,15 +509,451 @@
             card.addEventListener('click', function () {
                 var key = (card.id || '').replace('area-', '');
                 sel.value = key;
+                if (sel._lbRefresh) { sel._lbRefresh(); }
                 render();
             });
         });
+    }
+
+
+    /* ------------------------------------------------------------------ *
+     * 7b. Komponen: dropdown kustom + pemilih tanggal & jam
+     *     <select> / <input type="datetime-local"> asli tetap ada (tersembunyi)
+     *     sehingga nilai form, validasi, dan fallback tanpa JS tetap bekerja.
+     * ------------------------------------------------------------------ */
+    var MONTHS = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+    var MONTHS_S = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+    var DAYS_S = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
+    var uidSeq = 0;
+    function uid(p) { uidSeq += 1; return 'lb' + p + uidSeq; }
+
+    var current = null; // popover yang sedang terbuka
+    function closePopover() { if (current) { var c = current; current = null; c.close(); } }
+
+    function svgIcon(name, cls) {
+        var s2 = doc.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        s2.setAttribute('class', 'lb-i' + (cls ? ' ' + cls : ''));
+        s2.setAttribute('aria-hidden', 'true');
+        var u = doc.createElementNS('http://www.w3.org/2000/svg', 'use');
+        u.setAttribute('href', '#i-' + name);
+        s2.appendChild(u);
+        return s2;
+    }
+
+    /* Membuka elemen `pop` (dipindah ke <body>) di dekat `anchor`. Di layar kecil tampil sebagai lembar bawah. */
+    function openPopover(cfg) {
+        closePopover();
+        var pop = cfg.el, anchor = cfg.anchor;
+        var mq = window.matchMedia('(max-width: 559.98px)');
+        var backdrop = doc.createElement('div');
+        backdrop.className = 'lb-pop-backdrop';
+        doc.body.appendChild(backdrop);
+        doc.body.appendChild(pop);
+        pop.hidden = false;
+
+        function position() {
+            if (mq.matches) { pop.style.left = pop.style.top = pop.style.width = pop.style.minWidth = pop.style.maxHeight = ''; return; }
+            var r = anchor.getBoundingClientRect();
+            var vw = doc.documentElement.clientWidth, vh = window.innerHeight;
+            pop.style.maxHeight = '';
+            pop.style.width = cfg.width ? Math.min(cfg.width, vw - 16) + 'px' : '';
+            pop.style.minWidth = cfg.width ? '' : Math.max(r.width, cfg.minWidth || 0) + 'px';
+            var pw = pop.offsetWidth, ph = pop.offsetHeight;
+            var below = vh - r.bottom - 14, above = r.top - 14;
+            var openUp = ph > below && above > below;
+            var maxH = Math.max(180, openUp ? above : below);
+            var h = Math.min(ph, maxH);
+            var top = openUp ? Math.max(8, r.top - 6 - h) : r.bottom + 6;
+            var left = Math.min(Math.max(8, r.left), Math.max(8, vw - pw - 8));
+            pop.style.left = left + 'px';
+            pop.style.top = top + 'px';
+            pop.style.maxHeight = maxH + 'px';
+            pop.classList.toggle('is-up', openUp);
+        }
+
+        function onDown(e) { if (!pop.contains(e.target) && !anchor.contains(e.target)) { closePopover(); } }
+        function onKey(e) { if (e.key === 'Escape') { e.stopPropagation(); closePopover(); if (cfg.focusBack) { cfg.focusBack.focus(); } } }
+        function onMove() { position(); }
+        doc.addEventListener('pointerdown', onDown, true);
+        doc.addEventListener('keydown', onKey, true);
+        window.addEventListener('resize', onMove);
+        window.addEventListener('scroll', onMove, true);
+        backdrop.addEventListener('click', function () { closePopover(); });
+        doc.documentElement.classList.toggle('lb-pop-open', mq.matches);
+
+        position();
+        requestAnimationFrame(function () { pop.classList.add('is-open'); backdrop.classList.add('is-open'); });
+
+        current = {
+            close: function () {
+                doc.removeEventListener('pointerdown', onDown, true);
+                doc.removeEventListener('keydown', onKey, true);
+                window.removeEventListener('resize', onMove);
+                window.removeEventListener('scroll', onMove, true);
+                pop.classList.remove('is-open');
+                pop.hidden = true;
+                if (pop.parentNode) { pop.parentNode.removeChild(pop); }
+                if (backdrop.parentNode) { backdrop.parentNode.removeChild(backdrop); }
+                doc.documentElement.classList.remove('lb-pop-open');
+                if (cfg.onClose) { cfg.onClose(); }
+            }
+        };
+        return current;
+    }
+
+    function liftCard(el, on) {
+        var card = el.closest ? el.closest('.lb-card') : null;
+        if (card) { card.classList.toggle('lb-card--lift', on); }
+    }
+
+    /* ----- Dropdown ----- */
+    function enhanceSelect(sel) {
+        if (sel._lbDd) { return; }
+        var field = sel.closest ? sel.closest('.lb-field') : null;
+        if (!field) { return; }
+        sel._lbDd = true;
+        field.classList.add('lb-field--dd');
+        sel.classList.add('lb-native');
+        sel.tabIndex = -1;
+        sel.setAttribute('aria-hidden', 'true');
+
+        var lab = sel.id ? doc.querySelector('label[for="' + sel.id + '"]') : null;
+        var btn = doc.createElement('button');
+        btn.type = 'button';
+        btn.className = 'lb-dd__btn';
+        btn.setAttribute('aria-haspopup', 'listbox');
+        btn.setAttribute('aria-expanded', 'false');
+        var txt = doc.createElement('span');
+        txt.className = 'lb-dd__label';
+        txt.id = uid('ddt');
+        btn.appendChild(txt);
+        if (lab) { if (!lab.id) { lab.id = uid('ddl'); } btn.setAttribute('aria-labelledby', lab.id + ' ' + txt.id); lab.addEventListener('click', function () { btn.focus(); }); }
+        sel.insertAdjacentElement('afterend', btn);
+
+        var list = doc.createElement('ul');
+        list.className = 'lb-pop lb-dd__list';
+        list.id = uid('ddlist');
+        list.setAttribute('role', 'listbox');
+        list.hidden = true;
+        if (lab) { list.setAttribute('aria-labelledby', lab.id); }
+        btn.setAttribute('aria-controls', list.id);
+
+        function sync() {
+            var o = sel.options[sel.selectedIndex];
+            txt.textContent = o ? o.text : '';
+            txt.classList.toggle('is-placeholder', !sel.value);
+        }
+        sel._lbRefresh = sync;
+        sel._lbFocus = btn;
+        sync();
+
+        function build() {
+            list.innerHTML = '';
+            Array.prototype.forEach.call(sel.options, function (o, i) {
+                var li = doc.createElement('li');
+                li.className = 'lb-dd__opt' + (o.value === '' ? ' is-placeholder' : '');
+                li.setAttribute('role', 'option');
+                li.tabIndex = -1;
+                li.setAttribute('data-i', String(i));
+                li.setAttribute('aria-selected', String(i === sel.selectedIndex));
+                var t = doc.createElement('span');
+                t.textContent = o.text;
+                li.appendChild(t);
+                li.appendChild(svgIcon('check', 'lb-dd__tick'));
+                list.appendChild(li);
+            });
+        }
+
+        function opts() { return Array.prototype.slice.call(list.querySelectorAll('.lb-dd__opt')); }
+
+        function choose(i) {
+            sel.selectedIndex = i;
+            sel.dispatchEvent(new Event('input', { bubbles: true }));
+            sel.dispatchEvent(new Event('change', { bubbles: true }));
+            sync();
+            closePopover();
+            btn.focus();
+        }
+
+        function open() {
+            build();
+            field.classList.add('is-open');
+            btn.setAttribute('aria-expanded', 'true');
+            liftCard(field, true);
+            openPopover({
+                anchor: field, el: list, minWidth: 220, focusBack: btn,
+                onClose: function () { field.classList.remove('is-open'); btn.setAttribute('aria-expanded', 'false'); liftCard(field, false); }
+            });
+            var items = opts();
+            var cur = items[sel.selectedIndex] || items[0];
+            if (cur) { cur.focus({ preventScroll: true }); cur.scrollIntoView({ block: 'nearest' }); }
+        }
+
+        btn.addEventListener('click', function () { if (current && field.classList.contains('is-open')) { closePopover(); } else { open(); } });
+        btn.addEventListener('keydown', function (e) {
+            if (e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }
+        });
+
+        var typed = '', typedTimer;
+        list.addEventListener('click', function (e) {
+            var li = e.target.closest ? e.target.closest('.lb-dd__opt') : null;
+            if (li) { choose(parseInt(li.getAttribute('data-i'), 10)); }
+        });
+        list.addEventListener('keydown', function (e) {
+            var items = opts();
+            var idx = items.indexOf(doc.activeElement);
+            if (e.key === 'ArrowDown') { e.preventDefault(); (items[Math.min(items.length - 1, idx + 1)] || items[0]).focus(); }
+            else if (e.key === 'ArrowUp') { e.preventDefault(); (items[Math.max(0, idx - 1)] || items[0]).focus(); }
+            else if (e.key === 'Home') { e.preventDefault(); items[0].focus(); }
+            else if (e.key === 'End') { e.preventDefault(); items[items.length - 1].focus(); }
+            else if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); if (idx > -1) { choose(idx); } }
+            else if (e.key === 'Tab') { closePopover(); }
+            else if (e.key.length === 1 && /\S/.test(e.key)) {
+                typed += e.key.toLowerCase();
+                clearTimeout(typedTimer);
+                typedTimer = setTimeout(function () { typed = ''; }, 700);
+                var hit = items.filter(function (li) { return li.textContent.toLowerCase().indexOf(typed) === 0; })[0];
+                if (hit) { hit.focus(); }
+            }
+        });
+        list.addEventListener('mousemove', function (e) {
+            var li = e.target.closest ? e.target.closest('.lb-dd__opt') : null;
+            if (li && li !== doc.activeElement) { li.focus({ preventScroll: true }); }
+        });
+    }
+
+    /* ----- Tanggal & jam ----- */
+    function pad2(n) { return (n < 10 ? '0' : '') + n; }
+    function slotList() {
+        var hrs = (CFG.hours || { open: '08:00', close: '20:00' });
+        var out = [], t = toMin(hrs.open), end = toMin(hrs.close) - 30;
+        for (; t <= end; t += 30) { out.push(pad2(Math.floor(t / 60)) + ':' + pad2(t % 60)); }
+        return out;
+    }
+    function dayStart(d) { return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+    function sameDay(a, b) { return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate(); }
+    function slotDate(day, hhmm) { var p = hhmm.split(':'); return new Date(day.getFullYear(), day.getMonth(), day.getDate(), parseInt(p[0], 10), parseInt(p[1], 10)); }
+    function slotFree(day, hhmm) { return slotDate(day, hhmm).getTime() >= Date.now() + 30 * 60000; }
+    function firstFreeSlot(day) { return slotList().filter(function (t) { return slotFree(day, t); })[0] || null; }
+    function nextAvailable() {
+        var d = dayStart(new Date());
+        for (var i = 0; i < 14; i += 1) {
+            var day = new Date(d.getFullYear(), d.getMonth(), d.getDate() + i);
+            var t = firstFreeSlot(day);
+            if (t) { return slotDate(day, t); }
+        }
+        return new Date();
+    }
+    function toLocalValue(d) { return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()) + 'T' + pad2(d.getHours()) + ':' + pad2(d.getMinutes()); }
+
+    function enhanceDateTime(inp) {
+        if (inp._lbDt) { return; }
+        var field = inp.closest ? inp.closest('.lb-field') : null;
+        if (!field) { return; }
+        inp._lbDt = true;
+        field.classList.add('lb-field--dd');
+        inp.classList.add('lb-native');
+        inp.tabIndex = -1;
+        inp.setAttribute('aria-hidden', 'true');
+
+        var lab = inp.id ? doc.querySelector('label[for="' + inp.id + '"]') : null;
+        var btn = doc.createElement('button');
+        btn.type = 'button';
+        btn.className = 'lb-dd__btn';
+        btn.setAttribute('aria-haspopup', 'dialog');
+        btn.setAttribute('aria-expanded', 'false');
+        var txt = doc.createElement('span');
+        txt.className = 'lb-dd__label';
+        txt.id = uid('dtt');
+        btn.appendChild(txt);
+        if (lab) { if (!lab.id) { lab.id = uid('dtl'); } btn.setAttribute('aria-labelledby', lab.id + ' ' + txt.id); lab.addEventListener('click', function () { btn.focus(); }); }
+        inp.insertAdjacentElement('afterend', btn);
+        field.appendChild(svgIcon('chevron', 'lb-field__chev'));
+
+        var placeholder = inp.getAttribute('data-placeholder') || 'Pilih tanggal & jam';
+        var selDate = null, selTime = null, viewY, viewM;
+
+        function parse() {
+            var m = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/.exec(inp.value || '');
+            if (!m) { selDate = null; selTime = null; return; }
+            selDate = new Date(parseInt(m[1], 10), parseInt(m[2], 10) - 1, parseInt(m[3], 10));
+            selTime = m[4] + ':' + m[5];
+        }
+        function sync() {
+            parse();
+            if (selDate) {
+                txt.textContent = DAYS_S[selDate.getDay()] + ', ' + selDate.getDate() + ' ' + MONTHS_S[selDate.getMonth()] + ' ' + selDate.getFullYear() + ' · ' + selTime + ' WIB';
+                txt.classList.remove('is-placeholder');
+            } else {
+                txt.textContent = placeholder;
+                txt.classList.add('is-placeholder');
+            }
+        }
+        inp._lbRefresh = sync;
+        inp._lbFocus = btn;
+        sync();
+
+        function commit() {
+            if (selDate && selTime) {
+                inp.value = toLocalValue(slotDate(selDate, selTime));
+            } else {
+                inp.value = '';
+            }
+            inp.dispatchEvent(new Event('input', { bubbles: true }));
+            inp.dispatchEvent(new Event('change', { bubbles: true }));
+            sync();
+        }
+
+        function open() {
+            parse();
+            var today = dayStart(new Date());
+            var minDay = firstFreeSlot(today) ? today : new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+            var maxDay = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 60);
+            var base = selDate || minDay;
+            viewY = base.getFullYear(); viewM = base.getMonth();
+
+            var pop = doc.createElement('div');
+            pop.className = 'lb-pop lb-dt';
+            pop.setAttribute('role', 'dialog');
+            pop.setAttribute('aria-label', 'Pilih tanggal dan jam');
+            pop.innerHTML =
+                '<div class="lb-dt__cal">' +
+                '<div class="lb-dt__head"><button type="button" class="lb-dt__nav" data-nav="-1" aria-label="Bulan sebelumnya"></button><strong class="lb-dt__title" aria-live="polite"></strong><button type="button" class="lb-dt__nav" data-nav="1" aria-label="Bulan berikutnya"></button></div>' +
+                '<div class="lb-dt__dow" aria-hidden="true"><span>Sen</span><span>Sel</span><span>Rab</span><span>Kam</span><span>Jum</span><span>Sab</span><span>Min</span></div>' +
+                '<div class="lb-dt__grid" role="group" aria-label="Tanggal"></div>' +
+                '</div>' +
+                '<div class="lb-dt__time"><p class="lb-dt__label">Pilih jam <small>(WIB)</small></p><div class="lb-dt__slots" role="group" aria-label="Jam"></div></div>' +
+                '<div class="lb-dt__foot"><button type="button" class="lb-dt__clear">Hapus</button><button type="button" class="lb-btn lb-btn--primary lb-btn--sm lb-dt__ok">Selesai</button></div>';
+
+            var title = pop.querySelector('.lb-dt__title');
+            var grid = pop.querySelector('.lb-dt__grid');
+            var slots = pop.querySelector('.lb-dt__slots');
+            var prev = pop.querySelector('[data-nav="-1"]');
+            var next = pop.querySelector('[data-nav="1"]');
+            prev.appendChild(svgIcon('chevron-r', 'lb-dt__arrow lb-dt__arrow--l'));
+            next.appendChild(svgIcon('chevron-r', 'lb-dt__arrow'));
+
+            function renderCal() {
+                title.textContent = MONTHS[viewM] + ' ' + viewY;
+                grid.innerHTML = '';
+                var first = new Date(viewY, viewM, 1);
+                var offset = (first.getDay() + 6) % 7;
+                var count = new Date(viewY, viewM + 1, 0).getDate();
+                for (var i = 0; i < offset; i += 1) { grid.appendChild(doc.createElement('span')); }
+                var focusTarget = null;
+                for (var d = 1; d <= count; d += 1) {
+                    var date = new Date(viewY, viewM, d);
+                    var b = doc.createElement('button');
+                    b.type = 'button';
+                    b.className = 'lb-dt__day';
+                    b.textContent = String(d);
+                    b.setAttribute('data-d', String(d));
+                    var off = date < minDay || date > maxDay;
+                    b.disabled = off;
+                    if (sameDay(date, today)) { b.classList.add('is-today'); b.setAttribute('aria-label', d + ' ' + MONTHS[viewM] + ' (hari ini)'); }
+                    else { b.setAttribute('aria-label', d + ' ' + MONTHS[viewM] + ' ' + viewY); }
+                    var sel2 = selDate && sameDay(date, selDate);
+                    if (sel2) { b.classList.add('is-selected'); b.setAttribute('aria-pressed', 'true'); }
+                    b.tabIndex = -1;
+                    if (!off && (sel2 || (!focusTarget && (!selDate || selDate.getMonth() !== viewM || selDate.getFullYear() !== viewY)))) { focusTarget = b; }
+                    grid.appendChild(b);
+                }
+                if (focusTarget) { focusTarget.tabIndex = 0; }
+                prev.disabled = new Date(viewY, viewM, 1) <= new Date(minDay.getFullYear(), minDay.getMonth(), 1);
+                next.disabled = new Date(viewY, viewM + 1, 1) > maxDay;
+            }
+
+            function renderSlots() {
+                slots.innerHTML = '';
+                slotList().forEach(function (t) {
+                    var b = doc.createElement('button');
+                    b.type = 'button';
+                    b.className = 'lb-dt__slot';
+                    b.textContent = t;
+                    b.setAttribute('data-t', t);
+                    b.disabled = !selDate || !slotFree(selDate, t);
+                    if (selTime === t && selDate) { b.classList.add('is-selected'); b.setAttribute('aria-pressed', 'true'); }
+                    slots.appendChild(b);
+                });
+                if (!selDate) {
+                    var hint = doc.createElement('p');
+                    hint.className = 'lb-dt__hint';
+                    hint.textContent = 'Pilih tanggal terlebih dahulu.';
+                    slots.appendChild(hint);
+                }
+            }
+
+            pop.addEventListener('click', function (e) {
+                var t = e.target.closest ? e.target.closest('button') : null;
+                if (!t || t.disabled) { return; }
+                if (t.hasAttribute('data-nav')) {
+                    viewM += parseInt(t.getAttribute('data-nav'), 10);
+                    if (viewM < 0) { viewM = 11; viewY -= 1; } else if (viewM > 11) { viewM = 0; viewY += 1; }
+                    renderCal();
+                } else if (t.classList.contains('lb-dt__day')) {
+                    selDate = new Date(viewY, viewM, parseInt(t.getAttribute('data-d'), 10));
+                    if (selTime && !slotFree(selDate, selTime)) { selTime = null; }
+                    if (!selTime) { selTime = firstFreeSlot(selDate); }
+                    renderCal(); renderSlots();
+                    var ds = grid.querySelector('.is-selected'); if (ds) { ds.tabIndex = 0; }
+                    commit();
+                } else if (t.classList.contains('lb-dt__slot')) {
+                    selTime = t.getAttribute('data-t');
+                    renderSlots();
+                    commit();
+                    closePopover();
+                    btn.focus();
+                } else if (t.classList.contains('lb-dt__clear')) {
+                    selDate = null; selTime = null;
+                    commit();
+                    closePopover();
+                    btn.focus();
+                } else if (t.classList.contains('lb-dt__ok')) {
+                    closePopover();
+                    btn.focus();
+                }
+            });
+            // navigasi keyboard pada grid tanggal
+            grid.addEventListener('keydown', function (e) {
+                var cur = e.target.closest ? e.target.closest('.lb-dt__day') : null;
+                if (!cur) { return; }
+                var days = Array.prototype.slice.call(grid.querySelectorAll('.lb-dt__day:not(:disabled)'));
+                var i = days.indexOf(cur), n = null;
+                if (e.key === 'ArrowRight') { n = days[i + 1]; }
+                else if (e.key === 'ArrowLeft') { n = days[i - 1]; }
+                else if (e.key === 'ArrowDown') { n = days[i + 7]; }
+                else if (e.key === 'ArrowUp') { n = days[i - 7]; }
+                else if (e.key === 'Home') { n = days[0]; }
+                else if (e.key === 'End') { n = days[days.length - 1]; }
+                if (n) { e.preventDefault(); cur.tabIndex = -1; n.tabIndex = 0; n.focus(); }
+            });
+
+            renderCal(); renderSlots();
+            field.classList.add('is-open');
+            btn.setAttribute('aria-expanded', 'true');
+            liftCard(field, true);
+            openPopover({
+                anchor: field, el: pop, width: 560, focusBack: btn,
+                onClose: function () { field.classList.remove('is-open'); btn.setAttribute('aria-expanded', 'false'); liftCard(field, false); }
+            });
+            var f0 = grid.querySelector('[tabindex="0"]') || grid.querySelector('.lb-dt__day:not(:disabled)');
+            if (f0) { f0.focus({ preventScroll: true }); }
+        }
+
+        btn.addEventListener('click', function () { if (current && field.classList.contains('is-open')) { closePopover(); } else { open(); } });
+        btn.addEventListener('keydown', function (e) { if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
+    }
+
+    function initWidgets() {
+        $$('.lb-field--select select').forEach(enhanceSelect);
+        $$('.lb-field input[type="datetime-local"]').forEach(enhanceDateTime);
     }
 
     /* ------------------------------------------------------------------ */
     function init() {
         initHeader();
         initTabs();
+        initWidgets();
         initInquiry();
         initChat();
         initHours();

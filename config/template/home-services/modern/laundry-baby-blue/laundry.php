@@ -27,7 +27,7 @@ return [
         'phone'      => '+62 822-3456-7890',
         'email'      => 'info@bluelaundry.id',
         // format internasional tanpa "+" / spasi, dipakai untuk link wa.me
-        'whatsapp'   => '6282234567890',
+        'whatsapp'   => '62895630300345',   // 0895630300345 (tujuan form inquiry & semua tombol WhatsApp)
         'wa_greeting'=> 'Halo BlueLaundry, saya ingin bertanya tentang layanan laundry.',
     ],
 

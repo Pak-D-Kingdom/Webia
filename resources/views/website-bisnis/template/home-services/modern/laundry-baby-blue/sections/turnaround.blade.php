@@ -41,17 +41,19 @@
                 <div><h2 class="lb-card__title" id="lb-est-title">Hitung Perkiraan Selesai</h2><p class="lb-card__sub">Pilih layanan dan waktu penjemputan.</p></div>
             </header>
             <div class="lb-estimator__fields">
-                <label class="lb-label">Pilihan layanan
-                    <span class="lb-field lb-field--select">
-                        <select name="option" data-lb-est-option>
+                <div class="lb-label">
+                    <label class="lb-label__t" for="lbEstOption">Pilihan layanan</label>
+                    <div class="lb-field lb-field--select">
+                        <select id="lbEstOption" name="option" data-lb-est-option>
                             @foreach ($laundry['turnaround'] as $t)<option value="{{ $t['key'] }}">{{ $t['key'] }} ({{ $t['time'] }})</option>@endforeach
                         </select>
                         <svg class="lb-i lb-field__chev" aria-hidden="true"><use href="#i-chevron"/></svg>
-                    </span>
-                </label>
-                <label class="lb-label">Laundry dijemput / diserahkan
-                    <span class="lb-field"><input type="datetime-local" name="when" data-lb-est-when></span>
-                </label>
+                    </div>
+                </div>
+                <div class="lb-label">
+                    <label class="lb-label__t" for="lbEstWhen">Laundry dijemput / diserahkan</label>
+                    <div class="lb-field lb-field--dt"><svg class="lb-i lb-field__ico" aria-hidden="true"><use href="#i-calendar"/></svg><input id="lbEstWhen" type="datetime-local" name="when" data-lb-est-when data-placeholder="Pilih tanggal &amp; jam"></div>
+                </div>
             </div>
             <div class="lb-estimator__result" data-lb-est-result aria-live="polite">Pilih layanan dan waktu untuk melihat perkiraan selesai.</div>
             <a class="lb-btn lb-btn--primary lb-btn--block" href="{{ route('webia.laundry-baby-blue.order-inquiry') }}">Order Sekarang</a>

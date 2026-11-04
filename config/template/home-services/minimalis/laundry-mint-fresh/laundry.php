@@ -52,10 +52,19 @@ return [
 
     // Menu tambahan pada dropdown "More" (halaman section lain)
     'nav_more' => [
-        ['label' => 'Service Options',  'route' => 'opsi'],
-        ['label' => 'Turnaround Time',  'route' => 'estimasi'],
-        ['label' => 'How to Order',     'route' => 'cara'],
-        ['label' => 'Operating Hours',  'route' => 'jam'],
+        ['label' => 'Service Options', 'route' => 'opsi',     'icon' => 'star',     'desc' => 'Express, Regular, Premium & Eco'],
+        ['label' => 'Turnaround Time', 'route' => 'estimasi', 'icon' => 'clock',    'desc' => 'Estimasi waktu pengerjaan'],
+        ['label' => 'How to Order',    'route' => 'cara',     'icon' => 'form',     'desc' => '5 langkah mudah memesan'],
+        ['label' => 'Operating Hours', 'route' => 'jam',      'icon' => 'calendar', 'desc' => 'Setiap hari 08.00 - 20.00'],
+    ],
+
+    // Pita ajakan di bagian bawah halaman dalam
+    'cta' => [
+        'title'   => 'Siap menjaga pakaian kesayangan Anda?',
+        'text'    => 'Pesan sekarang atau tanya FreshBot seputar harga dan proses laundry.',
+        'primary' => 'Pesan Sekarang',
+        'wa'      => 'Chat WhatsApp',
+        'bot'     => 'Tanya FreshBot',
     ],
 
     // ---------- Gambar (nama file di folder images template) ----------

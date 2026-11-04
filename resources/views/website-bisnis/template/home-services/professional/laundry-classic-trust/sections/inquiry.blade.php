@@ -5,7 +5,7 @@
             <a class="card card--pad cbox" href="tel:{{ $c['contact']['phone_tel'] }}"><span class="bub bub--sm bub--dark"><svg class="ic"><use href="#i-phone"/></svg></span><div><strong>Telepon</strong><span>{{ $c['contact']['phone'] }}</span></div></a>
             <a class="card card--pad cbox" href="mailto:{{ $c['contact']['email'] }}"><span class="bub bub--sm bub--dark"><svg class="ic"><use href="#i-mail"/></svg></span><div><strong>Email</strong><span>{{ $c['contact']['email'] }}</span></div></a>
             <div class="card card--pad cbox"><span class="bub bub--sm bub--dark"><svg class="ic"><use href="#i-pin"/></svg></span><div><strong>Alamat</strong><span>{{ $c['contact']['address'] }}</span></div></div>
-            <div class="mascot"><img src="{{ $img('bunny-freshbot.png') }}" alt="" loading="lazy"></div>
+            <div class="card card--pad cbox"><span class="bub bub--sm bub--dark"><svg class="ic"><use href="#i-clock"/></svg></span><div><strong>Jam Operasional</strong><span>Setiap hari {{ $c['hours']['open'] }} - {{ $c['hours']['close'] }}</span></div></div>
         </div>
 
         <form class="card card--pad form" data-wa-form data-wa="{{ $c['whatsapp']['number'] }}" novalidate>

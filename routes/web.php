@@ -1090,15 +1090,15 @@ Route::prefix('webia/template/home-services/minimalis/laundry-mint-fresh')
     ->group(function () {
         $v = 'website-bisnis.template.home-services.minimalis.laundry-mint-fresh.';
 
-        Route::view('/', $v.'pages.home')->name('home');
-        Route::view('/layanan', $v.'pages.layanan')->name('layanan');
-        Route::view('/daftar-harga', $v.'pages.harga')->name('harga');
-        Route::view('/opsi-layanan', $v.'pages.opsi')->name('opsi');
-        Route::view('/estimasi-waktu', $v.'pages.estimasi')->name('estimasi');
-        Route::view('/area-jemput-antar', $v.'pages.area')->name('area');
-        Route::view('/cara-pemesanan', $v.'pages.cara')->name('cara');
-        Route::view('/jam-operasional', $v.'pages.jam')->name('jam');
-        Route::view('/order-inquiry', $v.'pages.inquiry')->name('inquiry');
+        Route::view('/',                 $v . 'pages.index')->name('home');
+        Route::view('/layanan',          $v . 'pages.layanan')->name('layanan');
+        Route::view('/daftar-harga',     $v . 'pages.harga')->name('harga');
+        Route::view('/opsi-layanan',     $v . 'pages.opsi')->name('opsi');
+        Route::view('/estimasi-waktu',   $v . 'pages.estimasi')->name('estimasi');
+        Route::view('/area-jemput-antar', $v . 'pages.area')->name('area');
+        Route::view('/cara-pemesanan',   $v . 'pages.cara')->name('cara');
+        Route::view('/jam-operasional',  $v . 'pages.jam')->name('jam');
+        Route::view('/order-inquiry',    $v . 'pages.inquiry')->name('inquiry');
     });
 
 Route::prefix('webia/template/home-services/professional/laundry-classic-trust')
@@ -1186,6 +1186,105 @@ Route::prefix('webia/template/transportation-logistics/bold/logistics-company-or
 
         foreach ($pages as $uri => [$name, $file]) {
             Route::get($uri, fn () => view($view.$file, $data()))->name($name);
+        }
+    });
+
+Route::prefix('webia/template/agriculture-farming/corporate/agribisnis-forest-moss')
+    ->name('agribisnis.')
+    ->group(function () {
+        $v = 'website-bisnis.template.agriculture&farming.corporate.agribisnis-forest-moss';
+
+        Route::view('/', $v . '.index')->name('home');
+        Route::view('/katalog-komoditas', $v . '.pages.katalog')->name('katalog');
+        Route::view('/informasi-tanaman-panen', $v . '.pages.panen')->name('panen');
+        Route::view('/spesifikasi-produk', $v . '.pages.spesifikasi')->name('spesifikasi');
+        Route::view('/jumlah-pemesanan-minimal', $v . '.pages.moq')->name('moq');
+        Route::view('/kapasitas-pasokan', $v . '.pages.kapasitas')->name('kapasitas');
+        Route::view('/jangkauan-distribusi', $v . '.pages.distribusi')->name('distribusi');
+        Route::view('/sertifikasi', $v . '.pages.sertifikasi')->name('sertifikasi');
+        Route::view('/inquiry-b2b', $v . '.pages.inquiry')->name('inquiry');
+        Route::view('/permintaan-penawaran', $v . '.pages.penawaran')->name('penawaran');
+        Route::view('/ai-assistant', $v . '.pages.chatbot')->name('chatbot');
+    });
+
+Route::prefix('webia/template/agriculture-farming/organic/agribisnis-earth-tone')
+    ->name('agribisnis.')
+    ->group(function () {
+
+        $viewBase  = 'website-bisnis.template.agriculture&farming.organic.agribisnis-earth-tone';
+        $assetBase = 'website-bisnis/template/agriculture&farming/organic/agribisnis-earth-tone';
+
+        $render = static function (string $page) use ($viewBase, $assetBase) {
+            // Data statis dibaca dari config/template/.../agribisnis.php (tanpa database)
+            $data = config('template.agriculture&farming.organic.agribisnis-earth-tone.agribisnis');
+
+            if (! is_array($data) || $data === []) {
+                $file = config_path('template/agriculture&farming/organic/agribisnis-earth-tone/agribisnis.php');
+                $data = is_file($file) ? require $file : [];
+            }
+
+            $waNumber = $data['contact']['whatsapp'] ?? '62895630300345';
+            $waBase   = 'https://wa.me/' . $waNumber;
+
+            $urls = [
+                'home'            => route('agribisnis.home'),
+                'komoditas'       => route('agribisnis.komoditas'),
+                'panen'           => route('agribisnis.panen'),
+                'spesifikasi'     => route('agribisnis.spesifikasi'),
+                'moq'             => route('agribisnis.moq'),
+                'kapasitas'       => route('agribisnis.kapasitas'),
+                'distribusi'      => route('agribisnis.distribusi'),
+                'sertifikasi'     => route('agribisnis.sertifikasi'),
+                'b2b'             => route('agribisnis.b2b'),
+                'penawaran'       => route('agribisnis.penawaran'),
+                'chatbot'         => route('agribisnis.chatbot'),
+                'whatsapp'        => $waBase . '?text=' . rawurlencode($data['contact']['whatsapp_text'] ?? 'Halo AgroHarvest'),
+                'whatsapp_karir'  => $waBase . '?text=' . rawurlencode('Halo AgroHarvest, saya tertarik dengan informasi karir.'),
+            ];
+
+            return view($viewBase . '.' . $page, [
+                'data' => $data,
+                'u'    => $urls,
+                'v'    => $viewBase,
+                'css'  => asset('css/' . $assetBase . '/logistics-agribisnis.css'),
+                'js'   => asset('js/' . $assetBase . '/agribisnis.js'),
+                'img'  => asset('images/' . $assetBase),
+            ]);
+        };
+
+        Route::get('/', fn () => $render('index'))->name('home');
+        Route::get('/komoditas', fn () => $render('komoditas'))->name('komoditas');
+        Route::get('/informasi-panen', fn () => $render('informasi-panen'))->name('panen');
+        Route::get('/spesifikasi-produk', fn () => $render('spesifikasi-produk'))->name('spesifikasi');
+        Route::get('/jumlah-pesanan-minimum', fn () => $render('jumlah-pesanan-minimum'))->name('moq');
+        Route::get('/kapasitas-pasokan', fn () => $render('kapasitas-pasokan'))->name('kapasitas');
+        Route::get('/jangkauan-distribusi', fn () => $render('jangkauan-distribusi'))->name('distribusi');
+        Route::get('/sertifikasi', fn () => $render('sertifikasi'))->name('sertifikasi');
+        Route::get('/inquiry-b2b', fn () => $render('inquiry-b2b'))->name('b2b');
+        Route::get('/permintaan-penawaran', fn () => $render('permintaan-penawaran'))->name('penawaran');
+        Route::get('/ai-chatbot', fn () => $render('ai-chatbot'))->name('chatbot');
+    });
+
+Route::prefix('webia/template/nonprofit-community/creative/social-organization-tropical-rush')
+    ->name('webia.so.')
+    ->group(function () {
+        $view = 'website-bisnis.template.nonprofit&community.creative.social-organization-tropical-rush.social-organization';
+
+        $pages = [
+            'home'    => '/',
+            'profil'  => 'profil',
+            'program' => 'program',
+            'galeri'  => 'galeri',
+            'dampak'  => 'dampak',
+            'event'   => 'event',
+            'gabung'  => 'gabung',
+            'mitra'   => 'mitra',
+            'kontak'  => 'kontak',
+            'faq-ai'  => 'faq-ai',
+        ];
+
+        foreach ($pages as $name => $uri) {
+            Route::get($uri, fn () => view($view, ['page' => $name]))->name($name);
         }
     });
 

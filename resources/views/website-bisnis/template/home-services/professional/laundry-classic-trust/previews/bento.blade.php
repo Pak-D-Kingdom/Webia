@@ -1,23 +1,12 @@
-{{-- Grid beranda mengikuti desain UI: 3 baris di kiri + kolom chatbot di kanan --}}
+{{-- Grid beranda (24 kolom): baris 1 = 5/8/6/5, baris 2 = 8/8/8, baris 3 = 12/6/6 --}}
 <div class="lw-wrap home">
-    <div class="home__main">
-        <div class="hrow hrow--1">
-            @include("{$T}.previews.services")
-            @include("{$T}.previews.prices")
-        </div>
-        <div class="hrow hrow--2">
-            @include("{$T}.previews.options")
-            @include("{$T}.previews.turnaround")
-            @include("{$T}.previews.coverage")
-        </div>
-        <div class="hrow hrow--3">
-            @include("{$T}.previews.instructions")
-            @include("{$T}.previews.hours")
-            @include("{$T}.previews.inquiry")
-        </div>
-    </div>
-    <aside class="home__side" aria-label="Asisten FreshBot">
-        @include("{$T}.previews.chat-intro")
-        @include("{$T}.previews.chat-faq")
-    </aside>
+    @include("{$T}.previews.services")
+    @include("{$T}.previews.prices")
+    @include("{$T}.previews.chat-intro")
+    @include("{$T}.previews.options")
+    @include("{$T}.previews.turnaround")
+    @include("{$T}.previews.coverage")
+    @include("{$T}.previews.instructions")
+    @include("{$T}.previews.hours")
+    @include("{$T}.previews.inquiry")
 </div>
