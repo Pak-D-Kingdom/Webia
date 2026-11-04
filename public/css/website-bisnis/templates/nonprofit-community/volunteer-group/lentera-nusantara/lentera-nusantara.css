@@ -1,0 +1,1304 @@
+/* Lentera Nusantara — extracted from approved HTML reference */
+/* Custom Background Pattern matching reference image */
+.bg-batik-pattern {
+    background-color: #0A3B2C;
+    background-image: radial-gradient(rgba(229, 203, 149, 0.08) 1px, transparent 0);
+    background-size: 28px 28px;
+}
+
+.bg-batik-wavy {
+    background: linear-gradient(135deg, #07271D 0%, #0A3B2C 50%, #0E4434 100%);
+    position: relative;
+}
+
+.bg-batik-wavy::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='20' viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M21.184 20c.357-.13.72-.264 1.088-.402l1.768-.661C33.64 15.347 39.647 14 50 14c10.271 0 15.362 1.222 24.629 4.928.955.383 1.869.74 2.75 1.072H100V0H0v20h21.184z' fill='%2523e5cb95' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* Hero Image Arch Mask */
+.arch-frame {
+    border-top-left-radius: 200px;
+    border-top-right-radius: 200px;
+    border-bottom-left-radius: 24px;
+    border-bottom-right-radius: 24px;
+    overflow: hidden;
+    border: 2px solid rgba(229, 203, 149, 0.3);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+/* Glassmorphic elements */
+.glass-card {
+    background: rgba(10, 59, 44, 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(229, 203, 149, 0.2);
+}
+
+.glass-card-light {
+    background: rgba(244, 239, 230, 0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(17, 75, 58, 0.15);
+}
+
+/* Ripple effect for AI Chatbot */
+@keyframes warmRipple {
+    0% {
+        box-shadow: 0 0 0 0 rgba(224, 159, 62, 0.6), 0 0 0 0 rgba(229, 203, 149, 0.4);
+    }
+
+    70% {
+        box-shadow: 0 0 0 18px rgba(224, 159, 62, 0), 0 0 0 30px rgba(229, 203, 149, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(224, 159, 62, 0), 0 0 0 0 rgba(229, 203, 149, 0);
+    }
+}
+
+.ai-btn-pulse {
+    animation: warmRipple 2.5s infinite;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #07271D;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #1A5D4A;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #E5CB95;
+}
+
+
+/* =========================================================
+   LENTERA NUSANTARA — VISUAL REFINEMENT LAYER
+   Elegant contemporary heritage: forest, ivory, terracotta,
+   saffron and botanical accents. Scoped to this template.
+   ========================================================= */
+:root {
+    --ln-forest: #103c32;
+    --ln-forest-deep: #082a23;
+    --ln-forest-soft: #1c6652;
+    --ln-ivory: #fbf7ef;
+    --ln-paper: #fffdf8;
+    --ln-sand: #efe3cf;
+    --ln-gold: #d7ad58;
+    --ln-saffron: #f0b84c;
+    --ln-terracotta: #c66d4b;
+    --ln-rose: #d98d78;
+    --ln-ink: #24352f;
+    --ln-muted: #68756d;
+    --ln-line: rgba(16, 60, 50, .13);
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 112px;
+}
+
+body {
+    background: var(--ln-ivory) !important;
+    color: var(--ln-ink);
+    font-family: "Plus Jakarta Sans", sans-serif;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    opacity: .18;
+    background-image: radial-gradient(rgba(198, 109, 75, .22) .8px, transparent .8px);
+    background-size: 22px 22px;
+}
+
+#topbar {
+    background: linear-gradient(90deg, #082a23, #155442 55%, #8b5538) !important;
+    color: #fff2d7 !important;
+    min-height: 38px;
+}
+
+#topbar a {
+    color: #fff2d7 !important;
+}
+
+nav.sticky {
+    background: rgba(255, 253, 248, .94) !important;
+    border-bottom: 1px solid rgba(215, 173, 88, .38) !important;
+    box-shadow: 0 8px 28px rgba(23, 48, 39, .07);
+}
+
+nav.sticky>div {
+    max-width: 1320px;
+}
+
+nav.sticky a,
+nav.sticky button {
+    transition: .25s ease;
+}
+
+nav.sticky a:hover {
+    color: var(--ln-terracotta) !important;
+}
+
+nav.sticky button {
+    background: var(--ln-forest) !important;
+    color: #fff8e9 !important;
+    border: 1px solid var(--ln-gold) !important;
+    box-shadow: 0 8px 18px rgba(8, 42, 35, .14);
+}
+
+nav.sticky button:hover {
+    background: var(--ln-terracotta) !important;
+    transform: translateY(-2px);
+}
+
+.bg-batik-wavy {
+    background:
+        radial-gradient(ellipse at 80% 12%, rgba(240, 184, 76, .22), transparent 30%),
+        radial-gradient(ellipse at 12% 85%, rgba(198, 109, 75, .20), transparent 32%),
+        linear-gradient(120deg, #082a23 0%, #104637 48%, #1b5b49 100%) !important;
+    color: #fff8e9 !important;
+    isolation: isolate;
+}
+
+.bg-batik-wavy::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: .17;
+    background-image:
+        repeating-linear-gradient(45deg, transparent 0 22px, rgba(239, 211, 157, .18) 23px 24px, transparent 25px 48px),
+        radial-gradient(circle at 1px 1px, rgba(255, 240, 210, .45) 1px, transparent 1.5px);
+    background-size: 96px 96px, 24px 24px;
+}
+
+.bg-batik-wavy h1,
+.bg-batik-wavy p,
+.bg-batik-wavy .text-brand-cream,
+.bg-batik-wavy .text-brand-cream\/80,
+.bg-batik-wavy .text-brand-cream\/70 {
+    color: #fff8e9 !important;
+}
+
+.bg-batik-wavy h1 {
+    text-shadow: 0 4px 28px rgba(0, 0, 0, .18);
+}
+
+.bg-batik-wavy h1 span {
+    color: #f3c978 !important;
+}
+
+.bg-batik-wavy .text-brand-gold {
+    color: #f3c978 !important;
+}
+
+.bg-batik-wavy .bg-brand-accent,
+.bg-batik-wavy button.bg-brand-accent {
+    background: linear-gradient(135deg, #f4c56e, #d98752) !important;
+    color: #17372e !important;
+    border: 0 !important;
+}
+
+.arch-frame {
+    border: 5px solid rgba(243, 201, 120, .78) !important;
+    box-shadow: 0 28px 70px rgba(0, 0, 0, .34), 0 0 0 12px rgba(243, 201, 120, .10) !important;
+}
+
+.arch-frame img {
+    filter: saturate(1.08) contrast(1.03) !important;
+}
+
+.bg-batik-wavy .absolute.-bottom-6 {
+    background: rgba(7, 39, 29, .92) !important;
+    border-color: rgba(243, 201, 120, .65) !important;
+    box-shadow: 0 18px 42px rgba(0, 0, 0, .28);
+}
+
+section {
+    position: relative;
+}
+
+section[id="tentang"],
+section[id="kebutuhan-desa"],
+section[id="program"],
+section[id="jurnal"] {
+    isolation: isolate;
+}
+
+section[id="tentang"]::before,
+section[id="program"]::before {
+    content: "";
+    position: absolute;
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(215, 173, 88, .17), transparent 68%);
+    top: 35px;
+    right: -95px;
+    z-index: -1;
+    pointer-events: none;
+}
+
+section[id="tentang"] .grid>div,
+section[id="program"] .grid>div,
+#skills-grid .skill-card,
+#jurnal .grid>div {
+    background: linear-gradient(145deg, #fffefa, #f8efe1) !important;
+    border: 1px solid rgba(198, 109, 75, .20) !important;
+    box-shadow: 0 12px 28px rgba(36, 53, 47, .07) !important;
+    transition: transform .28s ease, box-shadow .28s ease, border-color .28s ease;
+}
+
+section[id="tentang"] .grid>div:hover,
+section[id="program"] .grid>div:hover,
+#skills-grid .skill-card:hover,
+#jurnal .grid>div:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 22px 42px rgba(36, 53, 47, .13) !important;
+    border-color: rgba(215, 173, 88, .75) !important;
+}
+
+section[id="tentang"] .grid>div:nth-child(2) {
+    background: linear-gradient(145deg, #fffaf0, #f8e8d9) !important;
+}
+
+section[id="tentang"] .grid>div:nth-child(3) {
+    background: linear-gradient(145deg, #f4fbf4, #e5f1e8) !important;
+}
+
+section[id="gotong-royong"] {
+    background:
+        radial-gradient(circle at 8% 12%, rgba(215, 173, 88, .18), transparent 24%),
+        radial-gradient(circle at 92% 90%, rgba(198, 109, 75, .18), transparent 26%),
+        linear-gradient(135deg, #082a23, #104637 58%, #1a5b48) !important;
+    color: #fff8e9 !important;
+}
+
+section[id="gotong-royong"] h2,
+section[id="gotong-royong"] h3,
+section[id="gotong-royong"] p,
+section[id="gotong-royong"] span {
+    color: inherit;
+}
+
+section[id="gotong-royong"] .grid>div {
+    background: #fffaf1 !important;
+    color: var(--ln-ink) !important;
+    border: 1px solid rgba(243, 201, 120, .65) !important;
+    box-shadow: 0 18px 38px rgba(0, 0, 0, .18);
+}
+
+section[id="gotong-royong"] .grid>div h3 {
+    color: var(--ln-forest) !important;
+}
+
+section[id="gotong-royong"] .grid>div p {
+    color: #66736b !important;
+}
+
+section[id="gotong-royong"] .grid>div .text-brand-gold {
+    color: #a45c3f !important;
+}
+
+section[id="gotong-royong"] .grid>div button {
+    background: linear-gradient(135deg, #e7b75d, #d77b4f) !important;
+    color: #17372e !important;
+}
+
+section[id="kebutuhan-desa"]>div:first-child .relative.w-full {
+    background:
+        radial-gradient(circle at 15% 20%, rgba(240, 184, 76, .24), transparent 18%),
+        radial-gradient(circle at 80% 75%, rgba(198, 109, 75, .2), transparent 22%),
+        linear-gradient(135deg, #0c3a30, #17634f) !important;
+    border: 5px solid #f0dfbf !important;
+    box-shadow: 0 24px 48px rgba(17, 55, 44, .18) !important;
+}
+
+#kebutuhan-desa .bg-brand-creamLight {
+    background: linear-gradient(135deg, #fffaf0, #f2e5d2) !important;
+    border: 1px solid rgba(198, 109, 75, .24) !important;
+    box-shadow: 0 16px 36px rgba(36, 53, 47, .08);
+}
+
+#kebutuhan-desa .skill-btn {
+    border-color: rgba(16, 60, 50, .18) !important;
+}
+
+#kebutuhan-desa .skill-btn.active,
+#kebutuhan-desa .skill-btn.bg-brand-emerald {
+    background: var(--ln-forest) !important;
+    color: #ffe7b2 !important;
+}
+
+section[id="kalender"] {
+    background:
+        radial-gradient(circle at 5% 15%, rgba(240, 184, 76, .16), transparent 25%),
+        linear-gradient(125deg, #0a3028, #145340 60%, #8a5339) !important;
+}
+
+section[id="kalender"] h2,
+section[id="kalender"] h3 {
+    color: #fff5df !important;
+}
+
+section[id="kalender"] .bg-brand-dark\/60 {
+    background: rgba(6, 35, 29, .62) !important;
+    border: 1px solid rgba(243, 201, 120, .38) !important;
+}
+
+section[id="kalender"] .lg\:col-span-5 {
+    background: linear-gradient(145deg, rgba(7, 39, 29, .95), rgba(34, 91, 69, .92)) !important;
+    border: 1px solid rgba(243, 201, 120, .6) !important;
+    box-shadow: 0 22px 48px rgba(0, 0, 0, .18);
+}
+
+section[id="program"] .bg-brand-dark {
+    background:
+        radial-gradient(circle at 90% 20%, rgba(240, 184, 76, .22), transparent 30%),
+        linear-gradient(115deg, #082a23, #155440) !important;
+    border: 1px solid rgba(215, 173, 88, .5);
+}
+
+section.bg-brand-creamLight {
+    background: linear-gradient(135deg, #f7eddf, #fffaf2 48%, #f1e6d5) !important;
+}
+
+section.bg-brand-creamLight .bg-white {
+    background: #fffdf8 !important;
+}
+
+table thead {
+    background: linear-gradient(90deg, #103c32, #1c6652) !important;
+}
+
+table tbody tr:nth-child(even) {
+    background: #f8f0e5;
+}
+
+table tbody tr:hover {
+    background: #f5e3c9 !important;
+}
+
+#jurnal .grid>div {
+    overflow: hidden;
+}
+
+#jurnal img {
+    transition: transform .6s ease;
+}
+
+#jurnal .grid>div:hover img {
+    transform: scale(1.045);
+}
+
+footer,
+#kontak {
+    background: linear-gradient(120deg, #082a23, #104637 65%, #85513a) !important;
+    color: #fff5df !important;
+}
+
+footer h3,
+footer h4,
+footer p,
+footer a,
+#kontak h3,
+#kontak p {
+    color: #fff5df !important;
+}
+
+footer a:hover {
+    color: #f3c978 !important;
+}
+
+button,
+a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+    outline: 3px solid rgba(215, 173, 88, .65);
+    outline-offset: 3px;
+}
+
+.skill-card[style*="display: none"] {
+    display: none !important;
+}
+
+#ai-chat-window {
+    border: 1px solid rgba(243, 201, 120, .7) !important;
+    box-shadow: 0 24px 65px rgba(0, 0, 0, .28) !important;
+}
+
+.fixed.inset-0[id^="modal-"]>div {
+    background: linear-gradient(145deg, #fffdf8, #f5ead8) !important;
+    border: 2px solid #d7ad58 !important;
+    box-shadow: 0 28px 80px rgba(0, 0, 0, .32) !important;
+}
+
+@media (max-width: 767px) {
+    #topbar>div {
+        align-items: flex-start !important;
+    }
+
+    #topbar>div>div:last-child {
+        flex-wrap: wrap;
+        gap: 10px !important;
+    }
+
+    nav.sticky .h-20 {
+        height: 72px !important;
+    }
+
+    nav.sticky .font-serif {
+        font-size: 17px !important;
+    }
+
+    .bg-batik-wavy {
+        padding-top: 48px !important;
+        padding-bottom: 76px !important;
+    }
+
+    .bg-batik-wavy h1 {
+        font-size: clamp(2.4rem, 11vw, 3.6rem) !important;
+        line-height: 1.08 !important;
+    }
+
+    .bg-batik-wavy .grid.grid-cols-3 {
+        gap: 10px !important;
+    }
+
+    .bg-batik-wavy .grid.grid-cols-3>div>div:first-child {
+        font-size: 25px !important;
+    }
+
+    .arch-frame {
+        max-width: 330px;
+        margin: 0 auto 20px;
+    }
+
+    .bg-batik-wavy .absolute.-bottom-6 {
+        left: -8px !important;
+        max-width: 245px !important;
+    }
+
+    section {
+        padding-top: 64px !important;
+        padding-bottom: 64px !important;
+    }
+
+    section[id="gotong-royong"] .grid>div {
+        margin-bottom: 4px;
+    }
+
+    #kebutuhan-desa .bg-brand-creamLight {
+        padding: 22px !important;
+    }
+
+    #kebutuhan-desa #skill-filters {
+        width: 100%;
+    }
+
+    #kebutuhan-desa .skill-btn {
+        font-size: 11px !important;
+    }
+
+    section[id="kalender"] .flex.items-center {
+        align-items: flex-start !important;
+        gap: 12px !important;
+    }
+
+    section[id="kalender"] .flex.items-center>div:nth-child(2) {
+        min-width: 0;
+    }
+
+    table {
+        min-width: 680px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+    }
+}
+
+.skill-card[hidden] {
+    display: none !important;
+}
+
+body.modal-open {
+    overflow: hidden;
+}
+
+
+
+/* =========================================================
+   LENTERA NUSANTARA — CONTRAST + VISUAL DENSITY HOTFIX
+   Explicit component-level contrast. Loaded after all styles.
+   ========================================================= */
+:root {
+    --ln-forest: #103c32;
+    --ln-forest-deep: #082a23;
+    --ln-forest-mid: #175744;
+    --ln-ivory: #fbf6ec;
+    --ln-card: #fffdf8;
+    --ln-sand: #f1e4d0;
+    --ln-gold: #dfb75f;
+    --ln-terracotta: #bf6848;
+    --ln-ink: #26372f;
+    --ln-muted: #66756d;
+}
+
+/* Base surface and section rhythm */
+body {
+    background: #fbf6ec !important;
+    color: var(--ln-ink) !important;
+}
+
+section {
+    position: relative;
+}
+
+section:not(.bg-batik-wavy) {
+    overflow: hidden;
+}
+
+section[id="tentang"],
+section[id="kebutuhan-desa"],
+section[id="program"],
+section[id="jurnal"] {
+    background:
+        radial-gradient(ellipse at 0% 10%, rgba(223, 183, 95, .13), transparent 28%),
+        radial-gradient(ellipse at 100% 85%, rgba(191, 104, 72, .09), transparent 26%),
+        #fbf6ec !important;
+}
+
+section[id="tentang"]::after,
+section[id="program"]::after,
+section[id="jurnal"]::after {
+    content: "✳";
+    position: absolute;
+    right: 4%;
+    top: 8%;
+    font-size: clamp(5rem, 11vw, 10rem);
+    line-height: 1;
+    color: rgba(191, 104, 72, .08);
+    pointer-events: none;
+    transform: rotate(15deg);
+    z-index: 0;
+}
+
+section[id="tentang"]>*,
+section[id="program"]>*,
+section[id="jurnal"]>* {
+    position: relative;
+    z-index: 1;
+}
+
+/* Calendar: dark outer stage, bright readable event cards */
+section[id="kalender"] {
+    background:
+        radial-gradient(circle at 12% 12%, rgba(223, 183, 95, .22), transparent 24%),
+        radial-gradient(circle at 92% 80%, rgba(191, 104, 72, .22), transparent 25%),
+        linear-gradient(125deg, #082a23 0%, #104637 55%, #1b604b 100%) !important;
+    color: #fff8e9 !important;
+}
+
+section[id="kalender"] h2,
+section[id="kalender"] h3,
+section[id="kalender"] .text-brand-cream,
+section[id="kalender"] .text-brand-cream\/80,
+section[id="kalender"] .text-brand-cream\/70 {
+    color: #fff8e9 !important;
+}
+
+section[id="kalender"]>div>div:first-child>p,
+section[id="kalender"] p.text-brand-dark,
+section[id="kalender"] .text-brand-dark\/70 {
+    color: #f2e7d2 !important;
+}
+
+section[id="kalender"] .bg-brand-dark\/60,
+section[id="kalender"] .bg-brand-dark,
+section[id="kalender"] .lg\:col-span-5 {
+    background: #fffaf1 !important;
+    color: #26372f !important;
+    border: 1px solid rgba(223, 183, 95, .72) !important;
+    box-shadow: 0 18px 42px rgba(0, 0, 0, .18) !important;
+}
+
+section[id="kalender"] .bg-brand-dark\/60 *,
+section[id="kalender"] .bg-brand-dark *,
+section[id="kalender"] .lg\:col-span-5 * {
+    color: #26372f !important;
+}
+
+section[id="kalender"] .bg-brand-dark\/60 h3,
+section[id="kalender"] .bg-brand-dark h3,
+section[id="kalender"] .lg\:col-span-5 h3 {
+    color: #103c32 !important;
+}
+
+section[id="kalender"] .bg-brand-dark\/60 button,
+section[id="kalender"] .bg-brand-dark button,
+section[id="kalender"] .lg\:col-span-5 button {
+    background: linear-gradient(135deg, #e6bd68, #d17b50) !important;
+    color: #17382e !important;
+    border: 0 !important;
+    border-radius: 999px !important;
+    padding: 11px 22px !important;
+    font-weight: 800 !important;
+}
+
+section[id="kalender"] .bg-brand-dark\/60 li,
+section[id="kalender"] .bg-brand-dark li,
+section[id="kalender"] .lg\:col-span-5 li {
+    color: #4e5c53 !important;
+}
+
+section[id="kalender"] .bg-brand-dark\/60 i,
+section[id="kalender"] .bg-brand-dark i,
+section[id="kalender"] .lg\:col-span-5 i {
+    color: #b96b43 !important;
+}
+
+/* Map: rich map canvas with a clear legend panel */
+section[id="kebutuhan-desa"] .relative.w-full {
+    background:
+        radial-gradient(circle at 18% 24%, rgba(239, 195, 112, .16), transparent 20%),
+        radial-gradient(circle at 82% 72%, rgba(207, 126, 78, .17), transparent 22%),
+        linear-gradient(135deg, #0b352b, #155541 58%, #1b6650) !important;
+    border: 5px solid #ead7b5 !important;
+    box-shadow: 0 24px 55px rgba(20, 54, 43, .2) !important;
+}
+
+section[id="kebutuhan-desa"] .relative.w-full::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        repeating-linear-gradient(35deg, transparent 0 68px, rgba(247, 225, 183, .08) 69px 71px, transparent 72px 135px),
+        radial-gradient(circle, rgba(246, 216, 158, .65) 1px, transparent 1.4px);
+    background-size: auto, 18px 18px;
+    opacity: .55;
+}
+
+section[id="kebutuhan-desa"] .relative.w-full .absolute.bottom-6,
+section[id="kebutuhan-desa"] .relative.w-full .absolute.left-6,
+section[id="kebutuhan-desa"] .relative.w-full .bg-white,
+section[id="kebutuhan-desa"] .relative.w-full .bg-brand-creamLight {
+    background: #fffaf1 !important;
+    color: #26372f !important;
+    border: 1px solid rgba(223, 183, 95, .7) !important;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, .16) !important;
+    border-radius: 18px !important;
+}
+
+section[id="kebutuhan-desa"] .relative.w-full .absolute.bottom-6 *,
+section[id="kebutuhan-desa"] .relative.w-full .absolute.left-6 *,
+section[id="kebutuhan-desa"] .relative.w-full .bg-white *,
+section[id="kebutuhan-desa"] .relative.w-full .bg-brand-creamLight * {
+    color: #26372f !important;
+}
+
+section[id="kebutuhan-desa"] .relative.w-full .absolute.bottom-6 .bg-emerald-500,
+section[id="kebutuhan-desa"] .relative.w-full .absolute.left-6 .bg-emerald-500 {
+    background: #13b981 !important;
+}
+
+section[id="kebutuhan-desa"] .relative.w-full button,
+section[id="kebutuhan-desa"] .relative.w-full [role="button"] {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, .22);
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+section[id="kebutuhan-desa"] .relative.w-full button:hover,
+section[id="kebutuhan-desa"] .relative.w-full [role="button"]:hover {
+    transform: translateY(-4px) scale(1.04);
+}
+
+/* Contribution ledger: readable header and polished table */
+section.bg-brand-creamLight {
+    background:
+        radial-gradient(circle at 5% 12%, rgba(223, 183, 95, .14), transparent 25%),
+        radial-gradient(circle at 96% 80%, rgba(191, 104, 72, .10), transparent 24%),
+        linear-gradient(135deg, #f6ecdd, #fffaf2 52%, #f0e4d2) !important;
+}
+
+section.bg-brand-creamLight table {
+    width: 100%;
+    border-collapse: separate !important;
+    border-spacing: 0;
+    overflow: hidden;
+    border-radius: 18px;
+    background: #fffdf8;
+    box-shadow: 0 15px 36px rgba(36, 53, 47, .09);
+}
+
+section.bg-brand-creamLight table thead,
+section.bg-brand-creamLight table thead tr {
+    background: linear-gradient(90deg, #103c32, #1d6953) !important;
+}
+
+section.bg-brand-creamLight table thead th {
+    color: #fff8e9 !important;
+    font-weight: 800 !important;
+    letter-spacing: .07em;
+    padding: 18px 20px !important;
+}
+
+section.bg-brand-creamLight table tbody td {
+    color: #34443b !important;
+    padding: 17px 20px !important;
+    border-bottom: 1px solid #eee4d5 !important;
+}
+
+section.bg-brand-creamLight table tbody tr:nth-child(even) {
+    background: #f8efe2 !important;
+}
+
+section.bg-brand-creamLight table tbody tr:hover {
+    background: #f2e1c7 !important;
+}
+
+/* Skills panel and cards: color-coded skill categories */
+#skills-grid .skill-card {
+    background: linear-gradient(145deg, #fffdf8, #f6ead8) !important;
+    color: #26372f !important;
+    border: 1px solid rgba(191, 104, 72, .2) !important;
+    border-radius: 22px !important;
+    box-shadow: 0 12px 30px rgba(36, 53, 47, .08) !important;
+}
+
+#skills-grid .skill-card h3 {
+    color: #103c32 !important;
+}
+
+#skills-grid .skill-card p {
+    color: #647168 !important;
+}
+
+#skills-grid .skill-card .text-brand-emerald {
+    color: #17634f !important;
+}
+
+#skills-grid .skill-card .text-brand-gold {
+    color: #ad7136 !important;
+}
+
+/* All cards get stronger shape and depth, but keep their intended surface */
+section[id="tentang"] .grid>div,
+section[id="program"] .grid>div,
+section[id="jurnal"] .grid>div {
+    border-radius: 22px !important;
+    box-shadow: 0 12px 30px rgba(36, 53, 47, .08) !important;
+}
+
+section[id="tentang"] .grid>div:nth-child(1) {
+    background: linear-gradient(145deg, #fffdf8, #f6ead8) !important;
+}
+
+section[id="tentang"] .grid>div:nth-child(2) {
+    background: linear-gradient(145deg, #fffaf0, #f6e4d4) !important;
+}
+
+section[id="tentang"] .grid>div:nth-child(3) {
+    background: linear-gradient(145deg, #f5fbf4, #e5f0e6) !important;
+}
+
+/* Gotong royong initiative cards: keep content bright and legible */
+section[id="gotong-royong"] {
+    background:
+        radial-gradient(circle at 10% 10%, rgba(223, 183, 95, .22), transparent 24%),
+        radial-gradient(circle at 90% 90%, rgba(191, 104, 72, .2), transparent 26%),
+        linear-gradient(125deg, #082a23, #145440 58%, #1d604c) !important;
+}
+
+section[id="gotong-royong"]>div {
+    position: relative;
+    z-index: 1;
+}
+
+section[id="gotong-royong"] .grid>div {
+    background: #fffaf1 !important;
+    color: #26372f !important;
+    border: 1px solid rgba(223, 183, 95, .75) !important;
+    border-radius: 22px !important;
+    overflow: hidden;
+    box-shadow: 0 20px 42px rgba(0, 0, 0, .2) !important;
+}
+
+section[id="gotong-royong"] .grid>div h3 {
+    color: #103c32 !important;
+}
+
+section[id="gotong-royong"] .grid>div p,
+section[id="gotong-royong"] .grid>div span {
+    color: #66736b !important;
+}
+
+section[id="gotong-royong"] .grid>div a,
+section[id="gotong-royong"] .grid>div button {
+    color: #17382e !important;
+    font-weight: 800 !important;
+}
+
+/* Testimonial gets its own warm accent treatment */
+section.bg-brand-cream .text-center {
+    position: relative;
+}
+
+section.bg-brand-cream .text-center blockquote,
+section.bg-brand-cream blockquote {
+    color: #34443b !important;
+}
+
+section.bg-brand-cream .text-center>i,
+section.bg-brand-cream blockquote+i {
+    color: #c17b4c !important;
+}
+
+/* Footer contrast */
+footer,
+#kontak {
+    background: linear-gradient(120deg, #082a23, #104637 62%, #85513a) !important;
+    color: #fff8e9 !important;
+}
+
+footer *,
+#kontak * {
+    color: #fff8e9;
+}
+
+footer input,
+#kontak input {
+    background: #fffaf1 !important;
+    color: #26372f !important;
+    border: 1px solid #dfb75f !important;
+}
+
+/* Typography and button hierarchy */
+h1,
+h2,
+h3,
+h4 {
+    text-wrap: balance;
+}
+
+button,
+a {
+    transition: color .2s ease, background .2s ease, transform .2s ease, box-shadow .2s ease;
+}
+
+button:hover,
+a[class*="rounded"]:hover {
+    transform: translateY(-2px);
+}
+
+@media(max-width:767px) {
+
+    section[id="kalender"] .bg-brand-dark\/60,
+    section[id="kalender"] .bg-brand-dark,
+    section[id="kalender"] .lg\:col-span-5 {
+        padding: 22px !important;
+    }
+
+    section[id="kebutuhan-desa"] .relative.w-full {
+        min-height: 360px !important;
+    }
+
+    section.bg-brand-creamLight table {
+        min-width: 650px;
+    }
+}
+
+/* ==========================================
+   LENTERA NUSANTARA
+   TRADITIONAL SKILLS EXCHANGE REDESIGN
+========================================== */
+
+.ln-skill-exchange {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    grid-template-columns: minmax(0, 1.65fr) minmax(260px, .75fr);
+    align-items: center;
+    gap: 55px;
+
+    width: 100%;
+    padding: 65px 60px;
+    margin-top: 30px;
+
+    overflow: hidden;
+    border-radius: 30px;
+
+    background:
+        radial-gradient(circle at 85% 15%,
+            rgba(224, 159, 62, .24),
+            transparent 30%),
+        radial-gradient(circle at 10% 100%,
+            rgba(35, 125, 91, .55),
+            transparent 35%),
+        linear-gradient(120deg,
+            #082a23 0%,
+            #104638 55%,
+            #185b46 100%);
+
+    border: 1px solid rgba(229, 203, 149, .65);
+
+    box-shadow:
+        0 25px 60px rgba(8, 42, 35, .18),
+        inset 0 1px 0 rgba(255, 255, 255, .12);
+}
+
+/* Decorative background */
+
+.ln-skill-decoration {
+    position: absolute;
+    z-index: -1;
+    pointer-events: none;
+    border-radius: 50%;
+}
+
+.ln-skill-decoration-one {
+    width: 350px;
+    height: 350px;
+    right: -100px;
+    top: -180px;
+
+    border: 1px solid rgba(229, 203, 149, .25);
+    box-shadow:
+        0 0 0 25px rgba(229, 203, 149, .035),
+        0 0 0 55px rgba(229, 203, 149, .025);
+}
+
+.ln-skill-decoration-two {
+    width: 220px;
+    height: 220px;
+    left: 42%;
+    bottom: -160px;
+
+    background: rgba(224, 159, 62, .08);
+    filter: blur(5px);
+}
+
+/* Main content */
+
+.ln-skill-content {
+    position: relative;
+    z-index: 2;
+    max-width: 720px;
+}
+
+/* Label */
+
+.ln-skill-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+
+    margin-bottom: 25px;
+
+    color: #f0cb83 !important;
+
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    line-height: 1.7;
+}
+
+.ln-skill-label-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 36px;
+    height: 36px;
+
+    border-radius: 50%;
+
+    color: #123b30 !important;
+    background: #e5cb95;
+
+    font-size: 15px;
+}
+
+/* Heading */
+
+.ln-skill-title {
+    margin: 0 0 22px !important;
+
+    max-width: 700px;
+
+    color: #fff8e9 !important;
+
+    font-family: 'Playfair Display', Georgia, serif !important;
+    font-size: clamp(30px, 3.5vw, 48px) !important;
+    font-weight: 700 !important;
+
+    line-height: 1.25 !important;
+    letter-spacing: -.8px;
+
+    overflow-wrap: normal;
+    word-break: normal;
+}
+
+.ln-skill-title span {
+    display: block;
+    color: #e9bd70 !important;
+}
+
+/* Description */
+
+.ln-skill-description {
+    max-width: 650px;
+
+    margin: 0 !important;
+
+    color: #eee8d9 !important;
+
+    font-size: 14px !important;
+    line-height: 1.9 !important;
+    font-weight: 400;
+}
+
+/* Highlight items */
+
+.ln-skill-highlights {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+
+    margin-top: 30px;
+}
+
+.ln-skill-highlight {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+
+    padding: 10px 14px;
+
+    border: 1px solid rgba(229, 203, 149, .3);
+    border-radius: 50px;
+
+    background: rgba(255, 255, 255, .07);
+
+    color: #fff8e9 !important;
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.ln-skill-highlight i {
+    color: #e9bd70 !important;
+    font-size: 13px;
+}
+
+/* Action panel */
+
+.ln-skill-action {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 260px;
+    padding: 32px 25px;
+
+    text-align: center;
+
+    background: rgba(255, 250, 240, .09);
+    border: 1px solid rgba(229, 203, 149, .45);
+    border-radius: 24px;
+
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.ln-skill-action-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 65px;
+    height: 65px;
+
+    margin-bottom: 20px;
+
+    border-radius: 22px;
+
+    background: linear-gradient(135deg, #e9bd70, #d1844f);
+
+    color: #103c32 !important;
+    font-size: 27px;
+
+    box-shadow: 0 10px 25px rgba(0, 0, 0, .15);
+}
+
+.ln-skill-action-caption {
+    margin-bottom: 22px;
+
+    color: #f0d9a8 !important;
+
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    line-height: 1.7;
+}
+
+/* Button */
+
+.ln-skill-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+
+    width: 100%;
+    max-width: 280px;
+
+    padding: 17px 23px;
+
+    border: none !important;
+    border-radius: 50px;
+
+    background: linear-gradient(120deg, #edc879, #d88a52) !important;
+
+    color: #17392e !important;
+
+    font-size: 12px !important;
+    font-weight: 800 !important;
+    letter-spacing: .5px;
+
+    cursor: pointer;
+
+    box-shadow: 0 12px 25px rgba(0, 0, 0, .18);
+
+    transition: all .3s ease;
+}
+
+.ln-skill-button i {
+    color: #17392e !important;
+    transition: transform .3s ease;
+}
+
+.ln-skill-button:hover {
+    transform: translateY(-4px);
+    background: #fff4dc !important;
+
+    box-shadow: 0 16px 30px rgba(0, 0, 0, .25);
+}
+
+.ln-skill-button:hover i {
+    transform: translateX(5px);
+}
+
+.ln-skill-action-note {
+    margin-top: 17px;
+
+    color: #eee1c8 !important;
+
+    font-size: 11px;
+    font-style: italic;
+}
+
+/* Responsive tablet */
+
+@media (max-width: 1024px) {
+    .ln-skill-exchange {
+        grid-template-columns: 1fr;
+        gap: 35px;
+        padding: 45px;
+    }
+
+    .ln-skill-content {
+        max-width: 100%;
+    }
+
+    .ln-skill-action {
+        min-height: auto;
+        padding: 30px;
+    }
+}
+
+/* Responsive mobile */
+
+@media (max-width: 640px) {
+    .ln-skill-exchange {
+        padding: 30px 22px;
+        gap: 30px;
+        border-radius: 22px;
+    }
+
+    .ln-skill-label {
+        font-size: 9px;
+        letter-spacing: 2px;
+        gap: 9px;
+        margin-bottom: 20px;
+    }
+
+    .ln-skill-title {
+        font-size: 29px !important;
+        line-height: 1.3 !important;
+        letter-spacing: -.4px;
+    }
+
+    .ln-skill-description {
+        font-size: 13px !important;
+        line-height: 1.8 !important;
+    }
+
+    .ln-skill-highlights {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .ln-skill-highlight {
+        width: 100%;
+        font-size: 11px;
+    }
+
+    .ln-skill-action {
+        padding: 27px 18px;
+        border-radius: 19px;
+    }
+
+    .ln-skill-button {
+        max-width: 100%;
+        padding: 16px;
+    }
+}
