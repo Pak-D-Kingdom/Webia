@@ -1,0 +1,260 @@
+/* Keyframe Animations */
+        @keyframes floatParcel {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-14px) rotate(4deg); }
+        }
+
+        @keyframes floatReverse {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(12px) rotate(-3deg); }
+        }
+
+        @keyframes chocoBounce {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-12px) scale(1.08); }
+        }
+
+        @keyframes caramelGlow {
+            0%, 100% { box-shadow: 0 0 18px rgba(217, 130, 43, 0.4), 0 8px 25px rgba(42, 23, 16, 0.25); }
+            50% { box-shadow: 0 0 35px rgba(217, 130, 43, 0.85), 0 12px 40px rgba(42, 23, 16, 0.35); }
+        }
+
+        @keyframes pulseGlint {
+            0%, 100% { opacity: 0.3; transform: scale(0.95); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+
+        @keyframes truckMove {
+            0% { transform: translateX(0%); }
+            50% { transform: translateX(85%); }
+            100% { transform: translateX(0%); }
+        }
+
+        @keyframes parcelUnbox {
+            0% { transform: scale(0.8) rotate(-10deg); }
+            50% { transform: scale(1.15) rotate(6deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
+        @keyframes marqueeScroll {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .animate-float-parcel { animation: floatParcel 4.5s ease-in-out infinite; }
+        .animate-float-reverse { animation: floatReverse 5s ease-in-out infinite; }
+        .animate-choco-bounce { animation: chocoBounce 2.2s ease-in-out infinite; }
+        .animate-caramel-glow { animation: caramelGlow 2.8s ease-in-out infinite; }
+        .animate-pulse-glint { animation: pulseGlint 3s ease-in-out infinite; }
+        .animate-truck-sim { animation: truckMove 12s ease-in-out infinite; }
+        .animate-parcel-unbox { animation: parcelUnbox 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+        .animate-marquee {
+            display: flex;
+            width: 200%;
+            animation: marqueeScroll 22s linear infinite;
+        }
+
+        /* Glassmorphism & Custom Cards */
+        .glass-choco {
+            background: rgba(255, 249, 242, 0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 2px solid rgba(217, 130, 43, 0.25);
+            box-shadow: 0 20px 40px rgba(42, 23, 16, 0.08);
+        }
+
+        .glass-dark-choco {
+            background: rgba(42, 23, 16, 0.94);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 2px solid rgba(217, 130, 43, 0.35);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.35);
+        }
+
+        /* Stamp Card Effect */
+        .stamp-border {
+            border: 3px dashed #D9822B;
+            border-radius: 28px;
+            background-color: rgba(255, 249, 242, 0.95);
+        }
+
+        /* Cursor Trail Sparkles (Delivery & Chocolate themed) */
+        .cursor-delivery-particle {
+            pointer-events: none;
+            position: fixed;
+            font-size: 16px;
+            animation: fadeOutParticle 0.85s forwards cubic-bezier(0.21, 0.6, 0.35, 1);
+            z-index: 9999;
+        }
+
+        @keyframes fadeOutParticle {
+            0% { opacity: 1; transform: translate(-50%, -50%) scale(1.1) rotate(0deg); }
+            100% { opacity: 0; transform: translate(-50%, -90%) scale(0.2) rotate(60deg); }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #FFF9F2; }
+        ::-webkit-scrollbar-thumb { background: #5C3A29; border-radius: 99px; }
+        ::-webkit-scrollbar-thumb:hover { background: #D9822B; }
+
+/* COCOEXPRESS — seamless, continuous hashtag ticker */
+.coco-marquee {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.coco-marquee-track {
+    display: flex;
+    width: max-content;
+    flex-wrap: nowrap;
+    animation: cocoMarquee 28s linear infinite;
+    will-change: transform;
+}
+.coco-marquee-group {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 3rem;
+    padding: 0 1.5rem;
+}
+.coco-marquee-group span {
+    flex: 0 0 auto;
+    white-space: nowrap;
+}
+@keyframes cocoMarquee {
+    from { transform: translate3d(0, 0, 0); }
+    to { transform: translate3d(-50%, 0, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .coco-marquee-track { animation-duration: 90s; }
+}
+
+
+/* =========================================
+   COCOEXPRESS HERO — DELIVERY SCENE MOTION
+   Supplied delivery.jpg is the main hero artwork.
+========================================= */
+.coco-hero-delivery {
+    isolation: isolate;
+    padding: 2.5rem 0 3.25rem;
+}
+.coco-delivery-image-wrap {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    overflow: visible;
+    border-radius: 2rem;
+    animation: cocoDeliveryFloat 5.5s ease-in-out infinite;
+    filter: drop-shadow(0 28px 28px rgba(20, 10, 5, .24));
+}
+.coco-delivery-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    transform-origin: 50% 70%;
+    animation: cocoTruckDrive 7s ease-in-out infinite;
+}
+.coco-delivery-orbit {
+    position: absolute;
+    z-index: 0;
+    border: 1px dashed rgba(229, 178, 93, .7);
+    border-radius: 50%;
+    pointer-events: none;
+}
+.coco-orbit-one {
+    width: 88%;
+    aspect-ratio: 1;
+    top: 3%;
+    left: 6%;
+    animation: cocoOrbit 26s linear infinite;
+}
+.coco-orbit-two {
+    width: 68%;
+    aspect-ratio: 1;
+    top: 13%;
+    left: 16%;
+    border-color: rgba(217, 130, 43, .35);
+    animation: cocoOrbit 19s linear infinite reverse;
+}
+.coco-float-badge {
+    position: absolute;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: .65rem;
+    padding: .75rem 1rem;
+    border: 1px solid rgba(217,130,43,.45);
+    border-radius: 1rem;
+    background: rgba(255,249,242,.96);
+    color: #2D1810;
+    box-shadow: 0 12px 28px rgba(45,24,16,.2);
+    font-family: Inter, sans-serif;
+    animation: cocoBadgeBob 4s ease-in-out infinite;
+}
+.coco-float-badge strong,
+.coco-float-badge small { display: block; white-space: nowrap; }
+.coco-float-badge strong { font-size: .75rem; font-weight: 800; }
+.coco-float-badge small { margin-top: 2px; color: #76523d; font-size: .62rem; }
+.coco-badge-icon { font-size: 1.45rem; }
+.coco-badge-pickup { top: 3%; left: -2%; transform: rotate(-4deg); }
+.coco-badge-route { right: -1%; bottom: 23%; animation-delay: -1.8s; }
+.coco-floating-parcel,
+.coco-floating-spark {
+    position: absolute;
+    z-index: 4;
+    pointer-events: none;
+}
+.coco-floating-parcel { font-size: 1.8rem; filter: drop-shadow(0 5px 5px rgba(45,24,16,.18)); }
+.coco-parcel-a { top: 18%; right: 8%; animation: cocoParcelPop 3.6s ease-in-out infinite; }
+.coco-parcel-b { bottom: 13%; left: 7%; animation: cocoParcelPop 4.2s ease-in-out infinite reverse; }
+.coco-floating-spark { color: #E5B25D; font-size: 2rem; text-shadow: 0 0 15px rgba(229,178,93,.8); }
+.coco-spark-a { top: 9%; right: 23%; animation: cocoSpark 2.4s ease-in-out infinite; }
+.coco-spark-b { bottom: 35%; left: 1%; animation: cocoSpark 3s ease-in-out infinite -1s; }
+.coco-delivery-caption {
+    position: absolute;
+    z-index: 5;
+    right: 5%;
+    bottom: -1.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+    padding: .8rem 1.1rem;
+    border: 1px solid rgba(229,178,93,.45);
+    border-radius: 1rem;
+    background: #2D1810;
+    color: #FFF9F2;
+    box-shadow: 0 14px 28px rgba(45,24,16,.22);
+    font-family: Inter, sans-serif;
+}
+.coco-delivery-caption > span:last-of-type { color: #E5B25D; font-size: .55rem; font-weight: 800; letter-spacing: .15em; }
+.coco-delivery-caption strong { font-size: .72rem; }
+.coco-live-dot { position: absolute; top: .95rem; right: .85rem; width: .45rem; height: .45rem; border-radius: 50%; background: #35c982; box-shadow: 0 0 0 5px rgba(53,201,130,.13); animation: cocoLivePulse 1.8s infinite; }
+@keyframes cocoDeliveryFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-11px); } }
+@keyframes cocoTruckDrive { 0%,100% { transform: translateX(0) rotate(0); } 35% { transform: translateX(5px) rotate(.25deg); } 70% { transform: translateX(-3px) rotate(-.15deg); } }
+@keyframes cocoOrbit { to { transform: rotate(360deg); } }
+@keyframes cocoBadgeBob { 0%,100% { translate: 0 0; } 50% { translate: 0 -9px; } }
+@keyframes cocoParcelPop { 0%,100% { transform: translateY(0) rotate(-8deg) scale(1); } 50% { transform: translateY(-13px) rotate(8deg) scale(1.08); } }
+@keyframes cocoSpark { 0%,100% { opacity: .35; transform: scale(.75) rotate(0); } 50% { opacity: 1; transform: scale(1.2) rotate(35deg); } }
+@keyframes cocoLivePulse { 0%,100% { box-shadow: 0 0 0 4px rgba(53,201,130,.12); } 50% { box-shadow: 0 0 0 8px rgba(53,201,130,.03); } }
+@media (max-width: 1023px) {
+    .coco-hero-delivery { max-width: 650px; margin: 0 auto; padding: 1rem 1rem 3.5rem; }
+    .coco-badge-pickup { left: 0; }
+    .coco-badge-route { right: 0; }
+}
+@media (max-width: 520px) {
+    .coco-float-badge { padding: .55rem .7rem; gap: .4rem; }
+    .coco-float-badge strong { font-size: .65rem; }
+    .coco-float-badge small { font-size: .52rem; }
+    .coco-badge-pickup { top: -2%; }
+    .coco-badge-route { bottom: 19%; }
+    .coco-delivery-caption { right: 0; bottom: -2.4rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .coco-delivery-image-wrap, .coco-delivery-image, .coco-delivery-orbit,
+    .coco-float-badge, .coco-floating-parcel, .coco-floating-spark, .coco-live-dot {
+        animation: none !important;
+    }
+}
