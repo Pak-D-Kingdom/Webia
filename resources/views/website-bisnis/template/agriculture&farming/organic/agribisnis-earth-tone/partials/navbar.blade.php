@@ -1,10 +1,10 @@
 @php
     $nav = [
-        ['label' => 'Beranda',       'href' => $u['home'],              'active' => request()->routeIs('agribisnis.home')],
-        ['label' => 'Komoditas',     'href' => $u['komoditas'],         'active' => request()->routeIs('agribisnis.komoditas')],
+        ['label' => 'Beranda',       'href' => $u['home'],              'active' => request()->routeIs('agribisnis-earth-tone.home')],
+        ['label' => 'Komoditas',     'href' => $u['komoditas'],         'active' => request()->routeIs('agribisnis-earth-tone.komoditas')],
         ['label' => 'Tentang Kami',  'href' => $u['home'] . '#tentang', 'active' => false],
-        ['label' => 'Kemitraan',     'href' => $u['b2b'],               'active' => request()->routeIs('agribisnis.b2b')],
-        ['label' => 'Sertifikasi',   'href' => $u['sertifikasi'],       'active' => request()->routeIs('agribisnis.sertifikasi')],
+        ['label' => 'Kemitraan',     'href' => $u['b2b'],               'active' => request()->routeIs('agribisnis-earth-tone.b2b')],
+        ['label' => 'Sertifikasi',   'href' => $u['sertifikasi'],       'active' => request()->routeIs('agribisnis-earth-tone.sertifikasi')],
         ['label' => 'Kontak',        'href' => '#kontak',               'active' => false],
     ];
 @endphp

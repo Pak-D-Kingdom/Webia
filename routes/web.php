@@ -1236,7 +1236,7 @@ Route::prefix('webia/template/agriculture-farming/corporate/agribisnis-forest-mo
     });
 
 Route::prefix('webia/template/agriculture-farming/organic/agribisnis-earth-tone')
-    ->name('agribisnis.')
+    ->name('agribisnis-earth-tone.')
     ->group(function () {
 
         $viewBase  = 'website-bisnis.template.agriculture&farming.organic.agribisnis-earth-tone';
@@ -1255,17 +1255,17 @@ Route::prefix('webia/template/agriculture-farming/organic/agribisnis-earth-tone'
             $waBase   = 'https://wa.me/' . $waNumber;
 
             $urls = [
-                'home'            => route('agribisnis.home'),
-                'komoditas'       => route('agribisnis.komoditas'),
-                'panen'           => route('agribisnis.panen'),
-                'spesifikasi'     => route('agribisnis.spesifikasi'),
-                'moq'             => route('agribisnis.moq'),
-                'kapasitas'       => route('agribisnis.kapasitas'),
-                'distribusi'      => route('agribisnis.distribusi'),
-                'sertifikasi'     => route('agribisnis.sertifikasi'),
-                'b2b'             => route('agribisnis.b2b'),
-                'penawaran'       => route('agribisnis.penawaran'),
-                'chatbot'         => route('agribisnis.chatbot'),
+                'home'            => route('agribisnis-earth-tone.home'),
+                'komoditas'       => route('agribisnis-earth-tone.komoditas'),
+                'panen'           => route('agribisnis-earth-tone.panen'),
+                'spesifikasi'     => route('agribisnis-earth-tone.spesifikasi'),
+                'moq'             => route('agribisnis-earth-tone.moq'),
+                'kapasitas'       => route('agribisnis-earth-tone.kapasitas'),
+                'distribusi'      => route('agribisnis-earth-tone.distribusi'),
+                'sertifikasi'     => route('agribisnis-earth-tone.sertifikasi'),
+                'b2b'             => route('agribisnis-earth-tone.b2b'),
+                'penawaran'       => route('agribisnis-earth-tone.penawaran'),
+                'chatbot'         => route('agribisnis-earth-tone.chatbot'),
                 'whatsapp'        => $waBase . '?text=' . rawurlencode($data['contact']['whatsapp_text'] ?? 'Halo AgroHarvest'),
                 'whatsapp_karir'  => $waBase . '?text=' . rawurlencode('Halo AgroHarvest, saya tertarik dengan informasi karir.'),
             ];
