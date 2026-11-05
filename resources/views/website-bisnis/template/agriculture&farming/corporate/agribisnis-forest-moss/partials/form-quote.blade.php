@@ -1,5 +1,5 @@
 {{-- Formulir permintaan penawaran harga (statis, divalidasi JS). --}}
-<form class="form form--full form--light" data-form="quote" novalidate>
+<form class="form form--full form--light" data-form="quote" data-wa="{{ $cfg['site']['whatsapp'] }}" data-wa-title="Permintaan Penawaran Harga — Green Harvest" novalidate>
     <div class="form__grid">
         <div class="field">
             <label for="qtNama">Nama Lengkap</label>
@@ -63,5 +63,9 @@
         </div>
     </div>
     <button class="btn btn--lime" type="submit"><span>{{ $cfg['quote']['btn'] }}</span><svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg></button>
-    <p class="form__ok" data-ok role="status" hidden>Terima kasih! Permintaan penawaran Anda sudah kami terima. Penawaran akan dikirim ke email Anda.</p>
+    <p class="form__note"><svg class="ic" aria-hidden="true"><use href="#i-wa-fill"/></svg>Pesan akan dikirim ke tim kami melalui WhatsApp.</p>
+    <div class="form__ok" data-ok role="status" hidden>
+        <p>Terima kasih! WhatsApp akan terbuka dengan pesan Anda yang sudah terisi. Tekan tombol kirim di WhatsApp untuk menyelesaikan.</p>
+        <a class="form__wa" data-wa-link href="#" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-wa-fill"/></svg>Buka WhatsApp</a>
+    </div>
 </form>

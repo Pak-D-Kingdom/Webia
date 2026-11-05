@@ -46,7 +46,7 @@
 
             <ul class="feature-grid feature-grid--4" id="regionGrid">
                 @foreach ($data['distribution']['regions'] as $r)
-                    <li class="feature-card" data-category="{{ $r['type'] }}">
+                    <li class="feature-card reveal" data-category="{{ $r['type'] }}">
                         <span class="feature-card__tag feature-card__tag--{{ $r['type'] }}">{{ ucfirst($r['type']) }}</span>
                         <h3>{{ $r['name'] }}</h3>
                         <p>{{ $r['text'] }}</p>
@@ -56,4 +56,6 @@
             </ul>
         </div>
     </section>
+
+    @include($v . '.partials.explore', ['exploreKeys' => ['sertifikasi', 'penawaran', 'chatbot']])
 @endsection

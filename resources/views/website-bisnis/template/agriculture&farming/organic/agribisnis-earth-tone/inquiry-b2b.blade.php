@@ -60,4 +60,6 @@
             </div>
         </div>
     </section>
+
+    @include($v . '.partials.explore', ['exploreKeys' => ['penawaran', 'komoditas', 'chatbot']])
 @endsection

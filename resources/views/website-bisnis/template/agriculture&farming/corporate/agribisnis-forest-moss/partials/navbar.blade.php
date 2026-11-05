@@ -12,25 +12,8 @@
             <nav aria-label="Navigasi utama">
                 <ul class="nav">
                     @foreach($cfg['nav'] as $item)
-                        <li class="nav__item @if(!empty($item['children'])) has-sub @endif @if(request()->routeIs($item['match'])) is-active @endif">
-                            <a class="nav__link" href="{{ route($item['route']) }}">{{ $item['label'] }}</a>
-                            @if(!empty($item['children']))
-                                <button class="nav__caret" type="button" aria-expanded="false" aria-label="Buka submenu {{ $item['label'] }}">
-                                    <svg class="ic ic--xs" aria-hidden="true"><use href="#i-down"/></svg>
-                                </button>
-                                <div class="subnav">
-                                    <ul>
-                                        @foreach($item['children'] as $child)
-                                            <li>
-                                                <a href="{{ route($child['route']) }}">
-                                                    <span class="subnav__ic"><svg class="ic" aria-hidden="true"><use href="#i-{{ $child['icon'] }}"/></svg></span>
-                                                    <span class="subnav__tx"><b>{{ $child['label'] }}</b><small>{{ $child['desc'] }}</small></span>
-                                                </a>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @endif
+                        <li class="nav__item @if(request()->routeIs($item['match'])) is-active @endif">
+                            <a class="nav__link" href="{{ route($item['route']) }}" title="{{ $item['title'] }}" @if(request()->routeIs($item['match'])) aria-current="page" @endif>{{ $item['label'] }}</a>
                         </li>
                     @endforeach
                 </ul>
@@ -67,4 +50,5 @@
         </div>
     </div>
 </div>
+<div class="progress" aria-hidden="true"><i data-progress></i></div>
 <div class="nav-backdrop" data-nav-backdrop hidden></div>

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="HACCP">
+  <defs><linearGradient id="h" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5b3fb0"/><stop offset="1" stop-color="#2a47a8"/></linearGradient></defs>
+  <path d="M60 8l44 16v34c0 28-19 46-44 54C35 104 16 86 16 58V24z" fill="#f3f0ff" stroke="url(#h)" stroke-width="4" stroke-linejoin="round"/>
+  <text x="60" y="66" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="800" font-size="25" fill="url(#h)" letter-spacing="-.5">HACCP</text>
+  <path d="M34 78h52" stroke="url(#h)" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M46 34l9 9 18-17" fill="none" stroke="#2f8a57" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="60" y="94" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="8.5" fill="#4a3fa6" letter-spacing="1.2">CERTIFIED</text>
+</svg>

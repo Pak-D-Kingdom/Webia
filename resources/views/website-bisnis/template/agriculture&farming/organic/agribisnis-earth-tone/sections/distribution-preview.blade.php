@@ -1,4 +1,4 @@
-<article class="card card--dist" aria-labelledby="distPrevTitle">
+<article class="card card--dist reveal" aria-labelledby="distPrevTitle">
     <div class="card__titlerow">
         <span class="title-icon"><svg class="ico"><use href="#i-globe"></use></svg></span>
         <div>

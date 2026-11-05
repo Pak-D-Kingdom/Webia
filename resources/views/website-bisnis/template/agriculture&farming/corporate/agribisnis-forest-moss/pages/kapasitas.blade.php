@@ -12,7 +12,7 @@
                 <span class="bigstat__ic" aria-hidden="true">
                     <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"><path d="m32 6 14 8v16l-14 8-14-8V14zM18 30l-14 8v16l14 8 14-8V38zM46 30l14 8v16l-14 8-14-8V38z" opacity=".9"/><path d="m18 14 14 8 14-8M32 22v16M4 38l14 8 14-8M32 38l14 8 14-8" opacity=".55"/></svg>
                 </span>
-                <p class="bigstat__val">{{ $cfg['supply']['value'] }}</p>
+                <p class="bigstat__val">{{ $cfg['supply']['prefix'] }} <span class="num" data-count="{{ $cfg['supply']['count'] }}">{{ $cfg['supply']['display'] }}</span> {{ $cfg['supply']['suffix'] }}</p>
                 <p class="bigstat__unit">{{ $cfg['supply']['unit'] }}</p>
                 <p class="bigstat__note">{{ $cfg['supply']['sub'] }}</p>
             </div>

@@ -1,4 +1,4 @@
-<article class="card card--moq" aria-labelledby="moqPrevTitle">
+<article class="card card--moq reveal" style="--d:.12s" aria-labelledby="moqPrevTitle">
     <h2 id="moqPrevTitle">{{ $data['moq']['title'] }}</h2>
     <p>{{ $data['moq']['text'] }}</p>
     <div class="metric">
@@ -8,5 +8,5 @@
             <strong>{{ $data['moq']['value'] }}</strong>
         </div>
     </div>
-    <a class="btn btn--primary btn--sm" href="{{ $u['moq'] }}">Lihat Detail <svg class="ico"><use href="#i-arrow"></use></svg></a>
+    <a class="btn btn--primary btn--xs" href="{{ $u['moq'] }}">Lihat Detail <svg class="ico"><use href="#i-arrow"></use></svg></a>
 </article>

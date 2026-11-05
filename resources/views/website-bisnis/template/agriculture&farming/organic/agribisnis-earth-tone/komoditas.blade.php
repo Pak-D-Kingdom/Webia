@@ -27,7 +27,7 @@
 
             <ul class="comm-grid" id="commGrid">
                 @foreach ($data['commodities'] as $c)
-                    <li class="comm-card" data-category="{{ $c['category'] }}" data-name="{{ strtolower($c['name'] . ' ' . $c['en']) }}">
+                    <li class="comm-card reveal" data-category="{{ $c['category'] }}" data-name="{{ strtolower($c['name'] . ' ' . $c['en']) }}">
                         <div class="comm-card__top">
                             <img src="{{ $img }}/{{ $c['image'] }}" alt="{{ $c['name'] }}" width="96" height="96" loading="lazy">
                             <div>
@@ -52,4 +52,6 @@
             <p class="empty" id="commEmpty" hidden>Komoditas tidak ditemukan. Coba kata kunci lain atau pilih kategori Semua.</p>
         </div>
     </section>
+
+    @include($v . '.partials.explore', ['exploreKeys' => ['panen', 'spesifikasi', 'penawaran']])
 @endsection

@@ -1,9 +1,10 @@
 <footer class="footer" id="footer">
+    <img class="footer__bg" src="{{ $img }}/harvest-bg.jpg" alt="" aria-hidden="true" loading="lazy">
     <div class="footer__inner">
         <div class="footer__grid">
             <div class="footer__brand">
                 <a class="brand brand--light" href="{{ $u['home'] }}" aria-label="{{ $data['brand']['name'] }}">
-                    <img class="brand__leaf" src="{{ $img }}/logo-leaf-light.png" alt="" width="42" height="42">
+                    <img class="brand__leaf" src="{{ $img }}/logo-leaf-light.png" alt="" width="40" height="40">
                     <span class="brand__text">
                         <strong>{{ $data['brand']['name'] }}</strong>
                         <small>{{ $data['brand']['tagline'] }}</small>
@@ -22,7 +23,6 @@
                 <ul>
                     <li><a href="{{ $u['home'] }}">Beranda</a></li>
                     <li><a href="{{ $u['komoditas'] }}">Komoditas</a></li>
-                    <li><a href="{{ $u['home'] }}#tentang">Tentang Kami</a></li>
                     <li><a href="{{ $u['b2b'] }}">Kemitraan</a></li>
                 </ul>
             </nav>
@@ -33,7 +33,6 @@
                     <li><a href="{{ $u['sertifikasi'] }}">Kualitas &amp; Sertifikasi</a></li>
                     <li><a href="{{ $u['kapasitas'] }}">Rantai Pasok yang Efisien</a></li>
                     <li><a href="{{ $u['chatbot'] }}">FAQ</a></li>
-                    <li><a href="#kontak">Kontak</a></li>
                 </ul>
             </nav>
 

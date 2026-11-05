@@ -1,0 +1,13 @@
+@extends($v.'layout')
+@section('content')
+@include($v.'partials.hero')
+@include($v.'partials.profil', ['limit' => 0])
+@include($v.'partials.program', ['limit' => 3])
+@include($v.'partials.galeri', ['limit' => 5])
+@include($v.'partials.kisah', ['limit' => 2])
+@include($v.'partials.event', ['limit' => 3])
+@include($v.'partials.daftar', ['mini' => 1])
+@include($v.'partials.mitra', ['limit' => 4])
+@include($v.'partials.chatbot', ['limit' => 3])
+@include($v.'partials.kontak', ['mini' => 1])
+@endsection

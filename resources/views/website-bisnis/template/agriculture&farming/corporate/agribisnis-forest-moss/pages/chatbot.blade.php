@@ -16,7 +16,8 @@
             <div class="chat-card">
                 <header class="chat-panel__head">
                     <img src="{{ asset($cfg['img']['bot']) }}" alt="" width="42" height="42">
-                    <div><strong>{{ $cfg['chatbot']['name'] }}</strong><small><i class="dot" aria-hidden="true"></i>{{ $cfg['chatbot']['status'] }}</small></div>
+                    <div><strong>{{ $cfg['chatbot']['name'] }}</strong><small>{{ $cfg['chatbot']['status'] }}</small></div>
+                    <button class="icon-btn icon-btn--light" type="button" aria-label="Mulai ulang percakapan" title="Mulai ulang" data-chat-reset><svg class="ic" aria-hidden="true"><use href="#i-refresh"/></svg></button>
                 </header>
                 @include('website-bisnis.template.agriculture&farming.corporate.agribisnis-forest-moss.partials.chat-box', ['suffix' => 'Page'])
             </div>

@@ -1,11 +1,11 @@
 <section class="home-row home-row--commodity" id="komoditas-unggulan" aria-labelledby="komUnggulanTitle">
-    <div class="card card--intro">
+    <div class="intro reveal">
         <h2 id="komUnggulanTitle">Komoditas Unggulan <span class="line-arrow" aria-hidden="true"></span></h2>
         <p>Pilihan komoditas terbaik dari perkebunan dan pertanian kami.</p>
         <a class="link-arrow" href="{{ $u['komoditas'] }}">Lihat Semua Komoditas <svg class="ico"><use href="#i-arrow"></use></svg></a>
     </div>
 
-    <div class="card card--strip">
+    <div class="card card--strip reveal" style="--d:.08s">
         <ul class="comm-strip" id="commStrip">
             @foreach ($data['commodities'] as $c)
                 <li>

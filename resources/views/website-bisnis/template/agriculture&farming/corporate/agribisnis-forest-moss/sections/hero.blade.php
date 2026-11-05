@@ -1,5 +1,8 @@
 <section class="hero" id="beranda" style="--hero-img: url('{{ asset($cfg['img']['hero']) }}')">
     <div class="hero__bg" aria-hidden="true"></div>
+    <img class="hero__leaf hero__leaf--1" src="{{ asset($cfg['img']['leaf']) }}" alt="" aria-hidden="true">
+    <img class="hero__leaf hero__leaf--2" src="{{ asset($cfg['img']['leaf']) }}" alt="" aria-hidden="true">
+    <img class="hero__leaf hero__leaf--3" src="{{ asset($cfg['img']['leaf']) }}" alt="" aria-hidden="true">
     <div class="container hero__in">
         <div class="hero__copy">
             <p class="hero__eyebrow">{{ $cfg['hero']['eyebrow'] }}</p>

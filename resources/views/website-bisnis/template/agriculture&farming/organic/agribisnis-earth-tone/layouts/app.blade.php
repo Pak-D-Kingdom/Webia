@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="{{ $css }}">
     @stack('head')
 </head>
-<body class="ag-body" data-page="@yield('page_key', 'home')">
+<body class="ag-body" data-page="{{ $page }}">
 
     @include($v . '.partials.sprite')
 
@@ -31,6 +31,7 @@
     </main>
 
     @include($v . '.partials.footer')
+    @include($v . '.partials.search')
     @include($v . '.partials.whatsapp-button')
     @include($v . '.partials.ai-chatbot')
 
@@ -39,9 +40,8 @@
         'urls'     => $u,
         'img'      => $img,
         'chatbot'  => $data['chatbot'],
-        'products' => collect($data['commodities'])->map(function ($c) {
-            return ['slug' => $c['slug'], 'name' => $c['name'], 'moq' => $c['moq']];
-        })->values(),
+        'pages'    => $data['pages'],
+        'commodities' => $data['commodities'],
     ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) !!}</script>
     <script src="{{ $js }}" defer></script>
     @stack('scripts')
