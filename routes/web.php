@@ -197,6 +197,22 @@ Route::view(
     '/webia/template/otto-artistic-workshop',
     'website-bisnis.templates.automotive.otto-artistic-workshop'
 )->name('webia.template.automotive.otto-artistic-workshop');
+Route::view(
+    '/webia/template/maison-otto-elegant-workshop',
+    'website-bisnis.templates.automotive.maison-otto-elegant-workshop'
+)->name('webia.template.automotive.maison-otto-elegant-workshop');
+Route::view(
+    '/webia/template/roseline-professional-workshop',
+    'website-bisnis.templates.automotive.roseline-professional-workshop'
+)->name('webia.template.automotive.roseline-professional-workshop');
+Route::view(
+    '/webia/template/bangun-karsa-contractor-professional',
+    'website-bisnis.templates.company.bangun-karsa-contractor-professional'
+)->name('webia.template.company.bangun-karsa-contractor-professional');
+Route::view(
+    '/webia/template/langit-karya-contractor-minimalist',
+    'website-bisnis.templates.company.langit-karya-contractor-minimalist'
+)->name('webia.template.company.langit-karya-contractor-minimalist');
 
 Route::view(
     '/webia/template/denim-horizon-property-minimalist',
