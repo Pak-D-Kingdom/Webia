@@ -264,6 +264,11 @@ Route::view(
     'website-bisnis.templates.pet-animal-service.paws-canine-terra-earth-tone'
 )->name('webia.template.pet-animal-service.paws-canine-terra-earth-tone');
 
+Route::view(
+    '/webia/template/pawtopia-animal-care',
+    'website-bisnis.templates.pet-animal-service.pawtopia-animal-care'
+)->name('webia.template.pet-animal-service.pawtopia-animal-care');
+
 // WEBIA — Template Nail Art Professional Soft Pink
 // URL lama dipertahankan agar konsisten; view mengikuti struktur folder baru.
 Route::view(
