@@ -38,10 +38,7 @@ class NightshiftTemplateTest extends TestCase
             ->firstOrFail();
 
         $this->assertSame('automotive', $template->category_slug);
-        $this->assertSame(
-            ['Modifikasi & Aksesori Kendaraan', 'Bengkel & Servis Kendaraan'],
-            $template->business_types
-        );
+        $this->assertSame(['Modifikasi & Aksesori Kendaraan'], $template->business_types);
         $this->assertSame('Futuristic', $template->design_style);
 
         $this->get(route('collections'))

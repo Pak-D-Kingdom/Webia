@@ -1,0 +1,99 @@
+/* Modern Keyframe Animations */
+        @keyframes floatBox {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(3deg); }
+        }
+
+        @keyframes boxSlide {
+            0% { transform: translateX(-8px) scale(0.98); }
+            50% { transform: translateX(8px) scale(1.02); }
+            100% { transform: translateX(-8px) scale(0.98); }
+        }
+
+        @keyframes orbitGlow {
+            0% { box-shadow: 0 0 15px rgba(20, 184, 166, 0.4), 0 0 30px rgba(245, 158, 11, 0.2); }
+            50% { box-shadow: 0 0 35px rgba(20, 184, 166, 0.8), 0 0 45px rgba(245, 158, 11, 0.5); }
+            100% { box-shadow: 0 0 15px rgba(20, 184, 166, 0.4), 0 0 30px rgba(245, 158, 11, 0.2); }
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+
+        @keyframes truckRoadDrive {
+            0% { transform: translateX(-10%); }
+            100% { transform: translateX(110%); }
+        }
+
+        @keyframes radarPulse {
+            0% { transform: scale(0.8); opacity: 0.8; }
+            100% { transform: scale(2.2); opacity: 0; }
+        }
+
+        @keyframes boxConveyor {
+            0% { transform: translateX(0px); }
+            100% { transform: translateX(60px); }
+        }
+
+        .animate-float-box { animation: floatBox 4s ease-in-out infinite; }
+        .animate-box-slide { animation: boxSlide 3.5s ease-in-out infinite; }
+        .animate-orbit-glow { animation: orbitGlow 3s ease-in-out infinite; }
+        .animate-marquee { display: flex; width: 200%; animation: marquee 24s linear infinite; }
+        .animate-truck-drive { animation: truckRoadDrive 8s linear infinite; }
+        .animate-radar { animation: radarPulse 2.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite; }
+        .animate-conveyor { animation: boxConveyor 2s linear infinite; }
+
+        /* Custom Glassmorphism UI */
+        .glass-teal {
+            background: rgba(13, 148, 136, 0.08);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(20, 184, 166, 0.25);
+        }
+
+        .glass-sand {
+            background: rgba(253, 251, 247, 0.92);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(227, 211, 184, 0.6);
+        }
+
+        /* Moving Particles Cursor */
+        .cursor-moving-particle {
+            pointer-events: none;
+            position: fixed;
+            font-size: 15px;
+            animation: particleFade 0.8s forwards ease-out;
+            z-index: 9999;
+        }
+
+        @keyframes particleFade {
+            0% { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+            100% { opacity: 0; transform: translate(-50%, -80%) scale(0.3) rotate(45deg); }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #F8F4EC; }
+        ::-webkit-scrollbar-thumb { background: #0D9488; border-radius: 99px; }
+        ::-webkit-scrollbar-thumb:hover { background: #F59E0B; }
+
+/* RELOKO template refinements */
+html { scroll-behavior: smooth; }
+body { min-width: 320px; }
+button, a, input, select { -webkit-tap-highlight-color: transparent; }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid rgba(245, 158, 11, .55); outline-offset: 3px; }
+#surveyModal { overflow-y: auto; }
+#relokoAiBox { max-height: min(560px, calc(100vh - 120px)); }
+#relokoMessages { overscroll-behavior: contain; }
+.prop-btn.is-selected { border-color: #0D9488 !important; background: #0D9488 !important; color: #fff !important; }
+.prop-btn.is-selected .property-volume { color: #FCD34D !important; }
+.checklist-item { width: 16px; height: 16px; vertical-align: middle; }
+@media (max-width: 640px) {
+    .fixed.bottom-6.right-6 { right: 14px; bottom: 14px; gap: 8px; }
+    #relokoAiBox { right: 12px; left: 12px; width: auto; bottom: 88px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
