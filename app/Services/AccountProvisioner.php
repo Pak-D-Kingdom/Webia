@@ -5,12 +5,11 @@ namespace App\Services;
 use App\Jobs\SendOrderCredentials;
 use App\Models\User;
 use App\Models\WebiaOrder;
-use Illuminate\Support\Str;
 
 class AccountProvisioner
 {
     /**
-     * Akun + password acak baru dibuat belakangan, saat pembayaran sudah lunas.
+     * Akun + password default dibuat belakangan, saat pembayaran sudah lunas.
      * Instansiasi harus idempotent: aman dipanggil ulang oleh webhook, simulasi, atau approval admin.
      *
      * @param  bool  $dispatchJob  bila false, pengirim email ditangani pemanggil (mis. job itu sendiri)
@@ -32,22 +31,23 @@ class AccountProvisioner
             return $order;
         }
 
-        // Kunci email mencegah dua order guest berjalan bersamaan membuat akun ganda untuk email yang sama.
+        // Kunci email mencegah dua order guest berjalan bersamaan me-reset password akun yang sama.
         $user = User::where('email', $email)->lockForUpdate()->first();
+        $plainPassword = config('webia.provisioning.default_password', 'password123');
         if ($user === null) {
-            $plainPassword = Str::password(16);
             $user = User::create([
                 'name' => $order->guest_name ?? 'Pelanggan WEBIA',
                 'email' => $email,
-                // Password lama tidak pernah diubah; email existing memakai akun tanpa kredensial baru.
                 'password' => $plainPassword,
             ]);
-            // Password acak disimpan terenkripsi di order, hanya sampai email kredensial terkirim.
-            $order->credential_password = $plainPassword;
+        } else {
+            // Akun lama diatur ulang ke password default agar email kredensial selalu bisa dipakai login.
+            $user->update(['password' => $plainPassword]);
         }
 
         $order->user_id = $user->id;
         $order->guest_email = $order->guest_email ?? $email;
+        $order->credential_password = $plainPassword;
         $order->credential_status = 'queued';
         $order->save();
 
