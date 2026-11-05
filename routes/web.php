@@ -1326,7 +1326,7 @@ $agroData       = config($agroConfigKey) ?: (is_file($agroConfigFile) ? require 
 $agroView       = 'website-bisnis.template.agriculture&farming.professional.agribisnis-classic-trust';
 
 Route::prefix('webia/template/agribisnis-classic-trust')
-    ->name('agribisnis.')
+    ->name('agribisnis-classic-trust.')
     ->group(function () use ($agroData, $agroView) {
         $data = ['agro' => $agroData, 'v' => $agroView];
 

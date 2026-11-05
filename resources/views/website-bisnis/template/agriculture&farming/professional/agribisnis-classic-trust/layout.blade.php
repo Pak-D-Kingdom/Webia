@@ -1,11 +1,11 @@
-@php
+﻿@php
     $img = $img ?? fn ($f) => asset($agro['img_path'] . '/' . $f);
     $assetDir = 'website-bisnis/template/agriculture&farming/professional/agribisnis-classic-trust';
 
     $pageKeys = ['home', 'komoditas', 'panen', 'spesifikasi', 'minimum', 'kapasitas', 'distribusi', 'sertifikasi', 'b2b', 'penawaran', 'ai'];
     $pageUrls = [];
     foreach ($pageKeys as $k) {
-        $pageUrls[$k] = route('agribisnis.' . $k);
+        $pageUrls[$k] = route('agribisnis-classic-trust.' . $k);
     }
 
     $faqPayload = [];
@@ -36,7 +36,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>@yield('title', $agro['meta']['title'])</title>
-    <meta name="description" content="@yield('description', 'AgroTrade — agribisnis dan perdagangan komoditas pertanian berkualitas ekspor: padi, jagung, kopi, kakao, kelapa sawit, karet, lada, teh, sayuran, dan buah-buahan.')">
+    <meta name="description" content="@yield('description', 'AgroTrade â€” agribisnis dan perdagangan komoditas pertanian berkualitas ekspor: padi, jagung, kopi, kakao, kelapa sawit, karet, lada, teh, sayuran, dan buah-buahan.')">
     <meta name="theme-color" content="#0f2622">
     <link rel="icon" type="image/svg+xml" href="{{ $img('favicon.svg') }}">
 

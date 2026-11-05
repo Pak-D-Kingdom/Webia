@@ -1,6 +1,6 @@
-@extends($v . '.layout')
+﻿@extends($v . '.layout')
 
-@section('title', 'Katalog Komoditas — AgroTrade')
+@section('title', 'Katalog Komoditas â€” AgroTrade')
 @section('description', 'Katalog komoditas AgroTrade: padi, jagung, kopi, kakao, kelapa sawit, karet, lada, teh, sayuran, dan buah-buahan berkualitas ekspor.')
 
 @section('content')
@@ -19,7 +19,7 @@
     <div class="toolbar">
         <label class="search-field" for="cmSearch">
             <svg class="i" aria-hidden="true"><use href="#i-search"/></svg>
-            <input type="search" id="cmSearch" placeholder="Cari komoditas…" autocomplete="off">
+            <input type="search" id="cmSearch" placeholder="Cari komoditasâ€¦" autocomplete="off">
         </label>
         <div class="chips" role="group" aria-label="Filter kategori">
             <button type="button" class="chip is-active" data-filter="all" aria-pressed="true">Semua</button>
@@ -50,8 +50,8 @@
                     </dl>
                 </div>
                 <div class="cm-card__foot">
-                    <a class="link-amber link-amber--sm" href="{{ route('agribisnis.spesifikasi') }}#{{ $c['slug'] }}">Spesifikasi <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-                    <a class="btn btn--green btn--sm" href="{{ route('agribisnis.penawaran') }}?komoditas={{ $c['slug'] }}">Minta Penawaran</a>
+                    <a class="link-amber link-amber--sm" href="{{ route('agribisnis-classic-trust.spesifikasi') }}#{{ $c['slug'] }}">Spesifikasi <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                    <a class="btn btn--green btn--sm" href="{{ route('agribisnis-classic-trust.penawaran') }}?komoditas={{ $c['slug'] }}">Minta Penawaran</a>
                 </div>
             </article>
         @endforeach

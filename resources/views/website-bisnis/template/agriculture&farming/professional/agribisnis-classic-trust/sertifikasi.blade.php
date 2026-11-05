@@ -1,6 +1,6 @@
-@extends($v . '.layout')
+﻿@extends($v . '.layout')
 
-@section('title', 'Sertifikasi — AgroTrade')
+@section('title', 'Sertifikasi â€” AgroTrade')
 @section('description', 'Sertifikasi AgroTrade: USDA Organic, HACCP, ISO 22000, dan Halal Indonesia untuk menjamin kualitas dan keamanan komoditas.')
 
 @section('content')
@@ -34,7 +34,7 @@
             <h2>Dokumen pendukung ekspor</h2>
             <p>Setiap pengiriman dilengkapi Certificate of Analysis (COA), Phytosanitary Certificate, Certificate of Origin (COO), serta packing list dan bill of lading sesuai kebutuhan negara tujuan.</p>
         </div>
-        <a class="btn btn--green btn--sm" href="{{ route('agribisnis.penawaran') }}">Minta Dokumen <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        <a class="btn btn--green btn--sm" href="{{ route('agribisnis-classic-trust.penawaran') }}">Minta Dokumen <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
     </div>
 </section>
 

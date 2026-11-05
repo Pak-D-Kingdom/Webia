@@ -1,6 +1,6 @@
-@extends($v . '.layout')
+﻿@extends($v . '.layout')
 
-@section('title', 'AgroTrade — Quality Harvests, Global Markets')
+@section('title', 'AgroTrade â€” Quality Harvests, Global Markets')
 
 @section('content')
 @php
@@ -20,10 +20,10 @@
             </h1>
             <p class="hero__text">{{ $h['text'] }}</p>
             <div class="hero__cta">
-                <a class="btn btn--amber btn--lg" href="{{ route('agribisnis.komoditas') }}">
+                <a class="btn btn--amber btn--lg" href="{{ route('agribisnis-classic-trust.komoditas') }}">
                     {{ $h['cta1'] }} <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg>
                 </a>
-                <a class="btn btn--outline-light btn--lg" href="{{ route('agribisnis.penawaran') }}">{{ $h['cta2'] }}</a>
+                <a class="btn btn--outline-light btn--lg" href="{{ route('agribisnis-classic-trust.penawaran') }}">{{ $h['cta2'] }}</a>
             </div>
         </div>
 
@@ -52,12 +52,12 @@
         <div class="card card--leaf catalog-intro">
             <h2 id="hCatalog">Katalog Komoditas</h2>
             <p>Pilihan komoditas unggulan berkualitas ekspor.</p>
-            <a class="link-amber" href="{{ route('agribisnis.komoditas') }}">Lihat Semua Komoditas <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="link-amber" href="{{ route('agribisnis-classic-trust.komoditas') }}">Lihat Semua Komoditas <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </div>
         <ul class="tiles">
             @foreach ($agro['commodities'] as $c)
                 <li>
-                    <a class="tile" href="{{ route('agribisnis.komoditas') }}#{{ $c['slug'] }}">
+                    <a class="tile" href="{{ route('agribisnis-classic-trust.komoditas') }}#{{ $c['slug'] }}">
                         <span class="tile__img"><img src="{{ $img($c['img']) }}" alt="{{ $c['name'] }}" loading="lazy" width="440" height="232"></span>
                         <span class="tile__name">{{ $c['name'] }}</span>
                     </a>
@@ -66,13 +66,13 @@
         </ul>
     </section>
 
-    {{-- ================= BARIS 2: PANEN · SPESIFIKASI · MOQ · KAPASITAS ================= --}}
+    {{-- ================= BARIS 2: PANEN Â· SPESIFIKASI Â· MOQ Â· KAPASITAS ================= --}}
     <section class="home-info">
         <article class="card panen" aria-labelledby="hPanen">
             <div class="panen__top">
                 <h2 id="hPanen">Informasi Tanaman &amp; Panen</h2>
                 <p>Data terkini seputar musim tanam, panen, dan potensi hasil.</p>
-                <a class="link-light" href="{{ route('agribisnis.panen') }}">Lihat Detail <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                <a class="link-light" href="{{ route('agribisnis-classic-trust.panen') }}">Lihat Detail <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
             </div>
             <ul class="panen__items">
                 @foreach ($agro['home_harvest'] as $it)
@@ -91,7 +91,7 @@
         <article class="card spec" aria-labelledby="hSpec">
             <div class="spec__head">
                 <h2 id="hSpec">Spesifikasi Produk</h2>
-                <a class="link-amber link-amber--sm" href="{{ route('agribisnis.spesifikasi') }}">Lihat Detail <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                <a class="link-amber link-amber--sm" href="{{ route('agribisnis-classic-trust.spesifikasi') }}">Lihat Detail <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
             </div>
             <p class="spec__sub">Detail kualitas dan standar produk komoditas.</p>
             <ul class="spec__list">
@@ -105,7 +105,7 @@
             </ul>
         </article>
 
-        <a class="beantile" href="{{ route('agribisnis.spesifikasi') }}#kopi" aria-label="Spesifikasi kopi">
+        <a class="beantile" href="{{ route('agribisnis-classic-trust.spesifikasi') }}#kopi" aria-label="Spesifikasi kopi">
             <img src="{{ $img('spesifikasi-kopi.jpg') }}" alt="Biji kopi pilihan" loading="lazy" width="260" height="708">
         </a>
 
@@ -119,7 +119,7 @@
                     <strong>{{ $agro['moq']['headline'] }}</strong>
                 </div>
             </div>
-            <a class="link-amber link-amber--sm" href="{{ route('agribisnis.minimum') }}">Lihat Detail <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="link-amber link-amber--sm" href="{{ route('agribisnis-classic-trust.minimum') }}">Lihat Detail <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </article>
 
         <article class="card card--leaf cap" aria-labelledby="hCap">
@@ -132,17 +132,17 @@
                     <span>{{ $agro['capacity']['unit'] }}</span>
                 </div>
             </div>
-            <a class="link-amber link-amber--sm" href="{{ route('agribisnis.kapasitas') }}">Lihat Kapasitas <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="link-amber link-amber--sm" href="{{ route('agribisnis-classic-trust.kapasitas') }}">Lihat Kapasitas <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </article>
     </section>
 
-    {{-- ================= BARIS 3: DISTRIBUSI · SERTIFIKASI · PROSES · B2B/QUOTATION ================= --}}
+    {{-- ================= BARIS 3: DISTRIBUSI Â· SERTIFIKASI Â· PROSES Â· B2B/QUOTATION ================= --}}
     <section class="home-mid">
         <article class="card dist" aria-labelledby="hDist">
             <h2 id="hDist">Jangkauan Distribusi</h2>
             <p>{{ $agro['distribution']['text'] }}</p>
             <div class="dist__map" role="img" aria-label="Peta jangkauan distribusi Indonesia dan dunia"></div>
-            <a class="link-dark" href="{{ route('agribisnis.distribusi') }}">Lihat Peta <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="link-dark" href="{{ route('agribisnis-classic-trust.distribusi') }}">Lihat Peta <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </article>
 
         <article class="card cert" aria-labelledby="hCert">
@@ -153,14 +153,14 @@
                     <li><img src="{{ $img($c['img']) }}" alt="{{ $c['name'] }}" loading="lazy" width="64" height="64"></li>
                 @endforeach
             </ul>
-            <a class="link-dark" href="{{ route('agribisnis.sertifikasi') }}">Lihat Sertifikasi <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="link-dark" href="{{ route('agribisnis-classic-trust.sertifikasi') }}">Lihat Sertifikasi <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </article>
 
         <article class="card proc" aria-labelledby="hProc">
             <div class="proc__top">
                 <h2 id="hProc">{{ $agro['process']['title'] }}</h2>
                 <p>{{ $agro['process']['text'] }}</p>
-                <a class="link-light" href="{{ route('agribisnis.distribusi') }}#rantai-pasok">Lihat Detail <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                <a class="link-light" href="{{ route('agribisnis-classic-trust.distribusi') }}#rantai-pasok">Lihat Detail <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
             </div>
             <ol class="proc__steps">
                 @foreach ($agro['process']['steps'] as $st)
@@ -178,7 +178,7 @@
                 <div class="mini__body">
                     <h2 id="hB2b">{{ $agro['b2b']['title'] }}</h2>
                     <p>{{ $agro['b2b']['text'] }}</p>
-                    <a class="btn btn--green btn--sm" href="{{ route('agribisnis.b2b') }}">{{ $agro['b2b']['cta'] }} <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                    <a class="btn btn--green btn--sm" href="{{ route('agribisnis-classic-trust.b2b') }}">{{ $agro['b2b']['cta'] }} <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
                 </div>
             </article>
             <article class="card mini" aria-labelledby="hQuo">
@@ -186,7 +186,7 @@
                 <div class="mini__body">
                     <h2 id="hQuo">{{ $agro['quotation']['title'] }}</h2>
                     <p>{{ $agro['quotation']['text'] }}</p>
-                    <a class="btn btn--green btn--sm" href="{{ route('agribisnis.penawaran') }}">{{ $agro['quotation']['cta'] }} <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                    <a class="btn btn--green btn--sm" href="{{ route('agribisnis-classic-trust.penawaran') }}">{{ $agro['quotation']['cta'] }} <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
                 </div>
             </article>
         </div>

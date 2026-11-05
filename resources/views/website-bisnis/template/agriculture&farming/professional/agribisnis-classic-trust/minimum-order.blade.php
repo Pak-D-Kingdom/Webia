@@ -1,6 +1,6 @@
-@extends($v . '.layout')
+﻿@extends($v . '.layout')
 
-@section('title', 'Jumlah Pesanan Minimum — AgroTrade')
+@section('title', 'Jumlah Pesanan Minimum â€” AgroTrade')
 @section('description', 'Ketentuan jumlah pesanan minimum (MOQ), pembayaran, Incoterms, dan waktu produksi komoditas AgroTrade.')
 
 @section('content')
@@ -48,7 +48,7 @@
                         <td><b>{{ $c['moq'] }}</b></td>
                         <td>{{ $c['packaging'] }}</td>
                         <td>{{ $c['capacity'] }}</td>
-                        <td><a class="link-amber link-amber--sm" href="{{ route('agribisnis.penawaran') }}?komoditas={{ $c['slug'] }}">Minta penawaran <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a></td>
+                        <td><a class="link-amber link-amber--sm" href="{{ route('agribisnis-classic-trust.penawaran') }}?komoditas={{ $c['slug'] }}">Minta penawaran <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a></td>
                     </tr>
                 @endforeach
             </tbody>

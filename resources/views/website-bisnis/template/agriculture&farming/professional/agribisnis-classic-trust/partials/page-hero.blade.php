@@ -1,10 +1,10 @@
-{{-- Variabel: $ph_title, $ph_lead, $ph_icon (opsional) --}}
+﻿{{-- Variabel: $ph_title, $ph_lead, $ph_icon (opsional) --}}
 <section class="phero">
     <div class="phero__bg" aria-hidden="true"></div>
     <div class="container phero__in">
         <nav class="crumb" aria-label="Breadcrumb">
             <ol>
-                <li><a href="{{ route('agribisnis.home') }}">Beranda</a></li>
+                <li><a href="{{ route('agribisnis-classic-trust.home') }}">Beranda</a></li>
                 <li aria-current="page">{{ $ph_title }}</li>
             </ol>
         </nav>

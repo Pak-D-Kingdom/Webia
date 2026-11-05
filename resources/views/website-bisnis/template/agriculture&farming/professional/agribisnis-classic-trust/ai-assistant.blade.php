@@ -1,6 +1,6 @@
-@extends($v . '.layout')
+﻿@extends($v . '.layout')
 
-@section('title', 'AI Assistant & FAQ — AgroTrade')
+@section('title', 'AI Assistant & FAQ â€” AgroTrade')
 @section('description', 'Tanya AgroBot, asisten AI AgroTrade, seputar komoditas, harga, proses pengiriman, sertifikasi, dan peluang kemitraan.')
 
 @section('content')
@@ -42,7 +42,7 @@
                     </summary>
                     <div class="faq__a">
                         <p>{{ $f['a'] }}</p>
-                        <a class="link-amber link-amber--sm" href="{{ route('agribisnis.' . $f['page']) }}">{{ $f['cta'] }} <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                        <a class="link-amber link-amber--sm" href="{{ route('agribisnis-classic-trust.' . $f['page']) }}">{{ $f['cta'] }} <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
                     </div>
                 </details>
             @endforeach
@@ -52,6 +52,6 @@
 
 @include($v . '.partials.cta-band', [
     'cta_title' => 'Masih ada pertanyaan?',
-    'cta_text'  => 'Tim kami siap membantu lewat WhatsApp pada jam kerja, Senin sampai Jumat pukul 08:00 – 17:00 WIB.',
+    'cta_text'  => 'Tim kami siap membantu lewat WhatsApp pada jam kerja, Senin sampai Jumat pukul 08:00 â€“ 17:00 WIB.',
 ])
 @endsection

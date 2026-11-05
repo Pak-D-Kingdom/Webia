@@ -1,11 +1,11 @@
-@php $f = $agro['footer']; @endphp
+﻿@php $f = $agro['footer']; @endphp
 <footer class="footer" id="siteFooter">
     <div class="footer__leaf footer__leaf--l" aria-hidden="true"></div>
     <div class="footer__leaf footer__leaf--r" aria-hidden="true"></div>
 
     <div class="container footer__grid">
         <div class="footer__brand">
-            <a class="brand brand--light" href="{{ route('agribisnis.home') }}" aria-label="AgroTrade — beranda">
+            <a class="brand brand--light" href="{{ route('agribisnis-classic-trust.home') }}" aria-label="AgroTrade â€” beranda">
                 <img class="brand__logo" src="{{ $img('logo-agrotrade.svg') }}" width="48" height="42" alt="">
                 <span class="brand__txt">
                     <strong>AgroTrade</strong>
@@ -31,7 +31,7 @@
                     @foreach ($col[1] as $link)
                         @php
                             $parts = explode('#', $link[1], 2);
-                            $href = route('agribisnis.' . $parts[0]) . (isset($parts[1]) ? '#' . $parts[1] : '');
+                            $href = route('agribisnis-classic-trust.' . $parts[0]) . (isset($parts[1]) ? '#' . $parts[1] : '');
                         @endphp
                         <li><a href="{{ $href }}">{{ $link[0] }}</a></li>
                     @endforeach

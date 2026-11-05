@@ -1,6 +1,6 @@
-@extends($v . '.layout')
+﻿@extends($v . '.layout')
 
-@section('title', 'Spesifikasi Produk — AgroTrade')
+@section('title', 'Spesifikasi Produk â€” AgroTrade')
 @section('description', 'Detail kualitas dan standar produk komoditas AgroTrade: kadar air, ukuran, kemurnian, jenis, dan kemasan.')
 
 @section('content')
@@ -49,8 +49,8 @@
                         <div><dt>Kemasan tersedia</dt><dd>{{ $c['packaging'] }}</dd></div>
                     </dl>
                     <div class="spec-panel__actions">
-                        <a class="btn btn--amber btn--sm" href="{{ route('agribisnis.penawaran') }}?komoditas={{ $c['slug'] }}">Minta Penawaran <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-                        <a class="btn btn--ghost-dark btn--sm" href="{{ route('agribisnis.sertifikasi') }}">Lihat Sertifikasi</a>
+                        <a class="btn btn--amber btn--sm" href="{{ route('agribisnis-classic-trust.penawaran') }}?komoditas={{ $c['slug'] }}">Minta Penawaran <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                        <a class="btn btn--ghost-dark btn--sm" href="{{ route('agribisnis-classic-trust.sertifikasi') }}">Lihat Sertifikasi</a>
                     </div>
                 </div>
             </article>

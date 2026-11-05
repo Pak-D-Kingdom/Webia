@@ -1,4 +1,4 @@
-<div class="topbar" id="topbar">
+﻿<div class="topbar" id="topbar">
     <div class="container topbar__in">
         <ul class="topbar__list">
             @foreach ($agro['topbar']['items'] as $item)
@@ -33,7 +33,7 @@
 
 <header class="nav" id="siteNav">
     <div class="container nav__in">
-        <a class="brand" href="{{ route('agribisnis.home') }}" aria-label="AgroTrade — beranda">
+        <a class="brand" href="{{ route('agribisnis-classic-trust.home') }}" aria-label="AgroTrade â€” beranda">
             <img class="brand__logo" src="{{ $img('logo-agrotrade.svg') }}" width="48" height="42" alt="">
             <span class="brand__txt">
                 <strong>AgroTrade</strong>
@@ -45,13 +45,13 @@
             <ul class="menu__list">
                 @foreach ($agro['nav'] as $item)
                     <li>
-                        <a href="{{ route('agribisnis.' . $item['route']) }}"
-                           class="menu__link {{ request()->routeIs('agribisnis.' . $item['route']) ? 'is-active' : '' }}"
-                           @if (request()->routeIs('agribisnis.' . $item['route'])) aria-current="page" @endif>{{ $item['label'] }}</a>
+                        <a href="{{ route('agribisnis-classic-trust.' . $item['route']) }}"
+                           class="menu__link {{ request()->routeIs('agribisnis-classic-trust.' . $item['route']) ? 'is-active' : '' }}"
+                           @if (request()->routeIs('agribisnis-classic-trust.' . $item['route'])) aria-current="page" @endif>{{ $item['label'] }}</a>
                     </li>
                 @endforeach
             </ul>
-            <a class="btn btn--amber btn--block menu__cta-mobile" href="{{ route('agribisnis.b2b') }}">
+            <a class="btn btn--amber btn--block menu__cta-mobile" href="{{ route('agribisnis-classic-trust.b2b') }}">
                 Hubungi Kami <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg>
             </a>
         </nav>
@@ -60,7 +60,7 @@
             <button type="button" class="icon-btn" id="searchToggle" aria-label="Cari komoditas" aria-expanded="false" aria-controls="searchBox">
                 <svg class="i" aria-hidden="true"><use href="#i-search"/></svg>
             </button>
-            <a class="btn btn--amber nav__cta" href="{{ route('agribisnis.b2b') }}">
+            <a class="btn btn--amber nav__cta" href="{{ route('agribisnis-classic-trust.b2b') }}">
                 Hubungi Kami <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg>
             </a>
             <button type="button" class="icon-btn nav__burger" id="menuToggle" aria-label="Buka menu" aria-expanded="false" aria-controls="mainMenu">
@@ -71,9 +71,9 @@
     </div>
 
     <div class="searchbox" id="searchBox" hidden>
-        <form class="container searchbox__form" action="{{ route('agribisnis.komoditas') }}" method="get" role="search">
+        <form class="container searchbox__form" action="{{ route('agribisnis-classic-trust.komoditas') }}" method="get" role="search">
             <svg class="i" aria-hidden="true"><use href="#i-search"/></svg>
-            <input type="search" name="q" placeholder="Cari komoditas, mis. kopi, kakao, lada…" aria-label="Cari komoditas" autocomplete="off">
+            <input type="search" name="q" placeholder="Cari komoditas, mis. kopi, kakao, ladaâ€¦" aria-label="Cari komoditas" autocomplete="off">
             <button type="submit" class="btn btn--amber btn--sm">Cari</button>
         </form>
     </div>
