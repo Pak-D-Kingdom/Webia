@@ -1522,6 +1522,18 @@ Route::prefix('webia/template')->group(function () {
     )->name('webia.template.aria-thorne-author-writer');
 });
 
+Route::prefix('webia/template')->group(function () {
+    Route::view(
+        '/arya-sanjaya-ruby-editorial',
+        'website-bisnis.templates.personal-brand.author-writer.arya-sanjaya-ruby-editorial'
+    )->name('webia.template.personal-brand.arya-sanjaya-ruby-editorial');
+
+    Route::view(
+        '/arya-sanjaya-plum-velvet',
+        'website-bisnis.templates.personal-brand.author-writer.arya-sanjaya-plum-velvet'
+    )->name('webia.template.personal-brand.arya-sanjaya-plum-velvet');
+});
+
 Route::view(
     'webia/template/fnb/restaurant/little-corner',
     'website-bisnis.templates.fnb.little-corner'

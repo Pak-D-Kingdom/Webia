@@ -3,6 +3,7 @@
 @import './property-template-themes.css';
 @import './agriculture-template-themes.css';
 @import './kids-template-themes.css';
+@import './author-template-themes.css';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -19,6 +20,8 @@
 @source '../views/website-bisnis/templates/agriculture/agriternak-bold-livestock.blade.php';
 @source '../views/website-bisnis/templates/retail/baby-kids-products/petit-wonder-candy-cloud.blade.php';
 @source '../views/website-bisnis/templates/retail/baby-kids-products/aurora-petit-yellow-sunshine.blade.php';
+@source '../views/website-bisnis/templates/personal-brand/author-writer/arya-sanjaya-ruby-editorial.blade.php';
+@source '../views/website-bisnis/templates/personal-brand/author-writer/arya-sanjaya-plum-velvet.blade.php';
 
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
