@@ -66,16 +66,6 @@
         }
         window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
  
-        /* ---------- Portal D-KREASI: tampil setelah scroll (cadangan dari website-bisnis.js) ---------- */
-        var portal = doc.querySelector('.webia-portal');
-        function portalState() {
-            if (!portal) return;
-            var y = Math.max(window.scrollY || 0, root.scrollTop || 0, doc.body.scrollTop || 0);
-            portal.classList.toggle('is-visible', y > 180);
-        }
-        doc.addEventListener('scroll', portalState, { passive: true, capture: true });
-        portalState();
- 
         /* ---------- Reveal saat scroll ---------- */
         var targets = '.website-section-heading,.webia-discovery-heading,.webia-gallery-heading,.website-benefit-card,.website-package-card,' +
             '.website-process-grid article,.website-addon-list article,.webia-category-card,.webia-template-card,.website-faq-list details,.website-package-note,' +
