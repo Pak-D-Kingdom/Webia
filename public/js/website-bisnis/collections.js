@@ -31,13 +31,13 @@ document.addEventListener('DOMContentLoaded', () => {
         {id:'interior-architecture',name:'Interior & Architecture',types:['Interior Design Studio','Architecture & Building Design','Furniture & Custom Furniture']},
         {id:'home-services',name:'Home Services',types:['Home Renovation & Repair','Laundry','Home Cleaning & Deep Cleaning']},
         {id:'photography-creative-studio',name:'Photography & Creative Studio',types:['Product Photography & Videography','Motion Graphics & 3D Studio','UGC & Content Creator Studio']},
-        {id:'pet-animal-services',name:'Pet & Animal Services',types:['Pet Shop','Pet Training','Animal Care']},
+        {id:'pet-animal-service',name:'Pet & Animal Services',types:['Pet Shop','Pet Training','Animal Care']},
         {id:'transportation-logistics',name:'Transportation & Logistics',types:['Logistics Company','Delivery Service','Moving Company']},
         {id:'agriculture-farming',name:'Agriculture & Farming',types:['Agribisnis & Perdagangan Komoditas Pertanian','Perlengkapan & Peralatan Pertanian','Peternakan & Budidaya Hewan']},
         {id:'nonprofit-community',name:'Nonprofit & Community',types:['Foundation','Social Organization','Volunteer Group']},
         {id:'technology-it',name:'Technology & IT',types:['Software House','Data Analytics','Hardware & Computer Networking']}
     ];
-    const styles = ['Modern','Classic','Elegant','Minimalist','Vintage','Professional','Luxury','Playful & Colorful','Bold','Futuristic','Artistic','Friendly','Premium Minimal'];
+    const styles = ['Modern','Classic','Elegant','Minimalist','Vintage','Professional','Luxury','Playful & Colorful','Bold','Futuristic','Futuristic & Neon','Artistic','Friendly','Premium Minimal'];
     const selectedCategories = new Set();
     const selectedTypes = new Set();
     let selectedStyle = '';
