@@ -33,6 +33,7 @@ class DatabaseSeederTest extends TestCase
             ->assertSee('Blush Nail Studio')
             ->assertSee('Sage Nail Atelier')
             ->assertSee('Maison Soleil')
+            ->assertSee('Pawtopia — Animal Care Masa Depan')
             ->assertSee('Sweet Crumb Bakery')
             ->assertSee('Kusuma Ningrat — Royal Heritage Catering')
             ->assertSee('NUVIA Skin Tech Clinic — Graphite & Lilac')
