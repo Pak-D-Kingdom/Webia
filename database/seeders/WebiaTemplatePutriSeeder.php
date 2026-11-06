@@ -110,6 +110,26 @@ class WebiaTemplatePutriSeeder extends Seeder
                 'sort_order' => 58,
             ],
 
+            // Template 6 — Agriculture & Farming · Perlengkapan & Peralatan Pertanian · Corporate · Sage Green (Sesuai Screenshot)
+            [
+                'name' => 'AgroPratama Machinery — Perlengkapan & Peralatan Pertanian Corporate Sage Green',
+                'slug' => 'agriculture-peralatanpertanian-corporate-sagegreen-putri',
+                'category_slug' => 'agriculture-farming',
+                'category_label' => 'Agriculture & Farming',
+                'business_types' => ['Perlengkapan & Peralatan Pertanian'],
+                'design_style' => 'Corporate',
+                'color_theme' => 'Sage Green',
+                'description' => 'Website distributor resmi mesin dan perlengkapan pertanian modern bergaya Corporate bertema Sage Green untuk AgroPratama Machinery. Menghadirkan katalog traktor, combine harvester, drone sprayer presisi, simulasi pembiayaan armada, layanan 3S (Sales, Service, Spare Parts), dan asisten virtual AgroBot AI.',
+                'preview_style' => 'preview-company',
+                'eyebrow' => 'MODERN AGRICULTURAL MACHINERY & EQUIPMENT',
+                'headline' => 'Mekanisasi Pertanian Modern,<br>Fondasi Ketahanan Pangan.',
+                'tag' => 'Agriculture & Farming · Perlengkapan & Peralatan Pertanian · Corporate · Sage Green',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/agriculture-peralatanpertanian-corporate-sagegreen-putri',
+                'is_active' => true,
+                'sort_order' => 60,
+            ],
+
             // Template Default — Technology & IT · Software House · Professional
             [
                 'name' => 'Nexora Digital — Software House',
