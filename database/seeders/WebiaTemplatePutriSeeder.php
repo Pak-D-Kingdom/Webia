@@ -130,6 +130,26 @@ class WebiaTemplatePutriSeeder extends Seeder
                 'sort_order' => 60,
             ],
 
+            // Template 7 — Agriculture & Farming · Perlengkapan & Peralatan Pertanian · Creative · Matcha Latte (Sesuai Screenshot)
+            [
+                'name' => 'MatchaAgro Machinery — Perlengkapan & Peralatan Pertanian Creative Matcha Latte',
+                'slug' => 'agriculture-peralatanpertanian-creative-matchalatte-putri',
+                'category_slug' => 'agriculture-farming',
+                'category_label' => 'Agriculture & Farming',
+                'business_types' => ['Perlengkapan & Peralatan Pertanian'],
+                'design_style' => 'Creative',
+                'color_theme' => 'Matcha Latte',
+                'description' => 'Website distributor perlengkapan dan alat pertanian modern bergaya Creative bertema Matcha Latte untuk MatchaAgro Machinery. Desain artistik-organik dengan layout asimetris, fluid glassmorphism, showcase traktor & smart drone presisi, simulator efisiensi lahan interaktif, FAQ dinamis, concierge WhatsApp, dan MatchaAgro AI.',
+                'preview_style' => 'preview-company',
+                'eyebrow' => 'CREATIVE AGRI-MACHINERY & SMART GEAR',
+                'headline' => 'Harmoni Alam & Mesin,<br>Inovasi Pertanian Berkelanjutan.',
+                'tag' => 'Agriculture & Farming · Perlengkapan & Peralatan Pertanian · Creative · Matcha Latte',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/agriculture-peralatanpertanian-creative-matchalatte-putri',
+                'is_active' => true,
+                'sort_order' => 62,
+            ],
+
             // Template Default — Technology & IT · Software House · Professional
             [
                 'name' => 'Nexora Digital — Software House',
