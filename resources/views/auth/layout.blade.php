@@ -74,6 +74,10 @@
                                 <span class="rounded border border-secondary-fixed/30 bg-secondary-fixed/20 px-1.5 py-0.5 text-[10px] font-bold text-secondary-fixed">{{ $verificationBadge }} Baru</span>
                             @endif
                         </a>
+                        <a class="flex min-h-11 items-center gap-space-sm rounded-lg border-l-4 px-space-sm py-2 font-label-md text-label-md transition-colors {{ request()->routeIs('admin.hosting-services.*') ? 'border-secondary-fixed bg-surface-container-lowest/10 text-on-primary' : 'border-transparent text-primary-fixed-dim/70 hover:bg-surface-container-lowest/5 hover:text-on-primary' }}" href="{{ route('admin.hosting-services.index') }}" @if (request()->routeIs('admin.hosting-services.*')) aria-current="page" @endif>
+                            <span aria-hidden="true" class="material-symbols-outlined">dns</span>
+                            Hosting
+                        </a>
                     </div>
                 </div>
                 <div>

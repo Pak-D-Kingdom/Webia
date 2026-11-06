@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminAiQuotaController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\HostingServiceController as AdminHostingServiceController;
 use App\Http\Controllers\Admin\WebiaAddonController;
 use App\Http\Controllers\Admin\WebiaOrderController as AdminWebiaOrderController;
 use App\Http\Controllers\Admin\WebiaPackageController;
@@ -72,6 +73,7 @@ Route::middleware('auth')->group(function (): void {
         Route::get('orders/{order}/receipt', [AdminWebiaOrderController::class, 'receipt'])->name('orders.receipt');
         Route::post('orders/{order}/verify', [AdminWebiaOrderController::class, 'verify'])->name('orders.verify');
         Route::post('orders/{order}/progress', [AdminWebiaOrderController::class, 'progress'])->name('orders.progress');
+        Route::resource('hosting-services', AdminHostingServiceController::class)->only(['index', 'create', 'store', 'show']);
         Route::get('ai-quotas', [AdminAiQuotaController::class, 'index'])->name('ai.index');
         Route::get('ai-quotas/export', [AdminAiQuotaController::class, 'export'])->name('ai.export');
         Route::post('ai-quotas/{tenant_id}/tier', [AdminAiQuotaController::class, 'updateTier'])->name('ai.update-tier');
