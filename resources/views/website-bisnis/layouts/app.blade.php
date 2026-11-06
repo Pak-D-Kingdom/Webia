@@ -11,8 +11,9 @@
 
      <meta name="theme-color" content="#123B82">
 
-     <link rel="stylesheet" href="{{ asset('css/website-bisnis/website-bisnis.css') }}">
+     {{-- <link rel="stylesheet" href="{{ asset('css/website-bisnis/website-bisnis.css') }}"> --}}
      <link rel="stylesheet" href="{{ asset('css/website-bisnis/ai-assistant.css') }}">
+     <link rel="stylesheet" href="{{ asset('css/website-bisnis/webia-galaxy.css') }}"> {{-- setelah ai-assistant.css --}}
 
      @stack('styles')
  </head>
@@ -27,14 +28,18 @@
 
      @include('website-bisnis.components.footer')
 
-     <script src="{{ asset('js/website-bisnis/website-bisnis.js') }}" defer></script>
+     {{-- <script src="{{ asset('js/website-bisnis/website-bisnis.js') }}" defer></script> --}}
+     <script src="{{ asset('js/website-bisnis/webia-galaxy.js') }}" defer></script> {{-- setelah website-bisnis.js --}}
      @stack('scripts')
 
-    @include('website-bisnis.components.ai-assistant')
-    <script src="{{ asset('js/website-bisnis/ai-assistant.js') }}" defer></script>
+     {{-- Nonaktifkan komponen dummy frontend --}}
+     {{-- @include('website-bisnis.components.ai-assistant') --}}
 
-    @include('website-bisnis.components.whatsapp-fab')
-    @include('website-bisnis.components.portal-dkreasi')
+     {{-- Widget AI Assistant Webia yang sebenarnya --}}
+     <script src="http://localhost:8001/widget/widget.js" data-site-key="site_webia_public" data-layer="l3" defer></script>
+
+     @include('website-bisnis.components.whatsapp-fab')
+     @include('website-bisnis.components.portal-dkreasi')
  </body>
 
  </html>
