@@ -373,14 +373,19 @@
                 return;
             }
 
-            /* Kirim lewat WhatsApp: buka wa.me ke nomor tujuan dengan pesan terisi (tanpa backend). */
+            /* Kirim lewat WhatsApp: buka wa.me ke nomor tujuan dengan pesan terisi (tanpa backend).
+               window.open dipanggil paling awal agar masih dianggap aksi pengguna oleh browser. */
             var waUrl = buildWaUrl(form);
+            var win = window.open(waUrl, '_blank');
+            if (win) { win.opener = null; }
             var waLink = $('[data-wa-link]', form);
             if (waLink) { waLink.href = waUrl; }
             form.reset();
             if (ok) { ok.hidden = false; ok.scrollIntoView({ block: 'nearest', behavior: reduceMotion ? 'auto' : 'smooth' }); }
-            var win = window.open(waUrl, '_blank');
-            if (win) { win.opener = null; }
+            if (!win) {
+                /* Popup diblokir: arahkan tab ini langsung ke WhatsApp agar pesan tetap terkirim */
+                window.setTimeout(function () { window.location.href = waUrl; }, 700);
+            }
         });
         form.addEventListener('input', function () { if (ok && !ok.hidden) { ok.hidden = true; } });
     });

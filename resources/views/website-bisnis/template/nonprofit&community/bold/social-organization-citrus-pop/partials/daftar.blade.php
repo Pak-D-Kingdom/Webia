@@ -11,12 +11,12 @@
 <label>Nomor WhatsApp<input name="WhatsApp" required inputmode="tel" autocomplete="tel" pattern="[0-9+ -]{8,16}"></label>
 <label>Kota atau RW<input name="Domisili" required></label>
 <label>Ingin menjadi<select name="Peran" required><option value="">Pilih peran</option><option>Relawan</option><option>Anggota</option><option>Relawan dan anggota</option></select></label>
-<label>Program yang diminati<select name="Program">
+<label class="full">Program yang diminati<select name="Program">
 @foreach($d['programs'] as $p)
 <option>{{ $p['t'] }}</option>
 @endforeach
 </select></label>
-<label>Pesan singkat<textarea name="Pesan" rows="3"></textarea></label>
+<label class="full">Pesan singkat<textarea name="Pesan" rows="3"></textarea></label>
 <button class="btn btn-k" type="submit">Kirim lewat WhatsApp</button><p class="msg" data-msg role="status"></p>
 </form>
 @endif

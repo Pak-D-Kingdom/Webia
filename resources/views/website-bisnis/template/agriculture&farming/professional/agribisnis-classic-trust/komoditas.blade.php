@@ -1,6 +1,6 @@
-﻿@extends($v . '.layout')
+@extends($v . '.layout')
 
-@section('title', 'Katalog Komoditas â€” AgroTrade')
+@section('title', 'Katalog Komoditas — AgroTrade')
 @section('description', 'Katalog komoditas AgroTrade: padi, jagung, kopi, kakao, kelapa sawit, karet, lada, teh, sayuran, dan buah-buahan berkualitas ekspor.')
 
 @section('content')
@@ -19,7 +19,10 @@
     <div class="toolbar">
         <label class="search-field" for="cmSearch">
             <svg class="i" aria-hidden="true"><use href="#i-search"/></svg>
-            <input type="search" id="cmSearch" placeholder="Cari komoditasâ€¦" autocomplete="off">
+            <input type="search" id="cmSearch" placeholder="Cari komoditas…" autocomplete="off">
+            <button type="button" class="search-field__clear" id="cmClear" aria-label="Hapus pencarian" hidden>
+                <svg class="i" aria-hidden="true"><use href="#i-x"/></svg>
+            </button>
         </label>
         <div class="chips" role="group" aria-label="Filter kategori">
             <button type="button" class="chip is-active" data-filter="all" aria-pressed="true">Semua</button>

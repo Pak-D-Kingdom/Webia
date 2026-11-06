@@ -3,6 +3,13 @@
 @section('title', 'Monitoring Kuota AI')
 
 @section('content')
+<style>
+    /* Isolasi khusus menu Monitoring Kuota AI */
+    [data-open-tier-modal],
+    [data-close-tier-modal] {
+        cursor: pointer !important;
+    }
+</style>
 <div class="mb-space-md flex flex-col gap-space-md">
     <!-- Header Halaman Superadmin -->
     <div class="mb-space-xl mt-space-lg flex flex-col justify-between gap-space-md lg:flex-row xl:items-end">
@@ -25,7 +32,7 @@
         </div>
 
         <div class="flex flex-wrap items-center gap-space-xs">
-            <button onclick="window.location.reload()" type="button" title="Muat ulang data" class="flex h-9 items-center gap-1.5 rounded-lg border-2 border-outline-variant bg-surface-container-lowest px-3 font-label-md text-label-md text-on-surface transition-all hover:border-primary hover:text-primary">
+            <button onclick="window.location.reload()" type="button" title="Muat ulang data" class="flex h-9 cursor-pointer items-center gap-1.5 rounded-lg border-2 border-outline-variant bg-surface-container-lowest px-3 font-label-md text-label-md text-on-surface transition-all hover:border-primary hover:text-primary">
                 <span class="material-symbols-outlined text-lg">refresh</span>
                 Refresh
             </button>
@@ -201,7 +208,7 @@
                         @php
                             $p = $client['percentage'];
                             $barClass = $p >= 100 ? 'bg-error' : ($p >= 80 ? 'bg-amber-500' : 'bg-secondary');
-                            $waMessage = "Halo Kak {$client['client_name']}, kami dari Tim Sales WEBIA ingin menginfokan bahwa kuota chatbot AI website {$client['business_name']} saat ini telah terpakai {$p}% ({$client['used_messages']}/{$client['monthly_quota']} pesan). Apakah ingin kami bantu upgrade paket agar bot tetap aktif melayani calon pembeli?";
+                            $waMessage = "Halo Kak {$client['client_name']}, kami dari Tim Webia ingin menginfokan bahwa kuota chatbot AI website {$client['business_name']} saat ini telah terpakai {$p}% ({$client['used_messages']}/{$client['monthly_quota']} pesan).\n\nApakah ingin tambah kuota (+500 pesan Rp49rb / +1.000 pesan Rp89rb) atau upgrade paket website agar chatbot tetap aktif melayani pengunjung?";
                             $waUrl = "https://wa.me/" . preg_replace('/[^0-9]/', '', $client['whatsapp']) . "?text=" . rawurlencode($waMessage);
 
                             $pkgTier = strtolower($client['package_tier'] ?? 'pixel');
@@ -304,15 +311,30 @@
                                     </a>
 
                                     <!-- Tombol Ubah Tier / Top-Up Kuota -->
-                                    <button type="button" onclick="openTierModal('{{ $client['tenant_id'] }}', '{{ addslashes($client['business_name']) }}', '{{ $client['package_tier'] }}', {{ $client['monthly_quota'] }})" title="Ubah Paket & Kuota Klien" class="flex h-8 items-center gap-1 rounded-lg border border-outline-variant bg-surface-container-low px-2.5 font-label-sm text-label-sm font-bold text-on-surface transition-all hover:border-primary hover:text-primary">
+                                    <button type="button"
+                                        data-open-tier-modal
+                                        data-tenant-id="{{ $client['tenant_id'] }}"
+                                        data-tenant-name="{{ $client['business_name'] }}"
+                                        data-current-tier="{{ $client['package_tier'] }}"
+                                        data-current-quota="{{ $client['monthly_quota'] }}"
+                                        onclick="openTierModal('{{ $client['tenant_id'] }}', '{{ addslashes($client['business_name']) }}', '{{ $client['package_tier'] }}', {{ $client['monthly_quota'] }})"
+                                        title="Ubah Paket & Kuota Klien"
+                                        class="flex h-8 cursor-pointer items-center gap-1 rounded-lg border border-outline-variant bg-surface-container-low px-2.5 font-label-sm text-label-sm font-bold text-on-surface transition-all hover:border-primary hover:text-primary">
                                         <span class="material-symbols-outlined text-[16px]">tune</span>
                                         <span class="hidden sm:inline">Ubah Paket</span>
                                     </button>
 
                                     @if ($client['order'])
-                                        <a href="{{ route('admin.orders.show', $client['order']) }}" title="Detail Pesanan" class="flex h-8 w-8 items-center justify-center rounded-lg bg-surface-container-low text-on-surface-variant transition-colors hover:bg-surface-container-high hover:text-primary">
+                                        <a href="{{ route('admin.orders.show', $client['order']) }}"
+                                           data-order-detail
+                                           title="Detail Pesanan ({{ $client['order']->order_number }})"
+                                           class="flex h-8 w-8 items-center justify-center rounded-lg bg-surface-container-low text-on-surface-variant transition-colors hover:bg-surface-container-high hover:text-primary">
                                             <span class="material-symbols-outlined text-[18px]">receipt_long</span>
                                         </a>
+                                    @else
+                                        <span title="Tenant ini belum memiliki data pesanan Webia (Tenant bawaan / dibuat via AI Engine)" class="flex h-8 w-8 cursor-not-allowed items-center justify-center rounded-lg bg-surface-container-low text-outline/50">
+                                            <span class="material-symbols-outlined text-[18px]">receipt_long</span>
+                                        </span>
                                     @endif
                                 </div>
                             </td>
@@ -334,29 +356,62 @@
     </div>
 </div>
 
-<!-- Modal Dialog: Ubah Paket & Top-Up Kuota (Mengikuti Styling Webdev Modal) -->
-<div id="tierModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
+<!-- Modal Dialog: Ubah Paket & Tambah Kuota Klien -->
+<div id="tierModal" class="fixed inset-0 z-[70] hidden items-center justify-center p-4 bg-slate-900/50 backdrop-blur-xs">
     <div class="w-full max-w-md rounded-2xl bg-surface-container-lowest border border-outline-variant p-6 shadow-xl transition-all">
         <div class="flex items-center justify-between border-b border-surface-container pb-3 mb-4">
             <div class="flex items-center gap-2">
                 <span class="material-symbols-outlined text-primary text-2xl">tune</span>
-                <h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Ubah Paket &amp; Kuota Klien</h3>
+                <h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Ubah Paket &amp; Tambah Kuota</h3>
             </div>
-            <button type="button" onclick="closeTierModal()" class="text-on-surface-variant hover:text-on-surface font-bold text-xl">&times;</button>
+            <button type="button" data-close-tier-modal onclick="closeTierModal()" class="cursor-pointer text-on-surface-variant hover:text-on-surface font-bold text-xl">&times;</button>
         </div>
 
         <form id="tierForm" method="POST" action="">
             @csrf
             <div class="space-y-4">
+                {{-- Info Klien --}}
                 <div class="rounded-lg bg-surface-container-low p-3">
                     <span class="font-caption text-caption text-on-surface-variant block mb-0.5">Klien Bisnis / Tenant:</span>
                     <div id="modalTenantName" class="font-label-md font-bold text-on-surface"></div>
-                    <div id="modalTenantId" class="font-mono text-xs text-primary"></div>
+                    <div class="flex items-center justify-between mt-1">
+                        <span id="modalTenantId" class="font-mono text-xs text-primary"></span>
+                        <span id="modalCurrentQuotaBadge" class="text-xs font-bold text-on-surface-variant bg-surface-container px-2 py-0.5 rounded"></span>
+                    </div>
                 </div>
 
+                {{-- Catatan SOP Verifikasi Manual --}}
+                <div class="rounded-lg bg-amber-500/10 border border-amber-500/20 p-2.5 text-xs text-amber-800 flex items-start gap-2">
+                    <span class="material-symbols-outlined text-[16px] text-amber-600 shrink-0 mt-0.5">receipt_long</span>
+                    <span><strong>SOP Upgrade Manual:</strong> Karena payment gateway sedang dalam pengembangan, klien mengonfirmasi pesanan via WhatsApp. Pastikan bukti transfer sudah valid sebelum menyimpan.</span>
+                </div>
+
+                {{-- Opsi Cepat Tambah Kuota Instan (Top-Up) --}}
                 <div>
-                    <label for="packageTierSelect" class="font-label-md font-bold text-on-surface block mb-1.5">Pilih Tingkatan Paket Baru:</label>
-                    <select id="packageTierSelect" name="package_tier" class="h-10 w-full rounded-lg border border-outline-variant bg-surface-container-low px-3 font-body-sm text-body-sm text-on-surface transition-all focus:bg-surface-container-lowest focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
+                    <div class="flex items-center justify-between mb-1.5">
+                        <label class="font-label-md font-bold text-on-surface block">Tambah Kuota Cepat (+Pesan):</label>
+                        <span class="text-[11px] text-on-surface-variant font-normal">Klik untuk memilih</span>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2" id="quickAddQuotaGroup">
+                        <button type="button" id="btn-add-500" onclick="applyAddQuota(500)" class="quick-add-btn cursor-pointer py-2 px-2 text-xs font-bold rounded-xl border border-outline-variant bg-surface-container-low hover:border-primary hover:bg-primary/5 transition-all text-on-surface text-center flex flex-col items-center justify-center">
+                            <span class="block">+500 Pesan</span>
+                            <span class="text-[10px] text-on-surface-variant font-normal">Rp49.000</span>
+                        </button>
+                        <button type="button" id="btn-add-1000" onclick="applyAddQuota(1000)" class="quick-add-btn cursor-pointer py-2 px-2 text-xs font-bold rounded-xl border border-outline-variant bg-surface-container-low hover:border-primary hover:bg-primary/5 transition-all text-on-surface text-center flex flex-col items-center justify-center">
+                            <span class="block">+1.000 Pesan</span>
+                            <span class="text-[10px] text-on-surface-variant font-normal">Rp89.000</span>
+                        </button>
+                        <button type="button" id="btn-add-2500" onclick="applyAddQuota(2500)" class="quick-add-btn cursor-pointer py-2 px-2 text-xs font-bold rounded-xl border border-outline-variant bg-surface-container-low hover:border-primary hover:bg-primary/5 transition-all text-on-surface text-center flex flex-col items-center justify-center">
+                            <span class="block">+2.500 Pesan</span>
+                            <span class="text-[10px] text-on-surface-variant font-normal">Rp199.000</span>
+                        </button>
+                    </div>
+                </div>
+
+                {{-- Pilihan Upgrade Tingkatan Paket --}}
+                <div>
+                    <label for="packageTierSelect" class="font-label-md font-bold text-on-surface block mb-1.5">Atau Upgrade Paket Website:</label>
+                    <select id="packageTierSelect" name="package_tier" onchange="onTierChange(this.value)" class="h-10 w-full cursor-pointer rounded-lg border border-outline-variant bg-surface-container-low px-3 font-body-sm text-body-sm text-on-surface transition-all focus:bg-surface-container-lowest focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
                         <option value="pixel">Pixel — 500 Pesan / Bulan (Starter)</option>
                         <option value="pulse">Pulse — 1.500 Pesan / Bulan (Standard)</option>
                         <option value="nexus">Nexus — 2.500 Pesan / Bulan (Business CMS)</option>
@@ -364,20 +419,26 @@
                     </select>
                 </div>
 
+                {{-- Batas Kuota Baru Hasil Hitung / Kustom --}}
                 <div>
-                    <label for="customQuotaInput" class="font-label-md font-bold text-on-surface block mb-1.5">
-                        Batas Kuota Kustom (Opsional):
-                        <span class="font-normal font-caption text-caption text-on-surface-variant">(Kosongkan jika default paket)</span>
-                    </label>
-                    <input type="number" id="customQuotaInput" name="custom_quota" placeholder="Contoh: 3000" min="100" step="50" class="h-10 w-full rounded-lg border border-outline-variant bg-surface-container-low px-3 font-body-sm text-body-sm text-on-surface placeholder:text-outline transition-all focus:bg-surface-container-lowest focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
+                    <div class="flex justify-between items-center mb-1.5">
+                        <label for="customQuotaInput" class="font-label-md font-bold text-on-surface">
+                            Total Batas Kuota Baru:
+                        </label>
+                        <button type="button" onclick="resetToTierDefault()" class="text-[11px] text-primary hover:underline cursor-pointer">
+                            Reset ke Default
+                        </button>
+                    </div>
+                    <input type="number" id="customQuotaInput" name="custom_quota" placeholder="Otomatis mengikuti paket atau isi kustom" min="100" step="50" class="h-10 w-full rounded-lg border border-outline-variant bg-surface-container-low px-3 font-body-sm text-body-sm text-on-surface placeholder:text-outline transition-all focus:bg-surface-container-lowest focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
+                    <span id="quotaCalcNotice" class="font-caption text-caption text-on-surface-variant mt-1 block"></span>
                 </div>
             </div>
 
             <div class="mt-6 flex justify-end gap-2 border-t border-surface-container pt-4">
-                <button type="button" onclick="closeTierModal()" class="rounded-lg border-2 border-outline-variant px-4 py-2 font-label-md text-label-md font-bold text-on-surface-variant hover:bg-surface-container-low">
+                <button type="button" data-close-tier-modal onclick="closeTierModal()" class="cursor-pointer rounded-lg border-2 border-outline-variant px-4 py-2 font-label-md text-label-md font-bold text-on-surface-variant hover:bg-surface-container-low">
                     Batal
                 </button>
-                <button type="submit" class="rounded-lg bg-primary px-4 py-2 font-label-md text-label-md font-bold text-on-primary shadow-sm hover:bg-primary/90">
+                <button type="submit" class="cursor-pointer rounded-lg bg-primary px-4 py-2 font-label-md text-label-md font-bold text-on-primary shadow-sm hover:bg-primary/90">
                     Simpan Perubahan
                 </button>
             </div>
@@ -386,24 +447,110 @@
 </div>
 
 <script>
-    function openTierModal(tenantId, tenantName, currentTier, currentQuota) {
+    let activeClientQuota = 500;
+    let selectedQuickAdd = null;
+    const TIER_DEFAULT_QUOTAS = {
+        'pixel': 500,
+        'pulse': 1500,
+        'nexus': 2500,
+        'infinity': 5000
+    };
+
+    function updateQuickAddVisuals(selectedAmount) {
+        const amounts = [500, 1000, 2500];
+        amounts.forEach(amt => {
+            const btn = document.getElementById(`btn-add-${amt}`);
+            if (!btn) return;
+            if (selectedAmount === amt) {
+                btn.className = 'quick-add-btn cursor-pointer py-2 px-2 text-xs font-extrabold rounded-xl border-2 border-primary bg-primary/10 text-primary shadow-xs transition-all text-center flex flex-col items-center justify-center ring-2 ring-primary/20';
+            } else {
+                btn.className = 'quick-add-btn cursor-pointer py-2 px-2 text-xs font-bold rounded-xl border border-outline-variant bg-surface-container-low hover:border-primary hover:bg-primary/5 transition-all text-on-surface text-center flex flex-col items-center justify-center';
+            }
+        });
+    }
+
+    window.openTierModal = function(tenantId, tenantName, currentTier, currentQuota) {
+        const modal = document.getElementById('tierModal');
         const form = document.getElementById('tierForm');
+        if (!modal || !form) return;
+
         form.action = `/admin/ai-quotas/${encodeURIComponent(tenantId)}/tier`;
 
-        document.getElementById('modalTenantName').innerText = tenantName;
-        document.getElementById('modalTenantId').innerText = tenantId;
-        document.getElementById('packageTierSelect').value = currentTier.toLowerCase();
-        document.getElementById('customQuotaInput').value = '';
+        activeClientQuota = parseInt(currentQuota) || 500;
+        selectedQuickAdd = null;
+        updateQuickAddVisuals(null);
 
-        document.getElementById('tierModal').classList.remove('hidden');
-    }
+        const nameEl = document.getElementById('modalTenantName');
+        const idEl = document.getElementById('modalTenantId');
+        const badgeEl = document.getElementById('modalCurrentQuotaBadge');
+        const selectEl = document.getElementById('packageTierSelect');
+        const quotaEl = document.getElementById('customQuotaInput');
+        const noticeEl = document.getElementById('quotaCalcNotice');
 
-    function closeTierModal() {
-        document.getElementById('tierModal').classList.add('hidden');
-    }
+        if (nameEl) nameEl.innerText = tenantName || tenantId;
+        if (idEl) idEl.innerText = tenantId;
+        if (badgeEl) badgeEl.innerText = `Kuota Saat Ini: ${activeClientQuota.toLocaleString('id-ID')} pesan`;
+        if (selectEl) selectEl.value = (currentTier || 'pixel').toLowerCase();
+        if (quotaEl) quotaEl.value = '';
+        if (noticeEl) noticeEl.innerText = 'Kosongkan jika ingin mengikuti kuota standar paket.';
 
-    document.getElementById('tierModal')?.addEventListener('click', function(e) {
-        if (e.target === this) closeTierModal();
-    });
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        document.body.classList.toggle('overflow-hidden', true);
+    };
+
+    window.applyAddQuota = function(amount) {
+        const quotaEl = document.getElementById('customQuotaInput');
+        const noticeEl = document.getElementById('quotaCalcNotice');
+        if (!quotaEl) return;
+
+        // Toggle jika mengklik tombol yang sama
+        if (selectedQuickAdd === amount) {
+            selectedQuickAdd = null;
+            updateQuickAddVisuals(null);
+            quotaEl.value = '';
+            if (noticeEl) noticeEl.innerText = 'Pilihan tambah kuota dibatalkan. Mengikuti default paket.';
+            return;
+        }
+
+        selectedQuickAdd = amount;
+        updateQuickAddVisuals(amount);
+
+        const newTotal = activeClientQuota + amount;
+        quotaEl.value = newTotal;
+        if (noticeEl) {
+            noticeEl.innerHTML = `<span class="inline-flex items-center gap-1 text-primary font-bold"><span class="material-symbols-outlined text-[15px]">check_circle</span> +${amount.toLocaleString('id-ID')} pesan terpilih</span> ditambahkan ke kuota berjalan (${activeClientQuota.toLocaleString('id-ID')} → <strong>${newTotal.toLocaleString('id-ID')}</strong> pesan/bulan).`;
+        }
+    };
+
+    window.onTierChange = function(tier) {
+        selectedQuickAdd = null;
+        updateQuickAddVisuals(null);
+
+        const quotaEl = document.getElementById('customQuotaInput');
+        const noticeEl = document.getElementById('quotaCalcNotice');
+        const defaultQuota = TIER_DEFAULT_QUOTAS[tier] || 500;
+        if (quotaEl) quotaEl.value = defaultQuota;
+        if (noticeEl) {
+            noticeEl.innerText = `Batas kuota otomatis disesuaikan ke standar paket ${tier.toUpperCase()}: ${defaultQuota.toLocaleString('id-ID')} pesan/bulan.`;
+        }
+    };
+
+    window.resetToTierDefault = function() {
+        selectedQuickAdd = null;
+        updateQuickAddVisuals(null);
+
+        const selectEl = document.getElementById('packageTierSelect');
+        const tier = selectEl ? selectEl.value : 'pixel';
+        onTierChange(tier);
+    };
+
+    window.closeTierModal = function() {
+        const modal = document.getElementById('tierModal');
+        if (!modal) return;
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        document.body.classList.remove('overflow-hidden');
+    };
 </script>
 @endsection

@@ -55,10 +55,10 @@ class AccountProvisioningTest extends TestCase
         });
     }
 
-    public function test_settlement_reuses_existing_account_without_changing_password(): void
+    public function test_settlement_resets_existing_account_password_and_sends_it(): void
     {
         Mail::fake();
-        $existing = User::factory()->create(['email' => 'zainul@example.com', 'password' => 'password123']);
+        $existing = User::factory()->create(['email' => 'zainul@example.com', 'password' => 'password-lama-rahasia']);
         $order = $this->createGuestOrder(['guest_name' => 'Zainul', 'guest_email' => 'zainul@example.com']);
 
         $this->notifySettlement($order->payments()->firstOrFail());
@@ -66,10 +66,9 @@ class AccountProvisioningTest extends TestCase
         $order->refresh();
         $this->assertSame($existing->id, $order->user_id);
         $this->assertSame(1, User::where('email', 'zainul@example.com')->count());
-        $this->assertTrue(password_verify('password123', $existing->fresh()->password));
-        // Akun lama tanpa password baru: email hanya pemberitahuan.
-        $this->assertNull(DB::table('webia_orders')->where('id', $order->id)->value('credential_password'));
-        Mail::assertSent(AccountCredentialsMail::class, fn (AccountCredentialsMail $mail): bool => $mail->plainPassword === null
+        // Akun lama diatur ulang ke password default supaya email kredensial selalu bisa dipakai login.
+        $this->assertTrue(password_verify(config('webia.provisioning.default_password'), $existing->fresh()->password));
+        Mail::assertSent(AccountCredentialsMail::class, fn (AccountCredentialsMail $mail): bool => $mail->plainPassword === config('webia.provisioning.default_password')
             && $mail->hasTo('zainul@example.com'));
     }
 

@@ -35,8 +35,8 @@ class EmailNotificationTest extends TestCase
         $payload = ['order_id' => 'WEB-'.$order->id.'-01', 'status_code' => '200', 'gross_amount' => '499000', 'transaction_status' => 'settlement'];
         $this->postJson(route('payments.midtrans.notify'), $payload + ['signature_key' => $this->signature($payload)])->assertOk();
 
-        // Lunas: kredensial dikirim via email, tanpa password baru untuk akun lama.
-        Mail::assertSent(fn (AccountCredentialsMail $mail): bool => $mail->plainPassword === null
+        // Lunas: kredensial dikirim via email, akun lama diatur ulang ke password default.
+        Mail::assertSent(fn (AccountCredentialsMail $mail): bool => $mail->plainPassword === config('webia.provisioning.default_password')
             && $mail->hasTo($order->user->email));
         $this->assertSame('sent', $order->fresh()->credential_status);
     }

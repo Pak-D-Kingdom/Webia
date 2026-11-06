@@ -302,5 +302,47 @@ class WebiaTemplateAlleSeeder extends Seeder
                 'sort_order' => 46,
             ]
         );
+
+        WebiaTemplate::updateOrCreate(
+            ['slug' => 'arya-sanjaya-ruby-editorial'],
+            [
+                'name' => 'Arya Sanjaya — Ruby Editorial Author Portfolio',
+                'category_slug' => 'personal-brand',
+                'category_label' => 'Personal Brand',
+                'business_types' => ['Author & Writer'],
+                'design_style' => 'Literary Editorial',
+                'color_theme' => 'Ruby Red, Charcoal & Ivory',
+                'description' => 'Literary author portfolio featuring Arya Sanjaya’s biography, selected books, writing excerpts, literary events, reader FAQs, direct WhatsApp book orders, newsletter signup, and an AI literary assistant demo.',
+                'preview_style' => 'preview-arya-sanjaya-ruby-editorial',
+                'eyebrow' => 'AUTHOR · NOVELIST · ESSAYIST',
+                'headline' => 'Keheningan yang Menuliskan Rahasia Jiwa.',
+                'tag' => 'Personal Brand · Author & Writer · Literary Editorial',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/arya-sanjaya-ruby-editorial',
+                'is_active' => true,
+                'sort_order' => 47,
+            ]
+        );
+
+        WebiaTemplate::updateOrCreate(
+            ['slug' => 'arya-sanjaya-plum-velvet'],
+            [
+                'name' => 'Arya Sanjaya — Plum Velvet Literary Portfolio',
+                'category_slug' => 'personal-brand',
+                'category_label' => 'Personal Brand',
+                'business_types' => ['Author & Writer'],
+                'design_style' => 'Professional Luxury',
+                'color_theme' => 'Deep Plum & Champagne Gold',
+                'description' => 'Professional author portfolio featuring Arya Sanjaya’s literary profile, books and writing, awards, reader FAQs, direct WhatsApp book orders, newsletter signup, and an AI literary assistant demo.',
+                'preview_style' => 'preview-arya-sanjaya-plum-velvet',
+                'eyebrow' => 'PENULIS · PEMIKIRAN · LITERASI',
+                'headline' => 'Selamat datang di ruang karya & pemikiran Arya Sanjaya.',
+                'tag' => 'Personal Brand · Author & Writer · Plum Velvet',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/arya-sanjaya-plum-velvet',
+                'is_active' => true,
+                'sort_order' => 48,
+            ]
+        );
     }
 }
