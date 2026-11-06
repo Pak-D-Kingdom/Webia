@@ -102,10 +102,14 @@
                         <span>URL: <span class="customer-site-url">{{ route('sites.show', ['order' => $deliveredSite->site_slug]) }}</span></span>
                     </div>
                 </div>
-                <div class="customer-site-done-action">
+                <div class="customer-site-done-action" style="display:flex; gap:0.5rem; flex-wrap:wrap;">
                     <a class="customer-open-site" href="{{ route('sites.show', ['order' => $deliveredSite->site_slug]) }}" rel="noopener" target="_blank">
                         Buka website
                         <span aria-hidden="true" class="material-symbols-outlined">open_in_new</span>
+                    </a>
+                    <a class="customer-open-site" href="{{ route('customer.ai') }}" style="background:var(--account-lavender); color:var(--account-action); border:1px solid var(--account-line);">
+                        Pantau AI & Kuota
+                        <span aria-hidden="true" class="material-symbols-outlined">smart_toy</span>
                     </a>
                 </div>
             </div>

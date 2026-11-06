@@ -1,0 +1,103 @@
+@theme {
+    --color-arya-ruby-50: #fff5f6;
+    --color-arya-ruby-100: #fde8ea;
+    --color-arya-ruby-200: #f9cbd0;
+    --color-arya-ruby-300: #f2aab2;
+    --color-arya-ruby-600: #cc2133;
+    --color-arya-ruby-700: #ab1c2b;
+    --color-arya-ruby-750: #9e1b29;
+    --color-arya-ruby-800: #85131f;
+    --color-arya-ruby-850: #72101b;
+    --color-arya-ruby-900: #5c0b14;
+    --color-arya-ruby-950: #3a070c;
+    --color-arya-charcoal-600: #525252;
+    --color-arya-charcoal-700: #383838;
+    --color-arya-charcoal-800: #262626;
+    --color-arya-charcoal-900: #1a1a1a;
+    --color-arya-charcoal-950: #121212;
+    --color-arya-canvas: #faf9f6;
+    --color-arya-canvas-card: #ffffff;
+    --color-arya-canvas-subtle: #f4f3ef;
+    --color-arya-canvas-border: #e7e5e0;
+    --font-arya-ruby-editorial: 'Cormorant Garamond', serif;
+    --font-arya-ruby-serif: 'Playfair Display', serif;
+    --font-arya-ruby-sans: 'Inter', sans-serif;
+
+    --color-arya-plum-50: #fbf7fc;
+    --color-arya-plum-100: #f6ecf7;
+    --color-arya-plum-600: #943b99;
+    --color-arya-plum-700: #752b79;
+    --color-arya-plum-800: #58205b;
+    --color-arya-plum-850: #421a44;
+    --color-arya-plum-900: #351436;
+    --color-arya-plum-950: #210d21;
+    --color-arya-champagne-300: #fbe2a7;
+    --color-arya-champagne-400: #eec780;
+    --color-arya-champagne-500: #dcb060;
+    --color-arya-champagne-600: #b88c3a;
+    --font-arya-plum-sans: 'Plus Jakarta Sans', sans-serif;
+    --font-arya-plum-serif: 'Playfair Display', serif;
+    --font-arya-plum-editorial: 'Cormorant Garamond', serif;
+    --font-arya-plum-cinzel: 'Cinzel', serif;
+}
+
+.arya-ruby-page {
+    background-color: #faf9f6;
+    color: #1a1a1a;
+    font-family: 'Inter', sans-serif;
+}
+
+.arya-ruby-page .arya-ruby-glass-light {
+    background: rgba(250, 249, 246, 0.92);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+.arya-ruby-page .arya-ruby-book-shadow {
+    box-shadow: -10px 16px 32px -8px rgba(114, 16, 27, 0.28), 0 8px 18px -4px rgba(26, 26, 26, 0.12);
+}
+
+.arya-ruby-page .arya-ruby-book-shadow-dark {
+    box-shadow: -12px 18px 34px -8px rgba(0, 0, 0, 0.25), 0 6px 14px -3px rgba(0, 0, 0, 0.1);
+}
+
+.arya-ruby-page .arya-ruby-accordion-content,
+.arya-plum-page .arya-plum-accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease;
+    opacity: 0;
+}
+
+.arya-ruby-page .arya-ruby-accordion-content.open {
+    max-height: 480px;
+    opacity: 1;
+}
+
+.arya-plum-page .arya-plum-accordion-content.open {
+    max-height: 500px;
+    opacity: 1;
+}
+
+.arya-ruby-page .arya-ruby-fade-enter,
+.arya-plum-page .arya-plum-fade-enter {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+    transition: all 0.25s ease-out;
+}
+
+.arya-ruby-page .arya-ruby-fade-enter-active,
+.arya-plum-page .arya-plum-fade-enter-active {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+}
+
+.arya-plum-page .arya-plum-glass-dark {
+    background: rgba(33, 13, 33, 0.88);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+.arya-plum-page .arya-plum-book-shadow {
+    box-shadow: -14px 18px 38px -10px rgba(0, 0, 0, 0.55), 0 8px 16px -6px rgba(0, 0, 0, 0.35);
+}

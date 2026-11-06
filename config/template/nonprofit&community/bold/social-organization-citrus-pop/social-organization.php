@@ -7,11 +7,11 @@ return [
         'tag' => 'Komunitas warga yang memeras tenaga kecil jadi manfaat besar.',
         'addr' => 'Rumah Segar, Jl. Kebon Jeruk No. 12',
         'email' => 'halo@segarkita.id',
-        'tel' => '+62 812-3456-7890',
+        'tel' => '+62 895-6303-00345',
         'jam' => 'Sen–Sab, 08.00–17.00',
         'ig' => '@segarkita.id',
     ],
-    'wa' => '6281234567890',
+    'wa' => '62895630300345',
     'wa_text' => 'Halo%20SegarKita%2C%20saya%20ingin%20tahu%20cara%20ikut%20berkontribusi.',
     'ticker' => ['Kebun Segar', 'Kelas Sore', 'Bank Sampah Bareng', 'Dapur Berbagi', 'Ronda Sehat', 'Lapak Warga'],
     'nav' => [

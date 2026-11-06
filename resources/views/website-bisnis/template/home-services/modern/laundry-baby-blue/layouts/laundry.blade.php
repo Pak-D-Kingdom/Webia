@@ -1,17 +1,19 @@
 
 @php
-    $brand   = $laundry['brand'];
+    $brand = $laundry['brand'];
     $contact = $laundry['contact'];
+
     $current = request()->route()?->getName() ?? '';
-    $slug    = \Illuminate\Support\Str::afterLast($current, '.');
+    $slug = \Illuminate\Support\Str::afterLast($current, '.');
 
     $ver = @filemtime(
         public_path($laundry['assets']['css'] . '/laundry.css')
     ) ?: 1;
 
+    // Route links
     $links = [];
 
-    foreach ([
+    $routeNames = [
         'home',
         'layanan',
         'harga',
@@ -21,19 +23,24 @@
         'cara-order',
         'jam',
         'order-inquiry',
-        'ai-chatbot'
-    ] as $r) {
+        'ai-chatbot',
+    ];
+
+    foreach ($routeNames as $r) {
         $links[$r] = route('webia.laundry-baby-blue.' . $r);
     }
 
+    // FAQ configuration
     $faqJs = collect($laundry['faq'])->map(function ($f) use ($links) {
 
         $cta = null;
 
         if (isset($f['cta'])) {
+            $ctaRoute = $f['cta']['route'];
+
             $cta = [
                 'label' => $f['cta']['label'],
-                'url' => $links[$f['cta']['route']] ?? '#',
+                'url' => $links[$ctaRoute] ?? '#',
             ];
         }
 
@@ -47,6 +54,7 @@
 
     })->values();
 
+    // JavaScript configuration
     $jsConfig = [
         'brand' => $brand['name'],
         'whatsapp' => $contact['whatsapp'],
@@ -81,16 +89,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>
-        @yield('title', 'BlueLaundry — Pakaian Bersih, Wangi, Rapi & Terawat')
-    </title>
+    <title>@yield('title', 'BlueLaundry — Pakaian Bersih, Wangi, Rapi & Terawat')</title>
 
     <meta name="description"
         content="@yield('description', 'BlueLaundry: layanan laundry modern di Surabaya dengan antar-jemput, hasil bersih, wangi tahan lama, dan siap pakai.')">
 
     <meta name="theme-color" content="#d6eafb">
 
-    <link rel="icon"
+    <link
+        rel="icon"
         type="image/png"
         href="{{ asset($laundry['assets']['img'] . '/logo-cloud.png') }}">
 

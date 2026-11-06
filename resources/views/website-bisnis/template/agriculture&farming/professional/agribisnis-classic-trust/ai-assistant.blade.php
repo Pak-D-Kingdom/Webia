@@ -1,6 +1,6 @@
-﻿@extends($v . '.layout')
+@extends($v . '.layout')
 
-@section('title', 'AI Assistant & FAQ â€” AgroTrade')
+@section('title', 'AI Assistant & FAQ — AgroTrade')
 @section('description', 'Tanya AgroBot, asisten AI AgroTrade, seputar komoditas, harga, proses pengiriman, sertifikasi, dan peluang kemitraan.')
 
 @section('content')
@@ -52,6 +52,6 @@
 
 @include($v . '.partials.cta-band', [
     'cta_title' => 'Masih ada pertanyaan?',
-    'cta_text'  => 'Tim kami siap membantu lewat WhatsApp pada jam kerja, Senin sampai Jumat pukul 08:00 â€“ 17:00 WIB.',
+    'cta_text'  => 'Tim kami siap membantu lewat WhatsApp pada jam kerja, Senin sampai Jumat pukul 08:00 – 17:00 WIB.',
 ])
 @endsection

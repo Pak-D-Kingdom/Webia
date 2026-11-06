@@ -1,11 +1,11 @@
-﻿@php $f = $agro['footer']; @endphp
+@php $f = $agro['footer']; @endphp
 <footer class="footer" id="siteFooter">
     <div class="footer__leaf footer__leaf--l" aria-hidden="true"></div>
     <div class="footer__leaf footer__leaf--r" aria-hidden="true"></div>
 
     <div class="container footer__grid">
         <div class="footer__brand">
-            <a class="brand brand--light" href="{{ route('agribisnis-classic-trust.home') }}" aria-label="AgroTrade â€” beranda">
+            <a class="brand brand--light" href="{{ route('agribisnis-classic-trust.home') }}" aria-label="AgroTrade — beranda">
                 <img class="brand__logo" src="{{ $img('logo-agrotrade.svg') }}" width="48" height="42" alt="">
                 <span class="brand__txt">
                     <strong>AgroTrade</strong>

@@ -28,6 +28,7 @@ return [
         'email'      => 'info@bluelaundry.id',
         // format internasional tanpa "+" / spasi, dipakai untuk link wa.me
         'whatsapp'   => '62895630300345',   // 0895630300345 (tujuan form inquiry & semua tombol WhatsApp)
+        'whatsapp_display' => '+62 895 6303 00345',
         'wa_greeting'=> 'Halo BlueLaundry, saya ingin bertanya tentang layanan laundry.',
     ],
 
@@ -191,6 +192,24 @@ return [
 
     /* ---------------- Order inquiry ---------------- */
     'inquiry_services' => ['Cuci Kering (Regular)', 'Cuci Setrika (Express)', 'Setrika Saja', 'Bed Cover & Selimut', 'Bantal & Guling', 'Boneka', 'Sepatu', 'Gorden', 'Premium Care'],
+
+    // pilihan cepat (chip) di halaman Order Inquiry — harus sama persis dengan salah satu 'inquiry_services'
+    'inquiry_quick' => ['Cuci Kering (Regular)', 'Cuci Setrika (Express)', 'Bed Cover & Selimut', 'Premium Care'],
+
+    // alur setelah inquiry dikirim (halaman Order Inquiry)
+    'inquiry_next' => [
+        ['icon' => 'send',  'title' => 'Kirim inquiry',       'text' => 'Isi data singkat lalu tekan Kirim Inquiry — WhatsApp terbuka otomatis dengan pesan yang sudah terisi.'],
+        ['icon' => 'chat',  'title' => 'Tim kami konfirmasi', 'text' => 'Kami membalas dan mengonfirmasi detail order pada jam operasional.'],
+        ['icon' => 'truck', 'title' => 'Laundry dijemput',    'text' => 'Kurir menjemput sesuai jadwal dan area yang Anda pilih.'],
+    ],
+
+    // tips di halaman Cara Order
+    'order_tips' => [
+        ['icon' => 'clipboard', 'title' => 'Siapkan data order',      'text' => 'Nama, nomor WhatsApp, jenis layanan, dan alamat penjemputan.'],
+        ['icon' => 'shirt',     'title' => 'Pisahkan cucian',         'text' => 'Pisahkan pakaian putih dan berwarna agar hasil cuci lebih aman.'],
+        ['icon' => 'tag',       'title' => 'Cek isi kantong',         'text' => 'Keluarkan barang pribadi dari kantong pakaian sebelum diserahkan.'],
+        ['icon' => 'chat',      'title' => 'Tulis permintaan khusus', 'text' => 'Catat bahan halus atau noda tertentu di kolom catatan agar ditangani tepat.'],
+    ],
 
     /* ---------------- AI chatbot (FAQ harga & proses laundry) ---------------- */
     'chatbot' => [
