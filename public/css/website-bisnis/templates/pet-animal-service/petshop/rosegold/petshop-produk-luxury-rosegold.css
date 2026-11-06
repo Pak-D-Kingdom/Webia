@@ -1,0 +1,157 @@
+:root {
+    --rose: #b76e79;
+    --blush: #f8e8e5;
+    --ivory: #fffaf6;
+    --espresso: #5d4548;
+    --muted: #8e7b78;
+    --border: #eaded8;
+    --heading: "Playfair Display", Georgia, serif;
+    --body: "DM Sans", sans-serif;
+    --ui: "Manrope", sans-serif;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+body { margin: 0; background: var(--ivory); color: var(--espresso); font-family: var(--body); line-height: 1.7; }
+a { color: inherit; text-decoration: none; }
+button, input { font: inherit; }
+button { cursor: pointer; }
+
+.fcp-announcement {
+    padding: 8px 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    background: var(--espresso);
+    color: white;
+    text-align: center;
+    font: 700 8px var(--ui);
+    letter-spacing: 1px;
+}
+.fcp-announcement span { color: #e7b5b4; }
+.fcp-announcement a { color: #f3cfc9; text-decoration: underline; text-underline-offset: 3px; }
+
+.fcp-header {
+    min-height: 91px;
+    padding: 13px 6%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--ivory);
+    border-bottom: 1px solid var(--border);
+}
+.fcp-logo { display: inline-flex; align-items: center; gap: 9px; flex-shrink: 0; font: 800 12px var(--ui); letter-spacing: 1px; }
+.fcp-logo strong { color: var(--rose); }
+.fcp-logo > span:last-child { line-height: 1.5; }
+.fcp-logo small { display: block; font-size: 7px; font-weight: 600; letter-spacing: 2px; }
+.fcp-logo-mark { width: 41px; height: 41px; display: grid; place-items: center; border: 1px solid var(--rose); border-radius: 50%; color: var(--rose); font: 500 15px var(--heading); letter-spacing: -2px; }
+.fcp-logo-mark span { font-size: 10px; }
+
+.fcp-header nav { display: flex; align-items: center; gap: 23px; font: 700 10px var(--ui); }
+.fcp-header nav a:hover { color: var(--rose); }
+.fcp-concierge-button { padding: 11px 14px; border: 1px solid #d7b4ae; background: transparent; color: var(--espresso); font: 800 9px var(--ui); white-space: nowrap; }
+.fcp-concierge-button:hover { background: var(--blush); }
+
+.fcp-main { padding: 0 8% 75px; }
+.fcp-breadcrumb { display: flex; flex-wrap: wrap; gap: 12px; padding: 24px 0; color: var(--muted); font-size: 10px; }
+.fcp-breadcrumb a { color: var(--rose); font-weight: 700; }
+
+.fcp-product { display: grid; grid-template-columns: 1fr 1fr; align-items: start; gap: 7%; padding: 10px 0 70px; }
+.fcp-image-frame { height: 450px; position: relative; overflow: hidden; background: #f3e2df; }
+.fcp-image-frame img { width: 100%; height: 100%; object-fit: cover; mix-blend-mode: multiply; }
+.fcp-image-label { position: absolute; top: 16px; left: 16px; z-index: 2; padding: 7px 10px; background: var(--ivory); color: var(--rose); font: 800 8px var(--ui); letter-spacing: 1px; }
+.fcp-image-index { position: absolute; right: 15px; bottom: 14px; color: white; font: 700 8px var(--ui); letter-spacing: 1.5px; text-shadow: 0 1px 5px #0006; }
+.fcp-image-caption { margin-top: 12px; color: #a38a85; text-align: center; font: 700 8px var(--ui); letter-spacing: 1.3px; }
+
+.fcp-eyebrow { color: var(--rose); font: 800 9px var(--ui); letter-spacing: 1.8px; }
+.fcp-product-info h1 { margin: 12px 0; color: var(--espresso); font: 500 clamp(32px, 3.5vw, 44px)/1.18 var(--heading); letter-spacing: -.7px; }
+.fcp-rating { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.fcp-rating > span { color: #c69756; font-size: 13px; letter-spacing: 2px; }
+.fcp-rating small { color: var(--muted); font-size: 9px; }
+.fcp-price { margin: 20px 0 12px; color: var(--espresso); font: 600 28px var(--heading); }
+.fcp-description { color: var(--muted); font-size: 12px; line-height: 2; }
+
+.fcp-stock { display: flex; align-items: flex-start; gap: 11px; margin: 20px 0; padding: 14px; background: #f7f0e9; }
+.fcp-stock-dot { width: 8px; height: 8px; margin-top: 7px; flex-shrink: 0; border-radius: 50%; background: #b08c68; }
+.fcp-stock strong, .fcp-stock small { display: block; }
+.fcp-stock strong { font: 800 10px var(--ui); }
+.fcp-stock small { margin-top: 3px; color: var(--muted); font-size: 9px; }
+
+.fcp-divider { height: 1px; margin: 23px 0; background: var(--border); }
+.fcp-quantity-label { display: block; margin-bottom: 10px; font: 800 8px var(--ui); letter-spacing: 1.2px; }
+.fcp-quantity { display: inline-flex; align-items: center; border: 1px solid #ddc8c2; }
+.fcp-quantity button { width: 40px; height: 40px; border: 0; background: #f8eeea; color: var(--espresso); font-size: 18px; }
+.fcp-quantity input { width: 48px; height: 40px; border: 0; outline: 0; background: transparent; color: var(--espresso); text-align: center; font-size: 12px; }
+.fcp-quantity input::-webkit-inner-spin-button, .fcp-quantity input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.fcp-quantity input { -moz-appearance: textfield; }
+
+.fcp-actions { display: grid; grid-template-columns: 1.4fr 1fr; gap: 10px; margin: 18px 0 27px; }
+.fcp-order-button, .fcp-stock-button { min-height: 48px; padding: 12px; font: 800 9px var(--ui); }
+.fcp-order-button { border: 0; background: var(--espresso); color: white; }
+.fcp-order-button:hover { background: #76595b; }
+.fcp-stock-button { border: 1px solid #d7b4ae; background: transparent; color: var(--espresso); }
+.fcp-stock-button:hover { background: var(--blush); }
+
+.fcp-benefits { display: grid; gap: 14px; }
+.fcp-benefits > div { display: flex; align-items: center; gap: 12px; }
+.fcp-benefits > div > span { width: 38px; height: 38px; display: grid; place-items: center; border: 1px solid #ead4ce; color: var(--rose); font-size: 18px; }
+.fcp-benefits p { margin: 0; }
+.fcp-benefits strong, .fcp-benefits small { display: block; }
+.fcp-benefits strong { font: 800 10px var(--ui); }
+.fcp-benefits small { color: var(--muted); font-size: 9px; }
+
+.fcp-details { padding: 55px 4%; display: grid; grid-template-columns: .8fr 1.2fr; gap: 9%; border-top: 1px solid var(--border); }
+.fcp-details-heading h2, .fcp-concierge h2 { margin: 12px 0; font: 500 clamp(30px, 3.4vw, 42px)/1.2 var(--heading); }
+.fcp-details-heading h2 em, .fcp-concierge h2 em { color: var(--rose); font-weight: 400; }
+.fcp-details-copy h3 { margin: 0 0 12px; font: 600 20px var(--heading); }
+.fcp-details-copy > p { color: var(--muted); font-size: 11px; line-height: 2; }
+.fcp-note { display: flex; align-items: flex-start; gap: 12px; margin-top: 24px; padding: 17px; background: #f8efeb; }
+.fcp-note > span { color: var(--rose); font-size: 22px; }
+.fcp-note strong { font: 800 10px var(--ui); }
+.fcp-note p { margin-bottom: 0; color: var(--muted); font-size: 10px; line-height: 1.8; }
+
+.fcp-concierge { margin: 40px 0 25px; padding: 35px 5%; display: flex; align-items: center; justify-content: space-between; gap: 25px; background: var(--blush); }
+.fcp-concierge h2 { font-size: 32px; }
+.fcp-concierge p { max-width: 490px; color: var(--muted); font-size: 11px; }
+.fcp-concierge button { flex-shrink: 0; padding: 14px 17px; border: 0; background: var(--espresso); color: white; font: 800 9px var(--ui); }
+.fcp-concierge button:hover { background: #76595b; }
+
+.fcp-back { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 15px; padding: 20px 0; font: 800 9px var(--ui); }
+.fcp-back a:hover { color: var(--rose); }
+
+.fcp-footer { padding: 35px 5% 25px; background: #fff5f0; text-align: center; }
+.fcp-footer .fcp-logo { justify-content: center; text-align: left; }
+.fcp-footer > p { color: var(--muted); font: italic 13px var(--heading); }
+.fcp-footer-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 23px; margin: 20px 0; font: 700 9px var(--ui); }
+.fcp-footer-links a:hover { color: var(--rose); }
+.fcp-footer > small { color: #a38e89; font-size: 8px; }
+
+@media (max-width: 850px) {
+    .fcp-header { padding: 13px 4%; gap: 12px; }
+    .fcp-header nav { gap: 12px; font-size: 9px; }
+    .fcp-main { padding-right: 5%; padding-left: 5%; }
+    .fcp-image-frame { height: 360px; }
+    .fcp-details { padding-right: 0; padding-left: 0; gap: 5%; }
+}
+@media (max-width: 620px) {
+    .fcp-announcement { font-size: 7px; gap: 6px; }
+    .fcp-header { min-height: 75px; flex-wrap: wrap; }
+    .fcp-logo { font-size: 10px; }
+    .fcp-logo-mark { width: 35px; height: 35px; }
+    .fcp-header nav { gap: 10px; font-size: 8px; }
+    .fcp-header nav a:last-child { display: none; }
+    .fcp-concierge-button { padding: 9px; font-size: 8px; }
+    .fcp-product { grid-template-columns: 1fr; gap: 25px; padding-bottom: 45px; }
+    .fcp-image-frame { height: 330px; }
+    .fcp-product-info h1 { font-size: 36px; }
+    .fcp-details { grid-template-columns: 1fr; gap: 20px; padding-top: 35px; }
+    .fcp-details-heading h2, .fcp-concierge h2 { font-size: 33px; }
+    .fcp-concierge { padding: 25px 6%; align-items: flex-start; flex-direction: column; }
+    .fcp-actions { grid-template-columns: 1fr; }
+}

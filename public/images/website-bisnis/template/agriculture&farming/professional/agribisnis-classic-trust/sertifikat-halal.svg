@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Halal Indonesia">
+  <defs><linearGradient id="l" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7a4fb8"/><stop offset="1" stop-color="#4a2a86"/></linearGradient></defs>
+  <path d="M60 10c-5 7-5 14 0 20 5-6 5-13 0-20z" fill="url(#l)"/>
+  <path d="M26 86V62c0-16 14-28 34-28s34 12 34 28v24z" fill="none" stroke="url(#l)" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M40 86V66c0-9 9-16 20-16s20 7 20 16v20" fill="none" stroke="url(#l)" stroke-width="4"/>
+  <path d="M60 50v36" stroke="url(#l)" stroke-width="3"/>
+  <path d="M18 86h84" stroke="url(#l)" stroke-width="5" stroke-linecap="round"/>
+  <text x="60" y="102" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="800" font-size="12" fill="#4a2a86" letter-spacing="1.5">HALAL</text>
+  <text x="60" y="113" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="600" font-size="6.5" fill="#4a2a86" letter-spacing="1">INDONESIA</text>
+</svg>

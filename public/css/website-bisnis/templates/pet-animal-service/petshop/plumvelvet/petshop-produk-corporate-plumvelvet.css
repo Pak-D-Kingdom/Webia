@@ -1,0 +1,235 @@
+
+.pbpd-main {
+    max-width: 1250px;
+    margin: 0 auto;
+    padding: 35px 6% 85px;
+}
+
+.pbpd-breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 35px;
+    color: #827686;
+    font-size: 11px;
+}
+
+.pbpd-breadcrumb a:hover { color: #704568; }
+
+.pbpd-product {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+    gap: 60px;
+}
+
+.pbpd-image-wrap {
+    position: relative;
+    overflow: hidden;
+    border-radius: 18px;
+    background: #FAF7FB;
+}
+
+.pbpd-image-wrap img {
+    width: 100%;
+    aspect-ratio: 4 / 4.5;
+    object-fit: cover;
+}
+
+.pbpd-image-label {
+    position: absolute;
+    bottom: 18px;
+    left: 18px;
+    padding: 9px 12px;
+    border-radius: 5px;
+    color: #432443;
+    background: white;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: .1em;
+}
+
+.pbpd-eyebrow {
+    color: #98719B;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .15em;
+}
+
+.pbpd-category {
+    margin: 14px 0 0;
+    color: #827686;
+    font-size: 11px;
+}
+
+.pbpd-info h1 {
+    margin: 8px 0 14px;
+    color: #432443;
+    font-family: 'Manrope', sans-serif;
+    font-size: clamp(30px, 3.5vw, 43px);
+    font-weight: 800;
+    letter-spacing: -.05em;
+    line-height: 1.2;
+}
+
+.pbpd-price {
+    margin: 18px 0;
+    color: #432443;
+    font-size: 25px;
+    font-weight: 800;
+}
+
+.pbpd-description {
+    color: #827686;
+    font-size: 13px;
+    line-height: 1.9;
+}
+
+.pbpd-stock {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin: 20px 0;
+    color: #827686;
+    font-size: 10px;
+}
+
+.pbpd-stock span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #B78A51;
+}
+
+.pbpd-quantity {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin: 25px 0 15px;
+    color: #432443;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.pbpd-quantity > div {
+    display: flex;
+    align-items: center;
+    border: 1px solid #EAE2EB;
+    border-radius: 7px;
+    overflow: hidden;
+}
+
+.pbpd-quantity button {
+    width: 36px;
+    height: 38px;
+    border: 0;
+    color: #432443;
+    background: #FAF7FB;
+    font-size: 18px;
+}
+
+.pbpd-quantity input {
+    width: 48px;
+    height: 38px;
+    border: 0;
+    outline: 0;
+    color: #432443;
+    background: white;
+    text-align: center;
+    font-size: 12px;
+}
+
+.pbpd-quantity input::-webkit-inner-spin-button,
+.pbpd-quantity input::-webkit-outer-spin-button {
+    margin: 0;
+    appearance: none;
+}
+
+.pbpd-add-button,
+.pbpd-contact-button {
+    width: 100%;
+    min-height: 47px;
+    margin-bottom: 10px;
+    border: 1px solid #432443;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.pbpd-add-button {
+    color: white;
+    background: #432443;
+}
+
+.pbpd-add-button:hover { background: #704568; }
+
+.pbpd-contact-button {
+    color: #432443;
+    background: white;
+}
+
+.pbpd-contact-button:hover { background: #FAF7FB; }
+
+.pbpd-disclaimer {
+    color: #827686;
+    font-size: 10px;
+    line-height: 1.7;
+}
+
+.pbpd-specifications {
+    margin-top: 32px;
+    padding-top: 20px;
+    border-top: 1px solid #EAE2EB;
+}
+
+.pbpd-specifications h2 {
+    margin: 0 0 12px;
+    color: #432443;
+    font-family: 'Manrope', sans-serif;
+    font-size: 17px;
+}
+
+.pbpd-spec-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 12px 0;
+    border-bottom: 1px solid #F0EAF1;
+    font-size: 11px;
+}
+
+.pbpd-spec-row span { color: #827686; }
+.pbpd-spec-row strong { color: #432443; text-align: right; }
+
+.pbpd-more {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 80px;
+    padding: 30px;
+    border-radius: 14px;
+    background: #FAF7FB;
+}
+
+.pbpd-more h2 {
+    margin: 10px 0 0;
+    color: #432443;
+    font-family: 'Manrope', sans-serif;
+    font-size: 23px;
+}
+
+.pbpd-more > a {
+    color: #704568;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+@media (max-width: 760px) {
+    .pbpd-main { padding: 25px 5% 55px; }
+    .pbpd-product { grid-template-columns: 1fr; gap: 30px; }
+    .pbpd-image-wrap img { aspect-ratio: 1 / 1; }
+    .pbpd-more { align-items: flex-start; flex-direction: column; }
+    .pbpd-more h2 { font-size: 21px; }
+}

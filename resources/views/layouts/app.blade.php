@@ -25,5 +25,13 @@
     @include('components.footer')
 
     @stack('scripts')
+
+    <script 
+        src="http://localhost:8001/widget/widget.js" 
+        data-site-key="site_webia_public" 
+        data-layer="l3" 
+        defer>
+    </script>
+
 </body>
 </html>

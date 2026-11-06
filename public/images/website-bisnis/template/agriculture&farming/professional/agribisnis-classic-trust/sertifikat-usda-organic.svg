@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="USDA Organic">
+  <defs><clipPath id="c"><circle cx="60" cy="60" r="50"/></clipPath></defs>
+  <circle cx="60" cy="60" r="56" fill="#ffffff"/>
+  <circle cx="60" cy="60" r="52" fill="#ffffff" stroke="#2f7d3c" stroke-width="5"/>
+  <g clip-path="url(#c)">
+    <rect x="0" y="64" width="120" height="60" fill="#2f7d3c"/>
+    <path d="M0 64c20-9 40-9 60 0s40 9 60 0V74H0z" fill="#2f7d3c"/>
+    <path d="M0 64c20-9 40-9 60 0s40 9 60 0" fill="none" stroke="#ffffff" stroke-width="2"/>
+  </g>
+  <text x="60" y="50" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="800" font-size="25" fill="#2f7d3c" letter-spacing="1">USDA</text>
+  <text x="60" y="86" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="800" font-size="16" fill="#ffffff" letter-spacing=".5">ORGANIC</text>
+  <path d="M40 62c6-5 14-5 20 0s14 5 20 0" fill="none" stroke="#bfe3c4" stroke-width="1.5"/>
+</svg>

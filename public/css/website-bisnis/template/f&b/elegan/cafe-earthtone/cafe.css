@@ -1,0 +1,474 @@
+/* ==========================================================================
+   The Lumière Café & Kitchen — F&B · Elegan · Cafe Earthtone
+   Mobile-first. Penamaan BEM dengan prefix .lm- agar tidak bentrok dengan
+   template lain. Breakpoint: 576 / 768 / 992 / 1200.
+   ========================================================================== */
+
+/* ---------- 1. Token ---------- */
+:root {
+    --lm-ink: #1d1b17;
+    --lm-text: #4a453c;
+    --lm-muted: #857e72;
+    --lm-bg: #faf8f4;
+    --lm-alt: #f3efe8;
+    --lm-line: #e8e1d5;
+    --lm-dark: #10201b;
+    --lm-gold: #b08a4f;
+    --lm-gold-d: #94713a;
+    --lm-gold-l: #d6b57a;
+    --lm-wa: #128c4a;
+    --lm-wa-d: #0e7239;
+
+    --lm-serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+    --lm-sans: 'Poppins', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    --lm-script: 'Caveat', 'Segoe Script', 'Brush Script MT', cursive;
+
+    --lm-r: 12px;
+    --lm-r-sm: 8px;
+    --lm-shadow: 0 10px 28px rgba(40, 30, 10, .10);
+    --lm-wrap: 1320px;
+    --lm-pad: clamp(16px, 3vw, 32px);
+    --lm-nav-h: 68px;
+}
+
+/* ---------- 2. Reset ringan (spesifisitas rendah lewat :where) ---------- */
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--lm-nav-h) + 8px); -webkit-text-size-adjust: 100%; }
+:where(.lm), :where(.lm) *, :where(.lm) *::before, :where(.lm) *::after { box-sizing: border-box; }
+.lm { margin: 0; background: var(--lm-bg); color: var(--lm-text); font-family: var(--lm-sans); font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+:where(.lm) img { display: block; max-width: 100%; height: auto; }
+:where(.lm) a { color: inherit; text-decoration: none; }
+:where(.lm) ul, :where(.lm) ol { margin: 0; padding: 0; list-style: none; }
+:where(.lm) h1, :where(.lm) h2, :where(.lm) h3, :where(.lm) p, :where(.lm) figure, :where(.lm) address { margin: 0; }
+:where(.lm) address { font-style: normal; }
+:where(.lm) button, :where(.lm) input, :where(.lm) select, :where(.lm) textarea { font: inherit; color: inherit; }
+:where(.lm) button { cursor: pointer; }
+.lm [hidden] { display: none !important; }
+.lm :focus-visible { outline: 2px solid var(--lm-gold); outline-offset: 2px; }
+.lm img.is-broken { visibility: hidden; }
+
+.lm-container { width: 100%; max-width: var(--lm-wrap); margin-inline: auto; padding-inline: var(--lm-pad); }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.lm-skip { position: absolute; left: -999px; top: 0; z-index: 100; padding: 10px 16px; background: #fff; color: var(--lm-ink); }
+.lm-skip:focus { left: 8px; top: 8px; }
+.i { width: 1.15em; height: 1.15em; flex: none; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---------- 3. Tipografi & tombol ---------- */
+.lm-eyebrow { font-size: .66rem; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: var(--lm-gold); }
+.lm-eyebrow--gold { color: var(--lm-gold-l); }
+.lm-eyebrow--line { display: flex; align-items: center; gap: 12px; color: var(--lm-gold-l); }
+.lm-eyebrow--line::before { content: ""; width: 34px; height: 1px; background: currentColor; }
+.lm-title { font-family: var(--lm-serif); font-weight: 600; font-size: clamp(1.7rem, 3vw, 2.2rem); line-height: 1.2; color: var(--lm-ink); }
+.lm-lead { max-width: 46ch; font-size: .88rem; color: var(--lm-muted); }
+.lm-muted { font-size: .8rem; color: var(--lm-muted); }
+.lm-link { display: inline-flex; align-items: center; gap: 8px; font-size: .85rem; font-weight: 500; color: var(--lm-gold-d); }
+.lm-link:hover { color: var(--lm-ink); }
+
+.lm-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: .8rem 1.5rem; border: 1px solid transparent; border-radius: var(--lm-r-sm); font-size: .85rem; font-weight: 500; line-height: 1; white-space: nowrap; transition: background-color .2s, color .2s, border-color .2s, transform .2s; }
+.lm-btn:hover { transform: translateY(-1px); }
+.lm-btn--pill { border-radius: 999px; }
+.lm-btn--sm { padding: .7rem 1.15rem; font-size: .78rem; }
+.lm-btn--xs { padding: .5rem .95rem; font-size: .72rem; }
+.lm-btn--gold { background: var(--lm-gold); color: #fff; }
+.lm-btn--gold:hover { background: var(--lm-gold-d); }
+.lm-btn--ghost { border-color: rgba(255, 255, 255, .7); background: transparent; color: #fff; }
+.lm-btn--ghost:hover { background: #fff; color: var(--lm-dark); }
+.lm-btn--line { border-color: var(--lm-gold); color: var(--lm-gold-d); background: transparent; }
+.lm-btn--line:hover { background: var(--lm-gold); color: #fff; }
+.lm-btn--wa { width: 100%; padding-block: .95rem; background: var(--lm-wa); color: #fff; }
+.lm-btn--wa:hover { background: var(--lm-wa-d); }
+
+.lm-icon-btn { display: grid; place-items: center; width: 44px; height: 44px; flex: none; border: 1px solid var(--lm-line); border-radius: 50%; background: #fff; font-size: 1.15rem; color: var(--lm-ink); transition: border-color .2s, color .2s; }
+.lm-icon-btn:hover { border-color: var(--lm-gold); color: var(--lm-gold-d); }
+
+/* ---------- 4. Topbar ---------- */
+.lm-topbar { background: var(--lm-dark); color: #d9d4c8; font-size: .72rem; }
+.lm-topbar__in { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 38px; padding-block: 6px; }
+.lm-topbar__info { display: flex; flex-wrap: wrap; gap: 4px 28px; }
+.lm-topbar__info li { display: flex; align-items: center; gap: 8px; }
+.lm-topbar__info .i { color: var(--lm-gold-l); }
+.lm-topbar__right { display: flex; align-items: center; gap: 18px; }
+.lm-social { display: flex; gap: 14px; }
+.lm-social a { display: grid; place-items: center; transition: color .2s; }
+.lm-social a:hover { color: var(--lm-gold-l); }
+@media (max-width: 991.98px) { .lm-topbar__info li:not(:last-child) { display: none; } }
+@media (max-width: 575.98px) { .lm-topbar__right .lm-social { display: none; } .lm-topbar { font-size: .68rem; } }
+
+/* ---------- 5. Navbar ---------- */
+.lm-nav { position: sticky; top: 0; z-index: 50; background: #fff; border-bottom: 1px solid var(--lm-line); transition: box-shadow .25s; }
+.lm-nav.is-stuck { box-shadow: 0 6px 24px rgba(20, 20, 10, .08); }
+.lm-nav__in { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: var(--lm-nav-h); }
+
+.lm-logo { display: flex; align-items: center; gap: 10px; color: var(--lm-ink); }
+.lm-logo__ico { width: 38px; height: 38px; color: var(--lm-gold); stroke-width: 1.2; }
+.lm-logo__txt { display: flex; flex-direction: column; line-height: 1.1; }
+.lm-logo__txt strong { font-family: var(--lm-serif); font-weight: 500; font-size: 1.15rem; letter-spacing: .12em; text-transform: uppercase; }
+.lm-logo__txt small { margin-top: 4px; font-size: .5rem; letter-spacing: .3em; text-transform: uppercase; color: var(--lm-muted); }
+.lm-logo--light { color: #fff; }
+.lm-logo--light small { color: #cfc8b8; }
+
+.lm-nav__toggle { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid var(--lm-line); border-radius: 10px; background: #fff; font-size: 1.3rem; color: var(--lm-ink); }
+.lm-nav__panel { display: none; position: absolute; inset: 100% 0 auto 0; max-height: calc(100vh - var(--lm-nav-h)); overflow-y: auto; padding: 8px var(--lm-pad) 22px; background: #fff; border-bottom: 1px solid var(--lm-line); box-shadow: 0 18px 30px rgba(20, 20, 10, .10); }
+.lm-nav.is-open .lm-nav__panel { display: block; }
+.lm-nav__list { display: flex; flex-direction: column; }
+.lm-nav__list a { display: block; padding: 14px 4px; border-bottom: 1px solid var(--lm-line); font-size: .95rem; }
+.lm-nav__list a.is-active { color: var(--lm-gold-d); font-weight: 500; }
+.lm-nav__actions { display: flex; align-items: center; gap: 12px; margin-top: 18px; }
+.lm-nav__actions .lm-btn { flex: 1; }
+
+@media (min-width: 992px) {
+    .lm-nav__toggle { display: none; }
+    .lm-nav__panel { position: static; display: flex; flex: 1; align-items: center; justify-content: space-between; max-height: none; overflow: visible; padding: 0; background: none; border: 0; box-shadow: none; }
+    .lm-nav__list { flex-direction: row; gap: clamp(18px, 2.4vw, 42px); margin-inline: auto; }
+    .lm-nav__list a { padding: 8px 0; border-bottom: 2px solid transparent; font-size: .82rem; }
+    .lm-nav__list a:hover { color: var(--lm-gold-d); }
+    .lm-nav__list a.is-active { border-bottom-color: var(--lm-gold); }
+    .lm-nav__actions { margin: 0; }
+    .lm-nav__actions .lm-btn { flex: none; }
+    .lm-nav__actions .lm-icon-btn { border-color: transparent; background: none; }
+}
+
+/* ---------- 6. Hero / slider ---------- */
+.lm-hero { position: relative; display: grid; overflow: hidden; min-height: 420px; background: #14100d; color: #fff; }
+.lm-slide { position: relative; grid-area: 1 / 1; display: flex; align-items: center; opacity: 0; visibility: hidden; transition: opacity .8s ease, visibility .8s; }
+.lm-slide.is-active { opacity: 1; visibility: visible; }
+/* Foto di sisi kanan, memudar ke gelap di kiri (tempat teks) seperti pada desain */
+.lm-slide__bg { position: absolute; top: 0; right: 0; width: auto; max-width: none; height: 100%; -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 34%); mask-image: linear-gradient(90deg, transparent 0, #000 34%); }
+.lm-slide::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(14, 12, 10, .55) 0%, rgba(14, 12, 10, .28) 45%, rgba(14, 12, 10, 0) 70%); }
+.lm-slide__in { position: relative; z-index: 2; width: 100%; padding-block: 56px; }
+.lm-slide__copy { max-width: 560px; }
+.lm-hero__title { margin: 16px 0 14px; font-family: var(--lm-serif); font-weight: 600; font-size: clamp(2.3rem, 4.4vw, 3.5rem); line-height: 1.08; }
+.lm-hero__title em { display: block; font-weight: 500; font-style: italic; }
+.lm-hero__text { max-width: 46ch; margin-bottom: 24px; font-size: clamp(.88rem, 1.3vw, .95rem); color: #ece7da; }
+.lm-hero__actions { display: flex; flex-wrap: wrap; gap: 14px; }
+.lm-hero__script { display: none; position: absolute; right: clamp(60px, 7vw, 110px); bottom: 28px; font-family: var(--lm-script); font-size: clamp(1.8rem, 2.8vw, 2.5rem); line-height: 1; color: rgba(255, 255, 255, .9); transform: rotate(-8deg); }
+@media (min-width: 768px) { .lm-hero__script { display: block; } }
+@media (min-width: 992px) { .lm-hero { min-height: 340px; } .lm-slide__in { padding-block: 44px; } }
+
+.lm-hero__nav { position: absolute; z-index: 5; bottom: 20px; display: grid; place-items: center; width: 42px; height: 42px; border: 1px solid rgba(255, 255, 255, .5); border-radius: 50%; background: rgba(0, 0, 0, .28); color: #fff; font-size: 1.2rem; backdrop-filter: blur(4px); transition: background-color .2s, color .2s; }
+.lm-hero__nav:hover { background: #fff; color: var(--lm-dark); }
+.lm-hero__nav--prev { left: var(--lm-pad); }
+.lm-hero__nav--next { right: var(--lm-pad); }
+@media (min-width: 768px) { .lm-hero__nav { top: 50%; bottom: auto; width: 46px; height: 46px; translate: 0 -50%; } }
+@media (max-width: 767.98px) { .lm-slide::after { background: linear-gradient(180deg, rgba(14, 12, 10, .72), rgba(14, 12, 10, .55)); } }
+
+/* ---------- 7. Keunggulan ---------- */
+.lm-features { background: #fff; border-bottom: 1px solid var(--lm-line); }
+.lm-features__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 12px; padding-block: 22px; }
+.lm-feature { display: flex; align-items: center; gap: 12px; }
+.lm-feature:last-child:nth-child(odd) { grid-column: 1 / -1; }
+.lm-feature__ico { width: 36px; height: 36px; color: var(--lm-gold); stroke-width: 1.25; }
+.lm-feature strong { display: block; font-size: .82rem; font-weight: 500; color: var(--lm-ink); }
+.lm-feature span { display: block; font-size: .7rem; color: var(--lm-muted); }
+@media (min-width: 768px) {
+    .lm-features__list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .lm-feature:last-child:nth-child(odd) { grid-column: auto; }
+}
+@media (min-width: 1100px) {
+    .lm-features__list { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0; }
+    .lm-feature { justify-content: center; }
+    .lm-feature + .lm-feature { border-left: 1px solid var(--lm-line); }
+}
+
+/* ---------- 8. Menu ---------- */
+.lm-section { padding-block: clamp(36px, 5vw, 64px); }
+.lm-menu__wrap { display: grid; gap: 28px; }
+@media (min-width: 1200px) { .lm-menu__wrap { grid-template-columns: minmax(0, 1.75fr) minmax(0, 1fr); gap: 32px; } }
+@media (min-width: 1200px) { .lm-menu__wrap--stack { grid-template-columns: minmax(0, 1fr); } }
+.lm-menu__head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 24px; margin-bottom: 22px; }
+.lm-menu__head .lm-title { margin: 6px 0 8px; }
+
+/* Tab kategori: hanya dipakai di halaman Menu */
+.lm-tabs { display: flex; gap: 8px; margin-bottom: 26px; padding-bottom: 6px; overflow-x: auto; scrollbar-width: none; }
+.lm-tabs::-webkit-scrollbar { display: none; }
+.lm-tabs--center { justify-content: safe center; }
+.lm-tab { flex: none; padding: .6rem 1.4rem; border: 1px solid var(--lm-line); border-radius: 999px; background: #fff; font-size: .85rem; color: var(--lm-text); transition: background-color .2s, color .2s, border-color .2s; }
+.lm-tab:hover { border-color: var(--lm-gold); color: var(--lm-gold-d); }
+.lm-tab.is-active { border-color: var(--lm-gold); background: var(--lm-gold); color: #fff; }
+.lm-empty { padding: 32px 0; text-align: center; font-size: .88rem; color: var(--lm-muted); }
+
+.lm-products { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+@media (min-width: 576px) { .lm-products { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 992px) { .lm-products { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+.lm-products--all { grid-template-columns: repeat(auto-fill, minmax(min(100%, 210px), 1fr)); gap: 18px; }
+.lm-product { overflow: hidden; background: #fff; border: 1px solid var(--lm-line); border-radius: var(--lm-r-sm); transition: transform .25s, box-shadow .25s; }
+.lm-product:hover { transform: translateY(-4px); box-shadow: var(--lm-shadow); }
+.lm-product__body { padding: 10px 12px 12px; }
+.lm-product h3 { font-size: .78rem; font-weight: 500; color: var(--lm-ink); }
+.lm-product p { margin-top: 2px; font-size: .78rem; font-weight: 500; color: var(--lm-gold-d); }
+.lm-products--all .lm-product h3, .lm-products--all .lm-product p { font-size: .88rem; }
+
+/* Wadah gambar: gradasi earthtone tampil bila file gambar belum ada */
+.lm-media { position: relative; overflow: hidden; background: linear-gradient(135deg, #d9cdb7, #a98b5e); }
+.lm-media img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
+.lm-product .lm-media { aspect-ratio: 423 / 225; }
+.lm-product:hover .lm-media img { transform: scale(1.06); }
+
+/* ---------- 8b. Halaman Menu (lebih ramai) ---------- */
+.lm-menu--page { padding: 0; }
+.lm-tabsbar { position: sticky; top: var(--lm-nav-h); z-index: 30; padding-block: 14px 8px; background: rgba(250, 248, 244, .94); border-bottom: 1px solid var(--lm-line); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+.lm-tabsbar .lm-tabs { margin: 0; padding-bottom: 6px; }
+.lm-tab small { margin-left: 6px; padding: 1px 7px; border-radius: 999px; background: rgba(176, 138, 79, .14); font-size: .68rem; color: var(--lm-gold-d); }
+.lm-tab.is-active small { background: rgba(255, 255, 255, .25); color: #fff; }
+.lm-menu__groups { display: flex; flex-direction: column; gap: clamp(44px, 6vw, 76px); padding-block: clamp(32px, 5vw, 56px); }
+.lm-menu-group__head { margin-bottom: 30px; text-align: center; }
+.lm-menu-group__head .lm-title { margin: 6px 0 8px; }
+.lm-menu-group__head .lm-lead { margin-inline: auto; }
+.lm-orn { display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 10px; color: var(--lm-gold); }
+.lm-orn::before, .lm-orn::after { content: ""; flex: 0 1 110px; height: 1px; }
+.lm-orn::before { background: linear-gradient(90deg, transparent, var(--lm-gold-l)); }
+.lm-orn::after { background: linear-gradient(270deg, transparent, var(--lm-gold-l)); }
+.lm-orn .i { width: 1.7rem; height: 1.7rem; stroke-width: 1.1; }
+
+.lm-products--detail { grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 22px; }
+.lm-products--detail .lm-product { display: flex; flex-direction: column; }
+.lm-products--detail .lm-media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(16, 32, 27, .28), transparent 55%); pointer-events: none; }
+.lm-product__tag { position: absolute; left: 12px; top: 12px; z-index: 2; padding: .25rem .7rem; border-radius: 999px; background: rgba(16, 32, 27, .78); color: #fff; font-size: .66rem; letter-spacing: .12em; text-transform: uppercase; -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+.lm-product__fav { position: absolute; right: 12px; top: 12px; z-index: 2; display: inline-flex; align-items: center; gap: 4px; padding: .25rem .65rem; border-radius: 999px; background: var(--lm-gold); color: #fff; font-size: .68rem; font-weight: 500; }
+.lm-products--detail .lm-product__body { display: flex; flex: 1; flex-direction: column; gap: 6px; padding: 16px 18px 18px; }
+.lm-products--detail .lm-product h3 { font-family: var(--lm-serif); font-weight: 600; font-size: 1.1rem; line-height: 1.25; }
+.lm-products--detail .lm-product .lm-product__desc { margin: 0; font-size: .82rem; font-weight: 400; line-height: 1.6; color: var(--lm-muted); }
+.lm-products--detail .lm-product .lm-product__price { margin-top: auto; padding-top: 12px; border-top: 1px solid var(--lm-line); font-family: var(--lm-serif); font-size: 1.1rem; font-weight: 600; }
+
+.lm-menu-promo { padding-block: clamp(8px, 2vw, 20px) clamp(40px, 6vw, 72px); }
+
+.lm-cta { position: relative; isolation: isolate; overflow: hidden; background: var(--lm-dark); color: #fff; }
+.lm-cta__bg { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; }
+.lm-cta::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgba(10, 18, 15, .94), rgba(10, 18, 15, .78) 55%, rgba(10, 18, 15, .5)); }
+.lm-cta__in { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px 40px; padding-block: clamp(36px, 6vw, 64px); }
+.lm-cta h2 { margin: 8px 0; font-family: var(--lm-serif); font-weight: 600; font-size: clamp(1.7rem, 3.4vw, 2.4rem); line-height: 1.15; }
+.lm-cta p:not(.lm-eyebrow) { max-width: 46ch; font-size: .9rem; color: #ece7da; }
+
+/* ---------- 9. Promo: kartu & banner, berisi 1 sampai banyak promo ---------- */
+.lm-promos { position: relative; min-width: 0; }
+.lm-promos__track { height: 100%; }
+/* bergantian: baris geser. --pv = jumlah tampil sekaligus, --idx = posisi (diatur cafe.js) */
+.lm-promos[data-mode="slider"] { overflow: hidden; border-radius: var(--lm-r); }
+.lm-promos[data-mode="slider"] .lm-promos__track { display: flex; gap: 16px; transition: transform .6s cubic-bezier(.4, 0, .2, 1); transform: translateX(calc(var(--idx, 0) * (100% + 16px) / var(--pv, 1) * -1)); }
+.lm-promos[data-mode="slider"] .lm-promos__track > * { flex: 0 0 calc((100% - (var(--pv, 1) - 1) * 16px) / var(--pv, 1)); min-width: 0; }
+/* bersamaan: semua tampil, kolom menyesuaikan lebar */
+.lm-promos[data-mode="grid"] .lm-promos__track { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--lm-min, 320px)), 1fr)); }
+
+.lm-dots { position: absolute; left: 0; right: 0; bottom: 10px; z-index: 4; display: flex; justify-content: center; gap: 8px; pointer-events: none; }
+.lm-dots button { position: relative; width: 8px; height: 8px; padding: 0; border: 0; border-radius: 8px; background: rgba(255, 255, 255, .4); pointer-events: auto; transition: width .25s, background-color .25s; }
+.lm-dots button::before { content: ""; position: absolute; inset: -9px -5px; }
+.lm-dots button[aria-current="true"] { width: 22px; background: var(--lm-gold-l); }
+
+.lm-promo { position: relative; isolation: isolate; display: flex; align-items: center; min-height: 260px; overflow: hidden; border-radius: var(--lm-r); background: var(--lm-dark); color: #fff; }
+.lm-promo__img { position: absolute; top: 0; right: 0; z-index: -2; width: auto; max-width: none; height: 100%; -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 30%); mask-image: linear-gradient(90deg, transparent 0, #000 30%); }
+.lm-promo::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgba(16, 32, 27, .92) 0%, rgba(16, 32, 27, .7) 45%, rgba(16, 32, 27, 0) 85%); }
+.lm-promo__body { max-width: 440px; padding: clamp(24px, 4vw, 40px) clamp(24px, 4vw, 40px) clamp(34px, 4vw, 44px); }
+.lm-promo h2 { margin: 14px 0 6px; font-family: var(--lm-serif); font-weight: 600; font-size: clamp(1.9rem, 3.4vw, 2.6rem); line-height: 1.1; }
+.lm-promo__sub { font-family: var(--lm-serif); font-size: 1.15rem; }
+.lm-promo__date { margin-top: 12px; font-size: .8rem; color: var(--lm-gold-l); }
+.lm-promo__badge { position: absolute; top: 20px; right: 22px; display: grid; place-content: center; width: 74px; height: 74px; border: 2px solid var(--lm-gold-l); border-radius: 50%; background: #fff; color: var(--lm-dark); text-align: center; font-family: var(--lm-script); font-size: 1.15rem; line-height: 1; transform: rotate(8deg); box-shadow: 0 4px 14px rgba(0, 0, 0, .3); }
+.lm-promo__badge b { display: block; font-weight: 600; }
+
+/* ---------- 10. Layanan, jam operasional & lokasi ---------- */
+.lm-card { display: flex; flex-direction: column; gap: 12px; min-width: 0; padding: 20px; background: #fff; border: 1px solid var(--lm-line); border-radius: var(--lm-r); }
+.lm-card__title { font-family: var(--lm-serif); font-weight: 600; font-size: 1.3rem; line-height: 1.2; color: var(--lm-ink); }
+.lm-card__title--sm { font-size: 1.1rem; }
+.lm-card p:not(.lm-eyebrow) { font-size: .78rem; line-height: 1.65; color: var(--lm-muted); }
+
+/* Produk & Layanan */
+.lm-services { background: #fff; border-block: 1px solid var(--lm-line); }
+.lm-services__head { margin-bottom: 26px; }
+.lm-services__head .lm-title { margin: 6px 0 8px; }
+.lm-services__grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; }
+@media (min-width: 576px) { .lm-services__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 992px) { .lm-services__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; } }
+.lm-service { overflow: hidden; background: var(--lm-bg); border: 1px solid var(--lm-line); border-radius: var(--lm-r); transition: transform .25s, box-shadow .25s; }
+.lm-service:hover { transform: translateY(-4px); box-shadow: var(--lm-shadow); }
+.lm-service .lm-media { aspect-ratio: 4 / 3; }
+.lm-service:hover .lm-media img { transform: scale(1.05); }
+.lm-service__body { padding: 18px 20px 22px; }
+.lm-service h3 { font-family: var(--lm-serif); font-weight: 600; font-size: 1.2rem; line-height: 1.25; color: var(--lm-ink); }
+.lm-service h3::after { content: ""; display: block; width: 28px; height: 2px; margin-top: 10px; background: var(--lm-gold); }
+.lm-service p { margin-top: 10px; font-size: .84rem; line-height: 1.7; color: var(--lm-muted); }
+
+/* Jam operasional + lokasi (satu baris) */
+.lm-visit { background: var(--lm-alt); }
+.lm-visit__grid { display: grid; gap: 18px; }
+@media (min-width: 992px) { .lm-visit__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 2.3fr); } }
+.lm-visit .lm-card { padding: clamp(20px, 3vw, 28px); }
+
+.lm-hours__table { width: 100%; border-collapse: collapse; font-size: .85rem; }
+.lm-hours__table tr + tr { border-top: 1px solid var(--lm-line); }
+.lm-hours__table th, .lm-hours__table td { padding: 14px 0; font-weight: 400; text-align: left; }
+.lm-hours__table th { display: flex; align-items: center; gap: 10px; color: var(--lm-ink); }
+.lm-hours__table th .i { font-size: 1.1rem; color: var(--lm-gold); }
+.lm-hours__table td { text-align: right; white-space: nowrap; color: var(--lm-text); }
+.lm-hours__table tr.is-today th, .lm-hours__table tr.is-today td { font-weight: 500; color: var(--lm-gold-d); }
+
+.lm-loc { gap: 18px; }
+.lm-loc__head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 14px 24px; }
+.lm-loc__title { margin: 6px 0 8px; font-size: 1.55rem; }
+.lm-loc address { max-width: 44ch; font-size: .9rem; line-height: 1.65; color: var(--lm-muted); }
+.lm-map { position: relative; height: clamp(280px, 38vw, 420px); overflow: hidden; border: 1px solid var(--lm-line); border-radius: var(--lm-r-sm); background: #e4ece3; }
+.lm-map iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+/* Peta terkunci sampai diklik/diketuk agar tidak "menangkap" scroll halaman */
+.lm-map__lock { position: absolute; inset: 0; z-index: 2; display: flex; align-items: flex-end; justify-content: center; padding: 16px; border: 0; background: transparent; cursor: pointer; }
+.lm-map__lock span { padding: .55rem 1.1rem; border-radius: 999px; background: rgba(16, 32, 27, .88); color: #fff; font-size: .74rem; opacity: 0; transform: translateY(4px); transition: opacity .25s, transform .25s; }
+.lm-map:hover .lm-map__lock span, .lm-map__lock:focus-visible span { opacity: 1; transform: none; }
+@media (hover: none) { .lm-map__lock span { opacity: 1; transform: none; } }
+.lm-map.is-active .lm-map__lock { display: none; }
+
+/* ---------- 11. Banner promo & FAQ ---------- */
+.lm-lower { padding-block: 28px 44px; }
+.lm-lower__grid { display: grid; gap: 18px; }
+@media (min-width: 992px) { .lm-lower__grid { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); } }
+/* FAQ selalu di kolom kanan dengan tinggi alaminya (tidak ikut melebar/memanjang mengikuti promo) */
+.lm-lower__grid > .lm-faq { align-self: start; }
+
+.lm-banner { position: relative; display: grid; align-items: center; min-height: 150px; overflow: hidden; border-radius: var(--lm-r); background: linear-gradient(135deg, #0f1f1a, #16302a); color: #fff; }
+.lm-banner__visual { position: relative; display: flex; align-items: center; height: 100%; min-height: 140px; }
+.lm-banner__img { position: absolute; top: 0; right: 0; width: 58%; max-width: none; height: 100%; object-fit: cover; -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 24%, #000 76%, transparent 100%); mask-image: linear-gradient(90deg, transparent 0, #000 24%, #000 76%, transparent 100%); }
+.lm-banner__script { position: relative; z-index: 2; padding-left: clamp(18px, 3vw, 28px); font-family: var(--lm-script); font-size: clamp(1.7rem, 2.6vw, 2.3rem); line-height: .98; color: rgba(255, 255, 255, .92); transform: rotate(-8deg); }
+.lm-banner__body { padding: 8px clamp(18px, 3vw, 28px) 30px; }
+.lm-banner h2 { margin: 8px 0 6px; font-family: var(--lm-serif); font-weight: 500; font-size: clamp(1.25rem, 2.2vw, 1.55rem); line-height: 1.25; }
+.lm-banner__body p:not(.lm-eyebrow) { font-size: .8rem; color: #d9d4c8; }
+@media (min-width: 576px) {
+    .lm-banner { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); }
+    .lm-banner__body { padding: 20px 28px 20px 0; }
+}
+/* Kartu banner sempit (diatur cafe.js lewat data-compact): foto di atas, teks di bawah */
+.lm-promos[data-compact="true"] .lm-banner { grid-template-columns: minmax(0, 1fr); align-content: start; }
+.lm-promos[data-compact="true"] .lm-banner__visual { min-height: 140px; }
+.lm-promos[data-compact="true"] .lm-banner__body { padding: 6px 22px 34px; }
+.lm-promos[data-compact="true"] .lm-banner h2 { font-size: 1.2rem; }
+
+.lm-faq { gap: 10px; }
+.lm-faq__form { display: flex; align-items: center; gap: 8px; padding: 5px 5px 5px 14px; background: #fff; border: 1px solid var(--lm-line); border-radius: 999px; color: var(--lm-muted); }
+.lm-faq__form:focus-within { border-color: var(--lm-gold); }
+.lm-faq__form input { flex: 1; min-width: 0; padding: 8px 2px; border: 0; outline: 0; background: none; font-size: .8rem; }
+.lm-faq__form button { display: grid; place-items: center; flex: none; width: 34px; height: 34px; border: 0; border-radius: 50%; background: var(--lm-gold); color: #fff; transition: background-color .2s; }
+.lm-faq__form button:hover { background: var(--lm-gold-d); }
+.lm-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.lm-chip { padding: .45rem .85rem; border: 1px solid var(--lm-line); border-radius: 999px; background: #fff; font-size: .7rem; color: var(--lm-text); transition: border-color .2s, color .2s; }
+.lm-chip:hover { border-color: var(--lm-gold); color: var(--lm-gold-d); }
+.lm-faq__answer { padding: 12px 14px; border-left: 3px solid var(--lm-gold); border-radius: var(--lm-r-sm); background: var(--lm-alt); font-size: .82rem; line-height: 1.6; color: var(--lm-text); }
+.lm-faq__answer b { display: block; margin-bottom: 4px; font-weight: 500; color: var(--lm-ink); }
+.lm-typing { display: inline-flex; gap: 5px; padding: 4px 0; }
+.lm-typing i { width: 6px; height: 6px; border-radius: 50%; background: var(--lm-gold); animation: lm-blink 1s infinite ease-in-out; }
+.lm-typing i:nth-child(2) { animation-delay: .15s; }
+.lm-typing i:nth-child(3) { animation-delay: .3s; }
+@keyframes lm-blink { 0%, 80%, 100% { opacity: .25; transform: scale(.8); } 40% { opacity: 1; transform: scale(1); } }
+
+/* ---------- 12. Footer ---------- */
+.lm-footer { position: relative; background: var(--lm-dark); color: #cfc9bb; font-size: .78rem; }
+.lm-footer__grid { display: grid; gap: 28px; padding-block: 40px 30px; }
+@media (min-width: 576px) { .lm-footer__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 992px) { .lm-footer__grid { grid-template-columns: 1.3fr 1.3fr 1.3fr 1.2fr; gap: 40px; } }
+.lm-footer__brand { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
+.lm-footer__brand p { max-width: 32ch; }
+.lm-footer__h { margin: 0 0 14px; font-size: .85rem; font-weight: 500; color: #fff; }
+.lm-footer__links { display: grid; grid-template-columns: repeat(2, max-content); gap: 8px 28px; }
+.lm-footer a { transition: color .2s; }
+.lm-footer a:hover { color: var(--lm-gold-l); }
+.lm-footer__contact li { display: flex; gap: 10px; margin-bottom: 10px; }
+.lm-footer__contact .i { margin-top: 3px; color: var(--lm-gold-l); }
+.lm-news { display: flex; padding: 4px; border: 1px solid rgba(255, 255, 255, .25); border-radius: 999px; background: rgba(255, 255, 255, .04); }
+.lm-news input { flex: 1; min-width: 0; padding: 8px 14px; border: 0; outline: 0; background: none; color: #fff; }
+.lm-news input::placeholder { color: #a8a294; }
+.lm-news:focus-within { border-color: var(--lm-gold-l); }
+.lm-news button { display: grid; place-items: center; flex: none; width: 36px; height: 36px; border: 0; border-radius: 50%; background: #fff; color: var(--lm-dark); }
+.lm-news__msg { margin-top: 8px; font-size: .72rem; color: var(--lm-gold-l); }
+.lm-footer__line { border-top: 1px solid rgba(255, 255, 255, .12); }
+.lm-footer__bar { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 20px; padding-block: 16px; font-size: .7rem; color: #a8a294; }
+.lm-footer__credit { border-top: 1px solid rgba(255, 255, 255, .12); background: rgba(0, 0, 0, .2); }
+.lm-footer__credit p { padding-block: 12px; text-align: center; font-size: .72rem; color: #a8a294; }
+.lm-top { position: fixed; right: 27px; bottom: calc(92px + env(safe-area-inset-bottom, 0px)); z-index: 40; display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid rgba(255, 255, 255, .3); border-radius: 50%; background: var(--lm-dark); color: #fff; font-size: 1.1rem; opacity: 0; visibility: hidden; transition: opacity .25s, visibility .25s, background-color .2s; }
+.lm-top.is-visible { opacity: 1; visibility: visible; }
+.lm-top:hover { background: var(--lm-gold); }
+
+/* Tombol WhatsApp bulat (melayang) */
+.lm-wa-float { position: fixed; right: 20px; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); z-index: 45; display: grid; place-items: center; width: 58px; height: 58px; border: 2px solid var(--lm-gold-l); border-radius: 50%; background: linear-gradient(145deg, #1f5a45, var(--lm-dark)); color: #fff; font-size: 1.9rem; box-shadow: 0 8px 22px rgba(16, 32, 27, .38); transition: transform .25s; animation: lm-pulse 2.8s ease-out infinite; }
+.lm-wa-float:hover { transform: translateY(-3px) scale(1.05); }
+.lm-wa-float .i { width: 1em; height: 1em; }
+.lm-wa-float__tip { position: absolute; right: calc(100% + 12px); top: 50%; translate: 0 -50%; padding: .45rem .85rem; border-radius: 999px; background: var(--lm-dark); color: #fff; font-size: .74rem; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity .2s; }
+.lm-wa-float:hover .lm-wa-float__tip, .lm-wa-float:focus-visible .lm-wa-float__tip { opacity: 1; }
+@media (hover: none) { .lm-wa-float__tip { display: none; } }
+@keyframes lm-pulse {
+    0% { box-shadow: 0 8px 22px rgba(16, 32, 27, .38), 0 0 0 0 rgba(214, 181, 122, .55); }
+    70%, 100% { box-shadow: 0 8px 22px rgba(16, 32, 27, .38), 0 0 0 16px rgba(214, 181, 122, 0); }
+}
+
+/* ---------- 13. Halaman menu & reservasi ---------- */
+.lm-pagehead { position: relative; isolation: isolate; overflow: hidden; background: var(--lm-dark); color: #fff; }
+.lm-pagehead__bg { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; object-position: right center; }
+.lm-pagehead::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgba(10, 18, 15, .94), rgba(10, 18, 15, .72) 55%, rgba(10, 18, 15, .45)); }
+.lm-pagehead__in { padding-block: clamp(32px, 5vw, 56px); }
+.lm-crumb { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; font-size: .75rem; color: var(--lm-gold-l); }
+.lm-crumb a:hover { text-decoration: underline; }
+.lm-pagehead__title { font-family: var(--lm-serif); font-weight: 600; font-size: clamp(1.9rem, 4vw, 2.8rem); line-height: 1.15; }
+.lm-pagehead__text { max-width: 52ch; margin-top: 8px; font-size: .9rem; color: #ece7da; }
+
+/* Reservasi: form + panel informasi */
+.lm-reserve { background: var(--lm-bg); }
+.lm-reserve__grid { display: grid; gap: 24px; }
+@media (min-width: 992px) { .lm-reserve__grid { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); align-items: start; } }
+.lm-reserve__main { min-width: 0; }
+@media (min-width: 992px) { .lm-reserve__main { position: sticky; top: calc(var(--lm-nav-h) + 20px); } }
+.lm-reserve__side { display: grid; gap: 18px; min-width: 0; }
+@media (max-width: 991.98px) { .lm-reserve__side { order: 2; } }
+
+.lm-reserve__card { padding: clamp(22px, 4vw, 36px); border-top: 3px solid var(--lm-gold); box-shadow: var(--lm-shadow); }
+.lm-reserve__card .lm-card__title { font-size: clamp(1.6rem, 3vw, 2rem); }
+.lm-form { display: grid; gap: 16px; margin-top: 10px; }
+.lm-form__row { display: grid; gap: 16px; }
+@media (min-width: 480px) { .lm-form__row { grid-template-columns: 1fr 1fr; } }
+.lm-field { display: grid; gap: 7px; font-size: .8rem; font-weight: 500; color: var(--lm-ink); }
+.lm-input { position: relative; display: flex; align-items: center; }
+.lm-input > .i { position: absolute; left: 14px; z-index: 1; font-size: 1.05rem; color: var(--lm-gold); pointer-events: none; }
+.lm-input--area > .i { top: 15px; }
+.lm-field input, .lm-field select, .lm-field textarea { width: 100%; padding: .82rem .9rem .82rem 2.6rem; border: 1px solid var(--lm-line); border-radius: var(--lm-r-sm); background: #fff; font-size: .88rem; font-weight: 400; transition: border-color .2s, box-shadow .2s; }
+.lm-field textarea { resize: vertical; }
+.lm-field input:focus, .lm-field select:focus, .lm-field textarea:focus { outline: 0; border-color: var(--lm-gold); box-shadow: 0 0 0 3px rgba(176, 138, 79, .18); }
+.lm-field input:user-invalid { border-color: #c0392b; }
+.lm-btn--block { width: 100%; padding-block: 1rem; font-size: .92rem; }
+.lm-form__status { padding: 12px 14px; border-left: 3px solid var(--lm-wa); border-radius: var(--lm-r-sm); background: #eef7f1; font-size: .82rem; color: var(--lm-ink); }
+
+.lm-rsv-photo { position: relative; isolation: isolate; display: flex; align-items: flex-end; min-height: 280px; overflow: hidden; border-radius: var(--lm-r); background: linear-gradient(135deg, #0f1f1a, #1b3a31); color: #fff; }
+.lm-rsv-photo img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; }
+.lm-rsv-photo::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(0deg, rgba(10, 18, 15, .92) 0%, rgba(10, 18, 15, .4) 55%, rgba(10, 18, 15, .1) 100%); }
+.lm-rsv-photo__txt { padding: 24px 26px; }
+.lm-rsv-photo h2 { margin: 8px 0 0; font-family: var(--lm-serif); font-weight: 600; font-size: clamp(1.7rem, 3vw, 2.2rem); line-height: 1.12; }
+.lm-rsv-photo h2 em { display: block; font-weight: 500; font-style: italic; }
+.lm-rsv-photo__txt p:not(.lm-eyebrow) { max-width: 36ch; margin-top: 10px; font-size: .84rem; color: #ece7da; }
+
+.lm-steps__list { display: grid; gap: 18px; }
+.lm-steps__list li { position: relative; display: flex; gap: 14px; }
+.lm-steps__list li:not(:last-child)::after { content: ""; position: absolute; left: 16px; top: 38px; bottom: -14px; width: 1px; background: var(--lm-line); }
+.lm-steps__n { display: grid; place-items: center; flex: none; width: 33px; height: 33px; border-radius: 50%; background: var(--lm-gold); color: #fff; font-family: var(--lm-serif); font-weight: 600; }
+.lm-steps strong { display: block; font-size: .92rem; font-weight: 500; color: var(--lm-ink); }
+.lm-steps__list p { margin-top: 2px; }
+
+.lm-rsv-contact ul { display: grid; gap: 12px; }
+.lm-rsv-contact li { display: flex; gap: 12px; font-size: .85rem; color: var(--lm-text); }
+.lm-rsv-contact .i { margin-top: 3px; color: var(--lm-gold); }
+.lm-rsv-contact a:hover { color: var(--lm-gold-d); }
+
+/* ---------- 13b. Efek interaktif AI FAQ ----------
+   Tambahan murni: hanya gerak & respons saat diinteraksi. Ukuran, posisi, warna, dan bentuk FAQ
+   saat diam TIDAK berubah (blok .lm-faq di bagian 11 tidak disentuh). Kelas fx-* ditambah oleh cafe.js. */
+.lm-faq { transition: box-shadow .35s ease; }
+.lm-faq.fx-wait, .lm-faq.fx-in { transition: opacity .7s ease, transform .7s cubic-bezier(.2, .7, .2, 1), box-shadow .35s ease; }
+.lm-faq.fx-wait { opacity: 0; transform: translateY(18px); }
+.lm-faq.fx-in { opacity: 1; transform: none; }
+.lm-faq:hover, .lm-faq:focus-within { box-shadow: 0 14px 38px rgba(176, 138, 79, .22); }
+.lm-faq.fx-pulse { animation: lm-faq-glow 1.2s ease-out 2; }
+@keyframes lm-faq-glow { 0% { box-shadow: 0 0 0 0 rgba(176, 138, 79, .45); } 100% { box-shadow: 0 0 0 22px rgba(176, 138, 79, 0); } }
+.lm-faq .lm-faq__form { transition: border-color .2s, box-shadow .25s; }
+.lm-faq .lm-faq__form:focus-within { box-shadow: 0 0 0 4px rgba(176, 138, 79, .16); }
+.lm-faq .lm-faq__form button { transition: background-color .2s, transform .25s; }
+.lm-faq .lm-faq__form button:hover { transform: scale(1.08) rotate(-8deg); }
+.lm-faq .lm-chip { transition: border-color .2s, color .2s, transform .2s, box-shadow .2s; }
+.lm-faq .lm-chip:hover { transform: translateY(-2px); box-shadow: 0 6px 14px rgba(176, 138, 79, .2); }
+.lm-faq .lm-chip:active { transform: translateY(0); }
+.lm-faq__answer.fx-show { animation: lm-faq-rise .45s ease both; }
+@keyframes lm-faq-rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* ---------- 14. Preferensi gerak ---------- */
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .lm *, .lm *::before, .lm *::after { animation: none !important; transition: none !important; }
+}

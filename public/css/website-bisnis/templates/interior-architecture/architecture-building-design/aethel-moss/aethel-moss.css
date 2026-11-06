@@ -1,0 +1,65 @@
+
+        /* Custom Customizations & Architectural Utilities */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0B1911;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1E422F;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #D4AF37;
+        }
+        .glass-panel {
+            background: rgba(19, 46, 32, 0.55);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+        }
+        .glass-panel-light {
+            background: rgba(244, 241, 234, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(19, 46, 32, 0.1);
+        }
+        .glow-gold {
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.25);
+        }
+        .glow-moss {
+            box-shadow: 0 0 35px rgba(19, 46, 32, 0.6);
+        }
+        .text-gradient-gold {
+            background: linear-gradient(135deg, #FFF 0%, #D4AF37 50%, #E5C76B 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .clip-diagonal {
+            clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+        }
+        /* Custom Smooth Transitions */
+        .transition-all-custom {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        /* Hotspot Ripple */
+        @keyframes ripple {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(2.2); opacity: 0; }
+        }
+        .animate-ripple {
+            animation: ripple 2s infinite ease-out;
+        }
+    
+
+/* Aethel Moss WEBIA integration */
+html { scroll-behavior: smooth; }
+section[id] { scroll-margin-top: 6rem; }
+#ai-chatbot-window { max-height: calc(100vh - 7rem); }
+#chat-messages { overflow-wrap: anywhere; }
+@media (max-width: 480px) {
+  .fixed.bottom-6.right-6 { right: .75rem; bottom: .75rem; gap: .5rem; }
+  .fixed.bottom-6.right-6 > a,
+  .fixed.bottom-6.right-6 > button { width: 3rem; height: 3rem; font-size: 1.2rem; }
+  #ai-chatbot-window { right: .75rem; width: calc(100vw - 1.5rem); }
+}

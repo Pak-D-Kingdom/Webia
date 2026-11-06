@@ -1,0 +1,754 @@
+
+/* JELLY POP — UNISEX SPORTY COLOR BOOST */
+
+:root {
+    --jp-purple: #5522A0;
+    --jp-grape: #291044;
+    --jp-lilac: #D9CCFF;
+    --jp-pink: #FF987D;
+    --jp-pink-hot: #FF6B59;
+    --jp-blue: #B8E9FF;
+    --jp-blue-strong: #45B8FF;
+    --jp-lime: #D9FF58;
+    --jp-yellow: #F5FF78;
+    --jp-orange: #FF985E;
+    --jp-ink: #20152F;
+    --jp-muted: #6F657C;
+    --jp-white: #FCFAFF;
+    --jp-border: rgba(71, 32, 111, .16);
+}
+
+/* Base and navigation */
+
+body {
+    background: var(--jp-white);
+}
+
+.jp-topbar {
+    background: linear-gradient(
+        100deg,
+        #291044,
+        #5522A0 55%,
+        #176CB5
+    );
+}
+
+.jp-navbar {
+    box-shadow: 0 5px 24px rgba(41, 16, 68, .07);
+}
+
+.jp-logo {
+    background: linear-gradient(
+        140deg,
+        #5522A0,
+        #176CB5
+    );
+    box-shadow: 0 5px 0 #B8E9FF;
+    transform: rotate(-5deg);
+    transition: transform .25s ease;
+}
+
+.jp-brand:hover .jp-logo {
+    transform: rotate(5deg) scale(1.05);
+}
+
+.jp-nav .jp-nav-cta {
+    border-radius: 999px;
+    background: var(--jp-grape);
+    box-shadow: 0 4px 0 var(--jp-blue);
+}
+
+/* Hero: energetic, gender-neutral */
+
+.jp-hero {
+    background:
+        radial-gradient(
+            circle at 8% 15%,
+            rgba(217, 255, 88, .55),
+            transparent 22%
+        ),
+        radial-gradient(
+            circle at 90% 10%,
+            rgba(69, 184, 255, .45),
+            transparent 27%
+        ),
+        linear-gradient(
+            125deg,
+            #F4F0FF,
+            #E7F5FF 58%,
+            #F9FBE8
+        );
+}
+
+.jp-hero h1 {
+    color: #291044;
+    text-shadow: 0 3px 0 rgba(255, 255, 255, .8);
+}
+
+.jp-hero h1 em,
+.jp-section h2 em,
+.jp-trainer h2 em,
+.jp-options h2 em,
+.jp-booking h2 em,
+.jp-detail-hero h1 em {
+    background: linear-gradient(
+        90deg,
+        #5522A0,
+        #176CB5 58%,
+        #168A78
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.jp-hero:after {
+    content: "✳";
+    position: absolute;
+    top: 12%;
+    right: 43%;
+    color: #5522A0;
+    opacity: .16;
+    font-size: 75px;
+    pointer-events: none;
+}
+
+.jp-hero-art > img {
+    border-radius: 42% 42% 24px 24px;
+    box-shadow:
+        13px 13px 0 #45B8FF,
+        -6px -6px 0 #D9CCFF;
+    transition: transform .3s ease;
+}
+
+.jp-hero-art:hover > img {
+    transform: translateY(-4px);
+}
+
+.jp-sticker {
+    border: 3px solid white;
+    box-shadow: 0 0 0 3px #5522A0,
+                0 12px 25px rgba(41, 16, 68, .18);
+}
+
+.jp-sticker-pink {
+    background: var(--jp-lime);
+    color: var(--jp-grape);
+}
+
+.jp-sticker-purple {
+    background: var(--jp-purple);
+    color: white;
+    box-shadow: 0 0 0 3px var(--jp-blue),
+                0 12px 25px rgba(41, 16, 68, .18);
+}
+
+.jp-hero-note {
+    border: 2px solid white;
+    box-shadow: 0 0 0 2px var(--jp-blue),
+                0 12px 30px rgba(41, 16, 68, .12);
+}
+
+.jp-hero-note > span {
+    color: #176CB5;
+}
+
+.jp-marquee {
+    background: linear-gradient(
+        90deg,
+        #291044,
+        #5522A0,
+        #176CB5,
+        #168A78
+    );
+    padding: 15px 0;
+}
+
+/* Buttons */
+
+.jp-btn {
+    border-radius: 999px;
+}
+
+.jp-btn-dark {
+    background: linear-gradient(
+        100deg,
+        #5522A0,
+        #176CB5
+    );
+    box-shadow: 0 5px 0 #B8E9FF;
+}
+
+.jp-btn-dark:hover {
+    background: linear-gradient(
+        100deg,
+        #176CB5,
+        #168A78
+    );
+    box-shadow: 0 7px 0 #B8E9FF;
+}
+
+.jp-btn-pink {
+    background: var(--jp-lime);
+    color: var(--jp-grape);
+    box-shadow: 0 5px 0 #B8E9FF;
+}
+
+.jp-btn-pink:hover {
+    background: #B8E9FF;
+    color: var(--jp-grape);
+}
+
+/* Package cards */
+
+.jp-programs {
+    background:
+        radial-gradient(
+            circle at 0 0,
+            #E8DEFF,
+            transparent 32%
+        ),
+        radial-gradient(
+            circle at 100% 100%,
+            #D6F4FF,
+            transparent 30%
+        ),
+        #F9FAFF;
+}
+
+.jp-program-card {
+    border: 2px solid white;
+    border-radius: 22px;
+    box-shadow: 0 7px 0 rgba(85, 34, 160, .08);
+    transition: transform .25s ease,
+                box-shadow .25s ease;
+}
+
+.jp-program-card:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 13px 0 rgba(85, 34, 160, .08),
+                0 22px 35px rgba(41, 16, 68, .12);
+}
+
+.jp-card-lilac {
+    background: linear-gradient(
+        145deg,
+        #F0E9FF,
+        #D9CCFF
+    );
+}
+
+.jp-card-purple {
+    background: linear-gradient(
+        145deg,
+        #5522A0,
+        #291044
+    );
+}
+
+.jp-card-blue {
+    background: linear-gradient(
+        145deg,
+        #E4F7FF,
+        #B8E9FF
+    );
+}
+
+.jp-ribbon {
+    background: var(--jp-lime);
+    color: var(--jp-grape);
+    border-radius: 0 0 0 12px;
+}
+
+.jp-icon {
+    border-radius: 13px;
+    box-shadow: 0 4px 0 #B8E9FF;
+}
+
+.jp-card-link {
+    border-top-style: dashed;
+}
+
+.jp-card-link b {
+    border-radius: 12px;
+    transition: transform .2s ease;
+}
+
+.jp-card-link:hover b {
+    transform: rotate(45deg);
+    background: #168A78;
+}
+
+/* Trainer and goals */
+
+.jp-trainer {
+    background:
+        radial-gradient(
+            circle at 95% 10%,
+            #E8DEFF,
+            transparent 28%
+        ),
+        #FCFAFF;
+}
+
+.jp-trainer-image img {
+    border-radius: 24px;
+    box-shadow: 14px 14px 0 #D9CCFF,
+                -5px -5px 0 #B8E9FF;
+}
+
+.jp-credential-grid > div {
+    background: linear-gradient(
+        120deg,
+        #F0E9FF,
+        #EAF8FF
+    );
+    border-radius: 13px;
+}
+
+.jp-credential-grid strong {
+    color: #176CB5;
+}
+
+.jp-goals {
+    background:
+        radial-gradient(
+            circle at 100% 0,
+            #D9FF58,
+            transparent 24%
+        ),
+        linear-gradient(
+            120deg,
+            #B8E9FF,
+            #E6F7FF 58%,
+            #E8DEFF
+        );
+}
+
+.jp-goal-grid article {
+    background: rgba(255, 255, 255, .85);
+    border: 2px solid white;
+    border-radius: 18px;
+    box-shadow: 0 6px 0 rgba(41, 16, 68, .05);
+    transition: transform .2s ease;
+}
+
+.jp-goal-grid article:hover {
+    transform: translateY(-5px);
+}
+
+.jp-goal-grid article > span {
+    background: linear-gradient(
+        145deg,
+        #D9FF58,
+        #B8E9FF
+    );
+    color: #291044;
+}
+
+/* Gallery and testimonials */
+
+.jp-transformation {
+    background:
+        radial-gradient(
+            circle at 10% 10%,
+            #E8DEFF,
+            transparent 28%
+        ),
+        #F8FBFF;
+}
+
+.jp-result-grid article {
+    border: 2px solid white;
+    border-radius: 20px;
+    box-shadow: 0 7px 0 #D9CCFF;
+    transition: transform .25s ease;
+}
+
+.jp-result-grid article:hover {
+    transform: translateY(-5px);
+}
+
+.jp-result-grid article span {
+    color: #176CB5;
+}
+
+.jp-options {
+    background:
+        radial-gradient(
+            circle at 5% 5%,
+            #5522A0,
+            transparent 35%
+        ),
+        linear-gradient(
+            120deg,
+            #291044,
+            #3E176D 65%,
+            #145E88
+        );
+}
+
+.jp-options .jp-kicker {
+    color: var(--jp-lime);
+}
+
+.jp-options h2 em {
+    background: linear-gradient(
+        90deg,
+        #D9FF58,
+        #B8E9FF
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.jp-options-image img {
+    border: 4px solid white;
+    box-shadow: 13px 13px 0 #B8E9FF,
+                -5px -5px 0 #D9CCFF;
+}
+
+.jp-option-line {
+    border-bottom-style: dashed;
+}
+
+.jp-option-line > span {
+    color: var(--jp-lime);
+}
+
+.jp-testimonials {
+    background: linear-gradient(
+        125deg,
+        #F0E9FF,
+        #EAF8FF,
+        #F8FBF0
+    );
+}
+
+.jp-quote {
+    border: 2px solid white;
+    border-radius: 22px;
+    box-shadow: 0 7px 0 #D9CCFF;
+}
+
+.jp-quote-stars {
+    color: #E69A18;
+}
+
+/* Booking form */
+
+.jp-booking {
+    background:
+        radial-gradient(
+            circle at 0 0,
+            #D9CCFF,
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 100% 100%,
+            #B8E9FF,
+            transparent 30%
+        ),
+        #F9FAFF;
+}
+
+.jp-form {
+    border: 2px solid white;
+    border-radius: 22px;
+    box-shadow: 0 7px 0 #D9CCFF,
+                0 20px 40px rgba(41, 16, 68, .08);
+}
+
+.jp-form input,
+.jp-form select,
+.jp-form textarea {
+    border-radius: 11px;
+    background: #FCFAFF;
+}
+
+.jp-form input:focus,
+.jp-form select:focus,
+.jp-form textarea:focus {
+    border-color: #176CB5;
+    box-shadow: 0 0 0 4px rgba(69, 184, 255, .18);
+}
+
+.jp-form-note {
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: #F5FFCE;
+    color: #51465F;
+}
+
+/* FAQ and footer */
+
+.jp-faq {
+    background:
+        radial-gradient(
+            circle at 100% 0,
+            #D9CCFF,
+            transparent 25%
+        ),
+        #FCFAFF;
+}
+
+.jp-faq details {
+    border-bottom: 1px dashed #D2C4E8;
+}
+
+.jp-faq details[open] {
+    padding: 18px;
+    border: 1px solid #D9CCFF;
+    border-radius: 13px;
+    background: #F4F0FF;
+}
+
+.jp-faq summary span {
+    display: grid;
+    place-items: center;
+    min-width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #D9FF58;
+    color: #291044;
+}
+
+.jp-footer {
+    background:
+        radial-gradient(
+            circle at 90% 0,
+            #5522A0,
+            transparent 30%
+        ),
+        linear-gradient(
+            110deg,
+            #20152F,
+            #291044
+        );
+}
+
+.jp-footer .jp-logo {
+    background: linear-gradient(
+        140deg,
+        #5522A0,
+        #176CB5
+    );
+}
+
+.jp-footer-bottom {
+    border-top-style: dashed;
+}
+
+/* Floating actions */
+
+.jp-floating-actions {
+    gap: 10px;
+}
+
+.jp-float {
+    border: 2px solid white;
+    box-shadow: 0 0 0 2px rgba(85, 34, 160, .12),
+                0 10px 25px rgba(32, 21, 47, .2);
+    transition: transform .2s ease;
+}
+
+.jp-float:hover {
+    transform: translateY(-3px);
+}
+
+.jp-ai {
+    background: linear-gradient(
+        100deg,
+        #5522A0,
+        #176CB5
+    );
+}
+
+.jp-wa {
+    background: linear-gradient(
+        100deg,
+        #087C54,
+        #13A77B
+    );
+}
+
+/* Program detail page */
+
+.jp-detail-hero {
+    background:
+        radial-gradient(
+            circle at 0 0,
+            #D9CCFF,
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 100% 0,
+            #B8E9FF,
+            transparent 30%
+        ),
+        linear-gradient(
+            125deg,
+            #F9F7FF,
+            #EAF8FF
+        );
+}
+
+.jp-detail-image > img {
+    border-radius: 24px;
+    box-shadow: 13px 13px 0 #45B8FF,
+                -5px -5px 0 #D9CCFF;
+}
+
+.jp-detail-sticker {
+    border: 3px solid white;
+    background: var(--jp-lime);
+    color: #291044;
+    box-shadow: 0 0 0 3px #5522A0,
+                0 12px 25px rgba(41, 16, 68, .2);
+}
+
+.jp-discount {
+    background: var(--jp-lime);
+    color: #291044;
+}
+
+.jp-detail-price > strong,
+.jp-sidebar-price strong {
+    color: #5522A0;
+}
+
+.jp-countdown {
+    border: 2px solid white;
+    background: linear-gradient(
+        110deg,
+        #F0E9FF,
+        #EAF8FF,
+        #F5FFCE
+    );
+    box-shadow: 0 5px 0 #D9CCFF;
+}
+
+.jp-countdown > span,
+.jp-countdown b {
+    color: #5522A0;
+}
+
+.jp-detail-facts {
+    background: linear-gradient(
+        100deg,
+        #291044,
+        #5522A0,
+        #176CB5
+    );
+}
+
+.jp-detail-facts small {
+    color: var(--jp-lime);
+}
+
+.jp-detail-sidebar {
+    border: 2px solid white;
+    border-radius: 20px;
+    background: linear-gradient(
+        145deg,
+        #F5F0FF,
+        #EAF8FF
+    );
+    box-shadow: 0 7px 0 #D9CCFF;
+}
+
+.jp-bonus {
+    border: 1px solid white;
+    background: linear-gradient(
+        120deg,
+        #F5FFCE,
+        #D9CCFF
+    );
+}
+
+.jp-inclusion-list > div {
+    border-bottom-style: dashed;
+}
+
+/* Motion kept subtle and disabled for reduced-motion preferences */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+@media (max-width: 760px) {
+    .jp-hero:after {
+        top: 5%;
+        right: 8%;
+        font-size: 48px;
+    }
+
+    .jp-hero-art > img {
+        box-shadow: 9px 9px 0 #45B8FF,
+                    -4px -4px 0 #D9CCFF;
+    }
+
+    .jp-trainer-image img {
+        box-shadow: 10px 10px 0 #D9CCFF,
+                    -4px -4px 0 #B8E9FF;
+    }
+
+    .jp-options-image img {
+        box-shadow: 10px 10px 0 #B8E9FF,
+                    -4px -4px 0 #D9CCFF;
+    }
+
+    .jp-program-card:hover,
+    .jp-goal-grid article:hover,
+    .jp-result-grid article:hover {
+        transform: none;
+    }
+}
+
+
+/* =========================================
+   SOFT PINK ACCENT — LITTLE SWEET TOUCH 💗
+   Aksen kecil saja, warna utama tetap unisex
+========================================= */
+
+:root {
+    --jp-soft-pink: #F8DCE8;
+    --jp-soft-pink-dark: #EFBFD3;
+}
+
+/* Hiasan kecil dan sticker */
+.jp-sticker-pink {
+    background: var(--jp-soft-pink) !important;
+    color: #74405B !important;
+    border-color: var(--jp-soft-pink-dark) !important;
+}
+
+/* Aksen dekoratif yang lembut */
+.jp-hero::before {
+    border-color: var(--jp-soft-pink) !important;
+}
+
+/* Hover kartu dengan sentuhan pink tipis */
+.jp-program-card:hover {
+    box-shadow: 0 14px 35px rgba(239, 191, 211, 0.22);
+}
+
+/* Badge kecil agar terlihat manis */
+.jp-badge-pink,
+.jp-tag-pink {
+    background: var(--jp-soft-pink) !important;
+    color: #74405B !important;
+}
+
+/* Pink hanya sebagai aksen, bukan warna tombol utama */
+.jp-btn-pink {
+    background: #B8F36B !important;
+    color: #26351B !important;
+}

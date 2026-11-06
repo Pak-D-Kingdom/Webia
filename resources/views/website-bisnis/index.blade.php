@@ -1,92 +1,64 @@
 @extends('website-bisnis.layouts.app')
 
-@section('title', 'Website Bisnis — D-KREASI')
+@section('title', 'WEBIA — Website Bisnis Profesional')
 @section('meta_description',
     'Temukan paket pembuatan website bisnis dari D-KREASI. Website responsif, AI Chatbot, SEO,
     dan solusi digital sesuai kebutuhan bisnis Anda.')
 
+@push('styles')
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+@endpush
+
 @section('content')
 
-    {{-- HERO WEBSITE BISNIS --}}
-    <section class="website-hero" id="website-beranda">
-        <div class="website-hero-decoration website-decoration-one"></div>
-        <div class="website-hero-decoration website-decoration-two"></div>
+    {{-- HERO WEBSITE BISNIS — REDESAIN GALAXY --}}
+    <section class="website-hero webia-galaxy-hero" id="website-beranda">
+        <div class="webia-galaxy-hero__stars" aria-hidden="true"></div>
 
-        <div class="website-hero-inner">
-            <div class="website-hero-copy">
-                <span class="website-eyebrow">
-                    ✦ DIGITAL SOLUTIONS FOR YOUR BUSINESS
-                </span>
+        <div class="webia-galaxy-hero__inner">
+            <div class="webia-galaxy-hero__copy">
+                <span class="webia-galaxy-hero__pill">Website bisnis siap meluncur</span>
 
                 <h1>
-                    Bisnismu Punya Cerita.
-                    <span>Website Kami Bantu Wujudkan!</span>
+                    Bisnismu layak tampil
+                    <span>memukau</span> di dunia digital.
                 </h1>
 
-                <p>
-                    Bangun identitas digital yang profesional dengan website
-                    sesuai kebutuhan bisnis, dilengkapi AI Chatbot dan pilihan
-                    fitur yang fleksibel.
+                <p class="webia-galaxy-hero__lead">
+                    Pilih template, isi data bisnis, dan tim WEBIA menyiapkan website
+                    lengkap dengan AI Chatbot. Cocok untuk toko, studio, kafe,
+                    sampai jasa profesional.
                 </p>
 
-                <div class="website-hero-actions">
-                    <a href="#paket-website" class="website-button website-button-primary">
-                        Lihat Paket <span>↗</span>
+                <div class="webia-galaxy-hero__actions">
+                    <a href="#paket-website" class="webia-galaxy-hero__button webia-galaxy-hero__button--primary">
+                        Lihat paket
                     </a>
-
-                    <a href="#keunggulan-website" class="website-button website-button-secondary">
-                        Kenali Layanannya
+                    <a href="#koleksi-template" class="webia-galaxy-hero__button webia-galaxy-hero__button--secondary">
+                        Jelajahi template
                     </a>
                 </div>
 
-                <div class="website-hero-note">
-                    <span>✦</span> Satu platform untuk berbagai kebutuhan bisnis.
+                <div class="webia-galaxy-hero__stats" aria-label="Statistik template WEBIA">
+                    <div><strong>120+</strong><span>template siap pakai</span></div>
+                    <div><strong>48+</strong><span>kategori bisnis</span></div>
+                    <div><strong>7+</strong><span>hari rata-rata jadi</span></div>
                 </div>
             </div>
 
-            <div class="website-hero-visual">
-                <div class="website-floating-chip chip-top">✦ Responsive Design</div>
-
-                <div class="website-browser">
-                    <div class="website-browser-bar">
-                        <span></span><span></span><span></span>
-                        <div>website-bisnis.id</div>
-                    </div>
-
-                    <div class="website-browser-content">
-                        <div class="website-demo-nav">
-                            <div class="website-demo-logo">BRAND<span>.</span></div>
-                            <div class="website-demo-links">
-                                <i></i><i></i><i></i>
-                            </div>
-                        </div>
-
-                        <div class="website-demo-hero">
-                            <span>YOUR BUSINESS, YOUR STORY</span>
-                            <div class="website-demo-title"></div>
-                            <div class="website-demo-title short"></div>
-                            <div class="website-demo-description"></div>
-                            <div class="website-demo-description short"></div>
-                            <div class="website-demo-button"></div>
-                        </div>
-
-                        <div class="website-demo-cards">
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="website-floating-chip chip-bottom">
-                    <span>✧</span> AI Chatbot Ready
-                </div>
-
-                <div class="website-orbit-star">✳</div>
+            <div class="webia-galaxy-hero__visual" aria-label="Ilustrasi planet dan fitur website WEBIA">
+                <div class="webia-galaxy-hero__orbit webia-galaxy-hero__orbit--one"><i></i></div>
+                <div class="webia-galaxy-hero__orbit webia-galaxy-hero__orbit--two"><i></i></div>
+                <div class="webia-galaxy-hero__planet"></div>
+                <div class="webia-galaxy-hero__mock" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+                <div class="webia-galaxy-hero__chip webia-galaxy-hero__chip--top">Responsif di semua layar🖥️</div>
+                <div class="webia-galaxy-hero__chip webia-galaxy-hero__chip--bottom">AI Chatbot aktif🤖</div>
+                <div class="webia-galaxy-hero__chip webia-galaxy-hero__chip--side">Terintegrasi SEO🔧</div>
             </div>
         </div>
     </section>
-
 
 
     {{-- KATEGORI WEBSITE --}}
@@ -99,7 +71,7 @@
 
         <div class="webia-category-grid">
             {{-- 01. F&B --}}
-            <a class="webia-category-card category-fnb" href="{{ route('webia.collections', ['category' => 'fnb']) }}">
+            <a class="webia-category-card category-fnb" href="{{ route('collections', ['category' => 'fnb']) }}">
                 <span class="webia-category-symbol">☕</span>
                 <span class="webia-category-count">01 · F&B</span>
                 <strong>F&B</strong>
@@ -109,7 +81,7 @@
 
             {{-- 02. BEAUTY --}}
             <a class="webia-category-card category-beauty"
-                href="{{ route('webia.collections', ['category' => 'beauty']) }}">
+                href="{{ route('collections', ['category' => 'beauty']) }}">
                 <span class="webia-category-symbol">✿</span>
                 <span class="webia-category-count">02 · BEAUTY</span>
                 <strong>Beauty</strong>
@@ -119,7 +91,7 @@
 
             {{-- 03. AUTOMOTIVE --}}
             <a class="webia-category-card category-auto"
-                href="{{ route('webia.collections', ['category' => 'automotive']) }}">
+                href="{{ route('collections', ['category' => 'automotive']) }}">
                 <span class="webia-category-symbol">✦</span>
                 <span class="webia-category-count">03 · AUTOMOTIVE</span>
                 <strong>Automotive</strong>
@@ -129,7 +101,7 @@
 
             {{-- 04. COMPANY --}}
             <a class="webia-category-card category-company"
-                href="{{ route('webia.collections', ['category' => 'company']) }}">
+                href="{{ route('collections', ['category' => 'company']) }}">
                 <span class="webia-category-symbol">▧</span>
                 <span class="webia-category-count">04 · COMPANY</span>
                 <strong>Company</strong>
@@ -139,7 +111,7 @@
 
             {{-- 05. PROPERTY --}}
             <a class="webia-category-card category-property"
-                href="{{ route('webia.collections', ['category' => 'property']) }}">
+                href="{{ route('collections', ['category' => 'property']) }}">
                 <span class="webia-category-symbol">⌂</span>
                 <span class="webia-category-count">05 · PROPERTY</span>
                 <strong>Property</strong>
@@ -149,7 +121,7 @@
 
             {{-- 06. EDUCATION --}}
             <a class="webia-category-card category-education"
-                href="{{ route('webia.collections', ['category' => 'education']) }}">
+                href="{{ route('collections', ['category' => 'education']) }}">
                 <span class="webia-category-symbol">✎</span>
                 <span class="webia-category-count">06 · EDUCATION</span>
                 <strong>Education</strong>
@@ -159,7 +131,7 @@
 
             {{-- 07. PROFESSIONAL SERVICE --}}
             <a class="webia-category-card category-professional"
-                href="{{ route('webia.collections', ['category' => 'professional-service']) }}">
+                href="{{ route('collections', ['category' => 'professional-service']) }}">
                 <span class="webia-category-symbol">◇</span>
                 <span class="webia-category-count">07 · PROFESSIONAL SERVICE</span>
                 <strong>Professional Service</strong>
@@ -169,7 +141,7 @@
 
             {{-- 08. PERSONAL BRAND --}}
             <a class="webia-category-card category-personal"
-                href="{{ route('webia.collections', ['category' => 'personal-brand']) }}">
+                href="{{ route('collections', ['category' => 'personal-brand']) }}">
                 <span class="webia-category-symbol">✧</span>
                 <span class="webia-category-count">08 · PERSONAL BRAND</span>
                 <strong>Personal Brand</strong>
@@ -179,7 +151,7 @@
 
             {{-- 09. RETAIL --}}
             <a class="webia-category-card category-retail"
-                href="{{ route('webia.collections', ['category' => 'retail']) }}">
+                href="{{ route('collections', ['category' => 'retail']) }}">
                 <span class="webia-category-symbol">▣</span>
                 <span class="webia-category-count">09 · RETAIL</span>
                 <strong>Retail</strong>
@@ -189,7 +161,7 @@
 
             {{-- 10. HEALTHCARE --}}
             <a class="webia-category-card category-healthcare"
-                href="{{ route('webia.collections', ['category' => 'healthcare']) }}">
+                href="{{ route('collections', ['category' => 'healthcare']) }}">
                 <span class="webia-category-symbol">✚</span>
                 <span class="webia-category-count">10 · HEALTHCARE</span>
                 <strong>Healthcare</strong>
@@ -200,7 +172,7 @@
 
         <div class="webia-discovery-footer">
             <span>Belum menemukan kategori yang pas? Masih banyak kemungkinan ✨</span>
-            <a class="website-button website-button-secondary" href="{{ route('webia.collections') }}">Jelajahi Semua
+            <a class="website-button website-button-secondary" href="{{ route('collections') }}">Jelajahi Semua
                 Kategori <span>↗</span></a>
         </div>
     </section>
@@ -213,12 +185,12 @@
                 <h2>Template yang Bikin <span>Brand Makin Bersinar.</span></h2>
                 <p>Intip beberapa gaya desain. Temukan favoritmu di galeri koleksi WEBIA.</p>
             </div>
-            <a class="webia-text-link" href="{{ route('webia.collections') }}">Lihat Koleksi Kami <span>↗</span></a>
+            <a class="webia-text-link" href="{{ route('collections') }}">Lihat Koleksi Kami <span>↗</span></a>
         </div>
         <div class="webia-featured-grid">
             <article class="webia-template-card">
                 <a class="webia-template-preview preview-cafe"
-                    href="{{ route('webia.collections', ['category' => 'fnb']) }}" aria-label="Lihat template cafe">
+                    href="{{ route('collections', ['category' => 'fnb']) }}" aria-label="Lihat template cafe">
                     <div class="webia-preview-browser"><i></i><i></i><i></i><span>littlecorner.cafe</span></div>
                     <div class="webia-preview-content"><small>YOUR DAILY HAPPY PLACE</small><b>Good coffee.<br>Good
                             mood.</b><span></span>
@@ -233,7 +205,7 @@
             </article>
             <article class="webia-template-card">
                 <a class="webia-template-preview preview-beauty"
-                    href="{{ route('webia.collections', ['category' => 'beauty']) }}" aria-label="Lihat template beauty">
+                    href="{{ route('collections', ['category' => 'beauty']) }}" aria-label="Lihat template beauty">
                     <div class="webia-preview-browser"><i></i><i></i><i></i><span>maison.beauty</span></div>
                     <div class="webia-preview-content"><small>YOUR BEAUTY RITUAL</small><b>Feel good<br>in your
                             skin.</b><span></span>
@@ -248,7 +220,7 @@
             </article>
             <article class="webia-template-card">
                 <a class="webia-template-preview preview-company"
-                    href="{{ route('webia.collections', ['category' => 'company']) }}"
+                    href="{{ route('collections', ['category' => 'company']) }}"
                     aria-label="Lihat template company">
                     <div class="webia-preview-browser"><i></i><i></i><i></i><span>northstar.co</span></div>
                     <div class="webia-preview-content"><small>BUILT FOR WHAT'S NEXT</small><b>Ideas
@@ -264,7 +236,7 @@
             </article>
             <article class="webia-template-card webia-template-card-automotive">
                 <a class="webia-template-preview preview-automotive"
-                    href="{{ route('webia.collections', ['category' => 'automotive']) }}"
+                    href="{{ route('collections', ['category' => 'automotive']) }}"
                     aria-label="Lihat template Velocity Garage">
 
                     <div class="webia-preview-browser">
@@ -295,7 +267,7 @@
             </article>
         </div>
         <div class="webia-featured-bottom"><span>✦ Koleksi akan terus bertambah seiring berkembangnya semesta
-                WEBIA.</span><a href="{{ route('webia.collections') }}">Lihat semua template <span>→</span></a></div>
+                WEBIA.</span><a href="{{ route('collections') }}">Lihat semua template <span>→</span></a></div>
     </section>
 
 
@@ -324,25 +296,25 @@
 
         <div class="website-benefit-grid">
             <article class="website-benefit-card benefit-purple">
-                <div class="website-benefit-icon">✧</div>
+                <div class="website-benefit-icon">⚡</div>
                 <h3>Desain Responsif</h3>
                 <p>Tampilan menyesuaikan perangkat desktop, tablet, dan smartphone.</p>
             </article>
 
             <article class="website-benefit-card benefit-pink">
-                <div class="website-benefit-icon">♡</div>
+                <div class="website-benefit-icon">🤖</div>
                 <h3>AI Chatbot</h3>
                 <p>Asisten virtual yang dirancang menjawab pertanyaan berdasarkan data bisnis.</p>
             </article>
 
             <article class="website-benefit-card benefit-blue">
-                <div class="website-benefit-icon">↗</div>
+                <div class="website-benefit-icon">📲</div>
                 <h3>SEO</h3>
                 <p>Pondasi optimasi mesin pencari sesuai cakupan paket yang dipilih.</p>
             </article>
 
             <article class="website-benefit-card benefit-green">
-                <div class="website-benefit-icon">✳</div>
+                <div class="website-benefit-icon">🔧</div>
                 <h3>Fleksibel</h3>
                 <p>Pilih fitur dan modul sesuai kebutuhan serta perkembangan bisnis.</p>
             </article>
@@ -386,7 +358,7 @@
             <article class="process-step-card">
                 <div class="process-step-top">
                     <span class="process-step-number">03</span>
-                    <span class="process-step-icon">✦</span>
+                    <span class="process-step-icon">📦</span>
                 </div>
                 <h3>Pilih Paket</h3>
                 <p>Tentukan paket website dan fitur tambahan sesuai kebutuhan bisnis.</p>
@@ -412,20 +384,30 @@
                 <p>Selesaikan pembayaran sesuai metode dan ketentuan yang disepakati.</p>
             </article>
 
-            {{-- STEP 6 --}}
+                      {{-- STEP 6 --}}
             <article class="process-step-card">
                 <div class="process-step-top">
                     <span class="process-step-number">06</span>
-                    <span class="process-step-icon">✎</span>
+                    <span class="process-step-icon">👤</span>
                 </div>
-                <h3>Isi Data Bisnis</h3>
-                <p>Lengkapi profil bisnis, layanan, kontak, alamat, dan informasi pendukung website.</p>
+                <h3>Mendapatkan Personal Akun</h3>
+                <p>Dapatkan akses ke akun personal Anda untuk memantau pembayaran dan mengisi data website anda</p>
             </article>
 
             {{-- STEP 7 --}}
             <article class="process-step-card">
                 <div class="process-step-top">
                     <span class="process-step-number">07</span>
+                    <span class="process-step-icon">✎</span>
+                </div>
+                <h3>Isi Data Bisnis</h3>
+                <p>Lengkapi profil bisnis, layanan, kontak, alamat, dan informasi pendukung website.</p>
+            </article>
+
+            {{-- STEP 8 --}}
+            <article class="process-step-card">
+                <div class="process-step-top">
+                    <span class="process-step-number">08</span>
                     <span class="process-step-icon">✧</span>
                 </div>
                 <h3>Konfigurasi AI Chatbot</h3>
@@ -464,10 +446,10 @@
 
                 <div class="website-price-label">Biaya pembuatan</div>
                 <div class="website-price-old">Rp589.500</div>
-                <div class="website-price">Rp99.500</div>
+                <div class="website-price">Rp499.000</div>
                 <div class="website-price-caption">Sekali bayar</div>
 
-                <a href="#konsultasi-website" class="website-package-button">
+                <a href="{{ route('orders.create', ['package' => 'pixel']) }}" class="website-package-button">
                     Pilih Pixel <span>↗</span>
                 </a>
 
@@ -503,7 +485,7 @@
                 <div class="website-price">Rp899.000</div>
                 <div class="website-price-caption">Sekali bayar</div>
 
-                <a href="#konsultasi-website" class="website-package-button">
+                <a href="{{ route('orders.create', ['package' => 'pulse']) }}" class="website-package-button">
                     Pilih Pulse <span>↗</span>
                 </a>
 
@@ -539,7 +521,7 @@
                 <div class="website-price">Rp1.499.000</div>
                 <div class="website-price-caption">Sekali bayar</div>
 
-                <a href="#konsultasi-website" class="website-package-button">
+                <a href="{{ route('orders.create', ['package' => 'nexus']) }}" class="website-package-button">
                     Pilih Nexus <span>↗</span>
                 </a>
 
@@ -579,7 +561,7 @@
                 <div class="website-price">Rp2.499.000</div>
                 <div class="website-price-caption">Sekali bayar</div>
 
-                <a href="#konsultasi-website" class="website-package-button">
+                <a href="{{ route('orders.create', ['package' => 'infinity']) }}" class="website-package-button">
                     Pilih Infinity <span>↗</span>
                 </a>
 
@@ -627,7 +609,7 @@
 
             <div class="website-package-dialog-footer">
                 <p id="websitePackageDialogNote"></p>
-                <a href="#konsultasi-website" class="website-package-button" id="websitePackageDialogChoose">
+                <a href="{{ route('orders.create') }}" class="website-package-button" id="websitePackageDialogChoose">
                     Pilih Paket <span>↗</span>
                 </a>
             </div>
@@ -750,7 +732,6 @@
 
 
 @push('scripts')
-    <script src="{{ asset('js/website-bisnis/website-bisnis.js') }}" defer></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const dialog = document.getElementById('websitePackageDialog');
@@ -854,6 +835,7 @@
                     });
 
                     chooseButton.textContent = 'Pilih ' + selected.name + ' ↗';
+                    chooseButton.href = @json(route('orders.create')) + '?package=' + this.dataset.packageDetail;
 
                     if (!dialog.open) {
                         dialog.showModal();

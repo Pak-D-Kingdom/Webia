@@ -1,0 +1,1464 @@
+:root {
+    --sage: #819477;
+    --sage-dark: #34483a;
+    --sage-deep: #26372d;
+    --sage-pale: #e8ede3;
+    --sage-soft: #f2f4ee;
+    --sage-cream: #faf9f4;
+    --sage-beige: #d8cbb8;
+    --sage-ink: #26312a;
+    --sage-muted: #6f776f;
+    --sage-line: #dfe4da;
+    --sage-white: #fff;
+    --sage-radius: 22px;
+    --sage-shadow: 0 22px 60px rgba(37, 53, 42, .10)
+}
+
+.sage-salon {
+    font-family: 'DM Sans', sans-serif;
+    color: var(--sage-ink);
+    background: var(--sage-cream);
+    font-size: 15px;
+    line-height: 1.65;
+    overflow: hidden
+}
+
+.sage-salon * {
+    box-sizing: border-box
+}
+
+.sage-salon img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover
+}
+
+.sage-salon a {
+    color: inherit;
+    text-decoration: none
+}
+
+.sage-salon button,
+.sage-salon input,
+.sage-salon select,
+.sage-salon textarea {
+    font: inherit
+}
+
+.sage-salon button {
+    cursor: pointer
+}
+
+.sage-announcement {
+    min-height: 37px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding: 7px 18px;
+    background: var(--sage-deep);
+    color: #f8f8f1;
+    font-size: 11px;
+    letter-spacing: .04em
+}
+
+.sage-announcement a {
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 3px
+}
+
+.sage-announcement-dot,
+.sage-eyebrow i {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #b6c6a8
+}
+
+.sage-header {
+    height: 88px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
+    padding: 0 clamp(22px, 6vw, 90px);
+    background: var(--sage-cream);
+    border-bottom: 1px solid rgba(52, 72, 58, .08);
+    position: relative;
+    z-index: 5
+}
+
+.sage-brand {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    flex-shrink: 0
+}
+
+.sage-brand-mark {
+    display: grid;
+    place-items: center;
+    width: 43px;
+    height: 43px;
+    border-radius: 50%;
+    background: var(--sage);
+    color: white;
+    font-family: 'Manrope', sans-serif;
+    font-size: 23px;
+    font-weight: 800;
+    letter-spacing: -.1em;
+    padding-right: 4px
+}
+
+.sage-brand-copy {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.3
+}
+
+.sage-brand-copy strong {
+    font-family: 'Manrope', sans-serif;
+    font-size: 12px;
+    letter-spacing: .17em
+}
+
+.sage-brand-copy small {
+    font-size: 8px;
+    letter-spacing: .16em;
+    color: var(--sage-muted);
+    margin-top: 4px
+}
+
+.sage-nav {
+    display: flex;
+    align-items: center;
+    gap: clamp(15px, 2.4vw, 34px)
+}
+
+.sage-nav a {
+    font-size: 12px;
+    color: #5c655c;
+    transition: color .2s
+}
+
+.sage-nav a:hover,
+.sage-footer a:hover {
+    color: var(--sage)
+}
+
+.sage-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    min-height: 49px;
+    padding: 0 20px;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .01em;
+    transition: transform .2s, background .2s
+}
+
+.sage-button:hover {
+    transform: translateY(-2px)
+}
+
+.sage-button span {
+    font-size: 16px
+}
+
+.sage-button-dark {
+    background: var(--sage-deep);
+    color: white !important
+}
+
+.sage-button-dark:hover {
+    background: #435d49
+}
+
+.sage-button-light {
+    background: var(--sage-cream);
+    color: var(--sage-deep) !important
+}
+
+.sage-button-outline {
+    border-color: #a8b4a3;
+    color: var(--sage-deep) !important;
+    background: transparent
+}
+
+.sage-menu-toggle {
+    display: none;
+    background: none;
+    border: 0;
+    font-size: 23px;
+    color: var(--sage-deep)
+}
+
+.sage-hero {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr .92fr;
+    align-items: center;
+    gap: clamp(35px, 6vw, 90px);
+    padding: 75px clamp(22px, 8.2vw, 125px) 58px;
+    min-height: 620px;
+    background: radial-gradient(ellipse at 6% 12%, #edf0e7 0, transparent 37%), var(--sage-cream)
+}
+
+.sage-hero-copy {
+    max-width: 550px;
+    padding-bottom: 24px
+}
+
+.sage-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: .18em;
+    color: var(--sage);
+    text-transform: uppercase
+}
+
+.sage-hero h1,
+.sage-section h2,
+.sage-about h2,
+.sage-promo h2,
+.sage-booking h2,
+.sage-location h2 {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    letter-spacing: -.065em;
+    line-height: 1.07
+}
+
+.sage-hero h1 {
+    font-size: clamp(47px, 6vw, 82px);
+    margin: 25px 0 22px
+}
+
+.sage-hero h1 em,
+.sage-section h2 em,
+.sage-about h2 em,
+.sage-promo h2 em,
+.sage-booking h2 em,
+.sage-location h2 em {
+    font-family: Georgia, serif;
+    font-weight: 400;
+    color: var(--sage);
+    letter-spacing: -.07em
+}
+
+.sage-hero-copy>p {
+    max-width: 425px;
+    color: var(--sage-muted);
+    font-size: 14px;
+    line-height: 1.9;
+    margin: 0
+}
+
+.sage-hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    flex-wrap: wrap;
+    margin-top: 29px
+}
+
+.sage-text-link {
+    font-size: 11px;
+    font-weight: 700
+}
+
+.sage-text-link span {
+    margin-left: 7px;
+    color: var(--sage)
+}
+
+.sage-hero-proof {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin-top: 50px
+}
+
+.sage-avatar-stack {
+    display: flex;
+    padding-left: 4px
+}
+
+.sage-avatar-stack span {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border: 2px solid var(--sage-cream);
+    border-radius: 50%;
+    margin-left: -5px;
+    background: #d8c9b5;
+    color: var(--sage-deep);
+    font-size: 9px;
+    font-weight: 700
+}
+
+.sage-avatar-stack span:nth-child(2) {
+    background: #b7c3ac
+}
+
+.sage-avatar-stack span:nth-child(3) {
+    background: #e7dcd0
+}
+
+.sage-hero-proof>div:last-child {
+    display: flex;
+    flex-direction: column
+}
+
+.sage-hero-proof strong {
+    font-size: 10px
+}
+
+.sage-hero-proof small {
+    font-size: 9px;
+    color: var(--sage-muted);
+    margin-top: 2px
+}
+
+.sage-hero-visual {
+    position: relative;
+    max-width: 490px;
+    width: 100%;
+    justify-self: end;
+    height: 440px
+}
+
+.sage-hero-visual>img {
+    border-radius: 47% 47% 5px 5px;
+    object-position: center 42%;
+    box-shadow: var(--sage-shadow)
+}
+
+.sage-image-note {
+    position: absolute;
+    bottom: 28px;
+    left: -35px;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    background: #fffdf8;
+    padding: 14px 19px;
+    box-shadow: 0 10px 35px #283b2b16
+}
+
+.sage-note-icon {
+    display: grid;
+    place-items: center;
+    width: 33px;
+    height: 33px;
+    border-radius: 50%;
+    background: var(--sage-pale);
+    color: var(--sage);
+    font-size: 18px
+}
+
+.sage-image-note span:last-child {
+    display: flex;
+    flex-direction: column
+}
+
+.sage-image-note strong {
+    font-family: 'Manrope', sans-serif;
+    font-size: 11px
+}
+
+.sage-image-note small {
+    font-size: 9px;
+    color: var(--sage-muted)
+}
+
+.sage-hero-stamp {
+    position: absolute;
+    right: -23px;
+    top: 25px;
+    width: 94px;
+    height: 94px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--sage);
+    color: white;
+    transform: rotate(10deg);
+    font-size: 8px;
+    letter-spacing: .18em
+}
+
+.sage-hero-stamp b {
+    font-size: 22px;
+    line-height: 1.3
+}
+
+.sage-hero-bottom {
+    position: absolute;
+    bottom: 17px;
+    left: clamp(22px, 8.2vw, 125px);
+    right: clamp(22px, 8.2vw, 125px);
+    display: flex;
+    justify-content: space-between;
+    color: #929a8f;
+    font-size: 8px;
+    letter-spacing: .12em
+}
+
+.sage-service-strip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(12px, 3vw, 45px);
+    flex-wrap: wrap;
+    padding: 21px 20px;
+    background: var(--sage-deep);
+    color: #f5f4ec;
+    font-family: 'Manrope', sans-serif;
+    font-size: 10px;
+    letter-spacing: .04em
+}
+
+.sage-service-strip i {
+    color: #b7c7a9;
+    font-style: normal
+}
+
+.sage-section {
+    padding: 105px clamp(22px, 8.2vw, 125px)
+}
+
+.sage-section-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 35px;
+    margin-bottom: 43px
+}
+
+.sage-section h2,
+.sage-about h2,
+.sage-promo h2,
+.sage-booking h2,
+.sage-location h2 {
+    font-size: clamp(37px, 4.5vw, 59px);
+    margin: 17px 0 0
+}
+
+.sage-section-heading>p {
+    max-width: 365px;
+    margin: 0 0 5px;
+    color: var(--sage-muted);
+    font-size: 12px;
+    line-height: 1.9
+}
+
+.sage-service-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px
+}
+
+.sage-service-card {
+    background: #fff;
+    border: 1px solid #e9ebe4;
+    min-width: 0;
+    transition: transform .25s, box-shadow .25s
+}
+
+.sage-service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--sage-shadow)
+}
+
+.sage-service-image {
+    height: 245px;
+    position: relative;
+    overflow: hidden;
+    background: var(--sage-pale)
+}
+
+.sage-service-image img {
+    transition: transform .5s
+}
+
+.sage-service-card:hover .sage-service-image img {
+    transform: scale(1.04)
+}
+
+.sage-service-image>span {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    background: #fbfaf5eF;
+    color: var(--sage-deep);
+    font-size: 10px
+}
+
+.sage-service-image>b {
+    position: absolute;
+    right: 12px;
+    top: 18px;
+    background: var(--sage-deep);
+    color: white;
+    padding: 6px 8px;
+    font-size: 8px;
+    letter-spacing: .12em
+}
+
+.sage-service-info {
+    padding: 22px 21px 18px
+}
+
+.sage-service-info>div:first-child {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    gap: 8px;
+    flex-wrap: wrap
+}
+
+.sage-service-info h3 {
+    font-family: 'Manrope', sans-serif;
+    font-size: 17px;
+    letter-spacing: -.04em;
+    margin: 0
+}
+
+.sage-service-duration {
+    font-size: 9px;
+    color: var(--sage-muted);
+    padding-top: 5px
+}
+
+.sage-service-info p {
+    font-size: 11px;
+    line-height: 1.8;
+    color: var(--sage-muted);
+    min-height: 59px;
+    margin: 12px 0 18px
+}
+
+.sage-service-price {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid var(--sage-line);
+    padding-top: 14px
+}
+
+.sage-service-price strong {
+    font-size: 11px
+}
+
+.sage-service-price a {
+    display: grid;
+    place-items: center;
+    width: 31px;
+    height: 31px;
+    border: 1px solid #d8dfd3;
+    border-radius: 50%;
+    font-size: 16px;
+    color: var(--sage-deep)
+}
+
+.sage-disclaimer {
+    font-size: 9px;
+    color: #8c9488;
+    margin-top: 18px
+}
+
+.sage-about {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(40px, 8vw, 120px);
+    align-items: center;
+    padding: 85px clamp(22px, 10vw, 150px);
+    background: var(--sage-pale)
+}
+
+.sage-about-image {
+    height: 510px;
+    position: relative;
+    max-width: 500px
+}
+
+.sage-about-image img {
+    object-position: center;
+    border-radius: 3px 3px 90px 3px
+}
+
+.sage-about-caption {
+    position: absolute;
+    bottom: 22px;
+    left: -17px;
+    background: var(--sage-deep);
+    color: white;
+    padding: 12px 17px;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 13px
+}
+
+.sage-about-copy>p {
+    max-width: 440px;
+    font-size: 12px;
+    line-height: 2;
+    color: var(--sage-muted);
+    margin: 24px 0
+}
+
+.sage-about-copy ul {
+    padding: 0;
+    list-style: none;
+    margin: 0 0 28px;
+    display: grid;
+    gap: 12px
+}
+
+.sage-about-copy li {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    font-size: 11px
+}
+
+.sage-about-copy li span {
+    color: var(--sage);
+    font-size: 15px
+}
+
+.sage-stylists {
+    background: var(--sage-cream)
+}
+
+.sage-stylist-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px
+}
+
+.sage-stylist-card {
+    position: relative;
+    background: #e7eae1;
+    min-width: 0
+}
+
+.sage-stylist-card>img {
+    height: 330px;
+    object-position: center 30%;
+    filter: saturate(.8)
+}
+
+.sage-stylist-card>div {
+    padding: 19px 18px 21px;
+    background: white
+}
+
+.sage-stylist-card>div>span {
+    font-size: 8px;
+    letter-spacing: .16em;
+    color: var(--sage)
+}
+
+.sage-stylist-card h3 {
+    font-family: 'Manrope', sans-serif;
+    font-size: 17px;
+    margin: 5px 0 1px
+}
+
+.sage-stylist-card p {
+    margin: 0;
+    color: var(--sage-muted);
+    font-size: 10px
+}
+
+.sage-promo {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    padding: 65px clamp(22px, 10vw, 150px);
+    background: var(--sage);
+    color: white;
+    overflow: hidden
+}
+
+.sage-promo .sage-eyebrow {
+    color: #e5ecdf
+}
+
+.sage-promo h2 {
+    font-size: clamp(37px, 4.5vw, 56px);
+    position: relative;
+    z-index: 1
+}
+
+.sage-promo h2 em {
+    color: #e3eadb
+}
+
+.sage-promo p {
+    max-width: 520px;
+    font-size: 12px;
+    line-height: 1.9;
+    color: #f1f4ed;
+    margin: 19px 0 12px
+}
+
+.sage-promo>div>small {
+    font-size: 9px;
+    color: #e1e9da
+}
+
+.sage-promo .sage-button {
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1
+}
+
+.sage-promo-decoration {
+    position: absolute !important;
+    right: 25%;
+    top: -115px;
+    font-size: 310px;
+    line-height: 1;
+    color: #ffffff0c;
+    pointer-events: none
+}
+
+.sage-reviews {
+    background: #f2f2eb
+}
+
+.sage-review-rating {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end
+}
+
+.sage-review-rating strong {
+    font-family: 'Manrope', sans-serif;
+    font-size: 43px;
+    line-height: 1
+}
+
+.sage-review-rating span,
+.sage-review-grid blockquote>div {
+    color: #b18c50;
+    letter-spacing: .15em;
+    font-size: 12px
+}
+
+.sage-review-rating small {
+    font-size: 9px;
+    color: var(--sage-muted)
+}
+
+.sage-review-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px
+}
+
+.sage-review-grid blockquote {
+    margin: 0;
+    background: #fff;
+    padding: 24px 23px;
+    border: 1px solid #e7e8e0
+}
+
+.sage-review-grid blockquote>p {
+    font-family: Georgia, serif;
+    font-size: 14px;
+    line-height: 1.85;
+    color: #4c574e;
+    min-height: 105px
+}
+
+.sage-review-grid blockquote footer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-top: 1px solid var(--sage-line);
+    padding-top: 15px
+}
+
+.sage-review-avatar {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--sage-pale);
+    color: var(--sage-deep);
+    font-size: 11px;
+    font-weight: 700
+}
+
+.sage-review-grid blockquote footer>span:last-child {
+    display: flex;
+    flex-direction: column
+}
+
+.sage-review-grid blockquote footer strong {
+    font-size: 10px
+}
+
+.sage-review-grid blockquote footer small {
+    font-size: 9px;
+    color: var(--sage-muted)
+}
+
+.sage-booking {
+    display: grid;
+    grid-template-columns: .85fr 1fr;
+    gap: clamp(35px, 7vw, 100px);
+    padding: 100px clamp(22px, 10vw, 150px);
+    background: #e5eadd
+}
+
+.sage-booking-copy>p {
+    max-width: 430px;
+    color: var(--sage-muted);
+    font-size: 12px;
+    line-height: 1.9;
+    margin: 23px 0 38px
+}
+
+.sage-booking-contact {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+    border-top: 1px solid #cbd5c4;
+    padding-top: 20px
+}
+
+.sage-booking-contact>span {
+    font-size: 8px;
+    letter-spacing: .17em;
+    color: var(--sage)
+}
+
+.sage-booking-contact>a {
+    font-family: 'Manrope', sans-serif;
+    font-size: 14px;
+    font-weight: 700
+}
+
+.sage-booking-contact small {
+    font-size: 9px;
+    color: var(--sage-muted)
+}
+
+.sage-booking-form {
+    background: #fff;
+    padding: clamp(22px, 3vw, 38px);
+    box-shadow: 0 18px 45px #2b3b2b0d
+}
+
+.sage-form-heading {
+    margin-bottom: 24px
+}
+
+.sage-form-heading>span {
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: .16em;
+    color: var(--sage)
+}
+
+.sage-form-heading h3 {
+    font-family: 'Manrope', sans-serif;
+    font-size: 23px;
+    letter-spacing: -.04em;
+    margin: 4px 0
+}
+
+.sage-booking-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    font-size: 10px;
+    font-weight: 700;
+    margin-bottom: 15px
+}
+
+.sage-booking-form input,
+.sage-booking-form select,
+.sage-booking-form textarea {
+    width: 100%;
+    border: 1px solid #e1e5dc;
+    background: #fbfcf9;
+    border-radius: 2px;
+    padding: 12px 12px;
+    color: var(--sage-ink);
+    font-size: 11px;
+    outline: none;
+    min-height: 43px
+}
+
+.sage-booking-form textarea {
+    resize: vertical
+}
+
+.sage-booking-form input:focus,
+.sage-booking-form select:focus,
+.sage-booking-form textarea:focus {
+    border-color: var(--sage)
+}
+
+.sage-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px
+}
+
+.sage-form-submit {
+    width: 100%;
+    border: 0;
+    margin-top: 2px
+}
+
+.sage-form-note {
+    display: block;
+    text-align: center;
+    color: var(--sage-muted);
+    font-size: 9px;
+    margin-top: 11px
+}
+
+.sage-form-status {
+    font-size: 11px;
+    color: var(--sage-deep);
+    margin: 10px 0 0
+}
+
+.sage-location {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 40px;
+    padding: 70px clamp(22px, 10vw, 150px);
+    background: var(--sage-cream)
+}
+
+.sage-location h2 {
+    font-size: clamp(31px, 3.8vw, 48px)
+}
+
+.sage-location>div:first-child>p {
+    font-size: 11px;
+    color: var(--sage-muted);
+    margin: 17px 0 0
+}
+
+.sage-location-details {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    min-width: 290px
+}
+
+.sage-location-icon {
+    display: grid;
+    place-items: center;
+    width: 43px;
+    height: 43px;
+    border-radius: 50%;
+    background: var(--sage-pale);
+    font-size: 23px;
+    color: var(--sage)
+}
+
+.sage-location-details strong {
+    font-family: 'Manrope', sans-serif;
+    font-size: 12px
+}
+
+.sage-location-details p {
+    margin: 5px 0;
+    font-size: 10px;
+    color: var(--sage-muted)
+}
+
+.sage-location-details a {
+    display: inline-block;
+    margin-top: 7px;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--sage)
+}
+
+.sage-footer {
+    padding: 38px clamp(22px, 6vw, 90px) 24px;
+    background: var(--sage-deep);
+    color: #f6f6ef;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 18px
+}
+
+.sage-footer .sage-brand-mark {
+    background: #e6ebdf;
+    color: var(--sage-deep)
+}
+
+.sage-footer .sage-brand-copy small {
+    color: #c5d0c0
+}
+
+.sage-footer>p {
+    font-family: Georgia, serif;
+    font-size: 13px;
+    font-style: italic;
+    color: #d1d9cd
+}
+
+.sage-footer>div {
+    display: flex;
+    gap: 23px;
+    grid-column: 1/-1;
+    padding: 18px 0;
+    border-top: 1px solid #ffffff20;
+    border-bottom: 1px solid #ffffff20
+}
+
+.sage-footer>div a {
+    font-size: 10px;
+    color: #e1e7dd
+}
+
+.sage-footer>small {
+    grid-column: 1/-1;
+    color: #b8c3b5;
+    font-size: 9px
+}
+
+.sage-chat-launcher {
+    position: fixed;
+    z-index: 30;
+    right: 22px;
+    bottom: 22px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 12px 17px;
+    border: 0;
+    border-radius: 30px;
+    background: var(--sage-deep);
+    color: white;
+    box-shadow: 0 8px 28px #15271b30;
+    font-size: 11px
+}
+
+.sage-chat-launcher span {
+    font-size: 17px;
+    color: #c8d7bb
+}
+
+.sage-chat-panel {
+    position: fixed;
+    z-index: 31;
+    right: 22px;
+    bottom: 82px;
+    width: min(360px, calc(100vw - 28px));
+    background: white;
+    box-shadow: 0 18px 60px #15271b35;
+    border: 1px solid var(--sage-line)
+}
+
+.sage-chat-panel[hidden] {
+    display: none
+}
+
+.sage-chat-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+    background: var(--sage-deep);
+    color: white
+}
+
+.sage-chat-symbol {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #ffffff20;
+    color: #d9e4d0
+}
+
+.sage-chat-head>div {
+    display: flex;
+    flex-direction: column;
+    flex: 1
+}
+
+.sage-chat-head strong {
+    font-size: 12px
+}
+
+.sage-chat-head small {
+    font-size: 9px;
+    color: #d2ddce
+}
+
+.sage-chat-head>button {
+    border: 0;
+    background: none;
+    color: white;
+    font-size: 24px
+}
+
+.sage-chat-messages {
+    padding: 15px;
+    min-height: 110px;
+    max-height: 220px;
+    overflow: auto;
+    background: #fbfcf9
+}
+
+.sage-chat-bubble {
+    font-size: 11px;
+    line-height: 1.8;
+    background: #eaf0e5;
+    border-radius: 0 12px 12px 12px;
+    padding: 11px 12px;
+    margin: 0;
+    max-width: 95%
+}
+
+.sage-chat-bubble.is-user {
+    margin: 9px 0 0 auto;
+    background: var(--sage-deep);
+    color: white;
+    border-radius: 12px 0 12px 12px
+}
+
+.sage-chat-suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 0 12px 12px;
+    background: #fbfcf9
+}
+
+.sage-chat-suggestions button {
+    border: 1px solid #dbe3d5;
+    background: white;
+    border-radius: 15px;
+    padding: 7px 9px;
+    font-size: 9px;
+    color: var(--sage-deep)
+}
+
+.sage-chat-input {
+    display: flex;
+    border-top: 1px solid var(--sage-line);
+    padding: 9px;
+    gap: 8px
+}
+
+.sage-chat-input input {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    font-size: 11px;
+    padding: 8px
+}
+
+.sage-chat-input button {
+    width: 34px;
+    border: 0;
+    background: var(--sage-deep);
+    color: white;
+    font-size: 18px
+}
+
+.sage-chat-disclaimer {
+    display: block;
+    padding: 0 12px 12px;
+    color: #858d81;
+    font-size: 8px;
+    background: #fbfcf9
+}
+
+@media(max-width:1050px) {
+    .sage-header {
+        padding-inline: 25px;
+        gap: 15px
+    }
+
+    .sage-nav {
+        gap: 15px
+    }
+
+    .sage-nav a {
+        font-size: 11px
+    }
+
+    .sage-header-cta {
+        padding-inline: 13px;
+        gap: 10px
+    }
+
+    .sage-hero {
+        padding-inline: 55px;
+        gap: 38px
+    }
+
+    .sage-hero-bottom {
+        left: 55px;
+        right: 55px
+    }
+
+    .sage-section {
+        padding-inline: 55px
+    }
+
+    .sage-about {
+        padding-inline: 55px;
+        gap: 45px
+    }
+
+    .sage-booking,
+    .sage-location {
+        padding-inline: 55px
+    }
+
+    .sage-promo {
+        padding-inline: 55px
+    }
+
+    .sage-stylist-card>img {
+        height: 280px
+    }
+}
+
+@media(max-width:760px) {
+    .sage-announcement {
+        font-size: 9px;
+        flex-wrap: wrap
+    }
+
+    .sage-header {
+        height: 72px;
+        padding-inline: 20px
+    }
+
+    .sage-menu-toggle {
+        display: block;
+        margin-left: auto
+    }
+
+    .sage-nav {
+        display: none;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 71px;
+        background: var(--sage-cream);
+        padding: 15px 22px 22px;
+        box-shadow: 0 15px 25px #26372d12;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0
+    }
+
+    .sage-nav.is-open {
+        display: flex
+    }
+
+    .sage-nav a {
+        padding: 11px 0;
+        border-bottom: 1px solid var(--sage-line);
+        font-size: 12px
+    }
+
+    .sage-header-cta {
+        display: none
+    }
+
+    .sage-hero {
+        grid-template-columns: 1fr;
+        padding: 52px 23px 62px;
+        gap: 38px
+    }
+
+    .sage-hero-copy {
+        padding: 0
+    }
+
+    .sage-hero h1 {
+        font-size: clamp(49px, 12vw, 72px)
+    }
+
+    .sage-hero-visual {
+        justify-self: center;
+        width: calc(100% - 24px);
+        height: 370px;
+        margin: 0 12px 0 0
+    }
+
+    .sage-hero-bottom {
+        left: 23px;
+        right: 23px;
+        bottom: 18px;
+        font-size: 7px
+    }
+
+    .sage-image-note {
+        left: -12px;
+        bottom: 20px
+    }
+
+    .sage-hero-stamp {
+        right: -13px;
+        width: 78px;
+        height: 78px
+    }
+
+    .sage-service-strip {
+        gap: 10px 16px;
+        font-size: 9px
+    }
+
+    .sage-section {
+        padding: 70px 22px
+    }
+
+    .sage-section-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 17px;
+        margin-bottom: 30px
+    }
+
+    .sage-section-heading>p {
+        max-width: 100%
+    }
+
+    .sage-service-grid,
+    .sage-stylist-grid,
+    .sage-review-grid {
+        grid-template-columns: 1fr;
+        gap: 17px
+    }
+
+    .sage-service-image {
+        height: 260px
+    }
+
+    .sage-service-info p {
+        min-height: 0
+    }
+
+    .sage-about {
+        grid-template-columns: 1fr;
+        padding: 60px 23px;
+        gap: 32px
+    }
+
+    .sage-about-image {
+        height: 390px;
+        margin-inline: 8px 12px
+    }
+
+    .sage-about-copy {
+        padding: 0 2px
+    }
+
+    .sage-stylist-card>img {
+        height: 350px
+    }
+
+    .sage-promo {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 55px 23px;
+        gap: 25px
+    }
+
+    .sage-promo-decoration {
+        right: -10px;
+        top: -70px;
+        font-size: 230px
+    }
+
+    .sage-booking {
+        grid-template-columns: 1fr;
+        padding: 65px 22px;
+        gap: 30px
+    }
+
+    .sage-form-row {
+        grid-template-columns: 1fr;
+        gap: 0
+    }
+
+    .sage-location {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 60px 23px;
+        gap: 28px
+    }
+
+    .sage-location-details {
+        min-width: 0
+    }
+
+    .sage-footer {
+        grid-template-columns: 1fr;
+        padding: 32px 23px 22px
+    }
+
+    .sage-footer>p {
+        margin: 0
+    }
+
+    .sage-footer>div {
+        gap: 15px;
+        flex-wrap: wrap
+    }
+
+    .sage-chat-launcher {
+        right: 14px;
+        bottom: 14px
+    }
+
+    .sage-chat-panel {
+        right: 14px;
+        bottom: 72px
+    }
+}
+
+@media(prefers-reduced-motion:reduce) {
+    .sage-salon * {
+        scroll-behavior: auto !important;
+        transition: none !important
+    }
+}

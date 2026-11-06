@@ -1,0 +1,351 @@
+   
+/* =====================================================
+   RUBY LUXE - LOGIN PAGE
+===================================================== */
+
+.rl-login {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: #faf6f3;
+    color: #382c30;
+    font-family: inherit;
+}
+
+/* =====================================================
+   LEFT VISUAL PANEL
+===================================================== */
+
+.rl-login-visual {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 48px;
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(40, 25, 30, .12),
+            rgba(40, 25, 30, .58)
+        ),
+        url('/images/templates/login-beauty.jpg')
+        center / cover no-repeat;
+
+    color: #fff;
+}
+
+.rl-login-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: fit-content;
+    color: inherit;
+    text-decoration: none;
+}
+
+.rl-login-brand-mark {
+    display: grid;
+    place-items: center;
+    width: 43px;
+    height: 43px;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    font-family: Georgia, serif;
+    font-size: 24px;
+}
+
+.rl-login-brand-copy strong {
+    display: block;
+    font-size: 15px;
+    letter-spacing: 2px;
+}
+
+.rl-login-brand-copy small {
+    display: block;
+    margin-top: 4px;
+    font-size: 9px;
+    letter-spacing: 2px;
+}
+
+.rl-login-message {
+    position: relative;
+    z-index: 1;
+    max-width: 450px;
+}
+
+.rl-login-eyebrow {
+    color: #b7838c;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+.rl-login-visual .rl-login-eyebrow {
+    color: #f6e0e2;
+}
+
+.rl-login-message h1 {
+    margin: 18px 0;
+    font-family: Georgia, serif;
+    font-size: clamp(36px, 4vw, 58px);
+    font-weight: 400;
+    line-height: 1.15;
+}
+
+.rl-login-message p {
+    max-width: 350px;
+    font-size: 14px;
+    line-height: 1.9;
+    opacity: .9;
+}
+
+.rl-login-copyright {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+}
+
+/* =====================================================
+   RIGHT CONTENT
+===================================================== */
+
+.rl-login-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px;
+}
+
+.rl-login-card {
+    width: 100%;
+    max-width: 410px;
+}
+
+.rl-login-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 40px;
+    color: #8f6c72;
+    font-size: 13px;
+    text-decoration: none;
+    transition: color .2s ease;
+}
+
+.rl-login-back:hover {
+    color: #a97680;
+}
+
+.rl-login-heading h2 {
+    margin: 12px 0;
+    font-family: Georgia, serif;
+    font-size: 38px;
+    font-weight: 400;
+}
+
+.rl-login-heading p {
+    margin-bottom: 30px;
+    color: #887b7e;
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+/* =====================================================
+   FORM FIELDS
+===================================================== */
+
+.rl-login-field {
+    margin-bottom: 20px;
+}
+
+.rl-login-field label {
+    display: block;
+    margin-bottom: 9px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.rl-login-field input {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 49px;
+    padding: 0 15px;
+    border: 1px solid #e6d9d8;
+    border-radius: 5px;
+    outline: none;
+    background: #fff;
+    color: #382c30;
+    font: inherit;
+    font-size: 13px;
+    transition: border-color .2s ease,
+                box-shadow .2s ease;
+}
+
+.rl-login-field input:focus {
+    border-color: #b7838c;
+    box-shadow: 0 0 0 3px rgba(183, 131, 140, .12);
+}
+
+.rl-login-field input::placeholder {
+    color: #b8aaac;
+}
+
+/* =====================================================
+   REMEMBER & FORGOT PASSWORD
+===================================================== */
+
+.rl-login-options {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 4px 0 25px;
+    font-size: 12px;
+}
+
+.rl-login-remember {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    cursor: pointer;
+}
+
+.rl-login-remember input {
+    accent-color: #a12b32;
+}
+
+.rl-login-options a,
+.rl-login-register a {
+    color: #a36e79;
+    text-decoration: none;
+}
+
+.rl-login-options a:hover,
+.rl-login-register a:hover {
+    text-decoration: underline;
+}
+
+/* =====================================================
+   SUBMIT BUTTON
+===================================================== */
+
+.rl-login-submit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    min-height: 51px;
+    padding: 12px 20px;
+    border: 0;
+    border-radius: 5px;
+    background: #a97680;
+    color: #fff;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .2s ease;
+}
+
+.rl-login-submit:hover {
+    background: #a12b32;
+}
+
+.rl-login-submit span {
+    transition: transform .2s ease;
+}
+
+.rl-login-submit:hover span {
+    transform: translate(2px, -2px);
+}
+
+/* =====================================================
+   FEEDBACK MESSAGES
+===================================================== */
+
+.rl-login-error,
+.rl-login-status {
+    margin-bottom: 18px;
+    padding: 12px 14px;
+    border: 1px solid #efcaca;
+    border-radius: 5px;
+    background: #fff0f0;
+    color: #a33333;
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+/* =====================================================
+   REGISTER & FOOTER
+===================================================== */
+
+.rl-login-register {
+    margin-top: 25px;
+    color: #887b7e;
+    font-size: 12px;
+    text-align: center;
+}
+
+.rl-login-footer {
+    margin-top: 45px;
+    color: #a89b9d;
+    font-size: 10px;
+    text-align: center;
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 800px) {
+    .rl-login {
+        grid-template-columns: 1fr;
+    }
+
+    .rl-login-visual {
+        min-height: 230px;
+        padding: 25px;
+    }
+
+    .rl-login-message {
+        margin-top: 45px;
+    }
+
+    .rl-login-message h1 {
+        font-size: 34px;
+    }
+
+    .rl-login-message p {
+        margin-bottom: 0;
+    }
+
+    .rl-login-copyright {
+        margin-top: 30px;
+    }
+
+    .rl-login-content {
+        padding: 35px 24px;
+    }
+
+    .rl-login-back {
+        margin-bottom: 28px;
+    }
+
+    .rl-login-footer {
+        margin-top: 30px;
+    }
+}
+
+@media (max-width: 420px) {
+    .rl-login-options {
+        align-items: flex-start;
+        font-size: 11px;
+    }
+
+    .rl-login-heading h2 {
+        font-size: 33px;
+    }
+}
