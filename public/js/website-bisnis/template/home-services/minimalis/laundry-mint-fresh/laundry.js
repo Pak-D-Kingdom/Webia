@@ -370,9 +370,73 @@
         } catch (err) { /* storage dimatikan: abaikan */ }
     }
 
+    /* ---------- 7. GERAK: progress scroll, parallax hero, muncul saat di-scroll ---------- */
+    function initFx() {
+        var nav = $('[data-lw-nav]');
+        var bar = $('[data-lw-progress]');
+        var hero = $('.lw-hero');
+        var heroImg = hero && $('.lw-hero__img', hero);
+        var wide = window.matchMedia ? window.matchMedia('(min-width: 1280px)') : { matches: false };
+        var ticking = false;
+
+        function update() {
+            ticking = false;
+            var y = window.scrollY || window.pageYOffset || 0;
+            if (bar) {
+                var max = document.documentElement.scrollHeight - window.innerHeight;
+                bar.style.setProperty('--lw-p', max > 0 ? Math.min(1, Math.max(0, y / max)).toFixed(4) : 0);
+            }
+            if (heroImg && !reduceMotion && wide.matches && y < hero.offsetHeight + 80) {
+                heroImg.style.setProperty('--lw-py', Math.min(y * 0.16, 56).toFixed(1) + 'px');
+            }
+        }
+        function onScroll() {
+            if (!ticking) { ticking = true; window.requestAnimationFrame(update); }
+        }
+        update();
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll);
+    }
+
+    function initReveal() {
+        if (reduceMotion || !('IntersectionObserver' in window)) return;
+        var groups = [
+            '.lw-home-wrap .lw-card', '.lw-home-wrap .lw-band',
+            '.lw-page .lw-card', '.lw-page .lw-hsteps li',
+            '.lw-cta__box', '.lw-footer__grid > *'
+        ];
+        var vh = window.innerHeight || 800;
+        var targets = [];
+        $$(groups.join(',')).forEach(function (el) {
+            if (el.classList.contains('lw-rv')) return;
+            // elemen yang sudah terlihat saat load tidak disembunyikan (hindari kedipan)
+            if (el.getBoundingClientRect().top < vh * 0.92) return;
+            var sibs = el.parentElement ? Array.prototype.filter.call(el.parentElement.children, function (c) { return c.tagName === el.tagName; }) : [el];
+            el.style.setProperty('--rv-d', (Math.max(0, sibs.indexOf(el)) % 4) * 90 + 'ms');
+            el.classList.add('lw-rv');
+            targets.push(el);
+        });
+        if (!targets.length) return;
+
+        var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (en) {
+                if (!en.isIntersecting) return;
+                var el = en.target;
+                io.unobserve(el);
+                el.classList.add('is-in');
+                // setelah animasi selesai, lepaskan kelas agar transisi hover normal kembali
+                setTimeout(function () {
+                    el.classList.remove('lw-rv', 'is-in');
+                    el.style.removeProperty('--rv-d');
+                }, 1100);
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -6% 0px' });
+        targets.forEach(function (el) { io.observe(el); });
+    }
+
     /* ---------- BOOT ---------- */
     function boot() {
-        initNav(); initToTop(); initTabs(); initHours(); initOrderForm(); initAreaCheck(); initChat();
+        initNav(); initFx(); initReveal(); initToTop(); initTabs(); initHours(); initOrderForm(); initAreaCheck(); initChat();
     }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
     else boot();

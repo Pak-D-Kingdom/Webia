@@ -179,6 +179,30 @@
       t.className = 'fd-msg fd-msg--bot fd-typing';
       t.innerHTML = '<i></i><i></i><i></i>';
       body.appendChild(t); body.scrollTop = body.scrollHeight;
+
+      var tenantId = window.PAKDE_TENANT_ID || (window.FD && window.FD.tenantId);
+      var apiUrl = window.PAKDE_API_URL || 'http://localhost:8001/api/v1/chat';
+
+      if (tenantId) {
+        fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-Site-Key': 'site_webia_public' },
+          body: JSON.stringify({ layer: 'l4', tenant_id: tenantId, messages: [{ role: 'user', content: q }] })
+        }).then(function(r) { return r.json(); })
+          .then(function(data) {
+            t.remove();
+            add('bot', data.reply || data.response || FAQ.fallback);
+          })
+          .catch(function() {
+            t.remove();
+            var hit = findAnswer(q);
+            if (hit && hit.link && FD.links && FD.links[hit.link]) add('bot', hit.a, { href: FD.links[hit.link], label: 'Buka halaman terkait' });
+            else if (hit) add('bot', hit.a);
+            else add('bot', FAQ.fallback, { href: waUrl('Halo, saya ingin bertanya: ' + q), label: 'Tanya via WhatsApp', external: true });
+          });
+        return;
+      }
+
       setTimeout(function () {
         t.remove();
         var hit = findAnswer(q);

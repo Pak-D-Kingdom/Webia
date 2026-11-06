@@ -264,6 +264,11 @@ Route::view(
     'website-bisnis.templates.pet-animal-service.paws-canine-terra-earth-tone'
 )->name('webia.template.pet-animal-service.paws-canine-terra-earth-tone');
 
+Route::view(
+    '/webia/template/pawtopia-animal-care',
+    'website-bisnis.templates.pet-animal-service.pawtopia-animal-care'
+)->name('webia.template.pet-animal-service.pawtopia-animal-care');
+
 // WEBIA — Template Nail Art Professional Soft Pink
 // URL lama dipertahankan agar konsisten; view mengikuti struktur folder baru.
 Route::view(
@@ -1377,6 +1382,64 @@ Route::prefix('webia/template/nonprofit-community/professional/foundation-classi
         Route::view('/chatbot', $base.'.chatbot', $data)->name('chatbot');
     });
 
+Route::prefix('webia/template/nonprofit-community/creative/foundation-nature-green')
+    ->name('webia.template.nonprofit-community.creative.foundation-nature-green.')
+    ->group(function () {
+        $view = 'website-bisnis.template.nonprofit&community.creative.foundation-nature-green.';
+
+        Route::get('/', fn () => view($view.'index'))->name('home');
+        Route::get('/tentang-kami', fn () => view($view.'tentang-kami'))->name('tentang-kami');
+        Route::get('/program', fn () => view($view.'program'))->name('program');
+        Route::get('/dampak', fn () => view($view.'dampak'))->name('dampak');
+        Route::get('/donasi', fn () => view($view.'donasi'))->name('donasi');
+        Route::get('/transparansi', fn () => view($view.'transparansi'))->name('transparansi');
+        Route::get('/mitra', fn () => view($view.'mitra'))->name('mitra');
+        Route::get('/relawan', fn () => view($view.'relawan'))->name('relawan');
+        Route::get('/berita', fn () => view($view.'berita'))->name('berita');
+        Route::get('/ai-chatbot', fn () => view($view.'ai-chatbot'))->name('ai-chatbot');
+    });
+
+Route::prefix('webia/template/nonprofit-community/minimalis/foundation-warm-neutral')
+    ->name('foundation-warm-neutral.')
+    ->group(function () {
+
+        $viewBase = 'website-bisnis.template.nonprofit&community.minimalis.foundation-warm-neutral';
+        $assetDir = 'template/nonprofit&community/minimalis/foundation-warm-neutral';
+
+        // Konten dibaca dari config; jika belum ter-load (mis. config cache lama), baca file langsung.
+        $config = config('template.nonprofit&community.minimalis.foundation-warm-neutral.foundation');
+        if (empty($config) || !is_array($config)) {
+            $file   = base_path('config/' . $assetDir . '/foundation.php');
+            $config = is_file($file) ? require $file : [];
+        }
+
+        $data = [
+            'f'   => $config,
+            'v'   => $viewBase,
+            'rp'  => 'foundation-warm-neutral.',
+            'img' => 'images/website-bisnis/' . $assetDir,
+            'css' => 'css/website-bisnis/' . $assetDir . '/foundation.css',
+            'js'  => 'js/website-bisnis/' . $assetDir . '/foundation.js',
+        ];
+
+        $pages = [
+            'home'           => ['/',                'index'],
+            'mission-vision' => ['/misi-visi',       'mission-vision'],
+            'programs'       => ['/program',         'programs'],
+            'impact'         => ['/dampak',          'impact'],
+            'donation'       => ['/donasi',          'donation'],
+            'transparency'   => ['/transparansi',    'transparency'],
+            'partners'       => ['/mitra-sponsor',   'partners'],
+            'volunteer'      => ['/relawan',         'volunteer'],
+            'news'           => ['/berita-acara',    'news'],
+            'chatbot'        => ['/hopebot',         'chatbot'],
+        ];
+
+        foreach ($pages as $name => $page) {
+            \Illuminate\Support\Facades\Route::view($page[0], $viewBase . '.' . $page[1], $data)->name($name);
+        }
+    });
+
 Route::prefix('webia/template/nonprofit-community/creative/social-organization-tropical-rush')
     ->name('webia.so.')
     ->group(function () {
@@ -1427,6 +1490,11 @@ Route::prefix('webia/template/nonprofit-community/bold/social-organization-citru
         Route::get('/'.$page, fn () => view($view.'halaman', $ctx($page)))->name('citrus.'.$page);
     }
 });
+
+Route::get('/webia/template/photography-creative-studio/bold/ugc-content-creator-studio-pink-voltage/{page?}', function (?string $page = null) {
+    return view('website-bisnis.template.photography-creative-studio.bold.ugc-content-creator-studio-pink-voltage.ugc-content-creator-studio', ['page' => $page ?: 'home']);
+})->where('page', 'home|portofolio|video-ugc|paket|hak-guna|platform|kolaborasi|kampanye|testimoni|tanya-ai')->name('webia.template.ugc-content-creator-studio');
+
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -1528,6 +1596,18 @@ Route::prefix('webia/template')->group(function () {
         '/aria-thorne-author-writer',
         'website-bisnis.templates.personal-brand.author-writer.aria-thorne.aria-thorne'
     )->name('webia.template.aria-thorne-author-writer');
+});
+
+Route::prefix('webia/template')->group(function () {
+    Route::view(
+        '/arya-sanjaya-ruby-editorial',
+        'website-bisnis.templates.personal-brand.author-writer.arya-sanjaya-ruby-editorial'
+    )->name('webia.template.personal-brand.arya-sanjaya-ruby-editorial');
+
+    Route::view(
+        '/arya-sanjaya-plum-velvet',
+        'website-bisnis.templates.personal-brand.author-writer.arya-sanjaya-plum-velvet'
+    )->name('webia.template.personal-brand.arya-sanjaya-plum-velvet');
 });
 
 Route::view(

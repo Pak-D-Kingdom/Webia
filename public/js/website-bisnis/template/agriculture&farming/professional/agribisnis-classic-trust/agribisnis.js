@@ -1,7 +1,7 @@
 /* =========================================================================
    AgroTrade — Agribisnis · Professional · Classic Trust
    JavaScript vanilla (tanpa dependensi). Semua fitur bersifat progressive:
-   halaman tetap terbaca tanpa JS.
+   halaman tetap terbaca dan berfungsi dasar tanpa JS.
    ========================================================================= */
 (function () {
     'use strict';
@@ -10,12 +10,13 @@
     var body = doc.body;
     var $ = function (sel, ctx) { return (ctx || doc).querySelector(sel); };
     var $$ = function (sel, ctx) { return Array.prototype.slice.call((ctx || doc).querySelectorAll(sel)); };
-    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var reduceMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    var hasIO = 'IntersectionObserver' in window;
 
     var DATA = {};
     try {
-        var node = $('#agro-data');
-        DATA = node ? JSON.parse(node.textContent) : {};
+        var dataNode = $('#agro-data');
+        DATA = dataNode ? JSON.parse(dataNode.textContent) : {};
     } catch (e) { DATA = {}; }
 
     var store = {
@@ -26,6 +27,11 @@
     function svgIcon(name, cls) {
         return '<svg class="i' + (cls ? ' ' + cls : '') + '" aria-hidden="true"><use href="#i-' + name + '"/></svg>';
     }
+    function escapeHtml(s) {
+        return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; });
+    }
+    function escapeRegExp(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+    function lockScroll(on) { body.classList.toggle('modal-open', on); }
 
     /* -------------------------------------------------- Placeholder links */
     $$('a[data-placeholder]').forEach(function (a) {
@@ -33,19 +39,29 @@
     });
 
     /* -------------------------------------------------- Navbar */
+    var closeMenu = function () {};
     (function () {
         var nav = $('#siteNav');
         var toggle = $('#menuToggle');
         var backdrop = $('#navBackdrop');
         var menu = $('#mainMenu');
-        var searchBtn = $('#searchToggle');
-        var searchBox = $('#searchBox');
+        var progress = $('#navProgress');
+        var ticking = false;
 
-        function onScroll() {
-            if (nav) { nav.classList.toggle('is-stuck', window.scrollY > 4); }
+        function update() {
+            ticking = false;
+            var y = window.pageYOffset || doc.documentElement.scrollTop || 0;
+            if (nav) { nav.classList.toggle('is-stuck', y > 4); }
+            if (progress) {
+                var max = (doc.documentElement.scrollHeight - window.innerHeight) || 1;
+                progress.style.width = Math.min(100, Math.max(0, (y / max) * 100)) + '%';
+            }
         }
-        onScroll();
-        window.addEventListener('scroll', onScroll, { passive: true });
+        update();
+        window.addEventListener('scroll', function () {
+            if (!ticking) { ticking = true; window.requestAnimationFrame(update); }
+        }, { passive: true });
+        window.addEventListener('resize', update);
 
         function setMenu(open) {
             if (!toggle) { return; }
@@ -53,37 +69,14 @@
             toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
             toggle.setAttribute('aria-label', open ? 'Tutup menu' : 'Buka menu');
             if (backdrop) { backdrop.hidden = !open; }
-            if (open) { setSearch(false); }
         }
+        closeMenu = function () { setMenu(false); };
 
-        function setSearch(open) {
-            if (!searchBtn || !searchBox) { return; }
-            searchBox.hidden = !open;
-            searchBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
-            if (open) {
-                var input = $('input', searchBox);
-                if (input) { window.setTimeout(function () { input.focus(); }, 30); }
-            }
-        }
-
-        if (toggle) {
-            toggle.addEventListener('click', function () { setMenu(!body.classList.contains('menu-open')); });
-        }
+        if (toggle) { toggle.addEventListener('click', function () { setMenu(!body.classList.contains('menu-open')); }); }
         if (backdrop) { backdrop.addEventListener('click', function () { setMenu(false); }); }
-        if (menu) {
-            $$('a', menu).forEach(function (a) { a.addEventListener('click', function () { setMenu(false); }); });
-        }
-        if (searchBtn) {
-            searchBtn.addEventListener('click', function () {
-                setSearch(searchBox.hidden);
-                if (!searchBox.hidden) { setMenu(false); }
-            });
-        }
+        if (menu) { $$('a', menu).forEach(function (a) { a.addEventListener('click', function () { setMenu(false); }); }); }
         doc.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape') {
-                if (body.classList.contains('menu-open')) { setMenu(false); if (toggle) { toggle.focus(); } }
-                if (searchBox && !searchBox.hidden) { setSearch(false); if (searchBtn) { searchBtn.focus(); } }
-            }
+            if (e.key === 'Escape' && body.classList.contains('menu-open')) { setMenu(false); if (toggle) { toggle.focus(); } }
         });
         window.addEventListener('resize', function () { if (window.innerWidth > 1159) { setMenu(false); } });
     })();
@@ -102,7 +95,184 @@
         doc.addEventListener('keydown', function (e) { if (e.key === 'Escape') { set(false); } });
     });
 
-    /* -------------------------------------------------- Custom select (dropdown rapi) */
+    /* -------------------------------------------------- Pencarian (modal) */
+    (function () {
+        var modal = $('#searchModal');
+        var btn = $('#searchToggle');
+        var input = $('#searchInput');
+        var bodyEl = $('#searchBody');
+        var clear = $('#searchClear');
+        var form = $('#searchForm');
+        if (!modal || !btn || !input || !bodyEl || !DATA.search) { return; }
+
+        var S = DATA.search;
+        var results = [];
+        var active = -1;
+        var lastFocus = null;
+        var popular = ['Kopi', 'Kakao', 'Kelapa Sawit', 'Padi', 'Minimum order', 'Sertifikasi'];
+
+        function norm(t) {
+            var s = String(t || '').toLowerCase();
+            if (s.normalize) { s = s.normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
+            return s.replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
+        }
+        function mark(text, q) {
+            var safe = escapeHtml(text);
+            var words = q.split(/\s+/).filter(function (w) { return w.length > 0; }).map(escapeRegExp);
+            if (!words.length) { return safe; }
+            try { return safe.replace(new RegExp('(' + words.join('|') + ')', 'ig'), '<mark>$1</mark>'); } catch (e) { return safe; }
+        }
+
+        function score(hay, q) {
+            var h = norm(hay);
+            if (!h) { return 0; }
+            if (h === q) { return 6; }
+            if (h.indexOf(q) === 0) { return 5; }
+            if (h.indexOf(' ' + q) !== -1) { return 4; }
+            if (h.indexOf(q) !== -1) { return 3; }
+            var words = q.split(' ');
+            var hit = 0;
+            words.forEach(function (w) { if (w && h.indexOf(w) !== -1) { hit += 1; } });
+            return hit === words.length ? 2 : (hit ? 1 : 0);
+        }
+
+        function itemHtml(it, q, idx) {
+            var lead = it.thumb
+                ? '<span class="sitem__thumb"><img src="' + escapeHtml(it.thumb) + '" alt="" loading="lazy" width="58" height="44"></span>'
+                : '<span class="sitem__ico">' + svgIcon(it.icon || 'leaf') + '</span>';
+            return '<a class="sitem" role="option" id="sr-' + idx + '" data-i="' + idx + '" href="' + escapeHtml(it.url) + '">' + lead +
+                '<span class="sitem__txt"><span class="sitem__t">' + mark(it.title, q) + '</span><span class="sitem__d">' + mark(it.desc, q) + '</span></span>' +
+                '<span class="sitem__go">' + svgIcon('arrow') + '</span></a>';
+        }
+
+        function render() {
+            var q = norm(input.value);
+            clear.hidden = !input.value;
+            results = [];
+            var html = '';
+
+            if (!q) {
+                html += '<div class="sgroup__title">Pencarian populer</div><div class="schips">';
+                popular.forEach(function (p) { html += '<button type="button" data-q="' + escapeHtml(p) + '">' + escapeHtml(p) + '</button>'; });
+                html += '</div><div class="sgroup__title">Halaman</div>';
+                S.pages.forEach(function (p) {
+                    if (p.title === 'Beranda') { return; }
+                    results.push({ title: p.title, desc: p.desc, icon: p.icon, url: p.url });
+                    html += itemHtml(results[results.length - 1], '', results.length - 1);
+                });
+            } else {
+                var com = S.commodities.map(function (c) {
+                    var sc = Math.max(score(c.name, q) * 2, score(c.tag, q), score(c.group, q), score(c.meta, q));
+                    return { sc: sc, it: { title: c.name, desc: c.tag + ' · ' + c.meta, thumb: c.thumb, url: c.url } };
+                }).filter(function (x) { return x.sc > 0; }).sort(function (a, b) { return b.sc - a.sc; }).slice(0, 8);
+                var pg = S.pages.map(function (p) {
+                    return { sc: Math.max(score(p.title, q) * 2, score(p.kw, q), score(p.desc, q)), it: { title: p.title, desc: p.desc, icon: p.icon, url: p.url } };
+                }).filter(function (x) { return x.sc > 0; }).sort(function (a, b) { return b.sc - a.sc; }).slice(0, 6);
+
+                if (com.length) {
+                    html += '<div class="sgroup__title">Komoditas</div>';
+                    com.forEach(function (x) { results.push(x.it); html += itemHtml(x.it, input.value.trim(), results.length - 1); });
+                }
+                if (pg.length) {
+                    html += '<div class="sgroup__title">Halaman</div>';
+                    pg.forEach(function (x) { results.push(x.it); html += itemHtml(x.it, input.value.trim(), results.length - 1); });
+                }
+                if (!results.length) {
+                    html = '<div class="sempty">' + svgIcon('search') + '<p>Tidak ada hasil untuk “' + escapeHtml(input.value.trim()) + '”.<br>Coba kata kunci lain, mis. <b>kopi</b>, <b>sertifikasi</b>, atau <b>minimum order</b>.</p></div>';
+                }
+            }
+            bodyEl.innerHTML = html;
+            setActive(results.length ? 0 : -1, false);
+        }
+
+        function setActive(i, scroll) {
+            var items = $$('.sitem', bodyEl);
+            items.forEach(function (el) { el.classList.remove('is-active'); el.removeAttribute('aria-selected'); });
+            active = i;
+            if (i >= 0 && items[i]) {
+                items[i].classList.add('is-active');
+                items[i].setAttribute('aria-selected', 'true');
+                input.setAttribute('aria-activedescendant', items[i].id);
+                if (scroll) { items[i].scrollIntoView({ block: 'nearest' }); }
+            } else {
+                input.removeAttribute('aria-activedescendant');
+            }
+        }
+
+        function open() {
+            if (!modal.hidden) { return; }
+            closeMenu();
+            lastFocus = doc.activeElement;
+            modal.hidden = false;
+            lockScroll(true);
+            btn.setAttribute('aria-expanded', 'true');
+            render();
+            window.setTimeout(function () { input.focus(); input.select(); }, 20);
+        }
+        function close() {
+            if (modal.hidden) { return; }
+            modal.hidden = true;
+            lockScroll(false);
+            btn.setAttribute('aria-expanded', 'false');
+            if (lastFocus && lastFocus.focus) { lastFocus.focus(); }
+        }
+
+        btn.setAttribute('aria-expanded', 'false');
+        btn.addEventListener('click', open);
+        $$('[data-search-close]', modal).forEach(function (el) { el.addEventListener('click', close); });
+        input.setAttribute('role', 'combobox');
+        input.setAttribute('aria-controls', 'searchBody');
+        input.setAttribute('aria-expanded', 'true');
+        bodyEl.setAttribute('role', 'listbox');
+        input.addEventListener('input', render);
+        clear.addEventListener('click', function () { input.value = ''; render(); input.focus(); });
+
+        bodyEl.addEventListener('click', function (e) {
+            var chip = e.target.closest('button[data-q]');
+            if (chip) { input.value = chip.getAttribute('data-q'); render(); input.focus(); return; }
+            if (e.target.closest('a.sitem')) { window.setTimeout(close, 0); }
+        });
+        bodyEl.addEventListener('mousemove', function (e) {
+            var a = e.target.closest('a.sitem');
+            if (a) { var i = parseInt(a.getAttribute('data-i'), 10); if (i !== active) { setActive(i, false); } }
+        });
+
+        form.addEventListener('submit', function (e) {
+            if (results.length && active >= 0 && results[active]) {
+                e.preventDefault();
+                var url = results[active].url;
+                close();
+                window.location.href = url;
+            }
+            /* tanpa hasil: biarkan form terkirim ke halaman katalog (?q=…) */
+        });
+
+        modal.addEventListener('keydown', function (e) {
+            var k = e.key;
+            if (k === 'Escape') { e.preventDefault(); close(); }
+            else if (k === 'ArrowDown') { e.preventDefault(); if (results.length) { setActive((active + 1) % results.length, true); } }
+            else if (k === 'ArrowUp') { e.preventDefault(); if (results.length) { setActive((active - 1 + results.length) % results.length, true); } }
+            else if (k === 'Tab') {
+                var f = $$('input, button:not([hidden]), a', modal).filter(function (el) { return el.offsetParent !== null; });
+                if (!f.length) { return; }
+                var first = f[0];
+                var last = f[f.length - 1];
+                if (e.shiftKey && doc.activeElement === first) { e.preventDefault(); last.focus(); }
+                else if (!e.shiftKey && doc.activeElement === last) { e.preventDefault(); first.focus(); }
+            }
+        });
+
+        doc.addEventListener('keydown', function (e) {
+            var t = e.target;
+            var typing = t && (/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName) || t.isContentEditable);
+            if (((e.key === '/' && !typing && !e.ctrlKey && !e.metaKey && !e.altKey) || ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')))) {
+                e.preventDefault();
+                open();
+            }
+        });
+    })();
+
+    /* -------------------------------------------------- Custom select (dropdown rapi, bottom-sheet di HP) */
     var uid = 0;
     function enhanceSelect(select) {
         if (select.dataset.enhanced) { return; }
@@ -135,12 +305,15 @@
         wrap.appendChild(list);
 
         var label = select.id ? $('label[for="' + select.id + '"]') : null;
+        var titleText = 'Pilih opsi';
         if (label) {
             if (!label.id) { label.id = 'cs-lbl-' + uid; }
             btn.setAttribute('aria-labelledby', label.id + ' ' + btn.id);
             label.addEventListener('click', function (e) { e.preventDefault(); btn.focus(); });
+            titleText = label.textContent.replace('*', '').trim() || titleText;
         }
 
+        var scrim = null;
         var valEl = $('.cselect__val', btn);
         var items = [];
         var activeIdx = -1;
@@ -148,7 +321,7 @@
         var typedTimer = null;
 
         function build() {
-            list.innerHTML = '';
+            list.innerHTML = '<li class="cselect__title" role="presentation">' + escapeHtml(titleText) + '</li>';
             items = [];
             $$('option', select).forEach(function (opt, i) {
                 var li = doc.createElement('li');
@@ -167,7 +340,7 @@
 
         function sync() {
             var sel = select.options[select.selectedIndex];
-            var isPlaceholder = !sel || sel.disabled || sel.value === '' && sel.defaultSelected && select.required;
+            var isPlaceholder = !sel || sel.disabled;
             valEl.textContent = sel ? sel.textContent : '';
             valEl.classList.toggle('is-placeholder', !!isPlaceholder);
             items.forEach(function (it) {
@@ -190,12 +363,22 @@
         function open() {
             if (!list.hidden) { return; }
             $$('.cselect.is-open').forEach(function (o) { if (o !== wrap && o._close) { o._close(); } });
+            var sheet = !!(window.matchMedia && window.matchMedia('(max-width: 575px)').matches);
             list.hidden = false;
             wrap.classList.add('is-open');
             btn.setAttribute('aria-expanded', 'true');
-            var rect = btn.getBoundingClientRect();
-            var room = window.innerHeight - rect.bottom;
-            wrap.classList.toggle('is-up', room < 280 && rect.top > room);
+            if (sheet) {
+                wrap.classList.add('is-sheet');
+                scrim = doc.createElement('div');
+                scrim.className = 'cselect__scrim';
+                scrim.addEventListener('click', close);
+                wrap.appendChild(scrim);
+                lockScroll(true);
+            } else {
+                var rect = btn.getBoundingClientRect();
+                var room = window.innerHeight - rect.bottom;
+                wrap.classList.toggle('is-up', room < 300 && rect.top > room);
+            }
             var cur = items.filter(function (it) { return it.opt.selected && !it.opt.disabled; })[0] || visibleItems()[0];
             setActive(cur, true);
         }
@@ -203,7 +386,10 @@
         function close() {
             if (list.hidden) { return; }
             list.hidden = true;
-            wrap.classList.remove('is-open');
+            wrap.classList.remove('is-open', 'is-up');
+            if (wrap.classList.contains('is-sheet')) { wrap.classList.remove('is-sheet'); lockScroll(false); }
+            if (scrim && scrim.parentNode) { scrim.parentNode.removeChild(scrim); }
+            scrim = null;
             btn.setAttribute('aria-expanded', 'false');
             setActive(null);
         }
@@ -269,6 +455,71 @@
         build();
     }
     $$('select.select').forEach(enhanceSelect);
+
+    /* -------------------------------------------------- Animasi saat scroll + penghitung angka */
+    (function () {
+        var SEL = [
+            '.catalog-intro', '.tile', '.panen', '.spec', '.beantile', '.moq', '.cap', '.dist', '.cert', '.proc', '.mini', '.ai-band',
+            '.cm-card', '.info-card', '.check-row', '.cert-card', '.timeline > li', '.bigstat', '.terms', '.statgrid li', '.bars',
+            '.table-wrap', '.sec-head', '.ctaband__in', '.faq__item', '.botcard', '.formcard', '.side', '.ports', '.mapcard', '.docs',
+            '.benefits li', '.toolbar', '.stepcards > li', '.faq > h2', '.lead'
+        ].join(',');
+
+        function fmt(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
+
+        function countUp(el) {
+            var target = parseInt(el.getAttribute('data-count'), 10);
+            if (isNaN(target) || el._counted) { return; }
+            el._counted = true;
+            if (reduceMotion) { el.textContent = fmt(target); return; }
+            var dur = 1500;
+            var t0 = null;
+            function step(ts) {
+                if (t0 === null) { t0 = ts; }
+                var p = Math.min(1, (ts - t0) / dur);
+                var eased = 1 - Math.pow(1 - p, 3);
+                el.textContent = fmt(Math.round(target * eased));
+                if (p < 1) { window.requestAnimationFrame(step); } else { el.textContent = fmt(target); }
+            }
+            window.requestAnimationFrame(step);
+        }
+
+        var counters = $$('[data-count]');
+
+        if (!hasIO) { return; }
+
+        var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (en) {
+                if (!en.isIntersecting) { return; }
+                en.target.classList.add('is-in');
+                if (en.target.hasAttribute('data-count')) { countUp(en.target); }
+                io.unobserve(en.target);
+            });
+        }, { threshold: 0.12, rootMargin: '0px 0px -5% 0px' });
+
+        var counts = {};
+        var vh = window.innerHeight || 800;
+        $$(SEL).forEach(function (el) {
+            var r = el.getBoundingClientRect();
+            if (r.top < vh * 0.9 && r.bottom > 0) { el.classList.add('is-in'); return; }
+            var parent = el.parentNode;
+            if (parent && parent.tagName === 'LI') { parent = parent.parentNode; }
+            var key = parent ? (parent._rvk || (parent._rvk = 'k' + Math.random().toString(36).slice(2))) : 'k0';
+            counts[key] = (counts[key] || 0) + 1;
+            el.style.setProperty('--d', Math.min(counts[key] - 1, 7) * 70 + 'ms');
+            el.classList.add('rv');
+            io.observe(el);
+        });
+
+        counters.forEach(function (el) {
+            var r = el.getBoundingClientRect();
+            el.textContent = '0';
+            if (r.top < vh && r.bottom > 0) { countUp(el); } else { io.observe(el); }
+        });
+        // elemen di dalam viewport yang sudah punya data-count tidak perlu di-reveal
+        $$('.bars, .proc').forEach(function (el) { if (!el.classList.contains('rv')) { el.classList.add('is-in'); } });
+        $$('.bars li').forEach(function (li, i) { li.style.setProperty('--i', i); });
+    })();
 
     /* -------------------------------------------------- Form → WhatsApp */
     (function () {
@@ -372,23 +623,31 @@
         if (!grid) { return; }
         var cards = $$('.cm-card', grid);
         var input = $('#cmSearch');
+        var clear = $('#cmClear');
         var chips = $$('.chip[data-filter]');
         var count = $('#cmCount');
         var empty = $('#cmEmpty');
         var group = 'all';
 
+        function norm(t) {
+            var s = String(t || '').toLowerCase();
+            if (s.normalize) { s = s.normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
+            return s;
+        }
+
         function apply() {
-            var q = (input ? input.value : '').trim().toLowerCase();
+            var q = norm(input ? input.value : '').trim();
             var shown = 0;
             cards.forEach(function (c) {
                 var okGroup = group === 'all' || c.dataset.group === group;
-                var okText = !q || c.dataset.name.indexOf(q) !== -1;
+                var okText = !q || norm(c.dataset.name).indexOf(q) !== -1;
                 var show = okGroup && okText;
                 c.hidden = !show;
-                if (show) { shown += 1; }
+                if (show) { shown += 1; if (c.classList.contains('rv')) { c.classList.add('is-in'); } }
             });
             if (count) { count.textContent = 'Menampilkan ' + shown + ' dari ' + cards.length + ' komoditas'; }
             if (empty) { empty.hidden = shown !== 0; }
+            if (clear) { clear.hidden = !(input && input.value); }
         }
 
         chips.forEach(function (chip) {
@@ -404,9 +663,11 @@
         });
         if (input) {
             input.addEventListener('input', apply);
+            input.addEventListener('keydown', function (e) { if (e.key === 'Escape' && input.value) { input.value = ''; apply(); } });
             var q = new URLSearchParams(window.location.search).get('q');
             if (q) { input.value = q; }
         }
+        if (clear) { clear.addEventListener('click', function () { input.value = ''; apply(); input.focus(); }); }
         apply();
     })();
 
@@ -464,37 +725,49 @@
         var form = $('#chatForm');
         var input = $('#chatInput');
         var closeBtn = $('#chatClose');
+        var resetBtn = $('#chatReset');
+        var badge = $('#chatBadge');
         var hint = $('#botHint');
         var hintClose = $('#botHintClose');
         var faq = DATA.ai.faq || [];
+        var topics = DATA.ai.topics || [];
         var welcomed = false;
         var busy = false;
         var botImg = $('.chat__avatar img', panel);
         var botSrc = botImg ? botImg.getAttribute('src') : '';
+        var waNumber = (DATA.whatsapp && DATA.whatsapp.number) || '';
 
         function scrollDown() { log.scrollTop = log.scrollHeight; }
 
-        function addMsg(role, html, isHtml) {
+        function now() {
+            try { return new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }).replace('.', ':'); } catch (e) { return ''; }
+        }
+
+        function addMsg(role, content, isHtml) {
             var el = doc.createElement('div');
             el.className = 'msg msg--' + role;
-            var inner = '';
-            if (role === 'bot') { inner += '<span class="msg__av"><img src="' + botSrc + '" alt="" width="22" height="26"></span>'; }
-            inner += '<div class="msg__bub"></div>';
-            el.innerHTML = inner;
+            var html = '';
+            if (role === 'bot') { html += '<span class="msg__av"><img src="' + escapeHtml(botSrc) + '" alt="" width="22" height="26"></span>'; }
+            html += '<div class="msg__col"><div class="msg__bub"></div><span class="msg__time">' + now() + '</span></div>';
+            el.innerHTML = html;
             var bub = $('.msg__bub', el);
-            if (isHtml) { bub.innerHTML = html; } else { bub.textContent = html; }
+            if (isHtml) { bub.innerHTML = content; } else { bub.textContent = content; }
             log.appendChild(el);
             scrollDown();
             return el;
         }
 
         function addTyping() {
-            var el = addMsg('bot', '<span class="typing" aria-label="AgroBot sedang mengetik"><i></i><i></i><i></i></span>', true);
+            var el = addMsg('bot', '<span class="typing" role="status" aria-label="AgroBot sedang mengetik"><i></i><i></i><i></i></span>', true);
+            var t = $('.msg__time', el);
+            if (t) { t.hidden = true; }
             return el;
         }
 
         function normalize(t) {
-            return (' ' + t.toLowerCase().replace(/[^a-z0-9\/\s]/g, ' ').replace(/\s+/g, ' ') + ' ');
+            var s = String(t).toLowerCase();
+            if (s.normalize) { s = s.normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
+            return ' ' + s.replace(/[^a-z0-9\/\s]/g, ' ').replace(/\s+/g, ' ') + ' ';
         }
 
         function findAnswer(q) {
@@ -515,43 +788,37 @@
             return bestScore >= 2 ? best : null;
         }
 
-        function waLink(text) {
-            return 'https://wa.me/' + (DATA.whatsapp.number || '') + '?text=' + encodeURIComponent(text);
-        }
-
-        function escapeHtml(s) {
-            return s.replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; });
-        }
+        function waLink(text) { return 'https://wa.me/' + waNumber + '?text=' + encodeURIComponent(text); }
 
         function reply(q) {
             var n = normalize(q);
-            var html;
             if (/ (halo|hai|hi|hello|selamat) /.test(n) && n.trim().split(' ').length <= 3) {
-                html = escapeHtml('Halo! Ada yang bisa saya bantu seputar komoditas, harga, pengiriman, sertifikasi, atau kemitraan?');
-            } else if (/ (terima kasih|makasih|thanks|thank you) /.test(n)) {
-                html = escapeHtml('Sama-sama! Jika ada pertanyaan lain, silakan tanyakan kapan saja.');
-            } else if (/ (admin|cs|manusia|petugas|sales|agen) /.test(n)) {
-                html = escapeHtml('Tentu, Anda bisa langsung berbincang dengan tim kami melalui WhatsApp.') +
-                    '<br><a class="msg__cta" href="' + waLink(DATA.whatsapp.greeting) + '" target="_blank" rel="noopener">Chat WhatsApp ' + svgIcon('arrow', 'i--sm') + '</a>';
-            } else {
-                var f = findAnswer(q);
-                if (f) {
-                    html = escapeHtml(f.a) + '<br><a class="msg__cta" href="' + f.url + '">' + escapeHtml(f.cta) + ' ' + svgIcon('arrow', 'i--sm') + '</a>';
-                } else {
-                    html = escapeHtml(DATA.ai.fallback) +
-                        '<br><a class="msg__cta" href="' + waLink('Halo AgroTrade, saya ingin bertanya: ' + q) + '" target="_blank" rel="noopener">Tanya via WhatsApp ' + svgIcon('arrow', 'i--sm') + '</a>';
-                }
+                return escapeHtml('Halo! Ada yang bisa saya bantu seputar komoditas, harga, pengiriman, sertifikasi, atau kemitraan?');
             }
-            return html;
+            if (/ (terima kasih|makasih|thanks|thank you) /.test(n)) {
+                return escapeHtml('Sama-sama! Jika ada pertanyaan lain, silakan tanyakan kapan saja.');
+            }
+            if (/ (admin|cs|manusia|petugas|sales|agen) /.test(n)) {
+                return escapeHtml('Tentu, Anda bisa langsung berbincang dengan tim kami melalui WhatsApp.') +
+                    '<br><a class="msg__cta" href="' + waLink(DATA.whatsapp.greeting) + '" target="_blank" rel="noopener">Chat WhatsApp ' + svgIcon('arrow', 'i--sm') + '</a>';
+            }
+            var f = findAnswer(q);
+            if (f) {
+                return escapeHtml(f.a) + '<br><a class="msg__cta" href="' + escapeHtml(f.url) + '">' + escapeHtml(f.cta) + ' ' + svgIcon('arrow', 'i--sm') + '</a>';
+            }
+            return escapeHtml(DATA.ai.fallback) +
+                '<br><a class="msg__cta" href="' + waLink('Halo AgroTrade, saya ingin bertanya: ' + q) + '" target="_blank" rel="noopener">Tanya via WhatsApp ' + svgIcon('arrow', 'i--sm') + '</a>';
         }
 
         function ask(q) {
             q = (q || '').trim();
             if (!q || busy) { return; }
             busy = true;
+            var tp = $('.topics', log);
+            if (tp) { tp.remove(); }
             addMsg('user', q, false);
             var t = addTyping();
-            var delay = reduceMotion ? 0 : 450 + Math.min(700, q.length * 12);
+            var delay = reduceMotion ? 0 : 500 + Math.min(800, q.length * 14);
             window.setTimeout(function () {
                 t.remove();
                 addMsg('bot', reply(q), true);
@@ -574,33 +841,72 @@
             if (welcomed) { return; }
             welcomed = true;
             addMsg('bot', DATA.ai.welcome, false);
+            if (topics.length) {
+                var wrap = doc.createElement('div');
+                wrap.className = 'topics';
+                topics.forEach(function (t) {
+                    var b = doc.createElement('button');
+                    b.type = 'button';
+                    b.className = 'topic';
+                    b.innerHTML = '<span class="topic__ico">' + svgIcon(t.icon) + '</span><span></span>';
+                    $('span:last-child', b).textContent = t.label;
+                    b.addEventListener('click', function () { ask(t.q); });
+                    wrap.appendChild(b);
+                });
+                log.appendChild(wrap);
+            }
             renderChips();
+            scrollDown();
+        }
+
+        function markRead() {
+            if (badge) { badge.classList.add('is-read'); }
+            if (hint) { hint.hidden = true; }
+            store.set('agroHintSeen', '1');
         }
 
         function open(question) {
+            if (!panel.hidden) { if (question) { ask(question); } return; }
+            panel.classList.remove('is-closing');
             panel.hidden = false;
             body.classList.add('chat-open');
             toggle.setAttribute('aria-expanded', 'true');
-            if (hint) { hint.hidden = true; store.set('agroHintSeen', '1'); }
+            markRead();
             welcome();
             if (question) {
-                window.setTimeout(function () { ask(question); }, 200);
+                window.setTimeout(function () { ask(question); }, 250);
             } else {
-                window.setTimeout(function () { input.focus(); }, 60);
+                window.setTimeout(function () { input.focus(); }, 80);
             }
         }
 
         function close() {
-            panel.hidden = true;
-            body.classList.remove('chat-open');
-            toggle.setAttribute('aria-expanded', 'false');
-            toggle.focus();
+            if (panel.hidden) { return; }
+            function done() {
+                panel.hidden = true;
+                panel.classList.remove('is-closing');
+                body.classList.remove('chat-open');
+                toggle.setAttribute('aria-expanded', 'false');
+                toggle.focus();
+            }
+            if (reduceMotion) { done(); return; }
+            panel.classList.add('is-closing');
+            window.setTimeout(done, 190);
+        }
+
+        function reset() {
+            log.innerHTML = '';
+            welcomed = false;
+            busy = false;
+            welcome();
+            input.focus();
         }
 
         toggle.addEventListener('click', function () { panel.hidden ? open() : close(); });
         closeBtn.addEventListener('click', close);
+        if (resetBtn) { resetBtn.addEventListener('click', reset); }
         doc.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape' && !panel.hidden) { close(); }
+            if (e.key === 'Escape' && !panel.hidden && (!$('#searchModal') || $('#searchModal').hidden)) { close(); }
         });
         form.addEventListener('submit', function (e) {
             e.preventDefault();
@@ -612,17 +918,22 @@
         $$('[data-chat-open]').forEach(function (b) { b.addEventListener('click', function () { open(); }); });
         $$('[data-chat-ask]').forEach(function (b) { b.addEventListener('click', function () { open(b.getAttribute('data-chat-ask')); }); });
 
-        // Sapaan AgroBot (sekali per sesi)
+        /* Sapaan AgroBot: muncul sekali per sesi, dengan efek mengetik */
+        if (store.get('agroHintSeen') && badge) { badge.classList.add('is-read'); }
         if (hint && !store.get('agroHintSeen')) {
             window.setTimeout(function () {
-                if (panel.hidden) {
-                    hint.hidden = false;
-                    window.setTimeout(function () { hint.hidden = true; store.set('agroHintSeen', '1'); }, 9000);
-                }
-            }, 5000);
+                if (!panel.hidden) { return; }
+                hint.hidden = false;
+                var typing = $('.hint__typing', hint);
+                var msg = $('.hint__msg', hint);
+                var hchips = $('.hint__chips', hint);
+                window.setTimeout(function () {
+                    if (typing) { typing.hidden = true; }
+                    if (msg) { msg.hidden = false; }
+                    if (hchips) { hchips.hidden = false; }
+                }, reduceMotion ? 0 : 1400);
+            }, reduceMotion ? 800 : 4000);
         }
-        if (hintClose) {
-            hintClose.addEventListener('click', function () { hint.hidden = true; store.set('agroHintSeen', '1'); });
-        }
+        if (hintClose) { hintClose.addEventListener('click', function () { hint.hidden = true; store.set('agroHintSeen', '1'); }); }
     })();
 })();

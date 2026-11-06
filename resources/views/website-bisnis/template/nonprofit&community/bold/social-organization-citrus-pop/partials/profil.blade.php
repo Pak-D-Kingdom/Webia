@@ -1,6 +1,6 @@
 <section class="sec">
 <div class="w pf">
-<div class="pf-i"><img src="{{ $img }}s7.svg" alt="Relawan SegarKita bekerja bersama" width="600" height="450" loading="lazy"><span class="stk st2">Dikelola warga</span></div>
+<div class="pf-i"><img src="{{ $img }}s7.svg" alt="Relawan SegarKita bekerja bersama" width="600" height="450"><span class="stk st2">Dikelola warga</span></div>
 <div>
 <h2>Kami bermula dari sebuah gerobak jeruk.</h2>
 <p>Tahun 2019, sekelompok warga berjualan jeruk untuk menambah kas ronda. Hasilnya dipakai membeli buku anak-anak. Sekarang kami adalah jaringan 14 RW dengan enam program rutin yang semuanya digerakkan relawan.</p>

@@ -7183,7 +7183,8 @@ html {
 }
 
 .webia-order-dialog.is-payment {
-    width: min(38rem, 94vw)
+    width: min(52rem, 94vw);
+    background: #fff
 }
 
 .webia-order-dialog.is-payment .webia-cart-dialog-head {
@@ -7212,27 +7213,86 @@ html {
 
 .webia-payment-panel {
     display: grid;
-    gap: 1rem;
-    width: min(100%, 34rem);
+    grid-template-columns: minmax(0, 1.05fr) minmax(17rem, .95fr);
+    gap: 0;
+    width: 100%;
     margin: 0 auto;
-    padding: 1.5rem;
-    border: 1px solid #e0e3e5;
+    border: 1px solid #ded8ea;
     border-radius: 1rem;
     background: #fff;
-    box-shadow: 0 1rem 3rem rgb(26 20 107 / 10%)
+    overflow: hidden
+}
+
+.webia-payment-status-column,
+.webia-payment-detail-column {
+    display: grid;
+    align-content: start;
+    gap: 1rem;
+    padding: 1.5rem
+}
+
+.webia-payment-status-column {
+    background: #faf8fe
+}
+
+.webia-payment-detail-column {
+    border-left: 1px solid #e5e0ec
 }
 
 .webia-payment-heading {
-    display: grid;
-    justify-items: center;
-    gap: .75rem;
-    text-align: center
+    display: flex;
+    align-items: center;
+    gap: .875rem
+}
+
+.webia-payment-heading>div {
+    min-width: 0
+}
+
+.webia-payment-kicker {
+    margin: 0 0 .2rem;
+    color: #675b78;
+    font-size: .75rem;
+    font-weight: 700
 }
 
 .webia-payment-heading h2 {
     margin: 0;
     color: #191c1e;
-    font-size: clamp(1.35rem, 4vw, 1.75rem)
+    font-size: clamp(1.3rem, 3vw, 1.65rem);
+    line-height: 1.2
+}
+
+.webia-payment-progress {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: .4rem;
+    color: #6d6877;
+    font-size: .68rem;
+    font-weight: 700
+}
+
+.webia-payment-progress span {
+    position: relative;
+    padding-top: .75rem
+}
+
+.webia-payment-progress span::before {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: .25rem;
+    border-radius: .25rem;
+    background: #ded9e5;
+    content: ""
+}
+
+.webia-payment-progress[data-step="payment"] [data-progress-payment]::before,
+.webia-payment-progress[data-step="account"] [data-progress-payment]::before,
+.webia-payment-progress[data-step="account"] [data-progress-account]::before,
+.webia-payment-progress[data-step="complete"] span::before {
+    background: #7151a8
 }
 
 .webia-payment-panel[hidden] {
@@ -7240,11 +7300,12 @@ html {
 }
 
 .webia-payment-panel .customer-verify-icon {
-    width: 4rem;
-    height: 4rem;
+    flex: 0 0 auto;
+    width: 3.25rem;
+    height: 3.25rem;
     color: #4e3a83;
-    background: #f7f3ff;
-    border-color: #d8cbed
+    background: #f1ebfa;
+    border-color: #cfc1e3
 }
 
 .webia-payment-panel .customer-verify-icon .material-symbols-outlined {
@@ -7255,30 +7316,42 @@ html {
 .webia-order-number {
     display: flex;
     align-items: center;
-    gap: .4rem;
-    min-height: 2.25rem;
-    padding: .35rem .5rem .35rem .75rem;
-    border: 1px solid #e0e3e5;
-    border-radius: 999px;
-    background: #f7f9fb;
+    justify-content: space-between;
+    gap: .75rem;
+    min-width: 0;
+    padding-bottom: .875rem;
+    border-bottom: 1px solid #e5e0ec;
     color: #62646b;
     font-size: .75rem
 }
 
+.webia-order-number>div {
+    display: grid;
+    min-width: 0;
+    gap: .2rem
+}
+
 .webia-order-number strong {
-    color: #312e81
+    overflow-wrap: anywhere;
+    color: #312e81;
+    font-size: .9rem
 }
 
 .webia-order-number button {
-    display: grid;
-    place-items: center;
-    width: 2rem;
-    height: 2rem;
-    padding: 0;
-    border: 0;
-    border-radius: 50%;
-    background: transparent;
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    gap: .3rem;
+    min-width: 4.5rem;
+    min-height: 44px;
+    padding: .5rem .7rem;
+    border: 1px solid #d9d2e4;
+    border-radius: .6rem;
+    background: #fff;
     color: #474651;
+    font: inherit;
+    font-weight: 700;
     cursor: pointer
 }
 
@@ -7292,13 +7365,11 @@ html {
 }
 
 .webia-payment-panel .customer-verify-meta {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
+    display: grid;
+    gap: .875rem;
     width: 100%;
     padding: 1rem;
-    border: 1px solid #eadfbf;
+    border: 1px solid #d9c992;
     border-radius: .75rem;
     background: #fff8e7;
     text-align: left
@@ -7323,24 +7394,33 @@ html {
 }
 
 .webia-payment-expiry {
-    flex: 0 0 auto;
-    text-align: right
+    padding-top: .75rem;
+    border-top: 1px solid #e1d3a8;
+    text-align: left
 }
 
 .webia-payment-expiry strong {
-    font-size: .8rem !important
+    font-size: .85rem !important
 }
 
 .webia-payment-summary {
     display: grid;
-    gap: .75rem;
-    padding: 1rem;
-    border: 1px solid #e0e3e5;
-    border-radius: .75rem;
-    background: #f7f9fb
+    gap: .75rem
 }
 
-.webia-payment-summary>div {
+.webia-payment-addons {
+    display: grid;
+    gap: .6rem;
+    max-height: 7rem;
+    overflow-y: auto
+}
+
+.webia-payment-addons:empty {
+    display: none
+}
+
+.webia-payment-summary>div:not(.webia-payment-addons),
+.webia-payment-addons>div {
     display: flex;
     justify-content: space-between;
     gap: 1rem;
@@ -7348,7 +7428,7 @@ html {
     font-size: .75rem
 }
 
-.webia-payment-summary>div strong {
+.webia-payment-summary strong {
     color: #191c1e;
     text-align: right
 }
@@ -7390,19 +7470,28 @@ html {
     color: #265f43
 }
 
-.webia-payment-panel.is-failed .customer-verify-icon {
-    color: #9f2f3f;
-    background: #fff2f4;
-    border-color: #efbdc5
-}
-
-.webia-payment-panel.is-failed .customer-verify-meta {
-    border-color: #efbdc5;
+.webia-payment-panel.is-payment-failed .customer-verify-icon,
+.webia-payment-panel.is-payment-failed .customer-verify-meta {
+    color: #8f2637;
+    border-color: #e7aeb8;
     background: #fff2f4
 }
 
-.webia-payment-panel.is-failed .customer-verify-meta strong {
-    color: #9f2f3f
+.webia-payment-panel.is-payment-failed .customer-verify-meta strong {
+    color: #8f2637
+}
+
+.webia-payment-panel.is-credential-failed .customer-verify-icon,
+.webia-payment-panel.is-credential-failed .customer-verify-meta,
+.webia-payment-panel.is-status-error .customer-verify-meta {
+    color: #704c0b;
+    border-color: #d9c47d;
+    background: #fff8e1
+}
+
+.webia-payment-panel.is-credential-failed .customer-verify-meta strong,
+.webia-payment-panel.is-status-error .customer-verify-meta strong {
+    color: #704c0b
 }
 
 .webia-payment-actions {
@@ -7443,9 +7532,11 @@ html {
 
 .webia-payment-panel .customer-verify-note {
     margin: 0;
-    text-align: center;
+    color: #554f61;
+    text-align: left;
+    font-size: .82rem;
     font-style: normal;
-    line-height: 1.6
+    line-height: 1.55
 }
 
 .webia-payment-actions [hidden],
@@ -7454,20 +7545,66 @@ html {
 }
 
 .webia-snap-panel {
-    width: min(100%, 42rem);
+    width: 100%;
     margin: 0 auto;
     overflow: hidden;
-    border: 1px solid rgb(167 139 250 / 24%);
-    border-radius: 1.25rem;
+    border: 1px solid #ded8ea;
+    border-radius: 1rem;
     background: #fff
+}
+
+.webia-snap-context {
+    display: grid;
+    grid-template-columns: auto 1fr 1fr;
+    align-items: center;
+    gap: 1rem;
+    padding: .75rem 1rem;
+    border-bottom: 1px solid #e5e0ec;
+    background: #faf8fe
+}
+
+.webia-snap-context button {
+    display: flex;
+    align-items: center;
+    gap: .3rem;
+    min-height: 44px;
+    padding: .5rem .75rem;
+    border: 1px solid #d9d2e4;
+    border-radius: .6rem;
+    background: #fff;
+    color: #423951;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer
+}
+
+.webia-snap-context>div {
+    display: grid;
+    gap: .15rem;
+    min-width: 0
+}
+
+.webia-snap-context span {
+    color: #675f72;
+    font-size: .7rem
+}
+
+.webia-snap-context strong {
+    overflow-wrap: anywhere;
+    color: #2d2540;
+    font-size: .82rem
 }
 
 .webia-snap-container {
     display: flex;
     justify-content: center;
     width: 100%;
-    min-width: 320px;
+    min-width: 0;
     min-height: 560px
+}
+
+.webia-snap-container iframe {
+    max-width: 100%
 }
 
 .webia-cart-note {
@@ -7673,18 +7810,37 @@ html {
     }
 
     .webia-payment-panel {
-        padding: 1.25rem 1rem
+        grid-template-columns: minmax(0, 1fr);
+        border: 0;
+        border-radius: 0
     }
 
-    .webia-payment-panel .customer-verify-meta {
-        align-items: stretch;
-        flex-direction: column
+    .webia-payment-status-column,
+    .webia-payment-detail-column {
+        padding: 1rem
     }
 
-    .webia-payment-expiry {
-        padding-top: .75rem;
-        border-top: 1px solid #eadfbf;
-        text-align: left
+    .webia-payment-detail-column {
+        border-top: 1px solid #e5e0ec;
+        border-left: 0
+    }
+
+    .webia-payment-heading {
+        align-items: flex-start
+    }
+
+    .webia-payment-progress {
+        font-size: .62rem
+    }
+
+    .webia-snap-context {
+        grid-template-columns: 1fr 1fr;
+        gap: .6rem
+    }
+
+    .webia-snap-context button {
+        grid-column: 1 / -1;
+        justify-self: start
     }
 
     .webia-cart-dialog-head {
@@ -7860,10 +8016,10 @@ html {
 }
 
 
-/* Halaman koleksi: pisahkan tombol WhatsApp dan keranjang */
+/* Halaman koleksi: rapatkan WhatsApp ke AI Assistant */
 .webia-whatsapp-fab {
     right: 24px !important;
-    bottom: calc(184px + env(safe-area-inset-bottom)) !important;
+    bottom: calc(90px + env(safe-area-inset-bottom)) !important;
     z-index: 10002 !important;
 }
 
@@ -7878,7 +8034,7 @@ html {
 @media (max-width: 560px) {
     .webia-whatsapp-fab {
         right: 14px !important;
-        bottom: calc(168px + env(safe-area-inset-bottom)) !important;
+        bottom: calc(78px + env(safe-area-inset-bottom)) !important;
     }
 
     .webia-cart-fab {

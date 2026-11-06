@@ -1,6 +1,6 @@
-﻿@extends($v . '.layout')
+@extends($v . '.layout')
 
-@section('title', 'AgroTrade â€” Quality Harvests, Global Markets')
+@section('title', 'AgroTrade — Quality Harvests, Global Markets')
 
 @section('content')
 @php
@@ -66,7 +66,7 @@
         </ul>
     </section>
 
-    {{-- ================= BARIS 2: PANEN Â· SPESIFIKASI Â· MOQ Â· KAPASITAS ================= --}}
+    {{-- ================= BARIS 2: PANEN · SPESIFIKASI · MOQ · KAPASITAS ================= --}}
     <section class="home-info">
         <article class="card panen" aria-labelledby="hPanen">
             <div class="panen__top">
@@ -128,7 +128,7 @@
             <div class="cap__body">
                 <span class="bigico bigico--leaf"><svg class="i" aria-hidden="true"><use href="#i-sprout"/></svg></span>
                 <div class="cap__num">
-                    <strong>{{ $agro['capacity']['headline'] }}</strong>
+                    <strong>&gt; <span data-count="{{ $agro['capacity']['number'] }}">{{ $agro['capacity']['number_fmt'] }}</span> Ton</strong>
                     <span>{{ $agro['capacity']['unit'] }}</span>
                 </div>
             </div>
@@ -136,7 +136,7 @@
         </article>
     </section>
 
-    {{-- ================= BARIS 3: DISTRIBUSI Â· SERTIFIKASI Â· PROSES Â· B2B/QUOTATION ================= --}}
+    {{-- ================= BARIS 3: DISTRIBUSI · SERTIFIKASI · PROSES · B2B/QUOTATION ================= --}}
     <section class="home-mid">
         <article class="card dist" aria-labelledby="hDist">
             <h2 id="hDist">Jangkauan Distribusi</h2>
@@ -164,7 +164,7 @@
             </div>
             <ol class="proc__steps">
                 @foreach ($agro['process']['steps'] as $st)
-                    <li>
+                    <li style="--i: {{ $loop->index }}">
                         <span class="proc__ico"><svg class="i" aria-hidden="true"><use href="#i-{{ $st[1] }}"/></svg></span>
                         <span class="proc__lbl">{{ $st[0] }}</span>
                     </li>
