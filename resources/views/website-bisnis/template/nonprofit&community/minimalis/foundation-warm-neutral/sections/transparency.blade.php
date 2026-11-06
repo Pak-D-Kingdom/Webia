@@ -1,5 +1,5 @@
 <article class="hf-card hf-report" data-reveal>
-    <img class="hf-report__img" src="{{ asset($img.'/report-illustration.jpg') }}" width="828" height="405" alt="Buku laporan keuangan dengan grafik dan kaca pembesar" loading="lazy">
+    <img class="hf-report__img" src="{{ asset($img.'/report-illustration.jpg') }}" width="883" height="432" alt="Buku laporan keuangan dengan grafik dan kaca pembesar" loading="lazy">
     <header class="hf-card__head">
         <svg class="hf-art" viewBox="0 0 48 48" aria-hidden="true"><use href="#ic-doc"/></svg>
         <h2 class="hf-card__title">{{ $f['transparency']['title'] }}</h2>

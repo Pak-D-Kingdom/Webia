@@ -4,7 +4,7 @@
 @section('body_class', 'page-inner page-mission')
 
 @section('content')
-    @include($v.'.partials.page-header', ['crumb' => 'Misi & Visi', 'title' => 'Misi & Visi Kami', 'lead' => $f['mission']['summary']])
+    @include($v.'.partials.page-header', ['crumb' => 'Misi & Visi', 'title' => 'Misi & Visi Kami', 'lead' => $f['mission']['summary'], 'eyebrow' => 'Tentang kami', 'image' => 'hero-children.jpg', 'alt' => 'Anak-anak tersenyum dan saling merangkul', 'cta_label' => 'Dukung Sekarang', 'cta_href' => route($rp.'donation'), 'chip_a_value' => '2009', 'chip_a_label' => 'Berdiri sejak', 'chip_b_value' => '45+', 'chip_b_label' => 'Provinsi dijangkau'])
 
     <div class="hf-container hf-page">
         <section class="hf-split" id="visi" data-reveal>
@@ -14,7 +14,7 @@
                 <p class="hf-script hf-vision__sign">Bersama, Kita Bisa</p>
             </div>
             <div class="hf-media">
-                <img src="{{ asset($img.'/mission-plant.jpg') }}" width="588" height="501" alt="Dua tangan menopang tunas tanaman muda" loading="lazy">
+                <img src="{{ asset($img.'/mission-plant.jpg') }}" width="627" height="534" alt="Dua tangan menopang tunas tanaman muda" loading="lazy">
             </div>
         </section>
 
@@ -23,7 +23,7 @@
                 <span class="hf-eyebrow">Misi</span>
                 <h2 class="hf-h2">Lima langkah yang kami jalani</h2>
             </header>
-            <ol class="hf-steps hf-steps--grid">
+            <ol class="hf-steps hf-steps--grid" data-stagger>
                 @foreach($f['mission']['missions'] as $m)
                     <li class="hf-card hf-card--pad">
                         <span class="hf-steps__num">{{ $loop->iteration }}</span>
@@ -39,7 +39,7 @@
                 <span class="hf-eyebrow">Nilai</span>
                 <h2 class="hf-h2">Yang membuat kami tetap di jalur</h2>
             </header>
-            <ul class="hf-grid hf-grid--4">
+            <ul class="hf-grid hf-grid--4" data-stagger>
                 @foreach($f['mission']['values'] as $v2)
                     <li class="hf-card hf-card--pad hf-value">
                         <svg class="hf-i hf-value__icon" aria-hidden="true"><use href="#i-heart"/></svg>

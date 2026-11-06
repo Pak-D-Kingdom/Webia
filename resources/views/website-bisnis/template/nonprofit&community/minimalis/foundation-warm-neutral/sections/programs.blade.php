@@ -4,15 +4,15 @@
             <svg class="hf-art" viewBox="0 0 48 48" aria-hidden="true"><use href="#ic-grid"/></svg>
             <h2 class="hf-card__title">{{ $f['programs']['title'] }}</h2>
         </div>
-        <a class="hf-linkmini" href="{{ route($rp.'programs') }}">{{ $f['programs']['link'] }} <svg class="hf-i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        <a class="hf-linkmini" href="{{ route($rp.'programs') }}"><span class="hf-lbl-long">{{ $f['programs']['link'] }}</span><span class="hf-lbl-short">{{ $f['programs']['link_short'] }}</span> <svg class="hf-i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
     </header>
     <p class="hf-card__sub">{{ $f['programs']['subtitle'] }}</p>
     <ul class="hf-programs__grid">
         @foreach($f['programs']['items'] as $p)
             <li>
-                <a class="hf-tile" href="{{ route($rp.'programs') }}#{{ $p['key'] }}">
+                <a class="hf-tile" href="{{ route($rp.'programs') }}#{{ $p['key'] }}" title="{{ $p['short'] }}">
                     <svg class="hf-art hf-art--lg" viewBox="0 0 64 64" aria-hidden="true"><use href="#{{ $p['icon'] }}"/></svg>
-                    <span>{{ $p['short'] }}</span>
+                    <span class="hf-tile__label"><b class="hf-lbl-long">{{ $p['short'] }}</b><b class="hf-lbl-short">{{ $p['tiny'] }}</b></span>
                 </a>
             </li>
         @endforeach

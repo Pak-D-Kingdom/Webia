@@ -26,6 +26,7 @@
     <div class="fh-wrap fh-split fh-split--even">
         <div class="fh-reveal">
             <div class="fh-sec__head fh-sec__head--left">
+                <span class="fh-eyebrow">Keuangan</span>
                 <h2>Alokasi Dana 2025</h2>
                 <p>Sebagian besar donasi disalurkan langsung ke program sosial.</p>
             </div>
@@ -42,6 +43,7 @@
         </div>
         <div class="fh-reveal">
             <div class="fh-sec__head fh-sec__head--left">
+                <span class="fh-eyebrow">Amanah</span>
                 <h2>Prinsip Keuangan Kami</h2>
                 <p>Cara kami menjaga amanah para donatur.</p>
             </div>
@@ -57,9 +59,10 @@
     </div>
 </section>
 
-<section class="fh-sec">
+<section class="fh-sec" id="laporan">
     <div class="fh-wrap">
         <div class="fh-sec__head fh-reveal">
+            <span class="fh-eyebrow">Unduh</span>
             <h2>Laporan Keuangan Tahunan</h2>
             <p>Ringkasan pemasukan dan penyaluran dana, siap diunduh.</p>
         </div>

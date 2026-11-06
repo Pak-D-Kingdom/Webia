@@ -4,11 +4,11 @@
 @section('body_class', 'page-inner page-impact')
 
 @section('content')
-    @include($v.'.partials.page-header', ['crumb' => 'Dampak', 'title' => 'Laporan Dampak Kami', 'lead' => $f['impact']['subtitle']])
+    @include($v.'.partials.page-header', ['crumb' => 'Dampak', 'title' => 'Laporan Dampak Kami', 'lead' => $f['impact']['subtitle'], 'eyebrow' => 'Dampak nyata', 'image' => 'sprout-quote.jpg', 'alt' => 'Tunas hijau tumbuh dari gundukan tanah', 'cta_label' => 'Lihat Transparansi', 'cta_href' => route($rp.'transparency'), 'chip_a_value' => '250K+', 'chip_a_label' => 'Penerima manfaat', 'chip_b_value' => '1.500+', 'chip_b_label' => 'Program terlaksana'])
 
     <div class="hf-container hf-page">
         <section class="hf-section hf-section--tight" data-reveal>
-            <ul class="hf-grid hf-grid--3 hf-bigstats">
+            <ul class="hf-grid hf-grid--3 hf-bigstats" data-stagger>
                 @foreach($f['impact']['stats'] as $s)
                     <li class="hf-card hf-card--pad">
                         <strong class="hf-bigstat"><span data-count="{{ $s['value'] }}">{{ $s['display'] }}</span>{{ $s['suffix'] }}</strong>
@@ -52,7 +52,7 @@
                 </div>
                 <div class="hf-card hf-card--pad">
                     <h2 class="hf-h3">Lebih dari angka</h2>
-                    <ul class="hf-grid hf-grid--3 hf-extra">
+                    <ul class="hf-grid hf-grid--3 hf-extra" data-stagger>
                         @foreach($f['impact']['extra'] as $e)
                             <li><strong>{{ $e['value'] }}</strong><span>{{ $e['label'] }}</span></li>
                         @endforeach
@@ -63,7 +63,7 @@
 
         <section class="hf-section" data-reveal>
             <header class="hf-section__head"><span class="hf-eyebrow">Cerita lapangan</span><h2 class="hf-h2">Perubahan yang terlihat nyata</h2></header>
-            <div class="hf-grid hf-grid--2">
+            <div class="hf-grid hf-grid--2" data-stagger>
                 @foreach($f['impact']['stories'] as $st)
                     <article class="hf-card hf-card--pad hf-story">
                         <svg class="hf-i hf-value__icon" aria-hidden="true"><use href="#i-heart"/></svg>

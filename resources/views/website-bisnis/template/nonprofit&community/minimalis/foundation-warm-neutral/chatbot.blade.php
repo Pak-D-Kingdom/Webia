@@ -4,7 +4,7 @@
 @section('body_class', 'page-inner page-chatbot')
 
 @section('content')
-    @include($v.'.partials.page-header', ['crumb' => 'HopeBot', 'title' => 'Tanya HopeBot', 'lead' => $f['chatbot']['intro']])
+    @include($v.'.partials.page-header', ['crumb' => 'HopeBot', 'title' => 'Tanya HopeBot', 'lead' => $f['chatbot']['intro'], 'eyebrow' => 'Asisten FAQ', 'image' => '', 'alt' => '', 'cta_label' => '', 'cta_href' => '', 'chip_a_value' => '24/7', 'chip_a_label' => 'Siap membantu', 'chip_b_value' => '13', 'chip_b_label' => 'Topik FAQ'])
 
     <div class="hf-container hf-page">
         <section class="hf-split hf-split--chat" data-reveal>

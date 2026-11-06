@@ -13,35 +13,22 @@
                     </li>
                 @endforeach
             </ul>
-            <a class="fh-btn fh-btn--dark fh-menu__donate" href="{{ $url('donasi') }}">
-                <span class="fh-btn__heart">{{ $icon('heart', 'fh-ic fh-ic--gold') }}</span>Donasi Sekarang {{ $icon('arrow') }}
-            </a>
+            <div class="fh-menu__foot">
+                <button class="fh-menu__search" type="button" data-fh-search-toggle>{{ $icon('search') }}<span>Cari di situs ini</span></button>
+                <a class="fh-btn fh-btn--dark fh-menu__donate" href="{{ $url('donasi') }}">
+                    <span class="fh-btn__heart">{{ $icon('heart', 'fh-ic fh-ic--gold') }}</span>Donasi Sekarang {{ $icon('arrow') }}
+                </a>
+            </div>
         </nav>
 
         <div class="fh-nav__actions">
-            <button class="fh-iconbtn" type="button" data-fh-search-toggle aria-expanded="false" aria-controls="fh-search" aria-label="Cari halaman">{{ $icon('search') }}</button>
+            <button class="fh-iconbtn fh-iconbtn--search" type="button" data-fh-search-toggle aria-haspopup="dialog" aria-controls="fh-search" aria-label="Cari di situs (Ctrl+K)" title="Cari (Ctrl+K)">{{ $icon('search') }}</button>
             <a class="fh-btn fh-btn--dark fh-nav__donate" href="{{ $url('donasi') }}">
                 <span class="fh-btn__heart">{{ $icon('heart', 'fh-ic fh-ic--gold') }}</span>Donasi Sekarang {{ $icon('arrow') }}
             </a>
             <button class="fh-burger" type="button" data-fh-menu-toggle aria-expanded="false" aria-controls="fh-menu" aria-label="Buka menu">
                 <span class="fh-burger__open">{{ $icon('menu') }}</span><span class="fh-burger__close">{{ $icon('close') }}</span>
             </button>
-        </div>
-    </div>
-
-    <div class="fh-search" id="fh-search" hidden>
-        <div class="fh-wrap">
-            <label class="fh-sr" for="fh-search-input">Cari halaman</label>
-            <div class="fh-search__box">
-                {{ $icon('search') }}
-                <input id="fh-search-input" type="search" placeholder="Cari halaman, mis. donasi, relawan, program" autocomplete="off" data-fh-search-input>
-            </div>
-            <ul class="fh-search__list" data-fh-search-list>
-                @foreach ($cfg['search_index'] as $s)
-                    <li data-text="{{ \Illuminate\Support\Str::lower($s['label'].' '.$s['hint']) }}"><a href="{{ $url($s['slug']) }}">{{ $s['label'] }}{{ $icon('arrow') }}</a></li>
-                @endforeach
-            </ul>
-            <p class="fh-search__empty" data-fh-search-empty hidden>Halaman tidak ditemukan. Coba kata kunci lain.</p>
         </div>
     </div>
 </header>

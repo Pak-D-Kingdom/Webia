@@ -4,11 +4,11 @@
 @section('body_class', 'page-inner page-partners')
 
 @section('content')
-    @include($v.'.partials.page-header', ['crumb' => 'Mitra', 'title' => 'Mitra & Sponsor', 'lead' => $f['partners']['subtitle']])
+    @include($v.'.partials.page-header', ['crumb' => 'Mitra', 'title' => 'Mitra & Sponsor', 'lead' => $f['partners']['subtitle'], 'eyebrow' => 'Bergerak bersama', 'image' => 'volunteer-page.jpg', 'alt' => 'Tangan-tangan bertumpuk menandakan kemitraan', 'cta_label' => 'Jadi Mitra', 'cta_href' => route($rp.'donation'), 'chip_a_value' => '120+', 'chip_a_label' => 'Mitra & sponsor', 'chip_b_value' => '5', 'chip_b_label' => 'Mitra utama'])
 
     <div class="hf-container hf-page">
         <section class="hf-section hf-section--tight" data-reveal>
-            <ul class="hf-grid hf-grid--3 hf-partnerlist">
+            <ul class="hf-grid hf-grid--3 hf-partnerlist" data-stagger>
                 @foreach($f['partners']['items'] as $p)
                     <li class="hf-card hf-card--pad hf-partner" id="{{ $p['key'] }}">
                         <div class="hf-logo-tile hf-logo-tile--lg"><svg viewBox="0 0 120 40" role="img" aria-label="{{ $p['name'] }}"><use href="#logo-{{ $p['key'] }}"/></svg></div>
@@ -22,7 +22,7 @@
 
         <section class="hf-section" data-reveal>
             <header class="hf-section__head"><span class="hf-eyebrow">Bermitra dengan kami</span><h2 class="hf-h2">Cara terlibat sebagai mitra</h2></header>
-            <ul class="hf-grid hf-grid--3">
+            <ul class="hf-grid hf-grid--3" data-stagger>
                 @foreach($f['partners']['ways'] as $w)
                     <li class="hf-card hf-card--pad hf-value"><svg class="hf-i hf-value__icon" aria-hidden="true"><use href="#i-heart"/></svg><h3 class="hf-h3">{{ $w['title'] }}</h3><p>{{ $w['text'] }}</p></li>
                 @endforeach

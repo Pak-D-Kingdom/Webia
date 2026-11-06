@@ -54,6 +54,10 @@
                                 <label for="don-pesan">Pesan atau doa (opsional)</label>
                                 <textarea id="don-pesan" name="pesan" rows="3" maxlength="300" data-label="Pesan"></textarea>
                             </div>
+                            <div class="fh-summary" aria-live="polite">
+                                <span>Total donasi Anda</span>
+                                <strong data-fh-summary>{{ $money($cfg['donation']['amounts'][1]) }}</strong>
+                            </div>
                             <button class="fh-btn fh-btn--dark" type="submit">{{ $icon('whatsapp') }}Lanjut ke WhatsApp</button>
                         </form>
                     </div>
@@ -180,6 +184,7 @@
 <section class="fh-sec fh-sec--soft">
     <div class="fh-wrap">
         <div class="fh-sec__head fh-reveal">
+            <span class="fh-eyebrow">Langkah</span>
             <h2>Cara Berdonasi</h2>
             <p>Tiga langkah sederhana, dari memilih hingga menerima bukti donasi.</p>
         </div>

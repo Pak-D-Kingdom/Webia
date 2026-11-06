@@ -1,3 +1,7 @@
+@php
+    $rn = 'agribisnis-classic-trust.';
+    $curKey = str_replace($rn, '', request()->route()->getName());
+@endphp
 <div class="topbar" id="topbar">
     <div class="container topbar__in">
         <ul class="topbar__list">
@@ -44,14 +48,36 @@
         <nav class="menu" id="mainMenu" aria-label="Menu utama">
             <ul class="menu__list">
                 @foreach ($agro['nav'] as $item)
-                    <li>
-                        <a href="{{ route('agribisnis-classic-trust.' . $item['route']) }}"
-                           class="menu__link {{ request()->routeIs('agribisnis-classic-trust.' . $item['route']) ? 'is-active' : '' }}"
-                           @if (request()->routeIs('agribisnis-classic-trust.' . $item['route'])) aria-current="page" @endif>{{ $item['label'] }}</a>
-                    </li>
+                    @if (isset($item['children']))
+                        <li class="menu__item has-sub {{ in_array($curKey, $item['keys']) ? 'is-active' : '' }}" data-sub>
+                            <button type="button" class="menu__link menu__link--btn {{ in_array($curKey, $item['keys']) ? 'is-active' : '' }}" aria-haspopup="true" aria-expanded="false" aria-controls="sub-{{ $loop->index }}">
+                                {{ $item['label'] }}
+                                <svg class="i i--sm menu__caret" aria-hidden="true"><use href="#i-chev"/></svg>
+                            </button>
+                            <div class="submenu" id="sub-{{ $loop->index }}">
+                                <ul class="submenu__list">
+                                    @foreach ($item['children'] as $ch)
+                                        <li>
+                                            <a class="submenu__link {{ $curKey === $ch['route'] ? 'is-active' : '' }}" href="{{ route($rn . $ch['route']) }}"
+                                               @if ($curKey === $ch['route']) aria-current="page" @endif>
+                                                <span class="submenu__ico"><svg class="i" aria-hidden="true"><use href="#i-{{ $ch['icon'] }}"/></svg></span>
+                                                <span class="submenu__txt"><b>{{ $ch['title'] }}</b><small>{{ $ch['desc'] }}</small></span>
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </li>
+                    @else
+                        <li class="menu__item">
+                            <a href="{{ route($rn . $item['route']) }}"
+                               class="menu__link {{ $curKey === $item['route'] ? 'is-active' : '' }}"
+                               @if ($curKey === $item['route']) aria-current="page" @endif>{{ $item['label'] }}</a>
+                        </li>
+                    @endif
                 @endforeach
             </ul>
-            <a class="btn btn--amber btn--block menu__cta-mobile" href="{{ route('agribisnis-classic-trust.b2b') }}">
+            <a class="btn btn--amber btn--block menu__cta-mobile" href="{{ route($rn . 'b2b') }}">
                 Hubungi Kami <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg>
             </a>
         </nav>

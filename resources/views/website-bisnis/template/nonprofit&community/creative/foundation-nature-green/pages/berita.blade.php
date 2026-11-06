@@ -3,15 +3,21 @@
 
 <section class="fh-sec">
     <div class="fh-wrap">
-        <div class="fh-filters" role="group" aria-label="Saring berita dan acara" data-fh-filters>
-            <button type="button" class="is-active" data-fh-filter="all" aria-pressed="true">Semua</button>
-            <button type="button" data-fh-filter="Berita" aria-pressed="false">Berita</button>
-            <button type="button" data-fh-filter="Acara" aria-pressed="false">Acara</button>
+        <div class="fh-newsbar">
+            <div class="fh-filters" role="group" aria-label="Saring berita dan acara" data-fh-filters>
+                <button type="button" class="is-active" data-fh-filter="all" aria-pressed="true">Semua</button>
+                <button type="button" data-fh-filter="Berita" aria-pressed="false">Berita</button>
+                <button type="button" data-fh-filter="Acara" aria-pressed="false">Acara</button>
+            </div>
+            <div class="fh-searchfield">
+                {{ $icon('search') }}
+                <input type="search" placeholder="Cari berita atau acara…" autocomplete="off" aria-label="Cari berita atau acara" data-fh-news-search>
+            </div>
         </div>
 
         <ul class="fh-newsgrid">
             @foreach ($cfg['news']['items'] as $n)
-                <li id="{{ $n['id'] }}" data-fh-type="{{ $n['type'] }}">
+                <li id="{{ $n['id'] }}" data-fh-type="{{ $n['type'] }}" data-fh-text="{{ \Illuminate\Support\Str::lower($n['title'].' '.$n['excerpt']) }}">
                     <article class="fh-newscard fh-reveal">
                         <div class="fh-newscard__img">
                             <img src="{{ $img($n['image']) }}" alt="{{ $n['title'] }}" width="528" height="300" loading="lazy">
@@ -27,7 +33,7 @@
                 </li>
             @endforeach
         </ul>
-        <p class="fh-note" data-fh-filter-empty hidden>Belum ada item untuk kategori ini.</p>
+        <p class="fh-note" data-fh-filter-empty hidden>Tidak ada berita atau acara yang cocok. Coba kata kunci atau kategori lain.</p>
     </div>
 </section>
 

@@ -718,6 +718,24 @@ class WebiaTemplateNabiilaSeeder extends Seeder
                 'is_active' => true,
                 'sort_order' => 59,
             ],
+            [
+                'name' => 'Eventora — Wedding & Event Organizer Bold Sunset Gradient',
+                'slug' => 'wedding-event-organizer-sunset-gradient',
+                'category_slug' => 'wedding-event',
+                'category_label' => 'Wedding & Event',
+                'business_types' => ['Event Organizer & Planner'],
+                'design_style' => 'Bold',
+                'color_theme' => 'Sunset Gradient',
+                'description' => 'Website event organizer bold dengan warna sunset gradient, layanan event, portofolio, paket corporate & private event, proyek terdahulu, klien, proses perencanaan event, permintaan penawaran, WhatsApp, dan asisten AI FAQ layanan event.',
+                'preview_style' => 'preview-glow',
+                'eyebrow' => 'CREATE • PLAN • CELEBRATE',
+                'headline' => 'Your Perfect Event,<br>Our Expertise.',
+                'tag' => 'Wedding & Event · Event Organizer · Bold',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/wedding-event/bold/event-organizer-sunset-gradient',
+                'is_active' => true,
+                'sort_order' => 60,
+            ],
         ];
 
         foreach ($templates as $template) {

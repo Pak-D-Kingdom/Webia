@@ -27,6 +27,7 @@
 <section class="fh-sec fh-sec--soft">
     <div class="fh-wrap fh-wrap--narrow">
         <div class="fh-sec__head fh-reveal">
+            <span class="fh-eyebrow">FAQ</span>
             <h2>Pertanyaan yang Sering Diajukan</h2>
             <p>Klik pertanyaan untuk membaca jawabannya.</p>
         </div>

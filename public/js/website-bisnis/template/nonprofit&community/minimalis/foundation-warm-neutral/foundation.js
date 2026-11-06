@@ -1,7 +1,8 @@
 /* =========================================================================
    HopeTogether Foundation - Nonprofit & Community (Minimalist / Warm Neutral)
    foundation.js  |  Vanilla JS, tanpa dependensi. Semua modul aman jika elemennya tidak ada.
-   Modul: nav, search, reveal, counter, donut, toast, form->WhatsApp, donasi, filter berita, chatbot
+   Modul: toast, nav, search, dropdown, scroll (progress/parallax), reveal, counter, donut,
+          filter berita, form->WhatsApp, donasi, chatbot HopeBot
    ========================================================================= */
 (function () {
     'use strict';
@@ -21,10 +22,13 @@
             .replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
     }
     function formatID(n) { return Number(n).toLocaleString('id-ID'); }
+    function escapeHTML(t) {
+        return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+    function escRe(t) { return t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
 
     var routes = readJSON('hf-routes', {});
     var chatData = readJSON('hf-chat-data', null);
-    var navData = readJSON('hf-nav-data', []);
 
     /* ---------- Toast ---------- */
     var toastEl = $('#hf-toast');
@@ -56,9 +60,9 @@
         burger.setAttribute('aria-label', open ? 'Tutup menu' : 'Buka menu');
     }
     if (nav) {
-        var onScroll = function () { nav.classList.toggle('is-scrolled', window.scrollY > 8); };
-        onScroll();
-        window.addEventListener('scroll', onScroll, { passive: true });
+        var onNavScroll = function () { nav.classList.toggle('is-scrolled', window.scrollY > 8); };
+        onNavScroll();
+        window.addEventListener('scroll', onNavScroll, { passive: true });
     }
     if (burger) {
         burger.addEventListener('click', function () { setMenu(!nav.classList.contains('is-menu-open')); });
@@ -66,56 +70,307 @@
         window.addEventListener('resize', function () { if (window.innerWidth >= 1200) { setMenu(false); } });
     }
 
-    /* ---------- Search ---------- */
+    /* ---------- Search (command palette) ---------- */
     var searchBox = $('#hf-search');
     var searchInput = $('#hf-search-input');
     var searchList = $('#hf-search-list');
-    var searchPages = [];
-    (navData || []).forEach(function (item) { searchPages.push({ label: item.label, route: item.route, kw: '' }); });
-    searchPages.push({ label: 'Donasi', route: 'donation', kw: 'donasi sumbang berdonasi rutin barang' });
-    searchPages.push({ label: 'HopeBot - FAQ Program & Donasi', route: 'chatbot', kw: 'chatbot bot tanya faq bantuan' });
-    searchPages.push({ label: 'Laporan Keuangan', route: 'transparency', kw: 'laporan keuangan audit dana' });
-    searchPages.push({ label: 'Misi & Visi', route: 'mission-vision', kw: 'visi misi nilai tentang' });
-
+    var searchLabel = $('#hf-search-label');
+    var searchOpener = null;
+    var searchActive = -1;
+    var searchPages = [
+        { label: 'Beranda', desc: 'Ringkasan program, dampak, donasi, dan kabar terbaru', route: 'home', icon: 'ic-grid', kw: 'home utama awal' },
+        { label: 'Misi & Visi', desc: 'Tujuan, nilai, dan langkah yang kami jalani', route: 'mission-vision', icon: 'ic-target', kw: 'tentang kami visi misi nilai yayasan' },
+        { label: 'Program Kami', desc: 'Pendidikan, kesehatan, ekonomi, dan lingkungan', route: 'programs', icon: 'ic-grid', kw: 'program pendidikan kesehatan ekonomi lingkungan beasiswa' },
+        { label: 'Laporan Dampak', desc: 'Penerima manfaat, sebaran provinsi, dan cerita lapangan', route: 'impact', icon: 'ic-chart', kw: 'dampak penerima manfaat provinsi peta statistik' },
+        { label: 'Pilihan Donasi', desc: 'Donasi satu kali, rutin, barang, atau untuk program', route: 'donation', icon: 'ic-gift', kw: 'donasi berdonasi sumbang rutin barang bayar' },
+        { label: 'Transparansi Keuangan', desc: 'Alokasi dana, laporan tahunan, dan audit independen', route: 'transparency', icon: 'ic-doc', kw: 'laporan keuangan audit dana transparansi unduh' },
+        { label: 'Mitra & Sponsor', desc: 'Perusahaan dan komunitas yang bergerak bersama kami', route: 'partners', icon: 'ic-handshake', kw: 'mitra sponsor csr kerja sama bca mandiri bni unilever pertamina' },
+        { label: 'Daftar Relawan', desc: 'Formulir pendaftaran dan manfaat menjadi relawan', route: 'volunteer', icon: 'ic-people', kw: 'relawan volunteer daftar bergabung' },
+        { label: 'Berita & Acara', desc: 'Kabar terbaru dan agenda kegiatan mendatang', route: 'news', icon: 'ic-calendar-art', kw: 'berita acara agenda kegiatan event' },
+        { label: 'Tanya HopeBot', desc: 'Asisten FAQ untuk program dan donasi', route: 'chatbot', icon: 'i-chat', line: true, kw: 'chatbot bot tanya faq bantuan' }
+    ];
+    function highlight(text, tokens) {
+        var out = escapeHTML(text);
+        tokens.forEach(function (t) {
+            if (!t) { return; }
+            out = out.replace(new RegExp('(' + escRe(escapeHTML(t)) + ')', 'ig'), '<mark>$1</mark>');
+        });
+        return out;
+    }
+    function setSearchActive(i, scroll) {
+        var items = $$('.hf-search__item', searchList);
+        if (!items.length) { searchActive = -1; return; }
+        searchActive = (i + items.length) % items.length;
+        items.forEach(function (el, idx) {
+            var on = idx === searchActive;
+            el.classList.toggle('is-active', on);
+            el.parentNode.setAttribute('aria-selected', on ? 'true' : 'false');
+            if (on && searchInput) { searchInput.setAttribute('aria-activedescendant', el.parentNode.id); }
+            if (on && scroll && el.scrollIntoView) { el.scrollIntoView({ block: 'nearest' }); }
+        });
+    }
     function renderSearch(q) {
         if (!searchList) { return; }
         var nq = norm(q);
-        var seen = {};
+        var tokens = nq ? nq.split(' ') : [];
+        var found = [];
+        searchPages.forEach(function (p) {
+            if (!routes[p.route]) { return; }
+            var hay = norm(p.label + ' ' + p.desc + ' ' + p.kw);
+            var lab = norm(p.label);
+            var score = 0, ok = true;
+            tokens.forEach(function (t) {
+                if (hay.indexOf(t) === -1) { ok = false; return; }
+                if (lab.indexOf(t) === 0) { score += 6; } else if (lab.indexOf(t) !== -1) { score += 4; }
+                if (norm(p.kw).indexOf(t) !== -1) { score += 3; }
+                score += 1;
+            });
+            if (ok) { found.push({ p: p, score: score }); }
+        });
+        if (tokens.length) { found.sort(function (a, b) { return b.score - a.score; }); }
+        if (searchLabel) { searchLabel.textContent = tokens.length ? (found.length + ' hasil untuk "' + q.trim() + '"') : 'Halaman populer'; }
+        if (!found.length) {
+            searchList.innerHTML = '<li class="hf-search__empty" role="presentation"><span>Tidak ada halaman yang cocok dengan "' + escapeHTML(q.trim()) + '".</span><a href="' + (routes.chatbot || '#') + '">Tanya HopeBot &rarr;</a></li>';
+            searchActive = -1;
+            return;
+        }
         var html = '';
-        searchPages.forEach(function (p) {
-            var key = p.label;
-            if (seen[key] || !routes[p.route]) { return; }
-            if (nq && norm(p.label + ' ' + p.kw).indexOf(nq) === -1) { return; }
-            seen[key] = true;
-            html += '<li><a href="' + routes[p.route] + '"><span></span><b aria-hidden="true">&rarr;</b></a></li>';
+        found.forEach(function (f, i) {
+            var p = f.p;
+            var icon = p.line
+                ? '<svg class="hf-i" viewBox="0 0 24 24" aria-hidden="true"><use href="#' + p.icon + '"/></svg>'
+                : '<svg viewBox="0 0 48 48" aria-hidden="true"><use href="#' + p.icon + '"/></svg>';
+            html += '<li role="option" id="hf-sr-' + i + '" aria-selected="false"><a class="hf-search__item" href="' + routes[p.route] + '">' +
+                '<span class="hf-search__icon">' + icon + '</span>' +
+                '<span class="hf-search__txt"><strong>' + highlight(p.label, tokens) + '</strong><span>' + escapeHTML(p.desc) + '</span></span>' +
+                '<svg class="hf-i" aria-hidden="true"><use href="#i-arrow"/></svg></a></li>';
         });
-        searchList.innerHTML = html || '<li class="hf-search__empty">Halaman tidak ditemukan. Coba kata lain, misalnya "donasi".</li>';
-        // isi label via textContent agar aman
-        var labels = [];
-        searchPages.forEach(function (p) {
-            if (labels.indexOf(p.label) !== -1 || !routes[p.route]) { return; }
-            if (nq && norm(p.label + ' ' + p.kw).indexOf(nq) === -1) { return; }
-            labels.push(p.label);
-        });
-        $$('a > span', searchList).forEach(function (s, i) { s.textContent = labels[i]; });
+        searchList.innerHTML = html;
+        setSearchActive(0, false);
     }
-    function openSearch() {
+    function openSearch(opener) {
         if (!searchBox) { return; }
+        searchOpener = opener || doc.activeElement;
+        if (searchInput) { searchInput.value = ''; }
         renderSearch('');
         searchBox.hidden = false;
-        setTimeout(function () { if (searchInput) { searchInput.value = ''; searchInput.focus(); } }, 30);
+        doc.body.style.overflow = 'hidden';
+        setTimeout(function () { if (searchInput) { searchInput.focus(); } }, 40);
     }
-    function closeSearch() { if (searchBox) { searchBox.hidden = true; } }
-    $$('[data-search-open]').forEach(function (b) { b.addEventListener('click', openSearch); });
+    function closeSearch() {
+        if (!searchBox || searchBox.hidden) { return; }
+        searchBox.hidden = true;
+        doc.body.style.overflow = '';
+        if (searchOpener && searchOpener.focus) { try { searchOpener.focus(); } catch (e) { /* abaikan */ } }
+    }
+    $$('[data-search-open]').forEach(function (b) { b.addEventListener('click', function () { openSearch(b); }); });
     $$('[data-search-close]').forEach(function (b) { b.addEventListener('click', closeSearch); });
-    if (searchInput) { searchInput.addEventListener('input', function () { renderSearch(searchInput.value); }); }
+    $$('[data-search-tag]').forEach(function (b) {
+        b.addEventListener('click', function () {
+            if (!searchInput) { return; }
+            searchInput.value = b.getAttribute('data-search-tag');
+            renderSearch(searchInput.value);
+            searchInput.focus();
+        });
+    });
+    if (searchInput) {
+        searchInput.addEventListener('input', function () { renderSearch(searchInput.value); });
+        searchInput.addEventListener('keydown', function (e) {
+            if (e.key === 'ArrowDown') { e.preventDefault(); setSearchActive(searchActive + 1, true); }
+            else if (e.key === 'ArrowUp') { e.preventDefault(); setSearchActive(searchActive - 1, true); }
+            else if (e.key === 'Home') { e.preventDefault(); setSearchActive(0, true); }
+            else if (e.key === 'End') { e.preventDefault(); setSearchActive(-1, true); }
+            else if (e.key === 'Enter') {
+                var items = $$('.hf-search__item', searchList);
+                var target = items[searchActive];
+                if (!target) { target = $('.hf-search__empty a', searchList); }
+                if (target) { e.preventDefault(); window.location.href = target.getAttribute('href'); }
+            }
+        });
+    }
+    if (searchList) {
+        searchList.addEventListener('mousemove', function (e) {
+            var li = e.target.closest ? e.target.closest('li[role="option"]') : null;
+            if (!li) { return; }
+            var idx = $$('li[role="option"]', searchList).indexOf(li);
+            if (idx !== searchActive) { setSearchActive(idx, false); }
+        });
+    }
+    doc.addEventListener('keydown', function (e) {
+        if (e.key !== '/' || e.ctrlKey || e.metaKey || e.altKey) { return; }
+        var t = e.target;
+        var tag = t && t.tagName ? t.tagName.toLowerCase() : '';
+        if (tag === 'input' || tag === 'textarea' || tag === 'select' || (t && t.isContentEditable)) { return; }
+        if (searchBox && searchBox.hidden) { e.preventDefault(); openSearch(null); }
+    });
+
+    /* ---------- Dropdown kustom (select.hf-select) ---------- */
+    function enhanceSelect(sel) {
+        if (sel.getAttribute('data-enhanced')) { return; }
+        sel.setAttribute('data-enhanced', '1');
+        var wrap = doc.createElement('div');
+        wrap.className = 'hf-dd';
+        sel.parentNode.insertBefore(wrap, sel);
+        wrap.appendChild(sel);
+        sel.classList.add('hf-dd__native');
+        sel.setAttribute('tabindex', '-1');
+        sel.setAttribute('aria-hidden', 'true');
+
+        var uid = sel.id || ('dd' + Math.floor(Math.random() * 100000));
+        var btn = doc.createElement('button');
+        btn.type = 'button';
+        btn.className = 'hf-dd__btn';
+        btn.id = uid + '-btn';
+        btn.setAttribute('aria-haspopup', 'listbox');
+        btn.setAttribute('aria-expanded', 'false');
+        btn.innerHTML = '<span class="hf-dd__value"></span><svg class="hf-i hf-dd__chev" aria-hidden="true"><use href="#i-chevron"/></svg>';
+        var list = doc.createElement('ul');
+        list.className = 'hf-dd__list';
+        list.setAttribute('role', 'listbox');
+        list.id = uid + '-list';
+        list.setAttribute('tabindex', '-1');
+        btn.setAttribute('aria-controls', list.id);
+        wrap.appendChild(btn);
+        wrap.appendChild(list);
+
+        var label = sel.id ? doc.querySelector('label[for="' + sel.id + '"]') : null;
+        if (label) { label.setAttribute('for', btn.id); }
+
+        var valueEl = $('.hf-dd__value', btn);
+        var opts = [];
+        var active = 0;
+
+        Array.prototype.forEach.call(sel.options, function (o, i) {
+            var li = doc.createElement('li');
+            li.className = 'hf-dd__opt';
+            li.setAttribute('role', 'option');
+            li.id = uid + '-opt-' + i;
+            li.innerHTML = '<span></span><svg class="hf-i" aria-hidden="true"><use href="#i-check"/></svg>';
+            $('span', li).textContent = o.text.trim();
+            li.addEventListener('mousedown', function (e) { e.preventDefault(); });
+            li.addEventListener('click', function () { choose(i); });
+            li.addEventListener('mousemove', function () { setActive(i); });
+            list.appendChild(li);
+            opts.push(li);
+        });
+
+        function sync() {
+            var idx = sel.selectedIndex < 0 ? 0 : sel.selectedIndex;
+            valueEl.textContent = sel.options[idx] ? sel.options[idx].text.trim() : '';
+            opts.forEach(function (li, i) {
+                li.classList.toggle('is-selected', i === idx);
+                li.setAttribute('aria-selected', i === idx ? 'true' : 'false');
+            });
+            active = idx;
+        }
+        function setActive(i) {
+            active = Math.max(0, Math.min(opts.length - 1, i));
+            opts.forEach(function (li, k) { li.classList.toggle('is-active', k === active); });
+            btn.setAttribute('aria-activedescendant', opts[active].id);
+            if (opts[active].scrollIntoView) { opts[active].scrollIntoView({ block: 'nearest' }); }
+        }
+        function isOpen() { return wrap.classList.contains('is-open'); }
+        function open() {
+            if (isOpen()) { return; }
+            $$('.hf-dd.is-open').forEach(function (d) { d.classList.remove('is-open'); });
+            var r = btn.getBoundingClientRect();
+            var need = Math.min(280, opts.length * 44 + 20);
+            wrap.classList.toggle('is-up', window.innerHeight - r.bottom < need && r.top > need);
+            wrap.classList.add('is-open');
+            btn.setAttribute('aria-expanded', 'true');
+            setActive(sel.selectedIndex < 0 ? 0 : sel.selectedIndex);
+        }
+        function close(focusBtn) {
+            wrap.classList.remove('is-open');
+            btn.setAttribute('aria-expanded', 'false');
+            btn.removeAttribute('aria-activedescendant');
+            if (focusBtn) { btn.focus(); }
+        }
+        function choose(i) {
+            sel.selectedIndex = i;
+            sel.dispatchEvent(new Event('change', { bubbles: true }));
+            sync();
+            close(true);
+        }
+        btn.addEventListener('click', function () { if (isOpen()) { close(false); } else { open(); } });
+        btn.addEventListener('keydown', function (e) {
+            var k = e.key;
+            if (k === 'ArrowDown' || k === 'ArrowUp') {
+                e.preventDefault();
+                if (!isOpen()) { open(); } else { setActive(active + (k === 'ArrowDown' ? 1 : -1)); }
+            } else if (k === 'Enter' || k === ' ') {
+                e.preventDefault();
+                if (isOpen()) { choose(active); } else { open(); }
+            } else if (k === 'Escape') {
+                if (isOpen()) { e.preventDefault(); e.stopPropagation(); close(false); }
+            } else if (k === 'Tab') {
+                if (isOpen()) { close(false); }
+            } else if (k === 'Home' && isOpen()) { e.preventDefault(); setActive(0); }
+            else if (k === 'End' && isOpen()) { e.preventDefault(); setActive(opts.length - 1); }
+            else if (k.length === 1 && /\S/.test(k)) {
+                var ch = k.toLowerCase();
+                for (var n = 1; n <= opts.length; n++) {
+                    var idx = (active + n) % opts.length;
+                    if (opts[idx].textContent.trim().toLowerCase().indexOf(ch) === 0) { if (!isOpen()) { open(); } setActive(idx); break; }
+                }
+            }
+        });
+        doc.addEventListener('click', function (e) { if (isOpen() && !wrap.contains(e.target)) { close(false); } });
+        sel.addEventListener('change', sync);
+        sel._hfSync = sync;
+        sync();
+    }
+    $$('select.hf-select').forEach(enhanceSelect);
+
+    /* ---------- Progress scroll, parallax, penghitung karakter ---------- */
+    var progressBar = $('[data-scroll-progress]');
+    var parallaxEls = $$('[data-parallax]');
+    var ticking = false;
+    function onFrame() {
+        ticking = false;
+        var h = doc.documentElement;
+        var max = h.scrollHeight - h.clientHeight;
+        if (progressBar) { progressBar.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, h.scrollTop / max) : 0) + ')'; }
+        if (!reduceMotion) {
+            parallaxEls.forEach(function (el) {
+                var img = $('img', el);
+                if (!img) { return; }
+                var r = el.getBoundingClientRect();
+                if (r.bottom < 0 || r.top > window.innerHeight) { return; }
+                var shift = Math.max(-22, Math.min(22, -(r.top + r.height / 2 - window.innerHeight / 2) * 0.06));
+                img.style.transform = 'translateY(' + shift.toFixed(1) + 'px) scale(1.1)';
+            });
+        }
+    }
+    function requestFrame() { if (!ticking) { ticking = true; requestAnimationFrame(onFrame); } }
+    window.addEventListener('scroll', requestFrame, { passive: true });
+    window.addEventListener('resize', requestFrame);
+    onFrame();
+    $$('[data-count-target]').forEach(function (ta) {
+        var out = doc.getElementById(ta.getAttribute('data-count-target'));
+        var max = ta.getAttribute('maxlength') || '300';
+        var upd = function () { if (out) { out.textContent = ta.value.length + '/' + max; } };
+        ta.addEventListener('input', upd);
+        upd();
+    });
 
     /* ---------- Reveal on scroll ---------- */
+    $$('[data-stagger]').forEach(function (c) {
+        Array.prototype.forEach.call(c.children, function (ch, i) {
+            ch.setAttribute('data-reveal', '');
+            ch.style.setProperty('--i', String(i % 6));
+        });
+    });
     var revealEls = $$('[data-reveal]');
+    function revealDone(el) {
+        el.classList.add('is-in');
+        // setelah animasi selesai, lepas atribut agar hover/transisi bawaan komponen tidak terganggu
+        setTimeout(function () { el.removeAttribute('data-reveal'); el.style.removeProperty('--i'); }, 1600);
+    }
     if ('IntersectionObserver' in window && !reduceMotion) {
         var io = new IntersectionObserver(function (entries) {
             entries.forEach(function (en) {
-                if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); }
+                if (en.isIntersecting) { revealDone(en.target); io.unobserve(en.target); }
             });
         }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
         revealEls.forEach(function (el) { io.observe(el); });
@@ -211,6 +466,7 @@
         $$('option', sel).forEach(function (o) { if (o.value === key) { found = true; } });
         if (!found) { return; }
         sel.value = key;
+        if (sel._hfSync) { sel._hfSync(); }
         $$('.hf-donoption').forEach(function (c) { c.classList.toggle('is-selected', c.id === key); });
         syncAmountField();
         if (scroll) {
@@ -285,8 +541,6 @@
     });
 
     /* ---------- Chatbot HopeBot ---------- */
-    function escapeText(t) { var d = doc.createElement('div'); d.textContent = t; return d.innerHTML; }
-
     function findAnswer(q) {
         if (!chatData || !chatData.faq) { return null; }
         var nq = norm(q);
@@ -302,6 +556,17 @@
             if (s > bestScore) { bestScore = s; best = item; }
         });
         return bestScore >= 2 ? best : null;
+    }
+
+    function waNumber() {
+        var f = $('[data-wa]');
+        if (f) { return f.getAttribute('data-wa'); }
+        var link = $('.hf-fab--wa');
+        if (link) {
+            var m = (link.getAttribute('href') || '').match(/wa\.me\/(\d+)/);
+            if (m) { return m[1]; }
+        }
+        return '';
     }
 
     function ChatView(root) {
@@ -323,23 +588,23 @@
         function botReply(item) {
             var html;
             if (item) {
-                html = '<span>' + escapeText(item.a) + '</span>';
+                html = '<span>' + escapeHTML(item.a) + '</span>';
                 var url = item.link ? routes[item.link] : '';
-                if (url) { html += '<br><a class="hf-msg__link" href="' + url + '">' + escapeText(item.link_label || 'Buka halaman') + ' &rarr;</a>'; }
+                if (url) { html += '<br><a class="hf-msg__link" href="' + url + '">' + escapeHTML(item.link_label || 'Buka halaman') + ' &rarr;</a>'; }
             } else {
-                html = '<span>' + escapeText(chatData.fallback) + '</span>';
+                html = '<span>' + escapeHTML(chatData.fallback) + '</span>';
             }
             return html;
         }
         function waLinkHTML() {
-            return '<br><a class="hf-msg__link" target="_blank" rel="noopener" href="https://wa.me/' + (waNumber()) + '">Chat WhatsApp &rarr;</a>';
+            return '<br><a class="hf-msg__link" target="_blank" rel="noopener" href="https://wa.me/' + waNumber() + '">Chat WhatsApp &rarr;</a>';
         }
         function ask(text) {
             text = String(text || '').trim();
             if (!text || busy || !chatData || !log) { return; }
             greet();
             busy = true;
-            add('user', escapeText(text));
+            add('user', escapeHTML(text));
             var typing = add('bot', '<i></i><i></i><i></i>');
             typing.classList.add('hf-msg--typing');
             var nq = norm(text);
@@ -362,7 +627,7 @@
         function greet() {
             if (greeted || !chatData || !log) { return; }
             greeted = true;
-            add('bot', '<strong>' + escapeText(chatData.greeting) + '</strong><br><span>' + escapeText(chatData.intro) + '</span>');
+            add('bot', '<strong>' + escapeHTML(chatData.greeting) + '</strong><br><span>' + escapeHTML(chatData.intro) + '</span>');
         }
         if (form && input) {
             form.addEventListener('submit', function (e) {
@@ -373,17 +638,6 @@
             });
         }
         return { ask: ask, greet: greet, focus: function () { if (input) { input.focus(); } } };
-    }
-
-    function waNumber() {
-        var f = $('[data-wa]');
-        if (f) { return f.getAttribute('data-wa'); }
-        var link = $('.hf-fab--wa');
-        if (link) {
-            var m = (link.getAttribute('href') || '').match(/wa\.me\/(\d+)/);
-            if (m) { return m[1]; }
-        }
-        return '';
     }
 
     var panel = $('#hf-chat');

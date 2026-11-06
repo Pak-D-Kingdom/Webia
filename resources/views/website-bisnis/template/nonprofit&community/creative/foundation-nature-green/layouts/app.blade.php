@@ -58,6 +58,7 @@
     </main>
 
     @include($v('partials.footer'))
+    @include($v('partials.search'))
     @include($v('partials.floating'))
 
     <script src="{{ asset($cfg['assets']['js']) }}" defer></script>

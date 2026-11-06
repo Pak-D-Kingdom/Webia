@@ -4,11 +4,11 @@
 @section('body_class', 'page-inner page-transparency')
 
 @section('content')
-    @include($v.'.partials.page-header', ['crumb' => 'Transparansi', 'title' => 'Laporan Transparansi Keuangan', 'lead' => $f['transparency']['summary']])
+    @include($v.'.partials.page-header', ['crumb' => 'Transparansi', 'title' => 'Laporan Transparansi Keuangan', 'lead' => $f['transparency']['summary'], 'eyebrow' => 'Terbuka dan akuntabel', 'image' => 'report-illustration.jpg', 'alt' => 'Buku laporan keuangan dengan grafik dan kaca pembesar', 'cta_label' => 'Lihat Dokumen', 'cta_href' => '#laporan', 'chip_a_value' => 'Diaudit', 'chip_a_label' => 'Setiap tahun', 'chip_b_value' => '82%', 'chip_b_label' => 'Untuk penerima manfaat'])
 
     <div class="hf-container hf-page">
         <section class="hf-section hf-section--tight" data-reveal>
-            <ul class="hf-grid hf-grid--3 hf-bigstats">
+            <ul class="hf-grid hf-grid--3 hf-bigstats" data-stagger>
                 @foreach($f['transparency']['totals'] as $t)
                     <li class="hf-card hf-card--pad"><strong class="hf-bigstat">{{ $t['value'] }}</strong><span>{{ $t['label'] }}</span></li>
                 @endforeach
@@ -28,13 +28,13 @@
                 </div>
             </div>
             <div class="hf-media hf-media--report">
-                <img src="{{ asset($img.'/report-illustration.jpg') }}" width="828" height="405" alt="Buku laporan keuangan dengan grafik dan kaca pembesar" loading="lazy">
+                <img src="{{ asset($img.'/report-illustration.jpg') }}" width="883" height="432" alt="Buku laporan keuangan dengan grafik dan kaca pembesar" loading="lazy">
             </div>
         </section>
 
         <section class="hf-section" id="laporan" data-reveal>
             <header class="hf-section__head"><span class="hf-eyebrow">Dokumen</span><h2 class="hf-h2">Laporan yang dapat diunduh</h2></header>
-            <ul class="hf-reports">
+            <ul class="hf-reports" data-stagger>
                 @foreach($f['transparency']['reports'] as $r)
                     <li class="hf-card hf-report-row">
                         <svg class="hf-art hf-art--md" viewBox="0 0 48 48" aria-hidden="true"><use href="#ic-doc"/></svg>
@@ -46,7 +46,7 @@
         </section>
 
         <section class="hf-section" data-reveal>
-            <ul class="hf-grid hf-grid--3">
+            <ul class="hf-grid hf-grid--3" data-stagger>
                 @foreach($f['transparency']['principles'] as $p)
                     <li class="hf-card hf-card--pad hf-value"><svg class="hf-i hf-value__icon" aria-hidden="true"><use href="#i-check"/></svg><h3 class="hf-h3">{{ $p['title'] }}</h3><p>{{ $p['text'] }}</p></li>
                 @endforeach
