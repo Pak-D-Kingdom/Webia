@@ -150,6 +150,26 @@ class WebiaTemplatePutriSeeder extends Seeder
                 'sort_order' => 62,
             ],
 
+            // Template 8 — Agriculture & Farming · Perlengkapan & Peralatan Pertanian · Playful & Colorful · Arctic Frost (Sesuai Screenshot)
+            [
+                'name' => 'FrostyAgro Equipment — Perlengkapan & Peralatan Pertanian Playful & Colorful Arctic Frost',
+                'slug' => 'agriculture-peralatanpertanian-playfulcolorful-arcticfrost-putri',
+                'category_slug' => 'agriculture-farming',
+                'category_label' => 'Agriculture & Farming',
+                'business_types' => ['Perlengkapan & Peralatan Pertanian'],
+                'design_style' => 'Playful & Colorful',
+                'color_theme' => 'Arctic Frost',
+                'description' => 'Website distributor perlengkapan dan peralatan pertanian modern bergaya Playful & Colorful dengan palet Arctic Frost ceria untuk FrostyAgro Equipment. Menghadirkan mini tractor cerdas, drone robotik sebar benih, greenhouse kit hidroponik, simulator gear tani interaktif, kuis pemilihan alat, FAQ ceria, WhatsApp concierge, dan FrostyBot AI.',
+                'preview_style' => 'preview-company',
+                'eyebrow' => 'PLAYFUL & SMART FARM GEAR // ARCTIC EDITION',
+                'headline' => 'Bertani Ceria & Canggih,<br>Bikin Panen Makin Melimpah!',
+                'tag' => 'Agriculture & Farming · Perlengkapan & Peralatan Pertanian · Playful & Colorful · Arctic Frost',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/agriculture-peralatanpertanian-playfulcolorful-arcticfrost-putri',
+                'is_active' => true,
+                'sort_order' => 64,
+            ],
+
             // Template Default — Technology & IT · Software House · Professional
             [
                 'name' => 'Nexora Digital — Software House',

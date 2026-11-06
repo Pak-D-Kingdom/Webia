@@ -470,6 +470,14 @@ Route::view(
 )->name('webia.template.agriculture-peralatanpertanian-creative-matchalatte-putri');
 
 // =====================================================
+// WEBIA - AGRICULTURE & FARMING — PUTRI (Perlengkapan & Peralatan Pertanian Playful & Colorful Arctic Frost)
+// =====================================================
+Route::view(
+    '/webia/template/agriculture-peralatanpertanian-playfulcolorful-arcticfrost-putri',
+    'website-bisnis.templates.agriculture.peralatan-pertanian.agriculture-peralatanpertanian-playfulcolorful-arcticfrost-putri'
+)->name('webia.template.agriculture-peralatanpertanian-playfulcolorful-arcticfrost-putri');
+
+// =====================================================
 // WEBIA - SPORTS & FITNESS (GYM & FITNESS)
 // =====================================================
 Route::view(
