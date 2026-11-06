@@ -17,6 +17,7 @@ class HostingInvoiceFactory extends Factory
         return [
             'hosting_service_id' => HostingService::factory(),
             'invoice_number' => 'HST-'.$periodStart->format('Ym').'-'.Str::upper(Str::random(6)),
+            'billing_key' => (string) Str::uuid(),
             'period_start' => $periodStart,
             'period_end' => $periodStart->copy()->addMonthNoOverflow()->subDay(),
             'issued_at' => $periodStart,

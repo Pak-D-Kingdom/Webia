@@ -4,6 +4,10 @@ namespace App\Services;
 
 use App\Models\HostingInvoice;
 use App\Models\HostingService;
+use App\Models\HostingTask;
+use App\Models\User;
+use App\Notifications\HostingInvoiceReminder;
+use App\Notifications\HostingTaskCreated;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
@@ -22,11 +26,74 @@ class HostingBilling
             ->orderBy('id')
             ->each(fn (HostingService $service) => $this->createInvoiceWhenDue($service, $today));
 
+        HostingInvoice::query()
+            ->where('status', 'unpaid')
+            ->where('due_at', '<', $today)
+            ->update(['status' => 'overdue']);
+
+        HostingService::query()
+            ->whereHas('invoices', fn ($query) => $query->where('status', 'overdue')->where('due_at', '<=', $today->subDays(7)))
+            ->whereNotIn('billing_status', ['suspended', 'stopped'])
+            ->orderBy('id')
+            ->each(function (HostingService $service): void {
+                $service->update(['billing_status' => 'suspended', 'operational_status' => 'pending_suspension']);
+                $task = HostingTask::firstOrCreate([
+                    'hosting_service_id' => $service->id,
+                    'type' => 'suspend_hosting',
+                    'status' => 'pending',
+                ]);
+
+                if ($task->wasRecentlyCreated) {
+                    User::where('role', 'admin')->each(fn (User $admin) => $admin->notify(new HostingTaskCreated($task)));
+                }
+            });
+
         HostingService::query()
             ->whereNotNull('stopped_at')
             ->whereDate('stopped_at', '<=', $today)
             ->where('billing_status', '!=', 'stopped')
             ->update(['billing_status' => 'stopped', 'operational_status' => 'stopped']);
+
+        $this->sendReminders($today);
+    }
+
+    private function sendReminders(CarbonImmutable $today): void
+    {
+        HostingInvoice::query()
+            ->whereIn('status', ['unpaid', 'overdue'])
+            ->whereHas('service', fn ($query) => $query->whereNull('stopped_at')->orWhereDate('stopped_at', '>', $today))
+            ->with('service.user')
+            ->orderBy('id')
+            ->each(function (HostingInvoice $invoice) use ($today): void {
+                $dueDate = $invoice->due_at->toImmutable()->startOfDay();
+                $overdueDays = (int) $dueDate->diffInDays($today);
+                $type = match (true) {
+                    $invoice->issued_at->isSameDay($today) => 'issued',
+                    $dueDate->isSameDay($today->addDays(3)) => 'due_in_3_days',
+                    $dueDate->isSameDay($today->addDay()) => 'due_tomorrow',
+                    $dueDate->isSameDay($today) => 'due_today',
+                    $dueDate->isBefore($today) && $overdueDays === 3 => 'overdue_3_days',
+                    $dueDate->isBefore($today) && $overdueDays === 7 => 'suspended',
+                    $dueDate->isBefore($today) && $overdueDays > 7 && $overdueDays % 7 === 0 => 'weekly_overdue',
+                    default => null,
+                };
+
+                if ($type === null) {
+                    return;
+                }
+
+                $event = $invoice->notificationEvents()->firstOrCreate([
+                    'type' => $type,
+                    'scheduled_for' => $today,
+                ]);
+
+                if ($event->dispatched_at !== null) {
+                    return;
+                }
+
+                $invoice->service->user->notify((new HostingInvoiceReminder($invoice, $type))->afterCommit());
+                $event->update(['dispatched_at' => now()]);
+            });
     }
 
     private function createInvoiceWhenDue(HostingService $service, CarbonImmutable $today): void
@@ -46,6 +113,7 @@ class HostingBilling
 
                 $invoice = HostingInvoice::create([
                     'hosting_service_id' => $lockedService->id,
+                    'billing_key' => $lockedService->id.':'.$periodStart->toDateString().':automatic',
                     'period_start' => $periodStart,
                     'period_end' => $nextPeriodStart->subDay(),
                     'issued_at' => now(),
@@ -62,7 +130,9 @@ class HostingBilling
                 }
             });
         } catch (QueryException $exception) {
-            if (! HostingInvoice::where('hosting_service_id', $service->id)->whereDate('period_start', $periodStart)->exists()) {
+            $billingKey = $service->id.':'.$periodStart->toDateString().':automatic';
+
+            if (! HostingInvoice::where('billing_key', $billingKey)->exists()) {
                 throw $exception;
             }
         }

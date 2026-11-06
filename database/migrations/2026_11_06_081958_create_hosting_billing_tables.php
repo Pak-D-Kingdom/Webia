@@ -26,6 +26,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('hosting_service_id')->constrained()->cascadeOnDelete();
             $table->string('invoice_number', 24)->nullable()->unique();
+            $table->string('billing_key')->unique();
             $table->string('label')->nullable();
             $table->date('period_start');
             $table->date('period_end');
@@ -37,10 +38,8 @@ return new class extends Migration
             $table->timestamp('cancelled_at')->nullable();
             $table->foreignId('cancelled_by')->nullable()->constrained('users')->nullOnDelete();
             $table->text('cancellation_reason')->nullable();
-            $table->foreignId('replacement_for_id')->nullable()->constrained('hosting_invoices')->nullOnDelete();
+            $table->foreignId('replacement_for_id')->nullable()->unique()->constrained('hosting_invoices')->nullOnDelete();
             $table->timestamps();
-
-            $table->unique(['hosting_service_id', 'period_start']);
         });
 
         Schema::create('hosting_payments', function (Blueprint $table) {

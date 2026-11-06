@@ -8,9 +8,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 #[Fillable([
-    'hosting_service_id', 'invoice_number', 'label', 'period_start', 'period_end', 'issued_at', 'due_at',
+    'hosting_service_id', 'invoice_number', 'billing_key', 'label', 'period_start', 'period_end', 'issued_at', 'due_at',
     'amount', 'status', 'paid_at', 'cancelled_at', 'cancelled_by', 'cancellation_reason', 'replacement_for_id',
 ])]
 class HostingInvoice extends Model
@@ -31,6 +32,11 @@ class HostingInvoice extends Model
     public function notificationEvents(): HasMany
     {
         return $this->hasMany(HostingNotificationEvent::class);
+    }
+
+    public function replacement(): HasOne
+    {
+        return $this->hasOne(self::class, 'replacement_for_id');
     }
 
     protected function casts(): array
