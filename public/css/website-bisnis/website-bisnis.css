@@ -8016,10 +8016,10 @@ html {
 }
 
 
-/* Rapatkan WhatsApp ke AI Assistant */
+/* Jaga jarak WhatsApp dari AI Assistant */
 .webia-whatsapp-fab {
     right: 24px !important;
-    bottom: calc(82px + env(safe-area-inset-bottom)) !important;
+    bottom: calc(90px + env(safe-area-inset-bottom)) !important;
     z-index: 10002 !important;
 }
 
@@ -8034,7 +8034,7 @@ html {
 @media (max-width: 560px) {
     .webia-whatsapp-fab {
         right: 14px !important;
-        bottom: calc(72px + env(safe-area-inset-bottom)) !important;
+        bottom: calc(78px + env(safe-area-inset-bottom)) !important;
     }
 
     .webia-cart-fab {
