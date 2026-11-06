@@ -1320,7 +1320,7 @@ Route::prefix('webia/template/agriculture-farming/organic/agribisnis-earth-tone'
         Route::get('/ai-chatbot', fn () => $render('ai-chatbot', 'chatbot'))->name('chatbot');
     });
 
-    $agroConfigKey  = 'template.agriculture&farming.professional.agribisnis-classic-trust.agribisnis';
+$agroConfigKey  = 'template.agriculture&farming.professional.agribisnis-classic-trust.agribisnis';
 $agroConfigFile = config_path('template/agriculture&farming/professional/agribisnis-classic-trust/agribisnis.php');
 $agroData       = config($agroConfigKey) ?: (is_file($agroConfigFile) ? require $agroConfigFile : []);
 $agroView       = 'website-bisnis.template.agriculture&farming.professional.agribisnis-classic-trust';
@@ -1369,6 +1369,64 @@ Route::prefix('webia/template/nonprofit-community/professional/foundation-classi
         Route::view('/chatbot', $base . '.chatbot', $data)->name('chatbot');
     });
 
+Route::prefix('webia/template/nonprofit-community/creative/foundation-nature-green')
+    ->name('webia.template.nonprofit-community.creative.foundation-nature-green.')
+    ->group(function () {
+        $view = 'website-bisnis.template.nonprofit&community.creative.foundation-nature-green.';
+
+        Route::get('/', fn () => view($view.'index'))->name('home');
+        Route::get('/tentang-kami', fn () => view($view.'tentang-kami'))->name('tentang-kami');
+        Route::get('/program', fn () => view($view.'program'))->name('program');
+        Route::get('/dampak', fn () => view($view.'dampak'))->name('dampak');
+        Route::get('/donasi', fn () => view($view.'donasi'))->name('donasi');
+        Route::get('/transparansi', fn () => view($view.'transparansi'))->name('transparansi');
+        Route::get('/mitra', fn () => view($view.'mitra'))->name('mitra');
+        Route::get('/relawan', fn () => view($view.'relawan'))->name('relawan');
+        Route::get('/berita', fn () => view($view.'berita'))->name('berita');
+        Route::get('/ai-chatbot', fn () => view($view.'ai-chatbot'))->name('ai-chatbot');
+    });
+
+Route::prefix('webia/template/nonprofit-community/minimalis/foundation-warm-neutral')
+    ->name('foundation-warm-neutral.')
+    ->group(function () {
+
+        $viewBase = 'website-bisnis.template.nonprofit&community.minimalis.foundation-warm-neutral';
+        $assetDir = 'template/nonprofit&community/minimalis/foundation-warm-neutral';
+
+        // Konten dibaca dari config; jika belum ter-load (mis. config cache lama), baca file langsung.
+        $config = config('template.nonprofit&community.minimalis.foundation-warm-neutral.foundation');
+        if (empty($config) || !is_array($config)) {
+            $file   = base_path('config/' . $assetDir . '/foundation.php');
+            $config = is_file($file) ? require $file : [];
+        }
+
+        $data = [
+            'f'   => $config,
+            'v'   => $viewBase,
+            'rp'  => 'foundation-warm-neutral.',
+            'img' => 'images/website-bisnis/' . $assetDir,
+            'css' => 'css/website-bisnis/' . $assetDir . '/foundation.css',
+            'js'  => 'js/website-bisnis/' . $assetDir . '/foundation.js',
+        ];
+
+        $pages = [
+            'home'           => ['/',                'index'],
+            'mission-vision' => ['/misi-visi',       'mission-vision'],
+            'programs'       => ['/program',         'programs'],
+            'impact'         => ['/dampak',          'impact'],
+            'donation'       => ['/donasi',          'donation'],
+            'transparency'   => ['/transparansi',    'transparency'],
+            'partners'       => ['/mitra-sponsor',   'partners'],
+            'volunteer'      => ['/relawan',         'volunteer'],
+            'news'           => ['/berita-acara',    'news'],
+            'chatbot'        => ['/hopebot',         'chatbot'],
+        ];
+
+        foreach ($pages as $name => $page) {
+            \Illuminate\Support\Facades\Route::view($page[0], $viewBase . '.' . $page[1], $data)->name($name);
+        }
+    });
+
 Route::prefix('webia/template/nonprofit-community/creative/social-organization-tropical-rush')
     ->name('webia.so.')
     ->group(function () {
@@ -1407,7 +1465,7 @@ Route::prefix('webia/template/nonprofit-community/bold/social-organization-citru
             'inc'   => $view . 'partials.' . $page,
             'title' => $data['pages'][$page]['t'],
             'base'  => rtrim(url('/webia/template/nonprofit-community/bold/social-organization-citrus-pop'), '/'),
-            'img'   => asset('images/' . $dir),
+            'img'   => rtrim(asset('images/' . $dir), '/') . '/',
             'css'   => asset('css/' . $dir . 'social-organization.css'),
             'js'    => asset('js/' . $dir . 'social-organization.js'),
         ];
@@ -1419,6 +1477,11 @@ Route::prefix('webia/template/nonprofit-community/bold/social-organization-citru
         Route::get('/' . $page, fn () => view($view . 'halaman', $ctx($page)))->name('citrus.' . $page);
     }
 });
+
+Route::get('/webia/template/photography-creative-studio/bold/ugc-content-creator-studio-pink-voltage/{page?}', function (?string $page = null) {
+    return view('website-bisnis.template.photography-creative-studio.bold.ugc-content-creator-studio-pink-voltage.ugc-content-creator-studio', ['page' => $page ?: 'home']);
+})->where('page', 'home|portofolio|video-ugc|paket|hak-guna|platform|kolaborasi|kampanye|testimoni|tanya-ai')->name('webia.template.ugc-content-creator-studio');
+
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------
 
