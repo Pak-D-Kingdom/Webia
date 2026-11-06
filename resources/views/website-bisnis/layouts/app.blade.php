@@ -11,7 +11,7 @@
 
      <meta name="theme-color" content="#123B82">
 
-     {{-- <link rel="stylesheet" href="{{ asset('css/website-bisnis/website-bisnis.css') }}"> --}}
+     <link rel="stylesheet" href="{{ asset('css/website-bisnis/website-bisnis.css') }}">
      <link rel="stylesheet" href="{{ asset('css/website-bisnis/ai-assistant.css') }}">
      <link rel="stylesheet" href="{{ asset('css/website-bisnis/webia-galaxy.css') }}"> {{-- setelah ai-assistant.css --}}
 
@@ -28,7 +28,7 @@
 
      @include('website-bisnis.components.footer')
 
-     {{-- <script src="{{ asset('js/website-bisnis/website-bisnis.js') }}" defer></script> --}}
+     <script src="{{ asset('js/website-bisnis/website-bisnis.js') }}" defer></script>
      <script src="{{ asset('js/website-bisnis/webia-galaxy.js') }}" defer></script> {{-- setelah website-bisnis.js --}}
      @stack('scripts')
 
