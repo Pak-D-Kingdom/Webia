@@ -264,6 +264,11 @@ Route::view(
     'website-bisnis.templates.pet-animal-service.paws-canine-terra-earth-tone'
 )->name('webia.template.pet-animal-service.paws-canine-terra-earth-tone');
 
+Route::view(
+    '/webia/template/pawtopia-animal-care',
+    'website-bisnis.templates.pet-animal-service.pawtopia-animal-care'
+)->name('webia.template.pet-animal-service.pawtopia-animal-care');
+
 // WEBIA — Template Nail Art Professional Soft Pink
 // URL lama dipertahankan agar konsisten; view mengikuti struktur folder baru.
 Route::view(
@@ -449,6 +454,14 @@ Route::view(
 )->name('webia.template.technology-dataanalytics-creative-arcticfrost-putri');
 
 // =====================================================
+// WEBIA - AGRICULTURE & FARMING — PUTRI (Perlengkapan & Peralatan Pertanian Corporate Sage Green)
+// =====================================================
+Route::view(
+    '/webia/template/agriculture-peralatanpertanian-corporate-sagegreen-putri',
+    'website-bisnis.templates.agriculture.peralatan-pertanian.agriculture-peralatanpertanian-corporate-sagegreen-putri'
+)->name('webia.template.agriculture-peralatanpertanian-corporate-sagegreen-putri');
+
+// =====================================================
 // WEBIA - SPORTS & FITNESS (GYM & FITNESS)
 // =====================================================
 Route::view(
@@ -565,7 +578,7 @@ $minimalis = function (string $page) {
 
         config(['cafe' => config('template.f&b.minimalis.cafe-earthtone.cafe')]);
 
-        return view("$v.$page", ['v' => $v, 'path' => $path, 'pageUrl' => fn(string $name = 'home', string $hash = '') => route("webia.fnb.minimalis.{$name}") . $hash]);
+        return view("$v.$page", ['v' => $v, 'path' => $path, 'pageUrl' => fn (string $name = 'home', string $hash = '') => route("webia.fnb.minimalis.{$name}").$hash]);
     };
 };
 
@@ -592,7 +605,7 @@ Route::prefix('webia/template/fnb/elegan')->name('webia.fnb.elegan.')->group(fun
     Route::get('/reservasi', $elegan('reservasi'))->name('reservasi');
 });
 
-$vintage = fn(string $page) => fn() => view(
+$vintage = fn (string $page) => fn () => view(
     "website-bisnis.template.f&b.vintage.cafe-earthtone.{$page}",
     ['cafe' => config('template.f&b.vintage.cafe-earthtone.cafe')]
 );
@@ -618,9 +631,9 @@ Route::prefix('webia/template/company/modern/company-profile-ocean-teal')
     ->group(function () {
         $ns = 'website-bisnis.template.company.modern.company-profile-ocean-teal';
 
-        Route::view('/', $ns . '.index')->name('home');
-        Route::view('/tentang-kami', $ns . '.tentang-kami')->name('about');
-        Route::view('/portofolio', $ns . '.portofolio')->name('portfolio');
+        Route::view('/', $ns.'.index')->name('home');
+        Route::view('/tentang-kami', $ns.'.tentang-kami')->name('about');
+        Route::view('/portofolio', $ns.'.portofolio')->name('portfolio');
     });
 
 Route::prefix('webia/template/company/classic/company-profile-warm-neutral')
@@ -628,9 +641,9 @@ Route::prefix('webia/template/company/classic/company-profile-warm-neutral')
     ->group(function () {
         $ns = 'website-bisnis.template.company.classic.company-profile-warm-neutral';
 
-        Route::view('/', $ns . '.index')->name('home');
-        Route::view('/tentang-kami', $ns . '.tentang-kami')->name('about');
-        Route::view('/portofolio', $ns . '.portofolio')->name('portfolio');
+        Route::view('/', $ns.'.index')->name('home');
+        Route::view('/tentang-kami', $ns.'.tentang-kami')->name('about');
+        Route::view('/portofolio', $ns.'.portofolio')->name('portfolio');
     });
 
 Route::prefix('webia/template/property/luxury/real-estate-agency-emerald-green')
@@ -638,15 +651,15 @@ Route::prefix('webia/template/property/luxury/real-estate-agency-emerald-green')
     ->group(function () {
         $view = 'website-bisnis.template.property.luxury.real-estate-agency-emerald-green';
 
-        Route::view('/', $view . '.index')->name('index');
-        Route::view('/property', $view . '.property')->name('property');
-        Route::view('/property/{slug}', $view . '.property-detail')->name('property.show');
-        Route::view('/about', $view . '.about')->name('about');
-        Route::view('/gallery', $view . '.gallery')->name('gallery');
-        Route::view('/booking', $view . '.booking')->name('booking');
-        Route::view('/blog', $view . '.blog')->name('blog');
-        Route::view('/blog/{post}', $view . '.blog-detail')->name('blog.show');
-        Route::view('/contact', $view . '.contact')->name('contact');
+        Route::view('/', $view.'.index')->name('index');
+        Route::view('/property', $view.'.property')->name('property');
+        Route::view('/property/{slug}', $view.'.property-detail')->name('property.show');
+        Route::view('/about', $view.'.about')->name('about');
+        Route::view('/gallery', $view.'.gallery')->name('gallery');
+        Route::view('/booking', $view.'.booking')->name('booking');
+        Route::view('/blog', $view.'.blog')->name('blog');
+        Route::view('/blog/{post}', $view.'.blog-detail')->name('blog.show');
+        Route::view('/contact', $view.'.contact')->name('contact');
     });
 
 Route::prefix('webia/template/property/premium-minimal/real-estate-agency-nature-green')
@@ -657,72 +670,72 @@ Route::prefix('webia/template/property/premium-minimal/real-estate-agency-nature
         $cfg = 'template.property.premium-minimal.real-estate-agency-nature-green.real-estate-agency';
 
         // Satu pintu render: semua halaman mendapat data & helper yang sama.
-        $page = fn(string $view, string $active) => view($ns . $view, [
+        $page = fn (string $view, string $active) => view($ns.$view, [
             'ns' => $ns,
             'active' => $active,
             't' => config($cfg),
-            'r' => fn(string $route, array $params = []) => route($name . $route, $params),
-            'img' => fn(string $file) => asset(config($cfg . '.assets.images') . '/' . $file),
+            'r' => fn (string $route, array $params = []) => route($name.$route, $params),
+            'img' => fn (string $file) => asset(config($cfg.'.assets.images').'/'.$file),
         ]);
 
-        Route::get('/', fn() => $page('index', 'home'))->name('home');
-        Route::get('/properties', fn() => $page('properties', 'properties'))->name('properties');
-        $page = fn(string $view, string $active) => view($ns . $view, [
+        Route::get('/', fn () => $page('index', 'home'))->name('home');
+        Route::get('/properties', fn () => $page('properties', 'properties'))->name('properties');
+        $page = fn (string $view, string $active) => view($ns.$view, [
             'ns' => $ns,
             'active' => $active,
             't' => config($cfg),
-            'r' => fn(string $route, array $params = []) => route($name . $route, $params),
-            'img' => fn(string $file) => asset(config($cfg . '.assets.images') . '/' . $file),
+            'r' => fn (string $route, array $params = []) => route($name.$route, $params),
+            'img' => fn (string $file) => asset(config($cfg.'.assets.images').'/'.$file),
         ]);
 
-        Route::get('/', fn() => $page('index', 'home'))->name('home');
-        Route::get('/properties', fn() => $page('properties', 'properties'))->name('properties');
+        Route::get('/', fn () => $page('index', 'home'))->name('home');
+        Route::get('/properties', fn () => $page('properties', 'properties'))->name('properties');
         Route::get('/properties/{slug}', function (string $slug) use ($page, $cfg) {
-            $property = collect(config($cfg . '.properties'))->firstWhere('slug', $slug);
+            $property = collect(config($cfg.'.properties'))->firstWhere('slug', $slug);
             abort_if($property === null, 404);
 
             return $page('property', 'properties')->with('property', $property);
         })->name('property');
-        Route::get('/about-us', fn() => $page('about', 'about'))->name('about');
-        Route::get('/gallery', fn() => $page('gallery', 'gallery'))->name('gallery');
-        Route::get('/booking', fn() => $page('booking', 'booking'))->name('booking');
-        Route::get('/blog', fn() => $page('blog', 'blog'))->name('blog');
-        Route::get('/about-us', fn() => $page('about', 'about'))->name('about');
-        Route::get('/gallery', fn() => $page('gallery', 'gallery'))->name('gallery');
-        Route::get('/booking', fn() => $page('booking', 'booking'))->name('booking');
-        Route::get('/blog', fn() => $page('blog', 'blog'))->name('blog');
+        Route::get('/about-us', fn () => $page('about', 'about'))->name('about');
+        Route::get('/gallery', fn () => $page('gallery', 'gallery'))->name('gallery');
+        Route::get('/booking', fn () => $page('booking', 'booking'))->name('booking');
+        Route::get('/blog', fn () => $page('blog', 'blog'))->name('blog');
+        Route::get('/about-us', fn () => $page('about', 'about'))->name('about');
+        Route::get('/gallery', fn () => $page('gallery', 'gallery'))->name('gallery');
+        Route::get('/booking', fn () => $page('booking', 'booking'))->name('booking');
+        Route::get('/blog', fn () => $page('blog', 'blog'))->name('blog');
         Route::get('/blog/{slug}', function (string $slug) use ($page, $cfg) {
-            $post = collect(config($cfg . '.blog'))->firstWhere('slug', $slug);
+            $post = collect(config($cfg.'.blog'))->firstWhere('slug', $slug);
             abort_if($post === null, 404);
 
             return $page('article', 'blog')->with('post', $post);
         })->name('blog.show');
-        Route::get('/contact', fn() => $page('contact', 'contact'))->name('contact');
-        Route::get('/contact', fn() => $page('contact', 'contact'))->name('contact');
+        Route::get('/contact', fn () => $page('contact', 'contact'))->name('contact');
+        Route::get('/contact', fn () => $page('contact', 'contact'))->name('contact');
     });
 
 Route::prefix('webia/template/property/professional/real-estate-agency-coral-peach')
     ->name('coral-peach.')
     ->group(function () {
         $view = 'website-bisnis.template.property.professional.real-estate-agency-coral-peach';
-        $site = fn() => config('template.property.professional.real-estate-agency-coral-peach.real-estate-agency');
+        $site = fn () => config('template.property.professional.real-estate-agency-coral-peach.real-estate-agency');
 
-        Route::get('/', fn() => view("$view.index", ['site' => $site()]))->name('home');
-        Route::get('/property', fn() => view("$view.property", ['site' => $site()]))->name('property');
-        Route::get('/specification', fn() => view("$view.specification", ['site' => $site()]))->name('specification');
-        Route::get('/price', fn() => view("$view.price", ['site' => $site()]))->name('price');
-        Route::get('/about-us', fn() => view("$view.about", ['site' => $site()]))->name('about');
-        Route::get('/gallery', fn() => view("$view.gallery", ['site' => $site()]))->name('gallery');
-        Route::get('/booking', fn() => view("$view.booking", ['site' => $site()]))->name('booking');
-        Route::get('/blog', fn() => view("$view.blog", ['site' => $site()]))->name('blog');
-        Route::get('/', fn() => view("$view.index", ['site' => $site()]))->name('home');
-        Route::get('/property', fn() => view("$view.property", ['site' => $site()]))->name('property');
-        Route::get('/specification', fn() => view("$view.specification", ['site' => $site()]))->name('specification');
-        Route::get('/price', fn() => view("$view.price", ['site' => $site()]))->name('price');
-        Route::get('/about-us', fn() => view("$view.about", ['site' => $site()]))->name('about');
-        Route::get('/gallery', fn() => view("$view.gallery", ['site' => $site()]))->name('gallery');
-        Route::get('/booking', fn() => view("$view.booking", ['site' => $site()]))->name('booking');
-        Route::get('/blog', fn() => view("$view.blog", ['site' => $site()]))->name('blog');
+        Route::get('/', fn () => view("$view.index", ['site' => $site()]))->name('home');
+        Route::get('/property', fn () => view("$view.property", ['site' => $site()]))->name('property');
+        Route::get('/specification', fn () => view("$view.specification", ['site' => $site()]))->name('specification');
+        Route::get('/price', fn () => view("$view.price", ['site' => $site()]))->name('price');
+        Route::get('/about-us', fn () => view("$view.about", ['site' => $site()]))->name('about');
+        Route::get('/gallery', fn () => view("$view.gallery", ['site' => $site()]))->name('gallery');
+        Route::get('/booking', fn () => view("$view.booking", ['site' => $site()]))->name('booking');
+        Route::get('/blog', fn () => view("$view.blog", ['site' => $site()]))->name('blog');
+        Route::get('/', fn () => view("$view.index", ['site' => $site()]))->name('home');
+        Route::get('/property', fn () => view("$view.property", ['site' => $site()]))->name('property');
+        Route::get('/specification', fn () => view("$view.specification", ['site' => $site()]))->name('specification');
+        Route::get('/price', fn () => view("$view.price", ['site' => $site()]))->name('price');
+        Route::get('/about-us', fn () => view("$view.about", ['site' => $site()]))->name('about');
+        Route::get('/gallery', fn () => view("$view.gallery", ['site' => $site()]))->name('gallery');
+        Route::get('/booking', fn () => view("$view.booking", ['site' => $site()]))->name('booking');
+        Route::get('/blog', fn () => view("$view.blog", ['site' => $site()]))->name('blog');
         Route::get('/blog/{slug}', function (string $slug) use ($view, $site) {
             $data = $site();
             $post = collect($data['blog']['posts'])->firstWhere('slug', $slug);
@@ -730,8 +743,8 @@ Route::prefix('webia/template/property/professional/real-estate-agency-coral-pea
 
             return view("$view.blog-show", ['site' => $data, 'post' => $post]);
         })->name('blog.show');
-        Route::get('/contact', fn() => view("$view.contact", ['site' => $site()]))->name('contact');
-        Route::get('/contact', fn() => view("$view.contact", ['site' => $site()]))->name('contact');
+        Route::get('/contact', fn () => view("$view.contact", ['site' => $site()]))->name('contact');
+        Route::get('/contact', fn () => view("$view.contact", ['site' => $site()]))->name('contact');
     });
 
 $elNs = 'website-bisnis.template.e-learning.modern.e-learning-ocean-blue';
@@ -753,15 +766,15 @@ $elNs = 'website-bisnis.template.e-learning.playful-colorful.e-learning-pastel-m
 $elPath = 'webia/template/e-learning/playful-colorful/e-learning-pastel-mix';
 
 // Nama route = "{$elNs}.{halaman}" → harus sama dengan config 'route_prefix' di e-learning.php
-Route::prefix($elPath)->name($elNs . '.')->group(function () use ($elNs) {
-    Route::view('/', $elNs . '.index')->name('home');
-    Route::view('/programs', $elNs . '.programs')->name('programs');
-    Route::view('/schedules', $elNs . '.schedules')->name('schedules');
-    Route::view('/teachers', $elNs . '.teachers')->name('teachers');
-    Route::view('/pricing', $elNs . '.pricing')->name('pricing');
-    Route::view('/registration', $elNs . '.registration')->name('registration');
-    Route::view('/course-content', $elNs . '.course-content')->name('course-content');
-    Route::view('/member-area', $elNs . '.member-area')->name('member-area');
+Route::prefix($elPath)->name($elNs.'.')->group(function () use ($elNs) {
+    Route::view('/', $elNs.'.index')->name('home');
+    Route::view('/programs', $elNs.'.programs')->name('programs');
+    Route::view('/schedules', $elNs.'.schedules')->name('schedules');
+    Route::view('/teachers', $elNs.'.teachers')->name('teachers');
+    Route::view('/pricing', $elNs.'.pricing')->name('pricing');
+    Route::view('/registration', $elNs.'.registration')->name('registration');
+    Route::view('/course-content', $elNs.'.course-content')->name('course-content');
+    Route::view('/member-area', $elNs.'.member-area')->name('member-area');
 });
 
 Route::prefix('webia/template/e-learning/futuristic/e-learning-dark-mode')
@@ -769,14 +782,14 @@ Route::prefix('webia/template/e-learning/futuristic/e-learning-dark-mode')
     ->group(function () {
         $ns = 'website-bisnis.template.e-learning.futuristic.e-learning-dark-mode';
 
-        Route::view('/', $ns . '.index')->name('home');
-        Route::view('/programs', $ns . '.programs')->name('programs');
-        Route::view('/schedules', $ns . '.schedules')->name('schedules');
-        Route::view('/teachers', $ns . '.teachers')->name('teachers');
-        Route::view('/pricing', $ns . '.pricing')->name('pricing');
-        Route::view('/registration', $ns . '.registration')->name('registration');
-        Route::view('/course-content', $ns . '.course-content')->name('course-content');
-        Route::view('/member-area', $ns . '.member-area')->name('member-area');
+        Route::view('/', $ns.'.index')->name('home');
+        Route::view('/programs', $ns.'.programs')->name('programs');
+        Route::view('/schedules', $ns.'.schedules')->name('schedules');
+        Route::view('/teachers', $ns.'.teachers')->name('teachers');
+        Route::view('/pricing', $ns.'.pricing')->name('pricing');
+        Route::view('/registration', $ns.'.registration')->name('registration');
+        Route::view('/course-content', $ns.'.course-content')->name('course-content');
+        Route::view('/member-area', $ns.'.member-area')->name('member-area');
     });
 
 Route::prefix('webia/template/healthcare/professional/klinik-kecantikan-clean-white')
@@ -784,13 +797,13 @@ Route::prefix('webia/template/healthcare/professional/klinik-kecantikan-clean-wh
     ->group(function () {
         $view = 'website-bisnis.template.healthcare.professional.klinik-kecantikan-clean-white.';
 
-        Route::view('/', $view . 'index')->name('home');
-        Route::view('/layanan', $view . 'services')->name('services');
-        Route::view('/dokter-staff', $view . 'doctors')->name('doctors');
-        Route::view('/jadwal', $view . 'schedule')->name('schedule');
-        Route::view('/appointment', $view . 'appointment')->name('appointment');
-        Route::view('/faq', $view . 'faq')->name('faq');
-        Route::view('/kebijakan', $view . 'policy')->name('policy');
+        Route::view('/', $view.'index')->name('home');
+        Route::view('/layanan', $view.'services')->name('services');
+        Route::view('/dokter-staff', $view.'doctors')->name('doctors');
+        Route::view('/jadwal', $view.'schedule')->name('schedule');
+        Route::view('/appointment', $view.'appointment')->name('appointment');
+        Route::view('/faq', $view.'faq')->name('faq');
+        Route::view('/kebijakan', $view.'policy')->name('policy');
     });
 
 Route::prefix('webia/template/healthcare/luxury/klinik-kecantikan-champagne-glow')
@@ -802,7 +815,7 @@ Route::prefix('webia/template/healthcare/luxury/klinik-kecantikan-champagne-glow
 
         // Helper kecil: render view + kirim data config (`$c`), prefix view (`$v`),
         // dan URL dasar gambar template (`$img`).
-        $page = fn(string $name) => fn() => view("{$view}.{$name}", [
+        $page = fn (string $name) => fn () => view("{$view}.{$name}", [
             'c' => config($config),
             'v' => $view,
             'img' => asset('images/website-bisnis/template/healthcare/luxury/klinik-kecantikan-champagne-glow'),
@@ -827,7 +840,7 @@ Route::prefix('webia/template/healthcare/elegan/klinik-kecantikan-rose-gold')
 
         // Variabel ditulis eksplisit: arrow function hanya menangkap variabel yang
         // disebut langsung di badannya (compact('tpl') TIDAK menangkapnya).
-        $data = fn(string $page) => ['tpl' => $tpl, 'cfg' => $cfg, 'rp' => $rp, 'page' => $page];
+        $data = fn (string $page) => ['tpl' => $tpl, 'cfg' => $cfg, 'rp' => $rp, 'page' => $page];
 
         Route::view('/', "$tpl.index", $data('home'))->name('index');
         Route::view('/layanan', "$tpl.services", $data('services'))->name('services');
@@ -842,10 +855,10 @@ Route::prefix('webia/template/retail/luxury/skincare-soft-pink')
     ->name('website-bisnis.template.retail.luxury.skincare-soft-pink.')
     ->group(function () {
         $ns = 'website-bisnis.template.retail.luxury.skincare-soft-pink'; // namespace view
-        $rp = $ns . '.';                                                  // prefix nama route
+        $rp = $ns.'.';                                                  // prefix nama route
         $cfg = 'template.retail.luxury.skincare-soft-pink.skincare';       // config/template/.../skincare.php
 
-        $data = fn() => [
+        $data = fn () => [
             'ns' => $ns,
             'rp' => $rp,
             'cfg' => config($cfg),
@@ -854,12 +867,12 @@ Route::prefix('webia/template/retail/luxury/skincare-soft-pink')
             'js' => asset('js/website-bisnis/template/retail/luxury/skincare-soft-pink/skincare.js'),
         ];
 
-        Route::get('/', fn() => view($ns . '.index', $data()))->name('index');
-        Route::get('/catalog', fn() => view($ns . '.catalog', $data()))->name('catalog');
-        Route::get('/price', fn() => view($ns . '.price', $data()))->name('price');
-        Route::get('/stock', fn() => view($ns . '.stock', $data()))->name('stock');
-        Route::get('/inquiry', fn() => view($ns . '.inquiry', $data()))->name('inquiry');
-        Route::get('/shop', fn() => view($ns . '.shop', $data()))->name('shop');
+        Route::get('/', fn () => view($ns.'.index', $data()))->name('index');
+        Route::get('/catalog', fn () => view($ns.'.catalog', $data()))->name('catalog');
+        Route::get('/price', fn () => view($ns.'.price', $data()))->name('price');
+        Route::get('/stock', fn () => view($ns.'.stock', $data()))->name('stock');
+        Route::get('/inquiry', fn () => view($ns.'.inquiry', $data()))->name('inquiry');
+        Route::get('/shop', fn () => view($ns.'.shop', $data()))->name('shop');
     });
 
 $ns = 'website-bisnis.template.retail.premium-minimal.skincare-warm-neutral';
@@ -871,12 +884,12 @@ $data = [
 Route::prefix('webia/template/retail/premium-minimal/skincare-warm-neutral')
     ->name('skincare-warm-neutral.')
     ->group(function () use ($ns, $data) {
-        Route::view('/', $ns . '.index', $data)->name('home');
-        Route::view('/katalog', $ns . '.katalog', $data)->name('catalog');
-        Route::view('/harga', $ns . '.harga', $data)->name('price');
-        Route::view('/ketersediaan', $ns . '.ketersediaan', $data)->name('stock');
-        Route::view('/inquiry', $ns . '.inquiry', $data)->name('inquiry');
-        Route::view('/keranjang', $ns . '.keranjang', $data)->name('cart');
+        Route::view('/', $ns.'.index', $data)->name('home');
+        Route::view('/katalog', $ns.'.katalog', $data)->name('catalog');
+        Route::view('/harga', $ns.'.harga', $data)->name('price');
+        Route::view('/ketersediaan', $ns.'.ketersediaan', $data)->name('stock');
+        Route::view('/inquiry', $ns.'.inquiry', $data)->name('inquiry');
+        Route::view('/keranjang', $ns.'.keranjang', $data)->name('cart');
     });
 
 Route::prefix('webia/template/retail/organic/skincare-sage-green')
@@ -884,12 +897,12 @@ Route::prefix('webia/template/retail/organic/skincare-sage-green')
     ->group(function () {
         $view = 'website-bisnis.template.retail.organic.skincare-sage-green.';
 
-        Route::view('/', $view . 'index')->name('home');      // Beranda + preview semua fitur
-        Route::view('/katalog', $view . 'catalog')->name('catalog'); // Product catalog
-        Route::view('/harga', $view . 'price')->name('price');     // Price
-        Route::view('/stok', $view . 'stock')->name('stock');     // Stock / availability
-        Route::view('/inquiry', $view . 'inquiry')->name('inquiry'); // Inquiry (kirim ke WhatsApp)
-        Route::view('/belanja', $view . 'shop')->name('shop');       // Optional e-commerce
+        Route::view('/', $view.'index')->name('home');      // Beranda + preview semua fitur
+        Route::view('/katalog', $view.'catalog')->name('catalog'); // Product catalog
+        Route::view('/harga', $view.'price')->name('price');     // Price
+        Route::view('/stok', $view.'stock')->name('stock');     // Stock / availability
+        Route::view('/inquiry', $view.'inquiry')->name('inquiry'); // Inquiry (kirim ke WhatsApp)
+        Route::view('/belanja', $view.'shop')->name('shop');       // Optional e-commerce
     });
 
 $taNs = 'website-bisnis.template.travel&tourism.modern.travel-agent-ocean-teal';
@@ -929,21 +942,21 @@ Route::prefix('webia/template/travel-agent-ocean-teal')
                     'js' => asset("js/website-bisnis/{$taPath}/travel-agent.js"),
                 ],
                 'routes' => collect($taPages)
-                    ->map(fn($uri, $name) => route($taName . $name))
+                    ->map(fn ($uri, $name) => route($taName.$name))
                     ->all(),
                 // helper tampilan
-                'img' => fn(string $file) => asset("{$imgBase}/{$file}"),
-                'rp' => fn(int|float $n) => 'Rp ' . number_format($n, 0, ',', '.'),
-                'icon' => fn(string $name, string $class = '') => new HtmlString(
-                    '<svg class="ta-ic ' . e($class) . '" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
-                        . 'stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">'
-                        . ($ta['icons'][$name] ?? '') . '</svg>'
+                'img' => fn (string $file) => asset("{$imgBase}/{$file}"),
+                'rp' => fn (int|float $n) => 'Rp '.number_format($n, 0, ',', '.'),
+                'icon' => fn (string $name, string $class = '') => new HtmlString(
+                    '<svg class="ta-ic '.e($class).'" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+                        .'stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">'
+                        .($ta['icons'][$name] ?? '').'</svg>'
                 ),
             ];
         };
 
         foreach ($taPages as $name => $uri) {
-            Route::get($uri, fn() => view("{$taNs}.{$name}", $data($name)))->name($name);
+            Route::get($uri, fn () => view("{$taNs}.{$name}", $data($name)))->name($name);
         }
     });
 
@@ -966,54 +979,54 @@ Route::prefix('webia/template/travel&tourism/organic/travel-agent-forest-moss')
             'ns' => $ns,
             'cfg' => $cfg,
             'assets' => $assets,
-            'r' => fn(string $name) => route($cfg['route_prefix'] . $name),   // helper URL
-            'img' => fn(string $file) => $assets['img'] . '/' . $file,           // helper gambar
+            'r' => fn (string $name) => route($cfg['route_prefix'].$name),   // helper URL
+            'img' => fn (string $file) => $assets['img'].'/'.$file,           // helper gambar
         ];
 
-        Route::get('/', fn() => view($ns . '.index', $shared))->name('index');
-        Route::get('/destinasi', fn() => view($ns . '.destinasi', $shared))->name('destinasi');
-        Route::get('/paket-tour', fn() => view($ns . '.paket-tour', $shared))->name('paket-tour');
-        Route::get('/itinerary', fn() => view($ns . '.itinerary', $shared))->name('itinerary');
-        Route::get('/harga', fn() => view($ns . '.harga', $shared))->name('harga');
-        Route::get('/jadwal-keberangkatan', fn() => view($ns . '.jadwal-keberangkatan', $shared))->name('jadwal-keberangkatan');
-        Route::get('/galeri', fn() => view($ns . '.galeri', $shared))->name('galeri');
-        Route::get('/booking-inquiry', fn() => view($ns . '.booking-inquiry', $shared))->name('booking-inquiry');
-        Route::get('/testimoni', fn() => view($ns . '.testimoni', $shared))->name('testimoni');
-        Route::get('/asisten-ai', fn() => view($ns . '.asisten-ai', $shared))->name('asisten-ai');
+        Route::get('/', fn () => view($ns.'.index', $shared))->name('index');
+        Route::get('/destinasi', fn () => view($ns.'.destinasi', $shared))->name('destinasi');
+        Route::get('/paket-tour', fn () => view($ns.'.paket-tour', $shared))->name('paket-tour');
+        Route::get('/itinerary', fn () => view($ns.'.itinerary', $shared))->name('itinerary');
+        Route::get('/harga', fn () => view($ns.'.harga', $shared))->name('harga');
+        Route::get('/jadwal-keberangkatan', fn () => view($ns.'.jadwal-keberangkatan', $shared))->name('jadwal-keberangkatan');
+        Route::get('/galeri', fn () => view($ns.'.galeri', $shared))->name('galeri');
+        Route::get('/booking-inquiry', fn () => view($ns.'.booking-inquiry', $shared))->name('booking-inquiry');
+        Route::get('/testimoni', fn () => view($ns.'.testimoni', $shared))->name('testimoni');
+        Route::get('/asisten-ai', fn () => view($ns.'.asisten-ai', $shared))->name('asisten-ai');
     });
 
 $ns = 'website-bisnis.template.travel&tourism.luxury.travel-agent-navy-champagne-gold';
 $tvPrefix = 'webia/template/travel-tourism/luxury/travel-agent-navy-champagne-gold'; // ubah jika URL template berbeda
 $tvPath = 'travel&tourism/luxury/travel-agent-navy-champagne-gold';
-$tvConfig = require config_path('template/' . $tvPath . '/travel-agent.php');
+$tvConfig = require config_path('template/'.$tvPath.'/travel-agent.php');
 
 Route::prefix($tvPrefix)->name('webia.template.travel-agent-navy-champagne-gold.')
     ->group(function () use ($ns, $tvPrefix, $tvPath, $tvConfig) {
 
         // Data bersama untuk semua halaman (view tidak perlu tahu path asset / URL)
-        $data = fn(string $page) => [
+        $data = fn (string $page) => [
             'ns' => $ns,
             'page' => $page,
             't' => $tvConfig,
-            'css' => asset('css/website-bisnis/template/' . $tvPath . '/travel-agent.css'),
-            'js' => asset('js/website-bisnis/template/' . $tvPath . '/travel-agent.js'),
+            'css' => asset('css/website-bisnis/template/'.$tvPath.'/travel-agent.css'),
+            'js' => asset('js/website-bisnis/template/'.$tvPath.'/travel-agent.js'),
             // helper kecil yang dipakai di Blade
-            'url' => fn(string $p = '') => url($tvPrefix . ($p !== '' ? '/' . ltrim($p, '/') : '')),
-            'img' => fn(string $f) => asset('images/website-bisnis/template/' . $tvPath . '/' . $f),
-            'idr' => fn($n) => 'Rp ' . number_format((int) $n, 0, ',', '.'),
-            'icon' => fn(string $n) => view($ns . '.partials.icon', ['name' => $n])->render(),
+            'url' => fn (string $p = '') => url($tvPrefix.($p !== '' ? '/'.ltrim($p, '/') : '')),
+            'img' => fn (string $f) => asset('images/website-bisnis/template/'.$tvPath.'/'.$f),
+            'idr' => fn ($n) => 'Rp '.number_format((int) $n, 0, ',', '.'),
+            'icon' => fn (string $n) => view($ns.'.partials.icon', ['name' => $n])->render(),
         ];
 
-        Route::get('/', fn() => view($ns . '.index', $data('beranda')))->name('index');
-        Route::get('/destinasi', fn() => view($ns . '.destinasi', $data('destinasi')))->name('destinasi');
-        Route::get('/paket', fn() => view($ns . '.paket', $data('paket')))->name('paket');
-        Route::get('/itinerary', fn() => view($ns . '.itinerary', $data('itinerary')))->name('itinerary');
-        Route::get('/harga', fn() => view($ns . '.harga', $data('harga')))->name('harga');
-        Route::get('/jadwal', fn() => view($ns . '.jadwal', $data('jadwal')))->name('jadwal');
-        Route::get('/galeri', fn() => view($ns . '.galeri', $data('galeri')))->name('galeri');
-        Route::get('/testimoni', fn() => view($ns . '.testimoni', $data('testimoni')))->name('testimoni');
-        Route::get('/inquiry', fn() => view($ns . '.inquiry', $data('inquiry')))->name('inquiry');
-        Route::get('/faq', fn() => view($ns . '.faq', $data('faq')))->name('faq');
+        Route::get('/', fn () => view($ns.'.index', $data('beranda')))->name('index');
+        Route::get('/destinasi', fn () => view($ns.'.destinasi', $data('destinasi')))->name('destinasi');
+        Route::get('/paket', fn () => view($ns.'.paket', $data('paket')))->name('paket');
+        Route::get('/itinerary', fn () => view($ns.'.itinerary', $data('itinerary')))->name('itinerary');
+        Route::get('/harga', fn () => view($ns.'.harga', $data('harga')))->name('harga');
+        Route::get('/jadwal', fn () => view($ns.'.jadwal', $data('jadwal')))->name('jadwal');
+        Route::get('/galeri', fn () => view($ns.'.galeri', $data('galeri')))->name('galeri');
+        Route::get('/testimoni', fn () => view($ns.'.testimoni', $data('testimoni')))->name('testimoni');
+        Route::get('/inquiry', fn () => view($ns.'.inquiry', $data('inquiry')))->name('inquiry');
+        Route::get('/faq', fn () => view($ns.'.faq', $data('faq')))->name('faq');
     });
 
 Route::prefix('webia/template/interior-architecture/rustic/furniture-terracotta')
@@ -1021,17 +1034,17 @@ Route::prefix('webia/template/interior-architecture/rustic/furniture-terracotta'
     ->group(function () {
         $view = 'website-bisnis.template.interior&architecture.rustic.furniture-terracotta.';
 
-        Route::view('/', $view . 'index')->name('index');          // Beranda (preview semua section)
-        Route::view('/hero-banner', $view . 'hero')->name('hero');            // Hero banner
-        Route::view('/katalog', $view . 'catalog')->name('catalog');      // Furniture catalog
-        Route::view('/custom-design', $view . 'custom-design')->name('custom-design');
-        Route::view('/material-finishing', $view . 'materials')->name('materials');  // Materials & finishes
-        Route::view('/dimensi-produk', $view . 'dimensions')->name('dimensions');
-        Route::view('/galeri-proyek', $view . 'gallery')->name('gallery');      // Project gallery
-        Route::view('/custom-order', $view . 'order-form')->name('order-form');
-        Route::view('/lead-time-produksi', $view . 'lead-time')->name('lead-time');  // Production lead time
-        Route::view('/permintaan-penawaran', $view . 'quotation')->name('quotation');  // Quotation request
-        Route::view('/ai-faq', $view . 'ai-faq')->name('ai-faq');        // AI chatbot FAQ
+        Route::view('/', $view.'index')->name('index');          // Beranda (preview semua section)
+        Route::view('/hero-banner', $view.'hero')->name('hero');            // Hero banner
+        Route::view('/katalog', $view.'catalog')->name('catalog');      // Furniture catalog
+        Route::view('/custom-design', $view.'custom-design')->name('custom-design');
+        Route::view('/material-finishing', $view.'materials')->name('materials');  // Materials & finishes
+        Route::view('/dimensi-produk', $view.'dimensions')->name('dimensions');
+        Route::view('/galeri-proyek', $view.'gallery')->name('gallery');      // Project gallery
+        Route::view('/custom-order', $view.'order-form')->name('order-form');
+        Route::view('/lead-time-produksi', $view.'lead-time')->name('lead-time');  // Production lead time
+        Route::view('/permintaan-penawaran', $view.'quotation')->name('quotation');  // Quotation request
+        Route::view('/ai-faq', $view.'ai-faq')->name('ai-faq');        // AI chatbot FAQ
     });
 
 Route::prefix('webia/template/interior-architecture/premium-minimal/furniture-mocha-cream')
@@ -1039,17 +1052,17 @@ Route::prefix('webia/template/interior-architecture/premium-minimal/furniture-mo
     ->group(function () {
         $ns = 'website-bisnis.template.interior&architecture.premium-minimal.furniture-mocha-cream';
 
-        Route::view('/', $ns . '.index')->name('home');
-        Route::view('/hero-banner', $ns . '.hero')->name('hero');
-        Route::view('/katalog', $ns . '.katalog')->name('catalog');
-        Route::view('/custom-design', $ns . '.custom-design')->name('custom-design');
-        Route::view('/material-finishing', $ns . '.material-finishing')->name('materials');
-        Route::view('/ukuran-produk', $ns . '.ukuran-produk')->name('dimensions');
-        Route::view('/project-gallery', $ns . '.project-gallery')->name('gallery');
-        Route::view('/custom-order', $ns . '.custom-order')->name('custom-order');
-        Route::view('/production-lead-time', $ns . '.production-lead-time')->name('lead-time');
-        Route::view('/permintaan-penawaran', $ns . '.permintaan-penawaran')->name('quotation');
-        Route::view('/ai-chatbot', $ns . '.ai-chatbot')->name('ai-chatbot');
+        Route::view('/', $ns.'.index')->name('home');
+        Route::view('/hero-banner', $ns.'.hero')->name('hero');
+        Route::view('/katalog', $ns.'.katalog')->name('catalog');
+        Route::view('/custom-design', $ns.'.custom-design')->name('custom-design');
+        Route::view('/material-finishing', $ns.'.material-finishing')->name('materials');
+        Route::view('/ukuran-produk', $ns.'.ukuran-produk')->name('dimensions');
+        Route::view('/project-gallery', $ns.'.project-gallery')->name('gallery');
+        Route::view('/custom-order', $ns.'.custom-order')->name('custom-order');
+        Route::view('/production-lead-time', $ns.'.production-lead-time')->name('lead-time');
+        Route::view('/permintaan-penawaran', $ns.'.permintaan-penawaran')->name('quotation');
+        Route::view('/ai-chatbot', $ns.'.ai-chatbot')->name('ai-chatbot');
     });
 
 Route::prefix('webia/template/interior-architecture/luxury/furniture-chocolate-luxe')
@@ -1075,7 +1088,7 @@ Route::prefix('webia/template/interior-architecture/luxury/furniture-chocolate-l
 
         foreach ($pages as $name => [$uri, $view]) {
             Route::get($uri, function () use ($viewBase, $configKey, $view, $name) {
-                return view($viewBase . '.' . $view, [
+                return view($viewBase.'.'.$view, [
                     'furniture' => config($configKey),
                     'activePage' => $name,
                 ]);
@@ -1104,9 +1117,9 @@ View::composer(
         $view->with([
             'laundry' => $cfg,
 
-            'lbAsset' => fn(string $type, string $file = '') => asset(rtrim($cfg['assets'][$type] . '/' . $file, '/')),
+            'lbAsset' => fn (string $type, string $file = '') => asset(rtrim($cfg['assets'][$type].'/'.$file, '/')),
 
-            'lbRoute' => fn(string $name) => route('webia.laundry-baby-blue.' . $name),
+            'lbRoute' => fn (string $name) => route('webia.laundry-baby-blue.'.$name),
         ]);
     }
 );
@@ -1124,16 +1137,16 @@ Route::prefix('webia/template/home-services/modern/laundry-baby-blue')
         $data = ['laundry' => config('template.home-services.modern.laundry-baby-blue.laundry')
             ?? require config_path('template/home-services/modern/laundry-baby-blue/laundry.php')];
 
-        Route::view('/', $view.'.index', $data)->name('home');       // Beranda (preview semua section)
-        Route::view('/layanan', $view.'.layanan', $data)->name('layanan');    // Laundry services
-        Route::view('/harga', $view.'.harga', $data)->name('harga');      // Price list by item/kg
-        Route::view('/pilihan-layanan', $view.'.pilihan-layanan', $data)->name('pilihan');    // Service options
-        Route::view('/estimasi-waktu', $view.'.estimasi-waktu', $data)->name('estimasi');   // Estimated turnaround time
-        Route::view('/area-layanan', $view.'.area-layanan', $data)->name('area');       // Pickup & delivery coverage
-        Route::view('/cara-order', $view.'.cara-order', $data)->name('cara-order'); // Order instructions
-        Route::view('/jam-operasional', $view.'.jam-operasional', $data)->name('jam');        // Operating hours
-        Route::view('/order-inquiry', $view.'.order-inquiry', $data)->name('order-inquiry'); // Order inquiry
-        Route::view('/ai-chatbot', $view.'.ai-chatbot', $data)->name('ai-chatbot'); // AI chatbot (FAQ harga & proses)
+        Route::view('/', $view . '.index', $data)->name('home');       // Beranda (preview semua section)
+        Route::view('/layanan', $view . '.layanan', $data)->name('layanan');    // Laundry services
+        Route::view('/harga', $view . '.harga', $data)->name('harga');      // Price list by item/kg
+        Route::view('/pilihan-layanan', $view . '.pilihan-layanan', $data)->name('pilihan');    // Service options
+        Route::view('/estimasi-waktu', $view . '.estimasi-waktu', $data)->name('estimasi');   // Estimated turnaround time
+        Route::view('/area-layanan', $view . '.area-layanan', $data)->name('area');       // Pickup & delivery coverage
+        Route::view('/cara-order', $view . '.cara-order', $data)->name('cara-order'); // Order instructions
+        Route::view('/jam-operasional', $view . '.jam-operasional', $data)->name('jam');        // Operating hours
+        Route::view('/order-inquiry', $view . '.order-inquiry', $data)->name('order-inquiry'); // Order inquiry
+        Route::view('/ai-chatbot', $view . '.ai-chatbot', $data)->name('ai-chatbot'); // AI chatbot (FAQ harga & proses)
     });
 
 Route::prefix('webia/template/home-services/minimalis/laundry-mint-fresh')
@@ -1141,15 +1154,15 @@ Route::prefix('webia/template/home-services/minimalis/laundry-mint-fresh')
     ->group(function () {
         $v = 'website-bisnis.template.home-services.minimalis.laundry-mint-fresh.';
 
-        Route::view('/', $v . 'pages.home')->name('home');
-        Route::view('/layanan', $v . 'pages.layanan')->name('layanan');
-        Route::view('/daftar-harga', $v . 'pages.harga')->name('harga');
-        Route::view('/opsi-layanan', $v . 'pages.opsi')->name('opsi');
-        Route::view('/estimasi-waktu', $v . 'pages.estimasi')->name('estimasi');
-        Route::view('/area-jemput-antar', $v . 'pages.area')->name('area');
-        Route::view('/cara-pemesanan', $v . 'pages.cara')->name('cara');
-        Route::view('/jam-operasional', $v . 'pages.jam')->name('jam');
-        Route::view('/order-inquiry', $v . 'pages.inquiry')->name('inquiry');
+        Route::view('/', $v.'pages.home')->name('home');
+        Route::view('/layanan', $v.'pages.layanan')->name('layanan');
+        Route::view('/daftar-harga', $v.'pages.harga')->name('harga');
+        Route::view('/opsi-layanan', $v.'pages.opsi')->name('opsi');
+        Route::view('/estimasi-waktu', $v.'pages.estimasi')->name('estimasi');
+        Route::view('/area-jemput-antar', $v.'pages.area')->name('area');
+        Route::view('/cara-pemesanan', $v.'pages.cara')->name('cara');
+        Route::view('/jam-operasional', $v.'pages.jam')->name('jam');
+        Route::view('/order-inquiry', $v.'pages.inquiry')->name('inquiry');
     });
 
 Route::prefix('webia/template/home-services/professional/laundry-classic-trust')
@@ -1173,16 +1186,16 @@ Route::prefix('webia/template/logistics-company-classic-trust')
     ->group(function () {
         $view = 'website-bisnis.template.transportation&logistics.corporate.logistics-company-classic-trust.';
 
-        Route::view('/', $view.'index')->name('home');
-        Route::view('/layanan', $view.'layanan')->name('layanan');
-        Route::view('/opsi-pengiriman', $view.'opsi-pengiriman')->name('opsi-pengiriman');
-        Route::view('/jangkauan', $view.'jangkauan')->name('jangkauan');
-        Route::view('/armada-gudang', $view.'armada-gudang')->name('armada-gudang');
-        Route::view('/proses-pengiriman', $view.'proses-pengiriman')->name('proses-pengiriman');
-        Route::view('/tracking', $view.'tracking')->name('tracking');
-        Route::view('/klien', $view.'klien')->name('klien');
-        Route::view('/penawaran', $view.'penawaran')->name('penawaran');
-        Route::view('/ai-chatbot', $view.'ai-chatbot')->name('ai-chatbot');
+        Route::view('/', $view . 'index')->name('home');
+        Route::view('/layanan', $view . 'layanan')->name('layanan');
+        Route::view('/opsi-pengiriman', $view . 'opsi-pengiriman')->name('opsi-pengiriman');
+        Route::view('/jangkauan', $view . 'jangkauan')->name('jangkauan');
+        Route::view('/armada-gudang', $view . 'armada-gudang')->name('armada-gudang');
+        Route::view('/proses-pengiriman', $view . 'proses-pengiriman')->name('proses-pengiriman');
+        Route::view('/tracking', $view . 'tracking')->name('tracking');
+        Route::view('/klien', $view . 'klien')->name('klien');
+        Route::view('/penawaran', $view . 'penawaran')->name('penawaran');
+        Route::view('/ai-chatbot', $view . 'ai-chatbot')->name('ai-chatbot');
     });
 
 Route::prefix('webia/template/transportation-logistics/modern/logistics-company-midnight-navy')
@@ -1192,16 +1205,16 @@ Route::prefix('webia/template/transportation-logistics/modern/logistics-company-
         $site = require config_path('template/transportation&logistics/modern/logistics-company-midnight-navy/logistics-company.php');
         $data = ['site' => $site];
 
-        Route::view('/', $ns.'.index', $data)->name('home');
-        Route::view('/layanan', $ns.'.layanan', $data)->name('services');
-        Route::view('/solusi-freight', $ns.'.solusi-freight', $data)->name('freight');
-        Route::view('/jangkauan', $ns.'.jangkauan', $data)->name('coverage');
-        Route::view('/armada-gudang', $ns.'.armada-gudang', $data)->name('fleet');
-        Route::view('/proses-pengiriman', $ns.'.proses-pengiriman', $data)->name('process');
-        Route::view('/tracking', $ns.'.tracking', $data)->name('tracking');
-        Route::view('/klien-korporat', $ns.'.klien-korporat', $data)->name('clients');
-        Route::view('/minta-penawaran', $ns.'.minta-penawaran', $data)->name('quotation');
-        Route::view('/ai-assistant', $ns.'.ai-assistant', $data)->name('chatbot');
+        Route::view('/', $ns . '.index', $data)->name('home');
+        Route::view('/layanan', $ns . '.layanan', $data)->name('services');
+        Route::view('/solusi-freight', $ns . '.solusi-freight', $data)->name('freight');
+        Route::view('/jangkauan', $ns . '.jangkauan', $data)->name('coverage');
+        Route::view('/armada-gudang', $ns . '.armada-gudang', $data)->name('fleet');
+        Route::view('/proses-pengiriman', $ns . '.proses-pengiriman', $data)->name('process');
+        Route::view('/tracking', $ns . '.tracking', $data)->name('tracking');
+        Route::view('/klien-korporat', $ns . '.klien-korporat', $data)->name('clients');
+        Route::view('/minta-penawaran', $ns . '.minta-penawaran', $data)->name('quotation');
+        Route::view('/ai-assistant', $ns . '.ai-assistant', $data)->name('chatbot');
     });
 
 Route::prefix('webia/template/transportation-logistics/bold/logistics-company-orange-energy')
@@ -1213,12 +1226,12 @@ Route::prefix('webia/template/transportation-logistics/bold/logistics-company-or
         $imgBase = 'images/website-bisnis/template/transportation&logistics/bold/logistics-company-orange-energy/';
 
         // Data yang dibagikan ke semua view template (frontend statis, tanpa database).
-        $data = fn(): array => [
+        $data = fn (): array => [
             'site' => config($cfg),
             'v' => $view,
             'rp' => $rp,
-            'to' => fn (?string $name = null): string => $name ? route($rp.$name) : '#',
-            'img' => fn (string $file): string => asset($imgBase.$file),
+            'to' => fn(?string $name = null): string => $name ? route($rp . $name) : '#',
+            'img' => fn(string $file): string => asset($imgBase . $file),
         ];
 
         // uri => [nama route, nama file blade]
@@ -1236,7 +1249,7 @@ Route::prefix('webia/template/transportation-logistics/bold/logistics-company-or
         ];
 
         foreach ($pages as $uri => [$name, $file]) {
-            Route::get($uri, fn() => view($view . $file, $data()))->name($name);
+            Route::get($uri, fn () => view($view.$file, $data()))->name($name);
         }
     });
 
@@ -1245,25 +1258,25 @@ Route::prefix('webia/template/agriculture-farming/corporate/agribisnis-forest-mo
     ->group(function () {
         $v = 'website-bisnis.template.agriculture&farming.corporate.agribisnis-forest-moss';
 
-        Route::view('/', $v.'.index')->name('home');
-        Route::view('/katalog-komoditas', $v.'.pages.katalog')->name('katalog');
-        Route::view('/informasi-tanaman-panen', $v.'.pages.panen')->name('panen');
-        Route::view('/spesifikasi-produk', $v.'.pages.spesifikasi')->name('spesifikasi');
-        Route::view('/jumlah-pemesanan-minimal', $v.'.pages.moq')->name('moq');
-        Route::view('/kapasitas-pasokan', $v.'.pages.kapasitas')->name('kapasitas');
-        Route::view('/jangkauan-distribusi', $v.'.pages.distribusi')->name('distribusi');
-        Route::view('/sertifikasi', $v.'.pages.sertifikasi')->name('sertifikasi');
-        Route::view('/inquiry-b2b', $v.'.pages.inquiry')->name('inquiry');
-        Route::view('/permintaan-penawaran', $v.'.pages.penawaran')->name('penawaran');
-        Route::view('/ai-assistant', $v.'.pages.chatbot')->name('chatbot');
+        Route::view('/', $v . '.index')->name('home');
+        Route::view('/katalog-komoditas', $v . '.pages.katalog')->name('katalog');
+        Route::view('/informasi-tanaman-panen', $v . '.pages.panen')->name('panen');
+        Route::view('/spesifikasi-produk', $v . '.pages.spesifikasi')->name('spesifikasi');
+        Route::view('/jumlah-pemesanan-minimal', $v . '.pages.moq')->name('moq');
+        Route::view('/kapasitas-pasokan', $v . '.pages.kapasitas')->name('kapasitas');
+        Route::view('/jangkauan-distribusi', $v . '.pages.distribusi')->name('distribusi');
+        Route::view('/sertifikasi', $v . '.pages.sertifikasi')->name('sertifikasi');
+        Route::view('/inquiry-b2b', $v . '.pages.inquiry')->name('inquiry');
+        Route::view('/permintaan-penawaran', $v . '.pages.penawaran')->name('penawaran');
+        Route::view('/ai-assistant', $v . '.pages.chatbot')->name('chatbot');
     });
 
 Route::prefix('webia/template/agriculture-farming/organic/agribisnis-earth-tone')
     ->name('webia.template.agribisnis-earth-tone.')
     ->group(function () {
 
-        $prefix    = 'webia/template/agriculture-farming/organic/agribisnis-earth-tone';
-        $viewBase  = 'website-bisnis.template.agriculture&farming.organic.agribisnis-earth-tone';
+        $prefix = 'webia/template/agriculture-farming/organic/agribisnis-earth-tone';
+        $viewBase = 'website-bisnis.template.agriculture&farming.organic.agribisnis-earth-tone';
         $assetBase = 'website-bisnis/template/agriculture&farming/organic/agribisnis-earth-tone';
 
         // $view = nama file blade, $key = kunci halaman (untuk menu aktif & tautan)
@@ -1277,70 +1290,70 @@ Route::prefix('webia/template/agriculture-farming/organic/agribisnis-earth-tone'
             }
 
             $waNumber = $data['contact']['whatsapp'] ?? '62895630300345';
-            $waBase = 'https://wa.me/'.$waNumber;
+            $waBase = 'https://wa.me/' . $waNumber;
 
             // Semua URL dibangun dari prefix sendiri (bukan route name) agar tidak bentrok.
             $urls = [
-                'home'           => url($prefix),
-                'komoditas'      => url($prefix . '/komoditas'),
-                'panen'          => url($prefix . '/informasi-panen'),
-                'spesifikasi'    => url($prefix . '/spesifikasi-produk'),
-                'moq'            => url($prefix . '/jumlah-pesanan-minimum'),
-                'kapasitas'      => url($prefix . '/kapasitas-pasokan'),
-                'distribusi'     => url($prefix . '/jangkauan-distribusi'),
-                'sertifikasi'    => url($prefix . '/sertifikasi'),
-                'b2b'            => url($prefix . '/inquiry-b2b'),
-                'penawaran'      => url($prefix . '/permintaan-penawaran'),
-                'chatbot'        => url($prefix . '/ai-chatbot'),
-                'whatsapp'       => $waBase . '?text=' . rawurlencode($data['contact']['whatsapp_text'] ?? 'Halo AgroHarvest'),
-                'whatsapp_karir' => $waBase . '?text=' . rawurlencode('Halo AgroHarvest, saya tertarik dengan informasi karir.'),
+                'home' => url($prefix),
+                'komoditas' => url($prefix.'/komoditas'),
+                'panen' => url($prefix.'/informasi-panen'),
+                'spesifikasi' => url($prefix.'/spesifikasi-produk'),
+                'moq' => url($prefix.'/jumlah-pesanan-minimum'),
+                'kapasitas' => url($prefix.'/kapasitas-pasokan'),
+                'distribusi' => url($prefix.'/jangkauan-distribusi'),
+                'sertifikasi' => url($prefix.'/sertifikasi'),
+                'b2b' => url($prefix.'/inquiry-b2b'),
+                'penawaran' => url($prefix.'/permintaan-penawaran'),
+                'chatbot' => url($prefix.'/ai-chatbot'),
+                'whatsapp' => $waBase.'?text='.rawurlencode($data['contact']['whatsapp_text'] ?? 'Halo AgroHarvest'),
+                'whatsapp_karir' => $waBase.'?text='.rawurlencode('Halo AgroHarvest, saya tertarik dengan informasi karir.'),
             ];
 
-            return view($viewBase . '.' . $view, [
+            return view($viewBase.'.'.$view, [
                 'data' => $data,
-                'u'    => $urls,
+                'u' => $urls,
                 'page' => $key,
-                'v'    => $viewBase,
-                'css'  => asset('css/' . $assetBase . '/logistics-agribisnis.css'),
-                'js'   => asset('js/' . $assetBase . '/agribisnis.js'),
-                'img'  => asset('images/' . $assetBase),
+                'v' => $viewBase,
+                'css' => asset('css/'.$assetBase.'/logistics-agribisnis.css'),
+                'js' => asset('js/'.$assetBase.'/agribisnis.js'),
+                'img' => asset('images/'.$assetBase),
             ]);
         };
 
-        Route::get('/', fn () => $render('index', 'home'))->name('home');
-        Route::get('/komoditas', fn () => $render('komoditas', 'komoditas'))->name('komoditas');
-        Route::get('/informasi-panen', fn () => $render('informasi-panen', 'panen'))->name('panen');
-        Route::get('/spesifikasi-produk', fn () => $render('spesifikasi-produk', 'spesifikasi'))->name('spesifikasi');
-        Route::get('/jumlah-pesanan-minimum', fn () => $render('jumlah-pesanan-minimum', 'moq'))->name('moq');
-        Route::get('/kapasitas-pasokan', fn () => $render('kapasitas-pasokan', 'kapasitas'))->name('kapasitas');
-        Route::get('/jangkauan-distribusi', fn () => $render('jangkauan-distribusi', 'distribusi'))->name('distribusi');
-        Route::get('/sertifikasi', fn () => $render('sertifikasi', 'sertifikasi'))->name('sertifikasi');
-        Route::get('/inquiry-b2b', fn () => $render('inquiry-b2b', 'b2b'))->name('b2b');
-        Route::get('/permintaan-penawaran', fn () => $render('permintaan-penawaran', 'penawaran'))->name('penawaran');
-        Route::get('/ai-chatbot', fn () => $render('ai-chatbot', 'chatbot'))->name('chatbot');
+        Route::get('/', fn() => $render('index', 'home'))->name('home');
+        Route::get('/komoditas', fn() => $render('komoditas', 'komoditas'))->name('komoditas');
+        Route::get('/informasi-panen', fn() => $render('informasi-panen', 'panen'))->name('panen');
+        Route::get('/spesifikasi-produk', fn() => $render('spesifikasi-produk', 'spesifikasi'))->name('spesifikasi');
+        Route::get('/jumlah-pesanan-minimum', fn() => $render('jumlah-pesanan-minimum', 'moq'))->name('moq');
+        Route::get('/kapasitas-pasokan', fn() => $render('kapasitas-pasokan', 'kapasitas'))->name('kapasitas');
+        Route::get('/jangkauan-distribusi', fn() => $render('jangkauan-distribusi', 'distribusi'))->name('distribusi');
+        Route::get('/sertifikasi', fn() => $render('sertifikasi', 'sertifikasi'))->name('sertifikasi');
+        Route::get('/inquiry-b2b', fn() => $render('inquiry-b2b', 'b2b'))->name('b2b');
+        Route::get('/permintaan-penawaran', fn() => $render('permintaan-penawaran', 'penawaran'))->name('penawaran');
+        Route::get('/ai-chatbot', fn() => $render('ai-chatbot', 'chatbot'))->name('chatbot');
     });
 
-    $agroConfigKey  = 'template.agriculture&farming.professional.agribisnis-classic-trust.agribisnis';
+$agroConfigKey  = 'template.agriculture&farming.professional.agribisnis-classic-trust.agribisnis';
 $agroConfigFile = config_path('template/agriculture&farming/professional/agribisnis-classic-trust/agribisnis.php');
-$agroData       = config($agroConfigKey) ?: (is_file($agroConfigFile) ? require $agroConfigFile : []);
-$agroView       = 'website-bisnis.template.agriculture&farming.professional.agribisnis-classic-trust';
+$agroData = config($agroConfigKey) ?: (is_file($agroConfigFile) ? require $agroConfigFile : []);
+$agroView = 'website-bisnis.template.agriculture&farming.professional.agribisnis-classic-trust';
 
 Route::prefix('webia/template/agribisnis-classic-trust')
     ->name('agribisnis-classic-trust.')
     ->group(function () use ($agroData, $agroView) {
         $data = ['agro' => $agroData, 'v' => $agroView];
 
-        Route::view('/', $agroView . '.index', $data)->name('home');
-        Route::view('/komoditas', $agroView . '.komoditas', $data)->name('komoditas');
-        Route::view('/informasi-panen', $agroView . '.panen', $data)->name('panen');
-        Route::view('/spesifikasi-produk', $agroView . '.spesifikasi', $data)->name('spesifikasi');
-        Route::view('/minimum-order', $agroView . '.minimum-order', $data)->name('minimum');
-        Route::view('/kapasitas-pasokan', $agroView . '.kapasitas', $data)->name('kapasitas');
-        Route::view('/jangkauan-distribusi', $agroView . '.distribusi', $data)->name('distribusi');
-        Route::view('/sertifikasi', $agroView . '.sertifikasi', $data)->name('sertifikasi');
-        Route::view('/b2b-inquiry', $agroView . '.b2b-inquiry', $data)->name('b2b');
-        Route::view('/quotation-request', $agroView . '.penawaran', $data)->name('penawaran');
-        Route::view('/ai-assistant', $agroView . '.ai-assistant', $data)->name('ai');
+        Route::view('/', $agroView.'.index', $data)->name('home');
+        Route::view('/komoditas', $agroView.'.komoditas', $data)->name('komoditas');
+        Route::view('/informasi-panen', $agroView.'.panen', $data)->name('panen');
+        Route::view('/spesifikasi-produk', $agroView.'.spesifikasi', $data)->name('spesifikasi');
+        Route::view('/minimum-order', $agroView.'.minimum-order', $data)->name('minimum');
+        Route::view('/kapasitas-pasokan', $agroView.'.kapasitas', $data)->name('kapasitas');
+        Route::view('/jangkauan-distribusi', $agroView.'.distribusi', $data)->name('distribusi');
+        Route::view('/sertifikasi', $agroView.'.sertifikasi', $data)->name('sertifikasi');
+        Route::view('/b2b-inquiry', $agroView.'.b2b-inquiry', $data)->name('b2b');
+        Route::view('/quotation-request', $agroView.'.penawaran', $data)->name('penawaran');
+        Route::view('/ai-assistant', $agroView.'.ai-assistant', $data)->name('ai');
     });
 
 Route::prefix('webia/template/nonprofit-community/professional/foundation-classic-trust')
@@ -1350,23 +1363,81 @@ Route::prefix('webia/template/nonprofit-community/professional/foundation-classi
         $path = 'website-bisnis/template/nonprofit&community/professional/foundation-classic-trust';
 
         $data = [
-            'fd'     => require config_path('template/nonprofit&community/professional/foundation-classic-trust/foundation.php'),
+            'fd' => require config_path('template/nonprofit&community/professional/foundation-classic-trust/foundation.php'),
             'fdBase' => $base,
-            'fdImg'  => 'images/' . $path,
-            'fdCss'  => 'css/' . $path . '/foundation.css',
-            'fdJs'   => 'js/' . $path . '/foundation.js',
+            'fdImg' => 'images/'.$path,
+            'fdCss' => 'css/'.$path.'/foundation.css',
+            'fdJs' => 'js/'.$path.'/foundation.js',
         ];
 
-        Route::view('/', $base . '.index', $data)->name('index');
-        Route::view('/tentang-kami', $base . '.mission-vision', $data)->name('mission');
-        Route::view('/program-kami', $base . '.programs', $data)->name('programs');
-        Route::view('/dampak', $base . '.impact', $data)->name('impact');
-        Route::view('/donasi', $base . '.donation', $data)->name('donation');
-        Route::view('/transparansi-keuangan', $base . '.financial-report', $data)->name('financial');
-        Route::view('/mitra-sponsor', $base . '.partners', $data)->name('partners');
-        Route::view('/relawan', $base . '.volunteer', $data)->name('volunteer');
-        Route::view('/berita-acara', $base . '.news-events', $data)->name('news');
-        Route::view('/chatbot', $base . '.chatbot', $data)->name('chatbot');
+        Route::view('/', $base.'.index', $data)->name('index');
+        Route::view('/tentang-kami', $base.'.mission-vision', $data)->name('mission');
+        Route::view('/program-kami', $base.'.programs', $data)->name('programs');
+        Route::view('/dampak', $base.'.impact', $data)->name('impact');
+        Route::view('/donasi', $base.'.donation', $data)->name('donation');
+        Route::view('/transparansi-keuangan', $base.'.financial-report', $data)->name('financial');
+        Route::view('/mitra-sponsor', $base.'.partners', $data)->name('partners');
+        Route::view('/relawan', $base.'.volunteer', $data)->name('volunteer');
+        Route::view('/berita-acara', $base.'.news-events', $data)->name('news');
+        Route::view('/chatbot', $base.'.chatbot', $data)->name('chatbot');
+    });
+
+Route::prefix('webia/template/nonprofit-community/creative/foundation-nature-green')
+    ->name('webia.template.nonprofit-community.creative.foundation-nature-green.')
+    ->group(function () {
+        $view = 'website-bisnis.template.nonprofit&community.creative.foundation-nature-green.';
+
+        Route::get('/', fn () => view($view.'index'))->name('home');
+        Route::get('/tentang-kami', fn () => view($view.'tentang-kami'))->name('tentang-kami');
+        Route::get('/program', fn () => view($view.'program'))->name('program');
+        Route::get('/dampak', fn () => view($view.'dampak'))->name('dampak');
+        Route::get('/donasi', fn () => view($view.'donasi'))->name('donasi');
+        Route::get('/transparansi', fn () => view($view.'transparansi'))->name('transparansi');
+        Route::get('/mitra', fn () => view($view.'mitra'))->name('mitra');
+        Route::get('/relawan', fn () => view($view.'relawan'))->name('relawan');
+        Route::get('/berita', fn () => view($view.'berita'))->name('berita');
+        Route::get('/ai-chatbot', fn () => view($view.'ai-chatbot'))->name('ai-chatbot');
+    });
+
+Route::prefix('webia/template/nonprofit-community/minimalis/foundation-warm-neutral')
+    ->name('foundation-warm-neutral.')
+    ->group(function () {
+
+        $viewBase = 'website-bisnis.template.nonprofit&community.minimalis.foundation-warm-neutral';
+        $assetDir = 'template/nonprofit&community/minimalis/foundation-warm-neutral';
+
+        // Konten dibaca dari config; jika belum ter-load (mis. config cache lama), baca file langsung.
+        $config = config('template.nonprofit&community.minimalis.foundation-warm-neutral.foundation');
+        if (empty($config) || !is_array($config)) {
+            $file   = base_path('config/' . $assetDir . '/foundation.php');
+            $config = is_file($file) ? require $file : [];
+        }
+
+        $data = [
+            'f'   => $config,
+            'v'   => $viewBase,
+            'rp'  => 'foundation-warm-neutral.',
+            'img' => 'images/website-bisnis/' . $assetDir,
+            'css' => 'css/website-bisnis/' . $assetDir . '/foundation.css',
+            'js'  => 'js/website-bisnis/' . $assetDir . '/foundation.js',
+        ];
+
+        $pages = [
+            'home'           => ['/',                'index'],
+            'mission-vision' => ['/misi-visi',       'mission-vision'],
+            'programs'       => ['/program',         'programs'],
+            'impact'         => ['/dampak',          'impact'],
+            'donation'       => ['/donasi',          'donation'],
+            'transparency'   => ['/transparansi',    'transparency'],
+            'partners'       => ['/mitra-sponsor',   'partners'],
+            'volunteer'      => ['/relawan',         'volunteer'],
+            'news'           => ['/berita-acara',    'news'],
+            'chatbot'        => ['/hopebot',         'chatbot'],
+        ];
+
+        foreach ($pages as $name => $page) {
+            \Illuminate\Support\Facades\Route::view($page[0], $viewBase . '.' . $page[1], $data)->name($name);
+        }
     });
 
 Route::prefix('webia/template/nonprofit-community/creative/social-organization-tropical-rush')
@@ -1388,37 +1459,42 @@ Route::prefix('webia/template/nonprofit-community/creative/social-organization-t
         ];
 
         foreach ($pages as $name => $uri) {
-            Route::get($uri, fn() => view($view, ['page' => $name]))->name($name);
+            Route::get($uri, fn () => view($view, ['page' => $name]))->name($name);
         }
     });
 
 Route::prefix('webia/template/nonprofit-community/bold/social-organization-citrus-pop')->group(function () {
     $view = 'website-bisnis.template.nonprofit&community.bold.social-organization-citrus-pop.';
-    $dir  = 'website-bisnis/template/nonprofit&community/bold/social-organization-citrus-pop/';
-    $key  = 'template.nonprofit&community.bold.social-organization-citrus-pop.social-organization';
+    $dir = 'website-bisnis/template/nonprofit&community/bold/social-organization-citrus-pop/';
+    $key = 'template.nonprofit&community.bold.social-organization-citrus-pop.social-organization';
 
     $ctx = function (string $page) use ($view, $dir, $key) {
         $data = config($key) ?: require config_path('template/nonprofit&community/bold/social-organization-citrus-pop/social-organization.php');
 
         return [
-            'd'     => $data,
-            'v'     => $view,
-            'page'  => $page,
-            'inc'   => $view . 'partials.' . $page,
+            'd' => $data,
+            'v' => $view,
+            'page' => $page,
+            'inc' => $view.'partials.'.$page,
             'title' => $data['pages'][$page]['t'],
-            'base'  => rtrim(url('/webia/template/nonprofit-community/bold/social-organization-citrus-pop'), '/'),
-            'img'   => asset('images/' . $dir),
-            'css'   => asset('css/' . $dir . 'social-organization.css'),
-            'js'    => asset('js/' . $dir . 'social-organization.js'),
+            'base' => rtrim(url('/webia/template/nonprofit-community/bold/social-organization-citrus-pop'), '/'),
+            'img' => asset('images/'.$dir),
+            'css' => asset('css/'.$dir.'social-organization.css'),
+            'js' => asset('js/'.$dir.'social-organization.js'),
         ];
     };
 
-    Route::get('/', fn () => view($view . 'social-organization', $ctx('beranda')))->name('citrus.beranda');
+    Route::get('/', fn() => view($view . 'social-organization', $ctx('beranda')))->name('citrus.beranda');
 
     foreach (['profil', 'program', 'galeri', 'kisah', 'event', 'daftar', 'mitra', 'kontak', 'chatbot'] as $page) {
-        Route::get('/' . $page, fn () => view($view . 'halaman', $ctx($page)))->name('citrus.' . $page);
+        Route::get('/' . $page, fn() => view($view . 'halaman', $ctx($page)))->name('citrus.' . $page);
     }
 });
+
+Route::get('/webia/template/photography-creative-studio/bold/ugc-content-creator-studio-pink-voltage/{page?}', function (?string $page = null) {
+    return view('website-bisnis.template.photography-creative-studio.bold.ugc-content-creator-studio-pink-voltage.ugc-content-creator-studio', ['page' => $page ?: 'home']);
+})->where('page', 'home|portofolio|video-ugc|paket|hak-guna|platform|kolaborasi|kampanye|testimoni|tanya-ai')->name('webia.template.ugc-content-creator-studio');
+
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -1426,21 +1502,21 @@ Route::prefix('webia/template/transportation-logistics/delivery/logistics-compan
     $view = 'website-bisnis.template.transportation&logistics.delivery.logistics-company-emerald-express.';
     $site = require config_path('template/transportation&logistics/delivery/logistics-company-emerald-express/logistics-company.php');
 
-    Route::get('/', fn() => view($view . 'index', ['site' => $site]))->name('webia.template.logistics-company-emerald-express.home');
+    Route::get('/', fn () => view($view.'index', ['site' => $site]))->name('webia.template.logistics-company-emerald-express.home');
 });
 
 Route::prefix('webia/template/transportation-logistics/moving/logistics-company-navy-hearth')->group(function () {
     $view = 'website-bisnis.template.transportation&logistics.moving.logistics-company-navy-hearth.';
     $site = require config_path('template/transportation&logistics/moving/logistics-company-navy-hearth/logistics-company.php');
 
-    Route::get('/', fn() => view($view . 'index', ['site' => $site]))->name('webia.template.logistics-company-navy-hearth.home');
+    Route::get('/', fn () => view($view.'index', ['site' => $site]))->name('webia.template.logistics-company-navy-hearth.home');
 });
 
 Route::prefix('webia/template/transportation-logistics/luxury/logistics-company-rose-atelier')->group(function () {
     $view = 'website-bisnis.template.transportation&logistics.luxury.logistics-company-rose-atelier.';
     $site = require config_path('template/transportation&logistics/luxury/logistics-company-rose-atelier/logistics-company.php');
 
-    Route::get('/', fn() => view($view . 'index', ['site' => $site]))->name('webia.template.logistics-company-rose-atelier.home');
+    Route::get('/', fn () => view($view.'index', ['site' => $site]))->name('webia.template.logistics-company-rose-atelier.home');
 });
 
 // ------------------------------------------------------------------------------------------------------------------//
@@ -1522,6 +1598,18 @@ Route::prefix('webia/template')->group(function () {
     )->name('webia.template.aria-thorne-author-writer');
 });
 
+Route::prefix('webia/template')->group(function () {
+    Route::view(
+        '/arya-sanjaya-ruby-editorial',
+        'website-bisnis.templates.personal-brand.author-writer.arya-sanjaya-ruby-editorial'
+    )->name('webia.template.personal-brand.arya-sanjaya-ruby-editorial');
+
+    Route::view(
+        '/arya-sanjaya-plum-velvet',
+        'website-bisnis.templates.personal-brand.author-writer.arya-sanjaya-plum-velvet'
+    )->name('webia.template.personal-brand.arya-sanjaya-plum-velvet');
+});
+
 Route::view(
     'webia/template/fnb/restaurant/little-corner',
     'website-bisnis.templates.fnb.little-corner'
@@ -1541,62 +1629,62 @@ Route::view(
 $viewBase = 'website-bisnis.templates.beauty.ruby-luxe';
 
 Route::prefix('templates/ruby-luxe')->name('ruby-luxe.')->group(function () use ($viewBase) {
-    Route::view('/', $viewBase . '.home')->name('home');
+    Route::view('/', $viewBase.'.home')->name('home');
 
-    Route::view('/treatments', $viewBase . '.treatments.index')
+    Route::view('/treatments', $viewBase.'.treatments.index')
         ->name('treatments.index');
 
-    Route::view('/treatments/{slug}', $viewBase . '.treatments.show')
+    Route::view('/treatments/{slug}', $viewBase.'.treatments.show')
         ->name('treatments.show');
 
-    Route::view('/products', $viewBase . '.products.index')
+    Route::view('/products', $viewBase.'.products.index')
         ->name('products.index');
 
-    Route::view('/products/{slug}', $viewBase . '.products.show')
+    Route::view('/products/{slug}', $viewBase.'.products.show')
         ->name('products.show');
 
-    Route::view('/cart', $viewBase . '.products.cart')
+    Route::view('/cart', $viewBase.'.products.cart')
         ->name('cart');
 
-    Route::view('/booking', $viewBase . '.booking.create')
+    Route::view('/booking', $viewBase.'.booking.create')
         ->name('booking.create');
 
-    Route::view('/booking/confirmation', $viewBase . '.booking.confirmation')
+    Route::view('/booking/confirmation', $viewBase.'.booking.confirmation')
         ->name('booking.confirmation');
 
-    Route::view('/journal', $viewBase . '.journal.index')
+    Route::view('/journal', $viewBase.'.journal.index')
         ->name('journal.index');
 
-    Route::view('/journal/{slug}', $viewBase . '.journal.show')
+    Route::view('/journal/{slug}', $viewBase.'.journal.show')
         ->name('journal.show');
 
-    Route::view('/about', $viewBase . '.pages.about')->name('about');
-    Route::view('/team', $viewBase . '.pages.team')->name('team');
-    Route::view('/contact', $viewBase . '.pages.contact')->name('contact');
-    Route::view('/faq', $viewBase . '.pages.faq')->name('faq');
+    Route::view('/about', $viewBase.'.pages.about')->name('about');
+    Route::view('/team', $viewBase.'.pages.team')->name('team');
+    Route::view('/contact', $viewBase.'.pages.contact')->name('contact');
+    Route::view('/faq', $viewBase.'.pages.faq')->name('faq');
 
     Route::prefix('account')->name('account.')->group(function () use ($viewBase) {
-        Route::view('/', $viewBase . '.account.dashboard')->name('dashboard');
-        Route::view('/bookings', $viewBase . '.account.bookings')->name('bookings');
-        Route::view('/orders', $viewBase . '.account.orders')->name('orders');
+        Route::view('/', $viewBase.'.account.dashboard')->name('dashboard');
+        Route::view('/bookings', $viewBase.'.account.bookings')->name('bookings');
+        Route::view('/orders', $viewBase.'.account.orders')->name('orders');
     });
 
     Route::prefix('admin')->name('admin.')->group(function () use ($viewBase) {
-        Route::view('/', $viewBase . '.admin.dashboard')->name('dashboard');
+        Route::view('/', $viewBase.'.admin.dashboard')->name('dashboard');
 
-        Route::view('/treatments', $viewBase . '.admin.treatments.index')
+        Route::view('/treatments', $viewBase.'.admin.treatments.index')
             ->name('treatments.index');
 
-        Route::view('/products', $viewBase . '.admin.products.index')
+        Route::view('/products', $viewBase.'.admin.products.index')
             ->name('products.index');
 
-        Route::view('/bookings', $viewBase . '.admin.bookings.index')
+        Route::view('/bookings', $viewBase.'.admin.bookings.index')
             ->name('bookings.index');
 
-        Route::view('/orders', $viewBase . '.admin.orders.index')
+        Route::view('/orders', $viewBase.'.admin.orders.index')
             ->name('orders.index');
 
-        Route::view('/articles', $viewBase . '.admin.articles.index')
+        Route::view('/articles', $viewBase.'.admin.articles.index')
             ->name('articles.index');
     });
 
@@ -1682,4 +1770,16 @@ Route::prefix('webia/template')->group(function () {
         '/sakurabit-hardware-computer-networking',
         'website-bisnis.templates.technology.hardware-computer-networking.sakurabit.sakurabit'
     )->name('webia.template.sakurabit-hardware-computer-networking');
+    Route::view(
+        '/cyberwave-hardware-computer-networking',
+        'website-bisnis.templates.technology.hardware-computer-networking.cyberwave.cyberwave'
+    )->name('webia.template.cyberwave-hardware-computer-networking');
+    Route::view(
+        '/aetherion-digital-hardware-universe',
+        'website-bisnis.templates.technology.hardware-computer-networking.aetherion.aetherion'
+    )->name('webia.template.aetherion-digital-hardware-universe');
+    Route::view(
+        '/baitul-safar-umrah-haji',
+        'website-bisnis.templates.travel-tourism.umrah-haji.baitul-safar.baitul-safar'
+    )->name('webia.template.baitul-safar-umrah-haji');
 });

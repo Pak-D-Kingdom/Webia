@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             WebiaPackageSeeder::class,
             WebiaAddonSeeder::class,
             AdminUserSeeder::class,
+            CustomerAccountsSeeder::class,
         ]);
     }
 }

@@ -24,13 +24,13 @@
             <span class="bigico bigico--leaf"><svg class="i" aria-hidden="true"><use href="#i-sprout"/></svg></span>
             <div>
                 <small>Total kapasitas</small>
-                <strong>{{ $cap['headline'] }}</strong>
+                <strong>&gt; <span data-count="{{ $cap['number'] }}">{{ $cap['number_fmt'] }}</span> Ton</strong>
                 <p>{{ $cap['unit'] }} — dari jaringan petani mitra dan pusat pengolahan yang tersebar di sentra produksi utama.</p>
             </div>
         </article>
         <ul class="statgrid">
             @foreach ($cap['stats'] as $s)
-                <li><strong>{{ $s[0] }}</strong><span>{{ $s[1] }}</span></li>
+                <li><strong><span data-count="{{ $s['num'] }}">{{ $s['fmt'] }}</span>{{ $s['suf'] }}</strong><span>{{ $s['label'] }}</span></li>
             @endforeach
         </ul>
     </div>

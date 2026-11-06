@@ -39,8 +39,8 @@
             <small class="field__err" data-err></small>
         </div>
     </div>
-    <button class="btn btn--lime" type="submit"><span>{{ $cfg['inquiry']['btn'] }}</span><svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg></button>
-    <p class="form__note"><svg class="ic" aria-hidden="true"><use href="#i-wa-fill"/></svg>Pesan akan dikirim ke tim kami melalui WhatsApp.</p>
+    <button class="btn btn--lime" type="submit"><svg class="ic ic--wa" aria-hidden="true"><use href="#i-wa-fill"/></svg><span>Kirim via WhatsApp</span></button>
+    <p class="form__note"><svg class="ic" aria-hidden="true"><use href="#i-wa-fill"/></svg>Pesan dikirim langsung ke WhatsApp tim kami ({{ $cfg['site']['whatsapp_display'] }}).</p>
     <div class="form__ok" data-ok role="status" hidden>
         <p>Terima kasih! WhatsApp akan terbuka dengan pesan Anda yang sudah terisi. Tekan tombol kirim di WhatsApp untuk menyelesaikan.</p>
         <a class="form__wa" data-wa-link href="#" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-wa-fill"/></svg>Buka WhatsApp</a>

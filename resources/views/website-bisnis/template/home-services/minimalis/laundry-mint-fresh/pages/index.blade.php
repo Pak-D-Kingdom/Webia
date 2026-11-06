@@ -12,7 +12,15 @@
 @section('content')
     {{-- ===== HERO BANNER ===== --}}
     <section class="lw-hero" aria-labelledby="lw-hero-title">
-        <img class="lw-hero__img" src="{{ $img($c['img']['hero']) }}" alt="Mesin cuci, handuk bersih, dan keranjang laundry FreshWash" width="3072" height="492" fetchpriority="high">
+        <img class="lw-hero__img" src="{{ $img($c['img']['hero']) }}" alt="Mesin cuci, handuk bersih, dan keranjang laundry FreshWash" width="3072" height="730" fetchpriority="high">
+        <span class="lw-bubbles" aria-hidden="true">
+            <i style="--x: 8%;  --s: 14px; --t: 13s; --d: 0s"></i>
+            <i style="--x: 22%; --s: 9px;  --t: 16s; --d: 3s"></i>
+            <i style="--x: 41%; --s: 18px; --t: 14s; --d: 6s"></i>
+            <i style="--x: 58%; --s: 10px; --t: 17s; --d: 1.5s"></i>
+            <i style="--x: 74%; --s: 16px; --t: 15s; --d: 8s"></i>
+            <i style="--x: 90%; --s: 11px; --t: 18s; --d: 4.5s"></i>
+        </span>
 
         <div class="lw-hero__in">
             <div class="lw-hero__copy">
