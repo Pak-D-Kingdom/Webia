@@ -49,6 +49,44 @@ class CustomerSiteTest extends TestCase
             ->assertDontSee('Origins Cafe');
     }
 
+    public function test_publishing_elegant_template_renders_customer_site(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $order = $this->cafeOrder([
+            'business_data' => [
+                'business_name' => 'Lumiere Sore',
+                'tagline' => 'Kopi elegan',
+                'whatsapp' => '0812-3456-7890',
+                'description' => 'Kedai kopi elegan di Bandung.',
+                'address' => 'Jl. Cendana No. 7',
+                'city' => 'Bandung',
+                'address_url' => 'https://maps.google.com/?q=lumiere-sore',
+                'instagram' => '@lumieresore',
+            ],
+        ], 'fnb-cafe-elegan');
+
+        $this->actingAs($admin)->post(route('admin.orders.progress', $order), [
+            'action' => 'finish',
+        ])->assertRedirect(route('admin.orders.show', $order));
+
+        $order->refresh();
+        $this->assertSame('lumiere-sore-'.$order->id, $order->site_slug);
+
+        $siteUrl = route('sites.show', ['order' => $order->site_slug]);
+        $this->get($siteUrl)
+            ->assertOk()
+            ->assertSee('Lumiere Sore')
+            ->assertSee('Kedai kopi elegan di Bandung.')
+            ->assertSee('Jl. Cendana No. 7')
+            ->assertSee('6281234567890', false)
+            ->assertSee($siteUrl.'/menu', false)
+            ->assertSee($siteUrl.'/reservasi', false)
+            ->assertDontSee('The Lumière');
+
+        $this->get($siteUrl.'/menu')->assertOk()->assertSee('Lumiere Sore');
+        $this->get($siteUrl.'/reservasi')->assertOk()->assertSee('Reservasi');
+    }
+
     public function test_customer_site_is_not_public_before_delivery(): void
     {
         $order = $this->cafeOrder(['site_slug' => 'kopi-kawan']);
@@ -192,6 +230,7 @@ class CustomerSiteTest extends TestCase
             'site_config_path' => match ($templateSlug) {
                 'fnb-cafe-minimalis' => 'f&b/minimalis/cafe-earthtone/cafe',
                 'fnb-cafe-vintage' => 'f&b/vintage/cafe-earthtone/cafe',
+                'fnb-cafe-elegan' => 'f&b/elegan/cafe-earthtone/cafe',
                 default => null,
             },
         ]);

@@ -35,6 +35,7 @@ class CustomerSiteController extends Controller
 
         $cafe = match (true) {
             str_starts_with($siteConfigPath, 'f&b/vintage/') => $this->vintageSiteConfig($siteConfig, $business, $order, $whatsapp, $instagram),
+            str_starts_with($siteConfigPath, 'f&b/elegan/') => $this->eleganSiteConfig($siteConfig, $business, $order, $whatsapp, $instagram),
             default => $this->minimalisSiteConfig($siteConfig, $business, $order, $whatsapp, $instagram),
         };
         config(['cafe' => $cafe]);
@@ -71,6 +72,55 @@ class CustomerSiteController extends Controller
             'city' => $business['city'] ?? '',
             'city_short' => $business['city'] ?? '',
             'social' => $instagram === '' ? [] : [['Instagram', 'ig', 'https://instagram.com/'.$instagram]],
+        ]);
+    }
+
+    private function eleganSiteConfig(array $siteConfig, array $business, WebiaOrder $order, string $whatsapp, string $instagram): array
+    {
+        $name = $business['business_name'] ?? 'Cafe';
+        $address = trim(($business['address'] ?? '').($business['city'] ?? '' ? ', '.$business['city'] : ''));
+        // Teks konten demo masih menyebut nama template demo; tukar dengan nama bisnis pelanggan.
+        array_walk_recursive($siteConfig, function (&$value) use ($siteConfig, $name): void {
+            if (is_string($value)) {
+                $value = str_replace($siteConfig['brand']['name'], $name, $value);
+            }
+        });
+
+        $faqItems = collect($siteConfig['faq']['items'])->map(function (array $item) use ($business): array {
+            if (isset($item['keywords'])) {
+                match (true) {
+                    in_array('lokasi', $item['keywords'], true) => $item['a'] = 'Kami berada di '.($business['address'] ?? '').', '.($business['city'] ?? '').'.',
+                    default => null,
+                };
+            }
+
+            return $item;
+        });
+        $addressUrl = ($business['address_url'] ?? '') ?: ($siteConfig['contact']['maps_url'] ?? '');
+
+        return array_replace($siteConfig, [
+            'brand' => [
+                'name' => $name,
+                'title' => $name,
+                'description' => ($business['description'] ?? null) ?: 'Nikmati kopi, hidangan, dan suasana elegan di '.$name.'. Reservasi meja atau pesan lewat WhatsApp.',
+                'footer_text' => $siteConfig['brand']['footer_text'],
+            ],
+            'contact' => [
+                'address' => $address,
+                'address_full' => $address,
+                'phone' => $business['whatsapp'] ?? '',
+                'whatsapp' => $whatsapp,
+                'email' => $order->user?->email ?? '',
+                'open_text' => $siteConfig['contact']['open_text'],
+                'maps_url' => $addressUrl,
+                'chat_message' => 'Halo '.$name.', saya ingin bertanya tentang menu dan promo.',
+            ],
+            'social' => $instagram === '' ? [] : [['name' => 'Instagram', 'icon' => 'instagram', 'url' => 'https://instagram.com/'.$instagram]],
+            'slides' => [array_replace($siteConfig['slides'][0], [
+                'text' => ($business['description'] ?? null) ?: $siteConfig['slides'][0]['text'],
+            ])],
+            'location' => array_replace($siteConfig['location'], ['embed_url' => $addressUrl]),
+            'faq' => array_replace($siteConfig['faq'], ['items' => $faqItems->all()]),
         ]);
     }
 

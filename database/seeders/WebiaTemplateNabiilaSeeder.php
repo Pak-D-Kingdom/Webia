@@ -152,6 +152,7 @@ class WebiaTemplateNabiilaSeeder extends Seeder
                 'tag' => 'F&B · Cafe & Eatery · Elegant',
                 'preview_folder' => null,
                 'template_url' => '/webia/template/fnb/elegan',
+                'site_config_path' => 'f&b/elegan/cafe-earthtone/cafe',
                 'is_active' => true,
                 'sort_order' => 27,
             ],
