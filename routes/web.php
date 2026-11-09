@@ -716,16 +716,6 @@ Route::prefix('webia/template/property/premium-minimal/real-estate-agency-nature
 
         Route::get('/', fn () => $page('index', 'home'))->name('home');
         Route::get('/properties', fn () => $page('properties', 'properties'))->name('properties');
-        $page = fn (string $view, string $active) => view($ns.$view, [
-            'ns' => $ns,
-            'active' => $active,
-            't' => config($cfg),
-            'r' => fn (string $route, array $params = []) => route($name.$route, $params),
-            'img' => fn (string $file) => asset(config($cfg.'.assets.images').'/'.$file),
-        ]);
-
-        Route::get('/', fn () => $page('index', 'home'))->name('home');
-        Route::get('/properties', fn () => $page('properties', 'properties'))->name('properties');
         Route::get('/properties/{slug}', function (string $slug) use ($page, $cfg) {
             $property = collect(config($cfg.'.properties'))->firstWhere('slug', $slug);
             abort_if($property === null, 404);
@@ -736,17 +726,12 @@ Route::prefix('webia/template/property/premium-minimal/real-estate-agency-nature
         Route::get('/gallery', fn () => $page('gallery', 'gallery'))->name('gallery');
         Route::get('/booking', fn () => $page('booking', 'booking'))->name('booking');
         Route::get('/blog', fn () => $page('blog', 'blog'))->name('blog');
-        Route::get('/about-us', fn () => $page('about', 'about'))->name('about');
-        Route::get('/gallery', fn () => $page('gallery', 'gallery'))->name('gallery');
-        Route::get('/booking', fn () => $page('booking', 'booking'))->name('booking');
-        Route::get('/blog', fn () => $page('blog', 'blog'))->name('blog');
         Route::get('/blog/{slug}', function (string $slug) use ($page, $cfg) {
             $post = collect(config($cfg.'.blog'))->firstWhere('slug', $slug);
             abort_if($post === null, 404);
 
             return $page('article', 'blog')->with('post', $post);
         })->name('blog.show');
-        Route::get('/contact', fn () => $page('contact', 'contact'))->name('contact');
         Route::get('/contact', fn () => $page('contact', 'contact'))->name('contact');
     });
 
@@ -764,14 +749,6 @@ Route::prefix('webia/template/property/professional/real-estate-agency-coral-pea
         Route::get('/gallery', fn () => view("$view.gallery", ['site' => $site()]))->name('gallery');
         Route::get('/booking', fn () => view("$view.booking", ['site' => $site()]))->name('booking');
         Route::get('/blog', fn () => view("$view.blog", ['site' => $site()]))->name('blog');
-        Route::get('/', fn () => view("$view.index", ['site' => $site()]))->name('home');
-        Route::get('/property', fn () => view("$view.property", ['site' => $site()]))->name('property');
-        Route::get('/specification', fn () => view("$view.specification", ['site' => $site()]))->name('specification');
-        Route::get('/price', fn () => view("$view.price", ['site' => $site()]))->name('price');
-        Route::get('/about-us', fn () => view("$view.about", ['site' => $site()]))->name('about');
-        Route::get('/gallery', fn () => view("$view.gallery", ['site' => $site()]))->name('gallery');
-        Route::get('/booking', fn () => view("$view.booking", ['site' => $site()]))->name('booking');
-        Route::get('/blog', fn () => view("$view.blog", ['site' => $site()]))->name('blog');
         Route::get('/blog/{slug}', function (string $slug) use ($view, $site) {
             $data = $site();
             $post = collect($data['blog']['posts'])->firstWhere('slug', $slug);
@@ -779,7 +756,6 @@ Route::prefix('webia/template/property/professional/real-estate-agency-coral-pea
 
             return view("$view.blog-show", ['site' => $data, 'post' => $post]);
         })->name('blog.show');
-        Route::get('/contact', fn () => view("$view.contact", ['site' => $site()]))->name('contact');
         Route::get('/contact', fn () => view("$view.contact", ['site' => $site()]))->name('contact');
     });
 
