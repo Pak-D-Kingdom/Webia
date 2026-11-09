@@ -11,11 +11,11 @@
             <p class="kl-hero__text">{{ $h['text'] }}</p>
 
             <div class="kl-hero__actions">
-                <a class="kl-btn kl-btn--red" href="{{ route($cafe['routes'][$h['cta_primary']['route']]) }}">
+                <a class="kl-btn kl-btn--red" href="{{ $routeUrl($h['cta_primary']['route']) }}">
                     <span>{{ $h['cta_primary']['label'] }}</span>
                     <svg class="kl-icon" aria-hidden="true"><use href="#kl-i-{{ $h['cta_primary']['icon'] }}"/></svg>
                 </a>
-                <a class="kl-btn kl-btn--outline" href="{{ route($cafe['routes'][$h['cta_secondary']['route']]) }}">
+                <a class="kl-btn kl-btn--outline" href="{{ $routeUrl($h['cta_secondary']['route']) }}">
                     <svg class="kl-icon" aria-hidden="true"><use href="#kl-i-{{ $h['cta_secondary']['icon'] }}"/></svg>
                     <span>{{ $h['cta_secondary']['label'] }}</span>
                 </a>

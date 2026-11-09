@@ -3,7 +3,7 @@
     <img class="kl-pagehead__sketch" src="{{ $img('house-sketch.png') }}" alt="" aria-hidden="true" width="344" height="536">
     <div class="kl-pagehead__inner">
         <nav class="kl-crumb" aria-label="Breadcrumb">
-            <a href="{{ route($cafe['routes']['home']) }}">Beranda</a>
+            <a href="{{ $routeUrl('home') }}">Beranda</a>
             <span aria-hidden="true">/</span>
             <span aria-current="page">{{ $title }}</span>
         </nav>

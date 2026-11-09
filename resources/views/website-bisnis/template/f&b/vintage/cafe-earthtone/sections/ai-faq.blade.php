@@ -5,12 +5,12 @@
         'whatsapp' => 'https://wa.me/' . $cafe['contact']['wa_number'] . '?text=' . rawurlencode($cafe['whatsapp']['message']),
         'whatsappLabel' => $cafe['whatsapp']['cta'],
         'endpoint' => $f['endpoint'],
-        'items' => collect($f['items'])->map(function ($i) use ($cafe) {
+        'items' => collect($f['items'])->map(function ($i) use ($cafe, $routeUrl) {
             return [
                 'keywords' => $i['keywords'],
                 'answer'   => $i['answer'],
                 'link'     => isset($i['link'])
-                    ? ['label' => $i['link']['label'], 'url' => route($cafe['routes'][$i['link']['route']])]
+                    ? ['label' => $i['link']['label'], 'url' => $routeUrl($i['link']['route'])]
                     : null,
             ];
         })->values(),

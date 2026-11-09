@@ -33,7 +33,33 @@ class CustomerSiteController extends Controller
         $siteConfig = config('template.'.str_replace('/', '.', $siteConfigPath));
         abort_unless(is_array($siteConfig), 404);
 
-        $cafe = array_replace($siteConfig, [
+        $cafe = match (true) {
+            str_starts_with($siteConfigPath, 'f&b/vintage/') => $this->vintageSiteConfig($siteConfig, $business, $order, $whatsapp, $instagram),
+            default => $this->minimalisSiteConfig($siteConfig, $business, $order, $whatsapp, $instagram),
+        };
+        config(['cafe' => $cafe]);
+
+        $templatePath = Str::beforeLast($siteConfigPath, '/');
+        $path = 'website-bisnis/template/'.$templatePath;
+        $view = str_replace('/', '.', $path);
+        $pageUrl = fn (string $name = 'home', string $hash = ''): string => route('sites.show', [
+            'order' => $order->site_slug,
+            'page' => $name === 'home' ? null : $name,
+        ]).$hash;
+
+        return view($view.'.'.$views[$page], [
+            'v' => $view,
+            'path' => $path,
+            'currentPage' => $page,
+            'cafe' => $cafe,
+            'pageUrl' => $pageUrl,
+            'routeUrl' => $pageUrl,
+        ]);
+    }
+
+    private function minimalisSiteConfig(array $siteConfig, array $business, WebiaOrder $order, string $whatsapp, string $instagram): array
+    {
+        return array_replace($siteConfig, [
             'name' => $business['business_name'] ?? 'Cafe',
             'tagline' => ($business['tagline'] ?? null) ?: 'Cafe & Eatery',
             'hero_title' => ($business['tagline'] ?? null) ?: ($business['business_name'] ?? 'Cafe & Eatery'),
@@ -46,20 +72,51 @@ class CustomerSiteController extends Controller
             'city_short' => $business['city'] ?? '',
             'social' => $instagram === '' ? [] : [['Instagram', 'ig', 'https://instagram.com/'.$instagram]],
         ]);
-        config(['cafe' => $cafe]);
+    }
 
-        $templatePath = Str::beforeLast($siteConfigPath, '/');
-        $path = 'website-bisnis/template/'.$templatePath;
-        $view = str_replace('/', '.', $path);
+    private function vintageSiteConfig(array $siteConfig, array $business, WebiaOrder $order, string $whatsapp, string $instagram): array
+    {
+        $name = $business['business_name'] ?? 'Cafe';
+        // Teks konten demo masih menyebut nama template demo; tukar dengan nama bisnis pelanggan.
+        array_walk_recursive($siteConfig, function (&$value) use ($siteConfig, $name): void {
+            if (is_string($value)) {
+                $value = str_replace($siteConfig['brand']['name'], $name, $value);
+            }
+        });
 
-        return view($view.'.'.$views[$page], [
-            'v' => $view,
-            'path' => $path,
-            'currentPage' => $page,
-            'pageUrl' => fn (string $name = 'home', string $hash = ''): string => route('sites.show', [
-                'order' => $order->site_slug,
-                'page' => $name === 'home' ? null : $name,
-            ]).$hash,
+        $faqItems = collect($siteConfig['faq']['items'])->map(function (array $item) use ($name, $business): array {
+            if (isset($item['keywords'])) {
+                match (true) {
+                    in_array('lokasi', $item['keywords'], true) => $item['answer'] = $name.' ada di '.($business['address'] ?? '').', '.($business['city'] ?? '').'.',
+                    in_array('whatsapp', $item['keywords'], true) => $item['answer'] = 'Hubungi kami di '.($business['whatsapp'] ?? '').' atau chat langsung lewat tombol WhatsApp bulat di pojok kanan bawah layar.',
+                    default => null,
+                };
+            }
+
+            return $item;
+        });
+
+        $addressUrl = ($business['address_url'] ?? '') ?: ($siteConfig['contact']['maps_url'] ?? '');
+
+        return array_replace($siteConfig, [
+            'brand' => array_replace($siteConfig['brand'], ['tagline' => ($business['tagline'] ?? null) ?: 'Café & Eatery']),
+            'contact' => [
+                'phone' => $business['whatsapp'] ?? '',
+                'wa_number' => $whatsapp,
+                'email' => $order->user?->email ?? '',
+                'address' => $business['address'] ?? '',
+                'address_short' => $business['address'] ?? '',
+                'maps_url' => $addressUrl,
+            ],
+            'socials' => $instagram === '' ? [] : [['key' => 'instagram', 'label' => 'Instagram', 'url' => 'https://instagram.com/'.$instagram]],
+            'topbar_socials' => $instagram === '' ? [] : ['instagram'],
+            'hero' => array_replace($siteConfig['hero'], [
+                'subtitle' => ($business['tagline'] ?? null) ?: 'Café & Eatery',
+                'text' => ($business['description'] ?? null) ?: 'Tempat nyaman untuk menikmati kopi, makanan, dan kebersamaan.',
+            ]),
+            'whatsapp' => array_replace($siteConfig['whatsapp'], ['message' => 'Halo '.$name.', saya ingin bertanya.']),
+            'reservation' => array_replace($siteConfig['reservation'], ['wa_title' => 'Halo '.$name.', saya ingin reservasi meja:']),
+            'faq' => array_replace($siteConfig['faq'], ['items' => $faqItems]),
         ]);
     }
 

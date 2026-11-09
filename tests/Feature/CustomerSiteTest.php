@@ -56,6 +56,45 @@ class CustomerSiteTest extends TestCase
         $this->get(route('sites.show', ['order' => $order->site_slug]))->assertNotFound();
     }
 
+    public function test_publishing_vintage_template_renders_customer_site(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $order = $this->cafeOrder([
+            'business_data' => [
+                'business_name' => 'Vintage Kopi Sore',
+                'tagline' => 'Kopi sengaja',
+                'whatsapp' => '0812-3456-7890',
+                'description' => 'Kedai kopi musik sore di Bandung.',
+                'address' => 'Jl. Sore Indah No. 12',
+                'city' => 'Bandung',
+                'address_url' => 'https://maps.google.com/?q=kopi-sore',
+                'instagram' => '@kopisore',
+            ],
+        ], 'fnb-cafe-vintage');
+
+        $this->actingAs($admin)->post(route('admin.orders.progress', $order), [
+            'action' => 'finish',
+        ])->assertRedirect(route('admin.orders.show', $order));
+
+        $order->refresh();
+        $this->assertSame('vintage-kopi-sore-'.$order->id, $order->site_slug);
+
+        $siteUrl = route('sites.show', ['order' => $order->site_slug]);
+        $this->get($siteUrl)
+            ->assertOk()
+            ->assertSee('Kopi Sore', false)
+            ->assertSee('Kedai kopi musik sore di Bandung.')
+            ->assertSee('Jl. Sore Indah No. 12')
+            ->assertSee('6281234567890', false)
+            ->assertSee($siteUrl.'/menu', false)
+            ->assertSee($siteUrl.'/reservasi', false)
+            ->assertSee('instagram.com/kopisore', false)
+            ->assertDontSee('Kopi Lembang');
+
+        $this->get($siteUrl.'/menu')->assertOk()->assertSee('Vintage Kopi Sore');
+        $this->get($siteUrl.'/reservasi')->assertOk()->assertSee('Reservasi');
+    }
+
     public function test_finishing_other_template_does_not_publish_site(): void
     {
         $admin = User::factory()->admin()->create();
@@ -147,13 +186,19 @@ class CustomerSiteTest extends TestCase
     }
 
     /** @param array<string, mixed> $attributes */
-    private function cafeOrder(array $attributes = []): WebiaOrder
+    private function cafeOrder(array $attributes = [], string $templateSlug = 'fnb-cafe-minimalis'): WebiaOrder
     {
-        $template = $this->template('fnb-cafe-minimalis');
+        $template = $this->template($templateSlug, [
+            'site_config_path' => match ($templateSlug) {
+                'fnb-cafe-minimalis' => 'f&b/minimalis/cafe-earthtone/cafe',
+                'fnb-cafe-vintage' => 'f&b/vintage/cafe-earthtone/cafe',
+                default => null,
+            },
+        ]);
 
         return WebiaOrder::factory()->create(array_merge([
             'webia_template_id' => $template,
-            'template_snapshot' => ['name' => $template->name, 'slug' => $template->slug, 'category_slug' => 'fnb'],
+            'template_snapshot' => ['name' => $template->name, 'slug' => $template->slug, 'category_slug' => 'fnb', 'site_config_path' => $template->site_config_path],
             'status' => 'paid',
             'delivery_status' => 'in_progress',
             'business_data' => ['business_name' => 'Kopi Kawan'],

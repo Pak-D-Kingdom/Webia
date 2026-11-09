@@ -170,6 +170,7 @@ class WebiaTemplateNabiilaSeeder extends Seeder
                 'tag' => 'F&B · Cafe & Eatery · Vintage',
                 'preview_folder' => null,
                 'template_url' => '/webia/template/fnb/vintage',
+                'site_config_path' => 'f&b/vintage/cafe-earthtone/cafe',
                 'is_active' => true,
                 'sort_order' => 28,
             ],
