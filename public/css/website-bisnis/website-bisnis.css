@@ -1729,11 +1729,11 @@ body.webia-body {
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
 
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
 
-    transform: translateY(16px) scale(.96);
+    transform: translateY(0) scale(1);
 
     transition:
         opacity .35s ease,
@@ -8016,7 +8016,7 @@ html {
 }
 
 
-/* Halaman koleksi: rapatkan WhatsApp ke AI Assistant */
+/* Jaga jarak WhatsApp dari AI Assistant */
 .webia-whatsapp-fab {
     right: 24px !important;
     bottom: calc(90px + env(safe-area-inset-bottom)) !important;

@@ -2,6 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Models\HostingInvoice;
+use App\Models\HostingService;
+use App\Models\HostingTask;
 use App\Models\User;
 use App\Models\WebiaOrder;
 use App\Models\WebiaPackage;
@@ -89,6 +92,31 @@ class DashboardTest extends TestCase
             ->assertSee('WEB-VERIFY')
             ->assertViewHas('attention', fn ($orders): bool => $orders->contains($verification))
             ->assertViewHas('counts', fn ($c): bool => $c['verification'] === 1 && $c['in_progress'] === 1 && $c['new_today'] === 3);
+    }
+
+    public function test_admin_dashboard_shows_hosting_items_needing_action(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $service = HostingService::factory()->create(['billing_status' => 'suspended']);
+        HostingInvoice::factory()->create([
+            'hosting_service_id' => $service->id,
+            'status' => 'overdue',
+            'amount' => 200000,
+        ]);
+        HostingTask::factory()->create([
+            'hosting_service_id' => $service->id,
+            'status' => 'pending',
+        ]);
+        HostingInvoice::factory()->create(['status' => 'paid', 'amount' => 900000]);
+
+        $this->actingAs($admin)->get(route('admin.dashboard'))
+            ->assertOk()
+            ->assertSee('Hosting perlu tindakan')
+            ->assertSee('Rp200.000')
+            ->assertViewHas('hostingSummary', fn (array $summary): bool => $summary['overdue'] === 1
+                && $summary['overdueTotal'] === 200000
+                && $summary['suspended'] === 1
+                && $summary['pendingTasks'] === 1);
     }
 
     public function test_admin_dashboard_sums_verified_revenue_within_last_30_days(): void

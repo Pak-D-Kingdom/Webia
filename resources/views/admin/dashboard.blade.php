@@ -142,6 +142,19 @@
     </div>
 </section>
 
+<section class="mb-space-xl rounded-xl border border-outline-variant bg-surface-container-lowest p-space-md" aria-labelledby="hosting-attention-title">
+    <div class="flex flex-wrap items-center justify-between gap-3">
+        <div>
+            <h2 class="font-headline-sm font-bold text-on-surface" id="hosting-attention-title">Hosting perlu tindakan</h2>
+            <p class="text-on-surface-variant">{{ $hostingSummary['overdue'] }} overdue · Rp{{ number_format($hostingSummary['overdueTotal'], 0, ',', '.') }} · {{ $hostingSummary['suspended'] }} suspended · {{ $hostingSummary['pendingTasks'] }} tugas tertunda</p>
+        </div>
+        <div class="flex gap-2">
+            <a class="min-h-11 rounded-lg border border-primary px-4 py-2.5 font-semibold text-primary" href="{{ route('admin.hosting-services.index') }}">Lihat layanan</a>
+            <a class="min-h-11 rounded-lg bg-primary px-4 py-2.5 font-semibold text-on-primary" href="{{ route('admin.hosting-tasks.index') }}">Buka tugas</a>
+        </div>
+    </div>
+</section>
+
 <!-- 4 KPI -->
 <section class="mb-space-xl grid grid-cols-1 gap-space-md sm:grid-cols-2 xl:grid-cols-4">
     <!-- Pesanan Baru -->

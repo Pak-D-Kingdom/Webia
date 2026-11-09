@@ -74,6 +74,14 @@
                                 <span class="rounded border border-secondary-fixed/30 bg-secondary-fixed/20 px-1.5 py-0.5 text-[10px] font-bold text-secondary-fixed">{{ $verificationBadge }} Baru</span>
                             @endif
                         </a>
+                        <a class="flex min-h-11 items-center gap-space-sm rounded-lg border-l-4 px-space-sm py-2 font-label-md text-label-md transition-colors {{ request()->routeIs('admin.hosting-services.*') ? 'border-secondary-fixed bg-surface-container-lowest/10 text-on-primary' : 'border-transparent text-primary-fixed-dim/70 hover:bg-surface-container-lowest/5 hover:text-on-primary' }}" href="{{ route('admin.hosting-services.index') }}" @if (request()->routeIs('admin.hosting-services.*')) aria-current="page" @endif>
+                            <span aria-hidden="true" class="material-symbols-outlined">dns</span>
+                            Hosting
+                        </a>
+                        <a class="flex min-h-11 items-center gap-space-sm rounded-lg border-l-4 px-space-sm py-2 font-label-md text-label-md transition-colors {{ request()->routeIs('admin.hosting-tasks.*') ? 'border-secondary-fixed bg-surface-container-lowest/10 text-on-primary' : 'border-transparent text-primary-fixed-dim/70 hover:bg-surface-container-lowest/5 hover:text-on-primary' }}" href="{{ route('admin.hosting-tasks.index') }}" @if (request()->routeIs('admin.hosting-tasks.*')) aria-current="page" @endif>
+                            <span aria-hidden="true" class="material-symbols-outlined">task_alt</span>
+                            Tugas Hosting
+                        </a>
                     </div>
                 </div>
                 <div>
@@ -147,9 +155,12 @@
                     <button aria-label="Dokumentasi" class="hidden h-10 w-10 place-items-center rounded-lg text-on-surface-variant transition-colors hover:bg-surface-container-high hover:text-primary lg:grid" data-toast="Dokumentasi API belum tersedia" type="button">
                         <span class="material-symbols-outlined text-xl">description</span>
                     </button>
-                    <button aria-label="Notifikasi" class="grid h-10 w-10 place-items-center rounded-lg text-on-surface-variant transition-colors hover:bg-surface-container-high hover:text-primary" data-toast="Belum ada notifikasi baru" type="button">
+                    <a aria-label="Notifikasi{{ auth()->user()->unreadNotifications()->count() ? ': '.auth()->user()->unreadNotifications()->count().' belum dibaca' : '' }}" class="relative grid h-10 w-10 place-items-center rounded-lg text-on-surface-variant transition-colors hover:bg-surface-container-high hover:text-primary" href="{{ route('notifications.index') }}">
                         <span class="material-symbols-outlined text-xl">notifications</span>
-                    </button>
+                        @if ($adminUnreadNotifications = auth()->user()->unreadNotifications()->count())
+                            <span class="absolute right-0 top-0 min-w-5 rounded-full bg-error px-1 text-center text-xs font-bold text-on-error">{{ $adminUnreadNotifications > 99 ? '99+' : $adminUnreadNotifications }}</span>
+                        @endif
+                    </a>
                 </div>
                 <div class="mx-space-xs h-5 w-px bg-surface-container-high max-md:hidden"></div>
                 <div class="flex items-center px-1.5 py-1" aria-label="Akun {{ auth()->user()->name }}">
@@ -208,6 +219,9 @@
                 <a href="{{ route('orders.index') }}" @if (request()->routeIs('orders.*')) aria-current="page" @endif>
                     <span aria-hidden="true" class="material-symbols-outlined">shopping_bag</span> Pesanan Saya
                 </a>
+                <a href="{{ route('hosting-invoices.index') }}" @if (request()->routeIs('hosting-invoices.*')) aria-current="page" @endif>
+                    <span aria-hidden="true" class="material-symbols-outlined">receipt_long</span> Tagihan Hosting
+                </a>
                 <a href="{{ route('customer.ai') }}" @if (request()->routeIs('customer.ai*')) aria-current="page" @endif>
                     <span aria-hidden="true" class="material-symbols-outlined">smart_toy</span> Asisten AI &amp; Kuota
                 </a>
@@ -247,6 +261,12 @@
                     </nav>
                 </div>
                 <div class="customer-topbar-account">
+                    <a class="relative grid h-11 w-11 place-items-center rounded-lg text-on-surface-variant" href="{{ route('notifications.index') }}" aria-label="Notifikasi{{ auth()->user()->unreadNotifications()->count() ? ': '.auth()->user()->unreadNotifications()->count().' belum dibaca' : '' }}">
+                        <span aria-hidden="true" class="material-symbols-outlined">notifications</span>
+                        @if ($unreadNotifications = auth()->user()->unreadNotifications()->count())
+                            <span class="absolute right-0 top-0 min-w-5 rounded-full bg-error px-1 text-center text-xs font-bold text-on-error">{{ $unreadNotifications > 99 ? '99+' : $unreadNotifications }}</span>
+                        @endif
+                    </a>
                     <div class="customer-topbar-identity">
                         <strong>{{ auth()->user()->name }}</strong>
                         <span>Konsumen</span>
