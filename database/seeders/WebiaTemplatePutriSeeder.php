@@ -170,6 +170,26 @@ class WebiaTemplatePutriSeeder extends Seeder
                 'sort_order' => 64,
             ],
 
+            // Template 9 — Photography & Creative Studio · Motion Graphics & 3D Studio · Premium Minimal · Champagne Glow (Sesuai Screenshot)
+            [
+                'name' => 'AuraMotion 3D Studio — Motion Graphics & 3D Studio Premium Minimal Champagne Glow',
+                'slug' => 'photography-motiongraphics-premiumminimal-champagneglow-putri',
+                'category_slug' => 'photography-creative-studio',
+                'category_label' => 'Photography & Creative Studio',
+                'business_types' => ['Motion Graphics & 3D Studio'],
+                'design_style' => 'Premium Minimal',
+                'color_theme' => 'Champagne Glow',
+                'description' => 'Website studio motion graphics & visual 3D premium minimal bertema Champagne Glow untuk AuraMotion 3D Studio. Menghadirkan visualisasi 3D fotorealistik, animasi kinetik, showcase portfolio interaktif, kalkulator estimasi produksi, FAQ dinamis, concierge WhatsApp, dan AuraMotion AI.',
+                'preview_style' => 'preview-company',
+                'eyebrow' => 'PREMIUM MOTION GRAPHICS & 3D VISUAL STUDIO',
+                'headline' => 'Seni Gerak Presisi,<br>Visual 3D Bernilai Tinggi.',
+                'tag' => 'Photography & Creative Studio · Motion Graphics & 3D Studio · Premium Minimal · Champagne Glow',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/photography-motiongraphics-premiumminimal-champagneglow-putri',
+                'is_active' => true,
+                'sort_order' => 66,
+            ],
+
             // Template Default — Technology & IT · Software House · Professional
             [
                 'name' => 'Nexora Digital — Software House',
