@@ -306,6 +306,29 @@ class CustomerAccountsSeeder extends Seeder
                 'cat' => 'nonprofit-community',
                 'phone' => '08123344016',
             ],
+            // === TENANT DARI TEMPLATE TERBARU ===
+            [
+                'email' => 'pawtopia.pet@gmail.com',
+                'name' => 'Drh. Sarah Wijaya',
+                'business' => 'Pawtopia Animal Care & Grooming Center',
+                'order_num' => 'WEB-261106-PET_',
+                'pkg_slug' => 'pulse',
+                'site_slug' => 'tenant_pet_01',
+                'tmpl_slug' => 'pawtopia-animal-care',
+                'cat' => 'pet-animal-service',
+                'phone' => '08123344017',
+            ],
+            [
+                'email' => 'baitul.umrah@gmail.com',
+                'name' => 'H. Ahmad Fauzi',
+                'business' => 'Baitul Safar Travel Umrah & Haji Plus',
+                'order_num' => 'WEB-261106-UMRH',
+                'pkg_slug' => 'nexus',
+                'site_slug' => 'tenant_umrah_01',
+                'tmpl_slug' => 'baitul-safar-umrah-haji',
+                'cat' => 'travel-tourism',
+                'phone' => '08123344018',
+            ],
         ];
 
         foreach ($ordersConfig as $cfg) {
