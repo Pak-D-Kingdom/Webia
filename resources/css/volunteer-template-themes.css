@@ -1,0 +1,167 @@
+@theme {
+    --color-relakita-on-secondary-container: #fffbff;
+    --color-relakita-on-primary-fixed-variant: #7f2b00;
+    --color-relakita-surface-container-lowest: #ffffff;
+    --color-relakita-on-primary: #ffffff;
+    --color-relakita-secondary-fixed: #ffdadb;
+    --color-relakita-on-tertiary-container: #fffbff;
+    --color-relakita-surface-container-highest: #d8e3fb;
+    --color-relakita-secondary-fixed-dim: #ffb2b7;
+    --color-relakita-tertiary-fixed: #ffddb8;
+    --color-relakita-surface-container: #e7eeff;
+    --color-relakita-primary-fixed: #ffdbce;
+    --color-relakita-tertiary-container: #a36700;
+    --color-relakita-error-container: #ffdad6;
+    --color-relakita-surface-container-high: #dee8ff;
+    --color-relakita-on-surface-variant: #5a4138;
+    --color-relakita-primary-fixed-dim: #ffb599;
+    --color-relakita-on-secondary-fixed: #40000d;
+    --color-relakita-inverse-on-surface: #ecf1ff;
+    --color-relakita-on-secondary: #ffffff;
+    --color-relakita-on-error: #ffffff;
+    --color-relakita-outline: #8e7166;
+    --color-relakita-on-primary-fixed: #370e00;
+    --color-relakita-secondary: #b90538;
+    --color-relakita-surface-variant: #d8e3fb;
+    --color-relakita-tertiary: #825100;
+    --color-relakita-on-tertiary-fixed-variant: #653e00;
+    --color-relakita-inverse-primary: #ffb599;
+    --color-relakita-on-primary-container: #fffbff;
+    --color-relakita-on-secondary-fixed-variant: #92002a;
+    --color-relakita-surface-bright: #f9f9ff;
+    --color-relakita-outline-variant: #e2bfb2;
+    --color-relakita-on-background: #111c2d;
+    --color-relakita-surface-container-low: #f0f3ff;
+    --color-relakita-primary-container: #cc4900;
+    --color-relakita-surface-tint: #a73a00;
+    --color-relakita-on-surface: #111c2d;
+    --color-relakita-on-error-container: #93000a;
+    --color-relakita-on-tertiary-fixed: #2a1700;
+    --color-relakita-tertiary-fixed-dim: #ffb95f;
+    --color-relakita-error: #ba1a1a;
+    --color-relakita-surface-dim: #cfdaf2;
+    --color-relakita-background: #f9f9ff;
+    --color-relakita-surface: #f9f9ff;
+    --color-relakita-inverse-surface: #263143;
+    --color-relakita-primary: #a33900;
+    --color-relakita-on-tertiary: #ffffff;
+    --color-relakita-secondary-container: #dc2c4f;
+    --font-relakita-body-md: 'Plus Jakarta Sans';
+    --font-relakita-title-md: 'Plus Jakarta Sans';
+    --font-relakita-title-lg: 'Plus Jakarta Sans';
+    --font-relakita-headline-lg-mobile: 'Merriweather';
+    --font-relakita-display: 'Merriweather';
+    --font-relakita-headline-sm: 'Merriweather';
+    --font-relakita-body-sm: 'Plus Jakarta Sans';
+    --font-relakita-headline-md: 'Merriweather';
+    --font-relakita-body-lg: 'Plus Jakarta Sans';
+    --font-relakita-label-lg: 'Plus Jakarta Sans';
+    --font-relakita-label-sm: 'Plus Jakarta Sans';
+    --font-relakita-display-mobile: 'Merriweather';
+    --font-relakita-headline-lg: 'Merriweather';
+    --text-relakita-body-md: 16px;
+    --text-relakita-body-md--line-height: 26px;
+    --text-relakita-body-md--font-weight: 400;
+    --text-relakita-title-md: 18px;
+    --text-relakita-title-md--line-height: 26px;
+    --text-relakita-title-md--font-weight: 600;
+    --text-relakita-title-lg: 20px;
+    --text-relakita-title-lg--line-height: 28px;
+    --text-relakita-title-lg--font-weight: 700;
+    --text-relakita-headline-lg-mobile: 28px;
+    --text-relakita-headline-lg-mobile--line-height: 38px;
+    --text-relakita-headline-lg-mobile--font-weight: 700;
+    --text-relakita-display: 56px;
+    --text-relakita-display--line-height: 68px;
+    --text-relakita-display--letter-spacing: -0.02em;
+    --text-relakita-display--font-weight: 700;
+    --text-relakita-headline-sm: 22px;
+    --text-relakita-headline-sm--line-height: 32px;
+    --text-relakita-headline-sm--font-weight: 700;
+    --text-relakita-body-sm: 14px;
+    --text-relakita-body-sm--line-height: 22px;
+    --text-relakita-body-sm--font-weight: 400;
+    --text-relakita-headline-md: 30px;
+    --text-relakita-headline-md--line-height: 40px;
+    --text-relakita-headline-md--font-weight: 700;
+    --text-relakita-body-lg: 18px;
+    --text-relakita-body-lg--line-height: 30px;
+    --text-relakita-body-lg--font-weight: 400;
+    --text-relakita-label-lg: 14px;
+    --text-relakita-label-lg--line-height: 20px;
+    --text-relakita-label-lg--letter-spacing: 0.01em;
+    --text-relakita-label-lg--font-weight: 600;
+    --text-relakita-label-sm: 12px;
+    --text-relakita-label-sm--line-height: 16px;
+    --text-relakita-label-sm--letter-spacing: 0.02em;
+    --text-relakita-label-sm--font-weight: 600;
+    --text-relakita-display-mobile: 36px;
+    --text-relakita-display-mobile--line-height: 46px;
+    --text-relakita-display-mobile--letter-spacing: -0.01em;
+    --text-relakita-display-mobile--font-weight: 700;
+    --text-relakita-headline-lg: 40px;
+    --text-relakita-headline-lg--line-height: 52px;
+    --text-relakita-headline-lg--letter-spacing: -0.01em;
+    --text-relakita-headline-lg--font-weight: 700;
+    --spacing-relakita-margin: 2rem;
+    --spacing-relakita-space-xl: 3.5rem;
+    --spacing-relakita-gutter: 1.5rem;
+    --spacing-relakita-space-md: 1.25rem;
+    --spacing-relakita-margin-mobile: 1.25rem;
+    --spacing-relakita-space-lg: 2rem;
+    --spacing-relakita-space-sm: 0.75rem;
+    --spacing-relakita-space-xs: 0.375rem;
+    --spacing-relakita-gutter-mobile: 1rem;
+    --color-relakita2-navy-700: #1f356f;
+    --color-relakita2-navy-800: #172754;
+    --color-relakita2-navy-850: #111e40;
+    --color-relakita2-navy-900: #0c152e;
+    --color-relakita2-navy-950: #070d1e;
+    --color-relakita2-cyan-accent-400: #38bdf8;
+    --color-relakita2-cyan-accent-500: #00d2ff;
+    --color-relakita2-cyan-accent-600: #0284c7;
+    --color-relakita2-sunset-orange: #ff6b35;
+    --color-relakita2-sunset-coral: #f95738;
+    --color-relakita2-sunset-gold: #f7a072;
+    --color-relakita2-sunset-cream: #fffdf9;
+    --color-relakita2-sunset-sand: #fbf5ea;
+    --color-relakita2-sunset-dark: #2c1810;
+    --color-relakita2-sunset-text: #4a3b32;
+    --font-relakita2-modern: 'Outfit', 'Plus Jakarta Sans', 'sans-serif';
+    --font-relakita2-classic: 'Plus Jakarta Sans', 'sans-serif';
+    --font-relakita2-serif-title: 'Fraunces', 'serif';
+}
+
+.relakita-page {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+    overscroll-behavior: none;
+}
+
+.relakita-page main > :first-child { margin-top: 0 !important; }
+.relakita-page main > :last-child { margin-bottom: 0 !important; }
+.relakita-page ::-webkit-scrollbar { display: none; }
+
+.relakita2-page .relakita2-glass-navy {
+    background: rgba(12, 21, 46, 0.78);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(56, 189, 248, 0.18);
+}
+
+.relakita2-page .relakita2-glass-card-navy {
+    background: rgba(17, 30, 64, 0.65);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.relakita2-page .relakita2-glass-card-navy:hover {
+    border-color: rgba(56, 189, 248, 0.4);
+    box-shadow: 0 10px 30px -10px rgba(0, 210, 255, 0.2);
+}
+
+.relakita2-page .relakita2-view-container {
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}

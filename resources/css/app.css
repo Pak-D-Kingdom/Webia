@@ -4,6 +4,7 @@
 @import './agriculture-template-themes.css';
 @import './kids-template-themes.css';
 @import './author-template-themes.css';
+@import './volunteer-template-themes.css';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -22,6 +23,8 @@
 @source '../views/website-bisnis/templates/retail/baby-kids-products/aurora-petit-yellow-sunshine.blade.php';
 @source '../views/website-bisnis/templates/personal-brand/author-writer/arya-sanjaya-ruby-editorial.blade.php';
 @source '../views/website-bisnis/templates/personal-brand/author-writer/arya-sanjaya-plum-velvet.blade.php';
+@source '../views/website-bisnis/templates/nonprofit-community/relakita-volunteer-warm-sunrise.blade.php';
+@source '../views/website-bisnis/templates/nonprofit-community/kolektif-aksi-kita-volunteer-midnight-navy.blade.php';
 
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
