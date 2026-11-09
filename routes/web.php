@@ -299,6 +299,11 @@ Route::view(
     'website-bisnis.templates.pet-animal-service.pawtopia-animal-care'
 )->name('webia.template.pet-animal-service.pawtopia-animal-care');
 
+Route::view(
+    '/webia/template/pawlora-animal-care',
+    'website-bisnis.templates.pet-animal-service.pawlora-animal-care'
+)->name('webia.template.pet-animal-service.pawlora-animal-care');
+
 // WEBIA — Template Nail Art Professional Soft Pink
 // URL lama dipertahankan agar konsisten; view mengikuti struktur folder baru.
 Route::view(
@@ -552,6 +557,11 @@ Route::view(
     '/webia/template/healthcare/psychology/mitra-jiwa',
     'website-bisnis.templates.healthcare.psychology.mitra-jiwa'
 )->name('webia.template.healthcare.psychology.mitra-jiwa');
+
+Route::view(
+    '/webia/template/healthcare/psychology/aurelia-mind',
+    'website-bisnis.templates.healthcare.psychology.aurelia-mind'
+)->name('webia.template.healthcare.psychology.aurelia-mind');
 
 // =====================================================
 // WEBIA - WEDDING & EVENT (WEDDING ORGANIZER)
