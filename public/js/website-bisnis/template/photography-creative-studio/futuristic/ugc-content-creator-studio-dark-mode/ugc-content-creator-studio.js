@@ -25,7 +25,7 @@
         setTimeout(function (t) { t.style.transitionDelay = ''; }, 900, e.target);
       });
     }, { threshold: 0.1 });
-    $$('.ugc-sh,.ugc-card,.ugc-creator,.ugc-sample,.ugc-brand,.ugc-bstats,.ugc-marq,.ugc-banner,.ugc-mock,.ugc-acc details,.ugc-fcta').forEach(function (el, i) {
+    $$('.ugc-sh,.ugc-card,.ugc-creator,.ugc-sample,.ugc-brand,.ugc-bstats,.ugc-marq,.ugc-banner,.ugc-mock,.ugc-acc details,.ugc-fcta,.ugc-rate,.ugc-cmp,.ugc-orbit,.ugc-form,.ugc-side').forEach(function (el, i) {
       el.classList.add('ugc-rv'); el.style.transitionDelay = (i % 4) * 70 + 'ms'; io.observe(el);
     });
   }
@@ -61,7 +61,7 @@
     var sync = function () { b.textContent = sel.options[sel.selectedIndex].text; Array.prototype.forEach.call(ul.children, function (li, i) { li.setAttribute('aria-selected', String(i === sel.selectedIndex)); }); };
     var shut = function () { ul.hidden = true; b.setAttribute('aria-expanded', 'false'); };
     b.addEventListener('click', function () { var o = ul.hidden; $$('.ugc-dd__list').forEach(function (x) { x.hidden = true; }); ul.hidden = !o; b.setAttribute('aria-expanded', String(o)); });
-    ul.addEventListener('click', function (e) { var li = e.target.closest('li'); if (!li) return; sel.selectedIndex = +li.getAttribute('data-i'); sync(); shut(); b.focus(); });
+    ul.addEventListener('click', function (e) { var li = e.target.closest('li'); if (!li) return; sel.selectedIndex = +li.getAttribute('data-i'); sync(); shut(); b.focus(); sel.dispatchEvent(new Event('change', { bubbles: true })); });
     b.addEventListener('keydown', function (e) {
       var i = sel.selectedIndex, n = sel.options.length;
       if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); sel.selectedIndex = Math.max(0, Math.min(n - 1, i + (e.key === 'ArrowDown' ? 1 : -1))); sync(); }
@@ -71,11 +71,37 @@
     sync();
   });
 
+  /* ---- Pratinjau video (lightbox) ---- */
+  var lb = $('.ugc-lb');
+  if (lb) {
+    $$('[data-lb]').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        var g = function (k) { return a.getAttribute('data-' + k); };
+        $('img', lb).src = g('img'); $('[data-lb-t]', lb).textContent = g('title'); $('[data-lb-b]', lb).textContent = g('brand');
+        $('[data-lb-d]', lb).textContent = g('dur'); $('[data-lb-v]', lb).textContent = g('views'); $('[data-lb-r]', lb).textContent = g('ret');
+        if (lb.showModal) lb.showModal(); else lb.setAttribute('open', '');
+      });
+    });
+    var shutLb = function () { if (lb.close) lb.close(); else lb.removeAttribute('open'); };
+    lb.addEventListener('click', function (e) { if (e.target === lb) shutLb(); });
+    $('[data-lb-close]', lb).addEventListener('click', shutLb);
+  }
+
   /* ---- Form inquiry: validasi, lalu kirim lewat WhatsApp (tanpa server) ---- */
   var form = $('[data-ugc-form]');
   if (form) {
     var ta = $('textarea', form), cnt = $('[data-count]', form);
     if (ta && cnt) ta.addEventListener('input', function () { cnt.textContent = ta.value.length + '/600'; });
+    var setSum = function (k, v) { var x = $('[data-sum="' + k + '"]'); if (x) x.textContent = v; };
+    var upd = function () {
+      var req = $$('[data-req]', form), n = req.filter(function (x) { return x.value.trim(); }).length + ($('[data-consent]', form).checked ? 1 : 0), p = Math.round(n / (req.length + 1) * 100);
+      var bar = $('[data-prog]', form), pt = $('[data-prog-t]', form); if (bar) bar.style.width = p + '%'; if (pt) pt.textContent = p + '%';
+      var pk = $('[name=paket]:checked', form), pf = $$('[name="platform[]"]:checked', form).map(function (x) { return x.value; });
+      setSum('paket', pk ? pk.value : '-'); setSum('budget', form.elements.budget.value || '-');
+      setSum('platform', pf.length ? pf.join(', ') : 'Belum dipilih'); setSum('tanggal', form.elements.tanggal.value || '-');
+    };
+    form.addEventListener('input', upd); form.addEventListener('change', upd); upd();
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var ok = true;

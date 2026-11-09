@@ -1547,6 +1547,182 @@ Route::get('/webia/template/wedding-event/bold/event-organizer-sunset-gradient/{
     ]);
 })->where('page', '[a-z\-]+')->name('webia.event-organizer');
 
+Route::prefix('webia/template/wedding-event/creative/event-organizer-purple-dream')
+    ->name('webia.template.event-organizer-purple-dream.')
+    ->group(function () {
+        $view = 'website-bisnis.template.wedding-event.creative.event-organizer-purple-dream.';
+
+        Route::view('/', $view.'beranda', ['page' => 'home'])->name('home');
+        Route::view('/layanan', $view.'layanan', ['page' => 'layanan'])->name('layanan');
+        Route::view('/portofolio', $view.'portofolio', ['page' => 'portofolio'])->name('portofolio');
+        Route::view('/paket-event', $view.'paket-event', ['page' => 'paket'])->name('paket');
+        Route::view('/proyek-kami', $view.'proyek-kami', ['page' => 'proyek'])->name('proyek');
+        Route::view('/klien', $view.'klien', ['page' => 'klien'])->name('klien');
+        Route::view('/proses', $view.'proses', ['page' => 'proses'])->name('proses');
+        Route::view('/penawaran', $view.'penawaran', ['page' => 'penawaran'])->name('penawaran');
+        Route::view('/faq-ai', $view.'faq-ai', ['page' => 'faq'])->name('faq');
+    });
+
+Route::prefix('webia/template/travel-tourism/elegan/umrah-haji-navy-champagne-gold')
+    ->name('umrah-haji.')
+    ->group(function () {
+        $viewBase   = 'website-bisnis.template.travel&tourism.elegan.umrah-haji-navy-champagne-gold';
+        $imgBase    = 'images/website-bisnis/template/travel&tourism/elegan/umrah-haji-navy-champagne-gold/';
+        $cssFile    = 'css/website-bisnis/template/travel&tourism/elegan/umrah-haji-navy-champagne-gold/umrah-haji.css';
+        $jsFile     = 'js/website-bisnis/template/travel&tourism/elegan/umrah-haji-navy-champagne-gold/umrah-haji.js';
+        $configKey  = 'template.travel&tourism.elegan.umrah-haji-navy-champagne-gold.umrah-haji';
+        $configFile = 'template/travel&tourism/elegan/umrah-haji-navy-champagne-gold/umrah-haji.php';
+
+        // Memuat data statis; jika config belum terbaca, file dimuat langsung
+        $loadData = function () use ($configKey, $configFile) {
+            $data = config($configKey);
+
+            if (! is_array($data)) {
+                $data = require config_path($configFile);
+            }
+
+            return $data;
+        };
+
+        // Membuat response satu halaman
+        $page = function (string $name, string $view) use ($viewBase, $imgBase, $cssFile, $jsFile, $loadData) {
+            $d = $loadData();
+
+            // Awalan nama route diambil dari route yang sedang aktif (aman di dalam group lain)
+            $currentRoute = (string) Route::currentRouteName();
+            $routePrefix  = substr($currentRoute, 0, (int) strrpos($currentRoute, '.'));
+
+            return view($viewBase . '.' . $view, [
+                'd'    => $d,
+                'page' => $name,
+                'v'    => $viewBase,
+                'css'  => asset($cssFile),
+                'js'   => asset($jsFile),
+                'img'  => fn ($file) => asset($imgBase . $file),
+                'r'    => fn ($route) => route($routePrefix . '.' . $route),
+                'rp'   => fn ($n) => 'Rp ' . number_format($n, 0, ',', '.'),
+                'wa'   => fn ($text = null) => 'https://wa.me/' . $d['contact']['wa'] . ($text ? '?text=' . rawurlencode($text) : ''),
+            ]);
+        };
+
+        Route::get('/', fn () => $page('home', 'umrah-haji'))->name('home');
+        Route::get('paket-umrah-haji', fn () => $page('paket', 'paket'))->name('paket');
+        Route::get('jadwal-keberangkatan', fn () => $page('jadwal', 'jadwal'))->name('jadwal');
+        Route::get('harga-paket', fn () => $page('harga', 'harga'))->name('harga');
+        Route::get('hotel-pesawat', fn () => $page('hotel', 'hotel'))->name('hotel');
+        Route::get('itinerary', fn () => $page('itinerary', 'itinerary'))->name('itinerary');
+        Route::get('tim-kami', fn () => $page('tim', 'tim'))->name('tim');
+        Route::get('persyaratan', fn () => $page('persyaratan', 'persyaratan'))->name('persyaratan');
+        Route::get('testimoni', fn () => $page('testimoni', 'testimoni'))->name('testimoni');
+        Route::get('ai-chat', fn () => $page('chat', 'chat'))->name('chat');
+    });
+
+view()->composer(
+    'website-bisnis.template.travel&tourism.classic.umrah-haji-emerald-green.*',
+    function ($view) {
+        $request = request();
+        $shared  = $request->attributes->get('umrah-haji.shared');
+
+        if ($shared === null) {
+            $uh      = config('template.travel&tourism.classic.umrah-haji-emerald-green.umrah-haji');
+            $imgBase = 'images/website-bisnis/template/travel&tourism/classic/umrah-haji-emerald-green/';
+            $name    = optional(request()->route())->getName();
+            $active  = is_string($name) && str_starts_with($name, 'umrah-haji.')
+                ? substr($name, strlen('umrah-haji.'))
+                : 'home';
+
+            $url = fn (string $key) => route('umrah-haji.' . $key);
+            $img = fn (string $file) => asset($imgBase . $file);
+            $wa  = fn (string $text) => 'https://wa.me/' . $uh['brand']['whatsapp'] . '?text=' . rawurlencode($text);
+
+            $icons = [
+                'packages' => 'kaaba', 'schedules' => 'calendar', 'prices' => 'tag', 'hotel-flight' => 'hotel',
+                'itinerary' => 'route', 'team' => 'guide', 'requirements' => 'file', 'testimonials' => 'star',
+            ];
+
+            // indeks pencarian di navbar
+            $search = [];
+            foreach ($uh['nav'] as $item) {
+                if ($item['key'] === 'home') {
+                    continue;
+                }
+                $search[] = [
+                    'label' => $item['label'],
+                    'text'  => $uh['pages'][$item['key']]['text'] ?? '',
+                    'url'   => $url($item['key']),
+                    'icon'  => $icons[$item['key']] ?? 'file',
+                    'keys'  => '',
+                ];
+            }
+            foreach ($uh['packages'] as $pkg) {
+                $search[] = [
+                    'label' => $pkg['name'],
+                    'text'  => $pkg['duration'] . ' · mulai ' . $pkg['price'],
+                    'url'   => $url('packages') . '#' . $pkg['slug'],
+                    'icon'  => 'kaaba',
+                    'keys'  => $pkg['type'] . ' ' . $pkg['route'],
+                ];
+            }
+            $search[] = [
+                'label' => $uh['pages']['chatbot']['title'],
+                'text'  => $uh['pages']['chatbot']['text'],
+                'url'   => $url('chatbot'),
+                'icon'  => 'message',
+                'keys'  => 'faq tanya chat bantuan',
+            ];
+
+            // FAQ chatbot (tautan sudah berupa URL penuh)
+            $faq = [];
+            foreach ($uh['faq'] as $f) {
+                $faq[] = [
+                    'keys'       => $f['keys'],
+                    'a'          => $f['a'],
+                    'url'        => isset($f['link']) ? $url($f['link']) : null,
+                    'link_label' => $f['link_label'] ?? null,
+                ];
+            }
+
+            $shared = [
+                'uh'     => $uh,
+                'active' => $active,
+                'url'    => $url,
+                'img'    => $img,
+                'wa'     => $wa,
+                'css'    => asset('css/website-bisnis/template/travel&tourism/classic/umrah-haji-emerald-green/umrah-haji.css'),
+                'js'     => asset('js/website-bisnis/template/travel&tourism/classic/umrah-haji-emerald-green/umrah-haji.js'),
+                'jsData' => [
+                    'wa'     => $wa($uh['hero']['wa_consult']),
+                    'ai'     => ['welcome' => $uh['ai']['welcome'], 'fallback' => $uh['ai']['fallback']],
+                    'faq'    => $faq,
+                    'search' => $search,
+                ],
+            ];
+
+            $request->attributes->set('umrah-haji.shared', $shared);
+        }
+
+        $view->with($shared);
+    }
+);
+
+// ---- Rute halaman (Route::view: tanpa controller, tanpa Closure) ----
+Route::prefix('webia/template/travel-tourism/classic/umrah-haji-emerald-green')
+    ->name('umrah-haji.')
+    ->group(function () {
+        $v = 'website-bisnis.template.travel&tourism.classic.umrah-haji-emerald-green';
+
+        Route::view('/', $v . '.index')->name('home');
+        Route::view('/paket', $v . '.packages')->name('packages');
+        Route::view('/jadwal', $v . '.schedules')->name('schedules');
+        Route::view('/harga', $v . '.prices')->name('prices');
+        Route::view('/hotel-pesawat', $v . '.hotel-flight')->name('hotel-flight');
+        Route::view('/itinerary', $v . '.itinerary')->name('itinerary');
+        Route::view('/tim', $v . '.team')->name('team');
+        Route::view('/persyaratan', $v . '.requirements')->name('requirements');
+        Route::view('/testimoni', $v . '.testimonials')->name('testimonials');
+        Route::view('/chatbot', $v . '.chatbot')->name('chatbot');
+    });
+
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------
 

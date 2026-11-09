@@ -63,46 +63,199 @@ return [
             'n' => 'Portofolio',
             't' => 'Kreator yang kami kurasi satu per satu',
             's' => 'Setiap kreator lolos uji hook, pencahayaan, dan audio sebelum masuk roster.',
+            'kind' => 'frames',
+            'imgs' => ['creator-3.svg', 'creator-1.svg', 'creator-5.svg'],
+            'chips' => ['Dikurasi manual', 'ER 8,6%', '5 niche'],
+            'facts' => [
+                [
+                    'v' => '6',
+                    'l' => 'kreator aktif',
+                ],
+                [
+                    'v' => '8,6%',
+                    'l' => 'rata-rata engagement',
+                ],
+                [
+                    'v' => '5',
+                    'l' => 'niche tersedia',
+                ],
+            ],
         ],
         'samples' => [
             'n' => 'Sampel Video',
             't' => 'Sampel UGC dari kampanye yang sudah tayang',
             's' => 'Format vertikal 9:16 dengan hook di tiga detik pertama.',
+            'kind' => 'frames',
+            'imgs' => ['sample-3.svg', 'sample-1.svg', 'sample-5.svg'],
+            'chips' => ['REC 9:16', 'Hook 0–3 dtk', 'Retensi 78%'],
+            'facts' => [
+                [
+                    'v' => '2.400',
+                    'l' => 'video terkirim',
+                ],
+                [
+                    'v' => '1,2 jt',
+                    'l' => 'rata-rata tayangan',
+                ],
+                [
+                    'v' => '78%',
+                    'l' => 'retensi 3 detik',
+                ],
+            ],
         ],
         'packages' => [
             'n' => 'Paket',
             't' => 'Paket konten dengan harga yang jelas',
             's' => 'Pilih jumlah video, lalu tambahkan hak iklan bila dibutuhkan.',
+            'kind' => 'frames',
+            'imgs' => ['sample-2.svg', 'sample-4.svg', 'sample-6.svg'],
+            'chips' => ['Harga jelas', 'Revisi termasuk', 'Hak organik 30 hari'],
+            'facts' => [
+                [
+                    'v' => 'Rp 1,8 jt',
+                    'l' => 'harga mulai dari',
+                ],
+                [
+                    'v' => '3',
+                    'l' => 'pilihan paket',
+                ],
+                [
+                    'v' => '7–10 hari',
+                    'l' => 'waktu produksi',
+                ],
+            ],
         ],
         'rights' => [
             'n' => 'Hak Guna',
             't' => 'Hasil akhir dan hak penggunaan',
             's' => 'Apa yang Anda terima, dan berapa lama video boleh dipakai.',
+            'kind' => 'frames',
+            'imgs' => ['sample-5.svg', 'sample-3.svg', 'sample-1.svg'],
+            'chips' => ['Hak organik', 'Hak iklan', 'Buyout'],
+            'facts' => [
+                [
+                    'v' => '30–90 hari',
+                    'l' => 'hak iklan',
+                ],
+                [
+                    'v' => '3',
+                    'l' => 'format video',
+                ],
+                [
+                    'v' => 'SRT',
+                    'l' => 'subtitle disertakan',
+                ],
+            ],
         ],
         'platforms' => [
             'n' => 'Platform',
             't' => 'Platform yang kami dukung',
             's' => 'Setiap video disesuaikan dengan rasio dan batas durasi platform tujuan.',
+            'kind' => 'frames',
+            'imgs' => ['sample-1.svg', 'sample-2.svg', 'sample-4.svg'],
+            'chips' => ['TikTok', 'Reels', 'Shorts'],
+            'facts' => [
+                [
+                    'v' => '6',
+                    'l' => 'platform didukung',
+                ],
+                [
+                    'v' => '9:16',
+                    'l' => 'format utama',
+                ],
+                [
+                    'v' => '1 video',
+                    'l' => 'banyak versi',
+                ],
+            ],
         ],
         'brands' => [
             'n' => 'Brand',
             't' => 'Brand yang bekerja sama dengan kami',
             's' => 'Dari merek lokal baru sampai brand yang sudah punya tim pemasaran sendiri.',
+            'kind' => 'logo',
+            'imgs' => ['brand-1.svg', 'brand-4.svg', 'brand-5.svg'],
+            'chips' => ['120+ brand', 'ROAS 4,3x', 'Paid UGC'],
+            'facts' => [
+                [
+                    'v' => '120+',
+                    'l' => 'brand klien',
+                ],
+                [
+                    'v' => '4,3x',
+                    'l' => 'rata-rata ROAS',
+                ],
+                [
+                    'v' => '92%',
+                    'l' => 'klien lanjut',
+                ],
+            ],
         ],
         'testimonials' => [
             'n' => 'Testimoni',
             't' => 'Kata klien setelah kampanye berjalan',
             's' => 'Cerita singkat dari tim marketing yang memakai video kami untuk iklan.',
+            'kind' => 'frames',
+            'imgs' => ['creator-2.svg', 'creator-4.svg', 'creator-6.svg'],
+            'chips' => ['Rating 4,9', '92% lanjut', 'Klien terverifikasi'],
+            'facts' => [
+                [
+                    'v' => '4,9',
+                    'l' => 'rating rata-rata',
+                ],
+                [
+                    'v' => '86',
+                    'l' => 'ulasan klien',
+                ],
+                [
+                    'v' => '92%',
+                    'l' => 'repeat order',
+                ],
+            ],
         ],
         'inquiry' => [
             'n' => 'Kirim Brief',
             't' => 'Ceritakan kampanye Anda',
             's' => 'Tim kami membalas dalam satu hari kerja dengan estimasi biaya dan shortlist kreator.',
+            'kind' => 'frames',
+            'imgs' => ['sample-6.svg', 'sample-2.svg', 'sample-5.svg'],
+            'chips' => ['Balasan 1 hari', 'Konsultasi gratis', 'Via WhatsApp'],
+            'facts' => [
+                [
+                    'v' => '1 hari',
+                    'l' => 'balasan tim',
+                ],
+                [
+                    'v' => '3 hari',
+                    'l' => 'mulai produksi',
+                ],
+                [
+                    'v' => 'Rp 0',
+                    'l' => 'biaya konsultasi',
+                ],
+            ],
         ],
         'faq' => [
             'n' => 'FAQ',
             't' => 'Tanya paket dan kolaborasi',
             's' => 'Asisten AI menjawab pertanyaan umum. Sisanya kami bantu lewat WhatsApp.',
+            'kind' => 'frames',
+            'imgs' => ['sample-4.svg', 'sample-1.svg', 'sample-3.svg'],
+            'chips' => ['AI aktif 24 jam', 'Paket', 'Kolaborasi'],
+            'facts' => [
+                [
+                    'v' => '6',
+                    'l' => 'topik populer',
+                ],
+                [
+                    'v' => '24/7',
+                    'l' => 'asisten AI',
+                ],
+                [
+                    'v' => '1 jam',
+                    'l' => 'balasan WhatsApp',
+                ],
+            ],
         ],
     ],
     'hero' => [
@@ -136,6 +289,8 @@ return [
             'er' => '9,1%',
             'bio' => 'Review jujur dengan tekstur produk dan hasil pemakaian dua minggu.',
             'img' => 'creator-1.svg',
+            'tags' => ['Review jujur', 'Demo tekstur'],
+            'plat' => 'TikTok dan Reels',
         ],
         [
             'name' => 'Raka Mahendra',
@@ -145,6 +300,8 @@ return [
             'er' => '7,4%',
             'bio' => 'Unboxing dan tes harian untuk gadget dan aksesori.',
             'img' => 'creator-2.svg',
+            'tags' => ['Unboxing', 'Tes harian'],
+            'plat' => 'TikTok dan YouTube',
         ],
         [
             'name' => 'Nadine Kusuma',
@@ -154,6 +311,8 @@ return [
             'er' => '8,2%',
             'bio' => 'Try-on haul dan styling untuk brand lokal.',
             'img' => 'creator-3.svg',
+            'tags' => ['Try-on haul', 'Styling'],
+            'plat' => 'Reels dan TikTok',
         ],
         [
             'name' => 'Bima Santoso',
@@ -163,6 +322,8 @@ return [
             'er' => '10,3%',
             'bio' => 'Video rasa dan proses penyajian yang membuat lapar.',
             'img' => 'creator-4.svg',
+            'tags' => ['Food review', 'Behind the scene'],
+            'plat' => 'TikTok dan Shopee',
         ],
         [
             'name' => 'Salsa Wibowo',
@@ -172,6 +333,8 @@ return [
             'er' => '6,9%',
             'bio' => 'Cerita perjalanan dan hotel dengan footage sinematik.',
             'img' => 'creator-5.svg',
+            'tags' => ['Vlog hotel', 'Cinematic'],
+            'plat' => 'Reels dan YouTube',
         ],
         [
             'name' => 'Dimas Pratama',
@@ -181,6 +344,8 @@ return [
             'er' => '9,8%',
             'bio' => 'Perawatan pria dengan bahasa santai dan demo langsung.',
             'img' => 'creator-6.svg',
+            'tags' => ['Grooming', 'Tutorial'],
+            'plat' => 'TikTok dan Reels',
         ],
     ],
     'samples' => [
@@ -190,6 +355,8 @@ return [
             'dur' => '0:32',
             'views' => '1,2 jt',
             'img' => 'sample-1.svg',
+            'cat' => 'Skincare',
+            'ret' => '78%',
         ],
         [
             'title' => 'Unboxing earbuds',
@@ -197,6 +364,8 @@ return [
             'dur' => '0:41',
             'views' => '860 rb',
             'img' => 'sample-2.svg',
+            'cat' => 'Gadget',
+            'ret' => '71%',
         ],
         [
             'title' => 'Try-on blazer kerja',
@@ -204,6 +373,8 @@ return [
             'dur' => '0:28',
             'views' => '2,1 jt',
             'img' => 'sample-3.svg',
+            'cat' => 'Fashion',
+            'ret' => '82%',
         ],
         [
             'title' => 'Es kopi susu tanpa gula',
@@ -211,6 +382,8 @@ return [
             'dur' => '0:24',
             'views' => '640 rb',
             'img' => 'sample-4.svg',
+            'cat' => 'F&B',
+            'ret' => '69%',
         ],
         [
             'title' => 'Tes tahan air 3 hari',
@@ -218,6 +391,8 @@ return [
             'dur' => '0:47',
             'views' => '1,5 jt',
             'img' => 'sample-5.svg',
+            'cat' => 'Gadget',
+            'ret' => '74%',
         ],
         [
             'title' => 'Check-in hotel Ubud',
@@ -225,6 +400,8 @@ return [
             'dur' => '0:36',
             'views' => '980 rb',
             'img' => 'sample-6.svg',
+            'cat' => 'Travel',
+            'ret' => '76%',
         ],
     ],
     'packages' => [
@@ -235,6 +412,8 @@ return [
             'for' => 'Untuk uji konsep dan produk baru.',
             'hot' => false,
             'feat' => ['3 video UGC 15–30 detik', '1 kreator pilihan', 'Naskah dan hook', '1 kali revisi', 'Hak organik 30 hari'],
+            'ico' => 'bolt',
+            'eta' => '5–7 hari kerja',
         ],
         [
             'name' => 'Signal',
@@ -243,6 +422,8 @@ return [
             'for' => 'Untuk brand yang rutin beriklan.',
             'hot' => true,
             'feat' => ['8 video UGC 15–45 detik', '2–3 kreator', 'Naskah dengan 3 variasi hook', 'Subtitle dan caption', '2 kali revisi', 'Hak iklan 60 hari'],
+            'ico' => 'broad',
+            'eta' => '7–10 hari kerja',
         ],
         [
             'name' => 'Broadcast',
@@ -251,33 +432,73 @@ return [
             'for' => 'Untuk kampanye besar dan peluncuran.',
             'hot' => false,
             'feat' => ['20 video UGC', '5 kreator', 'Strategi konten bulanan', 'Footage mentah', '3 kali revisi', 'Hak iklan 90 hari dan whitelisting'],
+            'ico' => 'film',
+            'eta' => '10–14 hari kerja',
         ],
     ],
-    'deliver' => ['Video final MP4 1080×1920', 'Versi 1:1 dan 16:9 sesuai kebutuhan', 'Subtitle Bahasa Indonesia (SRT)', 'Caption dan hashtag', 'Footage mentah (paket Broadcast)'],
+    'deliver' => [
+        [
+            't' => 'Video final 1080×1920',
+            'd' => 'Format MP4 siap unggah ke semua platform.',
+            'ico' => 'play',
+        ],
+        [
+            't' => 'Versi 1:1 dan 16:9',
+            'd' => 'Ekspor tambahan sesuai kebutuhan kanal.',
+            'ico' => 'film',
+        ],
+        [
+            't' => 'Subtitle SRT',
+            'd' => 'Bahasa Indonesia dan mudah diedit.',
+            'ico' => 'text',
+        ],
+        [
+            't' => 'Caption dan hashtag',
+            'd' => 'Teks unggahan yang siap dipakai.',
+            'ico' => 'chat',
+        ],
+        [
+            't' => 'Footage mentah',
+            'd' => 'Termasuk di paket Broadcast.',
+            'ico' => 'cam',
+        ],
+    ],
     'usage' => [
         [
             'tier' => 'Organik',
             'dur' => '30 hari',
             'ch' => 'Akun brand',
             'fee' => 'Termasuk',
+            'ico' => 'users',
+            'pct' => 30,
+            'note' => 'Dipakai di akun brand Anda.',
         ],
         [
             'tier' => 'Iklan berbayar',
             'dur' => '60–90 hari',
             'ch' => 'Meta dan TikTok Ads',
             'fee' => '+20%',
+            'ico' => 'ads',
+            'pct' => 62,
+            'note' => 'Meta Ads, TikTok Ads, dan Google.',
         ],
         [
             'tier' => 'Whitelisting',
             'dur' => '90 hari',
             'ch' => 'Akun kreator',
             'fee' => '+35%',
+            'ico' => 'shield',
+            'pct' => 78,
+            'note' => 'Tayang lewat akun kreator.',
         ],
         [
             'tier' => 'Buyout',
             'dur' => 'Selamanya',
             'ch' => 'Semua kanal',
             'fee' => '+120%',
+            'ico' => 'inf',
+            'pct' => 100,
+            'note' => 'Hak penuh tanpa batas waktu.',
         ],
     ],
     'platforms' => [
@@ -286,36 +507,48 @@ return [
             'g' => 'TT',
             'fmt' => '9:16',
             'maxd' => 'hingga 10 menit',
+            'col' => '#25F4EE',
+            'tip' => 'Hook di 1 detik pertama.',
         ],
         [
             'name' => 'Instagram Reels',
             'g' => 'IG',
             'fmt' => '9:16',
             'maxd' => 'hingga 90 detik',
+            'col' => '#FF4D8D',
+            'tip' => 'Visual rapi dan teks singkat.',
         ],
         [
             'name' => 'YouTube Shorts',
             'g' => 'YT',
             'fmt' => '9:16',
             'maxd' => 'hingga 3 menit',
+            'col' => '#FF5A5A',
+            'tip' => 'Cocok untuk edukasi singkat.',
         ],
         [
             'name' => 'Shopee Video',
             'g' => 'SP',
             'fmt' => '9:16',
             'maxd' => 'hingga 60 detik',
+            'col' => '#FF8A3D',
+            'tip' => 'Tampilkan harga dan promo.',
         ],
         [
             'name' => 'Facebook Reels',
             'g' => 'FB',
             'fmt' => '9:16',
             'maxd' => 'hingga 90 detik',
+            'col' => '#6B9BFF',
+            'tip' => 'Jangkau audiens yang lebih luas.',
         ],
         [
             'name' => 'Tokopedia Play',
             'g' => 'TP',
             'fmt' => '9:16',
             'maxd' => 'hingga 60 detik',
+            'col' => '#3DDC84',
+            'tip' => 'Fokus pada demo produk.',
         ],
     ],
     'brands' => [
@@ -416,6 +649,9 @@ return [
             'role' => 'Marketing Lead',
             'brand' => 'Lumira Skin',
             'ini' => 'MA',
+            'metric' => '1,1% → 1,9%',
+            'mlbl' => 'CTR iklan dalam 2 minggu',
+            'img' => 'brand-1.svg',
         ],
         [
             'q' => 'Footage mentahnya rapi, jadi tim kami bisa membuat variasi iklan sendiri.',
@@ -423,6 +659,9 @@ return [
             'role' => 'Performance Marketer',
             'brand' => 'Voltra Audio',
             'ini' => 'RH',
+            'metric' => 'Lebih banyak',
+            'mlbl' => 'variasi iklan dari footage mentah',
+            'img' => 'brand-4.svg',
         ],
         [
             'q' => 'Revisi cepat dan kreatornya paham brief. Kami lanjut ambil paket Broadcast.',
@@ -430,6 +669,9 @@ return [
             'role' => 'Brand Manager',
             'brand' => 'Kopi Gunung',
             'ini' => 'IP',
+            'metric' => 'Naik paket',
+            'mlbl' => 'ke Broadcast',
+            'img' => 'brand-3.svg',
         ],
     ],
     'budgets' => ['Di bawah Rp 2 jt', 'Rp 2–5 jt', 'Rp 5–15 jt', 'Di atas Rp 15 jt'],
@@ -472,4 +714,118 @@ return [
             'go' => 'platforms',
         ],
     ],
+    'icons' => [
+        'bolt' => 'M13 2L4 14h7l-1 8 9-12h-7z',
+        'broad' => 'M4.9 19.1a10 10 0 0 1 0-14.2M19.1 4.9a10 10 0 0 1 0 14.2M8.5 15.5a5 5 0 0 1 0-7M15.5 8.5a5 5 0 0 1 0 7M12 10.5a1.5 1.5 0 1 0 .01 0',
+        'play' => 'M8 5v14l11-7z',
+        'shield' => 'M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z',
+        'clock' => 'M12 3a9 9 0 1 0 .01 0M12 7v5l3 2',
+        'inf' => 'M7 8a4 4 0 1 0 0 8c4 0 6-8 10-8a4 4 0 1 1 0 8c-4 0-6-8-10-8z',
+        'ads' => 'M3 11v2l12 5V6zM15 8.5c2.5 1 4 2.2 4 3.5s-1.5 2.5-4 3.5',
+        'users' => 'M16 20v-1a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v1M10 11a3.5 3.5 0 1 0 .01 0M20 20v-1a3 3 0 0 0-2.5-3M16 4.3a3.5 3.5 0 0 1 0 6.4',
+        'cam' => 'M4 8h3l2-3h6l2 3h3v11H4zM12 11a3.5 3.5 0 1 0 .01 0',
+        'check' => 'M5 12.5l4.5 4.5L19 7',
+        'chat' => 'M4 5h16v11H9l-5 4z',
+        'film' => 'M4 5h16v14H4zM8 5v14M16 5v14M4 9h4M4 15h4M16 9h4M16 15h4',
+        'text' => 'M5 6h14M5 11h14M5 16h9',
+        'mail' => 'M4 6h16v12H4zM4 7l8 6 8-6',
+        'pin' => 'M12 21s7-6 7-11a7 7 0 1 0-14 0c0 5 7 11 7 11zM12 8.5a2 2 0 1 0 .01 0',
+    ],
+    'cmp' => [
+        [
+            'f' => 'Jumlah video',
+            'v' => ['3', '8', '20'],
+        ],
+        [
+            'f' => 'Kreator',
+            'v' => ['1', '2–3', '5'],
+        ],
+        [
+            'f' => 'Variasi hook',
+            'v' => ['1', '3', '5'],
+        ],
+        [
+            'f' => 'Subtitle dan caption',
+            'v' => ['–', '✓', '✓'],
+        ],
+        [
+            'f' => 'Footage mentah',
+            'v' => ['–', '–', '✓'],
+        ],
+        [
+            'f' => 'Revisi',
+            'v' => ['1x', '2x', '3x'],
+        ],
+        [
+            'f' => 'Hak iklan',
+            'v' => ['–', '60 hari', '90 hari + whitelisting'],
+        ],
+    ],
+    'addons' => [
+        [
+            't' => 'Footage mentah',
+            'd' => 'Seluruh rekaman tanpa edit untuk tim kreatif Anda.',
+            'p' => '+ Rp 600 rb',
+            'ico' => 'film',
+        ],
+        [
+            't' => 'Voice over',
+            'd' => 'Narasi suara profesional Bahasa Indonesia.',
+            'p' => '+ Rp 350 rb',
+            'ico' => 'chat',
+        ],
+        [
+            't' => 'Pengerjaan kilat',
+            'd' => 'Video selesai 48 jam setelah produk diterima.',
+            'p' => '+ 25%',
+            'ico' => 'bolt',
+        ],
+        [
+            't' => 'Versi 16:9',
+            'd' => 'Ekspor tambahan untuk YouTube dan situs web.',
+            'p' => '+ Rp 150 rb',
+            'ico' => 'play',
+        ],
+    ],
+    'rating' => [
+        'score' => '4,9',
+        'total' => 'dari 86 ulasan klien',
+        'bars' => [
+            [
+                's' => 5,
+                'p' => 92,
+            ],
+            [
+                's' => 4,
+                'p' => 7,
+            ],
+            [
+                's' => 3,
+                'p' => 1,
+            ],
+            [
+                's' => 2,
+                'p' => 0,
+            ],
+            [
+                's' => 1,
+                'p' => 0,
+            ],
+        ],
+    ],
+    'trust' => [
+        [
+            't' => 'Brief Anda dijaga kerahasiaannya',
+            'ico' => 'shield',
+        ],
+        [
+            't' => 'Balasan dalam satu hari kerja',
+            'ico' => 'clock',
+        ],
+        [
+            't' => 'Konsultasi awal gratis',
+            'ico' => 'check',
+        ],
+    ],
+    'ticker' => ['TikTok', 'Instagram Reels', 'YouTube Shorts', 'Shopee Video', 'UGC Skincare', 'Unboxing', 'Review Jujur', 'Try-On', 'Food Content', 'Travel Vlog'],
 ];

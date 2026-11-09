@@ -5,15 +5,18 @@
         <h2>Opsi Donasi</h2>
     </header>
     <p class="fh-card__sub">{{ $cfg['donation']['text'] }}</p>
-    <ul class="fh-tiles fh-tiles--4 fh-tiles--don">
+    <ul class="fh-dgrid">
         @foreach ($cfg['donation']['options'] as $o)
             <li>
-                <a class="fh-tile fh-tile--sm" href="{{ $url('donasi') }}#{{ $o['key'] }}">
-                    <img src="{{ $img($o['icon']) }}" alt="" width="30" height="30" loading="lazy">
-                    <span>{{ $o['label'] }}@if ($o['note'])<small>{{ $o['note'] }}</small>@endif</span>
+                <a class="fh-dtile" href="{{ $url('donasi') }}#{{ $o['key'] }}">
+                    <img src="{{ $img($o['icon']) }}" alt="" width="32" height="32" loading="lazy">
+                    <span class="fh-dtile__txt">
+                        <strong>{{ $o['label'] }}</strong>
+                        <small>{{ $o['hint'] }}</small>
+                    </span>
                 </a>
             </li>
         @endforeach
     </ul>
-    <a class="fh-btn fh-btn--green fh-btn--sm fh-card__center" href="{{ $url('donasi') }}">Donasi Sekarang {{ $icon('arrow') }}</a>
+    <a class="fh-btn fh-btn--green fh-btn--sm fh-btn--block" href="{{ $url('donasi') }}">Donasi Sekarang {{ $icon('arrow') }}</a>
 </article>

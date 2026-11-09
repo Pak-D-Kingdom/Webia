@@ -4,9 +4,20 @@
 <section class="fh-sec">
     <div class="fh-wrap fh-split">
         <div class="fh-reveal">
-            <figure class="fh-figure">
-                <img src="{{ $img('volunteer-hands.jpg') }}" alt="Tangan para relawan bertumpuk menjadi satu" width="418" height="288" loading="lazy">
-            </figure>
+            <div class="fh-visual">
+                <figure class="fh-visual__frame">
+                    <img src="{{ $img('volunteer-hands.jpg') }}" alt="Tangan para relawan bertumpuk menjadi satu" width="752" height="512" loading="lazy">
+                </figure>
+                <ul class="fh-visual__chips">
+                    @foreach ([$cfg['impact']['more'][3], $cfg['impact']['more'][0]] as $chip)
+                        <li class="fh-visual__chip">
+                            <span class="fh-visual__ic">{{ $icon($loop->first ? 'users' : 'leaf') }}</span>
+                            <strong>{{ $chip['display'] }}</strong>
+                            <small>{{ $chip['label'] }}</small>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
             <div class="fh-sec__head fh-sec__head--left">
                 <span class="fh-eyebrow">Bergabung</span>
                 <h2>Mengapa Menjadi Relawan</h2>

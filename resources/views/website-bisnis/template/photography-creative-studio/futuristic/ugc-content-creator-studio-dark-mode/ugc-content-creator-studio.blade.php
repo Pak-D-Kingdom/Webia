@@ -64,10 +64,23 @@
   </div>
 </div></section>
 @else
-<section class="ugc-phead"><div class="ugc-wrap">
-  <p class="ugc-crumb"><a href="{{ route('ugc.home') }}">Beranda</a> / {{ $d['heads'][$page]['n'] }}</p>
-  <h1>{{ $d['heads'][$page]['t'] }}</h1>
-  <p>{{ $d['heads'][$page]['s'] }}</p>
+<section class="ugc-phead"><span class="ugc-ring ugc-ring--1" aria-hidden="true"></span><span class="ugc-ring ugc-ring--2" aria-hidden="true"></span>
+<div class="ugc-wrap ugc-phead__g">
+  <div class="ugc-phead__c">
+    <p class="ugc-crumb"><a href="{{ route('ugc.home') }}">Beranda</a><span>/</span>{{ $d['heads'][$page]['n'] }}</p>
+    <h1>{{ $d['heads'][$page]['t'] }}</h1>
+    <p class="ugc-phead__s">{{ $d['heads'][$page]['s'] }}</p>
+    <dl class="ugc-stats">@foreach($d['heads'][$page]['facts'] as $f)<div><dd>{{ $f['v'] }}</dd><dt>{{ $f['l'] }}</dt></div>@endforeach</dl>
+    @if($page!=='inquiry')<div class="ugc-cta"><a class="ugc-btn ugc-btn--pri" href="{{ route('ugc.inquiry') }}">Kirim brief kampanye</a><a class="ugc-btn" href="{{ route('ugc.packages') }}">Lihat paket</a></div>@endif
+  </div>
+  <div class="ugc-stage ugc-pv" aria-hidden="true">
+    @if($d['heads'][$page]['kind']==='logo')
+    @foreach($d['heads'][$page]['imgs'] as $im)<figure class="ugc-lg ugc-lg--{{ $loop->iteration }}"><img src="{{ $img }}/{{ $im }}" alt="" width="240" height="72"></figure>@endforeach
+    @else
+    @foreach($d['heads'][$page]['imgs'] as $im)<figure class="ugc-ph ugc-ph--{{ $loop->iteration }}"><img src="{{ $img }}/{{ $im }}" alt="" width="360" height="640"></figure>@endforeach
+    @endif
+    @foreach($d['heads'][$page]['chips'] as $ch)<span class="ugc-chip ugc-chip--{{ $loop->iteration }}">{{ $ch }}</span>@endforeach
+  </div>
 </div></section>
 @endif
 
@@ -84,19 +97,21 @@
   @if($k==='portfolio')
   @if($page==='portfolio')
   <div class="ugc-chips" role="group" aria-label="Filter niche">
-    @foreach($d['niches'] as $n)
-    <button type="button" class="ugc-fchip{{ $n==='Semua' ? ' is-on' : '' }}" data-filter="{{ $n }}">{{ $n }}</button>
-    @endforeach
+    @foreach($d['niches'] as $n)<button type="button" class="ugc-fchip{{ $n==='Semua' ? ' is-on' : '' }}" data-filter="{{ $n }}">{{ $n }}</button>@endforeach
   </div>
   @endif
-  <div class="ugc-grid" style="--min:16rem">
+  <div class="ugc-grid" style="--min:17rem">
     @foreach($d['portfolio'] as $r)
     @if($page!=='home' || $loop->index<$d['limit'][$k])
     <article class="ugc-creator" data-niche="{{ $r['niche'] }}">
-      <div class="ugc-vf"><img src="{{ $img }}/{{ $r['img'] }}" alt="Potret kreator {{ $r['name'] }}" width="480" height="600" loading="lazy"><span class="ugc-tag">{{ $r['niche'] }}</span><span class="ugc-er">{{ $r['er'] }} ER</span></div>
+      <div class="ugc-vf"><img src="{{ $img }}/{{ $r['img'] }}" alt="Potret kreator {{ $r['name'] }}" width="480" height="600" loading="lazy">
+        <span class="ugc-tag">{{ $r['niche'] }}</span><span class="ugc-er">{{ $r['er'] }} ER</span>
+        <div class="ugc-cname"><h3>{{ $r['name'] }}</h3><p>{{ $r['city'] }}, aktif di {{ $r['plat'] }}</p></div></div>
       <div class="ugc-cbody">
-        <h3>{{ $r['name'] }}</h3><p>{{ $r['bio'] }}</p>
+        <p>{{ $r['bio'] }}</p>
+        <ul class="ugc-tags">@foreach($r['tags'] as $t)<li>{{ $t }}</li>@endforeach</ul>
         <dl class="ugc-metrics"><div><dt>Pengikut</dt><dd>{{ $r['fol'] }}</dd></div><div><dt>Engagement</dt><dd>{{ $r['er'] }}</dd></div><div><dt>Kota</dt><dd>{{ $r['city'] }}</dd></div></dl>
+        <a class="ugc-btn ugc-btn--ghost" href="{{ route('ugc.inquiry') }}">Pesan kreator ini</a>
       </div>
     </article>
     @endif
@@ -105,13 +120,18 @@
   @endif
 
   @if($k==='samples')
-  <div class="ugc-grid" style="--min:12rem">
+  @if($page==='samples')
+  <div class="ugc-chips" role="group" aria-label="Filter kategori">
+    @foreach($d['niches'] as $n)<button type="button" class="ugc-fchip{{ $n==='Semua' ? ' is-on' : '' }}" data-filter="{{ $n }}">{{ $n }}</button>@endforeach
+  </div>
+  @endif
+  <div class="ugc-grid" style="--min:12.5rem">
     @foreach($d['samples'] as $r)
     @if($page!=='home' || $loop->index<$d['limit'][$k])
-    <article class="ugc-sample">
-      <a class="ugc-phone" href="{{ route('ugc.inquiry') }}" aria-label="Pesan video seperti {{ $r['title'] }}">
+    <article class="ugc-sample" data-niche="{{ $r['cat'] }}">
+      <a class="ugc-phone" href="{{ route('ugc.inquiry') }}" data-lb data-img="{{ $img }}/{{ $r['img'] }}" data-title="{{ $r['title'] }}" data-brand="{{ $r['brand'] }}" data-dur="{{ $r['dur'] }}" data-views="{{ $r['views'] }}" data-ret="{{ $r['ret'] }}" aria-label="Putar pratinjau {{ $r['title'] }}">
         <img src="{{ $img }}/{{ $r['img'] }}" alt="Cuplikan video {{ $r['title'] }}" width="360" height="640" loading="lazy">
-        <span class="ugc-rec"><i class="ugc-dot"></i>REC</span><span class="ugc-dur">{{ $r['dur'] }}</span><span class="ugc-play"></span>
+        <span class="ugc-rec"><i class="ugc-dot"></i>REC</span><span class="ugc-ret">Retensi {{ $r['ret'] }}</span><span class="ugc-dur">{{ $r['dur'] }}</span><span class="ugc-play"></span>
       </a>
       <h3>{{ $r['title'] }}</h3><p>{{ $r['brand'] }}</p><p class="ugc-views">{{ $r['views'] }} tayangan</p>
     </article>
@@ -125,34 +145,55 @@
     @foreach($d['packages'] as $r)
     <article class="ugc-card ugc-pkg{{ $r['hot'] ? ' ugc-pkg--hot' : '' }}">
       @if($r['hot'])<span class="ugc-badge">Paling banyak dipilih</span>@endif
-      <h3>{{ $r['name'] }}</h3><p class="ugc-mute">{{ $r['for'] }}</p>
+      <span class="ugc-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $d['icons'][$r['ico']] }}"/></svg></span>
+      <div><h3>{{ $r['name'] }}</h3><p class="ugc-mute">{{ $r['for'] }}</p></div>
       <p class="ugc-price">{{ $r['price'] }}<small> / {{ $r['qty'] }}</small></p>
+      <p class="ugc-eta"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $d['icons']['clock'] }}"/></svg>Estimasi {{ $r['eta'] }}</p>
       <ul class="ugc-ticks">@foreach($r['feat'] as $f)<li>{{ $f }}</li>@endforeach</ul>
       <a class="ugc-btn{{ $r['hot'] ? ' ugc-btn--pri' : '' }}" href="{{ route('ugc.inquiry') }}">Pilih paket {{ $r['name'] }}</a>
     </article>
     @endforeach
   </div>
+  @if($page==='packages')
+  <h2 class="ugc-h2s">Bandingkan paket</h2>
+  <div class="ugc-scroll ugc-cmp"><table class="ugc-table"><thead><tr><th>Fitur</th>@foreach($d['packages'] as $r)<th>{{ $r['name'] }}</th>@endforeach</tr></thead><tbody>
+    @foreach($d['cmp'] as $r)<tr><td>{{ $r['f'] }}</td>@foreach($r['v'] as $v)<td>{{ $v }}</td>@endforeach</tr>@endforeach
+  </tbody></table></div>
+  <h2 class="ugc-h2s">Tambahan opsional</h2>
+  <div class="ugc-grid" style="--min:14rem">
+    @foreach($d['addons'] as $r)<article class="ugc-card ugc-addon"><span class="ugc-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $d['icons'][$r['ico']] }}"/></svg></span><h3>{{ $r['t'] }}</h3><p class="ugc-mute">{{ $r['d'] }}</p><p class="ugc-addon__p">{{ $r['p'] }}</p></article>@endforeach
+  </div>
+  @endif
   @endif
 
   @if($k==='rights')
-  <div class="ugc-two">
-    <div class="ugc-card"><h3>Yang Anda terima</h3>
-      <ul class="ugc-ticks">@foreach($d['deliver'] as $f)<li>{{ $f }}</li>@endforeach</ul>
-    </div>
-    <div class="ugc-card"><h3>Hak penggunaan</h3>
-      <div class="ugc-scroll"><table class="ugc-table"><thead><tr><th>Jenis</th><th>Durasi</th><th>Kanal</th><th>Biaya</th></tr></thead><tbody>
-        @foreach($d['usage'] as $r)<tr><td>{{ $r['tier'] }}</td><td>{{ $r['dur'] }}</td><td>{{ $r['ch'] }}</td><td>{{ $r['fee'] }}</td></tr>@endforeach
-      </tbody></table></div>
-      <p class="ugc-note">Biaya tambahan dihitung dari harga paket. Perpanjangan bisa diajukan kapan saja.</p>
-    </div>
+  <div class="ugc-grid" style="--min:15rem">
+    @foreach($d['deliver'] as $r)<article class="ugc-card ugc-dlv"><span class="ugc-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $d['icons'][$r['ico']] }}"/></svg></span><h3>{{ $r['t'] }}</h3><p class="ugc-mute">{{ $r['d'] }}</p></article>@endforeach
   </div>
+  <h2 class="ugc-h2s">Hak penggunaan</h2>
+  <div class="ugc-tiers">
+    @foreach($d['usage'] as $r)
+    <article class="ugc-card ugc-tier">
+      <div class="ugc-tier__h"><span class="ugc-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $d['icons'][$r['ico']] }}"/></svg></span><div><h3>{{ $r['tier'] }}</h3><p class="ugc-mute">{{ $r['ch'] }}</p></div><b class="ugc-tier__fee">{{ $r['fee'] }}</b></div>
+      <div class="ugc-meter"><i style="--w:{{ $r['pct'] }}%"></i></div>
+      <p class="ugc-tier__d">Durasi: {{ $r['dur'] }}</p><p class="ugc-mute">{{ $r['note'] }}</p>
+    </article>
+    @endforeach
+  </div>
+  <p class="ugc-note">Biaya tambahan dihitung dari harga paket. Perpanjangan hak bisa diajukan kapan saja.</p>
   @endif
 
   @if($k==='platforms')
-  <div class="ugc-grid" style="--min:14rem">
-    @foreach($d['platforms'] as $r)
-    <article class="ugc-card ugc-plat"><span class="ugc-glyph">{{ $r['g'] }}</span><div><h3>{{ $r['name'] }}</h3><p class="ugc-mute">Rasio {{ $r['fmt'] }}, {{ $r['maxd'] }}</p></div></article>
-    @endforeach
+  <div class="ugc-plats">
+    <div class="ugc-orbit" aria-hidden="true">
+      <div class="ugc-orbit__c"><img src="{{ $img }}/sample-1.svg" alt="" width="360" height="640"></div>
+      <div class="ugc-orbit__r">@foreach($d['platforms'] as $r)<span class="ugc-orbit__n" style="--i:{{ $loop->index }};--c:{{ $r['col'] }}"><b>{{ $r['g'] }}</b></span>@endforeach</div>
+    </div>
+    <div class="ugc-grid" style="--min:15rem">
+      @foreach($d['platforms'] as $r)
+      <article class="ugc-card ugc-plat" style="--c:{{ $r['col'] }}"><span class="ugc-glyph">{{ $r['g'] }}</span><div><h3>{{ $r['name'] }}</h3><p class="ugc-mute">Rasio {{ $r['fmt'] }}, {{ $r['maxd'] }}</p><p class="ugc-plat__tip">{{ $r['tip'] }}</p></div></article>
+      @endforeach
+    </div>
   </div>
   @endif
 
@@ -187,20 +228,40 @@
   @endif
 
   @if($k==='testimonials')
-  <div class="ugc-grid" style="--min:17rem">
+  <div class="ugc-rate">
+    <div class="ugc-rate__s"><b>{{ $d['rating']['score'] }}</b><span class="ugc-stars" aria-hidden="true">★★★★★</span><small>{{ $d['rating']['total'] }}</small></div>
+    <div class="ugc-rate__b">@foreach($d['rating']['bars'] as $s)<div><span>{{ $s['s'] }} ★</span><i><u style="--w:{{ $s['p'] }}%"></u></i><em>{{ $s['p'] }}%</em></div>@endforeach</div>
+  </div>
+  <div class="ugc-tm">
     @foreach($d['testimonials'] as $r)
-    <figure class="ugc-card ugc-quote">
-      <p class="ugc-stars" aria-label="Rating 5 dari 5">★★★★★</p>
+    @if($loop->index===0)
+    <figure class="ugc-card ugc-quote ugc-feat">
+      <img class="ugc-tlogo" src="{{ $img }}/{{ $r['img'] }}" alt="Logo {{ $r['brand'] }}" width="240" height="72" loading="lazy">
+      <p class="ugc-metric"><b>{{ $r['metric'] }}</b><span>{{ $r['mlbl'] }}</span></p>
       <blockquote>{{ $r['q'] }}</blockquote>
       <figcaption><span class="ugc-av">{{ $r['ini'] }}</span><span><strong>{{ $r['name'] }}</strong><br><small>{{ $r['role'] }}, {{ $r['brand'] }}</small></span></figcaption>
     </figure>
+    @endif
     @endforeach
+    <div class="ugc-tm__side">
+      @foreach($d['testimonials'] as $r)
+      @if($loop->index>0)
+      <figure class="ugc-card ugc-quote">
+        <img class="ugc-tlogo" src="{{ $img }}/{{ $r['img'] }}" alt="Logo {{ $r['brand'] }}" width="240" height="72" loading="lazy">
+        <p class="ugc-metric"><b>{{ $r['metric'] }}</b><span>{{ $r['mlbl'] }}</span></p>
+        <blockquote>{{ $r['q'] }}</blockquote>
+        <figcaption><span class="ugc-av">{{ $r['ini'] }}</span><span><strong>{{ $r['name'] }}</strong><br><small>{{ $r['role'] }}, {{ $r['brand'] }}</small></span></figcaption>
+      </figure>
+      @endif
+      @endforeach
+    </div>
   </div>
   @endif
 
   @if($k==='inquiry')
   <div class="ugc-two ugc-two--form">
     <form class="ugc-card ugc-form" data-ugc-form data-wa="{{ $d['brand']['wa'] }}" action="#" method="post" novalidate>
+      <div class="ugc-prog" aria-hidden="true"><i data-prog></i></div><p class="ugc-prog__t"><span>Lengkapi brief Anda</span><span><b data-prog-t>0%</b> terisi</span></p>
       <section class="ugc-fs"><p class="ugc-fs__h"><b>01</b>Kontak Anda</p><div class="ugc-fgrid">
         <div class="ugc-f"><label for="f-nama">Nama lengkap</label><input id="f-nama" name="nama" placeholder="Nama Anda" data-req="t" data-msg="Isi nama Anda." autocomplete="name"><span class="ugc-err"></span></div>
         <div class="ugc-f"><label for="f-brand">Nama brand</label><input id="f-brand" name="brand" placeholder="Nama brand atau bisnis" data-req="t" data-msg="Isi nama brand." autocomplete="organization"><span class="ugc-err"></span></div>
@@ -225,8 +286,12 @@
       <div class="ugc-submit"><button class="ugc-btn ugc-btn--pri" type="submit">Kirim brief lewat WhatsApp</button><p>Brief terkirim ke WhatsApp tim kami di {{ $d['brand']['phone'] }}.</p></div>
     </form>
     <div class="ugc-card ugc-ok" data-ok hidden><h3>Brief siap dikirim</h3><p>WhatsApp terbuka dengan brief Anda. Tekan kirim di sana. Bila tidak terbuka, gunakan tombol di bawah.</p><div class="ugc-cta"><a class="ugc-btn ugc-btn--pri" data-wa-link href="#" target="_blank" rel="noopener">Buka WhatsApp</a><a class="ugc-btn" href="{{ route('ugc.packages') }}">Lihat paket</a></div></div>
-    <aside class="ugc-card ugc-after"><h3>Setelah brief dikirim</h3>
-      <ol>@foreach($d['after'] as $f)<li>{{ $f }}</li>@endforeach</ol>
+    <aside class="ugc-side">
+      <div class="ugc-card ugc-sum"><p class="ugc-idx">Ringkasan brief</p>
+        <dl><div><dt>Paket</dt><dd data-sum="paket">-</dd></div><div><dt>Anggaran</dt><dd data-sum="budget">-</dd></div><div><dt>Platform</dt><dd data-sum="platform">Belum dipilih</dd></div><div><dt>Target tayang</dt><dd data-sum="tanggal">-</dd></div></dl></div>
+      <div class="ugc-card ugc-after"><h3>Setelah brief dikirim</h3><ol>@foreach($d['after'] as $f)<li>{{ $f }}</li>@endforeach</ol></div>
+      <div class="ugc-card ugc-fast"><div><b>Butuh jawaban cepat?</b><p class="ugc-mute">Chat langsung ke {{ $d['brand']['phone'] }}</p></div><a class="ugc-btn" href="https://wa.me/{{ $d['brand']['wa'] }}" target="_blank" rel="noopener">Chat WhatsApp</a></div>
+      <ul class="ugc-trust">@foreach($d['trust'] as $r)<li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $d['icons'][$r['ico']] }}"/></svg>{{ $r['t'] }}</li>@endforeach</ul>
     </aside>
   </div>
   @endif
@@ -254,7 +319,9 @@
 </main>
 
 {{-- FOOTER --}}
-<footer class="ugc-foot"><div class="ugc-wrap">
+<footer class="ugc-foot">
+<div class="ugc-tick" aria-hidden="true"><div class="ugc-tick__t">@foreach($d['ticker'] as $t)<span>{{ $t }}</span>@endforeach @foreach($d['ticker'] as $t)<span>{{ $t }}</span>@endforeach</div></div>
+<div class="ugc-wrap">
   <div class="ugc-fcta"><div><h2>Punya produk yang ingin dibuatkan video UGC?</h2><p>Kirim brief singkat. Kami balas dengan estimasi dan shortlist kreator dalam satu hari kerja.</p></div><a class="ugc-btn ugc-btn--pri" href="{{ route('ugc.inquiry') }}">Kirim brief sekarang</a></div>
   <div class="ugc-foot__grid">
     <div><a class="ugc-logo" href="{{ route('ugc.home') }}" aria-label="{{ $d['brand']['name'] }}">
@@ -263,8 +330,14 @@
   </a><p class="ugc-mute">{{ $d['brand']['desc'] }}</p><a class="ugc-btn ugc-fwa" href="https://wa.me/{{ $d['brand']['wa'] }}" target="_blank" rel="noopener">Chat {{ $d['brand']['phone'] }}</a></div>
     <div><h3>Halaman</h3><ul>@foreach($d['nav'] as $n)<li><a data-nav="{{ $n['key'] }}" href="{{ route('ugc.'.$n['key']) }}">{{ $n['label'] }}</a></li>@endforeach</ul></div>
     <div><h3>Layanan</h3><ul>@foreach($d['order'] as $k)@if($k==='inquiry' || $k==='faq')<li><a data-nav="{{ $k }}" href="{{ route('ugc.'.$k) }}">{{ $d['heads'][$k]['n'] }}</a></li>@endif @endforeach</ul></div>
-    <div><h3>Kontak</h3><ul class="ugc-foot__c"><li><small>WhatsApp</small><a href="https://wa.me/{{ $d['brand']['wa'] }}" target="_blank" rel="noopener">{{ $d['brand']['phone'] }}</a></li><li><small>Email</small><a href="mailto:{{ $d['brand']['email'] }}">{{ $d['brand']['email'] }}</a></li><li><small>Jam kerja</small>{{ $d['brand']['hours'] }}</li><li><small>Studio</small>{{ $d['brand']['city'] }}, Indonesia</li></ul></div>
+    <div><h3>Kontak</h3><ul class="ugc-foot__c">
+      <li><span class="ugc-ico ugc-ico--s"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $d['icons']['chat'] }}"/></svg></span><div><small>WhatsApp</small><a href="https://wa.me/{{ $d['brand']['wa'] }}" target="_blank" rel="noopener">{{ $d['brand']['phone'] }}</a></div></li>
+      <li><span class="ugc-ico ugc-ico--s"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $d['icons']['mail'] }}"/></svg></span><div><small>Email</small><a href="mailto:{{ $d['brand']['email'] }}">{{ $d['brand']['email'] }}</a></div></li>
+      <li><span class="ugc-ico ugc-ico--s"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $d['icons']['clock'] }}"/></svg></span><div><small>Jam kerja</small><span>{{ $d['brand']['hours'] }}</span></div></li>
+      <li><span class="ugc-ico ugc-ico--s"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $d['icons']['pin'] }}"/></svg></span><div><small>Studio</small><span>{{ $d['brand']['city'] }}, Indonesia</span></div></li>
+    </ul></div>
   </div>
+  <p class="ugc-bigmark" aria-hidden="true">SOROT</p>
   <div class="ugc-bar"><p class="ugc-credit">© 2026 WEBIA by D-KREASI. Seluruh hak cipta dilindungi.</p><a class="ugc-top" href="#main">Kembali ke atas</a></div>
 </div></footer>
 
@@ -287,6 +360,14 @@
     <span class="ugc-fab__tip">Tanya paket</span>
   </button>
 </div>
+
+<dialog class="ugc-lb" aria-label="Pratinjau video"><div class="ugc-lb__in">
+  <button type="button" class="ugc-x" data-lb-close aria-label="Tutup pratinjau">×</button>
+  <div class="ugc-lb__v"><img src="" alt="" width="360" height="640"><span class="ugc-play"></span><i class="ugc-lb__bar"></i></div>
+  <div class="ugc-lb__i"><p class="ugc-idx">Pratinjau video</p><h3 data-lb-t></h3><p class="ugc-mute" data-lb-b></p>
+    <dl class="ugc-metrics"><div><dt>Durasi</dt><dd data-lb-d></dd></div><div><dt>Tayangan</dt><dd data-lb-v></dd></div><div><dt>Retensi 3 dtk</dt><dd data-lb-r></dd></div></dl>
+    <a class="ugc-btn ugc-btn--pri" href="{{ route('ugc.inquiry') }}">Pesan video seperti ini</a></div>
+</div></dialog>
 
 <script type="application/json" id="ugc-data">@json($d['faq'])</script>
 <script src="{{ asset('js/website-bisnis/template/photography-creative-studio/futuristic/ugc-content-creator-studio-dark-mode/ugc-content-creator-studio.js') }}"></script>
