@@ -68,6 +68,7 @@
                         @enderror
                     </div>
 
+                    <a class="auth-forgot" href="{{ route('password.request') }}">Lupa kata sandi?</a>
                     <button type="submit" class="auth-submit">Masuk</button>
                 </form>
 

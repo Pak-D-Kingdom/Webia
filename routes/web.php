@@ -9,12 +9,15 @@ use App\Http\Controllers\Admin\WebiaAddonController;
 use App\Http\Controllers\Admin\WebiaOrderController as AdminWebiaOrderController;
 use App\Http\Controllers\Admin\WebiaPackageController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\NewPasswordController;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\CustomerAiController;
 use App\Http\Controllers\CustomerSiteController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HostingInvoiceController;
 use App\Http\Controllers\MidtransController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RubyRegisterController;
 use App\Http\Controllers\WebiaOrderController;
 use App\Http\Controllers\WebsiteBisnis\TemplateCollectionController;
@@ -42,6 +45,10 @@ Route::get('/s/{order:site_slug}/{page?}', CustomerSiteController::class)
 Route::middleware('guest')->group(function (): void {
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
     Route::post('/login', [AuthenticatedSessionController::class, 'store'])->middleware('throttle:6,1');
+    Route::get('/forgot-password', [PasswordResetLinkController::class, 'create'])->name('password.request');
+    Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])->middleware('throttle:6,1')->name('password.email');
+    Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
+    Route::post('/reset-password', [NewPasswordController::class, 'store'])->middleware('throttle:6,1')->name('password.store');
 });
 
 // Buat pesanan bisa diakses guest: akun dibuat otomatis saat pesanan dikirim.
@@ -60,6 +67,9 @@ Route::middleware('auth')->group(function (): void {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
     Route::get('/ai-assistant', [CustomerAiController::class, 'index'])->name('customer.ai');
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->middleware('throttle:6,1')->name('profile.update');
+    Route::patch('/profile/password', [ProfileController::class, 'updatePassword'])->middleware('throttle:6,1')->name('profile.password');
     Route::get('/orders', [WebiaOrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{order}', [WebiaOrderController::class, 'show'])->name('orders.show');
     Route::get('/orders/{order}/payment-status/live', [WebiaOrderController::class, 'authenticatedPaymentStatus'])->middleware('throttle:12,1')->name('orders.payment-status.authenticated');

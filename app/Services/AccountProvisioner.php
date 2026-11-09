@@ -31,18 +31,15 @@ class AccountProvisioner
             return $order;
         }
 
-        // Kunci email mencegah dua order guest berjalan bersamaan me-reset password akun yang sama.
         $user = User::where('email', $email)->lockForUpdate()->first();
-        $plainPassword = config('webia.provisioning.default_password', 'password123');
+        $plainPassword = null;
         if ($user === null) {
+            $plainPassword = config('webia.provisioning.default_password', 'password123');
             $user = User::create([
                 'name' => $order->guest_name ?? 'Pelanggan WEBIA',
                 'email' => $email,
                 'password' => $plainPassword,
             ]);
-        } else {
-            // Akun lama diatur ulang ke password default agar email kredensial selalu bisa dipakai login.
-            $user->update(['password' => $plainPassword]);
         }
 
         $order->user_id = $user->id;
