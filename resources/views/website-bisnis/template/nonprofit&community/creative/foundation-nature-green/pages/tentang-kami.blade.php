@@ -12,6 +12,7 @@
 
         <div class="fh-reveal">
             <div class="fh-sec__head fh-sec__head--left">
+                <span class="fh-eyebrow">Misi</span>
                 <h2>Misi Kami</h2>
                 <p>{{ $cfg['mission']['heading'] }}.</p>
             </div>
@@ -30,6 +31,7 @@
 <section class="fh-sec fh-sec--soft">
     <div class="fh-wrap">
         <div class="fh-sec__head fh-reveal">
+            <span class="fh-eyebrow">Nilai</span>
             <h2>Nilai yang Kami Pegang</h2>
             <p>Empat nilai yang memandu setiap keputusan dan kegiatan kami.</p>
         </div>
@@ -48,6 +50,7 @@
 <section class="fh-sec">
     <div class="fh-wrap">
         <div class="fh-sec__head fh-reveal">
+            <span class="fh-eyebrow">Sejarah</span>
             <h2>Perjalanan GreenHope</h2>
             <p>Dari gerakan kecil bersama warga hingga ratusan ribu penerima manfaat.</p>
         </div>

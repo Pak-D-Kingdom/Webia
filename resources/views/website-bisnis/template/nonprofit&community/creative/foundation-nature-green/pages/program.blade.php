@@ -1,15 +1,16 @@
 {{-- Halaman Program Kami --}}
 @include($v('partials.page-header'))
 
-<section class="fh-sec fh-sec--tight">
-    <div class="fh-wrap">
-        <nav class="fh-chips" aria-label="Lompat ke program">
-            @foreach ($cfg['programs'] as $p)
-                <a href="#{{ $p['key'] }}"><img src="{{ $img($p['icon']) }}" alt="" width="26" height="26">{{ $p['title'] }}</a>
-            @endforeach
-        </nav>
+<div class="fh-spywrap">
+    <div class="fh-subnav">
+        <div class="fh-wrap">
+            <nav class="fh-chips" aria-label="Lompat ke program" data-fh-spy>
+                @foreach ($cfg['programs'] as $p)
+                    <a href="#{{ $p['key'] }}" data-fh-spy-link="{{ $p['key'] }}"><img src="{{ $img($p['icon']) }}" alt="" width="26" height="26">{{ $p['title'] }}</a>
+                @endforeach
+            </nav>
+        </div>
     </div>
-</section>
 
 @foreach ($cfg['programs'] as $p)
     <section class="fh-sec fh-sec--tight" id="{{ $p['key'] }}">
@@ -37,6 +38,7 @@
         </div>
     </section>
 @endforeach
+</div>
 
 @include($v('partials.cta-band'), [
     'ctaTitle' => 'Satu program, ribuan senyum',

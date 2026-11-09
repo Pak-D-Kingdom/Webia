@@ -4,10 +4,10 @@
 @section('body_class', 'page-inner page-programs')
 
 @section('content')
-    @include($v.'.partials.page-header', ['crumb' => 'Program Kami', 'title' => 'Program Kami', 'lead' => $f['programs']['subtitle']])
+    @include($v.'.partials.page-header', ['crumb' => 'Program Kami', 'title' => 'Program Kami', 'lead' => $f['programs']['subtitle'], 'eyebrow' => 'Empat fokus utama', 'image' => 'kids-right.jpg', 'alt' => 'Dua anak tersenyum dan saling merangkul', 'cta_label' => 'Dukung Program', 'cta_href' => route($rp.'donation'), 'chip_a_value' => '4', 'chip_a_label' => 'Program utama', 'chip_b_value' => '48.000+', 'chip_b_label' => 'Anak terbantu'])
 
     <div class="hf-container hf-page">
-        <div class="hf-programlist">
+        <div class="hf-programlist" data-stagger>
             @foreach($f['programs']['items'] as $p)
                 <article class="hf-card hf-card--pad hf-program" id="{{ $p['key'] }}" data-reveal>
                     <div class="hf-program__icon"><svg class="hf-art hf-art--xl" viewBox="0 0 64 64" aria-hidden="true"><use href="#{{ $p['icon'] }}"/></svg></div>

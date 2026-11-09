@@ -4,6 +4,7 @@
 
 @section('content')
     @include($v.'.sections.hero')
+    @include($v.'.sections.chatbot')
 
     <div class="hf-wide hf-bento">
         <div class="hf-row hf-row--1">

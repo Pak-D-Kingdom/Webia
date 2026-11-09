@@ -8,6 +8,7 @@
                 <img src="{{ $img('volunteer-hands.jpg') }}" alt="Tangan para relawan bertumpuk menjadi satu" width="418" height="288" loading="lazy">
             </figure>
             <div class="fh-sec__head fh-sec__head--left">
+                <span class="fh-eyebrow">Bergabung</span>
                 <h2>Mengapa Menjadi Relawan</h2>
                 <p>{{ $cfg['volunteer']['text'] }}</p>
             </div>
@@ -75,6 +76,7 @@
 <section class="fh-sec fh-sec--soft">
     <div class="fh-wrap">
         <div class="fh-sec__head fh-reveal">
+            <span class="fh-eyebrow">Langkah</span>
             <h2>Alur Pendaftaran</h2>
             <p>Dari mengisi formulir sampai turun ke lapangan.</p>
         </div>

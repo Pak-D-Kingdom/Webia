@@ -180,8 +180,9 @@
             ['nama', 'wa', 'layanan', 'opsi', 'area', 'alamat'].forEach(function (n) {
                 var el = f[n], v = (el.value || '').trim();
                 var invalid = !v || (n === 'wa' && !/^\+?\d{9,15}$/.test(v.replace(/[\s-]/g, '')));
-                el.classList.toggle('is-invalid', invalid);
-                if (invalid) bad.push(el);
+                var tgt = el.__lwBtn || el;
+                tgt.classList.toggle('is-invalid', invalid);
+                if (invalid) bad.push(tgt);
             });
             if (bad.length) {
                 err.hidden = false;
@@ -202,7 +203,7 @@
             if (f.catatan.value.trim()) lines.push('Catatan: ' + f.catatan.value.trim());
             openWhatsApp(number, lines.join('\n'));
         });
-        form.addEventListener('input', function (e) { e.target.classList.remove('is-invalid'); });
+        form.addEventListener('input', function (e) { (e.target.__lwBtn || e.target).classList.remove('is-invalid'); });
     }
 
     /* ---------- 5. CEK AREA ---------- */
@@ -216,7 +217,7 @@
             e.preventDefault();
             var sel = form.elements.area, kec = norm(form.elements.kec.value);
             out.className = 'lw-check-result'; out.textContent = '';
-            if (!sel.value) { out.className += ' is-no'; out.textContent = 'Pilih kota terlebih dahulu.'; sel.focus(); return; }
+            if (!sel.value) { out.className += ' is-no'; out.textContent = 'Pilih kota terlebih dahulu.'; (sel.__lwBtn || sel).focus(); return; }
 
             var opt = sel.options[sel.selectedIndex];
             var list = (opt.dataset.list || '').split('|').map(norm);
@@ -235,6 +236,197 @@
                 out.appendChild(a);
             }
         });
+    }
+
+    /* ---------- 5b. DROPDOWN KUSTOM (select) + KALKULATOR ---------- */
+    function initSelects() {
+        // Perangkat sentuh tetap memakai select bawaan (lebih nyaman di mobile).
+        if (!window.matchMedia || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+        var openOne = null;
+
+        function enhance(sel) {
+            var wrap = document.createElement('div');
+            wrap.className = 'lw-select';
+            sel.parentNode.insertBefore(wrap, sel);
+            wrap.appendChild(sel);
+            sel.classList.add('lw-select__native');
+            sel.tabIndex = -1;
+            sel.setAttribute('aria-hidden', 'true');
+
+            var base = sel.id || ('lw-sel-' + Math.random().toString(36).slice(2, 7));
+            var btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'lw-select__btn';
+            btn.id = base + '-btn';
+            btn.setAttribute('aria-haspopup', 'listbox');
+            btn.setAttribute('aria-expanded', 'false');
+            btn.innerHTML = '<span class="lw-select__val"></span><svg class="lw-i" aria-hidden="true"><use href="#i-chevron"/></svg>';
+            var val = btn.firstChild;
+            var list = document.createElement('ul');
+            list.className = 'lw-select__list';
+            list.id = base + '-list';
+            list.setAttribute('role', 'listbox');
+            btn.setAttribute('aria-controls', list.id);
+            wrap.appendChild(btn);
+            wrap.appendChild(list);
+
+            if (sel.id) {
+                var lab = document.querySelector('label[for="' + sel.id + '"]');
+                if (lab) lab.setAttribute('for', btn.id);
+            }
+            sel.__lwBtn = btn;
+
+            var items = [], active = -1;
+            var api = { close: function () { close(false); } };
+
+            function addOpt(o) {
+                var li = document.createElement('li');
+                li.className = 'lw-select__opt' + (o.value === '' ? ' is-empty' : '');
+                li.id = base + '-o' + items.length;
+                li.setAttribute('role', 'option');
+                li.textContent = o.text;
+                li.dataset.index = String(Array.prototype.indexOf.call(sel.options, o));
+                li.addEventListener('mousedown', function (e) { e.preventDefault(); });
+                li.addEventListener('click', function () { choose(+li.dataset.index); });
+                li.addEventListener('mousemove', function () { setActive(items.indexOf(li)); });
+                list.appendChild(li);
+                items.push(li);
+            }
+            function build() {
+                list.innerHTML = ''; items = [];
+                Array.prototype.forEach.call(sel.children, function (ch) {
+                    if (ch.tagName === 'OPTGROUP') {
+                        var g = document.createElement('li');
+                        g.className = 'lw-select__group';
+                        g.setAttribute('role', 'presentation');
+                        g.textContent = ch.label;
+                        list.appendChild(g);
+                        Array.prototype.forEach.call(ch.children, addOpt);
+                    } else if (ch.tagName === 'OPTION') {
+                        addOpt(ch);
+                    }
+                });
+            }
+            function setActive(i) {
+                active = i;
+                items.forEach(function (it, k) { it.classList.toggle('is-active', k === i); });
+                if (i > -1 && items[i]) {
+                    var it = items[i];
+                    btn.setAttribute('aria-activedescendant', it.id);
+                    if (it.offsetTop < list.scrollTop) list.scrollTop = it.offsetTop - 6;
+                    else if (it.offsetTop + it.offsetHeight > list.scrollTop + list.clientHeight) list.scrollTop = it.offsetTop + it.offsetHeight - list.clientHeight + 6;
+                }
+            }
+            function sync() {
+                var o = sel.options[sel.selectedIndex];
+                val.textContent = o ? o.text : '';
+                btn.classList.toggle('is-placeholder', !sel.value);
+                items.forEach(function (it) {
+                    var on = +it.dataset.index === sel.selectedIndex;
+                    it.classList.toggle('is-selected', on);
+                    it.setAttribute('aria-selected', String(on));
+                });
+            }
+            function choose(idx) {
+                if (idx < 0) return;
+                sel.selectedIndex = idx;
+                sync();
+                close(true);
+                sel.dispatchEvent(new Event('input', { bubbles: true }));
+                sel.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+            function open() {
+                if (openOne && openOne !== api) openOne.close();
+                wrap.classList.add('is-open');
+                btn.setAttribute('aria-expanded', 'true');
+                openOne = api;
+                var r = btn.getBoundingClientRect(), below = window.innerHeight - r.bottom;
+                wrap.classList.toggle('is-up', below < 270 && r.top > below);
+                var cur = items.map(function (it) { return +it.dataset.index; }).indexOf(sel.selectedIndex);
+                setActive(cur > -1 ? cur : 0);
+            }
+            function close(focusBtn) {
+                wrap.classList.remove('is-open');
+                btn.setAttribute('aria-expanded', 'false');
+                if (openOne === api) openOne = null;
+                if (focusBtn) btn.focus();
+            }
+
+            btn.addEventListener('click', function () { wrap.classList.contains('is-open') ? close(false) : open(); });
+            btn.addEventListener('keydown', function (e) {
+                var isOpen = wrap.classList.contains('is-open');
+                if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    if (!isOpen) { open(); return; }
+                    setActive(Math.min(items.length - 1, Math.max(0, active + (e.key === 'ArrowDown' ? 1 : -1))));
+                } else if (e.key === 'Home' && isOpen) { e.preventDefault(); setActive(0); }
+                else if (e.key === 'End' && isOpen) { e.preventDefault(); setActive(items.length - 1); }
+                else if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    if (isOpen) { if (active > -1) choose(+items[active].dataset.index); } else open();
+                } else if (e.key === 'Escape' && isOpen) { e.preventDefault(); e.stopPropagation(); close(true); }
+                else if (e.key === 'Tab' && isOpen) { close(false); }
+                else if (e.key.length === 1 && /\S/.test(e.key)) {
+                    var ch = e.key.toLowerCase();
+                    for (var k = 1; k <= items.length; k++) {
+                        var j = (Math.max(active, -1) + k) % items.length;
+                        if (items[j].textContent.trim().toLowerCase().indexOf(ch) === 0) { if (!isOpen) open(); setActive(j); break; }
+                    }
+                }
+            });
+            document.addEventListener('click', function (e) { if (!wrap.contains(e.target)) close(false); });
+            sel.addEventListener('change', sync);
+            sel.addEventListener('lw-sync', sync);
+            build();
+            sync();
+        }
+
+        $$('.lw-form select').forEach(enhance);
+    }
+
+    function initCalc() {
+        var box = $('[data-lw-calc]');
+        if (!box) return;
+        var sel = $('select', box), qty = $('input[type="number"]', box);
+        var unitEl = $('[data-lw-calc-unit]', box), totalEl = $('[data-lw-calc-total]', box), wa = $('[data-lw-calc-wa]', box);
+        var brandName = box.dataset.brand || brand;
+        var rupiah = new Intl.NumberFormat('id-ID');
+        var lastTotal = null;
+
+        function cur() { return sel.options[sel.selectedIndex]; }
+        function stepFor() { return cur().dataset.unit === 'kg' ? 0.5 : 1; }
+        function clamp(v) {
+            v = parseFloat(String(v).replace(',', '.'));
+            var s = stepFor();
+            if (!isFinite(v)) v = s;
+            v = Math.round(v / s) * s;
+            return Math.min(99, Math.max(s, v));
+        }
+        function fmtQty(q) { return String(q).replace('.', ','); }
+        function render() {
+            var o = cur(), unit = o.dataset.unit, q = clamp(qty.value), total = Math.round(+o.value * q);
+            qty.step = String(stepFor());
+            qty.min = String(stepFor());
+            unitEl.textContent = unit;
+            totalEl.textContent = 'Rp ' + rupiah.format(total);
+            if (lastTotal !== null && lastTotal !== total) {
+                totalEl.classList.remove('is-bump'); void totalEl.offsetWidth; totalEl.classList.add('is-bump');
+            }
+            lastTotal = total;
+            var text = 'Halo ' + brandName + ', saya ingin memesan:\n' + o.dataset.name + ' × ' + fmtQty(q) + ' ' + unit +
+                '\nEstimasi: Rp ' + rupiah.format(total) + ' (belum termasuk biaya opsi tambahan)';
+            wa.href = 'https://wa.me/' + box.dataset.wa + '?text=' + encodeURIComponent(text);
+        }
+        $$('[data-lw-qty]', box).forEach(function (b) {
+            b.addEventListener('click', function () {
+                qty.value = fmtQty(clamp(clamp(qty.value) + (+b.dataset.lwQty) * stepFor())).replace(',', '.');
+                render();
+            });
+        });
+        qty.addEventListener('input', render);
+        qty.addEventListener('change', function () { qty.value = String(clamp(qty.value)); render(); });
+        sel.addEventListener('change', function () { qty.value = String(clamp(qty.value)); render(); });
+        render();
     }
 
     /* ---------- 6. CHATBOT ---------- */
@@ -436,7 +628,7 @@
 
     /* ---------- BOOT ---------- */
     function boot() {
-        initNav(); initFx(); initReveal(); initToTop(); initTabs(); initHours(); initOrderForm(); initAreaCheck(); initChat();
+        initNav(); initFx(); initReveal(); initToTop(); initTabs(); initHours(); initOrderForm(); initAreaCheck(); initSelects(); initCalc(); initChat();
     }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
     else boot();

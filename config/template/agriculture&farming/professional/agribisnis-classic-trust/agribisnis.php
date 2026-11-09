@@ -50,24 +50,68 @@ return [
             'route' => 'komoditas',
         ],
         [
-            'label' => 'Panen',
-            'route' => 'panen',
-        ],
-        [
-            'label' => 'Spesifikasi',
-            'route' => 'spesifikasi',
-        ],
-        [
-            'label' => 'Kemitraan',
-            'route' => 'b2b',
+            'label' => 'Informasi',
+            'keys' => ['panen', 'spesifikasi', 'minimum', 'kapasitas', 'distribusi'],
+            'children' => [
+                [
+                    'route' => 'panen',
+                    'title' => 'Informasi Panen',
+                    'desc' => 'Kalender tanam dan musim panen',
+                    'icon' => 'sprout',
+                ],
+                [
+                    'route' => 'spesifikasi',
+                    'title' => 'Spesifikasi Produk',
+                    'desc' => 'Kadar air, ukuran, kemurnian',
+                    'icon' => 'gauge',
+                ],
+                [
+                    'route' => 'minimum',
+                    'title' => 'Minimum Order',
+                    'desc' => 'MOQ, pembayaran, Incoterms',
+                    'icon' => 'box',
+                ],
+                [
+                    'route' => 'kapasitas',
+                    'title' => 'Kapasitas Pasokan',
+                    'desc' => 'Lebih dari 10.000 ton per tahun',
+                    'icon' => 'trend',
+                ],
+                [
+                    'route' => 'distribusi',
+                    'title' => 'Jangkauan Distribusi',
+                    'desc' => 'Wilayah, ekspor, rantai pasok',
+                    'icon' => 'globe',
+                ],
+            ],
         ],
         [
             'label' => 'Sertifikasi',
             'route' => 'sertifikasi',
         ],
         [
-            'label' => 'Distribusi',
-            'route' => 'distribusi',
+            'label' => 'Kemitraan',
+            'keys' => ['b2b', 'penawaran', 'ai'],
+            'children' => [
+                [
+                    'route' => 'b2b',
+                    'title' => 'B2B Inquiry',
+                    'desc' => 'Ajukan kemitraan bisnis',
+                    'icon' => 'handshake',
+                ],
+                [
+                    'route' => 'penawaran',
+                    'title' => 'Quotation Request',
+                    'desc' => 'Minta penawaran harga',
+                    'icon' => 'docs',
+                ],
+                [
+                    'route' => 'ai',
+                    'title' => 'AI Assistant & FAQ',
+                    'desc' => 'Tanya AgroBot seputar komoditas',
+                    'icon' => 'chat',
+                ],
+            ],
         ],
     ],
     'hero' => [

@@ -81,6 +81,79 @@
         window.addEventListener('resize', function () { if (window.innerWidth > 1159) { setMenu(false); } });
     })();
 
+    /* -------------------------------------------------- Dropdown navigasi (submenu) */
+    (function () {
+        var items = $$('[data-sub]');
+        if (!items.length) { return; }
+        var canHover = !!(window.matchMedia && window.matchMedia('(hover: hover) and (min-width: 1160px)').matches);
+
+        function setOpen(li, open) {
+            var btn = $('.menu__link--btn', li);
+            li.classList.toggle('is-open', open);
+            if (btn) { btn.setAttribute('aria-expanded', open ? 'true' : 'false'); }
+        }
+        function closeAll(except) {
+            items.forEach(function (li) { if (li !== except) { setOpen(li, false); } });
+        }
+
+        items.forEach(function (li) {
+            var btn = $('.menu__link--btn', li);
+            var links = $$('.submenu__link', li);
+            if (!btn) { return; }
+            btn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                var open = !li.classList.contains('is-open');
+                closeAll(li);
+                setOpen(li, open);
+            });
+            btn.addEventListener('keydown', function (e) {
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    closeAll(li);
+                    setOpen(li, true);
+                    if (links[0]) { links[0].focus(); }
+                }
+            });
+            links.forEach(function (a, i) {
+                a.addEventListener('keydown', function (e) {
+                    if (e.key === 'ArrowDown') { e.preventDefault(); (links[i + 1] || links[0]).focus(); }
+                    else if (e.key === 'ArrowUp') { e.preventDefault(); (links[i - 1] || links[links.length - 1]).focus(); }
+                    else if (e.key === 'Escape') { e.preventDefault(); setOpen(li, false); btn.focus(); }
+                });
+            });
+            if (canHover) { li.addEventListener('mouseleave', function () { setOpen(li, false); }); }
+        });
+        doc.addEventListener('click', function (e) {
+            if (!e.target.closest || !e.target.closest('[data-sub]')) { closeAll(null); }
+        });
+        doc.addEventListener('keydown', function (e) { if (e.key === 'Escape') { closeAll(null); } });
+    })();
+
+    /* -------------------------------------------------- Parallax hero + efek sorot kartu */
+    (function () {
+        var hero = $('.hero');
+        if (hero && !reduceMotion) {
+            var ticking = false;
+            var update = function () {
+                ticking = false;
+                var y = window.pageYOffset || 0;
+                if (y < 900) { hero.style.setProperty('--py', Math.round(y * 0.16) + 'px'); }
+            };
+            window.addEventListener('scroll', function () {
+                if (!ticking) { ticking = true; window.requestAnimationFrame(update); }
+            }, { passive: true });
+        }
+        if (window.matchMedia && window.matchMedia('(hover: hover)').matches) {
+            doc.addEventListener('pointermove', function (e) {
+                var t = e.target && e.target.closest ? e.target.closest('.pv') : null;
+                if (!t) { return; }
+                var r = t.getBoundingClientRect();
+                t.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+                t.style.setProperty('--my', (e.clientY - r.top) + 'px');
+            }, { passive: true });
+        }
+    })();
+
     /* -------------------------------------------------- Dropdown sederhana (bahasa) */
     $$('[data-dropdown]').forEach(function (dd) {
         var btn = $('button', dd);
@@ -459,7 +532,7 @@
     /* -------------------------------------------------- Animasi saat scroll + penghitung angka */
     (function () {
         var SEL = [
-            '.catalog-intro', '.tile', '.panen', '.spec', '.beantile', '.moq', '.cap', '.dist', '.cert', '.proc', '.mini', '.ai-band',
+            '.hsec__head', '.tile', '.panen', '.spec', '.stat', '.dist', '.cert', '.proc', '.mini', '.ai-band',
             '.cm-card', '.info-card', '.check-row', '.cert-card', '.timeline > li', '.bigstat', '.terms', '.statgrid li', '.bars',
             '.table-wrap', '.sec-head', '.ctaband__in', '.faq__item', '.botcard', '.formcard', '.side', '.ports', '.mapcard', '.docs',
             '.benefits li', '.toolbar', '.stepcards > li', '.faq > h2', '.lead'

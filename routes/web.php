@@ -1311,8 +1311,8 @@ Route::prefix('webia/template/agriculture-farming/organic/agribisnis-earth-tone'
     ->name('webia.template.agribisnis-earth-tone.')
     ->group(function () {
 
-        $prefix = 'webia/template/agriculture-farming/organic/agribisnis-earth-tone';
-        $viewBase = 'website-bisnis.template.agriculture&farming.organic.agribisnis-earth-tone';
+        $prefix    = 'webia/template/agriculture-farming/organic/agribisnis-earth-tone';
+        $viewBase  = 'website-bisnis.template.agriculture&farming.organic.agribisnis-earth-tone';
         $assetBase = 'website-bisnis/template/agriculture&farming/organic/agribisnis-earth-tone';
 
         // $view = nama file blade, $key = kunci halaman (untuk menu aktif & tautan)
@@ -1326,33 +1326,33 @@ Route::prefix('webia/template/agriculture-farming/organic/agribisnis-earth-tone'
             }
 
             $waNumber = $data['contact']['whatsapp'] ?? '62895630300345';
-            $waBase = 'https://wa.me/'.$waNumber;
+            $waBase   = 'https://wa.me/' . $waNumber;
 
             // Semua URL dibangun dari prefix sendiri (bukan route name) agar tidak bentrok.
             $urls = [
-                'home' => url($prefix),
-                'komoditas' => url($prefix.'/komoditas'),
-                'panen' => url($prefix.'/informasi-panen'),
-                'spesifikasi' => url($prefix.'/spesifikasi-produk'),
-                'moq' => url($prefix.'/jumlah-pesanan-minimum'),
-                'kapasitas' => url($prefix.'/kapasitas-pasokan'),
-                'distribusi' => url($prefix.'/jangkauan-distribusi'),
-                'sertifikasi' => url($prefix.'/sertifikasi'),
-                'b2b' => url($prefix.'/inquiry-b2b'),
-                'penawaran' => url($prefix.'/permintaan-penawaran'),
-                'chatbot' => url($prefix.'/ai-chatbot'),
-                'whatsapp' => $waBase.'?text='.rawurlencode($data['contact']['whatsapp_text'] ?? 'Halo AgroHarvest'),
-                'whatsapp_karir' => $waBase.'?text='.rawurlencode('Halo AgroHarvest, saya tertarik dengan informasi karir.'),
+                'home'           => url($prefix),
+                'komoditas'      => url($prefix . '/komoditas'),
+                'panen'          => url($prefix . '/informasi-panen'),
+                'spesifikasi'    => url($prefix . '/spesifikasi-produk'),
+                'moq'            => url($prefix . '/jumlah-pesanan-minimum'),
+                'kapasitas'      => url($prefix . '/kapasitas-pasokan'),
+                'distribusi'     => url($prefix . '/jangkauan-distribusi'),
+                'sertifikasi'    => url($prefix . '/sertifikasi'),
+                'b2b'            => url($prefix . '/inquiry-b2b'),
+                'penawaran'      => url($prefix . '/permintaan-penawaran'),
+                'chatbot'        => url($prefix . '/ai-chatbot'),
+                'whatsapp'       => $waBase . '?text=' . rawurlencode($data['contact']['whatsapp_text'] ?? 'Halo AgroHarvest'),
+                'whatsapp_karir' => $waBase . '?text=' . rawurlencode('Halo AgroHarvest, saya tertarik dengan informasi karir.'),
             ];
 
-            return view($viewBase.'.'.$view, [
+            return view($viewBase . '.' . $view, [
                 'data' => $data,
-                'u' => $urls,
+                'u'    => $urls,
                 'page' => $key,
-                'v' => $viewBase,
-                'css' => asset('css/'.$assetBase.'/logistics-agribisnis.css'),
-                'js' => asset('js/'.$assetBase.'/agribisnis.js'),
-                'img' => asset('images/'.$assetBase),
+                'v'    => $viewBase,
+                'css'  => asset('css/' . $assetBase . '/agribisnis.css'),
+                'js'   => asset('js/' . $assetBase . '/agribisnis.js'),
+                'img'  => asset('images/' . $assetBase),
             ]);
         };
 
@@ -1530,6 +1530,47 @@ Route::prefix('webia/template/nonprofit-community/bold/social-organization-citru
 Route::get('/webia/template/photography-creative-studio/bold/ugc-content-creator-studio-pink-voltage/{page?}', function (?string $page = null) {
     return view('website-bisnis.template.photography-creative-studio.bold.ugc-content-creator-studio-pink-voltage.ugc-content-creator-studio', ['page' => $page ?: 'home']);
 })->where('page', 'home|portofolio|video-ugc|paket|hak-guna|platform|kolaborasi|kampanye|testimoni|tanya-ai')->name('webia.template.ugc-content-creator-studio');
+
+Route::prefix('webia/template/photography-creative-studio/futuristic/ugc-content-creator-studio-dark-mode')
+    ->name('ugc.')
+    ->group(function () {
+        $pages = [
+            'home'         => '',
+            'portfolio'    => 'creator-portfolio',
+            'samples'      => 'ugc-video-samples',
+            'packages'     => 'content-packages',
+            'rights'       => 'deliverables-usage-rights',
+            'platforms'    => 'supported-platforms',
+            'brands'       => 'brand-collaborations',
+            'inquiry'      => 'campaign-inquiry',
+            'testimonials' => 'client-testimonials',
+            'faq'          => 'ai-chatbot-faq',
+        ];
+
+        $view = 'website-bisnis.template.photography-creative-studio.futuristic.ugc-content-creator-studio-dark-mode.ugc-content-creator-studio';
+        $data = require config_path('template/photography-creative-studio/futuristic/ugc-content-creator-studio-dark-mode/ugc-content-creator-studio.php');
+
+        foreach ($pages as $key => $slug) {
+            Route::view($slug, $view, ['page' => $key, 'd' => $data])->name($key);
+        }
+    });
+
+Route::get('/webia/template/wedding-event/bold/event-organizer-sunset-gradient/{page?}', function (?string $page = null) {
+    $path = config_path('template/wedding-event/bold/event-organizer-sunset-gradient/event-organizer.php');
+    $cfg  = config('template.wedding-event.bold.event-organizer-sunset-gradient.event-organizer');
+
+    if (! is_array($cfg)) {
+        $cfg = require $path;
+    }
+
+    abort_if($page !== null && ! isset($cfg['pages'][$page]), 404);
+
+    return view('website-bisnis.template.wedding-event.bold.event-organizer-sunset-gradient.event-organizer', [
+        'c'    => $cfg,
+        'page' => $page,
+    ]);
+})->where('page', '[a-z\-]+')->name('webia.event-organizer');
+
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------
 

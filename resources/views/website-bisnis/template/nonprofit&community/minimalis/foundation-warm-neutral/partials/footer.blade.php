@@ -22,7 +22,6 @@
                 <li><a href="{{ route($rp.'donation') }}">Donasi</a></li>
                 <li><a href="{{ route($rp.'volunteer') }}">Relawan</a></li>
                 <li><a href="{{ route($rp.'news') }}">Berita &amp; Acara</a></li>
-                <li><a href="#kontak">Kontak</a></li>
             </ul>
         </div>
 

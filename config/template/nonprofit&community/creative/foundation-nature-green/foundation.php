@@ -42,6 +42,7 @@ return [
         'email'         => 'info@greenhope.or.id',
         // Nomor WhatsApp (format internasional tanpa +) untuk tombol WA, form, dan FAQ.
         'whatsapp'      => '62895630300345',
+        'map_url'       => 'https://www.google.com/maps/search/?api=1&query=Jl.+Merdeka+No.+123+Bandung',
     ],
 
     'social' => [
@@ -64,33 +65,44 @@ return [
         ['key' => 'kontak',       'label' => 'Kontak',         'slug' => '#kontak'],
     ],
 
-    // Judul tab browser + judul header halaman dalam.
+    // Judul tab browser + isi header halaman dalam.
+    // actions: tombol di header ([label, slug, style]); focus: object-position gambar header.
     'pages' => [
         'beranda'      => ['title' => 'GreenHope Foundation — Masa Depan yang Lebih Hijau'],
-        'tentang-kami' => ['title' => 'Misi & Visi', 'heading' => 'Misi & Visi Kami', 'lead' => 'Menebar kebaikan, menjaga kehidupan.', 'crumb' => 'Tentang Kami', 'image' => 'mission-globe.png'],
-        'program'      => ['title' => 'Program Kami', 'heading' => 'Program Kami', 'lead' => 'Berbagai program untuk mewujudkan perubahan.', 'crumb' => 'Program Kami', 'image' => 'impact-sapling.png'],
-        'dampak'       => ['title' => 'Laporan Dampak', 'heading' => 'Dampak Kami', 'lead' => 'Bersama, kita telah memberikan manfaat nyata untuk banyak orang.', 'crumb' => 'Dampak', 'image' => 'impact-hands.png'],
-        'donasi'       => ['title' => 'Opsi Donasi', 'heading' => 'Opsi Donasi', 'lead' => 'Pilih cara terbaik untuk berbagi kebaikan.', 'crumb' => 'Donasi', 'image' => 'quote-globe.png'],
-        'transparansi' => ['title' => 'Transparansi Keuangan', 'heading' => 'Transparansi Keuangan', 'lead' => 'Kami percaya pada keterbukaan dan akuntabilitas.', 'crumb' => 'Transparansi', 'image' => 'finance.png'],
-        'mitra'        => ['title' => 'Mitra & Sponsor', 'heading' => 'Mitra & Sponsor', 'lead' => 'Bersama mitra terpercaya, kami melangkah lebih jauh.', 'crumb' => 'Mitra', 'image' => 'mission-globe.png'],
-        'relawan'      => ['title' => 'Daftar Relawan', 'heading' => 'Daftar Relawan', 'lead' => 'Bergabunglah menjadi bagian dari perubahan positif.', 'crumb' => 'Relawan', 'image' => 'volunteer-hands.jpg'],
-        'berita'       => ['title' => 'Berita & Acara', 'heading' => 'Berita & Acara', 'lead' => 'Ikuti kabar terbaru dan kegiatan kami.', 'crumb' => 'Berita & Acara', 'image' => 'news-kids.jpg'],
-        'ai-chatbot'   => ['title' => 'GreenBot — FAQ Program & Donasi', 'heading' => 'Tanya GreenBot', 'lead' => 'Asisten FAQ untuk program dan donasi GreenHope.', 'crumb' => 'GreenBot', 'image' => 'mascot.png'],
+        'tentang-kami' => ['title' => 'Misi & Visi', 'heading' => 'Misi & Visi Kami', 'lead' => 'Menebar kebaikan, menjaga kehidupan. Kenali arah, nilai, dan perjalanan GreenHope.', 'crumb' => 'Tentang Kami', 'image' => 'hero-kids.jpg', 'focus' => '50% 40%',
+            'actions' => [['Lihat Program', 'program', 'primary'], ['Donasi Sekarang', 'donasi', 'ghost']]],
+        'program'      => ['title' => 'Program Kami', 'heading' => 'Program Kami', 'lead' => 'Empat program utama untuk lingkungan, pendidikan, kesehatan, dan komunitas.', 'crumb' => 'Program Kami', 'image' => 'news-soil.jpg', 'focus' => '60% 50%',
+            'actions' => [['Dukung Program', 'donasi', 'primary'], ['Jadi Relawan', 'relawan', 'ghost']]],
+        'dampak'       => ['title' => 'Laporan Dampak', 'heading' => 'Dampak Kami', 'lead' => 'Bersama, kita telah memberikan manfaat nyata untuk banyak orang.', 'crumb' => 'Dampak', 'image' => 'news-kids.jpg', 'focus' => '50% 40%',
+            'actions' => [['Unduh Laporan', 'dampak#laporan', 'primary'], ['Lihat Transparansi', 'transparansi', 'ghost']]],
+        'donasi'       => ['title' => 'Opsi Donasi', 'heading' => 'Opsi Donasi', 'lead' => 'Pilih cara terbaik untuk berbagi kebaikan. Setiap donasi dilaporkan secara terbuka.', 'crumb' => 'Donasi', 'image' => 'quote-globe.png', 'focus' => '50% 50%',
+            'actions' => [['Pilih Cara Donasi', 'donasi#online', 'primary'], ['Lihat Transparansi', 'transparansi', 'ghost']]],
+        'transparansi' => ['title' => 'Transparansi Keuangan', 'heading' => 'Transparansi Keuangan', 'lead' => 'Kami percaya pada keterbukaan dan akuntabilitas dalam setiap rupiah donasi.', 'crumb' => 'Transparansi', 'image' => 'finance.png', 'focus' => '50% 50%',
+            'actions' => [['Unduh Laporan', 'transparansi#laporan', 'primary'], ['Donasi Sekarang', 'donasi', 'ghost']]],
+        'mitra'        => ['title' => 'Mitra & Sponsor', 'heading' => 'Mitra & Sponsor', 'lead' => 'Bersama mitra terpercaya, kami melangkah lebih jauh.', 'crumb' => 'Mitra', 'image' => 'mission-globe.png', 'focus' => '50% 50%',
+            'actions' => [['Ajukan Kemitraan', 'mitra#ajukan', 'primary'], ['Lihat Dampak', 'dampak', 'ghost']]],
+        'relawan'      => ['title' => 'Daftar Relawan', 'heading' => 'Daftar Relawan', 'lead' => 'Bergabunglah menjadi bagian dari perubahan positif bersama ribuan relawan lainnya.', 'crumb' => 'Relawan', 'image' => 'volunteer-hands.jpg', 'focus' => '50% 50%',
+            'actions' => [['Isi Formulir', 'relawan#formulir', 'primary'], ['Lihat Program', 'program', 'ghost']]],
+        'berita'       => ['title' => 'Berita & Acara', 'heading' => 'Berita & Acara', 'lead' => 'Ikuti kabar terbaru dan kegiatan kami.', 'crumb' => 'Berita & Acara', 'image' => 'news-volunteer.jpg', 'focus' => '50% 45%',
+            'actions' => [['Jadi Relawan', 'relawan', 'primary'], ['Donasi Sekarang', 'donasi', 'ghost']]],
+        'ai-chatbot'   => ['title' => 'GreenBot — FAQ Program & Donasi', 'heading' => 'Tanya GreenBot', 'lead' => 'Asisten FAQ untuk program dan donasi GreenHope. Jawaban cepat, kapan saja.', 'crumb' => 'GreenBot', 'image' => 'mascot.png', 'focus' => '50% 18%',
+            'actions' => [['Lihat Program', 'program', 'primary'], ['Opsi Donasi', 'donasi', 'ghost']]],
     ],
 
-    // Pencarian cepat di navbar (halaman yang bisa dicari).
+    // Pencarian cepat: halaman yang bisa dicari. hint = kata kunci tambahan, desc = keterangan singkat.
     'search_index' => [
-        ['label' => 'Beranda', 'slug' => '', 'hint' => 'halaman utama'],
-        ['label' => 'Misi & Visi', 'slug' => 'tentang-kami', 'hint' => 'tentang kami nilai sejarah'],
-        ['label' => 'Program Kami', 'slug' => 'program', 'hint' => 'lingkungan pendidikan kesehatan komunitas'],
-        ['label' => 'Laporan Dampak', 'slug' => 'dampak', 'hint' => 'penerima manfaat statistik'],
-        ['label' => 'Opsi Donasi', 'slug' => 'donasi', 'hint' => 'donasi transfer bank barang rutin'],
-        ['label' => 'Transparansi Keuangan', 'slug' => 'transparansi', 'hint' => 'laporan keuangan audit'],
-        ['label' => 'Mitra & Sponsor', 'slug' => 'mitra', 'hint' => 'kerja sama sponsor'],
-        ['label' => 'Daftar Relawan', 'slug' => 'relawan', 'hint' => 'volunteer pendaftaran'],
-        ['label' => 'Berita & Acara', 'slug' => 'berita', 'hint' => 'kegiatan artikel'],
-        ['label' => 'GreenBot FAQ', 'slug' => 'ai-chatbot', 'hint' => 'tanya jawab chatbot'],
+        ['label' => 'Beranda', 'slug' => '', 'icon' => 'leaf', 'desc' => 'Halaman utama GreenHope Foundation', 'hint' => 'halaman utama home'],
+        ['label' => 'Misi & Visi', 'slug' => 'tentang-kami', 'icon' => 'sparkle', 'desc' => 'Tentang kami, nilai, dan perjalanan', 'hint' => 'tentang kami nilai sejarah visi misi'],
+        ['label' => 'Program Kami', 'slug' => 'program', 'icon' => 'users', 'desc' => 'Lingkungan, pendidikan, kesehatan, komunitas', 'hint' => 'lingkungan pendidikan kesehatan komunitas pohon'],
+        ['label' => 'Laporan Dampak', 'slug' => 'dampak', 'icon' => 'file', 'desc' => 'Statistik dan laporan tahunan', 'hint' => 'penerima manfaat statistik laporan'],
+        ['label' => 'Opsi Donasi', 'slug' => 'donasi', 'icon' => 'heart', 'desc' => 'Donasi online, transfer, barang, rutin', 'hint' => 'donasi transfer bank barang rutin berdonasi'],
+        ['label' => 'Transparansi Keuangan', 'slug' => 'transparansi', 'icon' => 'shield', 'desc' => 'Alokasi dana dan laporan keuangan', 'hint' => 'laporan keuangan audit dana'],
+        ['label' => 'Mitra & Sponsor', 'slug' => 'mitra', 'icon' => 'gift', 'desc' => 'Mitra kami dan cara bermitra', 'hint' => 'kerja sama sponsor kemitraan'],
+        ['label' => 'Daftar Relawan', 'slug' => 'relawan', 'icon' => 'check', 'desc' => 'Formulir pendaftaran relawan', 'hint' => 'volunteer pendaftaran gabung'],
+        ['label' => 'Berita & Acara', 'slug' => 'berita', 'icon' => 'calendar', 'desc' => 'Kabar terbaru dan kegiatan', 'hint' => 'kegiatan artikel acara festival'],
+        ['label' => 'GreenBot FAQ', 'slug' => 'ai-chatbot', 'icon' => 'chat', 'desc' => 'Tanya jawab program dan donasi', 'hint' => 'tanya jawab chatbot faq bantuan'],
     ],
+    'search_popular' => [['Donasi', 'donasi'], ['Program', 'program'], ['Relawan', 'relawan'], ['Laporan', 'transparansi']],
 
     'hero' => [
         'script'   => 'Bersama, Kita Wujudkan',
@@ -100,6 +112,10 @@ return [
         'cta'      => 'Dukung Sekarang',
         'cta_2'    => 'Pelajari Lebih Lanjut',
         'overlay'  => 'Untuk Dunia yang Lebih Baik',
+        'chips'    => [
+            ['icon' => 'users', 'value' => '150K+', 'label' => 'Penerima manfaat'],
+            ['icon' => 'heart', 'value' => '500+', 'label' => 'Program sosial'],
+        ],
     ],
 
     'mission' => [

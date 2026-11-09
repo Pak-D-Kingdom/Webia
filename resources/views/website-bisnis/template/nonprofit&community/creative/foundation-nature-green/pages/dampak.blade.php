@@ -25,6 +25,7 @@
     <div class="fh-wrap fh-split fh-split--even">
         <div class="fh-reveal">
             <div class="fh-sec__head fh-sec__head--left">
+                <span class="fh-eyebrow">Pertumbuhan</span>
                 <h2>Penerima Manfaat per Tahun</h2>
                 <p>Jumlah kumulatif penerima manfaat (dalam ribuan orang).</p>
             </div>
@@ -43,6 +44,7 @@
         </div>
         <div class="fh-reveal">
             <div class="fh-sec__head fh-sec__head--left">
+                <span class="fh-eyebrow">Capaian</span>
                 <h2>Dampak per Program</h2>
                 <p>Capaian utama dari empat program kami.</p>
             </div>
@@ -58,9 +60,10 @@
     </div>
 </section>
 
-<section class="fh-sec">
+<section class="fh-sec" id="laporan">
     <div class="fh-wrap">
         <div class="fh-sec__head fh-reveal">
+            <span class="fh-eyebrow">Unduh</span>
             <h2>Laporan Dampak Tahunan</h2>
             <p>Unduh laporan lengkap untuk melihat capaian dan cerita di baliknya.</p>
         </div>

@@ -28,11 +28,16 @@
 
     @if ($showBot)
         <button class="fh-botbtn" type="button" data-fh-bot-toggle aria-expanded="false" aria-controls="fh-bot" aria-label="Buka {{ $cfg['brand']['bot'] }}, asisten FAQ program dan donasi">
-            <span class="fh-botbtn__halo" aria-hidden="true"></span>
-            <span class="fh-botbtn__orbit" aria-hidden="true"><i></i><i></i><i></i></span>
-            <img class="fh-botbtn__img" src="{{ $img('robot-btn.png') }}" alt="" width="64" height="64">
-            <span class="fh-botbtn__badge" aria-hidden="true">FAQ</span>
-            <span class="fh-botbtn__tip" data-fh-bot-tip aria-hidden="true">Halo! Tanya {{ $cfg['brand']['bot'] }}</span>
+            <span class="fh-botbtn__label" aria-hidden="true">
+                <strong>Tanya {{ $cfg['brand']['bot'] }}</strong>
+                <small>FAQ program &amp; donasi</small>
+            </span>
+            <span class="fh-botbtn__face" aria-hidden="true">
+                <span class="fh-botbtn__halo"></span>
+                <span class="fh-botbtn__orbit"><i></i><i></i><i></i></span>
+                <img class="fh-botbtn__img" src="{{ $img('robot-face.jpg') }}" alt="" width="64" height="64">
+                <span class="fh-botbtn__status"></span>
+            </span>
         </button>
     @endif
 </div>
@@ -40,10 +45,13 @@
 @if ($showBot)
     <section class="fh-bot" id="fh-bot" data-fh-bot role="dialog" aria-modal="false" aria-label="{{ $cfg['brand']['bot'] }} — FAQ program dan donasi" hidden>
         <header class="fh-bot__head">
-            <img class="fh-bot__mascot" src="{{ $img('mascot.png') }}" alt="" width="84" height="94">
+            <span class="fh-bot__avatar">
+                <img src="{{ $img('robot-face.jpg') }}" alt="" width="52" height="52">
+                <i class="fh-bot__online" aria-hidden="true"></i>
+            </span>
             <div class="fh-bot__title">
                 <strong>{{ $cfg['brand']['bot'] }}</strong>
-                <span>Asisten FAQ Program &amp; Donasi</span>
+                <span>Online · FAQ Program &amp; Donasi</span>
             </div>
             <button class="fh-bot__close" type="button" data-fh-bot-close aria-label="Tutup {{ $cfg['brand']['bot'] }}">{{ $icon('close') }}</button>
         </header>

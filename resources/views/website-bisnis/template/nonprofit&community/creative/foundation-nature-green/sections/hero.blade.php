@@ -1,14 +1,25 @@
 {{-- Hero banner beranda --}}
 <section class="fh-hero" aria-labelledby="fh-hero-title">
+    <span class="fh-hero__glow" aria-hidden="true"></span>
     <img class="fh-hero__leaves" src="{{ $img('hero-leaves.jpg') }}" alt="" aria-hidden="true" width="232" height="514">
-    <div class="fh-hero__photo">
-        <img src="{{ $img('hero-kids.jpg') }}" alt="Anak-anak tersenyum memegang bibit pohon di taman kota" width="1456" height="528" fetchpriority="high">
-    </div>
 
-    <p class="fh-hero__overlay fh-script" aria-hidden="true">
-        <span>Untuk Dunia</span><span>yang Lebih Baik</span>
-        {{ $icon('heart', 'fh-ic fh-hero__overlay-heart') }}
-    </p>
+    <div class="fh-hero__stage">
+        <div class="fh-hero__photo">
+            <img src="{{ $img('hero-kids.jpg') }}" alt="Anak-anak tersenyum memegang bibit pohon di taman kota" width="1456" height="528" fetchpriority="high">
+        </div>
+        <p class="fh-hero__overlay fh-script" aria-hidden="true">
+            <span>Untuk Dunia</span><span>yang Lebih Baik</span>
+            {{ $icon('heart', 'fh-ic fh-hero__overlay-heart') }}
+        </p>
+        <ul class="fh-hero__chips">
+            @foreach ($cfg['hero']['chips'] as $chip)
+                <li class="fh-herochip fh-herochip--{{ $loop->iteration }}">
+                    <span class="fh-herochip__ic">{{ $icon($chip['icon']) }}</span>
+                    <span class="fh-herochip__txt"><strong>{{ $chip['value'] }}</strong><small>{{ $chip['label'] }}</small></span>
+                </li>
+            @endforeach
+        </ul>
+    </div>
 
     <span class="fh-drift fh-drift--1" aria-hidden="true">{{ $icon('leaf') }}</span>
     <span class="fh-drift fh-drift--2" aria-hidden="true">{{ $icon('leaf') }}</span>
@@ -26,7 +37,7 @@
             </h1>
             <p class="fh-hero__text">{{ $cfg['hero']['text'] }}</p>
             <div class="fh-hero__cta">
-                <a class="fh-btn fh-btn--dark" href="{{ $url('donasi') }}"><span class="fh-btn__heart">{{ $icon('heart', 'fh-ic fh-ic--gold') }}</span>{{ $cfg['hero']['cta'] }} {{ $icon('arrow') }}</a>
+                <a class="fh-btn fh-btn--dark fh-btn--lg" href="{{ $url('donasi') }}"><span class="fh-btn__heart">{{ $icon('heart', 'fh-ic fh-ic--gold') }}</span>{{ $cfg['hero']['cta'] }} {{ $icon('arrow') }}</a>
                 <a class="fh-link-play" href="{{ $url('tentang-kami') }}">{{ $cfg['hero']['cta_2'] }} {{ $icon('play') }}</a>
             </div>
         </div>

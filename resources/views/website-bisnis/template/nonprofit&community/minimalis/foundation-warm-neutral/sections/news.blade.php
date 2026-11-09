@@ -14,7 +14,7 @@
             @if($loop->index < 3)
             <li>
                 <a class="hf-newsitem" href="{{ route($rp.'news') }}">
-                    <img src="{{ asset($img.'/'.$n['image']) }}" width="712" height="160" alt="{{ $n['title'] }}" loading="lazy">
+                    <img src="{{ asset($img.'/'.$n['image']) }}" width="890" height="200" alt="{{ $n['title'] }}" loading="lazy">
                     <time>{{ $n['date'] }}</time>
                     <strong>{{ $n['title'] }}</strong>
                 </a>

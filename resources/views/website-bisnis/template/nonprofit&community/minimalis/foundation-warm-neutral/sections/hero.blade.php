@@ -15,7 +15,7 @@
         </div>
 
         <div class="hf-hero__media">
-            <img class="hf-hero__photo" src="{{ asset($img.'/hero-children.jpg') }}" width="2264" height="524" alt="Empat anak tersenyum dan saling merangkul di taman" fetchpriority="high">
+            <img class="hf-hero__photo" src="{{ asset($img.'/hero-children.jpg') }}" width="2830" height="655" alt="Empat anak tersenyum dan saling merangkul di taman" fetchpriority="high">
             <p class="hf-hero__quote hf-script">
                 {{ $f['hero']['quote'] }}
                 <svg class="hf-hero__quote-heart" viewBox="0 0 40 36" aria-hidden="true"><use href="#deco-heart"/></svg>
@@ -23,5 +23,4 @@
         </div>
     </section>
 
-    @include($v.'.sections.chatbot')
 </div>

@@ -32,7 +32,6 @@
 
     <script type="application/json" id="hf-routes">{"home":"{{ route($rp.'home') }}","mission-vision":"{{ route($rp.'mission-vision') }}","programs":"{{ route($rp.'programs') }}","impact":"{{ route($rp.'impact') }}","donation":"{{ route($rp.'donation') }}","transparency":"{{ route($rp.'transparency') }}","partners":"{{ route($rp.'partners') }}","volunteer":"{{ route($rp.'volunteer') }}","news":"{{ route($rp.'news') }}","chatbot":"{{ route($rp.'chatbot') }}","kontak":"#kontak"}</script>
     <script type="application/json" id="hf-chat-data">{!! json_encode($f['chatbot'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP) !!}</script>
-    <script type="application/json" id="hf-nav-data">{!! json_encode($f['nav'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP) !!}</script>
     <script src="{{ asset($js) }}" defer></script>
 </body>
 </html>

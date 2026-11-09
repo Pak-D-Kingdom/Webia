@@ -75,11 +75,18 @@
     <meta name="description" content="@yield('description', 'AgroTrade — agribisnis dan perdagangan komoditas pertanian berkualitas ekspor: padi, jagung, kopi, kakao, kelapa sawit, karet, lada, teh, sayuran, dan buah-buahan.')">
     <meta name="theme-color" content="#0f2622">
     <link rel="icon" type="image/svg+xml" href="{{ $img('favicon.svg') }}">
+    <link rel="apple-touch-icon" href="{{ $img('apple-touch-icon.png') }}">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="AgroTrade">
+    <meta property="og:title" content="@yield('title', $agro['meta']['title'])">
+    <meta property="og:description" content="@yield('description', 'AgroTrade — agribisnis dan perdagangan komoditas pertanian berkualitas ekspor.')">
+    <meta property="og:image" content="{{ $img('og-image.jpg') }}">
+    <meta name="twitter:card" content="summary_large_image">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/' . $assetDir . '/logistics-agribisnis.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/' . $assetDir . '/agribisnis.css') }}">
 
     <style>
         :root {
