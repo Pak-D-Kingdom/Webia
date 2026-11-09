@@ -133,6 +133,7 @@ class WebiaTemplateNabiilaSeeder extends Seeder
                 'tag' => 'F&B · Cafe & Eatery · Minimalist',
                 'preview_folder' => null,
                 'template_url' => '/webia/template/fnb/minimalis',
+                'site_config_path' => 'f&b/minimalis/cafe-earthtone/cafe',
                 'is_active' => true,
                 'sort_order' => 26,
             ],

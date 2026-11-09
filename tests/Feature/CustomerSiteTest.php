@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use App\Models\WebiaOrder;
+use App\Models\WebiaPackage;
 use App\Models\WebiaTemplate;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -74,6 +75,63 @@ class CustomerSiteTest extends TestCase
         $this->assertNull($order->fresh()->site_slug);
     }
 
+    public function test_finishing_any_template_with_site_config_publishes_site(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $template = $this->template('fnb-cafe-vintage', [
+            'site_config_path' => 'f&b/minimalis/cafe-earthtone/cafe',
+        ]);
+        $order = WebiaOrder::factory()->create([
+            'webia_template_id' => $template,
+            'template_snapshot' => [
+                'name' => $template->name,
+                'slug' => $template->slug,
+                'category_slug' => $template->category_slug,
+                'site_config_path' => $template->site_config_path,
+            ],
+            'status' => 'paid',
+            'delivery_status' => 'in_progress',
+            'business_data' => [
+                'business_name' => 'Vintage Kopi Sore',
+                'whatsapp' => '0812-3456-7890',
+                'address' => 'Jl. Sore No. 31',
+                'city' => 'Bandung',
+            ],
+        ]);
+
+        $this->actingAs($admin)->post(route('admin.orders.progress', $order), [
+            'action' => 'finish',
+        ])->assertRedirect(route('admin.orders.show', $order));
+
+        $order->refresh();
+        $this->assertSame('vintage-kopi-sore-'.$order->id, $order->site_slug);
+
+        $this->get(route('sites.show', ['order' => $order->site_slug]))
+            ->assertOk()
+            ->assertSee('Vintage Kopi Sore')
+            ->assertSee('Jl. Sore No. 31')
+            ->assertSee('6281234567890', false);
+    }
+
+    public function test_order_snapshot_carries_site_config_from_template(): void
+    {
+        $template = $this->template('fnb-cafe-vintage', [
+            'site_config_path' => 'f&b/minimalis/cafe-earthtone/cafe',
+        ]);
+        $package = WebiaPackage::factory()->create();
+
+        $response = $this->post(route('orders.store'), [
+            'package_id' => $package->id,
+            'template_id' => $template->id,
+            'name' => 'Pembeli Cafe',
+            'email' => 'pembeli-cafe@example.com',
+        ]);
+
+        $order = WebiaOrder::where('webia_template_id', $template->id)->firstOrFail();
+        $response->assertRedirect(route('orders.success'));
+        $this->assertSame('f&b/minimalis/cafe-earthtone/cafe', $order->template_snapshot['site_config_path']);
+    }
+
     public function test_customer_order_page_links_to_published_site(): void
     {
         $order = $this->cafeOrder([
@@ -102,9 +160,10 @@ class CustomerSiteTest extends TestCase
         ], $attributes));
     }
 
-    private function template(string $slug): WebiaTemplate
+    /** @param array<string, mixed> $attributes */
+    private function template(string $slug, array $attributes = []): WebiaTemplate
     {
-        return WebiaTemplate::create([
+        return WebiaTemplate::create(array_merge([
             'name' => 'Cafe Earthtone',
             'slug' => $slug,
             'category_slug' => 'fnb',
@@ -112,7 +171,8 @@ class CustomerSiteTest extends TestCase
             'business_types' => ['Cafe & Eatery'],
             'design_style' => 'Minimalist',
             'description' => 'Template cafe.',
+            'site_config_path' => $slug === 'fnb-cafe-minimalis' ? 'f&b/minimalis/cafe-earthtone/cafe' : null,
             'is_active' => true,
-        ]);
+        ], $attributes));
     }
 }

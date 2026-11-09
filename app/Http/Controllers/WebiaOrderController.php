@@ -333,7 +333,12 @@ class WebiaOrderController extends Controller
                         'webia_package_id' => $package->id,
                         'package_snapshot' => ['name' => $package->name, 'price' => $package->price],
                         'webia_template_id' => $template?->id,
-                        'template_snapshot' => $template ? ['name' => $template->name, 'slug' => $template->slug, 'category_slug' => $template->category_slug] : null,
+                        'template_snapshot' => $template ? [
+                            'name' => $template->name,
+                            'slug' => $template->slug,
+                            'category_slug' => $template->category_slug,
+                            'site_config_path' => $template->site_config_path,
+                        ] : null,
                         'category_slug' => $template?->category_slug ?? $categorySlug,
                         'addon_ids' => $addons->modelKeys(),
                         'addon_snapshot' => $addons->map(fn (WebiaAddon $addon): array => [

@@ -24,10 +24,16 @@ class CustomerSiteController extends Controller
         ];
         abort_unless(isset($views[$page]), 404);
 
+        $siteConfigPath = $order->siteConfigPath();
+        abort_unless($siteConfigPath !== null, 404);
+
         $business = $order->business_data ?? [];
         $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
         $instagram = ltrim($business['instagram'] ?? '', '@');
-        $cafe = array_replace(config('template.f&b.minimalis.cafe-earthtone.cafe'), [
+        $siteConfig = config('template.'.str_replace('/', '.', $siteConfigPath));
+        abort_unless(is_array($siteConfig), 404);
+
+        $cafe = array_replace($siteConfig, [
             'name' => $business['business_name'] ?? 'Cafe',
             'tagline' => ($business['tagline'] ?? null) ?: 'Cafe & Eatery',
             'hero_title' => ($business['tagline'] ?? null) ?: ($business['business_name'] ?? 'Cafe & Eatery'),
@@ -42,7 +48,8 @@ class CustomerSiteController extends Controller
         ]);
         config(['cafe' => $cafe]);
 
-        $path = 'website-bisnis/template/f&b/minimalis/cafe-earthtone';
+        $templatePath = Str::beforeLast($siteConfigPath, '/');
+        $path = 'website-bisnis/template/'.$templatePath;
         $view = str_replace('/', '.', $path);
 
         return view($view.'.'.$views[$page], [
