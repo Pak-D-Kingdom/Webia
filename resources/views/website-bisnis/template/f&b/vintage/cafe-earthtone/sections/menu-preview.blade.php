@@ -1,6 +1,6 @@
 @php
     $m       = $cafe['menu'];
-    $menuUrl = route($cafe['routes']['menu']);
+    $menuUrl = $routeUrl('menu');
     $preview = collect($m['items'])->where('preview', true)->take($m['preview_limit'] ?? 5)->values();
 @endphp
 <section class="kl-menu-preview" id="menu-andalan" aria-labelledby="kl-menu-title">

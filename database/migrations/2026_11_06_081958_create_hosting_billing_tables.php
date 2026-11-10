@@ -30,8 +30,8 @@ return new class extends Migration
             $table->string('label')->nullable();
             $table->date('period_start');
             $table->date('period_end');
-            $table->timestamp('issued_at');
-            $table->timestamp('due_at');
+            $table->dateTime('issued_at');
+            $table->dateTime('due_at');
             $table->unsignedBigInteger('amount');
             $table->string('status', 20)->default('unpaid')->index();
             $table->timestamp('paid_at')->nullable();
@@ -84,7 +84,7 @@ return new class extends Migration
             $table->timestamp('dispatched_at')->nullable();
             $table->timestamps();
 
-            $table->unique(['hosting_invoice_id', 'type', 'scheduled_for']);
+            $table->unique(['hosting_invoice_id', 'type', 'scheduled_for'], 'hne_invoice_type_scheduled_unique');
         });
     }
 

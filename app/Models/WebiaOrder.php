@@ -44,9 +44,14 @@ class WebiaOrder extends Model
         return $this->hasMany(WebiaPayment::class);
     }
 
+    public function siteConfigPath(): ?string
+    {
+        return $this->template_snapshot['site_config_path'] ?? $this->template?->site_config_path;
+    }
+
     public function supportsCustomerSite(): bool
     {
-        return ($this->template_snapshot['slug'] ?? $this->template?->slug) === 'fnb-cafe-minimalis';
+        return filled($this->siteConfigPath());
     }
 
     public function getProgressIndexAttribute(): int

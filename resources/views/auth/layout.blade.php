@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title') | WEBIA</title>
 @php
-    $isAuthPage = request()->routeIs('login');
+    $isAuthPage = request()->routeIs('login', 'password.*');
     $isAdmin = auth()->check() && request()->routeIs('admin.*');
 @endphp
 @if ($isAuthPage)
@@ -222,6 +222,9 @@
                 <a href="{{ route('hosting-invoices.index') }}" @if (request()->routeIs('hosting-invoices.*')) aria-current="page" @endif>
                     <span aria-hidden="true" class="material-symbols-outlined">receipt_long</span> Tagihan Hosting
                 </a>
+                <a href="{{ route('profile.edit') }}" @if (request()->routeIs('profile.*')) aria-current="page" @endif>
+                    <span aria-hidden="true" class="material-symbols-outlined">manage_accounts</span> Profil &amp; Keamanan
+                </a>
                 <a href="{{ route('customer.ai') }}" @if (request()->routeIs('customer.ai*')) aria-current="page" @endif>
                     <span aria-hidden="true" class="material-symbols-outlined">smart_toy</span> Asisten AI &amp; Kuota
                 </a>
@@ -267,11 +270,11 @@
                             <span class="absolute right-0 top-0 min-w-5 rounded-full bg-error px-1 text-center text-xs font-bold text-on-error">{{ $unreadNotifications > 99 ? '99+' : $unreadNotifications }}</span>
                         @endif
                     </a>
-                    <div class="customer-topbar-identity">
+                    <a class="customer-topbar-identity" href="{{ route('profile.edit') }}">
                         <strong>{{ auth()->user()->name }}</strong>
-                        <span>Konsumen</span>
-                    </div>
-                    <span class="account-avatar" aria-hidden="true">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</span>
+                        <span>Profil &amp; Keamanan</span>
+                    </a>
+                    <a class="account-avatar" href="{{ route('profile.edit') }}" aria-label="Buka profil">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</a>
                 </div>
             </header>
             <main id="main-content" class="account-main customer-main">

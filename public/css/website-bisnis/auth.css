@@ -241,7 +241,7 @@
     animation: auth-pulse 2s infinite;
 }
 
-.auth-card h2 {
+.auth-card :is(h1, h2) {
     margin: 14px 0 4px;
     font-size: 26px;
     font-weight: 800;
@@ -302,6 +302,34 @@
     font-weight: 600;
 }
 
+.auth-status {
+    margin: 0 0 20px;
+    padding: 12px 14px;
+    color: #165b47;
+    background: #e4f7f0;
+    border: 1px solid #a7ddca;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+.auth-back,
+.auth-forgot {
+    color: #3f2ca0;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.auth-back {
+    display: inline-block;
+    margin-bottom: 18px;
+}
+
+.auth-forgot {
+    justify-self: end;
+}
+
 .auth-submit {
     margin-top: 6px;
     width: 100%;
@@ -325,6 +353,18 @@
     transform: scale(0.99);
 }
 
+.auth-page {
+    min-height: 100vh;
+}
+
+.auth-page .auth-card {
+    padding: 32px;
+    background: #fff;
+    border: 1px solid #e4e1f0;
+    border-radius: 16px;
+    box-shadow: 0 16px 40px rgba(49, 34, 105, 0.12);
+}
+
 .auth-swap {
     margin: 24px 0 0;
     text-align: center;
@@ -338,8 +378,17 @@
     text-decoration: none;
 }
 
-.auth-swap a:hover {
+.auth-swap a:hover,
+.auth-back:hover,
+.auth-forgot:hover {
     text-decoration: underline;
+}
+
+.auth-back:focus-visible,
+.auth-forgot:focus-visible,
+.auth-submit:focus-visible {
+    outline: 3px solid rgba(63, 44, 160, 0.3);
+    outline-offset: 3px;
 }
 
 .auth-admin-link {

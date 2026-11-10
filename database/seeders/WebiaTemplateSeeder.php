@@ -739,6 +739,25 @@ class WebiaTemplateSeeder extends Seeder
                 'is_active' => true,
                 'sort_order' => 39,
             ],
+            [
+                'name' => 'WILDTRAIL — Explore the Wild',
+                'slug' => 'wildtrail-adventure-outdoor',
+                'category_slug' => 'travel-tourism',
+                'category_label' => 'Travel & Tourism',
+                'business_types' => ['Adventure & Outdoor Tour'],
+                'design_style' => 'Vintage',
+                'color_theme' => 'National Park Retro',
+                'description' => 'Vintage outdoor expedition website with adventure discovery map, expedition finder, trail profiles, seasonal calendar, packages, gear checklist, guides, safety guide, departures and WhatsApp registration.',
+                'preview_style' => 'preview-travel',
+                'eyebrow' => 'EXPEDITION OUTFITTERS',
+                'headline' => 'EXPLORE THE WILD',
+                'tag' => 'Adventure & Outdoor Tour',
+                'preview_folder' => 'travel-tourism/adventure-outdoor-tour',
+                'template_url' => '/webia/template/wildtrail-adventure-outdoor',
+                'is_active' => true,
+                'sort_order' => 40,
+            ],
+
 
 
         ];
