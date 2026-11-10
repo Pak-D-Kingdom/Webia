@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\WebiaTemplate;
+use Database\Seeders\WebiaTemplatePreviewSeeder;
 use Database\Seeders\WebiaTemplatePutriSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
@@ -12,9 +13,17 @@ class AgriculturePeralatanPertanianCorporateSageGreenPutriTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(WebiaTemplatePutriSeeder::class);
+        $this->seed(WebiaTemplatePreviewSeeder::class);
+    }
+
     public function test_route_renders_the_agriculture_peralatan_pertanian_corporate_sage_green_template(): void
     {
-        $this->get(route('webia.template.agriculture-peralatanpertanian-corporate-sagegreen-putri'))
+        $this->get('/webia/template/agriculture-peralatanpertanian-corporate-sagegreen-putri')
             ->assertOk()
             ->assertSee('AgroPratama Machinery')
             ->assertSee('Perlengkapan')

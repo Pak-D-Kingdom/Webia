@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Database\Seeders\WebiaTemplateAqilaSeeder;
+use Database\Seeders\WebiaTemplatePreviewSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
@@ -10,6 +11,14 @@ use Tests\TestCase;
 class RestaurantAndPreschoolCollectionTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(WebiaTemplateAqilaSeeder::class);
+        $this->seed(WebiaTemplatePreviewSeeder::class);
+    }
 
     public function test_seeded_restaurant_and_preschool_templates_are_displayed_in_the_collection(): void
     {
@@ -43,7 +52,7 @@ class RestaurantAndPreschoolCollectionTest extends TestCase
             '--no-interaction' => true,
         ]);
 
-        $this->get(route('webia.template.fnb.restaurant.restoran-azura'))
+        $this->get('/webia/template/restoran-azura')
             ->assertOk()
             ->assertSee('Restoran Azura — Hidangan Klasik')
             ->assertSee('id="menu-favorit"', false)

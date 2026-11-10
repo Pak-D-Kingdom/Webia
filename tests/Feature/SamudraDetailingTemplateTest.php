@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\WebiaTemplate;
+use Database\Seeders\WebiaTemplatePreviewSeeder;
 use Database\Seeders\WebiaTemplateSeederAthiya;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
@@ -12,9 +13,17 @@ class SamudraDetailingTemplateTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(WebiaTemplateSeederAthiya::class);
+        $this->seed(WebiaTemplatePreviewSeeder::class);
+    }
+
     public function test_demo_route_renders_samudra_and_secure_booking_interactions(): void
     {
-        $this->get(route('webia.template.automotive.samudra-auto-detailing-artistic'))
+        $this->get('/webia/template/samudra-auto-detailing-artistic')
             ->assertOk()
             ->assertSee('<title>Samudra Detailing – Auto Detailing &amp; Ceramic Coating</title>', false)
             ->assertSee('id="lay"', false)

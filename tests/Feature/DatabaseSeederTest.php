@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Database\Seeders\DatabaseSeeder;
+use Database\Seeders\WebiaTemplatePreviewSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
@@ -10,6 +11,14 @@ use Tests\TestCase;
 class DatabaseSeederTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(DatabaseSeeder::class);
+        $this->seed(WebiaTemplatePreviewSeeder::class);
+    }
 
     public function test_database_seeder_creates_the_webia_catalog(): void
     {
@@ -54,7 +63,7 @@ class DatabaseSeederTest extends TestCase
 
     public function test_sweet_crumb_demo_renders_bakery_sections_and_contact_buttons(): void
     {
-        $this->get(route('webia.template.fnb.bakery.playful.colorful'))
+        $this->get('/webia/template/fnb-bakery-playful-colorful')
             ->assertOk()
             ->assertSee('Katalog Roti & Pastry', false)
             ->assertSee('Paket Promo & Event', false)

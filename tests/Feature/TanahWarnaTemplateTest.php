@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\WebiaTemplate;
+use Database\Seeders\WebiaTemplatePreviewSeeder;
 use Database\Seeders\WebiaTemplateSeederAthiya;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
@@ -12,9 +13,17 @@ class TanahWarnaTemplateTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(WebiaTemplateSeederAthiya::class);
+        $this->seed(WebiaTemplatePreviewSeeder::class);
+    }
+
     public function test_demo_route_renders_tanah_warna_and_secure_booking_interactions(): void
     {
-        $this->get(route('webia.template.beauty.tanah-warna-rustic-makeup-artist'))
+        $this->get('/webia/template/tanah-warna-rustic-makeup-artist')
             ->assertOk()
             ->assertSee('<title>Tanah Warna – Makeup Artist Rustic oleh Rima Ayu</title>', false)
             ->assertSee('Wajah adalah', false)

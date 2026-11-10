@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\WebiaTemplate;
 use Database\Seeders\WebiaTemplateAqilaSeeder;
+use Database\Seeders\WebiaTemplatePreviewSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
@@ -12,9 +13,17 @@ class RubyAcademyTemplateTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(WebiaTemplateAqilaSeeder::class);
+        $this->seed(WebiaTemplatePreviewSeeder::class);
+    }
+
     public function test_demo_route_renders_the_ruby_academy_template_and_assets(): void
     {
-        $this->get(route('webia.template.education.ruby-academy-classic-school'))
+        $this->get('/webia/template/ruby-academy-classic-school')
             ->assertOk()
             ->assertHeader('content-type', 'text/html; charset=UTF-8')
             ->assertSee('<title>Ruby Academy | School of Excellence</title>', false)
@@ -23,7 +32,7 @@ class RubyAcademyTemplateTest extends TestCase
             ->assertSee('css/website-bisnis/templates/education/ruby-academy-classic-school.css', false)
             ->assertSee('js/website-bisnis/templates/education/ruby-academy-classic-school.js', false);
 
-        $this->get(route('webia.template.education.ruby-academy-classic-school', ['preview' => 1]))
+        $this->get('/webia/template/ruby-academy-classic-school?preview=1')
             ->assertOk()
             ->assertSee('class="webia-hero-preview-mode"', false);
     }

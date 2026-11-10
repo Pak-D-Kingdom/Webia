@@ -124,188 +124,28 @@ Route::get(
     [TemplateCollectionController::class, 'index']
 )->name('collections');
 
-Route::view(
-    '/webia/template/nantara-architecture-traditional-cultural',
-    'website-bisnis.templates.interior-architecture.architecture-building-design.nantara-architecture.nantara-architecture'
-)->name('webia.template.nantara-architecture-traditional-cultural');
 
-Route::view(
-    '/webia/template/aurelia-home-renovation',
-    'website-bisnis.templates.home-services.home-renovation-repair.aurelia.aurelia'
-)->name('webia.template.aurelia-home-renovation');
 
-Route::view(
-    '/webia/template/matcha-clean-organic-deep-cleaning',
-    'website-bisnis.templates.home-services.home-cleaning-deep-cleaning.matcha-clean.matcha-clean'
-)->name('webia.template.matcha-clean-organic-deep-cleaning');
 
-Route::view(
-    '/webia/template/aurumco-catering',
-    'website-bisnis.templates.fnb.aurumco-catering'
-)->name('webia.template.aurumco-catering');
 
-Route::view(
-    '/webia/template/vallaco-catering',
-    'website-bisnis.templates.fnb.vallaco-catering'
-)->name('webia.template.vallaco-catering');
-Route::view(
-    '/webia/template/rasa-rupa-artistik',
-    'website-bisnis.templates.fnb.rasa-rupa-artistik'
-)->name('webia.template.fnb.rasa-rupa-artistik');
-Route::view(
-    '/webia/template/tetangga-kenyang-friendly',
-    'website-bisnis.templates.fnb.tetangga-kenyang-friendly'
-)->name('webia.template.fnb.tetangga-kenyang-friendly');
-Route::view(
-    '/webia/template/hulu-pantry-asal-usul',
-    'website-bisnis.templates.fnb.hulu-pantry-asal-usul'
-)->name('webia.template.fnb.hulu-pantry-asal-usul');
-Route::view(
-    '/webia/template/kusuma-ningrat-royal-heritage',
-    'website-bisnis.templates.fnb.kusuma-ningrat-royal-heritage'
-)->name('webia.template.kusuma-ningrat-royal-heritage');
 
-Route::view(
-    '/webia/template/nuvia-skin-tech-clinic',
-    'website-bisnis.templates.beauty.nuvia-skin-tech-clinic'
-)->name('webia.template.beauty.nuvia-skin-tech-clinic');
 
-Route::view(
-    '/webia/template/glow-lab-creative-beauty-clinic',
-    'website-bisnis.templates.beauty.glow-lab-creative-beauty-clinic'
-)->name('webia.template.beauty.glow-lab-creative-beauty-clinic');
 
-Route::view(
-    '/webia/template/atelier-kulit-creative-beauty-clinic',
-    'website-bisnis.templates.beauty.atelier-kulit-creative-beauty-clinic'
-)->name('webia.template.beauty.atelier-kulit-creative-beauty-clinic');
 
-Route::view(
-    '/webia/template/tanah-warna-rustic-makeup-artist',
-    'website-bisnis.templates.beauty.tanah-warna-rustic-makeup-artist'
-)->name('webia.template.beauty.tanah-warna-rustic-makeup-artist');
 
-Route::view(
-    '/webia/template/rosalind-vintage-makeup-artist',
-    'website-bisnis.templates.beauty.rosalind-vintage-makeup-artist'
-)->name('webia.template.beauty.rosalind-vintage-makeup-artist');
 
-Route::view(
-    '/webia/template/visage-editorial-makeup-artist',
-    'website-bisnis.templates.beauty.visage-editorial-makeup-artist'
-)->name('webia.template.beauty.visage-editorial-makeup-artist');
 
-Route::view(
-    '/webia/template/voltrix-futuristic-automotive',
-    'website-bisnis.templates.automotive.voltrix-futuristic-automotive'
-)->name('webia.template.automotive.voltrix-futuristic-automotive');
 
-Route::view(
-    '/webia/template/nightshift-dark-mode-automotive',
-    'website-bisnis.templates.automotive.nightshift-dark-mode-automotive'
-)->name('webia.template.automotive.nightshift-dark-mode-automotive');
 
-Route::view(
-    '/webia/template/arvo-modern-automotive',
-    'website-bisnis.templates.automotive.arvo-modern-automotive'
-)->name('webia.template.automotive.arvo-modern-automotive');
-Route::view(
-    '/webia/template/apex-heritage-automotive-elegant',
-    'website-bisnis.templates.automotive.apex-heritage-automotive-elegant'
-)->name('webia.template.automotive.apex-heritage-automotive-elegant');
-Route::view(
-    '/webia/template/apex-scuderia-automotive-minimalist',
-    'website-bisnis.templates.automotive.apex-scuderia-automotive-minimalist'
-)->name('webia.template.automotive.apex-scuderia-automotive-minimalist');
 
-Route::view(
-    '/webia/template/samudra-auto-detailing-artistic',
-    'website-bisnis.templates.automotive.samudra-auto-detailing-artistic'
-)->name('webia.template.automotive.samudra-auto-detailing-artistic');
 
-Route::view(
-    '/webia/template/noir-auto-detailing-luxury',
-    'website-bisnis.templates.automotive.noir-auto-detailing-luxury'
-)->name('webia.template.automotive.noir-auto-detailing-luxury');
-Route::view(
-    '/webia/template/aurum-premium-auto-detailing',
-    'website-bisnis.templates.automotive.aurum-premium-auto-detailing'
-)->name('webia.template.automotive.aurum-premium-auto-detailing');
-Route::view(
-    '/webia/template/otto-artistic-workshop',
-    'website-bisnis.templates.automotive.otto-artistic-workshop'
-)->name('webia.template.automotive.otto-artistic-workshop');
-Route::view(
-    '/webia/template/maison-otto-elegant-workshop',
-    'website-bisnis.templates.automotive.maison-otto-elegant-workshop'
-)->name('webia.template.automotive.maison-otto-elegant-workshop');
-Route::view(
-    '/webia/template/roseline-professional-workshop',
-    'website-bisnis.templates.automotive.roseline-professional-workshop'
-)->name('webia.template.automotive.roseline-professional-workshop');
-Route::view(
-    '/webia/template/bangun-karsa-contractor-professional',
-    'website-bisnis.templates.company.bangun-karsa-contractor-professional'
-)->name('webia.template.company.bangun-karsa-contractor-professional');
-Route::view(
-    '/webia/template/langit-karya-contractor-minimalist',
-    'website-bisnis.templates.company.langit-karya-contractor-minimalist'
-)->name('webia.template.company.langit-karya-contractor-minimalist');
 
-Route::view(
-    '/webia/template/denim-horizon-property-minimalist',
-    'website-bisnis.templates.property.property-minimalist'
-)->name('webia.template.property.denim-horizon-property-minimalist');
 
-Route::view(
-    '/webia/template/pusaka-asri-property-traditional',
-    'website-bisnis.templates.property.property-traditional'
-)->name('webia.template.property.pusaka-asri-property-traditional');
 
-Route::view(
-    '/webia/template/agriternak-organic-ethical-precision',
-    'website-bisnis.templates.agriculture.agriternak-organic-ethical-precision'
-)->name('webia.template.agriculture.agriternak-organic-ethical-precision');
 
-Route::view(
-    '/webia/template/agriternak-futuristic-iot',
-    'website-bisnis.templates.agriculture.agriternak-futuristic-iot'
-)->name('webia.template.agriculture.agriternak-futuristic-iot');
 
-Route::view(
-    '/webia/template/agriternak-bold-livestock',
-    'website-bisnis.templates.agriculture.agriternak-bold-livestock'
-)->name('webia.template.agriculture.agriternak-bold-livestock');
 
-Route::view(
-    '/webia/template/fnb-bakery-playful-colorful',
-    'website-bisnis.templates.fnb.bakery.bakery-playful-colorful'
-)->name('webia.template.fnb.bakery.playful.colorful');
-Route::view(
-    '/webia/template/bakery-bold-luxury',
-    'website-bisnis.templates.fnb.bakery.bakery-bold-luxury'
-)->name('webia.template.fnb.bakery.bold-luxury');
-Route::view(
-    '/webia/template/midnightbaker-futuristic',
-    'website-bisnis.templates.fnb.bakery.midnightbaker-futuristic'
-)->name('webia.template.fnb.bakery.midnightbaker');
-Route::view(
-    '/webia/template/paws-clever-creative',
-    'website-bisnis.templates.pet-animal-service.paws-clever-creative'
-)->name('webia.template.pet-animal-service.paws-clever-creative');
-Route::view(
-    '/webia/template/paws-joy-jellypop',
-    'website-bisnis.templates.pet-animal-service.paws-joy-jellypop'
-)->name('webia.template.pet-animal-service.paws-joy-jellypop');
-Route::view(
-    '/webia/template/paws-canine-terra-earth-tone',
-    'website-bisnis.templates.pet-animal-service.paws-canine-terra-earth-tone'
-)->name('webia.template.pet-animal-service.paws-canine-terra-earth-tone');
 
-Route::view(
-    '/webia/template/pawtopia-animal-care',
-    'website-bisnis.templates.pet-animal-service.pawtopia-animal-care'
-)->name('webia.template.pet-animal-service.pawtopia-animal-care');
 
 Route::view(
     '/webia/template/pawlora-animal-care',
@@ -314,75 +154,27 @@ Route::view(
 
 // WEBIA — Template Nail Art Professional Soft Pink
 // URL lama dipertahankan agar konsisten; view mengikuti struktur folder baru.
-Route::view(
-    '/webia/template/nail-art-professional-soft-pink',
-    'website-bisnis.templates.beauty.nailart.nailart-professional-softpink'
-)->name('webia.template.beauty.nailart.professional-softpink');
 Route::view('/webia/template/nail-art-professional-soft-pink/gallery', 'website-bisnis.templates.beauty.nailart.nailart-professional-softpink-gallery')->name('webia.template.beauty.nailart.professional-softpink.gallery');
 
 // WEBIA Template 02 — Nail Art Minimalist Sage Green
-Route::view(
-    '/webia/template/nail-art-minimalist-sage-green',
-    'website-bisnis.templates.beauty.nailart.nailart-minimalist-sagegreen'
-)->name('webia.template.beauty.nailart.minimalist-sagegreen');
 Route::view('/webia/template/nail-art-minimalist-sage-green/gallery', 'website-bisnis.templates.beauty.nailart.nailart-minimalist-sagegreen-gallery')->name('webia.template.beauty.nailart.minimalist-sagegreen.gallery');
 
 // WEBIA Template 03 — Luxury Yellow Sunshine
-Route::view(
-    '/webia/template/nail-art-luxury-yellow-sunshine',
-    'website-bisnis.templates.beauty.nailart.nailart-luxury-yellowsunshine'
-)->name('webia.template.beauty.nailart.luxury-yellowsunshine');
 Route::view('/webia/template/nail-art-luxury-yellow-sunshine/gallery', 'website-bisnis.templates.beauty.nailart.nailart-luxury-yellowsunshine-gallery')->name('webia.template.beauty.nailart.luxury-yellowsunshine.gallery');
 
 // WEBIA — Laut Biru Seafood Restaurant
-Route::view(
-    '/webia/template/laut-biru-seafood',
-    'website-bisnis.templates.fnb.restaurant.laut-biru-seafood'
-)->name('webia.template.fnb.restaurant.laut-biru-seafood');
 
 // WEBIA — Restoran Azura
-Route::view(
-    '/webia/template/restoran-azura',
-    'website-bisnis.templates.fnb.restaurant.restoran-azura'
-)->name('webia.template.fnb.restaurant.restoran-azura');
 
 // WEBIA — NOIR Restaurant & Dining
-Route::view(
-    '/webia/template/noir-restaurant',
-    'website-bisnis.templates.fnb.restaurant.noir-restaurant'
-)->name('webia.template.fnb.restaurant.noir-restaurant');
 
 // WEBIA — Tunas Cendekia Preschool & Daycare
-Route::view(
-    '/webia/template/tunas-cendekia-preschool-daycare',
-    'website-bisnis.templates.education.preschool.tunas-cendekia-preschool-daycare'
-)->name('webia.template.education.tunas-cendekia-preschool-daycare');
 
-Route::view(
-    '/webia/template/rumah-latte-preschool-daycare',
-    'website-bisnis.templates.education.preschool.rumah-latte-preschool-daycare'
-)->name('webia.template.education.rumah-latte-preschool-daycare');
 
-Route::view(
-    '/webia/template/lumiere-photography-studio',
-    'website-bisnis.templates.photography.lumiere-photography-studio'
-)->name('webia.template.photography.lumiere-studio');
 
-Route::view(
-    '/webia/template/noir-studio-photography',
-    'website-bisnis.templates.photography.noir-studio-photography'
-)->name('webia.template.photography.noir-studio');
 
-Route::view(
-    '/webia/template/peachy-studio',
-    'website-bisnis.templates.photography.peachy-studio'
-)->name('webia.template.photography.peachy-studio');
 
 // WEBIA template 4 — Automotive Dealer Vintage (Heritage Motors)
-Route::view(
-    '/webia/template/automotive-dealer-vintage',
-    'website-bisnis.templates.automotive.dealer.automotive-dealer-vintage'
-)->name('webia.template.automotive.dealer.vintage');
 
 // WEBIA Template 04 — Heritage Motors collection page
 Route::view(
@@ -390,30 +182,14 @@ Route::view(
     'website-bisnis.templates.automotive.dealer.automotive-dealer-vintage-collection'
 )->name('webia.template.automotive.dealer.vintage.collection');
 
-Route::view(
-    '/webia/template/healthcare-dental-mint',
-    'website-bisnis.templates.healthcare.dental.mint-dental-house'
-)->name('webia.template.healthcare-dental-mint');
 
-Route::view(
-    '/webia/template/healthcare-dental-azure',
-    'website-bisnis.templates.healthcare.dental.azure-smile-clinic'
-)->name('webia.template.healthcare-dental-azure');
 
 // Sunset Dental Care Template
-Route::view(
-    '/webia/template/healthcare-dental-sunset',
-    'website-bisnis.templates.healthcare.dental.sunset-dental-care'
-)->name('webia.template.healthcare-dental-sunset');
 
 // =====================================================
 // WEBIA - PET SHOP MINIMALIST GLACIER BLUE
 // =====================================================
 
-Route::view(
-    '/webia/template/petshop-minimalist-glacierblue',
-    'website-bisnis.templates.pet-animal-service.petshop.glacierblue.petshop-minimalist-glacierblue'
-)->name('webia.template.petshop-minimalist-glacierblue');
 
 Route::view(
     '/webia/template/petshop-minimalist-glacierblue/katalog',
@@ -429,10 +205,6 @@ Route::view(
 // WEBIA - PET SHOP LUXURY ROSE GOLD
 // =====================================================
 
-Route::view(
-    '/webia/template/petshop-luxury-rosegold',
-    'website-bisnis.templates.pet-animal-service.petshop.rosegold.petshop-luxury-rosegold'
-)->name('webia.template.petshop-luxury-rosegold');
 
 Route::view(
     '/webia/template/petshop-luxury-rosegold/katalog',
@@ -448,10 +220,6 @@ Route::view(
 // WEBIA - TECHNOLOGY & IT (SOFTWARE HOUSE)
 // =====================================================
 Route::view(
-    '/webia/template/technology-softwarehouse-professional',
-    'website-bisnis.templates.technology.softwarehouse.technology-softwarehouse-modern'
-)->name('webia.template.technology-softwarehouse-professional');
-Route::view(
     '/webia/template/technology-softwarehouse-modern',
     'website-bisnis.templates.technology.softwarehouse.technology-softwarehouse-modern'
 )->name('webia.template.technology-softwarehouse-modern');
@@ -459,50 +227,26 @@ Route::view(
 // =====================================================
 // WEBIA - TECHNOLOGY & IT — PUTRI (Software House Elegant Baby Blue)
 // =====================================================
-Route::view(
-    '/webia/template/technology-softwarehouse-elegant-babyblue-putri',
-    'website-bisnis.templates.technology.softwarehouse.technology-softwarehouse-elegant-babyblue-putri'
-)->name('webia.template.technology-softwarehouse-elegant-babyblue-putri');
 
 // =====================================================
 // WEBIA - TECHNOLOGY & IT — PUTRI (Software House Minimalist Soft Pink)
 // =====================================================
-Route::view(
-    '/webia/template/technology-softwarehouse-minimalist-softpink-putri',
-    'website-bisnis.templates.technology.softwarehouse.technology-softwarehouse-minimalist-softpink-putri'
-)->name('webia.template.technology-softwarehouse-minimalist-softpink-putri');
 
 // =====================================================
 // WEBIA - TECHNOLOGY & IT — PUTRI (Data Analytics Luxury Pastel Mix)
 // =====================================================
-Route::view(
-    '/webia/template/technology-dataanalytics-luxury-pastelmix-putri',
-    'website-bisnis.templates.technology.data-analytics.technology-dataanalytics-luxury-pastelmix-putri'
-)->name('webia.template.technology-dataanalytics-luxury-pastelmix-putri');
 
 // =====================================================
 // WEBIA - TECHNOLOGY & IT — PUTRI (Data Analytics Corporate Ocean Teal)
 // =====================================================
-Route::view(
-    '/webia/template/technology-dataanalytics-corporate-oceanteal-putri',
-    'website-bisnis.templates.technology.data-analytics.technology-dataanalytics-corporate-oceanteal-putri'
-)->name('webia.template.technology-dataanalytics-corporate-oceanteal-putri');
 
 // =====================================================
 // WEBIA - TECHNOLOGY & IT — PUTRI (Data Analytics Creative Arctic Frost)
 // =====================================================
-Route::view(
-    '/webia/template/technology-dataanalytics-creative-arcticfrost-putri',
-    'website-bisnis.templates.technology.data-analytics.technology-dataanalytics-creative-arcticfrost-putri'
-)->name('webia.template.technology-dataanalytics-creative-arcticfrost-putri');
 
 // =====================================================
 // WEBIA - AGRICULTURE & FARMING — PUTRI (Perlengkapan & Peralatan Pertanian Corporate Sage Green)
 // =====================================================
-Route::view(
-    '/webia/template/agriculture-peralatanpertanian-corporate-sagegreen-putri',
-    'website-bisnis.templates.agriculture.peralatan-pertanian.agriculture-peralatanpertanian-corporate-sagegreen-putri'
-)->name('webia.template.agriculture-peralatanpertanian-corporate-sagegreen-putri');
 
 // =====================================================
 // WEBIA - AGRICULTURE & FARMING — PUTRI (Perlengkapan & Peralatan Pertanian Creative Matcha Latte)
@@ -531,48 +275,16 @@ Route::view(
 // =====================================================
 // WEBIA - SPORTS & FITNESS (GYM & FITNESS)
 // =====================================================
-Route::view(
-    '/webia/template/sports-gym-bold',
-    'website-bisnis.templates.sports-fitness.gym.sports-gym-bold'
-)->name('webia.template.sports-gym-bold');
 
 // =====================================================
 // WEBIA - EDUCATION (ONLINE COURSE)
 // =====================================================
-Route::view(
-    '/webia/template/education-onlinecourse-modern',
-    'website-bisnis.templates.education.online-course.education-onlinecourse-modern'
-)->name('webia.template.education-onlinecourse-modern');
 
-Route::view(
-    '/webia/template/spark-academy-maximum-impact',
-    'website-bisnis.templates.education.spark-academy-maximum-impact'
-)->name('webia.template.education.spark-academy');
 
-Route::view(
-    '/webia/template/ruby-academy-classic-school',
-    'website-bisnis.templates.education.ruby-academy-classic-school'
-)->name('webia.template.education.ruby-academy-classic-school');
 
-Route::view(
-    '/webia/template/arctic-academy-school',
-    'website-bisnis.templates.education.arctic-academy-school'
-)->name('webia.template.education.arctic-academy-school');
 
-Route::view(
-    '/webia/template/education/preschool-daycare-jeli-kecil',
-    'website-bisnis.template.education.preschool-daycare-jeli-kecil.index'
-)->name('webia.template.education.jeli-kecil');
 
-Route::view(
-    '/webia/template/healthcare/psychology/ruang-tenang',
-    'website-bisnis.template.healthcare.psychology.ruang-tenang.index'
-)->name('webia.template.healthcare.psychology.ruang-tenang');
 
-Route::view(
-    '/webia/template/healthcare/psychology/mitra-jiwa',
-    'website-bisnis.templates.healthcare.psychology.mitra-jiwa'
-)->name('webia.template.healthcare.psychology.mitra-jiwa');
 
 Route::view(
     '/webia/template/healthcare/psychology/aurelia-mind',
@@ -582,10 +294,6 @@ Route::view(
 // =====================================================
 // WEBIA - WEDDING & EVENT (WEDDING ORGANIZER)
 // =====================================================
-Route::view(
-    '/webia/template/wedding-organizer-elegant',
-    'website-bisnis.templates.wedding-event.wedding-organizer.wedding-organizer-elegant'
-)->name('webia.template.wedding-organizer-elegant');
 
 // =====================================================
 // WEBIA - PET SHOP CORPORATE PLUM VELVET
@@ -1990,20 +1698,8 @@ Route::view(
 )->name('webia.templates.coral-haven');
 
 // WEBIA — Indra Automotive templates.
-Route::view(
-    '/webia/template/tidal-detail-artistic-automotive',
-    'website-bisnis.templates.automotive.artistic'
-)->name('webia.template.automotive.tidal-detail-artistic');
 
-Route::view(
-    '/webia/template/noir-atelier-luxury-automotive',
-    'website-bisnis.templates.automotive.luxury'
-)->name('webia.template.automotive.noir-atelier-luxury');
 
-Route::view(
-    '/webia/template/form-auto-care-minimal-automotive',
-    'website-bisnis.templates.automotive.minimal'
-)->name('webia.template.automotive.form-auto-care-minimal');
 
 // WEBIA — Indra Wedding & Fitness templates.
 Route::view(

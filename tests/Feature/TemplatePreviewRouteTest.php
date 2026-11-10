@@ -2,13 +2,26 @@
 
 namespace Tests\Feature;
 
+use App\Http\Controllers\WebsiteBisnis\TemplatePreviewController;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class TemplatePreviewRouteTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function test_mapped_preview_url_is_resolved_by_the_database_controller(): void
+    {
+        $route = app('router')->getRoutes()->match(Request::create(
+            '/webia/template/matcha-clean-organic-deep-cleaning',
+            'GET',
+        ));
+
+        $this->assertSame('webia.template.preview', $route->getName());
+        $this->assertSame(TemplatePreviewController::class, $route->getControllerClass());
+    }
 
     public function test_active_database_template_renders_its_preview_view(): void
     {

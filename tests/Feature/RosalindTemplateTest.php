@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\WebiaTemplate;
+use Database\Seeders\WebiaTemplatePreviewSeeder;
 use Database\Seeders\WebiaTemplateSeederAthiya;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
@@ -12,9 +13,17 @@ class RosalindTemplateTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(WebiaTemplateSeederAthiya::class);
+        $this->seed(WebiaTemplatePreviewSeeder::class);
+    }
+
     public function test_demo_route_renders_rosalind_and_secure_reservation_interactions(): void
     {
-        $this->get(route('webia.template.beauty.rosalind-vintage-makeup-artist'))
+        $this->get('/webia/template/rosalind-vintage-makeup-artist')
             ->assertOk()
             ->assertSee('<title>Rosalind & Co. – Salon de Maquillage Vintage</title>', false)
             ->assertSee('id="mir"', false)

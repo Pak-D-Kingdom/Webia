@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\WebiaTemplate;
+use Database\Seeders\WebiaTemplatePreviewSeeder;
 use Database\Seeders\WebiaTemplateSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
@@ -12,9 +13,17 @@ class VallaCoCateringTemplateTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(WebiaTemplateSeeder::class);
+        $this->seed(WebiaTemplatePreviewSeeder::class);
+    }
+
     public function test_demo_route_renders_the_vallaco_template_and_interactions(): void
     {
-        $this->get(route('webia.template.vallaco-catering'))
+        $this->get('/webia/template/vallaco-catering')
             ->assertOk()
             ->assertSee('<title>VALLA & CO. | Nordic Botanical Catering & Gathering Studio</title>', false)
             ->assertSee('Quiet luxury,', false)

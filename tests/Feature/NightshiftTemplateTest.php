@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\WebiaTemplate;
+use Database\Seeders\WebiaTemplatePreviewSeeder;
 use Database\Seeders\WebiaTemplateSeederAthiya;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
@@ -12,9 +13,17 @@ class NightshiftTemplateTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(WebiaTemplateSeederAthiya::class);
+        $this->seed(WebiaTemplatePreviewSeeder::class);
+    }
+
     public function test_demo_route_renders_the_nightshift_catalog_and_interactions(): void
     {
-        $this->get(route('webia.template.automotive.nightshift-dark-mode-automotive'))
+        $this->get('/webia/template/nightshift-dark-mode-automotive')
             ->assertOk()
             ->assertSee('<title>NIGHTSHIFT Auto – Modifikasi dan Aksesori Kendaraan</title>', false)
             ->assertSee('Part yang<br>siap dipasang', false)

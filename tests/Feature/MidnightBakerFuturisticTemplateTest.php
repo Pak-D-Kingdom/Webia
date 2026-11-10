@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\WebiaTemplate;
 use Database\Seeders\WebiaTemplateAlleSeeder;
+use Database\Seeders\WebiaTemplatePreviewSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
@@ -12,9 +13,17 @@ class MidnightBakerFuturisticTemplateTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(WebiaTemplateAlleSeeder::class);
+        $this->seed(WebiaTemplatePreviewSeeder::class);
+    }
+
     public function test_template_route_renders_the_page_and_local_assets(): void
     {
-        $this->get(route('webia.template.fnb.bakery.midnightbaker'))
+        $this->get('/webia/template/midnightbaker-futuristic')
             ->assertOk()
             ->assertSee('<title>MIDNIGHTBAKER — Artisan Breads & Pastries</title>', false)
             ->assertSee('Tradition Meets')
@@ -73,7 +82,7 @@ class MidnightBakerFuturisticTemplateTest extends TestCase
 
     public function test_collection_preview_only_shows_the_template_header_and_hero(): void
     {
-        $this->get(route('webia.template.fnb.bakery.midnightbaker').'?preview=1')
+        $this->get('/webia/template/midnightbaker-futuristic'.'?preview=1')
             ->assertOk()
             ->assertSee('midnight-preview');
     }

@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\WebiaTemplate;
+use Database\Seeders\WebiaTemplatePreviewSeeder;
 use Database\Seeders\WebiaTemplateSeederAthiya;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
@@ -12,9 +13,17 @@ class HuluPantryTemplateTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(WebiaTemplateSeederAthiya::class);
+        $this->seed(WebiaTemplatePreviewSeeder::class);
+    }
+
     public function test_demo_route_renders_hulu_products_and_safe_interactions(): void
     {
-        $this->get(route('webia.template.fnb.hulu-pantry-asal-usul'))
+        $this->get('/webia/template/hulu-pantry-asal-usul')
             ->assertOk()
             ->assertSee('<title>Hulu – Pantry Asal-Usul Nusantara</title>', false)
             ->assertSee('Bahan pantry langka dari satu daerah', false)

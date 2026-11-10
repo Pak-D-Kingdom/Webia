@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\WebiaTemplate;
 use Database\Seeders\WebiaTemplateAqilaSeeder;
+use Database\Seeders\WebiaTemplatePreviewSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
@@ -12,9 +13,17 @@ class PawtopiaAnimalCareTemplateTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(WebiaTemplateAqilaSeeder::class);
+        $this->seed(WebiaTemplatePreviewSeeder::class);
+    }
+
     public function test_demo_route_renders_the_pawtopia_animal_care_template(): void
     {
-        $this->get(route('webia.template.pet-animal-service.pawtopia-animal-care'))
+        $this->get('/webia/template/pawtopia-animal-care')
             ->assertOk()
             ->assertSee('<title>Pawtopia — Animal Care Masa Depan</title>', false)
             ->assertSee('Perawatan hewan kesayangan,')
@@ -56,7 +65,7 @@ class PawtopiaAnimalCareTemplateTest extends TestCase
 
     public function test_catalog_preview_uses_the_pawtopia_hero_mode(): void
     {
-        $this->get(route('webia.template.pet-animal-service.pawtopia-animal-care').'?preview=1')
+        $this->get('/webia/template/pawtopia-animal-care'.'?preview=1')
             ->assertOk()
             ->assertSee('pawtopia-template-preview');
     }
