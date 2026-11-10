@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\WebiaTemplate;
 use Database\Seeders\DatabaseSeeder;
 use Database\Seeders\WebiaTemplatePreviewSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -21,13 +22,43 @@ class DatabaseSeederTest extends TestCase
         $this->seed(WebiaTemplatePreviewSeeder::class);
     }
 
+    public function test_company_profile_backfill_updates_only_targeted_templates(): void
+    {
+        $target = WebiaTemplate::where('slug', 'company-terracotta')->firstOrFail();
+        $other = WebiaTemplate::where('slug', 'property-emerald-green')->firstOrFail();
+        $target->update(['site_config_path' => null]);
+        $other->update(['site_config_path' => 'property/example']);
+        $migration = require database_path('migrations/2026_11_10_131233_backfill_site_config_path_for_company_profiles.php');
+
+        $migration->up();
+
+        $this->assertSame('company/elegan/company-profile-terracotta/company-profile', $target->fresh()->site_config_path);
+        $this->assertSame('property/example', $other->fresh()->site_config_path);
+
+        $migration->down();
+
+        $this->assertNull($target->fresh()->site_config_path);
+        $this->assertSame('property/example', $other->fresh()->site_config_path);
+    }
+
     public function test_database_seeder_creates_the_webia_catalog(): void
     {
         Artisan::call('db:seed', ['--no-interaction' => true]);
 
         $this->assertDatabaseHas('webia_packages', ['slug' => 'pixel']);
         $this->assertDatabaseHas('webia_addons', ['name' => 'SEO Optimization']);
-        $this->assertDatabaseHas('webia_templates', ['slug' => 'company-terracotta']);
+        $this->assertDatabaseHas('webia_templates', [
+            'slug' => 'company-terracotta',
+            'site_config_path' => 'company/elegan/company-profile-terracotta/company-profile',
+        ]);
+        $this->assertDatabaseHas('webia_templates', [
+            'slug' => 'company-ocean-teal',
+            'site_config_path' => 'company/modern/company-profile-ocean-teal/company-profile',
+        ]);
+        $this->assertDatabaseHas('webia_templates', [
+            'slug' => 'company-warm-neutral',
+            'site_config_path' => 'company/classic/company-profile-warm-neutral/company-profile',
+        ]);
         $this->assertDatabaseHas('webia_templates', [
             'slug' => 'kusuma-ningrat-royal-heritage',
             'preview_view' => 'website-bisnis.templates.fnb.kusuma-ningrat-royal-heritage',

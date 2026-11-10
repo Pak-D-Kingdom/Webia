@@ -3,7 +3,9 @@
     <div class="ot-container ot-topbar__inner">
         <ul class="ot-topbar__info">
             <li><svg class="ot-ic" aria-hidden="true"><use href="#i-pin"/></svg><span>{{ $t['address'] }}</span></li>
-            <li><svg class="ot-ic" aria-hidden="true"><use href="#i-mail"/></svg><a href="mailto:{{ $t['email'] }}">{{ $t['email'] }}</a></li>
+            @if ($t['email'])
+                <li><svg class="ot-ic" aria-hidden="true"><use href="#i-mail"/></svg><a href="mailto:{{ $t['email'] }}">{{ $t['email'] }}</a></li>
+            @endif
             <li><svg class="ot-ic" aria-hidden="true"><use href="#i-clock"/></svg><span>{{ $t['hours'] }}</span></li>
         </ul>
         <div class="ot-topbar__end">

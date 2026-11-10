@@ -3,7 +3,9 @@
     <div class="cp-container cp-topbar__inner">
         <ul class="cp-topbar__info">
             <li class="cp-topbar__item cp-show-sm">{!! $icon('pin') !!}<span>{{ $company['address'] }}</span></li>
-            <li class="cp-topbar__item cp-show-md">{!! $icon('mail') !!}<a href="mailto:{{ $company['email'] }}">{{ $company['email'] }}</a></li>
+            @if ($company['email'])
+                <li class="cp-topbar__item cp-show-md">{!! $icon('mail') !!}<a href="mailto:{{ $company['email'] }}">{{ $company['email'] }}</a></li>
+            @endif
             <li class="cp-topbar__item cp-show-lg">{!! $icon('clock') !!}<span>{{ $company['hours'] }}</span></li>
         </ul>
 

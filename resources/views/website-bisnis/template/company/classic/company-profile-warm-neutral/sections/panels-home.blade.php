@@ -40,8 +40,10 @@
             </ul>
         </section>
 
-        @include($ns . '.partials.panel-certs')
-        @include($ns . '.partials.panel-clients')
+        @unless (isset($pageUrl))
+            @include($ns . '.partials.panel-certs')
+            @include($ns . '.partials.panel-clients')
+        @endunless
 
     </div>
 </div>

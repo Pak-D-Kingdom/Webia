@@ -7,6 +7,7 @@ use App\Models\WebiaOrder;
 use App\Models\WebiaPackage;
 use App\Models\WebiaTemplate;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class CustomerSiteTest extends TestCase
@@ -131,6 +132,130 @@ class CustomerSiteTest extends TestCase
 
         $this->get($siteUrl.'/menu')->assertOk()->assertSee('Vintage Kopi Sore');
         $this->get($siteUrl.'/reservasi')->assertOk()->assertSee('Reservasi');
+    }
+
+    #[DataProvider('companyTemplates')]
+    public function test_publishing_company_template_renders_customer_site(
+        string $templateSlug,
+        string $siteConfigPath,
+        string $demoName,
+    ): void {
+        $admin = User::factory()->admin()->create();
+        $template = $this->template($templateSlug, [
+            'name' => 'Company Profile',
+            'category_slug' => 'company',
+            'category_label' => 'Company Profile',
+            'business_types' => ['Company Profile'],
+            'site_config_path' => $siteConfigPath,
+        ]);
+        $order = WebiaOrder::factory()->create([
+            'webia_template_id' => $template,
+            'template_snapshot' => [
+                'name' => $template->name,
+                'slug' => $template->slug,
+                'category_slug' => $template->category_slug,
+                'site_config_path' => $template->site_config_path,
+            ],
+            'status' => 'paid',
+            'delivery_status' => 'in_progress',
+            'business_data' => [
+                'business_name' => 'Cakrawala Karya',
+                'tagline' => 'Mitra tumbuh bisnis Indonesia',
+                'whatsapp' => '0812-3456-7890',
+                'description' => 'Perusahaan kreatif untuk pertumbuhan bisnis.',
+                'address' => 'Jl. Asia Afrika No. 8',
+                'city' => 'Bandung',
+                'instagram' => '@cakrawalakarya',
+            ],
+        ]);
+
+        $this->actingAs($admin)->post(route('admin.orders.progress', $order), [
+            'action' => 'finish',
+        ])->assertRedirect(route('admin.orders.show', $order));
+
+        $order->refresh();
+        $siteUrl = route('sites.show', ['order' => $order->site_slug]);
+        $this->get($siteUrl)
+            ->assertOk()
+            ->assertSee('Cakrawala Karya')
+            ->assertSee('Mitra tumbuh bisnis Indonesia')
+            ->assertSee('Perusahaan kreatif untuk pertumbuhan bisnis.')
+            ->assertSee('Jl. Asia Afrika No. 8, Bandung')
+            ->assertSee('6281234567890', false)
+            ->assertSee($siteUrl.'/tentang-kami', false)
+            ->assertSee($siteUrl.'/portofolio', false)
+            ->assertDontSee($demoName)
+            ->assertDontSee('mailto:', false)
+            ->assertDontSee('#sertifikasi', false)
+            ->assertDontSee('#klien', false);
+
+        $this->get($siteUrl.'/tentang-kami')->assertOk()->assertSee('Cakrawala Karya');
+        $this->get($siteUrl.'/portofolio')->assertOk()->assertSee('Cakrawala Karya');
+        $this->get($siteUrl)
+            ->assertDontSee($order->user->email)
+            ->assertDontSee('ISO 9001')
+            ->assertDontSee('Pertamina');
+    }
+
+    public static function companyTemplates(): array
+    {
+        return [
+            'terracotta' => ['company-terracotta', 'company/elegan/company-profile-terracotta/company-profile', 'KreasiNusa'],
+            'ocean teal' => ['company-ocean-teal', 'company/modern/company-profile-ocean-teal/company-profile', 'Inovatek'],
+            'warm neutral' => ['company-warm-neutral', 'company/classic/company-profile-warm-neutral/company-profile', 'Nusantara Kreasi'],
+        ];
+    }
+
+    public function test_company_customer_config_does_not_leak_between_requests(): void
+    {
+        $firstTemplate = $this->template('company-terracotta', [
+            'category_slug' => 'company',
+            'site_config_path' => 'company/elegan/company-profile-terracotta/company-profile',
+        ]);
+        $first = WebiaOrder::factory()->create([
+            'webia_template_id' => $firstTemplate,
+            'template_snapshot' => ['site_config_path' => $firstTemplate->site_config_path],
+            'business_data' => ['business_name' => 'Perusahaan Pertama', 'tagline' => 'Tagline Pertama'],
+            'delivery_status' => 'delivered',
+            'site_slug' => 'perusahaan-pertama',
+        ]);
+        $secondTemplate = $this->template('company-ocean-teal', [
+            'category_slug' => 'company',
+            'site_config_path' => 'company/modern/company-profile-ocean-teal/company-profile',
+        ]);
+        $second = WebiaOrder::factory()->create([
+            'webia_template_id' => $secondTemplate,
+            'template_snapshot' => ['site_config_path' => $secondTemplate->site_config_path],
+            'business_data' => ['business_name' => 'Perusahaan Kedua'],
+            'delivery_status' => 'delivered',
+            'site_slug' => 'perusahaan-kedua',
+        ]);
+
+        $this->get(route('sites.show', ['order' => $first->site_slug]))->assertOk()->assertSee('Tagline Pertama');
+        $this->get(route('sites.show', ['order' => $second->site_slug]))
+            ->assertOk()
+            ->assertSee('Build Better Tomorrow')
+            ->assertDontSee('Tagline Pertama');
+    }
+
+    public function test_template_cannot_render_page_from_another_template_type(): void
+    {
+        $cafe = $this->cafeOrder(['delivery_status' => 'delivered', 'site_slug' => 'kopi-kawan']);
+        $companyTemplate = $this->template('company-terracotta', [
+            'category_slug' => 'company',
+            'site_config_path' => 'company/elegan/company-profile-terracotta/company-profile',
+        ]);
+        $company = WebiaOrder::factory()->create([
+            'webia_template_id' => $companyTemplate,
+            'template_snapshot' => [
+                'site_config_path' => $companyTemplate->site_config_path,
+            ],
+            'delivery_status' => 'delivered',
+            'site_slug' => 'cakrawala-karya',
+        ]);
+
+        $this->get(route('sites.show', ['order' => $cafe->site_slug, 'page' => 'tentang-kami']))->assertNotFound();
+        $this->get(route('sites.show', ['order' => $company->site_slug, 'page' => 'menu']))->assertNotFound();
     }
 
     public function test_finishing_other_template_does_not_publish_site(): void

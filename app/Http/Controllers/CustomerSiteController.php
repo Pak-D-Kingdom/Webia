@@ -17,15 +17,13 @@ class CustomerSiteController extends Controller
         );
 
         $page = $page ?? 'home';
-        $views = [
-            'home' => 'index',
-            'menu' => 'menu',
-            'reservasi' => 'reservasi',
-        ];
-        abort_unless(isset($views[$page]), 404);
-
         $siteConfigPath = $order->siteConfigPath();
         abort_unless($siteConfigPath !== null, 404);
+
+        $views = str_starts_with($siteConfigPath, 'company/')
+            ? ['home' => 'index', 'tentang-kami' => 'tentang-kami', 'portofolio' => 'portofolio']
+            : ['home' => 'index', 'menu' => 'menu', 'reservasi' => 'reservasi'];
+        abort_unless(isset($views[$page]), 404);
 
         $business = $order->business_data ?? [];
         $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
@@ -33,12 +31,17 @@ class CustomerSiteController extends Controller
         $siteConfig = config('template.'.str_replace('/', '.', $siteConfigPath));
         abort_unless(is_array($siteConfig), 404);
 
-        $cafe = match (true) {
+        $siteConfig = match (true) {
+            str_starts_with($siteConfigPath, 'company/elegan/') => $this->terracottaCompanyConfig($siteConfig, $business, $whatsapp, $instagram),
+            str_starts_with($siteConfigPath, 'company/modern/') => $this->oceanTealCompanyConfig($siteConfig, $business, $whatsapp, $instagram),
+            str_starts_with($siteConfigPath, 'company/classic/') => $this->warmNeutralCompanyConfig($siteConfig, $business, $whatsapp, $instagram),
             str_starts_with($siteConfigPath, 'f&b/vintage/') => $this->vintageSiteConfig($siteConfig, $business, $order, $whatsapp, $instagram),
             str_starts_with($siteConfigPath, 'f&b/elegan/') => $this->eleganSiteConfig($siteConfig, $business, $order, $whatsapp, $instagram),
             default => $this->minimalisSiteConfig($siteConfig, $business, $order, $whatsapp, $instagram),
         };
-        config(['cafe' => $cafe]);
+        if (! str_starts_with($siteConfigPath, 'company/')) {
+            config(['cafe' => $siteConfig]);
+        }
 
         $templatePath = Str::beforeLast($siteConfigPath, '/');
         $path = 'website-bisnis/template/'.$templatePath;
@@ -52,10 +55,112 @@ class CustomerSiteController extends Controller
             'v' => $view,
             'path' => $path,
             'currentPage' => $page,
-            'cafe' => $cafe,
+            'cafe' => $siteConfig,
+            'siteConfig' => $siteConfig,
             'pageUrl' => $pageUrl,
             'routeUrl' => $pageUrl,
         ]);
+    }
+
+    private function terracottaCompanyConfig(array $siteConfig, array $business, string $whatsapp, string $instagram): array
+    {
+        $name = $business['business_name'] ?? 'Perusahaan';
+        $this->replaceDemoName($siteConfig, $siteConfig['brand']['name'], $name);
+
+        return array_replace($siteConfig, [
+            'brand' => array_replace($siteConfig['brand'], [
+                'name' => $name,
+                'tagline' => ($business['tagline'] ?? null) ?: $siteConfig['brand']['tagline'],
+            ]),
+            'topbar' => array_replace($siteConfig['topbar'], [
+                'address' => $this->businessAddress($business),
+                'email' => '',
+                'phone' => $business['whatsapp'] ?? '',
+            ]),
+            'whatsapp' => array_replace($siteConfig['whatsapp'], ['number' => $whatsapp]),
+            'social' => $instagram === '' ? [] : [['k' => 'ig', 'n' => 'Instagram', 'u' => 'https://instagram.com/'.$instagram]],
+            'nav' => array_values(array_filter($siteConfig['nav'], fn (array $item): bool => ! in_array($item['t'], ['Sertifikasi', 'Klien'], true))),
+            'footer_links' => array_values(array_filter($siteConfig['footer_links'], fn (array $item): bool => ! in_array($item['t'], ['Sertifikasi', 'Klien'], true))),
+            'hero' => array_replace($siteConfig['hero'], ['text' => ($business['description'] ?? null) ?: $siteConfig['hero']['text']]),
+            'about' => array_replace($siteConfig['about'], ['text' => ($business['description'] ?? null) ?: $siteConfig['about']['text']]),
+            'certifications' => array_replace($siteConfig['certifications'], ['items' => []]),
+            'clients' => array_replace($siteConfig['clients'], ['items' => []]),
+        ]);
+    }
+
+    private function oceanTealCompanyConfig(array $siteConfig, array $business, string $whatsapp, string $instagram): array
+    {
+        $name = $business['business_name'] ?? 'Perusahaan';
+        $this->replaceDemoName($siteConfig, $siteConfig['brand']['name'], $name);
+
+        return array_replace($siteConfig, [
+            'brand' => array_replace($siteConfig['brand'], [
+                'name' => $name,
+                'tagline' => ($business['tagline'] ?? null) ?: $siteConfig['brand']['tagline'],
+            ]),
+            'topbar' => array_replace($siteConfig['topbar'], [
+                'address' => $this->businessAddress($business),
+                'email' => '',
+                'phone' => $business['whatsapp'] ?? '',
+                'phone_href' => '+'.$whatsapp,
+            ]),
+            'socials' => $instagram === '' ? [] : [['icon' => 'instagram', 'label' => 'Instagram', 'url' => 'https://instagram.com/'.$instagram]],
+            'nav' => array_values(array_filter($siteConfig['nav'], fn (array $item): bool => ! in_array($item['key'], ['sertifikasi', 'klien'], true))),
+            'footer_nav' => array_values(array_filter($siteConfig['footer_nav'], fn (array $item): bool => ! in_array($item['key'], ['sertifikasi', 'klien'], true))),
+            'whatsapp' => array_replace($siteConfig['whatsapp'], ['number' => $whatsapp]),
+            'hero' => array_replace($siteConfig['hero'], [
+                'text' => ($business['description'] ?? null) ?: $siteConfig['hero']['text'],
+                'stats' => [],
+            ]),
+            'about' => array_replace($siteConfig['about'], ['paragraphs' => [($business['description'] ?? null) ?: $siteConfig['about']['paragraphs'][0]]]),
+            'certifications' => array_replace($siteConfig['certifications'], ['items' => []]),
+            'clients' => array_replace($siteConfig['clients'], ['items' => []]),
+            'ai_faq' => array_replace($siteConfig['ai_faq'], [
+                'items' => array_values(array_filter($siteConfig['ai_faq']['items'], fn (array $item): bool => ! str_contains(strtolower($item['q']), 'sertifikasi'))),
+            ]),
+        ]);
+    }
+
+    private function warmNeutralCompanyConfig(array $siteConfig, array $business, string $whatsapp, string $instagram): array
+    {
+        $name = $business['business_name'] ?? 'Perusahaan';
+        $this->replaceDemoName($siteConfig, $siteConfig['company']['name'], $name);
+
+        return array_replace($siteConfig, [
+            'company' => array_replace($siteConfig['company'], [
+                'name' => $name,
+                'tagline' => ($business['tagline'] ?? null) ?: $siteConfig['company']['tagline'],
+                'address' => $this->businessAddress($business),
+                'email' => '',
+                'phone' => $business['whatsapp'] ?? '',
+                'phone_href' => '+'.$whatsapp,
+            ]),
+            'social' => $instagram === '' ? [] : [['icon' => 'instagram', 'label' => 'Instagram', 'url' => 'https://instagram.com/'.$instagram]],
+            'nav' => array_values(array_filter($siteConfig['nav'], fn (array $item): bool => ! in_array($item['label'], ['Sertifikasi', 'Klien'], true))),
+            'whatsapp' => array_replace($siteConfig['whatsapp'], ['number' => $whatsapp]),
+            'hero' => array_replace($siteConfig['hero'], [
+                'eyebrow' => ($business['tagline'] ?? null) ?: $siteConfig['hero']['eyebrow'],
+                'lead' => ($business['description'] ?? null) ?: $siteConfig['hero']['lead'],
+            ]),
+            'about' => array_replace($siteConfig['about'], ['paragraphs' => [($business['description'] ?? null) ?: $siteConfig['about']['paragraphs'][0]]]),
+            'certifications' => [],
+            'clients' => [],
+            'faq' => array_values(array_filter($siteConfig['faq'], fn (array $item): bool => ! in_array($item['id'], ['sertifikasi', 'klien'], true))),
+        ]);
+    }
+
+    private function replaceDemoName(array &$siteConfig, string $demoName, string $name): void
+    {
+        array_walk_recursive($siteConfig, function (&$value) use ($demoName, $name): void {
+            if (is_string($value)) {
+                $value = str_replace($demoName, $name, $value);
+            }
+        });
+    }
+
+    private function businessAddress(array $business): string
+    {
+        return trim(($business['address'] ?? '').($business['city'] ?? '' ? ', '.$business['city'] : ''));
     }
 
     private function minimalisSiteConfig(array $siteConfig, array $business, WebiaOrder $order, string $whatsapp, string $instagram): array

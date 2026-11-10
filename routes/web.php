@@ -41,7 +41,7 @@ Route::post('/payments/midtrans/simulate/{payment}', [MidtransController::class,
 Route::get('/payments/midtrans/hosting/simulate/{payment}', [MidtransController::class, 'simulateHostingShow'])->middleware(['auth', 'throttle:10,1'])->name('payments.midtrans.hosting.simulate');
 Route::post('/payments/midtrans/hosting/simulate/{payment}', [MidtransController::class, 'simulateHostingPay'])->middleware(['auth', 'throttle:10,1'])->name('payments.midtrans.hosting.simulate.pay');
 Route::get('/s/{order:site_slug}/{page?}', CustomerSiteController::class)
-    ->whereIn('page', ['menu', 'reservasi'])
+    ->whereIn('page', ['menu', 'reservasi', 'tentang-kami', 'portofolio'])
     ->name('sites.show');
 
 Route::middleware('guest')->group(function (): void {

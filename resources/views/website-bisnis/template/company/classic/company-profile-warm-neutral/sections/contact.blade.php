@@ -18,7 +18,9 @@
                 <h3 class="cp-contact__heading">Kontak Kami</h3>
                 <ul class="cp-contact__list">
                     <li>{!! $icon('phone') !!}<a href="tel:{{ $company['phone_href'] }}">{{ $company['phone'] }}</a></li>
-                    <li>{!! $icon('mail') !!}<a href="mailto:{{ $company['email'] }}">{{ $company['email'] }}</a></li>
+                    @if ($company['email'])
+                        <li>{!! $icon('mail') !!}<a href="mailto:{{ $company['email'] }}">{{ $company['email'] }}</a></li>
+                    @endif
                     <li>{!! $icon('pin') !!}<span>{{ $company['address'] }}</span></li>
                 </ul>
             </div>
