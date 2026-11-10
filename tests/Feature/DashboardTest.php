@@ -78,6 +78,7 @@ class DashboardTest extends TestCase
             'invoice_number' => 'HST-AYU-001',
             'amount' => 275000,
             'status' => 'overdue',
+            'due_at' => now()->addDay(),
         ]);
         HostingInvoice::factory()->for($service, 'service')->create([
             'invoice_number' => 'HST-PAID-001',
@@ -86,6 +87,7 @@ class DashboardTest extends TestCase
         $stoppedService = HostingService::factory()->for($customer)->create(['billing_status' => 'stopped']);
         HostingInvoice::factory()->for($stoppedService, 'service')->create(['invoice_number' => 'HST-STOPPED-001']);
         HostingInvoice::factory()->create(['invoice_number' => 'HST-OTHER-001']);
+        HostingInvoice::factory()->count(5)->for($service, 'service')->create();
 
         $this->actingAs($customer)
             ->get(route('dashboard'))
@@ -96,7 +98,8 @@ class DashboardTest extends TestCase
             ->assertSee(route('hosting-invoices.index'), false)
             ->assertDontSee('HST-PAID-001')
             ->assertDontSee('HST-STOPPED-001')
-            ->assertDontSee('HST-OTHER-001');
+            ->assertDontSee('HST-OTHER-001')
+            ->assertViewHas('hostingInvoices', fn ($invoices): bool => $invoices->count() === 5);
     }
 
     public function test_customer_dashboard_hides_hosting_summary_without_outstanding_invoices(): void

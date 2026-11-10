@@ -115,7 +115,7 @@
             </div>
         @endif
 
-        @if ($hostingServices->isNotEmpty())
+        @if ($hostingInvoices->isNotEmpty())
             <div class="dashboard-empty customer-recent-card">
                 <div class="order-heading customer-recent-head">
                     <div>
@@ -128,21 +128,19 @@
                     </a>
                 </div>
                 <div class="admin-list dashboard-history-list customer-recent-list">
-                    @foreach ($hostingServices as $service)
-                        @foreach ($service->invoices as $invoice)
-                            <article class="admin-list-item">
-                                <div>
-                                    <p class="account-label">{{ $invoice->invoice_number }}</p>
-                                    <h3>{{ $service->website_name }}</h3>
-                                    <p>Jatuh tempo {{ $invoice->due_at->translatedFormat('d M Y') }}</p>
-                                </div>
-                                <div class="list-item-meta">
-                                    <strong>{{ 'Rp '.number_format($invoice->amount, 0, ',', '.') }}</strong>
-                                    <x-status-pill :status="$invoice->status" />
-                                    <a class="customer-detail-btn" href="{{ route('hosting-invoices.show', $invoice) }}">Detail</a>
-                                </div>
-                            </article>
-                        @endforeach
+                    @foreach ($hostingInvoices as $invoice)
+                        <article class="admin-list-item">
+                            <div>
+                                <p class="account-label">{{ $invoice->invoice_number }}</p>
+                                <h3>{{ $invoice->service->website_name }}</h3>
+                                <p>Jatuh tempo {{ $invoice->due_at->translatedFormat('d M Y') }}</p>
+                            </div>
+                            <div class="list-item-meta">
+                                <strong>{{ 'Rp '.number_format($invoice->amount, 0, ',', '.') }}</strong>
+                                <x-status-pill :status="$invoice->status" />
+                                <a class="customer-detail-btn" href="{{ route('hosting-invoices.show', $invoice) }}">Detail</a>
+                            </div>
+                        </article>
                     @endforeach
                 </div>
             </div>
