@@ -10,10 +10,11 @@ use App\Models\WebiaOrder;
 use App\Models\WebiaPayment;
 use App\Services\AccountProvisioner;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\URL;
 use Tests\TestCase;
 
@@ -41,16 +42,13 @@ class AccountProvisioningTest extends TestCase
         $this->assertSame($user->id, $order->user_id);
         $this->assertTrue($user->hasVerifiedEmail());
         $this->assertSame('paid', $order->status);
-        // Queue sync: job langsung dieksekusi, status final dan password plaintext bersih.
         $this->assertSame('sent', $order->credential_status);
-        $this->assertNull(DB::table('webia_orders')->where('id', $order->id)->value('credential_password'));
+        $this->assertFalse(Schema::hasColumn('webia_orders', 'credential_password'));
 
-        Mail::assertSent(AccountCredentialsMail::class, function (AccountCredentialsMail $mail) use ($order, $user): bool {
-            $this->assertNotNull($mail->plainPassword);
+        Mail::assertSent(AccountCredentialsMail::class, function (AccountCredentialsMail $mail) use ($order): bool {
             $this->assertTrue($mail->hasTo('zainul@example.com'));
             $this->assertTrue($mail->order->is($order));
-            // Password acak yang dikirim memang bisa dipakai login.
-            $this->assertTrue(password_verify($mail->plainPassword, $user->password));
+            $this->assertNotNull($mail->passwordSetupUrl);
 
             return true;
         });
@@ -69,11 +67,11 @@ class AccountProvisioningTest extends TestCase
         $this->assertSame($existing->id, $order->user_id);
         $this->assertSame(1, User::where('email', 'zainul@example.com')->count());
         $this->assertSame($originalPassword, $existing->fresh()->password);
-        Mail::assertSent(AccountCredentialsMail::class, fn (AccountCredentialsMail $mail): bool => $mail->plainPassword === null
+        Mail::assertSent(AccountCredentialsMail::class, fn (AccountCredentialsMail $mail): bool => $mail->passwordSetupUrl === null
             && $mail->hasTo('zainul@example.com'));
     }
 
-    public function test_job_clears_encrypted_password_after_sent_and_is_idempotent(): void
+    public function test_job_sends_password_setup_link_without_persisting_plaintext_and_is_idempotent(): void
     {
         Queue::fake();
         Mail::fake();
@@ -81,31 +79,60 @@ class AccountProvisioningTest extends TestCase
         app(AccountProvisioner::class)->provision($order, false);
         $order->refresh();
         $this->assertNotNull($order->user_id);
-        $this->assertNotNull($order->credential_password);
         $this->assertSame('queued', $order->credential_status);
-
-        $plainPassword = $order->credential_password;
-        // Plaintext hanya tersimpan terenkripsi, bukan polos.
-        $this->assertNotSame($plainPassword, (string) DB::table('webia_orders')->where('id', $order->id)->value('credential_password'));
+        $this->assertFalse(Schema::hasColumn('webia_orders', 'credential_password'));
 
         (new SendOrderCredentials($order->id))->handle(app(AccountProvisioner::class));
         $order->refresh();
         $this->assertSame('sent', $order->credential_status);
-        $this->assertNull($order->credential_password);
+        Mail::assertSent(AccountCredentialsMail::class, fn (AccountCredentialsMail $mail): bool => $mail->passwordSetupUrl !== null);
 
-        // Dipanggil ulang tidak mengirim email kedua.
         Mail::assertSentCount(1);
         (new SendOrderCredentials($order->id))->handle(app(AccountProvisioner::class));
         Mail::assertSentCount(1);
     }
 
-    public function test_failed_job_marks_credential_failed_for_admin_awareness(): void
+    public function test_new_customer_can_set_password_from_provisioning_link(): void
     {
+        Mail::fake();
         $order = $this->createGuestOrder();
 
-        (new SendOrderCredentials($order->id))->failed(new \RuntimeException('SMTP keluar'));
+        $this->notifySettlement($order->payments()->firstOrFail());
 
-        $this->assertSame('failed', $order->fresh()->credential_status);
+        $user = User::where('email', 'zainul@example.com')->firstOrFail();
+        $passwordSetupUrl = null;
+        Mail::assertSent(AccountCredentialsMail::class, function (AccountCredentialsMail $mail) use (&$passwordSetupUrl): bool {
+            $passwordSetupUrl = $mail->passwordSetupUrl;
+
+            return $passwordSetupUrl !== null;
+        });
+        parse_str((string) parse_url($passwordSetupUrl, PHP_URL_QUERY), $query);
+        $token = basename((string) parse_url($passwordSetupUrl, PHP_URL_PATH));
+
+        $this->post(route('password.store'), [
+            'token' => $token,
+            'email' => $query['email'],
+            'password' => 'password-baru-aman',
+            'password_confirmation' => 'password-baru-aman',
+        ])->assertRedirect(route('login'));
+
+        $this->assertTrue(Hash::check('password-baru-aman', $user->fresh()->password));
+    }
+
+    public function test_failed_job_retry_keeps_password_setup_link_for_new_account(): void
+    {
+        Queue::fake();
+        Mail::fake();
+        $order = $this->createGuestOrder();
+        app(AccountProvisioner::class)->provision($order, false);
+        $job = new SendOrderCredentials($order->id);
+
+        $job->failed(new \RuntimeException('SMTP keluar'));
+        app(AccountProvisioner::class)->provision($order->fresh(), false);
+        $job->handle(app(AccountProvisioner::class));
+
+        $this->assertSame('sent', $order->fresh()->credential_status);
+        Mail::assertSent(AccountCredentialsMail::class, fn (AccountCredentialsMail $mail): bool => $mail->passwordSetupUrl !== null);
     }
 
     public function test_status_polling_does_not_provision_before_payment(): void
@@ -164,12 +191,9 @@ class AccountProvisioningTest extends TestCase
         $order->refresh();
         $user = User::where('email', 'zainul@example.com')->firstOrFail();
         $this->assertSame($user->id, $order->user_id);
-        // Sync queue: email terkirim segera, plaintext password dihapus setelah sukses.
         $this->assertSame('sent', $order->credential_status);
-        $this->assertNull($order->credential_password);
         Mail::assertSent(AccountCredentialsMail::class, fn (AccountCredentialsMail $mail): bool => $mail->hasTo('zainul@example.com')
-            && $mail->plainPassword !== null
-            && password_verify($mail->plainPassword, $user->password));
+            && $mail->passwordSetupUrl !== null);
     }
 
     public function test_admin_reject_keeps_awaiting_without_account(): void

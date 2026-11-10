@@ -5,11 +5,12 @@ namespace App\Services;
 use App\Jobs\SendOrderCredentials;
 use App\Models\User;
 use App\Models\WebiaOrder;
+use Illuminate\Support\Str;
 
 class AccountProvisioner
 {
     /**
-     * Akun + password default dibuat belakangan, saat pembayaran sudah lunas.
+     * Akun dibuat setelah pembayaran lunas. Password internal acak tidak pernah dikirim ke pelanggan.
      * Instansiasi harus idempotent: aman dipanggil ulang oleh webhook, simulasi, atau approval admin.
      *
      * @param  bool  $dispatchJob  bila false, pengirim email ditangani pemanggil (mis. job itu sendiri)
@@ -32,20 +33,19 @@ class AccountProvisioner
         }
 
         $user = User::where('email', $email)->lockForUpdate()->first();
-        $plainPassword = null;
+        $requiresPasswordSetup = $user === null || $order->credential_requires_password_setup;
         if ($user === null) {
-            $plainPassword = config('webia.provisioning.default_password', 'password123');
             $user = User::create([
                 'name' => $order->guest_name ?? 'Pelanggan WEBIA',
                 'email' => $email,
-                'password' => $plainPassword,
+                'password' => Str::password(40),
             ]);
             $user->markEmailAsVerified();
         }
 
         $order->user_id = $user->id;
         $order->guest_email = $order->guest_email ?? $email;
-        $order->credential_password = $plainPassword;
+        $order->credential_requires_password_setup = $requiresPasswordSetup;
         $order->credential_status = 'queued';
         $order->save();
 

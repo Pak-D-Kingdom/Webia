@@ -15,7 +15,7 @@ class AccountCredentialsMail extends Mailable
 
     public function __construct(
         public WebiaOrder $order,
-        public ?string $plainPassword,
+        public ?string $passwordSetupUrl,
     ) {}
 
     public function envelope(): Envelope

@@ -28,12 +28,4 @@ return [
         'is_production' => env('MIDTRANS_ENV', 'sandbox') === 'production',
     ],
 
-    /*
-    | Password default akun WEBIA saat provisioning pembayaran lunas —
-    | dipakai akun baru maupun lama agar email kredensial selalu memuat password valid.
-    */
-    'provisioning' => [
-        'default_password' => env('WEBIA_DEFAULT_PASSWORD', 'password123'),
-    ],
-
 ];
