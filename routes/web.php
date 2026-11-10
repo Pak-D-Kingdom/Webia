@@ -139,6 +139,16 @@ Route::view(
 )->name('webia.template.matcha-clean-organic-deep-cleaning');
 
 Route::view(
+    '/webia/template/madubersih-home-cleaning-vintage',
+    'website-bisnis.templates.home-services.home-cleaning-deep-cleaning.madubersih-vintage'
+)->name('webia.template.madubersih-home-cleaning-vintage');
+
+Route::view(
+    '/webia/template/astroclean-home-cleaning-cosmic',
+    'website-bisnis.templates.home-services.home-cleaning-deep-cleaning.astroclean-cosmic'
+)->name('webia.template.astroclean-home-cleaning-cosmic');
+
+Route::view(
     '/webia/template/aurumco-catering',
     'website-bisnis.templates.fnb.aurumco-catering'
 )->name('webia.template.aurumco-catering');
