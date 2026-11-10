@@ -758,6 +758,44 @@ class WebiaTemplateSeeder extends Seeder
                 'sort_order' => 40,
             ],
 
+            [
+                'name' => 'VERBA — Editorial Translation House',
+                'slug' => 'verba-translation-interpreter',
+                'category_slug' => 'professional-service',
+                'category_label' => 'Professional Service',
+                'business_types' => ['Translation & Interpreter Service'],
+                'design_style' => 'Artistic',
+                'color_theme' => 'Editorial Muse',
+                'description' => 'Editorial translation, sworn document appraisal, localization, and professional interpretation services.',
+                'preview_style' => 'preview-editorial',
+                'eyebrow' => 'Words Across Borders',
+                'headline' => 'Nuance Across Cultures',
+                'tag' => 'Translation & Interpreter',
+                'preview_folder' => 'professional-service/translation-interpreter/verba',
+                'template_url' => '/webia/template/verba-translation-interpreter',
+                'is_active' => true,
+                'sort_order' => 40,
+            ],
+            [
+                'name' => 'VANGUARD — Heritage Counsel',
+                'slug' => 'vanguard-lawyer',
+                'category_slug' => 'professional-service',
+                'category_label' => 'Professional Service',
+                'business_types' => ['Lawyer'],
+                'design_style' => 'Rustic',
+                'color_theme' => 'Heritage Counsel',
+                'description' => 'Rustic editorial law firm website with consultation booking, practice areas, legal assessment, document checklist, and client portal preview.',
+                'preview_style' => 'preview-heritage',
+                'eyebrow' => 'Advocates & Legal Consultants',
+                'headline' => 'Perlindungan Hukum Strategis',
+                'tag' => 'Lawyer',
+                'preview_folder' => 'vanguard',
+                'template_url' => '/webia/template/vanguard-lawyer',
+                'is_active' => true,
+                'sort_order' => 41,
+            ],
+
+
 
 
         ];
