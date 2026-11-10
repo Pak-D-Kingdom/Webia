@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title') | WEBIA</title>
 @php
-    $isAuthPage = request()->routeIs('login', 'password.*');
+    $isAuthPage = request()->routeIs('login', 'password.*', 'verification.*');
     $isAdmin = auth()->check() && request()->routeIs('admin.*');
 @endphp
 @if ($isAuthPage)

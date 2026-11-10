@@ -3,8 +3,10 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class ProfileUpdateTest extends TestCase
@@ -42,15 +44,19 @@ class ProfileUpdateTest extends TestCase
 
     public function test_user_can_change_email_with_current_password(): void
     {
+        Notification::fake();
         $user = User::factory()->create(['email' => 'lama@example.com', 'password' => 'password']);
 
         $this->actingAs($user)->patch(route('profile.update'), [
             'name' => $user->name,
             'email' => 'baru@example.com',
             'current_password' => 'password',
-        ])->assertRedirect(route('profile.edit'));
+        ])->assertRedirect(route('verification.notice'));
 
-        $this->assertSame('baru@example.com', $user->fresh()->email);
+        $user->refresh();
+        $this->assertSame('baru@example.com', $user->email);
+        $this->assertFalse($user->hasVerifiedEmail());
+        Notification::assertSentTo($user, VerifyEmail::class);
     }
 
     public function test_user_can_update_password(): void

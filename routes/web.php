@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\WebiaAddonController;
 use App\Http\Controllers\Admin\WebiaOrderController as AdminWebiaOrderController;
 use App\Http\Controllers\Admin\WebiaPackageController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\CustomerAiController;
@@ -65,13 +66,19 @@ Route::get('/orders/success', function () {
 })->name('orders.success');
 
 Route::middleware('auth')->group(function (): void {
+    Route::get('/email/verify', [EmailVerificationController::class, 'notice'])->name('verification.notice');
+    Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])->middleware('signed')->name('verification.verify');
+    Route::post('/email/verification-notification', [EmailVerificationController::class, 'send'])->middleware('throttle:6,1')->name('verification.send');
+    Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+});
+
+Route::middleware(['auth', 'verified'])->group(function (): void {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
     Route::get('/ai-assistant', [CustomerAiController::class, 'index'])->name('customer.ai');
     Route::post('/ai-assistant/faq', [CustomerAiController::class, 'storeFaq'])->name('customer.ai.store-faq');
     Route::post('/ai-assistant/settings', [CustomerAiController::class, 'updateSettings'])->name('customer.ai.settings');
     Route::post('/ai-assistant/business-info', [CustomerAiController::class, 'updateBusinessInfo'])->name('customer.ai.business-info');
     Route::post('/ai-assistant/simulate', [CustomerAiController::class, 'simulateChat'])->name('customer.ai.simulate');
-    Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->middleware('throttle:6,1')->name('profile.update');
     Route::patch('/profile/password', [ProfileController::class, 'updatePassword'])->middleware('throttle:6,1')->name('profile.password');
