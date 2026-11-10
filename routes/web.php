@@ -1812,6 +1812,22 @@ Route::view(
     'website-bisnis.templates.automotive.minimal'
 )->name('webia.template.automotive.form-auto-care-minimal');
 
+// WEBIA — Indra Wedding & Fitness templates.
+Route::view(
+    '/webia/template/wedding-event/catering-wedding-cake/solenne-sunshine',
+    'website-bisnis.templates.wedding-event.Catering-Wedding-Cake.solenne-sunshine.solenne-sunshine'
+)->name('webia.template.wedding-event.solenne-sunshine');
+
+Route::view(
+    '/webia/template/sports-fitness/personal-trainer/northline-blue',
+    'website-bisnis.templates.sports-fitness.personal-trainer.northline-blue.northline-blue'
+)->name('webia.template.sports-fitness.northline-blue');
+
+Route::view(
+    '/webia/template/sports-fitness/personal-trainer/cyber-neon',
+    'website-bisnis.templates.sports-fitness.personal-trainer.cyber-neon.cyber-neon'
+)->name('webia.template.sports-fitness.cyber-neon');
+
 Route::prefix('webia/template')->group(function () {
     Route::view(
         '/revolt-impact-social-organization',
