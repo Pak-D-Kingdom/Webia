@@ -10,7 +10,7 @@ class WebiaTemplate extends Model
         'name', 'slug', 'category_slug', 'category_label', 'business_types',
         'design_style', 'color_theme', 'description', 'preview_style',
         'eyebrow', 'headline', 'tag', 'preview_folder', 'template_url',
-        'site_config_path', 'is_active', 'sort_order',
+        'preview_view', 'site_config_path', 'is_active', 'sort_order',
     ];
 
     protected function casts(): array

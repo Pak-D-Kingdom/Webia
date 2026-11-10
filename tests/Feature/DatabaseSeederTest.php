@@ -18,7 +18,10 @@ class DatabaseSeederTest extends TestCase
         $this->assertDatabaseHas('webia_packages', ['slug' => 'pixel']);
         $this->assertDatabaseHas('webia_addons', ['name' => 'SEO Optimization']);
         $this->assertDatabaseHas('webia_templates', ['slug' => 'company-terracotta']);
-        $this->assertDatabaseHas('webia_templates', ['slug' => 'kusuma-ningrat-royal-heritage']);
+        $this->assertDatabaseHas('webia_templates', [
+            'slug' => 'kusuma-ningrat-royal-heritage',
+            'preview_view' => 'website-bisnis.templates.fnb.kusuma-ningrat-royal-heritage',
+        ]);
     }
 
     public function test_default_database_seeder_displays_templates_in_collection(): void

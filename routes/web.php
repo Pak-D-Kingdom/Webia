@@ -21,6 +21,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RubyRegisterController;
 use App\Http\Controllers\WebiaOrderController;
 use App\Http\Controllers\WebsiteBisnis\TemplateCollectionController;
+use App\Http\Controllers\WebsiteBisnis\TemplatePreviewController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\HtmlString;
@@ -2078,3 +2079,7 @@ Route::prefix('webia/template')->group(function () {
         'website-bisnis.templates.travel-tourism.adventure-outdoor-tour.wildtrail.wildtrail'
     )->name('webia.template.wildtrail-adventure-outdoor');
 });
+
+Route::get('webia/template/{path}', TemplatePreviewController::class)
+    ->where('path', '.*')
+    ->name('webia.template.preview');
