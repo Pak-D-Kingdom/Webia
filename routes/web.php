@@ -1853,6 +1853,14 @@ Route::prefix('webia/template')->group(function () {
         'website-bisnis.templates.nonprofit-community.volunteer-group.lentera-nusantara.lentera-nusantara'
     )->name('webia.template.lentera-nusantara-volunteer-group');
     Route::view(
+        '/relakita-volunteer-warm-sunrise',
+        'website-bisnis.templates.nonprofit-community.relakita-volunteer-warm-sunrise'
+    )->name('webia.template.nonprofit-community.relakita-volunteer-warm-sunrise');
+    Route::view(
+        '/kolektif-aksi-kita-volunteer-midnight-navy',
+        'website-bisnis.templates.nonprofit-community.kolektif-aksi-kita-volunteer-midnight-navy'
+    )->name('webia.template.nonprofit-community.kolektif-aksi-kita-volunteer-midnight-navy');
+    Route::view(
         '/ironpulse-gym-fitness-center',
         'website-bisnis.templates.sports-fitness.gym-fitness-center.ironpulse.ironpulse'
     )->name('webia.template.ironpulse-gym-fitness-center');

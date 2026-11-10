@@ -344,5 +344,47 @@ class WebiaTemplateAlleSeeder extends Seeder
                 'sort_order' => 48,
             ]
         );
+
+        WebiaTemplate::updateOrCreate(
+            ['slug' => 'relakita-volunteer-warm-sunrise'],
+            [
+                'name' => 'Relakita — Warm Sunrise Volunteer Community',
+                'category_slug' => 'nonprofit-community',
+                'category_label' => 'Nonprofit & Community',
+                'business_types' => ['Volunteer Group'],
+                'design_style' => 'Warm Editorial',
+                'color_theme' => 'Warm Ivory, Terracotta & Rose',
+                'description' => 'Community volunteer landing page with an organization profile, three social-impact programs, volunteer registration form, impact stories, FAQs, AI volunteer assistant, and coordinator contact.',
+                'preview_style' => 'preview-relakita-volunteer-warm-sunrise',
+                'eyebrow' => 'RELAKITA · SAHABAT RELAWAN INDONESIA',
+                'headline' => 'Langkah Kecil Kita, Senyum Hangat untuk Saudara Sebangsa.',
+                'tag' => 'Nonprofit & Community · Volunteer Group · Warm Editorial',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/relakita-volunteer-warm-sunrise',
+                'is_active' => true,
+                'sort_order' => 49,
+            ]
+        );
+
+        WebiaTemplate::updateOrCreate(
+            ['slug' => 'kolektif-aksi-kita-volunteer-midnight-navy'],
+            [
+                'name' => 'Kolektif Aksi Kita — Midnight Navy Volunteer Network',
+                'category_slug' => 'nonprofit-community',
+                'category_label' => 'Nonprofit & Community',
+                'business_types' => ['Volunteer Group'],
+                'design_style' => 'Modern & Technology',
+                'color_theme' => 'Midnight Navy & Electric Cyan',
+                'description' => 'Modern volunteer-network landing page with organization benefits, open service programs, impact metrics, volunteer eligibility and FAQs, mobile navigation, a volunteer interest form, WhatsApp coordination, and an AI assistant demo.',
+                'preview_style' => 'preview-kolektif-aksi-kita-volunteer-midnight-navy',
+                'eyebrow' => 'RELAKITA · AKSI NYATA PEMUDA BERGERAK',
+                'headline' => 'Satu Jam Tenagamu, Sejuta Harapan untuk Nusantara.',
+                'tag' => 'Nonprofit & Community · Volunteer Group · Midnight Navy',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/kolektif-aksi-kita-volunteer-midnight-navy',
+                'is_active' => true,
+                'sort_order' => 50,
+            ]
+        );
     }
 }
