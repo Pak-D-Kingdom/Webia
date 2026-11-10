@@ -52,7 +52,7 @@ return [
         ['key' => 'tiktok',    'label' => 'TikTok',    'url' => '#'],
     ],
 
-    // Menu navbar. slug diawali "#" = anchor di halaman yang sama (footer).
+    // Menu navbar. (slug diawali "#" = anchor di halaman yang sama.)
     'nav' => [
         ['key' => 'beranda',      'label' => 'Beranda',        'slug' => ''],
         ['key' => 'tentang-kami', 'label' => 'Tentang Kami',   'slug' => 'tentang-kami'],
@@ -62,7 +62,6 @@ return [
         ['key' => 'mitra',        'label' => 'Mitra',          'slug' => 'mitra'],
         ['key' => 'relawan',      'label' => 'Relawan',        'slug' => 'relawan'],
         ['key' => 'berita',       'label' => 'Berita & Acara', 'slug' => 'berita'],
-        ['key' => 'kontak',       'label' => 'Kontak',         'slug' => '#kontak'],
     ],
 
     // Judul tab browser + isi header halaman dalam.
@@ -199,10 +198,10 @@ return [
     'donation' => [
         'text'    => 'Pilih cara terbaik untuk berbagi kebaikan.',
         'options' => [
-            ['key' => 'online', 'label' => 'Donasi Sekarang', 'note' => '(Online)', 'icon' => 'icons/don-online.png', 'text' => 'Donasi cepat lewat WhatsApp dengan nominal pilihan Anda.'],
-            ['key' => 'bank',   'label' => 'Transfer Bank',   'note' => '', 'icon' => 'icons/don-bank.png',   'text' => 'Transfer langsung ke rekening resmi yayasan.'],
-            ['key' => 'barang', 'label' => 'Donasi Barang',   'note' => '', 'icon' => 'icons/don-barang.png', 'text' => 'Sumbangkan buku, pakaian layak pakai, atau perlengkapan lain.'],
-            ['key' => 'rutin',  'label' => 'Donasi Rutin',    'note' => '', 'icon' => 'icons/don-rutin.png',  'text' => 'Berbagi setiap bulan agar manfaatnya terus berjalan.'],
+            ['key' => 'online', 'label' => 'Donasi Sekarang', 'note' => '(Online)', 'icon' => 'icons/don-online.png', 'hint' => 'Lewat WhatsApp', 'text' => 'Donasi cepat lewat WhatsApp dengan nominal pilihan Anda.'],
+            ['key' => 'bank',   'label' => 'Transfer Bank',   'note' => '', 'icon' => 'icons/don-bank.png',   'hint' => 'Rekening resmi', 'text' => 'Transfer langsung ke rekening resmi yayasan.'],
+            ['key' => 'barang', 'label' => 'Donasi Barang',   'note' => '', 'icon' => 'icons/don-barang.png', 'hint' => 'Buku & lainnya', 'text' => 'Sumbangkan buku, pakaian layak pakai, atau perlengkapan lain.'],
+            ['key' => 'rutin',  'label' => 'Donasi Rutin',    'note' => '', 'icon' => 'icons/don-rutin.png',  'hint' => 'Setiap bulan', 'text' => 'Berbagi setiap bulan agar manfaatnya terus berjalan.'],
         ],
         'amounts' => [25000, 50000, 100000, 250000, 500000],
         'banks' => [
@@ -339,7 +338,7 @@ return [
 
     'footer' => [
         'nav'     => [['Beranda', ''], ['Tentang Kami', 'tentang-kami'], ['Program Kami', 'program'], ['Dampak', 'dampak']],
-        'service' => [['Donasi', 'donasi'], ['Relawan', 'relawan'], ['Berita & Acara', 'berita'], ['Kontak', '#kontak']],
+        'service' => [['Donasi', 'donasi'], ['Relawan', 'relawan'], ['Berita & Acara', 'berita']],
         'copy'    => '© 2026 GreenHope Foundation. All rights reserved.',
         'credit'  => '© 2026 WEBIA by D-KREASI. Seluruh hak cipta dilindungi.',
     ],

@@ -24,11 +24,12 @@
         <div class="fh-nav__actions">
             <button class="fh-iconbtn fh-iconbtn--search" type="button" data-fh-search-toggle aria-haspopup="dialog" aria-controls="fh-search" aria-label="Cari di situs (Ctrl+K)" title="Cari (Ctrl+K)">{{ $icon('search') }}</button>
             <a class="fh-btn fh-btn--dark fh-nav__donate" href="{{ $url('donasi') }}">
-                <span class="fh-btn__heart">{{ $icon('heart', 'fh-ic fh-ic--gold') }}</span>Donasi Sekarang {{ $icon('arrow') }}
+                <span class="fh-btn__heart">{{ $icon('heart', 'fh-ic fh-ic--gold') }}</span><span class="fh-btn__label">Donasi<span class="fh-btn__more"> Sekarang</span></span>{{ $icon('arrow') }}
             </a>
             <button class="fh-burger" type="button" data-fh-menu-toggle aria-expanded="false" aria-controls="fh-menu" aria-label="Buka menu">
                 <span class="fh-burger__open">{{ $icon('menu') }}</span><span class="fh-burger__close">{{ $icon('close') }}</span>
             </button>
         </div>
     </div>
+    <span class="fh-progress" aria-hidden="true"><i data-fh-progress></i></span>
 </header>

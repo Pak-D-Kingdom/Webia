@@ -1,0 +1,855 @@
+<?php
+
+/*
+|--------------------------------------------------------------------------
+| Nur Rahmat Travel — Umrah & Haji · Classic · Emerald Green
+|--------------------------------------------------------------------------
+| WEBIA by D-KREASI. Seluruh konten template (teks, harga, jadwal, dst.) ada di sini,
+| sehingga tim backend cukup mengganti isi array ini (atau menggantinya dengan data dari DB)
+| tanpa menyentuh file Blade.
+|
+| Kunci config: template.travel&tourism.classic.umrah-haji-emerald-green.umrah-haji
+| Nomor WhatsApp (brand.whatsapp) memakai format internasional tanpa tanda "+" dan tanpa spasi.
+| Nama berkas gambar (image) merujuk ke public/images/website-bisnis/template/travel&tourism/classic/umrah-haji-emerald-green/
+*/
+
+return [
+    'brand' => [
+        'name' => 'Nur Rahmat Travel',
+        'tagline' => 'Sahabat Perjalanan Ibadah Anda',
+        'address' => 'Jakarta, Indonesia',
+        'hours' => 'Sen - Min : 08.00 - 21.00',
+        'email' => 'info@nurrahmattravel.co.id',
+        'phone_display' => '+62 812 3456 7890',
+        'whatsapp' => '62895630300345',
+        'credit' => '© 2026 WEBIA by D-KREASI. Seluruh hak cipta dilindungi.',
+    ],
+    'social' => [
+        [
+            'name' => 'Instagram',
+            'icon' => 'instagram',
+            'url' => 'https://www.instagram.com/',
+        ],
+        [
+            'name' => 'Facebook',
+            'icon' => 'facebook',
+            'url' => 'https://www.facebook.com/',
+        ],
+        [
+            'name' => 'YouTube',
+            'icon' => 'youtube',
+            'url' => 'https://www.youtube.com/',
+        ],
+        [
+            'name' => 'TikTok',
+            'icon' => 'tiktok',
+            'url' => 'https://www.tiktok.com/',
+        ],
+        [
+            'name' => 'LinkedIn',
+            'icon' => 'linkedin',
+            'url' => 'https://www.linkedin.com/',
+        ],
+    ],
+    'nav' => [
+        [
+            'key' => 'home',
+            'label' => 'Beranda',
+        ],
+        [
+            'key' => 'packages',
+            'label' => 'Paket Umrah & Haji',
+        ],
+        [
+            'key' => 'schedules',
+            'label' => 'Jadwal Keberangkatan',
+        ],
+        [
+            'key' => 'prices',
+            'label' => 'Harga Paket',
+        ],
+        [
+            'key' => 'hotel-flight',
+            'label' => 'Hotel & Pesawat',
+        ],
+        [
+            'key' => 'itinerary',
+            'label' => 'Itinerary',
+        ],
+        [
+            'key' => 'team',
+            'label' => 'Tim Kami',
+        ],
+        [
+            'key' => 'requirements',
+            'label' => 'Persyaratan',
+        ],
+        [
+            'key' => 'testimonials',
+            'label' => 'Testimoni',
+        ],
+    ],
+    'hero' => [
+        'eyebrow' => 'PERJALANAN SUCI, PENUH BERKAH',
+        'title' => 'Umrah & Haji',
+        'subtitle' => 'Bersama Nur Rahmat Travel',
+        'text' => 'Raih kesempatan berharga untuk menunaikan ibadah ke Tanah Suci dengan pelayanan terbaik, fasilitas nyaman, dan pendampingan profesional dari tim kami.',
+        'features' => [
+            [
+                'icon' => 'guide',
+                'label' => 'Pembimbing Berpengalaman',
+            ],
+            [
+                'icon' => 'gem',
+                'label' => 'Fasilitas Premium',
+            ],
+            [
+                'icon' => 'shield',
+                'label' => 'Harga Terbaik',
+            ],
+            [
+                'icon' => 'clock24',
+                'label' => 'Pelayanan 24 Jam',
+            ],
+        ],
+        'cta_primary' => 'Lihat Paket Kami',
+        'cta_secondary' => 'Konsultasi Gratis',
+        'wa_consult' => 'Assalamu\'alaikum Nur Rahmat Travel, saya ingin konsultasi gratis mengenai paket umrah dan haji.',
+        'calligraphy' => 'Mekkah bukan sekadar tempat, tapi panggilan hati',
+    ],
+    'ai' => [
+        'title' => 'AI Assistant',
+        'text' => 'Tanya apa saja tentang paket umrah, haji, jadwal, harga, dan persyaratan pendaftaran.',
+        'button' => 'Chat Sekarang',
+        'items' => [
+            [
+                'icon' => 'kaaba',
+                'label' => 'Informasi Paket Umrah & Haji',
+                'q' => 'Apa saja paket umrah dan haji yang tersedia?',
+            ],
+            [
+                'icon' => 'calendar',
+                'label' => 'Jadwal Keberangkatan',
+                'q' => 'Kapan jadwal keberangkatan terdekat?',
+            ],
+            [
+                'icon' => 'tag',
+                'label' => 'Harga & Promo',
+                'q' => 'Berapa harga paket umrah dan apakah ada promo?',
+            ],
+            [
+                'icon' => 'hotel',
+                'label' => 'Hotel & Pesawat',
+                'q' => 'Hotel dan pesawat apa yang digunakan?',
+            ],
+            [
+                'icon' => 'route',
+                'label' => 'Itinerary Perjalanan',
+                'q' => 'Bagaimana itinerary perjalanan umrah?',
+            ],
+            [
+                'icon' => 'file',
+                'label' => 'Persyaratan Pendaftaran',
+                'q' => 'Apa saja persyaratan pendaftaran?',
+            ],
+        ],
+        'bubble_title' => 'Ada pertanyaan?',
+        'bubble_text' => 'Tanya Muthawwif AI kami untuk informasi paket, jadwal, dan pendaftaran.',
+        'welcome' => 'Assalamu\'alaikum! Saya Muthawwif AI dari Nur Rahmat Travel. Saya bisa membantu menjawab seputar paket, harga, jadwal, hotel & pesawat, itinerary, dan persyaratan pendaftaran. Silakan pilih topik atau ketik pertanyaan Anda.',
+        'fallback' => 'Maaf, saya belum menemukan jawaban yang tepat untuk pertanyaan itu. Coba pilih salah satu topik di bawah, atau hubungi tim kami langsung melalui WhatsApp agar dibantu lebih lanjut.',
+    ],
+    'packages' => [
+        [
+            'slug' => 'umrah-reguler',
+            'name' => 'Umrah Reguler',
+            'meta' => '9 Hari',
+            'type' => 'umrah',
+            'price' => 'Rp 29.900.000',
+            'tag' => 'Populer',
+            'ribbon' => 'Populer',
+            'image' => 'paket-umrah-reguler.jpg',
+            'duration' => '9 Hari 7 Malam',
+            'route' => 'Jakarta – Madinah – Mekkah – Jakarta',
+            'hotel' => 'Hotel bintang 4, ±300 m dari Masjidil Haram',
+            'airline' => 'Maskapai penuh layanan, penerbangan langsung',
+            'desc' => 'Paket umrah hemat dengan pendampingan penuh. Cocok untuk jemaah yang baru pertama kali menunaikan umrah dan menginginkan perjalanan yang nyaman dengan biaya terjangkau.',
+            'facilities' => [
+                'Tiket pesawat PP Jakarta – Jeddah/Madinah',
+                'Hotel bintang 4 di Madinah & Mekkah',
+                'Makan 3x sehari menu Indonesia',
+                'Bus AC selama di Tanah Suci',
+                'Muthawwif berpengalaman',
+                'Visa umrah & asuransi perjalanan',
+                'Perlengkapan umrah & air zamzam 5 liter',
+            ],
+        ],
+        [
+            'slug' => 'umrah-plus-turki',
+            'name' => 'Umrah Plus Turki',
+            'meta' => '12 Hari',
+            'type' => 'umrah',
+            'price' => 'Rp 36.500.000',
+            'tag' => 'Best Seller',
+            'ribbon' => '',
+            'image' => 'paket-umrah-turki.jpg',
+            'duration' => '12 Hari 10 Malam',
+            'route' => 'Jakarta – Istanbul – Madinah – Mekkah – Jakarta',
+            'hotel' => 'Hotel bintang 4–5, ±200 m dari Masjidil Haram',
+            'airline' => 'Maskapai penuh layanan, transit Istanbul',
+            'desc' => 'Tunaikan umrah sekaligus berkunjung ke situs bersejarah Islam di Istanbul. Perjalanan ibadah dengan wawasan sejarah dan peradaban Islam.',
+            'facilities' => [
+                'Tiket pesawat PP termasuk rute Istanbul',
+                'Hotel bintang 4–5 di Istanbul, Madinah & Mekkah',
+                'City tour Istanbul bersama pemandu',
+                'Makan 3x sehari',
+                'Bus AC & transportasi lokal',
+                'Muthawwif & tour leader',
+                'Visa, asuransi & perlengkapan umrah',
+            ],
+        ],
+        [
+            'slug' => 'umrah-vip',
+            'name' => 'Umrah VIP',
+            'meta' => '12 Hari',
+            'type' => 'umrah',
+            'price' => 'Rp 49.900.000',
+            'tag' => 'Eksklusif',
+            'ribbon' => '',
+            'image' => 'paket-umrah-vip.jpg',
+            'duration' => '12 Hari 10 Malam',
+            'route' => 'Jakarta – Madinah – Mekkah – Jakarta',
+            'hotel' => 'Hotel bintang 5, pelataran Masjidil Haram',
+            'airline' => 'Maskapai penuh layanan, kelas ekonomi premium',
+            'desc' => 'Pengalaman ibadah paling nyaman dengan hotel bintang 5 berjarak terdekat dari masjid, kuota kecil, dan layanan pribadi dari tim pendamping.',
+            'facilities' => [
+                'Tiket pesawat PP kelas ekonomi premium',
+                'Hotel bintang 5 dengan akses terdekat ke masjid',
+                'Makan prasmanan 3x sehari',
+                'Transportasi VIP & handling bandara khusus',
+                'Muthawwif pribadi, kuota terbatas',
+                'Visa, asuransi & perlengkapan premium',
+                'Free air zamzam 10 liter',
+            ],
+        ],
+        [
+            'slug' => 'haji-khusus',
+            'name' => 'Haji Khusus',
+            'meta' => 'Furoda',
+            'type' => 'haji',
+            'price' => 'Rp 198.000.000',
+            'tag' => 'Terbatas',
+            'ribbon' => '',
+            'image' => 'paket-haji-khusus.jpg',
+            'duration' => '30 Hari',
+            'route' => 'Jakarta – Madinah – Mekkah – Armuzna – Jakarta',
+            'hotel' => 'Hotel bintang 5 & fasilitas tenda Armuzna terbaik',
+            'airline' => 'Maskapai penuh layanan, penerbangan langsung',
+            'desc' => 'Haji khusus (furoda) dengan keberangkatan tanpa antrean panjang, pembimbing ibadah haji berpengalaman, dan akomodasi terbaik selama di Tanah Suci. Kuota sangat terbatas.',
+            'facilities' => [
+                'Tiket pesawat PP penerbangan langsung',
+                'Hotel bintang 5 di Mekkah & Madinah',
+                'Fasilitas Armuzna (Arafah, Muzdalifah, Mina) terbaik',
+                'Pembimbing ibadah haji & tim medis',
+                'Makan 3x sehari',
+                'Visa haji, asuransi & perlengkapan haji',
+                'Manasik intensif sebelum keberangkatan',
+            ],
+        ],
+    ],
+    'schedules' => [
+        [
+            'date' => '12 Jan 2026',
+            'month' => 'Jan',
+            'package' => 'Umrah Reguler',
+            'type' => 'umrah',
+            'duration' => '9 Hari',
+            'status' => 'Tersedia',
+            'seats' => '12 kursi',
+            'tone' => 'ok',
+        ],
+        [
+            'date' => '20 Feb 2026',
+            'month' => 'Feb',
+            'package' => 'Umrah Plus Turki',
+            'type' => 'umrah',
+            'duration' => '12 Hari',
+            'status' => 'Tersedia',
+            'seats' => '9 kursi',
+            'tone' => 'ok',
+        ],
+        [
+            'date' => '15 Mar 2026',
+            'month' => 'Mar',
+            'package' => 'Umrah VIP',
+            'type' => 'umrah',
+            'duration' => '12 Hari',
+            'status' => 'Tersedia',
+            'seats' => '6 kursi',
+            'tone' => 'ok',
+        ],
+        [
+            'date' => '10 Apr 2026',
+            'month' => 'Apr',
+            'package' => 'Haji Khusus',
+            'type' => 'haji',
+            'duration' => '30 Hari',
+            'status' => 'Tersedia',
+            'seats' => '4 kursi',
+            'tone' => 'ok',
+        ],
+        [
+            'date' => '14 Mei 2026',
+            'month' => 'Mei',
+            'package' => 'Umrah Reguler',
+            'type' => 'umrah',
+            'duration' => '9 Hari',
+            'status' => 'Terbatas',
+            'seats' => '3 kursi',
+            'tone' => 'warn',
+        ],
+        [
+            'date' => '18 Jun 2026',
+            'month' => 'Jun',
+            'package' => 'Umrah Plus Turki',
+            'type' => 'umrah',
+            'duration' => '12 Hari',
+            'status' => 'Tersedia',
+            'seats' => '14 kursi',
+            'tone' => 'ok',
+        ],
+        [
+            'date' => '23 Jul 2026',
+            'month' => 'Jul',
+            'package' => 'Umrah VIP',
+            'type' => 'umrah',
+            'duration' => '12 Hari',
+            'status' => 'Penuh',
+            'seats' => '0 kursi',
+            'tone' => 'full',
+        ],
+        [
+            'date' => '27 Agu 2026',
+            'month' => 'Agu',
+            'package' => 'Umrah Reguler',
+            'type' => 'umrah',
+            'duration' => '9 Hari',
+            'status' => 'Tersedia',
+            'seats' => '20 kursi',
+            'tone' => 'ok',
+        ],
+    ],
+    'prices' => [
+        'banner_title' => 'Harga Paket Spesial',
+        'banner_text' => 'Nikmati harga terbaik dengan fasilitas premium dan pelayanan profesional.',
+        'banner_button' => 'Lihat Detail Harga',
+        'note' => 'Harga dapat berubah sewaktu-waktu mengikuti kurs dan kebijakan maskapai. Hubungi tim kami untuk harga terbaru.',
+        'items' => [
+            [
+                'package' => 'Umrah Reguler',
+                'tag' => 'Populer',
+                'from' => 'Rp 29.900.000',
+                'rooms' => [
+                    ['Quad (4 orang)', 'Rp 29.900.000'],
+                    ['Triple (3 orang)', 'Rp 31.500.000'],
+                    ['Double (2 orang)', 'Rp 33.900.000'],
+                ],
+                'dp' => 'DP mulai Rp 5.000.000',
+                'include' => ['Tiket pesawat PP', 'Hotel bintang 4', 'Makan 3x sehari', 'Visa & asuransi'],
+                'exclude' => ['Pembuatan paspor', 'Pengeluaran pribadi'],
+                'slug' => 'umrah-reguler',
+            ],
+            [
+                'package' => 'Umrah Plus Turki',
+                'tag' => 'Best Seller',
+                'from' => 'Rp 36.500.000',
+                'rooms' => [
+                    ['Quad (4 orang)', 'Rp 36.500.000'],
+                    ['Triple (3 orang)', 'Rp 38.200.000'],
+                    ['Double (2 orang)', 'Rp 40.900.000'],
+                ],
+                'dp' => 'DP mulai Rp 7.500.000',
+                'include' => ['Tiket pesawat PP via Istanbul', 'Hotel bintang 4–5', 'City tour Istanbul', 'Visa & asuransi'],
+                'exclude' => ['Pembuatan paspor', 'Pengeluaran pribadi'],
+                'slug' => 'umrah-plus-turki',
+            ],
+            [
+                'package' => 'Umrah VIP',
+                'tag' => 'Eksklusif',
+                'from' => 'Rp 49.900.000',
+                'rooms' => [
+                    ['Quad (4 orang)', 'Rp 49.900.000'],
+                    ['Triple (3 orang)', 'Rp 52.500.000'],
+                    ['Double (2 orang)', 'Rp 55.900.000'],
+                ],
+                'dp' => 'DP mulai Rp 10.000.000',
+                'include' => ['Tiket pesawat PP ekonomi premium', 'Hotel bintang 5', 'Handling VIP', 'Visa & asuransi'],
+                'exclude' => ['Pembuatan paspor', 'Pengeluaran pribadi'],
+                'slug' => 'umrah-vip',
+            ],
+            [
+                'package' => 'Haji Khusus',
+                'tag' => 'Terbatas',
+                'from' => 'Rp 198.000.000',
+                'rooms' => [
+                    ['Quad (4 orang)', 'Rp 198.000.000'],
+                    ['Double (2 orang)', 'Rp 215.000.000'],
+                ],
+                'dp' => 'DP mulai Rp 50.000.000',
+                'include' => ['Tiket pesawat PP langsung', 'Hotel bintang 5', 'Fasilitas Armuzna', 'Visa & asuransi'],
+                'exclude' => ['Pembuatan paspor', 'Dam & pengeluaran pribadi'],
+                'slug' => 'haji-khusus',
+            ],
+        ],
+    ],
+    'hotels' => [
+        'title' => 'Hotel & Pesawat',
+        'text' => 'Hotel bintang 3-5 dan maskapai pilihan untuk kenyamanan perjalanan Anda.',
+        'hotel' => [
+            'title' => 'Hotel',
+            'image' => 'hotel.jpg',
+            'points' => ['Dekat Masjid', 'Fasilitas Lengkap', 'Rating Terbaik'],
+        ],
+        'plane' => [
+            'title' => 'Pesawat',
+            'image' => 'pesawat.jpg',
+            'points' => ['Maskapai Terpercaya', 'Jadwal Fleksibel', 'Harga Kompetitif'],
+        ],
+        'art_title' => 'Ibadah Lebih Nyaman, Bersama Kami',
+        'stay' => [
+            [
+                'city' => 'Madinah',
+                'level' => 'Bintang 4–5',
+                'distance' => '±100–300 m dari Masjid Nabawi',
+                'facilities' => ['Kamar ber-AC', 'Makan prasmanan', 'Lift & Wi-Fi', 'Mushola lantai'],
+            ],
+            [
+                'city' => 'Mekkah',
+                'level' => 'Bintang 4–5',
+                'distance' => '±100–300 m dari Masjidil Haram',
+                'facilities' => ['Kamar ber-AC', 'Makan prasmanan', 'Lift & Wi-Fi', 'Akses shuttle'],
+            ],
+            [
+                'city' => 'Istanbul',
+                'level' => 'Bintang 4',
+                'distance' => 'Pusat kota, dekat area wisata',
+                'facilities' => ['Sarapan', 'Wi-Fi', 'Akses transportasi umum', 'Hanya paket Plus Turki'],
+            ],
+        ],
+        'flight' => [
+            ['Maskapai', 'Maskapai internasional penuh layanan'],
+            ['Rute', 'Jakarta – Madinah / Jeddah (PP)'],
+            ['Bagasi', 'Hingga 30 kg + kabin 7 kg'],
+            ['Kelas', 'Ekonomi (premium untuk paket VIP)'],
+            ['Konfirmasi', 'Jadwal final diinformasikan H-14'],
+        ],
+    ],
+    'itinerary' => [
+        'title' => 'Itinerary Perjalanan',
+        'text' => 'Rangkaian perjalanan yang terstruktur dan nyaman dari keberangkatan hingga kembali.',
+        'button' => 'Lihat Detail Itinerary',
+        'image' => 'itinerary.jpg',
+        'steps' => [
+            [
+                'day' => 'Hari 1',
+                'label' => 'Keberangkatan',
+                'icon' => 'plane',
+            ],
+            [
+                'day' => 'Hari 2-3',
+                'label' => 'Madinah',
+                'icon' => 'mosque',
+            ],
+            [
+                'day' => 'Hari 4-10',
+                'label' => 'Mekkah',
+                'icon' => 'kaaba',
+            ],
+            [
+                'day' => 'Hari 11',
+                'label' => 'Ziarah',
+                'icon' => 'mosque',
+            ],
+            [
+                'day' => 'Hari 12',
+                'label' => 'Kembali',
+                'icon' => 'home',
+            ],
+        ],
+        'tabs' => [
+            [
+                'key' => 'reguler',
+                'label' => 'Umrah Reguler (9 Hari)',
+                'days' => [
+                    [
+                        'day' => 'Hari 1',
+                        'title' => 'Keberangkatan dari Jakarta',
+                        'text' => 'Berkumpul di bandara, check-in rombongan, dan terbang menuju Madinah bersama muthawwif.',
+                    ],
+                    [
+                        'day' => 'Hari 2-3',
+                        'title' => 'Madinah Al-Munawwarah',
+                        'text' => 'Check-in hotel, ibadah di Masjid Nabawi, ziarah Raudhah dan sekitarnya.',
+                    ],
+                    [
+                        'day' => 'Hari 4',
+                        'title' => 'Perjalanan ke Mekkah',
+                        'text' => 'Bersiap ihram dari miqat, perjalanan dengan bus menuju Mekkah, dan check-in hotel.',
+                    ],
+                    [
+                        'day' => 'Hari 5-7',
+                        'title' => 'Ibadah Umrah di Mekkah',
+                        'text' => 'Tawaf, sa\'i, tahalul, dan ibadah sunnah di Masjidil Haram dengan bimbingan muthawwif.',
+                    ],
+                    [
+                        'day' => 'Hari 8',
+                        'title' => 'Ziarah Kota Mekkah',
+                        'text' => 'Ziarah Jabal Tsur, Arafah, Muzdalifah, Mina, dan Jabal Rahmah.',
+                    ],
+                    [
+                        'day' => 'Hari 9',
+                        'title' => 'Kembali ke Tanah Air',
+                        'text' => 'Tawaf wada\', menuju bandara Jeddah, dan terbang pulang ke Jakarta.',
+                    ],
+                ],
+            ],
+            [
+                'key' => 'turki',
+                'label' => 'Umrah Plus Turki (12 Hari)',
+                'days' => [
+                    [
+                        'day' => 'Hari 1',
+                        'title' => 'Keberangkatan menuju Istanbul',
+                        'text' => 'Berkumpul di bandara dan terbang menuju Istanbul bersama tour leader.',
+                    ],
+                    [
+                        'day' => 'Hari 2-3',
+                        'title' => 'City Tour Istanbul',
+                        'text' => 'Kunjungi Masjid Biru, Hagia Sophia, dan Selat Bosphorus.',
+                    ],
+                    [
+                        'day' => 'Hari 4-5',
+                        'title' => 'Madinah Al-Munawwarah',
+                        'text' => 'Terbang ke Madinah, ibadah di Masjid Nabawi, dan ziarah Raudhah.',
+                    ],
+                    [
+                        'day' => 'Hari 6-10',
+                        'title' => 'Ibadah Umrah di Mekkah',
+                        'text' => 'Perjalanan ke Mekkah, pelaksanaan umrah, dan ibadah sunnah di Masjidil Haram.',
+                    ],
+                    [
+                        'day' => 'Hari 11',
+                        'title' => 'Ziarah Kota Mekkah',
+                        'text' => 'Ziarah tempat-tempat bersejarah di Mekkah dan tawaf wada\'.',
+                    ],
+                    [
+                        'day' => 'Hari 12',
+                        'title' => 'Kembali ke Tanah Air',
+                        'text' => 'Menuju bandara dan terbang kembali ke Jakarta.',
+                    ],
+                ],
+            ],
+            [
+                'key' => 'vip',
+                'label' => 'Umrah VIP (12 Hari)',
+                'days' => [
+                    [
+                        'day' => 'Hari 1',
+                        'title' => 'Keberangkatan dengan handling VIP',
+                        'text' => 'Pendampingan khusus di bandara dan penerbangan menuju Madinah.',
+                    ],
+                    [
+                        'day' => 'Hari 2-5',
+                        'title' => 'Madinah Al-Munawwarah',
+                        'text' => 'Ibadah di Masjid Nabawi, ziarah Raudhah, dan kunjungan situs bersejarah Madinah.',
+                    ],
+                    [
+                        'day' => 'Hari 6-10',
+                        'title' => 'Ibadah Umrah di Mekkah',
+                        'text' => 'Pelaksanaan umrah dengan hotel pelataran Masjidil Haram dan muthawwif pribadi.',
+                    ],
+                    [
+                        'day' => 'Hari 11',
+                        'title' => 'Ziarah & Belanja',
+                        'text' => 'Ziarah Mekkah dan waktu luang untuk membeli oleh-oleh.',
+                    ],
+                    [
+                        'day' => 'Hari 12',
+                        'title' => 'Kembali ke Tanah Air',
+                        'text' => 'Tawaf wada\' dan penerbangan kembali ke Jakarta.',
+                    ],
+                ],
+            ],
+            [
+                'key' => 'haji',
+                'label' => 'Haji Khusus (30 Hari)',
+                'days' => [
+                    [
+                        'day' => 'Hari 1',
+                        'title' => 'Keberangkatan',
+                        'text' => 'Penerbangan langsung menuju Madinah atau Jeddah bersama pembimbing ibadah.',
+                    ],
+                    [
+                        'day' => 'Hari 2-9',
+                        'title' => 'Madinah Al-Munawwarah',
+                        'text' => 'Ibadah di Masjid Nabawi, ziarah Raudhah, dan manasik lanjutan.',
+                    ],
+                    [
+                        'day' => 'Hari 10-17',
+                        'title' => 'Mekkah sebelum Armuzna',
+                        'text' => 'Persiapan ibadah haji, umrah wajib, dan penyesuaian di Masjidil Haram.',
+                    ],
+                    [
+                        'day' => 'Hari 18-23',
+                        'title' => 'Armuzna',
+                        'text' => 'Wukuf di Arafah, mabit di Muzdalifah, dan Mina bersama bimbingan penuh.',
+                    ],
+                    [
+                        'day' => 'Hari 24-29',
+                        'title' => 'Mekkah setelah Haji',
+                        'text' => 'Tawaf ifadah, sa\'i, dan ibadah sunnah hingga persiapan kepulangan.',
+                    ],
+                    [
+                        'day' => 'Hari 30',
+                        'title' => 'Kembali ke Tanah Air',
+                        'text' => 'Tawaf wada\' dan penerbangan kembali ke Jakarta.',
+                    ],
+                ],
+            ],
+        ],
+    ],
+    'guides' => [
+        'title' => 'Tim Pembimbing',
+        'text' => 'Dibimbing oleh pembimbing berpengalaman dan tersertifikasi.',
+        'items' => [
+            [
+                'name' => 'Ust. Ahmad Fauzi',
+                'role' => 'Muthawwif',
+                'image' => 'tim-ahmad-fauzi.jpg',
+                'exp' => '12 tahun mendampingi jemaah',
+                'bio' => 'Lulusan Timur Tengah yang berpengalaman membimbing jemaah umrah reguler dan umrah plus. Dikenal sabar dan komunikatif.',
+                'langs' => 'Indonesia, Arab',
+            ],
+            [
+                'name' => 'Ust. H. Nurul Huda',
+                'role' => 'Muthawwif',
+                'image' => 'tim-nurul-huda.jpg',
+                'exp' => '15 tahun mendampingi jemaah',
+                'bio' => 'Pembimbing senior yang kerap memimpin rombongan umrah VIP dan haji khusus, fokus pada ketenangan dan kekhusyukan ibadah.',
+                'langs' => 'Indonesia, Arab, Inggris',
+            ],
+            [
+                'name' => 'Ust. Rudi Santoso',
+                'role' => 'Muthawwif',
+                'image' => 'tim-rudi-santoso.jpg',
+                'exp' => '9 tahun mendampingi jemaah',
+                'bio' => 'Muthawwif muda yang dekat dengan jemaah lansia dan keluarga, aktif memberi manasik sebelum keberangkatan.',
+                'langs' => 'Indonesia, Arab',
+            ],
+        ],
+    ],
+    'requirements' => [
+        'title' => 'Persyaratan Pendaftaran',
+        'text' => 'Siapkan dokumen yang dibutuhkan untuk kelancaran proses pendaftaran.',
+        'items' => [
+            [
+                'label' => 'Paspor (min. 6 bulan)',
+                'note' => 'Masa berlaku paspor minimal 6 bulan dari tanggal keberangkatan, dengan nama sesuai KTP.',
+            ],
+            [
+                'label' => 'Foto 4x6 (background putih)',
+                'note' => 'Foto berwarna terbaru, wajah terlihat jelas, tanpa kacamata, latar belakang putih.',
+            ],
+            [
+                'label' => 'KTP & KK',
+                'note' => 'Fotokopi KTP dan Kartu Keluarga yang masih berlaku.',
+            ],
+            [
+                'label' => 'Buku nikah (jika sudah menikah)',
+                'note' => 'Fotokopi buku nikah, diperlukan bagi jemaah yang berangkat bersama pasangan.',
+            ],
+            [
+                'label' => 'Vaksin meningitis',
+                'note' => 'Bukti vaksin meningitis dan vaksin lain sesuai ketentuan kesehatan terbaru.',
+            ],
+        ],
+        'steps' => [
+            [
+                'title' => 'Konsultasi paket',
+                'text' => 'Pilih paket dan jadwal bersama tim kami melalui WhatsApp atau AI Assistant.',
+            ],
+            [
+                'title' => 'Kumpulkan dokumen',
+                'text' => 'Siapkan seluruh dokumen persyaratan dalam bentuk fotokopi dan softcopy.',
+            ],
+            [
+                'title' => 'Bayar DP',
+                'text' => 'Lakukan pembayaran uang muka untuk mengamankan kursi keberangkatan.',
+            ],
+            [
+                'title' => 'Manasik & berangkat',
+                'text' => 'Ikuti manasik dan briefing, lalu berangkat bersama rombongan.',
+            ],
+        ],
+        'wa_register' => 'Assalamu\'alaikum Nur Rahmat Travel, saya ingin mendaftar paket umrah/haji. Mohon informasi langkah selanjutnya.',
+    ],
+    'testimonials' => [
+        'title' => 'Testimoni Jemaah',
+        'text' => 'Kisah nyata dari jamaah yang telah merasakan layanan terbaik kami.',
+        'items' => [
+            [
+                'name' => 'Siti Aisyah',
+                'role' => 'Jemaah Umrah Reguler',
+                'image' => 'testimoni-siti-aisyah.jpg',
+                'initials' => 'SA',
+                'text' => 'Pelayanan sangat memuaskan, pembimbingnya ramah dan profesional. InsyaAllah akan kembali lagi bersama Nur Rahmat.',
+            ],
+            [
+                'name' => 'Bapak Hasan Basri',
+                'role' => 'Jemaah Umrah Plus Turki',
+                'image' => '',
+                'initials' => 'HB',
+                'text' => 'Perjalanan terasa tenang dan terjadwal rapi. Wisata di Istanbul menambah wawasan keluarga kami.',
+            ],
+            [
+                'name' => 'Ibu Lilis Suryani',
+                'role' => 'Jemaah Umrah VIP',
+                'image' => '',
+                'initials' => 'LS',
+                'text' => 'Hotelnya dekat sekali dengan masjid, sangat membantu untuk orang tua kami. Terima kasih atas pendampingannya.',
+            ],
+            [
+                'name' => 'Bapak Dedi Kurniawan',
+                'role' => 'Jemaah Umrah Reguler',
+                'image' => '',
+                'initials' => 'DK',
+                'text' => 'Informasi pendaftaran jelas dan tim responsif. Manasik sebelum berangkat benar-benar membantu.',
+            ],
+        ],
+    ],
+    'faq' => [
+        [
+            'keys' => ['paket', 'umrah', 'haji', 'jenis', 'tersedia'],
+            'a' => 'Kami menyediakan 4 paket: Umrah Reguler (9 hari, mulai Rp 29.900.000), Umrah Plus Turki (12 hari, mulai Rp 36.500.000), Umrah VIP (12 hari, mulai Rp 49.900.000), dan Haji Khusus Furoda (mulai Rp 198.000.000). Detail lengkap ada di halaman Paket Umrah & Haji.',
+            'link' => 'packages',
+            'link_label' => 'Lihat halaman paket',
+        ],
+        [
+            'keys' => ['jadwal', 'berangkat', 'keberangkatan', 'tanggal', 'kapan'],
+            'a' => 'Jadwal keberangkatan tersedia hampir setiap bulan, dengan status Tersedia, Terbatas, atau Penuh. Silakan cek halaman Jadwal Keberangkatan dan konfirmasi sisa kursi melalui WhatsApp.',
+            'link' => 'schedules',
+            'link_label' => 'Lihat jadwal',
+        ],
+        [
+            'keys' => ['harga', 'biaya', 'promo', 'diskon', 'berapa'],
+            'a' => 'Harga paket umrah mulai Rp 29.900.000 dan bergantung pada tipe kamar (quad, triple, double). Harga dapat berubah mengikuti kurs dan kebijakan maskapai. Ada promo berkala, tanyakan tim kami untuk penawaran terbaru.',
+            'link' => 'prices',
+            'link_label' => 'Lihat harga paket',
+        ],
+        [
+            'keys' => ['dp', 'cicil', 'cicilan', 'bayar', 'pembayaran', 'uang muka'],
+            'a' => 'Pendaftaran dilakukan dengan membayar uang muka (DP) mulai Rp 5.000.000 untuk Umrah Reguler. Pelunasan dilakukan sesuai jadwal yang disepakati sebelum keberangkatan. Detail skema pembayaran dikonfirmasi oleh tim kami.',
+            'link' => 'prices',
+            'link_label' => 'Lihat rincian harga',
+        ],
+        [
+            'keys' => ['hotel', 'penginapan', 'kamar', 'menginap'],
+            'a' => 'Hotel yang digunakan berkisar bintang 3 hingga 5 dengan jarak dekat dari Masjid Nabawi dan Masjidil Haram, tergantung paket. Paket VIP menggunakan hotel bintang 5 terdekat.',
+            'link' => 'hotel-flight',
+            'link_label' => 'Lihat hotel & pesawat',
+        ],
+        [
+            'keys' => ['pesawat', 'maskapai', 'penerbangan', 'tiket', 'bagasi'],
+            'a' => 'Penerbangan menggunakan maskapai internasional penuh layanan dengan bagasi hingga 30 kg. Jadwal final penerbangan diinformasikan paling lambat H-14 keberangkatan.',
+            'link' => 'hotel-flight',
+            'link_label' => 'Lihat info penerbangan',
+        ],
+        [
+            'keys' => ['itinerary', 'rute', 'agenda', 'hari', 'perjalanan'],
+            'a' => 'Itinerary Umrah Reguler 9 hari: Jakarta – Madinah (ibadah di Masjid Nabawi) – Mekkah (umrah dan ziarah) – kembali ke Jakarta. Itinerary tiap paket tersedia lengkap di halaman Itinerary.',
+            'link' => 'itinerary',
+            'link_label' => 'Lihat itinerary',
+        ],
+        [
+            'keys' => ['syarat', 'persyaratan', 'dokumen', 'paspor', 'ktp', 'foto', 'vaksin', 'meningitis', 'nikah'],
+            'a' => 'Dokumen yang perlu disiapkan: paspor (berlaku minimal 6 bulan), foto 4x6 background putih, KTP & KK, buku nikah (jika sudah menikah), dan vaksin meningitis.',
+            'link' => 'requirements',
+            'link_label' => 'Lihat persyaratan',
+        ],
+        [
+            'keys' => ['daftar', 'pendaftaran', 'registrasi', 'cara', 'langkah'],
+            'a' => 'Cara mendaftar: 1) konsultasi paket, 2) kumpulkan dokumen, 3) bayar DP, 4) ikuti manasik lalu berangkat. Untuk memulai, hubungi tim kami melalui WhatsApp.',
+            'link' => 'requirements',
+            'link_label' => 'Lihat langkah pendaftaran',
+        ],
+        [
+            'keys' => ['pembimbing', 'muthawwif', 'tim', 'guide', 'ustadz', 'ustaz'],
+            'a' => 'Setiap rombongan didampingi muthawwif berpengalaman dan tersertifikasi, mulai dari keberangkatan, manasik, hingga kembali ke tanah air.',
+            'link' => 'team',
+            'link_label' => 'Kenali tim kami',
+        ],
+        [
+            'keys' => ['lansia', 'orang tua', 'mahram', 'wanita', 'sendiri', 'anak'],
+            'a' => 'Kami melayani jemaah lansia dan keluarga dengan pendampingan khusus. Untuk jemaah wanita, ketentuan mahram mengikuti aturan yang berlaku; tim kami akan membantu memastikan syarat terpenuhi.',
+            'link' => 'requirements',
+            'link_label' => 'Lihat persyaratan',
+        ],
+    ],
+    'pages' => [
+        'packages' => [
+            'title' => 'Paket Umrah & Haji',
+            'text' => 'Pilih paket terbaik sesuai kebutuhan dan impian Anda.',
+        ],
+        'schedules' => [
+            'title' => 'Jadwal Keberangkatan',
+            'text' => 'Pilih tanggal keberangkatan yang sesuai dengan rencana Anda.',
+        ],
+        'prices' => [
+            'title' => 'Harga Paket',
+            'text' => 'Nikmati harga terbaik dengan fasilitas premium dan pelayanan profesional.',
+        ],
+        'hotel-flight' => [
+            'title' => 'Hotel & Pesawat',
+            'text' => 'Hotel bintang 3-5 dan maskapai pilihan untuk kenyamanan perjalanan Anda.',
+        ],
+        'itinerary' => [
+            'title' => 'Itinerary Perjalanan',
+            'text' => 'Rangkaian perjalanan yang terstruktur dan nyaman dari keberangkatan hingga kembali.',
+        ],
+        'team' => [
+            'title' => 'Tim Pembimbing',
+            'text' => 'Dibimbing oleh pembimbing berpengalaman dan tersertifikasi.',
+        ],
+        'requirements' => [
+            'title' => 'Persyaratan Pendaftaran',
+            'text' => 'Siapkan dokumen yang dibutuhkan untuk kelancaran proses pendaftaran.',
+        ],
+        'testimonials' => [
+            'title' => 'Testimoni Jemaah',
+            'text' => 'Kisah nyata dari jamaah yang telah merasakan layanan terbaik kami.',
+        ],
+        'chatbot' => [
+            'title' => 'AI Assistant',
+            'text' => 'Tanya apa saja tentang paket umrah, haji, jadwal, harga, dan persyaratan pendaftaran.',
+        ],
+    ],
+    'footer' => [
+        'nav_a' => [
+            ['home', 'Beranda'],
+            ['packages', 'Paket Umrah & Haji'],
+            ['schedules', 'Jadwal Keberangkatan'],
+            ['prices', 'Harga Paket'],
+        ],
+        'nav_b' => [
+            ['hotel-flight', 'Hotel & Pesawat'],
+            ['itinerary', 'Itinerary'],
+            ['team', 'Tim Kami'],
+            ['requirements', 'Persyaratan'],
+        ],
+        'info' => [
+            ['testimonials', 'Testimoni'],
+            ['requirements', 'Pendaftaran'],
+            ['chatbot', 'FAQ'],
+        ],
+        'calligraphy' => 'Melangkah Bersama Menuju Baitullah',
+    ],
+];

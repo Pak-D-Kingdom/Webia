@@ -188,6 +188,15 @@
             entries.forEach(function (entry) {
                 if (!entry.isIntersecting) { return; }
                 entry.target.classList.add('is-in');
+                (function (node) {
+                    var done = function (ev) {
+                        if (ev.propertyName === 'opacity') {
+                            node.style.setProperty('--d', '0ms');
+                            node.removeEventListener('transitionend', done);
+                        }
+                    };
+                    node.addEventListener('transitionend', done);
+                })(entry.target);
                 io.unobserve(entry.target);
             });
         }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
@@ -515,6 +524,16 @@
                 ask: function (q) { open(); window.setTimeout(function () { if (chat) { chat.ask(q); } }, reduceMotion ? 0 : 300); }
             };
 
+            // Label tombol mengecil otomatis agar tidak menutup konten
+            window.setTimeout(function () { btn.classList.add('is-compact'); }, 12000);
+            var compactOnScroll = function () {
+                if (window.scrollY > 480) {
+                    btn.classList.add('is-compact');
+                    window.removeEventListener('scroll', compactOnScroll);
+                }
+            };
+            window.addEventListener('scroll', compactOnScroll, { passive: true });
+
             // Gelembung sapaan muncul sekali per sesi
             try {
                 if (!window.sessionStorage.getItem('fhBotTip')) {
@@ -715,6 +734,30 @@
         });
     }
 
+    /* ---- Efek scroll: progres halaman + parallax foto hero --------------- */
+    function initScrollFx() {
+        var bar = qs('[data-fh-progress]');
+        var photo = qs('.fh-hero__photo');
+        if (!bar && !photo) { return; }
+        var ticking = false;
+        function update() {
+            ticking = false;
+            var y = window.pageYOffset || doc.documentElement.scrollTop || 0;
+            if (bar) {
+                var max = doc.documentElement.scrollHeight - window.innerHeight;
+                bar.style.setProperty('--p', max > 0 ? Math.min(1, y / max).toFixed(4) : '0');
+            }
+            if (photo && !reduceMotion) {
+                photo.style.setProperty('--py', Math.min(16, Math.max(0, y * 0.1)).toFixed(1) + 'px');
+            }
+        }
+        window.addEventListener('scroll', function () {
+            if (!ticking) { ticking = true; window.requestAnimationFrame(update); }
+        }, { passive: true });
+        window.addEventListener('resize', update);
+        update();
+    }
+
     /* ---- Init ----------------------------------------------------------- */
     function init() {
         initHeader();
@@ -725,6 +768,7 @@
         initSelects();
         initWaForms();
         initSpy();
+        initScrollFx();
         initBot();
     }
     if (doc.readyState === 'loading') { doc.addEventListener('DOMContentLoaded', init); } else { init(); }

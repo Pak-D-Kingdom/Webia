@@ -7,8 +7,12 @@
             <div class="fh-tabs__list" role="tablist" aria-label="Pilih cara berdonasi">
                 @foreach ($cfg['donation']['options'] as $o)
                     <button type="button" role="tab" class="fh-tab" id="tab-{{ $o['key'] }}" data-fh-tab="{{ $o['key'] }}" aria-controls="{{ $o['key'] }}" aria-selected="{{ $loop->first ? 'true' : 'false' }}" tabindex="{{ $loop->first ? '0' : '-1' }}">
-                        <img src="{{ $img($o['icon']) }}" alt="" width="34" height="34">
-                        <span><strong>{{ $o['label'] }}</strong><small>{{ $o['note'] ?: $o['text'] }}</small></span>
+                        <span class="fh-tab__ic"><img src="{{ $img($o['icon']) }}" alt="" width="34" height="34"></span>
+                        <span class="fh-tab__txt">
+                            <strong>{{ $o['label'] }}@if ($o['note']) <i class="fh-tab__tag">Online</i>@endif</strong>
+                            <small>{{ $o['text'] }}</small>
+                        </span>
+                        <span class="fh-tab__check" aria-hidden="true">{{ $icon('check') }}</span>
                     </button>
                 @endforeach
             </div>
@@ -18,15 +22,20 @@
                 <div class="fh-tabpanel" role="tabpanel" id="online" aria-labelledby="tab-online">
                     <div class="fh-donate">
                         <div class="fh-donate__info">
-                            <h2>Donasi Sekarang (Online)</h2>
-                            <p>Pilih nominal, isi data singkat, lalu lanjutkan ke WhatsApp. Tim kami akan mengirim petunjuk pembayaran dan bukti donasi.</p>
-                            <ul class="fh-checks">
-                                <li>{{ $icon('check') }}<span>Tidak ada batas minimal donasi</span></li>
-                                <li>{{ $icon('check') }}<span>Bisa diarahkan ke program tertentu</span></li>
-                                <li>{{ $icon('check') }}<span>Bukti donasi dikirim lewat WhatsApp</span></li>
-                            </ul>
+                            <aside class="fh-infocard">
+                                <img class="fh-infocard__art" src="{{ $img('quote-globe.png') }}" alt="" aria-hidden="true" width="340" height="290" loading="lazy">
+                                <span class="fh-infocard__badge">{{ $icon('heart') }}Online</span>
+                                <h2>Donasi Sekarang</h2>
+                                <p>Pilih nominal, isi data singkat, lalu lanjutkan ke WhatsApp. Tim kami akan mengirim petunjuk pembayaran dan bukti donasi.</p>
+                                <ul class="fh-benefits">
+                                    <li><span class="fh-benefits__ic">{{ $icon('heart') }}</span><div><strong>Tanpa batas minimal</strong><small>Mulai dari berapa pun yang Anda mampu.</small></div></li>
+                                    <li><span class="fh-benefits__ic">{{ $icon('leaf') }}</span><div><strong>Pilih program tujuan</strong><small>Arahkan donasi ke bidang yang Anda pedulikan.</small></div></li>
+                                    <li><span class="fh-benefits__ic">{{ $icon('file') }}</span><div><strong>Bukti lewat WhatsApp</strong><small>Konfirmasi dan kabar penyaluran dikirim langsung.</small></div></li>
+                                </ul>
+                            </aside>
                         </div>
                         <form class="fh-form fh-panel" data-fh-wa-form data-wa-title="Halo GreenHope, saya ingin berdonasi:">
+                            <h3 class="fh-form__title"><span>{{ $icon('heart') }}</span>Detail donasi</h3>
                             <fieldset class="fh-amounts">
                                 <legend>Pilih nominal</legend>
                                 @foreach ($cfg['donation']['amounts'] as $a)
@@ -67,8 +76,12 @@
                 <div class="fh-tabpanel" role="tabpanel" id="bank" aria-labelledby="tab-bank" hidden>
                     <div class="fh-donate">
                         <div class="fh-donate__info">
-                            <h2>Transfer Bank</h2>
-                            <p>Transfer ke salah satu rekening resmi atas nama <strong>{{ $cfg['donation']['account_name'] }}</strong>, lalu konfirmasi lewat WhatsApp.</p>
+                            <aside class="fh-infocard">
+                                <img class="fh-infocard__art" src="{{ $img('quote-globe.png') }}" alt="" aria-hidden="true" width="340" height="290" loading="lazy">
+                                <span class="fh-infocard__badge">{{ $icon('shield') }}Rekening resmi</span>
+                                <h2>Transfer Bank</h2>
+                                <p>Transfer ke salah satu rekening resmi atas nama <strong>{{ $cfg['donation']['account_name'] }}</strong>, lalu konfirmasi lewat WhatsApp.</p>
+                            </aside>
                             <ul class="fh-banks">
                                 @foreach ($cfg['donation']['banks'] as $b)
                                     <li class="fh-panel">
@@ -80,7 +93,7 @@
                             </ul>
                         </div>
                         <form class="fh-form fh-panel" data-fh-wa-form data-wa-title="Halo GreenHope, saya sudah melakukan transfer donasi:">
-                            <h3>Konfirmasi transfer</h3>
+                            <h3 class="fh-form__title"><span>{{ $icon('check') }}</span>Konfirmasi transfer</h3>
                             <div class="fh-field">
                                 <label for="bank-nama">Nama pengirim</label>
                                 <input id="bank-nama" name="nama" type="text" required maxlength="80" autocomplete="name" data-label="Nama pengirim">
@@ -106,15 +119,20 @@
                 <div class="fh-tabpanel" role="tabpanel" id="barang" aria-labelledby="tab-barang" hidden>
                     <div class="fh-donate">
                         <div class="fh-donate__info">
-                            <h2>Donasi Barang</h2>
-                            <p>Barang yang Anda sumbangkan akan kami salurkan ke rumah belajar, sekolah, dan desa binaan. Barang yang kami terima:</p>
-                            <ul class="fh-checks">
-                                @foreach ($cfg['donation']['goods'] as $g)
-                                    <li>{{ $icon('check') }}<span>{{ $g }}</span></li>
-                                @endforeach
-                            </ul>
+                            <aside class="fh-infocard">
+                                <img class="fh-infocard__art" src="{{ $img('quote-globe.png') }}" alt="" aria-hidden="true" width="340" height="290" loading="lazy">
+                                <span class="fh-infocard__badge">{{ $icon('gift') }}Barang layak pakai</span>
+                                <h2>Donasi Barang</h2>
+                                <p>Barang yang Anda sumbangkan kami salurkan ke rumah belajar, sekolah, dan desa binaan. Barang yang kami terima:</p>
+                                <ul class="fh-benefits">
+                                    @foreach ($cfg['donation']['goods'] as $g)
+                                        <li><span class="fh-benefits__ic">{{ $icon(['file', 'gift', 'leaf', 'shield'][$loop->index] ?? 'gift') }}</span><div><strong>{{ $g }}</strong></div></li>
+                                    @endforeach
+                                </ul>
+                            </aside>
                         </div>
                         <form class="fh-form fh-panel" data-fh-wa-form data-wa-title="Halo GreenHope, saya ingin donasi barang:">
+                            <h3 class="fh-form__title"><span>{{ $icon('gift') }}</span>Detail donasi barang</h3>
                             <div class="fh-field">
                                 <label for="brg-nama">Nama Anda</label>
                                 <input id="brg-nama" name="nama" type="text" required maxlength="80" autocomplete="name" data-label="Nama">
@@ -143,13 +161,17 @@
                 <div class="fh-tabpanel" role="tabpanel" id="rutin" aria-labelledby="tab-rutin" hidden>
                     <div class="fh-donate">
                         <div class="fh-donate__info">
-                            <h2>Donasi Rutin</h2>
-                            <p>Berbagi setiap bulan membuat program kami bisa direncanakan lebih panjang. Pilih paket yang paling nyaman untuk Anda.</p>
-                            <ul class="fh-checks">
-                                <li>{{ $icon('check') }}<span>Pengingat bulanan lewat WhatsApp</span></li>
-                                <li>{{ $icon('check') }}<span>Dapat dihentikan atau diubah kapan saja</span></li>
-                                <li>{{ $icon('check') }}<span>Laporan dampak berkala untuk donatur rutin</span></li>
-                            </ul>
+                            <aside class="fh-infocard">
+                                <img class="fh-infocard__art" src="{{ $img('quote-globe.png') }}" alt="" aria-hidden="true" width="340" height="290" loading="lazy">
+                                <span class="fh-infocard__badge">{{ $icon('calendar') }}Setiap bulan</span>
+                                <h2>Donasi Rutin</h2>
+                                <p>Berbagi setiap bulan membuat program kami bisa direncanakan lebih panjang. Pilih paket yang paling nyaman untuk Anda.</p>
+                                <ul class="fh-benefits">
+                                    <li><span class="fh-benefits__ic">{{ $icon('calendar') }}</span><div><strong>Pengingat bulanan</strong><small>Dikirim lewat WhatsApp, tanpa repot.</small></div></li>
+                                    <li><span class="fh-benefits__ic">{{ $icon('check') }}</span><div><strong>Fleksibel</strong><small>Dapat dihentikan atau diubah kapan saja.</small></div></li>
+                                    <li><span class="fh-benefits__ic">{{ $icon('file') }}</span><div><strong>Laporan berkala</strong><small>Laporan dampak khusus untuk donatur rutin.</small></div></li>
+                                </ul>
+                            </aside>
                         </div>
                         <form class="fh-form fh-panel" data-fh-wa-form data-wa-title="Halo GreenHope, saya ingin berdonasi rutin bulanan:">
                             <fieldset class="fh-plans">
@@ -157,7 +179,13 @@
                                 @foreach ($cfg['donation']['recurring'] as $r)
                                     <label class="fh-plan">
                                         <input type="radio" name="paket" value="{{ $r['label'] }} ({{ $money($r['amount']) }}/bulan)" data-label="Paket" {{ $loop->index === 1 ? 'checked' : '' }}>
-                                        <span><strong>{{ $r['label'] }}</strong><em>{{ $money($r['amount']) }}/bulan</em><small>{{ $r['text'] }}</small></span>
+                                        <span class="fh-plan__card">
+                                            @if ($loop->index === 1)<i class="fh-plan__tag">Paling populer</i>@endif
+                                            <b class="fh-plan__name">{{ $r['label'] }}</b>
+                                            <em class="fh-plan__price">{{ $money($r['amount']) }}<small>/bulan</small></em>
+                                            <span class="fh-plan__desc">{{ $r['text'] }}</span>
+                                            <i class="fh-plan__check" aria-hidden="true">{{ $icon('check') }}</i>
+                                        </span>
                                     </label>
                                 @endforeach
                             </fieldset>

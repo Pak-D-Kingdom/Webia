@@ -47,9 +47,9 @@
                 <h2>Cara Bermitra</h2>
                 <p>Tiga langkah untuk memulai kerja sama.</p>
             </div>
-            <ol class="fh-steps fh-steps--col">
+            <ol class="fh-steps fh-steps--col fh-stepper">
                 @foreach ($cfg['partners']['steps'] as $s)
-                    <li><span class="fh-steps__n">{{ $loop->iteration }}</span><div><h3>{{ $s['title'] }}</h3><p>{{ $s['text'] }}</p></div></li>
+                    <li class="fh-reveal"><span class="fh-steps__n">{{ $loop->iteration }}</span><div><h3>{{ $s['title'] }}</h3><p>{{ $s['text'] }}</p></div></li>
                 @endforeach
             </ol>
         </div>

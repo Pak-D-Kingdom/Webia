@@ -8,12 +8,15 @@
         <a class="fh-more" href="{{ $url('program') }}">Lihat Semua {{ $icon('arrow') }}</a>
     </header>
     <p class="fh-card__sub">Berbagai program untuk mewujudkan perubahan.</p>
-    <ul class="fh-tiles fh-tiles--4">
+    <ul class="fh-pgrid">
         @foreach ($cfg['programs'] as $p)
             <li>
-                <a class="fh-tile" href="{{ $url('program') }}#{{ $p['key'] }}">
-                    <img src="{{ $img($p['icon']) }}" alt="" width="48" height="48" loading="lazy">
-                    <span>{{ $p['short'][0] }}<br>{{ $p['short'][1] }}</span>
+                <a class="fh-ptile" href="{{ $url('program') }}#{{ $p['key'] }}">
+                    <img src="{{ $img($p['icon']) }}" alt="" width="44" height="44" loading="lazy">
+                    <span class="fh-ptile__txt">
+                        <strong>{{ $p['title'] }}</strong>
+                        <small>{{ $p['stat'] }} {{ $p['stat_label'] }}</small>
+                    </span>
                 </a>
             </li>
         @endforeach
