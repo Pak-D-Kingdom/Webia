@@ -6,6 +6,7 @@ use Database\Seeders\DatabaseSeeder;
 use Database\Seeders\WebiaTemplatePreviewSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class DatabaseSeederTest extends TestCase
@@ -71,5 +72,53 @@ class DatabaseSeederTest extends TestCase
             ->assertSee('Apakah tersedia layanan pengiriman?')
             ->assertSee('wa.me/6281234567890')
             ->assertSee('webia-ai-launcher');
+    }
+
+    #[DataProvider('salonTemplates')]
+    public function test_salon_templates_are_seeded_renderable_and_listed(
+        string $slug,
+        string $templateUrl,
+        string $previewView,
+        string $name,
+    ): void {
+        $this->assertDatabaseHas('webia_templates', [
+            'slug' => $slug,
+            'template_url' => $templateUrl,
+            'preview_view' => $previewView,
+            'category_slug' => 'beauty',
+        ]);
+
+        $this->get($templateUrl)
+            ->assertOk()
+            ->assertViewIs($previewView);
+
+        $this->get(route('collections'))
+            ->assertOk()
+            ->assertSee($name)
+            ->assertSee($templateUrl, false);
+    }
+
+    public static function salonTemplates(): array
+    {
+        return [
+            'modern sage' => [
+                'salon-modern-sage',
+                '/webia/template/salon-modern-sage',
+                'website-bisnis.templates.salon-modern-sage',
+                'Sage Bloom Salon',
+            ],
+            'classic warm neutral' => [
+                'salon-classic-warm-neutral',
+                '/webia/template/salon-classic-warm-neutral',
+                'website-bisnis.templates.salon-classic-warm-neutral',
+                'Maison Élise Salon',
+            ],
+            'elegant soft pink' => [
+                'salon-elegant-soft-pink',
+                '/webia/template/salon-elegant-soft-pink',
+                'website-bisnis.templates.salon-elegant-soft-pink',
+                'Rosé Atelier',
+            ],
+        ];
     }
 }
