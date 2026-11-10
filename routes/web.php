@@ -66,6 +66,10 @@ Route::get('/orders/success', function () {
 Route::middleware('auth')->group(function (): void {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
     Route::get('/ai-assistant', [CustomerAiController::class, 'index'])->name('customer.ai');
+    Route::post('/ai-assistant/faq', [CustomerAiController::class, 'storeFaq'])->name('customer.ai.store-faq');
+    Route::post('/ai-assistant/settings', [CustomerAiController::class, 'updateSettings'])->name('customer.ai.settings');
+    Route::post('/ai-assistant/business-info', [CustomerAiController::class, 'updateBusinessInfo'])->name('customer.ai.business-info');
+    Route::post('/ai-assistant/simulate', [CustomerAiController::class, 'simulateChat'])->name('customer.ai.simulate');
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->middleware('throttle:6,1')->name('profile.update');
@@ -105,6 +109,9 @@ Route::middleware('auth')->group(function (): void {
         Route::get('ai-quotas', [AdminAiQuotaController::class, 'index'])->name('ai.index');
         Route::get('ai-quotas/export', [AdminAiQuotaController::class, 'export'])->name('ai.export');
         Route::post('ai-quotas/{tenant_id}/tier', [AdminAiQuotaController::class, 'updateTier'])->name('ai.update-tier');
+        Route::get('ai-quotas/{tenant_id}/knowledge', [AdminAiQuotaController::class, 'getKnowledge'])->name('ai.knowledge.get');
+        Route::post('ai-quotas/{tenant_id}/knowledge', [AdminAiQuotaController::class, 'saveKnowledge'])->name('ai.knowledge.save');
+        Route::get('ai-quotas/{tenant_id}/unanswered', [AdminAiQuotaController::class, 'getUnanswered'])->name('ai.unanswered');
     });
 });
 

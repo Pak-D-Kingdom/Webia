@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class AdminAiQuotaController extends Controller
@@ -120,6 +121,7 @@ class AdminAiQuotaController extends Controller
         $resetDateFormatted = $endOfMonth->locale('id')->isoFormat('D MMMM Y');
         $daysUntilReset = max(1, (int) Carbon::now()->diffInDays($endOfMonth, false));
         $lastSyncedTime = Carbon::now()->locale('id')->format('H:i:s') . ' WIB';
+        $cacheStats = AiQuotaService::getCacheStats();
 
         return view('admin.ai.index', compact(
             'filteredClients',
@@ -135,7 +137,8 @@ class AdminAiQuotaController extends Controller
             'aiOnline',
             'resetDateFormatted',
             'daysUntilReset',
-            'lastSyncedTime'
+            'lastSyncedTime',
+            'cacheStats'
         ));
     }
 
@@ -230,5 +233,46 @@ class AdminAiQuotaController extends Controller
         };
 
         return response()->stream($callback, 200, $headers);
+    }
+
+    /**
+     * Mengambil seluruh berkas knowledge base dan analitik tenant untuk modal admin.
+     */
+    public function getKnowledge(string $tenantId): JsonResponse
+    {
+        $knowledge = AiQuotaService::getTenantKnowledge($tenantId);
+        $insights = AiQuotaService::getTenantInsights($tenantId);
+
+        return response()->json([
+            'status' => 'success',
+            'tenant_id' => $tenantId,
+            'knowledge' => $knowledge,
+            'insights' => $insights,
+        ]);
+    }
+
+    /**
+     * Menyimpan pembaruan dokumen knowledge base tenant dari Superadmin.
+     */
+    public function saveKnowledge(Request $request, string $tenantId): JsonResponse
+    {
+        $payload = $request->only(['profil', 'layanan', 'kebijakan', 'faq']);
+        $result = AiQuotaService::saveTenantKnowledge($tenantId, $payload);
+
+        return response()->json($result);
+    }
+
+    /**
+     * Mengambil daftar pertanyaan yang belum terjawab / low-confidence untuk tenant tertentu.
+     */
+    public function getUnanswered(string $tenantId): JsonResponse
+    {
+        $unanswered = AiQuotaService::getTenantUnanswered($tenantId);
+
+        return response()->json([
+            'status' => 'success',
+            'tenant_id' => $tenantId,
+            'unanswered_queries' => $unanswered,
+        ]);
     }
 }

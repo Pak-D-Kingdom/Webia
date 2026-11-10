@@ -254,7 +254,7 @@ boarding:['Penitipan','Kamar ber-AC dengan CCTV, laporan foto harian, dan jam be
 jadwal:['Jam buka','Kami buka Senin–Minggu pukul 08.00–20.00. Klik tombol WhatsApp untuk booking jadwal.']};
 var msgs=document.getElementById('msgs');
 function add(t,c){var d=document.createElement('div');d.className='m '+c;d.textContent=t;msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight}
-document.querySelectorAll('.chips button').forEach(function(b){b.onclick=function(){var r=A[b.dataset.q];add(r[0],'me');setTimeout(function(){add(r[1],'bot')},300)}});
+document.querySelectorAll('.chips button').forEach(function(b){b.onclick=async function(){var r=A[b.dataset.q];var q=r[0];var fallback=r[1];add(q,'me');try{var tenantId=window.WEBIA_TENANT_ID||'tenant_pet_01';var res=await fetch('http://localhost:8001/api/v1/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:q,tenant_id:tenantId,layer:'l4',stream:false})});if(res.ok){var data=await res.json();var reply=data.reply||data.response||(data.data&&data.data.reply)||fallback;add(reply,'bot');return;}}catch(e){}setTimeout(function(){add(fallback,'bot')},300)}});
 </script>
 <script src="{{ asset('js/website-bisnis/templates/pet-animal-service/pawtopia-animal-care.js') }}" defer></script>
 </body>
