@@ -40,6 +40,7 @@ class AccountProvisioner
                 'email' => $email,
                 'password' => $plainPassword,
             ]);
+            $user->markEmailAsVerified();
         }
 
         $order->user_id = $user->id;

@@ -39,6 +39,7 @@ class AccountProvisioningTest extends TestCase
         $order->refresh();
         $user = User::where('email', 'zainul@example.com')->firstOrFail();
         $this->assertSame($user->id, $order->user_id);
+        $this->assertTrue($user->hasVerifiedEmail());
         $this->assertSame('paid', $order->status);
         // Queue sync: job langsung dieksekusi, status final dan password plaintext bersih.
         $this->assertSame('sent', $order->credential_status);
