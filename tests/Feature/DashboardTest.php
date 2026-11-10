@@ -70,6 +70,47 @@ class DashboardTest extends TestCase
             ->assertDontSee('Pilih Template</a>', false);
     }
 
+    public function test_customer_dashboard_shows_only_own_outstanding_hosting_invoices(): void
+    {
+        $customer = User::factory()->create();
+        $service = HostingService::factory()->for($customer)->create(['website_name' => 'Toko Ayu']);
+        HostingInvoice::factory()->for($service, 'service')->create([
+            'invoice_number' => 'HST-AYU-001',
+            'amount' => 275000,
+            'status' => 'overdue',
+        ]);
+        HostingInvoice::factory()->for($service, 'service')->create([
+            'invoice_number' => 'HST-PAID-001',
+            'status' => 'paid',
+        ]);
+        $stoppedService = HostingService::factory()->for($customer)->create(['billing_status' => 'stopped']);
+        HostingInvoice::factory()->for($stoppedService, 'service')->create(['invoice_number' => 'HST-STOPPED-001']);
+        HostingInvoice::factory()->create(['invoice_number' => 'HST-OTHER-001']);
+
+        $this->actingAs($customer)
+            ->get(route('dashboard'))
+            ->assertOk()
+            ->assertSee('Tagihan hosting')
+            ->assertSee('HST-AYU-001')
+            ->assertSee('Rp 275.000')
+            ->assertSee(route('hosting-invoices.index'), false)
+            ->assertDontSee('HST-PAID-001')
+            ->assertDontSee('HST-STOPPED-001')
+            ->assertDontSee('HST-OTHER-001');
+    }
+
+    public function test_customer_dashboard_hides_hosting_summary_without_outstanding_invoices(): void
+    {
+        $customer = User::factory()->create();
+        $service = HostingService::factory()->for($customer)->create();
+        HostingInvoice::factory()->for($service, 'service')->create(['status' => 'paid']);
+
+        $this->actingAs($customer)
+            ->get(route('dashboard'))
+            ->assertOk()
+            ->assertDontSee('Tagihan hosting');
+    }
+
     public function test_admin_dashboard_shows_real_operational_counts_and_attention_queue(): void
     {
         $admin = User::factory()->admin()->create();

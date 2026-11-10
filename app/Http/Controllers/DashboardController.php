@@ -26,7 +26,12 @@ class DashboardController extends Controller
             ->with('package')
             ->latest()
             ->first();
+        $hostingServices = $request->user()->hostingServices()
+            ->where('billing_status', '!=', 'stopped')
+            ->whereHas('invoices', fn ($query) => $query->whereIn('status', ['unpaid', 'overdue']))
+            ->with(['invoices' => fn ($query) => $query->whereIn('status', ['unpaid', 'overdue'])->orderBy('due_at')])
+            ->get();
 
-        return view('dashboard', compact('orders', 'activeOrder', 'deliveredSite'));
+        return view('dashboard', compact('orders', 'activeOrder', 'deliveredSite', 'hostingServices'));
     }
 }
