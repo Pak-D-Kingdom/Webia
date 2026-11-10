@@ -3,11 +3,12 @@
 @section('title', 'Harga Paket — Al Hijrah Travel')
 
 @section('content')
-@include($v . '.partials.page-hero', ['eyebrow' => 'HARGA TRANSPARAN', 'title' => 'Harga Paket', 'desc' => 'Harga terbaik dengan fasilitas lengkap untuk kenyamanan ibadah Anda.', 'bg' => 'price-tower.svg'])
+@include($v . '.partials.page-hero', ['eyebrow' => 'HARGA TRANSPARAN', 'title' => 'Harga Paket', 'desc' => 'Harga terbaik dengan fasilitas lengkap untuk kenyamanan ibadah Anda.', 'bg' => 'price-tower.svg', 'chips' => ['Harga transparan', 'DP mulai Rp 5 juta', 'Cicilan fleksibel']])
 
 <section class="uh-section">
     <div class="uh-container">
         <div class="uh-secthead" data-reveal>
+            <small>Harga Per Orang</small>
             <h2>Pilih Paket Sesuai Kebutuhan</h2>
             <p>Harga per orang. Pilih tipe kamar yang paling nyaman untuk Anda.</p>
             <i class="uh-orn"></i>
@@ -47,6 +48,7 @@
         </div>
 
         <div class="uh-secthead" data-reveal>
+            <small>Mudah & Fleksibel</small>
             <h2>Skema Pembayaran</h2>
             <p>Mudah dan fleksibel agar perjalanan ibadah Anda lebih ringan.</p>
             <i class="uh-orn"></i>

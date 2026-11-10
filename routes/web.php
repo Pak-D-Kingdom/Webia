@@ -1603,7 +1603,7 @@ Route::prefix('webia/template/wedding-event/creative/event-organizer-purple-drea
     });
 
 Route::prefix('webia/template/travel-tourism/elegan/umrah-haji-navy-champagne-gold')
-    ->name('umrah-haji-navy.')
+    ->name('umrah-haji.')
     ->group(function () {
         $viewBase   = 'website-bisnis.template.travel&tourism.elegan.umrah-haji-navy-champagne-gold';
         $imgBase    = 'images/website-bisnis/template/travel&tourism/elegan/umrah-haji-navy-champagne-gold/';
@@ -1760,6 +1760,37 @@ Route::prefix('webia/template/travel-tourism/classic/umrah-haji-emerald-green')
         Route::view('/persyaratan', $v . '.requirements')->name('requirements');
         Route::view('/testimoni', $v . '.testimonials')->name('testimonials');
         Route::view('/chatbot', $v . '.chatbot')->name('chatbot');
+    });
+
+Route::prefix('webia/template/professional-service/artistic/branding-creative-agency-terracotta')
+    ->name('bca-terracotta.')
+    ->group(function () {
+        $view = 'website-bisnis.template.professional-service.artistic.branding-creative-agency-terracotta.branding-creative-agency';
+        $conf = 'template.professional-service.artistic.branding-creative-agency-terracotta.branding-creative-agency';
+        $path = 'website-bisnis/template/professional-service/artistic/branding-creative-agency-terracotta';
+
+        $pages = [
+            'home'       => '/',
+            'layanan'    => 'layanan',
+            'keahlian'   => 'keahlian',
+            'harga'      => 'harga-konsultasi',
+            'portofolio' => 'portofolio',
+            'janji'      => 'janji-temu',
+            'brief'      => 'brief-proyek',
+        ];
+
+        foreach ($pages as $name => $uri) {
+            Route::get($uri, function () use ($name, $view, $conf, $path) {
+                return view($view, [
+                    'page' => $name,
+                    'c'    => config($conf),
+                    'r'    => fn (string $n) => route('bca-terracotta.' . $n),
+                    'img'  => fn (string $f) => asset('images/' . $path . '/' . $f),
+                    'css'  => asset('css/' . $path . '/branding-creative-agency.css'),
+                    'js'   => asset('js/' . $path . '/branding-creative-agency.js'),
+                ]);
+            })->name($name);
+        }
     });
 
 

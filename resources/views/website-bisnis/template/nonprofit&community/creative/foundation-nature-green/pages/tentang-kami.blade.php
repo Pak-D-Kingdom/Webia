@@ -4,7 +4,7 @@
 <section class="fh-sec">
     <div class="fh-wrap fh-split">
         <article class="fh-vision fh-reveal">
-            <img class="fh-vision__art" src="{{ $img('mission-globe.png') }}" alt="" aria-hidden="true" width="462" height="384" loading="lazy">
+            <img class="fh-vision__art" src="{{ $img('mission-globe.jpg') }}" alt="" aria-hidden="true" width="462" height="384" loading="lazy">
             <h2>Visi Kami</h2>
             <p class="fh-vision__quote">{{ $cfg['mission']['vision'] }}</p>
             <p class="fh-vision__sub">{{ $cfg['mission']['text'] }}</p>

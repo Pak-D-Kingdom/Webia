@@ -4,7 +4,7 @@
 <section class="fh-sec">
     <div class="fh-wrap fh-split fh-split--chat">
         <aside class="fh-botinfo fh-reveal">
-            <img class="fh-botinfo__mascot" src="{{ $img('mascot.png') }}" alt="Maskot robot {{ $cfg['brand']['bot'] }}" width="288" height="324" loading="lazy">
+            <img class="fh-botinfo__mascot" src="{{ $img('mascot.jpg') }}" alt="Maskot robot {{ $cfg['brand']['bot'] }}" width="288" height="324" loading="lazy">
             <h2>{{ $cfg['chatbot']['greeting'] }}</h2>
             <p>{{ $cfg['chatbot']['intro'] }}</p>
             <ul class="fh-checks">

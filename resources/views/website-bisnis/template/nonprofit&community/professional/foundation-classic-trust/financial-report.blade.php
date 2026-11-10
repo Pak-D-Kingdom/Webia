@@ -15,7 +15,7 @@
             <p style="margin-bottom:18px">Gambaran umum penggunaan dana donasi tahun berjalan.</p>
             <div class="fd-meter">
                 @foreach ($fd['financial']['allocation'] as $a)
-                    <div><header><span style="height:auto;background:none">{{ $a[0] }}</span><b>{{ $a[1] }}%</b></header><span><i data-w="{{ $a[1] }}"></i></span></div>
+                    <div><header><span>{{ $a[0] }}</span><b>{{ $a[1] }}%</b></header><span class="fd-meter__bar"><i data-w="{{ $a[1] }}"></i></span></div>
                 @endforeach
             </div>
         </div>

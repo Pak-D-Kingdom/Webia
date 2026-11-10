@@ -19,8 +19,8 @@ return [
         'city'    => 'Jakarta, Indonesia',
         'hours'   => 'Sen - Min : 08.00 - 21.00',
         'email'   => 'info@alhijrahtravel.co.id',
-        'phone'   => '+62 812 3456 7890',
-        'wa'      => '6281234567890',
+        'phone'   => '+62 895-6303-00345',
+        'wa'      => '62895630300345',
         'address' => 'Jl. Melati No. 25, Jakarta Selatan',
         'wa_text' => "Assalamu'alaikum Al Hijrah Travel, saya ingin bertanya tentang paket Umrah & Haji.",
         'wa_daftar' => "Assalamu'alaikum Al Hijrah Travel, saya ingin mendaftar paket Umrah/Haji.",
@@ -33,7 +33,7 @@ return [
     ],
 
     'social_footer' => [
-        ['key' => 'whatsapp',  'label' => 'WhatsApp',  'url' => 'https://wa.me/6281234567890'],
+        ['key' => 'whatsapp',  'label' => 'WhatsApp',  'url' => 'https://wa.me/62895630300345'],
         ['key' => 'instagram', 'label' => 'Instagram', 'url' => 'https://instagram.com/'],
         ['key' => 'facebook',  'label' => 'Facebook',  'url' => 'https://facebook.com/'],
         ['key' => 'youtube',   'label' => 'YouTube',   'url' => 'https://youtube.com/'],
@@ -53,18 +53,20 @@ return [
         ['testimoni', 'Testimoni'],
     ],
 
-    'search_keywords' => [
-        'home'       => 'beranda utama home al hijrah',
-        'paket'      => 'paket umrah haji reguler plus turki vip khusus furoda',
-        'jadwal'     => 'jadwal keberangkatan tanggal berangkat seat kuota',
-        'harga'      => 'harga biaya tarif dp cicilan promo pembayaran',
-        'hotel'      => 'hotel pesawat maskapai saudia emirates turkish bintang makkah madinah',
-        'itinerary'  => 'itinerary rencana perjalanan hari ziarah manasik',
-        'tim'        => 'tim pembimbing muthawwif ustadz ustadzah',
-        'persyaratan' => 'persyaratan syarat paspor ktp foto vaksin meningitis buku nikah mahram pendaftaran',
-        'testimoni'  => 'testimoni ulasan jamaah review',
-        'chat'       => 'ai chat asisten bantuan faq tanya',
+    // Indeks pencarian halaman — [route, judul, ikon, deskripsi, kata kunci]
+    'search_pages' => [
+        ['home', 'Beranda', 'sparkle', 'Halaman utama Al Hijrah Travel', 'beranda utama home al hijrah'],
+        ['paket', 'Paket Umrah & Haji', 'book', 'Umrah Reguler, Plus Turki, VIP, Haji Khusus, Furoda, Plus', 'paket umrah haji reguler plus turki vip khusus furoda program'],
+        ['jadwal', 'Jadwal Keberangkatan', 'calendar', 'Tanggal berangkat, maskapai, dan sisa seat', 'jadwal keberangkatan tanggal berangkat seat kuota'],
+        ['harga', 'Harga Paket', 'tag', 'Harga per orang, skema DP dan cicilan', 'harga biaya tarif dp cicilan promo pembayaran'],
+        ['hotel', 'Hotel & Pesawat', 'hotel', 'Hotel bintang 3-5 dan maskapai pilihan', 'hotel pesawat maskapai saudia emirates turkish bintang makkah madinah'],
+        ['itinerary', 'Itinerary Perjalanan', 'map', 'Rencana perjalanan hari demi hari', 'itinerary rencana perjalanan hari ziarah manasik'],
+        ['tim', 'Tim Pembimbing', 'users', 'Muthawwif dan tim pendamping jamaah', 'tim pembimbing muthawwif ustadz ustadzah guide'],
+        ['persyaratan', 'Persyaratan & Pendaftaran', 'clipboard', 'Dokumen yang dibutuhkan dan formulir pendaftaran', 'persyaratan syarat paspor ktp foto vaksin meningitis buku nikah mahram pendaftaran daftar form'],
+        ['testimoni', 'Testimoni Jamaah', 'star', 'Kisah nyata dari jamaah kami', 'testimoni ulasan jamaah review'],
+        ['chat', 'AI Chat — FAQ Paket & Pendaftaran', 'bot', 'Tanya jawab otomatis seputar paket dan pendaftaran', 'ai chat asisten bantuan faq tanya'],
     ],
+
 
     'hero' => [
         'eyebrow' => 'IBADAH SUCI, PERJALANAN MULIA',
@@ -247,7 +249,7 @@ return [
         ['k' => ['itinerary', 'rencana', 'hari', 'durasi', 'lama', 'ziarah'], 'q' => 'Seperti apa itinerary perjalanannya?', 'a' => 'Itinerary Umrah Reguler 9 hari mencakup Madinah, Makkah, ziarah kota, hingga kepulangan. Detail lengkap tersedia di halaman Itinerary.', 'l' => ['itinerary', 'Lihat Itinerary']],
         ['k' => ['pembimbing', 'muthawwif', 'ustadz', 'ustadzah', 'tim', 'guide'], 'q' => 'Siapa pembimbing perjalanan?', 'a' => 'Jamaah didampingi muthawwif dan muthawwifah berpengalaman serta tour leader selama di Tanah Suci.', 'l' => ['tim', 'Kenali Tim']],
         ['k' => ['batal', 'refund', 'pengembalian', 'ganti'], 'q' => 'Bagaimana jika batal berangkat?', 'a' => 'Ketentuan pembatalan mengikuti kebijakan maskapai dan penyelenggara. Hubungi customer care kami untuk penjelasan sesuai kondisi Anda.', 'l' => null],
-        ['k' => ['kontak', 'hubungi', 'telepon', 'alamat', 'lokasi', 'whatsapp', 'wa'], 'q' => 'Bagaimana menghubungi kami?', 'a' => 'WhatsApp +62 812 3456 7890, email info@alhijrahtravel.co.id, atau kunjungi kantor kami di Jl. Melati No. 25, Jakarta Selatan (Sen–Min 08.00–21.00).', 'l' => null],
+        ['k' => ['kontak', 'hubungi', 'telepon', 'alamat', 'lokasi', 'whatsapp', 'wa'], 'q' => 'Bagaimana menghubungi kami?', 'a' => 'WhatsApp +62 895-6303-00345, email info@alhijrahtravel.co.id, atau kunjungi kantor kami di Jl. Melati No. 25, Jakarta Selatan (Sen–Min 08.00–21.00).', 'l' => null],
     ],
 
     'chat' => [

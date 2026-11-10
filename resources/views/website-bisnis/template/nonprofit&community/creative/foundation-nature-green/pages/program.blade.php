@@ -17,7 +17,7 @@
         <div class="fh-wrap">
             <article class="fh-feature {{ $loop->even ? 'fh-feature--flip' : '' }} fh-reveal">
                 <div class="fh-feature__media">
-                    <img src="{{ $img($p['image']) }}" alt="Kegiatan program {{ $p['title'] }}" width="528" height="138" loading="lazy">
+                    <img class="fh-feature__art" src="{{ $img($p['image']) }}" alt="Ilustrasi program {{ $p['title'] }}" width="480" height="220" loading="lazy">
                     <div class="fh-feature__stat"><strong>{{ $p['stat'] }}</strong><span>{{ $p['stat_label'] }}</span></div>
                 </div>
                 <div class="fh-feature__body">

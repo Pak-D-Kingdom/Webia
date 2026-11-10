@@ -28,7 +28,7 @@
         </div>
 
         <div class="fh-pagehead__art" aria-hidden="true">
-            <figure class="fh-frame">
+            <figure class="fh-frame" style="max-width: {{ $meta['frame'] ?? 480 }}px">
                 <img src="{{ $img($meta['image']) }}" alt="" style="object-position: {{ $meta['focus'] ?? '50% 50%' }}">
             </figure>
             <span class="fh-pagehead__badge">{{ $icon('leaf') }}</span>

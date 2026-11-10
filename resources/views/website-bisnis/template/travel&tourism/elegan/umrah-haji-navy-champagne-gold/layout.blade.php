@@ -14,6 +14,7 @@
 </head>
 <body class="uh uh-page-{{ $page }}" data-page="{{ $page }}">
     <a class="uh-skip" href="#uh-main">Lewati ke konten utama</a>
+    <div class="uh-progress" aria-hidden="true"><i></i></div>
 
     @include($v . '.partials.icons')
     @include($v . '.partials.topbar')
@@ -26,14 +27,22 @@
 
     @include($v . '.partials.footer')
     @include($v . '.partials.floating')
+    <div class="uh-toast" id="uh-toast" role="status" aria-live="polite" hidden></div>
 
     @php
         $uhData = [
             'wa'     => $wa($d['contact']['wa_text']),
-            'search' => collect($d['menu'])
-                ->map(fn ($m) => ['label' => $m[1], 'url' => $r($m[0]), 'k' => $d['search_keywords'][$m[0]] ?? ''])
-                ->push(['label' => 'AI Chat — FAQ Paket & Pendaftaran', 'url' => $r('chat'), 'k' => $d['search_keywords']['chat']])
-                ->values()->all(),
+            'search' => [
+                'pages'    => collect($d['search_pages'])
+                    ->map(fn ($s) => ['t' => $s[1], 'u' => $r($s[0]), 'i' => $s[2], 'd' => $s[3], 'k' => $s[4]])
+                    ->values()->all(),
+                'packages' => collect($d['packages'])
+                    ->map(fn ($p) => ['t' => $p['name'], 'u' => $r('paket') . '#' . $p['id'], 'i' => 'book', 'd' => $p['days'] . ' · mulai ' . $rp($p['price']), 'k' => $p['airline'] . ' ' . $p['route'] . ' ' . $p['types']])
+                    ->values()->all(),
+                'faq'      => collect($d['faq'])
+                    ->map(fn ($f) => ['t' => $f['q'], 'k' => implode(' ', $f['k'])])
+                    ->values()->all(),
+            ],
             'faq'    => collect($d['faq'])
                 ->map(fn ($f) => ['k' => $f['k'], 'a' => $f['a'], 'l' => $f['l'] ? ['u' => $r($f['l'][0]), 't' => $f['l'][1]] : null])
                 ->values()->all(),

@@ -23,7 +23,7 @@
                     <div class="fh-donate">
                         <div class="fh-donate__info">
                             <aside class="fh-infocard">
-                                <img class="fh-infocard__art" src="{{ $img('quote-globe.png') }}" alt="" aria-hidden="true" width="340" height="290" loading="lazy">
+                                <img class="fh-infocard__art" src="{{ $img('quote-globe.jpg') }}" alt="" aria-hidden="true" width="340" height="290" loading="lazy">
                                 <span class="fh-infocard__badge">{{ $icon('heart') }}Online</span>
                                 <h2>Donasi Sekarang</h2>
                                 <p>Pilih nominal, isi data singkat, lalu lanjutkan ke WhatsApp. Tim kami akan mengirim petunjuk pembayaran dan bukti donasi.</p>
@@ -77,7 +77,7 @@
                     <div class="fh-donate">
                         <div class="fh-donate__info">
                             <aside class="fh-infocard">
-                                <img class="fh-infocard__art" src="{{ $img('quote-globe.png') }}" alt="" aria-hidden="true" width="340" height="290" loading="lazy">
+                                <img class="fh-infocard__art" src="{{ $img('quote-globe.jpg') }}" alt="" aria-hidden="true" width="340" height="290" loading="lazy">
                                 <span class="fh-infocard__badge">{{ $icon('shield') }}Rekening resmi</span>
                                 <h2>Transfer Bank</h2>
                                 <p>Transfer ke salah satu rekening resmi atas nama <strong>{{ $cfg['donation']['account_name'] }}</strong>, lalu konfirmasi lewat WhatsApp.</p>
@@ -120,7 +120,7 @@
                     <div class="fh-donate">
                         <div class="fh-donate__info">
                             <aside class="fh-infocard">
-                                <img class="fh-infocard__art" src="{{ $img('quote-globe.png') }}" alt="" aria-hidden="true" width="340" height="290" loading="lazy">
+                                <img class="fh-infocard__art" src="{{ $img('quote-globe.jpg') }}" alt="" aria-hidden="true" width="340" height="290" loading="lazy">
                                 <span class="fh-infocard__badge">{{ $icon('gift') }}Barang layak pakai</span>
                                 <h2>Donasi Barang</h2>
                                 <p>Barang yang Anda sumbangkan kami salurkan ke rumah belajar, sekolah, dan desa binaan. Barang yang kami terima:</p>
@@ -162,7 +162,7 @@
                     <div class="fh-donate">
                         <div class="fh-donate__info">
                             <aside class="fh-infocard">
-                                <img class="fh-infocard__art" src="{{ $img('quote-globe.png') }}" alt="" aria-hidden="true" width="340" height="290" loading="lazy">
+                                <img class="fh-infocard__art" src="{{ $img('quote-globe.jpg') }}" alt="" aria-hidden="true" width="340" height="290" loading="lazy">
                                 <span class="fh-infocard__badge">{{ $icon('calendar') }}Setiap bulan</span>
                                 <h2>Donasi Rutin</h2>
                                 <p>Berbagi setiap bulan membuat program kami bisa direncanakan lebih panjang. Pilih paket yang paling nyaman untuk Anda.</p>

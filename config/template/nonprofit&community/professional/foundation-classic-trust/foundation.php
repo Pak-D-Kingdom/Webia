@@ -39,7 +39,6 @@ return [
         ['label' => 'Mitra',          'route' => 'partners'],
         ['label' => 'Relawan',        'route' => 'volunteer'],
         ['label' => 'Berita & Acara', 'route' => 'news'],
-        ['label' => 'Kontak',         'route' => '#kontak'],
     ],
 
     'footer_nav' => [
@@ -47,8 +46,22 @@ return [
             ['Beranda', 'index'], ['Tentang Kami', 'mission'], ['Program Kami', 'programs'], ['Dampak', 'impact'],
         ],
         'Layanan' => [
-            ['Donasi', 'donation'], ['Relawan', 'volunteer'], ['Berita & Acara', 'news'], ['Kontak', '#kontak'],
+            ['Donasi', 'donation'], ['Relawan', 'volunteer'], ['Berita & Acara', 'news'],
         ],
+    ],
+
+    // Metadata halaman untuk pencarian (ikon = id sprite #fd-i-*)
+    'pages' => [
+        'index'     => ['Beranda',                    'Ringkasan semua program dan kegiatan kami.',          'heart'],
+        'mission'   => ['Misi & Visi',                'Arah, tujuan, dan nilai yang kami pegang.',           'heart'],
+        'programs'  => ['Program Kami',               'Pendidikan, kesehatan, ekonomi, dan lingkungan.',     'grid'],
+        'impact'    => ['Dampak Kami',                'Statistik penerima manfaat dan capaian kami.',        'users'],
+        'donation'  => ['Pilihan Donasi',             'Donasi sekarang, rutin, barang, atau program.',       'heart'],
+        'financial' => ['Transparansi Keuangan',      'Laporan penggunaan dana dan hasil audit.',            'doc'],
+        'partners'  => ['Mitra & Sponsor',            'Perusahaan dan lembaga yang mendukung kami.',         'users'],
+        'volunteer' => ['Pendaftaran Relawan',        'Bergabung sebagai relawan di lapangan.',              'users'],
+        'news'      => ['Berita & Acara',             'Kabar terbaru dan agenda kegiatan.',                  'news'],
+        'chatbot'   => ['HarapanBot — FAQ',           'Tanya jawab seputar program dan donasi.',             'help'],
     ],
 
     'mission' => [
@@ -102,9 +115,9 @@ return [
 
     'impact' => [
         'stats' => [
-            ['value' => 250000, 'suffix' => '+', 'label' => 'Penerima Manfaat', 'icon' => 'impact-people.png'],
-            ['value' => 1200,   'suffix' => '+', 'label' => 'Program Kegiatan', 'icon' => 'impact-heart.png'],
-            ['value' => 34,     'suffix' => '',  'label' => 'Provinsi',          'icon' => 'impact-pin.png'],
+            ['value' => 250000, 'suffix' => '+', 'label' => 'Penerima Manfaat', 'icon' => 'impact-people.svg'],
+            ['value' => 1200,   'suffix' => '+', 'label' => 'Program Kegiatan', 'icon' => 'impact-heart.svg'],
+            ['value' => 34,     'suffix' => '',  'label' => 'Provinsi',          'icon' => 'impact-pin.svg'],
         ],
         'by_year' => [
             ['2022', 38], ['2023', 56], ['2024', 78], ['2025', 92], ['2026', 100],
@@ -119,10 +132,10 @@ return [
 
     'donation' => [
         'options' => [
-            ['key' => 'sekarang', 'title' => 'Donasi Sekarang', 'sub' => 'Donasi Online',      'icon' => 'donate-now.png',     'desc' => 'Donasi sekali waktu dengan nominal bebas, langsung tersalurkan ke program prioritas.'],
-            ['key' => 'rutin',    'title' => 'Donasi Rutin',    'sub' => 'Bulanan',            'icon' => 'donate-routine.png', 'desc' => 'Berbagi setiap bulan agar program berjalan berkelanjutan dan dampaknya semakin besar.'],
-            ['key' => 'barang',   'title' => 'Donasi Barang',   'sub' => 'Bantuan Langsung',   'icon' => 'donate-goods.png',   'desc' => 'Salurkan buku, pakaian layak, alat kesehatan, dan kebutuhan pokok langsung ke penerima.'],
-            ['key' => 'program',  'title' => 'Donasi Program',  'sub' => 'Tematik',            'icon' => 'donate-program.png', 'desc' => 'Pilih program tertentu — pendidikan, kesehatan, ekonomi, atau lingkungan.'],
+            ['key' => 'sekarang', 'title' => 'Donasi Sekarang', 'sub' => 'Donasi Online',      'icon' => 'donate-now.svg',     'desc' => 'Donasi sekali waktu dengan nominal bebas, langsung tersalurkan ke program prioritas.'],
+            ['key' => 'rutin',    'title' => 'Donasi Rutin',    'sub' => 'Bulanan',            'icon' => 'donate-routine.svg', 'desc' => 'Berbagi setiap bulan agar program berjalan berkelanjutan dan dampaknya semakin besar.'],
+            ['key' => 'barang',   'title' => 'Donasi Barang',   'sub' => 'Bantuan Langsung',   'icon' => 'donate-goods.svg',   'desc' => 'Salurkan buku, pakaian layak, alat kesehatan, dan kebutuhan pokok langsung ke penerima.'],
+            ['key' => 'program',  'title' => 'Donasi Program',  'sub' => 'Tematik',            'icon' => 'donate-program.svg', 'desc' => 'Pilih program tertentu — pendidikan, kesehatan, ekonomi, atau lingkungan.'],
         ],
         'amounts' => [50000, 100000, 250000, 500000, 1000000],
         'programs' => ['Pendidikan untuk Semua', 'Kesehatan Masyarakat', 'Pemberdayaan Ekonomi', 'Pelestarian Lingkungan', 'Dana Umum (Prioritas Terbesar)'],
@@ -183,6 +196,7 @@ return [
 
     'faq' => [
         'greeting' => 'Halo! Saya HarapanBot! Saya siap membantu Anda seputar program kami dan donasi.',
+        'quick_icons' => ['heart', 'grid', 'users', 'doc', 'news'],
         'quick' => [
             'Bagaimana cara berdonasi?',
             'Program apa saja yang tersedia?',
