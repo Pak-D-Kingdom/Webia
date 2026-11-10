@@ -1896,4 +1896,8 @@ Route::prefix('webia/template')->group(function () {
         '/baitul-safar-umrah-haji',
         'website-bisnis.templates.travel-tourism.umrah-haji.baitul-safar.baitul-safar'
     )->name('webia.template.baitul-safar-umrah-haji');
+    Route::view(
+        '/wildtrail-adventure-outdoor',
+        'website-bisnis.templates.travel-tourism.adventure-outdoor-tour.wildtrail.wildtrail'
+    )->name('webia.template.wildtrail-adventure-outdoor');
 });
