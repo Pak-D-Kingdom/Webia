@@ -513,6 +513,14 @@ Route::view(
 )->name('webia.template.agriculture-peralatanpertanian-playfulcolorful-arcticfrost-putri');
 
 // =====================================================
+// WEBIA - PHOTOGRAPHY & CREATIVE STUDIO — PUTRI (Motion Graphics & 3D Studio Premium Minimal Champagne Glow)
+// =====================================================
+Route::view(
+    '/webia/template/photography-motiongraphics-premiumminimal-champagneglow-putri',
+    'website-bisnis.templates.photography-creative.motion-graphics.photography-motiongraphics-premiumminimal-champagneglow-putri'
+)->name('webia.template.photography-motiongraphics-premiumminimal-champagneglow-putri');
+
+// =====================================================
 // WEBIA - SPORTS & FITNESS (GYM & FITNESS)
 // =====================================================
 Route::view(
