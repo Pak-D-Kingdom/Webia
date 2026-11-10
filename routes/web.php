@@ -1603,7 +1603,7 @@ Route::prefix('webia/template/wedding-event/creative/event-organizer-purple-drea
     });
 
 Route::prefix('webia/template/travel-tourism/elegan/umrah-haji-navy-champagne-gold')
-    ->name('umrah-haji.')
+    ->name('umrah-haji-navy.')
     ->group(function () {
         $viewBase   = 'website-bisnis.template.travel&tourism.elegan.umrah-haji-navy-champagne-gold';
         $imgBase    = 'images/website-bisnis/template/travel&tourism/elegan/umrah-haji-navy-champagne-gold/';
