@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\WebiaAddon;
 use App\Models\WebiaOrder;
 use App\Models\WebiaPackage;
+use App\Models\WebiaTemplate;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -49,6 +50,60 @@ class AdminMasterDataTest extends TestCase
             'slug' => 'pixel',
             'price' => 499000,
         ]);
+    }
+
+    public function test_admin_package_index_shows_active_templates_for_assignment(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $active = $this->template('retail-active');
+        $inactive = $this->template('retail-inactive');
+        $inactive->update(['is_active' => false]);
+
+        $this->actingAs($admin)->get(route('admin.packages.index'))
+            ->assertOk()
+            ->assertSee($active->name)
+            ->assertDontSee($inactive->name);
+    }
+
+    public function test_admin_can_assign_templates_to_package(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $package = WebiaPackage::factory()->create();
+        $templates = collect([
+            $this->template('retail-minimalist'),
+            $this->template('healthcare-modern'),
+        ]);
+        $unassignedTemplate = $this->template('home-services-clean');
+
+        $this->actingAs($admin)->put(route('admin.packages.update', $package), [
+            'name' => $package->name,
+            'slug' => $package->slug,
+            'description' => $package->description,
+            'price' => $package->price,
+            'chatbot_monthly_quota' => $package->chatbot_monthly_quota,
+            'features' => implode("\n", $package->features),
+            'sort_order' => $package->sort_order,
+            'template_ids' => $templates->pluck('id')->all(),
+        ])->assertRedirect(route('admin.packages.index'));
+
+        $this->assertEqualsCanonicalizing($templates->pluck('id')->all(), $package->templates()->pluck('webia_templates.id')->all());
+        $this->assertFalse($package->templates()->whereKey($unassignedTemplate)->exists());
+    }
+
+    public function test_package_rejects_unknown_template(): void
+    {
+        $admin = User::factory()->admin()->create();
+
+        $this->actingAs($admin)->post(route('admin.packages.store'), [
+            'name' => 'Pixel',
+            'slug' => 'pixel',
+            'description' => 'Landing page sederhana.',
+            'price' => 499000,
+            'chatbot_monthly_quota' => 500,
+            'features' => 'Landing page',
+            'sort_order' => 1,
+            'template_ids' => [999999],
+        ])->assertSessionHasErrors('template_ids.0');
     }
 
     public function test_admin_can_toggle_addon_active_state(): void
@@ -136,5 +191,19 @@ class AdminMasterDataTest extends TestCase
         $this->actingAs($customer)
             ->get(route('admin.packages.index'))
             ->assertForbidden();
+    }
+
+    private function template(string $slug): WebiaTemplate
+    {
+        return WebiaTemplate::create([
+            'name' => str($slug)->headline(),
+            'slug' => $slug,
+            'category_slug' => 'retail',
+            'category_label' => 'Retail',
+            'business_types' => ['Toko'],
+            'design_style' => 'Minimalist',
+            'description' => 'Template pengujian.',
+            'is_active' => true,
+        ]);
     }
 }

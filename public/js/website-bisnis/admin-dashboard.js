@@ -764,10 +764,13 @@ function initializeAdminPage() {
         document.getElementById('packageQuota').value = row.dataset.quota;
         document.getElementById('packageSort').value = row.dataset.sortOrder;
         document.getElementById('packageCmsEnabled').checked = row.dataset.cms === '1';
+        const templateIds = new Set(row.dataset.templateIds.split(',').filter(Boolean));
+        pkgForm.querySelectorAll('[data-package-template]').forEach((input) => { input.checked = templateIds.has(input.value); });
         document.getElementById('packagePublishActive').checked = row.dataset.active === '1';
         document.getElementById('packagePublishDraft').checked = row.dataset.active !== '1';
       } else {
         pkgForm.reset();
+        pkgForm.querySelectorAll('[data-package-template]').forEach((input) => { input.checked = false; });
         document.getElementById('packagePublishActive').checked = true;
         document.getElementById('packageSort').value = String(pkgRows.reduce((max, r) => Math.max(max, Number(r.dataset.sortOrder)), 0) + 1);
       }

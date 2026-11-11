@@ -35,6 +35,15 @@
                 @error('features') <p class="form-error">{{ $message }}</p> @enderror
             </div>
             <label class="check-field"><input type="checkbox" name="cms_enabled" value="1" @checked(old('cms_enabled', $package->cms_enabled))> CMS aktif</label>
+            <fieldset class="form-field">
+                <legend>Template dalam paket</legend>
+                <p>Kosongkan jika paket berlaku untuk semua template aktif.</p>
+                @php($selectedTemplateIds = collect(old('template_ids', $package->exists ? $package->templates->modelKeys() : []))->map(fn ($id) => (int) $id))
+                @foreach ($templates as $template)
+                    <label class="check-field"><input type="checkbox" name="template_ids[]" value="{{ $template->id }}" @checked($selectedTemplateIds->contains($template->id))> {{ $template->name }}</label>
+                @endforeach
+                @error('template_ids.*') <p class="form-error">{{ $message }}</p> @enderror
+            </fieldset>
             <label class="check-field"><input type="checkbox" name="is_active" value="1" @checked(old('is_active', $package->exists ? $package->is_active : true))> Paket aktif</label>
             <button class="account-submit" type="submit">Simpan paket</button>
         </form>

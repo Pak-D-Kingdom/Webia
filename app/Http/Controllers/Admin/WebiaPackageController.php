@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\WebiaPackage;
+use App\Models\WebiaTemplate;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -15,7 +16,10 @@ class WebiaPackageController extends Controller
 {
     public function index(): View
     {
-        return view('admin.packages.index', ['packages' => WebiaPackage::query()->withCount('orders')->orderBy('sort_order')->get()]);
+        return view('admin.packages.index', [
+            'packages' => WebiaPackage::query()->with('templates:id')->withCount('orders')->orderBy('sort_order')->get(),
+            'templates' => WebiaTemplate::query()->where('is_active', true)->orderBy('name')->get(['id', 'name', 'category_label']),
+        ]);
     }
 
     public function toggle(Request $request, WebiaPackage $package): RedirectResponse|JsonResponse
@@ -33,24 +37,34 @@ class WebiaPackageController extends Controller
 
     public function create(): View
     {
-        return view('admin.packages.form', ['package' => new WebiaPackage]);
+        return view('admin.packages.form', [
+            'package' => new WebiaPackage,
+            'templates' => WebiaTemplate::query()->where('is_active', true)->orderBy('name')->get(['id', 'name']),
+        ]);
     }
 
     public function store(Request $request): RedirectResponse
     {
-        WebiaPackage::create($this->validated($request));
+        $validated = $this->validated($request);
+        $package = WebiaPackage::create($validated);
+        $package->templates()->sync($validated['template_ids'] ?? []);
 
         return redirect()->route('admin.packages.index')->with('status', 'Paket berhasil ditambahkan.');
     }
 
     public function edit(WebiaPackage $package): View
     {
-        return view('admin.packages.form', compact('package'));
+        return view('admin.packages.form', [
+            'package' => $package->load('templates:id'),
+            'templates' => WebiaTemplate::query()->where('is_active', true)->orderBy('name')->get(['id', 'name']),
+        ]);
     }
 
     public function update(Request $request, WebiaPackage $package): RedirectResponse
     {
-        $package->update($this->validated($request, $package));
+        $validated = $this->validated($request, $package);
+        $package->update($validated);
+        $package->templates()->sync($validated['template_ids'] ?? []);
 
         return redirect()->route('admin.packages.index')->with('status', 'Paket berhasil diperbarui.');
     }
@@ -78,6 +92,8 @@ class WebiaPackageController extends Controller
             'cms_enabled' => ['nullable', 'boolean'],
             'chatbot_monthly_quota' => ['required', 'integer', 'min:0'],
             'features' => ['required', 'string'],
+            'template_ids' => ['nullable', 'array'],
+            'template_ids.*' => ['integer', Rule::exists('webia_templates', 'id')->where('is_active', true)],
             'is_active' => ['nullable', 'boolean'],
             'sort_order' => ['required', 'integer', 'min:0'],
         ]);

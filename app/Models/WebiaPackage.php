@@ -6,6 +6,7 @@ use Database\Factories\WebiaPackageFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable([
@@ -28,6 +29,11 @@ class WebiaPackage extends Model
     public function orders(): HasMany
     {
         return $this->hasMany(WebiaOrder::class);
+    }
+
+    public function templates(): BelongsToMany
+    {
+        return $this->belongsToMany(WebiaTemplate::class, 'webia_package_template');
     }
 
     protected function casts(): array
