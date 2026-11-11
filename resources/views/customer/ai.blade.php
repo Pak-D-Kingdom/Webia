@@ -79,24 +79,26 @@
             </div>
         </div>
     @else
+    {{-- Notifikasi Pop-Up (Muncul Mengambang / Pop Up Saja, Tidak Di Atas Halaman) --}}
     @if (session('success'))
-        <div style="background:#e6f4ea; border:1px solid #ceead6; border-radius:var(--account-radius); padding:1rem 1.25rem; margin-top:1.25rem; display:flex; align-items:center; justify-content:space-between; gap:0.75rem;">
-            <div style="display:flex; align-items:center; gap:0.5rem; color:#137333; font-weight:600; font-size:0.9rem;">
-                <span class="material-symbols-outlined" style="font-size:1.25rem;">check_circle</span>
-                <span>{{ session('success') }}</span>
-            </div>
-            <button onclick="this.parentElement.remove()" style="background:none; border:none; color:#137333; cursor:pointer; font-size:1.25rem;">&times;</button>
-        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                if (typeof showAiPopup === 'function') {
+                    showAiPopup('Berhasil Disimpan!', @json(session('success')), true);
+                }
+            });
+        </script>
     @endif
     @if (session('error'))
-        <div style="background:#fce8e6; border:1px solid #fad2cf; border-radius:var(--account-radius); padding:1rem 1.25rem; margin-top:1.25rem; display:flex; align-items:center; justify-content:space-between; gap:0.75rem;">
-            <div style="display:flex; align-items:center; gap:0.5rem; color:#c5221f; font-weight:600; font-size:0.9rem;">
-                <span class="material-symbols-outlined" style="font-size:1.25rem;">error</span>
-                <span>{{ session('error') }}</span>
-            </div>
-            <button onclick="this.parentElement.remove()" style="background:none; border:none; color:#c5221f; cursor:pointer; font-size:1.25rem;">&times;</button>
-        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                if (typeof showAiPopup === 'function') {
+                    showAiPopup('Terjadi Kesalahan', @json(session('error')), false);
+                }
+            });
+        </script>
     @endif
+
     {{-- Alert Notifikasi jika kuota habis / menipis --}}
     @php
         $percent = (float) ($quotaData['percentage_used'] ?? 0);
@@ -201,7 +203,7 @@
                     {{ $order->business_data['business_name'] ?? 'Website Bisnis Anda' }}
                 </div>
                 <div style="font-size:0.85rem; color:var(--account-muted); margin-bottom:0.35rem;">
-                    Template: <strong style="color:var(--account-ink);">{{ $order->template?->name ?? $order->template_snapshot['name'] ?? 'Pitstop Garage' }}</strong>
+                    Template: <strong style="color:var(--account-ink);">{{ $order->template?->name ?? $order->template_snapshot['name'] ?? 'Template Webia' }}</strong>
                 </div>
                 <div style="display:inline-flex; align-items:center; gap:0.35rem; font-size:0.8rem; font-weight:600; color:var(--account-teal); margin-bottom:0.5rem;">
                     <span class="material-symbols-outlined" style="font-size:0.95rem;">verified</span>
@@ -210,7 +212,7 @@
             </div>
             <div style="margin-top:1.25rem; padding-top:1rem; border-top:1px solid var(--account-line); display:flex; justify-content:space-between; align-items:center;">
                 <div style="font-size:0.785rem; color:var(--account-muted);">
-                    Tenant ID: <code>{{ $quotaData['tenant_id'] ?? 'tenant_automotive_01' }}</code>
+                    Tenant ID: <code>{{ $quotaData['tenant_id'] ?? ($order->site_slug ?? 'Dalam Proses') }}</code>
                 </div>
                 @if ($order->site_slug)
                     <a href="{{ route('sites.show', ['order' => $order->site_slug]) }}" target="_blank" style="font-size:0.785rem; font-weight:700; color:var(--account-action); text-decoration:none; display:inline-flex; align-items:center; gap:0.2rem;">
@@ -244,7 +246,7 @@
             </span>
         </div>
 
-        <form method="POST" action="{{ route('customer.ai.business-info') }}">
+        <form id="businessInfoForm" method="POST" action="{{ route('customer.ai.business-info') }}">
             @csrf
             <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:1.5rem; margin-bottom:1.5rem;">
                 {{-- Kolom Kiri: Interaksi Chatbot & Kontak CS --}}
@@ -260,20 +262,17 @@
                             </div>
                         </div>
 
-                        {{-- Quick Preset Template Buttons --}}
-                        <div style="display:flex; align-items:center; gap:0.35rem; flex-wrap:wrap; margin-bottom:0.6rem;">
+                        {{-- Quick Preset Template Buttons (3 Pilihan Utama) --}}
+                        <div style="display:flex; align-items:center; gap:0.4rem; flex-wrap:wrap; margin-bottom:0.6rem;">
                             <span style="font-size:0.7rem; font-weight:700; color:var(--account-muted);">Template Cepat:</span>
-                            <button type="button" onclick="applyWelcomeTemplate('friendly')" style="background:#eef2ff; border:1px solid #c7d2fe; color:#4338ca; border-radius:6px; padding:0.25rem 0.55rem; font-size:0.72rem; font-weight:600; cursor:pointer; transition:all 0.15s;">
+                            <button type="button" onclick="applyWelcomeTemplate('friendly')" style="background:#eef2ff; border:1px solid #c7d2fe; color:#4338ca; border-radius:6px; padding:0.25rem 0.6rem; font-size:0.72rem; font-weight:600; cursor:pointer; transition:all 0.15s;">
                                 ✨ Ramah &amp; Santai
                             </button>
-                            <button type="button" onclick="applyWelcomeTemplate('sales')" style="background:#fef3c7; border:1px solid #fde68a; color:#b45309; border-radius:6px; padding:0.25rem 0.55rem; font-size:0.72rem; font-weight:600; cursor:pointer; transition:all 0.15s;">
+                            <button type="button" onclick="applyWelcomeTemplate('professional')" style="background:#f0fdf4; border:1px solid #bbf7d0; color:#15803d; border-radius:6px; padding:0.25rem 0.6rem; font-size:0.72rem; font-weight:600; cursor:pointer; transition:all 0.15s;">
+                                💼 Profesional &amp; Solutif
+                            </button>
+                            <button type="button" onclick="applyWelcomeTemplate('sales')" style="background:#fef3c7; border:1px solid #fde68a; color:#b45309; border-radius:6px; padding:0.25rem 0.6rem; font-size:0.72rem; font-weight:600; cursor:pointer; transition:all 0.15s;">
                                 🛍️ Promo &amp; Penjualan
-                            </button>
-                            <button type="button" onclick="applyWelcomeTemplate('service')" style="background:#f0fdf4; border:1px solid #bbf7d0; color:#15803d; border-radius:6px; padding:0.25rem 0.55rem; font-size:0.72rem; font-weight:600; cursor:pointer; transition:all 0.15s;">
-                                💼 Layanan &amp; Jasa
-                            </button>
-                            <button type="button" onclick="applyWelcomeTemplate('formal')" style="background:#f8fafc; border:1px solid #cbd5e1; color:#334155; border-radius:6px; padding:0.25rem 0.55rem; font-size:0.72rem; font-weight:600; cursor:pointer; transition:all 0.15s;">
-                                🏢 Formal Bisnis
                             </button>
                         </div>
 
@@ -282,20 +281,34 @@
                                   oninput="updateWelcomePreview(this.value)"
                                   style="width:100%; box-sizing:border-box; padding:0.75rem 0.85rem; border:1px solid var(--account-line); border-radius:var(--account-radius); font-size:0.85rem; background:#fff; color:var(--account-ink); resize:none; line-height:1.45; font-family:inherit;">{{ $currentWelcome }}</textarea>
                         
-                        {{-- Live Preview Bubble --}}
-                        <div style="margin-top:0.75rem; padding-top:0.6rem; border-top:1px dashed #cbd5e1;">
-                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem;">
-                                <span style="font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:#94a3b8;">
-                                    Preview Tampilan Balon Chat:
-                                </span>
-                                <span style="font-size:0.68rem; color:#16a34a; font-weight:700; display:inline-flex; align-items:center; gap:0.25rem;">
-                                    <span style="width:6px; height:6px; border-radius:50%; background:#16a34a;"></span>
-                                    Aktif di Website
+                        {{-- Live Preview Balon Chat (Modern Messenger UI) --}}
+                        <div style="margin-top:0.85rem; background:#f1f5f9; border:1px solid #e2e8f0; border-radius:12px; padding:0.85rem; box-shadow:inset 0 1px 2px rgba(0,0,0,0.03);">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+                                <div style="display:flex; align-items:center; gap:0.4rem;">
+                                    <span class="material-symbols-outlined" style="font-size:0.95rem; color:#6366f1;">visibility</span>
+                                    <span style="font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#475569;">
+                                        Preview Balon Chatbot
+                                    </span>
+                                </div>
+                                <span style="font-size:0.65rem; color:#15803d; font-weight:700; background:#dcfce7; border:1px solid #bbf7d0; padding:0.15rem 0.5rem; border-radius:999px; display:inline-flex; align-items:center; gap:0.25rem;">
+                                    <span style="width:5px; height:5px; border-radius:50%; background:#16a34a; box-shadow:0 0 0 2px rgba(22,163,74,0.2);"></span>
+                                    Tampil di Website
                                 </span>
                             </div>
-                            <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; border-top-left-radius:3px; padding:0.65rem 0.85rem; font-size:0.8rem; color:#1e293b; box-shadow:0 1px 3px rgba(0,0,0,0.04); display:flex; align-items:flex-start; gap:0.6rem;">
-                                <div style="width:24px; height:24px; border-radius:50%; background:var(--account-action); color:#fff; display:flex; align-items:center; justify-content:center; font-size:0.65rem; font-weight:800; flex-shrink:0; margin-top:1px;">AI</div>
-                                <span id="welcomePreviewText" style="line-height:1.45;">{{ $currentWelcome }}</span>
+
+                            <div style="display:flex; align-items:flex-start; gap:0.6rem;">
+                                <div style="width:30px; height:30px; border-radius:50%; background:linear-gradient(135deg, #6366f1 0%, #4338ca 100%); color:#fff; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 4px rgba(99,102,241,0.25); flex-shrink:0;">
+                                    <span class="material-symbols-outlined" style="font-size:1rem;">smart_toy</span>
+                                </div>
+                                <div style="position:relative; background:#ffffff; border:1px solid #e2e8f0; border-radius:14px; border-top-left-radius:3px; padding:0.75rem 0.95rem; box-shadow:0 2px 8px -2px rgba(15,23,42,0.06); max-width:100%; width:100%;">
+                                    <div style="font-size:0.68rem; font-weight:700; color:#6366f1; margin-bottom:0.25rem; display:flex; align-items:center; gap:0.25rem;">
+                                        <span>Asisten AI</span>
+                                        <span style="color:#94a3b8; font-weight:400;">• Balon Sapaan</span>
+                                    </div>
+                                    <div id="welcomePreviewText" style="font-size:0.825rem; color:#0f172a; line-height:1.5; word-break:break-word;">
+                                        {{ $currentWelcome }}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -355,14 +368,43 @@
                             <span>Bisnis Anda beroperasi secara daring (online). AI akan menjelaskan bahwa pesanan dan layanan diproses secara digital tanpa toko/kantor fisik.</span>
                         </div>
 
-                        {{-- Live Preview Balasan Bot AI Mengenai Alamat --}}
-                        <div style="margin-top:0.75rem; padding:0.55rem 0.75rem; background:#ffffff; border:1px dashed #cbd5e1; border-radius:8px; display:flex; align-items:flex-start; gap:0.5rem;">
-                            <span class="material-symbols-outlined" style="font-size:1.1rem; color:var(--account-action); flex-shrink:0; margin-top:1px;">smart_toy</span>
-                            <div>
-                                <span style="font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#64748b; display:block;">Jawaban Bot Mengenai Lokasi / Alamat:</span>
-                                <strong id="previewAlamatText" style="font-size:0.8rem; color:#0f172a; line-height:1.4;">
-                                    {{ $isOnlineOnly ? 'Layanan kami beroperasi penuh secara online dan melayani pelanggan secara digital tanpa kantor fisik.' : ($currentAlamat ?: 'Alamat fisik belum diatur') }}
-                                </strong>
+                        {{-- Live Preview Balasan Bot AI Mengenai Alamat (Mini Conversation UI) --}}
+                        <div style="margin-top:0.85rem; background:#f1f5f9; border:1px solid #e2e8f0; border-radius:12px; padding:0.85rem; box-shadow:inset 0 1px 2px rgba(0,0,0,0.03);">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.55rem;">
+                                <div style="display:flex; align-items:center; gap:0.4rem;">
+                                    <span class="material-symbols-outlined" style="font-size:0.95rem; color:#0284c7;">forum</span>
+                                    <span style="font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#475569;">
+                                        Simulasi Tanya Lokasi
+                                    </span>
+                                </div>
+                                <span style="font-size:0.65rem; color:#0369a1; font-weight:700; background:#e0f2fe; border:1px solid #bae6fd; padding:0.15rem 0.5rem; border-radius:999px;">
+                                    Respon Otomatis
+                                </span>
+                            </div>
+
+                            <div style="display:flex; flex-direction:column; gap:0.5rem;">
+                                {{-- Balon Pengunjung (User Bubble) --}}
+                                <div style="display:flex; justify-content:flex-end;">
+                                    <div style="background:#e0e7ff; color:#3730a3; border-radius:12px; border-bottom-right-radius:2px; padding:0.4rem 0.75rem; font-size:0.75rem; font-weight:600; max-width:85%; display:inline-flex; align-items:center; gap:0.35rem;">
+                                        <span>Kak, lokasi operasional atau alamat tokonya di mana?</span>
+                                    </div>
+                                </div>
+
+                                {{-- Balon Asisten AI (Bot Bubble) --}}
+                                <div style="display:flex; align-items:flex-start; gap:0.5rem;">
+                                    <div style="width:28px; height:28px; border-radius:50%; background:linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color:#fff; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 4px rgba(2,132,199,0.25); flex-shrink:0;">
+                                        <span class="material-symbols-outlined" style="font-size:0.95rem;">smart_toy</span>
+                                    </div>
+                                    <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; border-top-left-radius:2px; padding:0.65rem 0.85rem; box-shadow:0 2px 8px -2px rgba(15,23,42,0.06); max-width:92%; width:100%;">
+                                        <div style="display:flex; align-items:center; gap:0.35rem; font-size:0.68rem; font-weight:700; color:#0284c7; margin-bottom:0.25rem;">
+                                            <span class="material-symbols-outlined" style="font-size:0.85rem;">pin_drop</span>
+                                            <span>Info Lokasi Bot</span>
+                                        </div>
+                                        <div id="previewAlamatText" style="font-size:0.8rem; color:#0f172a; line-height:1.45; word-break:break-word;">
+                                            {{ $isOnlineOnly ? 'Layanan kami beroperasi penuh secara online dan melayani pelanggan secara digital tanpa kantor fisik.' : ($currentAlamat ?: 'Alamat fisik belum diatur') }}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -394,7 +436,7 @@
                     <span class="material-symbols-outlined" style="font-size:1.1rem; color:#16a34a;">check_circle</span>
                     Pembaruan langsung disinkronkan ke chatbot website Anda tanpa jeda.
                 </div>
-                <button type="submit" style="background:var(--account-action); color:#fff; border:none; padding:0.75rem 1.75rem; border-radius:var(--account-radius); font-weight:700; font-size:0.875rem; cursor:pointer; display:inline-flex; align-items:center; gap:0.45rem; box-shadow:0 2px 4px rgba(0,0,0,0.08); transition:opacity 0.2s;">
+                <button id="btnSubmitBusinessInfo" type="submit" style="background:var(--account-action); color:#fff; border:none; padding:0.75rem 1.75rem; border-radius:var(--account-radius); font-weight:700; font-size:0.875rem; cursor:pointer; display:inline-flex; align-items:center; gap:0.45rem; box-shadow:0 2px 4px rgba(0,0,0,0.08); transition:opacity 0.2s;">
                     <span class="material-symbols-outlined" style="font-size:1.15rem;">save</span>
                     Simpan Pengaturan &amp; Info Bisnis
                 </button>
@@ -819,12 +861,10 @@
         if (!welcomeInput) return;
         if (type === 'friendly') {
             welcomeInput.value = 'Halo! Senang Anda mampir ke website kami. Ada yang bisa kami bantu hari ini? 😊';
+        } else if (type === 'professional') {
+            welcomeInput.value = 'Selamat datang di website kami. Kami siap memberikan informasi layanan dan solusi terbaik yang Anda butuhkan.';
         } else if (type === 'sales') {
-            welcomeInput.value = 'Halo! Selamat datang. Sedang mencari produk, promo terbaru, atau butuh bantuan pemesanan?';
-        } else if (type === 'service') {
-            welcomeInput.value = 'Selamat datang! Silakan tanyakan informasi mengenai layanan, jadwal konsultasi, atau penawaran kami.';
-        } else if (type === 'formal') {
-            welcomeInput.value = 'Selamat datang di website resmi kami. Kami siap membantu memberikan informasi yang Anda butuhkan.';
+            welcomeInput.value = 'Halo! Selamat datang. Sedang mencari produk, promo terbaru, atau butuh bantuan pemesanan hari ini?';
         }
         updateWelcomePreview(welcomeInput.value);
     }
@@ -854,7 +894,129 @@
             previewEl.textContent = val.trim() || 'Alamat fisik belum diatur';
         }
     }
+
+    function showAiPopup(title, message, isSuccess = true) {
+        let popup = document.getElementById('aiFlashPopup');
+        if (!popup) {
+            popup = document.createElement('div');
+            popup.id = 'aiFlashPopup';
+            document.body.appendChild(popup);
+        }
+        popup.style.cssText = `
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            z-index: 99999;
+            max-width: 440px;
+            width: calc(100% - 4rem);
+            background: #ffffff;
+            border-radius: 16px;
+            border: 1px solid ${isSuccess ? '#bbf7d0' : '#fecaca'};
+            box-shadow: 0 16px 36px -4px rgba(15,23,42,0.18), 0 6px 14px -2px rgba(15,23,42,0.08);
+            padding: 1.15rem 1.25rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.85rem;
+            animation: popInFlash 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            font-family: inherit;
+        `;
+
+        const bgIcon = isSuccess ? '#dcfce7' : '#fee2e2';
+        const colorIcon = isSuccess ? '#15803d' : '#b91c1c';
+        const iconName = isSuccess ? 'check_circle' : 'error';
+
+        popup.innerHTML = `
+            <div style="width:38px; height:38px; border-radius:10px; background:${bgIcon}; color:${colorIcon}; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                <span class="material-symbols-outlined" style="font-size:1.35rem;">${iconName}</span>
+            </div>
+            <div style="flex:1;">
+                <div style="font-size:0.9rem; font-weight:800; color:#0f172a; margin-bottom:0.25rem;">
+                    ${title}
+                </div>
+                <div style="font-size:0.825rem; color:#475569; line-height:1.45;">
+                    ${message}
+                </div>
+            </div>
+            <button type="button" onclick="closeAiPopup()" style="background:transparent; border:none; color:#94a3b8; cursor:pointer; padding:0.2rem; border-radius:6px; display:flex; align-items:center; justify-content:center; transition:color 0.15s;" onmouseover="this.style.color='#0f172a'" onmouseout="this.style.color='#94a3b8'">
+                <span class="material-symbols-outlined" style="font-size:1.2rem;">close</span>
+            </button>
+        `;
+
+        if (window.aiPopupTimer) clearTimeout(window.aiPopupTimer);
+        window.aiPopupTimer = setTimeout(() => {
+            closeAiPopup();
+        }, 5000);
+    }
+
+    function closeAiPopup() {
+        const popup = document.getElementById('aiFlashPopup');
+        if (popup) {
+            popup.style.opacity = '0';
+            popup.style.transform = 'translateY(-12px) scale(0.96)';
+            popup.style.transition = 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)';
+            setTimeout(() => popup.remove(), 250);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const bizForm = document.getElementById('businessInfoForm');
+        if (bizForm) {
+            bizForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const submitBtn = document.getElementById('btnSubmitBusinessInfo');
+                const originalHtml = submitBtn ? submitBtn.innerHTML : '';
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.style.opacity = '0.75';
+                    submitBtn.innerHTML = '<span class="material-symbols-outlined" style="font-size:1.15rem; animation:spinAi 1s linear infinite;">sync</span> Menyimpan...';
+                }
+
+                try {
+                    const formData = new FormData(bizForm);
+                    const res = await fetch(bizForm.action, {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        body: formData
+                    });
+
+                    const data = await res.json();
+                    if (res.ok && data.status === 'success') {
+                        showAiPopup('Berhasil Disimpan!', data.message || 'Pengaturan & informasi bisnis berhasil disimpan! Asisten AI website Anda langsung diperbarui.', true);
+                    } else {
+                        showAiPopup('Terjadi Kesalahan', data.message || 'Gagal memperbarui informasi bisnis ke AI. Silakan coba lagi.', false);
+                    }
+                } catch (err) {
+                    bizForm.submit();
+                } finally {
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.style.opacity = '1';
+                        submitBtn.innerHTML = originalHtml;
+                    }
+                }
+            });
+        }
+    });
     </script>
+    <style>
+    @keyframes popInFlash {
+        from {
+            opacity: 0;
+            transform: translateY(-16px) scale(0.96);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+    @keyframes spinAi {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+    </style>
     @endif
 </section>
 @endsection

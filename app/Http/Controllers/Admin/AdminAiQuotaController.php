@@ -22,15 +22,19 @@ class AdminAiQuotaController extends Controller
     {
         $orders = WebiaOrder::with(['user', 'package', 'template'])
             ->whereNotNull('site_slug')
-            ->orWhere('status', 'paid')
+            ->where('site_slug', '!=', '')
             ->get()
             ->keyBy('site_slug');
 
-        $tenants = AiQuotaService::getAllTenants();
+        $tenantsList = AiQuotaService::getAllTenants();
+        $tenants = collect($tenantsList)->keyBy('id');
+
+        // Gabungkan seluruh tenant ID dari database SQLite dan WebiaOrder
+        $allTenantIds = $orders->keys()->merge($tenants->keys())->unique()->filter();
         $clients = [];
 
-        foreach ($tenants as $tenant) {
-            $tenantId = $tenant['id'];
+        foreach ($allTenantIds as $tenantId) {
+            $tenant = $tenants->get($tenantId);
             $matchedOrder = $orders->get($tenantId);
 
             $tierSlug = $matchedOrder?->package?->slug ?? ($tenant['package_tier'] ?? 'pixel');
@@ -43,9 +47,9 @@ class AdminAiQuotaController extends Controller
             $isWarning = $percentage >= 80 && ! $isExhausted;
             $statusCategory = $isExhausted ? 'habis' : ($isWarning ? 'waspada' : 'aman');
 
-            $bizName = $matchedOrder?->business_data['business_name'] ?? $tenant['name'];
+            $bizName = $matchedOrder?->business_data['business_name'] ?? ($tenant['name'] ?? ucwords(str_replace(['tenant_', '_', '-'], ' ', $tenantId)));
             $clientName = $matchedOrder?->user?->name ?? ('Klien ' . ucfirst($tenant['category'] ?? 'Bisnis'));
-            $clientEmail = $matchedOrder?->user?->email ?? (strtolower(str_replace(' ', '', $tenant['name'])) . '@example.com');
+            $clientEmail = $matchedOrder?->user?->email ?? (strtolower(str_replace(' ', '', $bizName)) . '@example.com');
             $phone = $matchedOrder?->business_data['whatsapp'] ?? '081234567890';
             $templateName = $matchedOrder?->template?->name ?? $matchedOrder?->template_snapshot['name'] ?? (ucwords($tenant['category'] ?? 'General') . ' Template');
 
@@ -55,6 +59,7 @@ class AdminAiQuotaController extends Controller
                 'client_name' => $clientName,
                 'client_email' => $clientEmail,
                 'business_name' => $bizName,
+                'category' => $matchedOrder?->category_slug ?? ($tenant['category'] ?? 'Bisnis'),
                 'whatsapp' => $phone,
                 'package_name' => ucfirst($tierSlug),
                 'package_tier' => $tierSlug,
@@ -78,10 +83,14 @@ class AdminAiQuotaController extends Controller
     public function index(Request $request): View
     {
         $statusFilter = $request->query('status', 'semua');
+        $categoryFilter = $request->query('kategori', 'semua');
         $search = strtolower(trim((string) $request->query('q', '')));
 
         $clients = $this->getClientsData();
         $aiOnline = AiQuotaService::isOnline();
+
+        // Ambil daftar unik seluruh kategori bisnis tenant
+        $categories = collect($clients)->pluck('category')->filter()->unique()->values()->all();
 
         // Hitung ringkasan KPI untuk Superadmin
         $totalClients = count($clients);
@@ -94,7 +103,7 @@ class AdminAiQuotaController extends Controller
         $totalQuotaMessages = collect($clients)->sum('monthly_quota');
 
         // Terapkan filter & pencarian jika ada
-        $filteredClients = collect($clients)->filter(function ($c) use ($statusFilter, $search) {
+        $filteredClients = collect($clients)->filter(function ($c) use ($statusFilter, $categoryFilter, $search) {
             $matchStatus = true;
             if ($statusFilter === 'habis') {
                 $matchStatus = $c['status_category'] === 'habis';
@@ -106,6 +115,11 @@ class AdminAiQuotaController extends Controller
                 $matchStatus = $c['status_category'] === 'aman';
             }
 
+            $matchCategory = true;
+            if ($categoryFilter !== 'semua') {
+                $matchCategory = strtolower((string) ($c['category'] ?? '')) === strtolower((string) $categoryFilter);
+            }
+
             $matchSearch = true;
             if (! empty($search)) {
                 $matchSearch = str_contains(strtolower($c['business_name']), $search)
@@ -114,7 +128,7 @@ class AdminAiQuotaController extends Controller
                     || str_contains(strtolower($c['package_name']), $search);
             }
 
-            return $matchStatus && $matchSearch;
+            return $matchStatus && $matchCategory && $matchSearch;
         })->values();
 
         $endOfMonth = Carbon::now()->endOfMonth();
@@ -133,6 +147,8 @@ class AdminAiQuotaController extends Controller
             'totalUsedMessages',
             'totalQuotaMessages',
             'statusFilter',
+            'categoryFilter',
+            'categories',
             'search',
             'aiOnline',
             'resetDateFormatted',
