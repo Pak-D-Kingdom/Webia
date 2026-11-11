@@ -19,7 +19,7 @@
     */
 
     $ns  = 'website-bisnis.template.company.classic.company-profile-warm-neutral';
-    $cfg = config('template.company.classic.company-profile-warm-neutral.company-profile', []);
+    $cfg = $siteConfig ?? config('template.company.classic.company-profile-warm-neutral.company-profile', []);
 
     $pageKey    = $pageKey ?? 'beranda';
     $pageTitle  = $pageTitle ?? 'Solusi Kreatif untuk Masa Depan';
@@ -30,6 +30,7 @@
 
     /* ----- Data dari config ------------------------------------------------ */
     $company        = $cfg['company'] ?? [];
+    $pageDesc       = str_replace('Nusantara Kreasi', $company['name'] ?? 'Nusantara Kreasi', $pageDesc);
     $social         = $cfg['social'] ?? [];
     $hero           = $cfg['hero'] ?? [];
     $about          = $cfg['about'] ?? [];
@@ -53,7 +54,9 @@
 
     /* ----- URL halaman ----------------------------------------------------- */
     $routeNames = $cfg['routes'] ?? [];
-    $page = fn (string $key) => isset($routeNames[$key]) && \Illuminate\Support\Facades\Route::has($routeNames[$key]) ? route($routeNames[$key]) : '#';
+    $page = isset($pageUrl)
+        ? fn (string $key) => $pageUrl(match ($key) { 'tentang' => 'tentang-kami', 'portofolio' => 'portofolio', default => 'home' })
+        : fn (string $key) => isset($routeNames[$key]) && \Illuminate\Support\Facades\Route::has($routeNames[$key]) ? route($routeNames[$key]) : '#';
 
     // Tautan ke sebuah bagian: anchor jika bagian ada di halaman ini, selain itu ke Beranda.
     $link = fn (string $id) => in_array($id, $anchors, true) ? '#' . $id : $page('beranda') . '#' . $id;

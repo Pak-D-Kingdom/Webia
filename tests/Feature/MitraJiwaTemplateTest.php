@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\WebiaTemplate;
 use Database\Seeders\WebiaTemplateAqilaSeeder;
+use Database\Seeders\WebiaTemplatePreviewSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
@@ -12,9 +13,17 @@ class MitraJiwaTemplateTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(WebiaTemplateAqilaSeeder::class);
+        $this->seed(WebiaTemplatePreviewSeeder::class);
+    }
+
     public function test_demo_route_renders_mitra_jiwa_psychology_content(): void
     {
-        $this->get(route('webia.template.healthcare.psychology.mitra-jiwa'))
+        $this->get('/webia/template/healthcare/psychology/mitra-jiwa')
             ->assertOk()
             ->assertSee('<title>Mitra Jiwa — Psikologi & Konseling Profesional</title>', false)
             ->assertSee('Kesehatan mental yang <em>terjaga</em>', false)

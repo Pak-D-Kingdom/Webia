@@ -5,7 +5,9 @@
         <p>{{ $k['text'] }}</p>
         <ul class="cp-contact__list">
             <li><span class="cp-ico">{{ $ic('phone') }}</span><div><small>Telepon</small><a href="tel:{{ preg_replace('/\s+/', '', $t['phone']) }}">{{ $t['phone'] }}</a></div></li>
-            <li><span class="cp-ico">{{ $ic('mail') }}</span><div><small>Email</small><a href="mailto:{{ $t['email'] }}">{{ $t['email'] }}</a></div></li>
+            @if ($t['email'])
+                <li><span class="cp-ico">{{ $ic('mail') }}</span><div><small>Email</small><a href="mailto:{{ $t['email'] }}">{{ $t['email'] }}</a></div></li>
+            @endif
             <li><span class="cp-ico">{{ $ic('pin') }}</span><div><small>Alamat</small><span>{{ $t['address'] }}</span></div></li>
             <li><span class="cp-ico">{{ $ic('clock') }}</span><div><small>Jam kerja</small><span>{{ $t['hours'] }}</span></div></li>
         </ul>

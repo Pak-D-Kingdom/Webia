@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\WebiaTemplate;
+use Database\Seeders\WebiaTemplatePreviewSeeder;
 use Database\Seeders\WebiaTemplateSeederAthiya;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
@@ -12,9 +13,17 @@ class VisageTemplateTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(WebiaTemplateSeederAthiya::class);
+        $this->seed(WebiaTemplatePreviewSeeder::class);
+    }
+
     public function test_demo_route_renders_visage_and_secure_booking_interactions(): void
     {
-        $this->get(route('webia.template.beauty.visage-editorial-makeup-artist'))
+        $this->get('/webia/template/visage-editorial-makeup-artist')
             ->assertOk()
             ->assertSee('<title>Visage – Makeup Editorial oleh Rima Ayu</title>', false)
             ->assertSee('data-theme="dark"', false)

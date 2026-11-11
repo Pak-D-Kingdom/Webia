@@ -4,7 +4,9 @@
         <h2 id="ot-contact-title">{{ $z['contact']['title'] }}</h2>
         <ul>
             <li><svg class="ot-ic" aria-hidden="true"><use href="#i-phone"/></svg><a href="tel:{{ $t['phone_href'] }}">{{ $t['phone'] }}</a></li>
-            <li><svg class="ot-ic" aria-hidden="true"><use href="#i-mail"/></svg><a href="mailto:{{ $t['email'] }}">{{ $t['email'] }}</a></li>
+            @if ($t['email'])
+                <li><svg class="ot-ic" aria-hidden="true"><use href="#i-mail"/></svg><a href="mailto:{{ $t['email'] }}">{{ $t['email'] }}</a></li>
+            @endif
             <li><svg class="ot-ic" aria-hidden="true"><use href="#i-pin"/></svg><span>{{ $t['address'] }}</span></li>
         </ul>
     </div>

@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\WebiaTemplate;
 use Database\Seeders\WebiaTemplateAqilaSeeder;
+use Database\Seeders\WebiaTemplatePreviewSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
@@ -12,9 +13,17 @@ class JeliKecilTemplateTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(WebiaTemplateAqilaSeeder::class);
+        $this->seed(WebiaTemplatePreviewSeeder::class);
+    }
+
     public function test_demo_route_renders_preschool_daycare_content_and_interactions(): void
     {
-        $this->get(route('webia.template.education.jeli-kecil'))
+        $this->get('/webia/template/education/preschool-daycare-jeli-kecil')
             ->assertOk()
             ->assertSee('<title>Jeli Kecil – Preschool & Daycare</title>', false)
             ->assertSee('Program untuk setiap usia', false)

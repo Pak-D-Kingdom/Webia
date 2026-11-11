@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\WebiaTemplate;
 use Database\Seeders\WebiaTemplateAqilaSeeder;
+use Database\Seeders\WebiaTemplatePreviewSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
@@ -12,9 +13,17 @@ class NoirStudioPhotographyTemplateTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(WebiaTemplateAqilaSeeder::class);
+        $this->seed(WebiaTemplatePreviewSeeder::class);
+    }
+
     public function test_demo_route_renders_noir_studio_photography_content(): void
     {
-        $this->get(route('webia.template.photography.noir-studio'))
+        $this->get('/webia/template/noir-studio-photography')
             ->assertOk()
             ->assertSee('<title>Noir Studio | Product Photography & Videography</title>', false)
             ->assertSee('Turn Your Product<br>into a <em>Visual Story.</em>', false)

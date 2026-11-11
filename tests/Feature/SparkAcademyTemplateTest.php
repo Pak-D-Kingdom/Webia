@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\WebiaTemplate;
 use Database\Seeders\WebiaTemplateAqilaSeeder;
+use Database\Seeders\WebiaTemplatePreviewSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
@@ -12,9 +13,17 @@ class SparkAcademyTemplateTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(WebiaTemplateAqilaSeeder::class);
+        $this->seed(WebiaTemplatePreviewSeeder::class);
+    }
+
     public function test_demo_route_renders_the_spark_academy_template_and_assets(): void
     {
-        $this->get(route('webia.template.education.spark-academy'))
+        $this->get('/webia/template/spark-academy-maximum-impact')
             ->assertOk()
             ->assertHeader('content-type', 'text/html; charset=UTF-8')
             ->assertSee('<title>SPARK Academy | School</title>', false)
@@ -24,7 +33,7 @@ class SparkAcademyTemplateTest extends TestCase
             ->assertSee('css/website-bisnis/templates/education/spark-academy-maximum-impact.css', false)
             ->assertSee('js/website-bisnis/templates/education/spark-academy-maximum-impact.js', false);
 
-        $this->get(route('webia.template.education.spark-academy', ['preview' => 1]))
+        $this->get('/webia/template/spark-academy-maximum-impact?preview=1')
             ->assertOk()
             ->assertSee('class="webia-hero-preview-mode"', false);
     }

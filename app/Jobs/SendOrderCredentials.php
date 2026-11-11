@@ -9,6 +9,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Password;
 use Throwable;
 
 class SendOrderCredentials implements ShouldQueue
@@ -39,10 +40,18 @@ class SendOrderCredentials implements ShouldQueue
             return;
         }
 
-        Mail::to($recipient)->send(new AccountCredentialsMail($order, $order->credential_password));
+        $passwordSetupUrl = null;
+        if ($order->credential_requires_password_setup) {
+            $token = Password::broker()->createToken($order->user);
+            $passwordSetupUrl = route('password.reset', [
+                'token' => $token,
+                'email' => $recipient,
+            ]);
+        }
 
-        // Setelah terkirim, plaintext password tidak boleh tersisa di database.
-        $order->update(['credential_status' => 'sent', 'credential_password' => null]);
+        Mail::to($recipient)->send(new AccountCredentialsMail($order, $passwordSetupUrl));
+
+        $order->update(['credential_status' => 'sent']);
     }
 
     public function failed(Throwable $exception): void

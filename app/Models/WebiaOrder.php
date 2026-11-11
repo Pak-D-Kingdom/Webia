@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable([
     'user_id', 'guest_name', 'guest_email', 'order_number', 'webia_package_id', 'package_snapshot', 'webia_template_id', 'template_snapshot', 'category_slug',
-    'addon_ids', 'addon_snapshot', 'status', 'credential_status', 'credential_password', 'total_price', 'payment_receipt_path', 'payment_note', 'paid_at',
+    'addon_ids', 'addon_snapshot', 'status', 'credential_status', 'credential_requires_password_setup', 'total_price', 'payment_receipt_path', 'payment_note', 'paid_at',
     'business_data', 'delivery_status', 'site_slug',
 ])]
 class WebiaOrder extends Model
@@ -74,7 +74,7 @@ class WebiaOrder extends Model
             'addon_snapshot' => 'array',
             'business_data' => 'array',
             'paid_at' => 'datetime',
-            'credential_password' => 'encrypted',
+            'credential_requires_password_setup' => 'boolean',
         ];
     }
 }

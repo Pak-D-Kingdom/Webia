@@ -115,6 +115,37 @@
             </div>
         @endif
 
+        @if ($hostingInvoices->isNotEmpty())
+            <div class="dashboard-empty customer-recent-card">
+                <div class="order-heading customer-recent-head">
+                    <div>
+                        <p class="account-label">Perlu dibayar</p>
+                        <h2>Tagihan hosting</h2>
+                    </div>
+                    <a class="customer-recent-link" href="{{ route('hosting-invoices.index') }}">
+                        Lihat semua tagihan
+                        <span aria-hidden="true" class="material-symbols-outlined">chevron_right</span>
+                    </a>
+                </div>
+                <div class="admin-list dashboard-history-list customer-recent-list">
+                    @foreach ($hostingInvoices as $invoice)
+                        <article class="admin-list-item">
+                            <div>
+                                <p class="account-label">{{ $invoice->invoice_number }}</p>
+                                <h3>{{ $invoice->service->website_name }}</h3>
+                                <p>Jatuh tempo {{ $invoice->due_at->translatedFormat('d M Y') }}</p>
+                            </div>
+                            <div class="list-item-meta">
+                                <strong>{{ 'Rp '.number_format($invoice->amount, 0, ',', '.') }}</strong>
+                                <x-status-pill :status="$invoice->status" />
+                                <a class="customer-detail-btn" href="{{ route('hosting-invoices.show', $invoice) }}">Detail</a>
+                            </div>
+                        </article>
+                    @endforeach
+                </div>
+            </div>
+        @endif
+
         @if ($orders->isNotEmpty())
             <div class="dashboard-empty customer-recent-card">
                 <div class="order-heading customer-recent-head">

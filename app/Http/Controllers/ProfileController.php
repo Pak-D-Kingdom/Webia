@@ -29,8 +29,14 @@ class ProfileController extends Controller
         $user->update([
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'email_verified_at' => $emailChanged ? null : $user->email_verified_at,
         ]);
+
+        if ($emailChanged) {
+            $user->markEmailAsUnverified();
+            $user->sendEmailVerificationNotification();
+
+            return to_route('verification.notice');
+        }
 
         return to_route('profile.edit')->with('status', 'Profil berhasil diperbarui.');
     }

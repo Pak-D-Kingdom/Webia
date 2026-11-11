@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\WebiaTemplate;
 use Database\Seeders\WebiaTemplateAqilaSeeder;
+use Database\Seeders\WebiaTemplatePreviewSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
@@ -12,9 +13,17 @@ class PeachyStudioTemplateTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(WebiaTemplateAqilaSeeder::class);
+        $this->seed(WebiaTemplatePreviewSeeder::class);
+    }
+
     public function test_demo_route_renders_peachy_studio_content_and_sections(): void
     {
-        $this->get(route('webia.template.photography.peachy-studio'))
+        $this->get('/webia/template/peachy-studio')
             ->assertOk()
             ->assertSee('<title>Peachy Studio | Product Photography</title>', false)
             ->assertSee('Make Your Product <span>Look Irresistible.</span>', false)

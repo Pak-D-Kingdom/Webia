@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\WebiaTemplate;
 use Database\Seeders\WebiaTemplateAqilaSeeder;
+use Database\Seeders\WebiaTemplatePreviewSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
@@ -12,9 +13,17 @@ class RuangTenangTemplateTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(WebiaTemplateAqilaSeeder::class);
+        $this->seed(WebiaTemplatePreviewSeeder::class);
+    }
+
     public function test_demo_route_renders_psychology_services_and_booking_information(): void
     {
-        $this->get(route('webia.template.healthcare.psychology.ruang-tenang'))
+        $this->get('/webia/template/healthcare/psychology/ruang-tenang')
             ->assertOk()
             ->assertSee('<title>Ruang Tenang — Psikologi & Konseling</title>', false)
             ->assertSee('Konseling Individu', false)

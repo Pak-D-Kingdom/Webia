@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\HostingInvoice;
 use App\Models\WebiaOrder;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -26,7 +27,14 @@ class DashboardController extends Controller
             ->with('package')
             ->latest()
             ->first();
+        $hostingInvoices = HostingInvoice::query()
+            ->whereIn('status', ['unpaid', 'overdue'])
+            ->whereHas('service', fn ($query) => $query->whereBelongsTo($request->user())->where('billing_status', '!=', 'stopped'))
+            ->with('service')
+            ->orderBy('due_at')
+            ->take(5)
+            ->get();
 
-        return view('dashboard', compact('orders', 'activeOrder', 'deliveredSite'));
+        return view('dashboard', compact('orders', 'activeOrder', 'deliveredSite', 'hostingInvoices'));
     }
 }

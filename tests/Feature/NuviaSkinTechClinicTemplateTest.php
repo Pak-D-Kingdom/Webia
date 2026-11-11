@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\WebiaTemplate;
+use Database\Seeders\WebiaTemplatePreviewSeeder;
 use Database\Seeders\WebiaTemplateSeederAthiya;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
@@ -12,9 +13,17 @@ class NuviaSkinTechClinicTemplateTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(WebiaTemplateSeederAthiya::class);
+        $this->seed(WebiaTemplatePreviewSeeder::class);
+    }
+
     public function test_demo_route_starts_in_dark_mode_and_exposes_the_theme_switch(): void
     {
-        $this->get(route('webia.template.beauty.nuvia-skin-tech-clinic'))
+        $this->get('/webia/template/nuvia-skin-tech-clinic')
             ->assertOk()
             ->assertSee('<title>NUVIA Skin Tech Clinic</title>', false)
             ->assertSee('<html lang="id" data-theme="dark">', false)

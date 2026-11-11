@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\WebiaTemplate;
+use Database\Seeders\WebiaTemplatePreviewSeeder;
 use Database\Seeders\WebiaTemplateSeederAthiya;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
@@ -12,9 +13,17 @@ class AurumPremiumAutoDetailingTemplateTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(WebiaTemplateSeederAthiya::class);
+        $this->seed(WebiaTemplatePreviewSeeder::class);
+    }
+
     public function test_demo_route_renders_aurum_and_safe_mobile_booking_interactions(): void
     {
-        $this->get(route('webia.template.automotive.aurum-premium-auto-detailing'))
+        $this->get('/webia/template/aurum-premium-auto-detailing')
             ->assertOk()
             ->assertSee('<title>AURUM – Premium Auto Atelier</title>', false)
             ->assertSee('id="burger"', false)

@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\WebiaTemplate;
 use Database\Seeders\WebiaTemplateAlleSeeder;
+use Database\Seeders\WebiaTemplatePreviewSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
@@ -12,9 +13,17 @@ class AgriternakTemplatesTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(WebiaTemplateAlleSeeder::class);
+        $this->seed(WebiaTemplatePreviewSeeder::class);
+    }
+
     public function test_organic_demo_renders_the_ethical_livestock_farm(): void
     {
-        $this->get(route('webia.template.agriculture.agriternak-organic-ethical-precision'))
+        $this->get('/webia/template/agriternak-organic-ethical-precision')
             ->assertOk()
             ->assertSee('<title>AgriTernak - Peternakan Organik Beretika &amp; Presisi</title>', false)
             ->assertSee('Peternakan Organik Beretika')
@@ -24,7 +33,7 @@ class AgriternakTemplatesTest extends TestCase
 
     public function test_futuristic_demo_renders_the_ai_iot_livestock_platform(): void
     {
-        $this->get(route('webia.template.agriculture.agriternak-futuristic-iot'))
+        $this->get('/webia/template/agriternak-futuristic-iot')
             ->assertOk()
             ->assertSee('<title>AgriTernak - Arctic Frost Precision Pasture &amp; AI IoT Livestock Platform</title>', false)
             ->assertSee('Platform AI & IoT Peternakan')
@@ -35,7 +44,7 @@ class AgriternakTemplatesTest extends TestCase
 
     public function test_bold_demo_renders_the_smart_pasture_showcase(): void
     {
-        $this->get(route('webia.template.agriculture.agriternak-bold-livestock'))
+        $this->get('/webia/template/agriternak-bold-livestock')
             ->assertOk()
             ->assertSee('<title>AgriTernak - Precision Livestock &amp; Smart Pasture Ecosystem</title>', false)
             ->assertSee('Revolusi')
@@ -97,7 +106,7 @@ class AgriternakTemplatesTest extends TestCase
             'agriternak-futuristic-iot' => 'agriternak-futuristic-preview',
             'agriternak-bold-livestock' => 'agriternak-bold-preview',
         ] as $slug => $previewClass) {
-            $this->get(route("webia.template.agriculture.{$slug}").'?preview=1')
+            $this->get("/webia/template/{$slug}?preview=1")
                 ->assertOk()
                 ->assertSee($previewClass);
         }

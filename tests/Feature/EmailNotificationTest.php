@@ -35,7 +35,7 @@ class EmailNotificationTest extends TestCase
         $payload = ['order_id' => 'WEB-'.$order->id.'-01', 'status_code' => '200', 'gross_amount' => '499000', 'transaction_status' => 'settlement'];
         $this->postJson(route('payments.midtrans.notify'), $payload + ['signature_key' => $this->signature($payload)])->assertOk();
 
-        Mail::assertSent(fn (AccountCredentialsMail $mail): bool => $mail->plainPassword === null
+        Mail::assertSent(fn (AccountCredentialsMail $mail): bool => $mail->passwordSetupUrl === null
             && $mail->hasTo($order->user->email));
         $this->assertSame('sent', $order->fresh()->credential_status);
     }
@@ -127,19 +127,21 @@ class EmailNotificationTest extends TestCase
         $this->assertStringContainsString(route('orders.show', $order), $html);
     }
 
-    public function test_new_account_email_shows_login_email_and_password(): void
+    public function test_new_account_email_shows_login_email_and_password_setup_link(): void
     {
         $order = WebiaOrder::factory()->create(['user_id' => null, 'guest_email' => 'pelanggan@example.com']);
+        $passwordSetupUrl = 'https://webia.test/reset-password/token?email=pelanggan%40example.com';
 
-        $html = (new AccountCredentialsMail($order, 'Rahasia-123'))->render();
+        $html = (new AccountCredentialsMail($order, $passwordSetupUrl))->render();
 
         $this->assertStringContainsString('Email masuk', $html);
         $this->assertStringContainsString('pelanggan@example.com', $html);
-        $this->assertStringContainsString('Password', $html);
-        $this->assertStringContainsString('Rahasia-123', $html);
+        $this->assertStringContainsString('Atur password', $html);
+        $this->assertStringContainsString($passwordSetupUrl, $html);
+        $this->assertStringNotContainsString('Password:', $html);
     }
 
-    public function test_existing_account_email_shows_login_email_without_password(): void
+    public function test_existing_account_email_shows_login_link_without_password_setup(): void
     {
         $order = WebiaOrder::factory()->create();
 
@@ -147,7 +149,8 @@ class EmailNotificationTest extends TestCase
 
         $this->assertStringContainsString('Email masuk', $html);
         $this->assertStringContainsString($order->user->email, $html);
-        $this->assertStringContainsString('Gunakan password akun WEBIA yang sudah ada.', $html);
+        $this->assertStringContainsString('Masuk ke portal', $html);
+        $this->assertStringNotContainsString('Atur password', $html);
         $this->assertStringNotContainsString('Password:', $html);
     }
 

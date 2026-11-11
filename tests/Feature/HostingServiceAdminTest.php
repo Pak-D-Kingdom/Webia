@@ -31,6 +31,27 @@ class HostingServiceAdminTest extends TestCase
         $this->assertSame('scheduled', $service->billing_status);
     }
 
+    public function test_admin_cannot_override_managed_hosting_statuses_when_creating_a_service(): void
+    {
+        $this->travelTo('2026-11-06 08:00:00');
+        $admin = User::factory()->admin()->create();
+        $customer = User::factory()->create(['role' => 'customer']);
+
+        $this->actingAs($admin)->post(route('admin.hosting-services.store'), [
+            'user_id' => $customer->id,
+            'website_name' => 'Toko Maju',
+            'domain' => 'tokomaju.id',
+            'monthly_price' => 150000,
+            'activation_date' => '2026-11-10',
+            'billing_status' => 'stopped',
+            'operational_status' => 'stopped',
+        ])->assertRedirect();
+
+        $service = HostingService::sole();
+        $this->assertSame('scheduled', $service->billing_status);
+        $this->assertSame('pending_activation', $service->operational_status);
+    }
+
     public function test_admin_cannot_use_a_past_activation_date(): void
     {
         $this->travelTo('2026-11-06 08:00:00');

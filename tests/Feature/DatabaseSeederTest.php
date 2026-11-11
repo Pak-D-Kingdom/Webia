@@ -2,14 +2,44 @@
 
 namespace Tests\Feature;
 
+use App\Models\WebiaTemplate;
 use Database\Seeders\DatabaseSeeder;
+use Database\Seeders\WebiaTemplatePreviewSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class DatabaseSeederTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(DatabaseSeeder::class);
+        $this->seed(WebiaTemplatePreviewSeeder::class);
+    }
+
+    public function test_company_profile_backfill_updates_only_targeted_templates(): void
+    {
+        $target = WebiaTemplate::where('slug', 'company-terracotta')->firstOrFail();
+        $other = WebiaTemplate::where('slug', 'property-emerald-green')->firstOrFail();
+        $target->update(['site_config_path' => null]);
+        $other->update(['site_config_path' => 'property/example']);
+        $migration = require database_path('migrations/2026_11_10_131233_backfill_site_config_path_for_company_profiles.php');
+
+        $migration->up();
+
+        $this->assertSame('company/elegan/company-profile-terracotta/company-profile', $target->fresh()->site_config_path);
+        $this->assertSame('property/example', $other->fresh()->site_config_path);
+
+        $migration->down();
+
+        $this->assertNull($target->fresh()->site_config_path);
+        $this->assertSame('property/example', $other->fresh()->site_config_path);
+    }
 
     public function test_database_seeder_creates_the_webia_catalog(): void
     {
@@ -17,8 +47,22 @@ class DatabaseSeederTest extends TestCase
 
         $this->assertDatabaseHas('webia_packages', ['slug' => 'pixel']);
         $this->assertDatabaseHas('webia_addons', ['name' => 'SEO Optimization']);
-        $this->assertDatabaseHas('webia_templates', ['slug' => 'company-terracotta']);
-        $this->assertDatabaseHas('webia_templates', ['slug' => 'kusuma-ningrat-royal-heritage']);
+        $this->assertDatabaseHas('webia_templates', [
+            'slug' => 'company-terracotta',
+            'site_config_path' => 'company/elegan/company-profile-terracotta/company-profile',
+        ]);
+        $this->assertDatabaseHas('webia_templates', [
+            'slug' => 'company-ocean-teal',
+            'site_config_path' => 'company/modern/company-profile-ocean-teal/company-profile',
+        ]);
+        $this->assertDatabaseHas('webia_templates', [
+            'slug' => 'company-warm-neutral',
+            'site_config_path' => 'company/classic/company-profile-warm-neutral/company-profile',
+        ]);
+        $this->assertDatabaseHas('webia_templates', [
+            'slug' => 'kusuma-ningrat-royal-heritage',
+            'preview_view' => 'website-bisnis.templates.fnb.kusuma-ningrat-royal-heritage',
+        ]);
     }
 
     public function test_default_database_seeder_displays_templates_in_collection(): void
@@ -51,7 +95,7 @@ class DatabaseSeederTest extends TestCase
 
     public function test_sweet_crumb_demo_renders_bakery_sections_and_contact_buttons(): void
     {
-        $this->get(route('webia.template.fnb.bakery.playful.colorful'))
+        $this->get('/webia/template/fnb-bakery-playful-colorful')
             ->assertOk()
             ->assertSee('Katalog Roti & Pastry', false)
             ->assertSee('Paket Promo & Event', false)
@@ -59,5 +103,53 @@ class DatabaseSeederTest extends TestCase
             ->assertSee('Apakah tersedia layanan pengiriman?')
             ->assertSee('wa.me/6281234567890')
             ->assertSee('webia-ai-launcher');
+    }
+
+    #[DataProvider('salonTemplates')]
+    public function test_salon_templates_are_seeded_renderable_and_listed(
+        string $slug,
+        string $templateUrl,
+        string $previewView,
+        string $name,
+    ): void {
+        $this->assertDatabaseHas('webia_templates', [
+            'slug' => $slug,
+            'template_url' => $templateUrl,
+            'preview_view' => $previewView,
+            'category_slug' => 'beauty',
+        ]);
+
+        $this->get($templateUrl)
+            ->assertOk()
+            ->assertViewIs($previewView);
+
+        $this->get(route('collections'))
+            ->assertOk()
+            ->assertSee($name)
+            ->assertSee($templateUrl, false);
+    }
+
+    public static function salonTemplates(): array
+    {
+        return [
+            'modern sage' => [
+                'salon-modern-sage',
+                '/webia/template/salon-modern-sage',
+                'website-bisnis.templates.salon-modern-sage',
+                'Sage Bloom Salon',
+            ],
+            'classic warm neutral' => [
+                'salon-classic-warm-neutral',
+                '/webia/template/salon-classic-warm-neutral',
+                'website-bisnis.templates.salon-classic-warm-neutral',
+                'Maison Élise Salon',
+            ],
+            'elegant soft pink' => [
+                'salon-elegant-soft-pink',
+                '/webia/template/salon-elegant-soft-pink',
+                'website-bisnis.templates.salon-elegant-soft-pink',
+                'Rosé Atelier',
+            ],
+        ];
     }
 }
