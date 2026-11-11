@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 220" role="img" aria-label="Ilustrasi hati dengan tanda tambah dan detak jantung">
+  <defs>
+    <linearGradient id="ht" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fffbe9"/><stop offset="1" stop-color="#cfe5a3"/></linearGradient>
+  </defs>
+  <circle cx="240" cy="112" r="100" fill="#8cc63f" opacity=".12"/>
+  <path d="M20 150H130L152 118L178 178L208 90L236 150H460" fill="none" stroke="#8cc63f" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M240 178C150 126 128 86 152 60C176 36 218 46 240 80C262 46 304 36 328 60C352 86 330 126 240 178Z" fill="url(#ht)"/>
+  <path d="M240 84V136M214 110H266" stroke="#2f6b2f" stroke-width="14" stroke-linecap="round" fill="none"/>
+  <g fill="#7fd0e8">
+    <path transform="translate(84 62)" d="M0-16C9-3 13 3 13 9A13 13 0 0 1-13 9C-13 3-9-3 0-16Z"/>
+    <path transform="translate(404 58)" d="M0-16C9-3 13 3 13 9A13 13 0 0 1-13 9C-13 3-9-3 0-16Z"/>
+    <path transform="translate(430 150) scale(.75)" d="M0-16C9-3 13 3 13 9A13 13 0 0 1-13 9C-13 3-9-3 0-16Z"/>
+  </g>
+  <g fill="#ffffff" opacity=".7"><ellipse cx="79" cy="66" rx="2.6" ry="4.2"/><ellipse cx="399" cy="62" rx="2.6" ry="4.2"/></g>
+  <g fill="#f6d365"><circle cx="60" cy="150" r="6"/><circle cx="450" cy="96" r="5"/><circle cx="360" cy="24" r="4"/></g>
+</svg>

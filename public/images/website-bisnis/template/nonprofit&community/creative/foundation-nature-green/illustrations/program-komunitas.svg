@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 220" role="img" aria-label="Ilustrasi warga desa bergandengan tangan">
+  <defs>
+    <linearGradient id="kg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8cc63f"/><stop offset="1" stop-color="#5fa52d"/></linearGradient>
+    <clipPath id="rc"><rect width="480" height="220" rx="26"/></clipPath>
+  </defs>
+  <g clip-path="url(#rc)">
+  <circle cx="240" cy="110" r="104" fill="#8cc63f" opacity=".1"/>
+  <path d="M0 160C120 140 360 140 480 160V220H0Z" fill="#3d8a34"/>
+  <g transform="translate(36 114)"><rect y="26" width="46" height="36" fill="#2f6b2f"/><path d="M-6 28L23 2L52 28Z" fill="#1d4723"/><rect x="17" y="38" width="12" height="24" fill="#f6d365"/></g>
+  <g transform="translate(398 120)"><rect y="26" width="46" height="36" fill="#2f6b2f"/><path d="M-6 28L23 2L52 28Z" fill="#1d4723"/><rect x="17" y="38" width="12" height="24" fill="#f6d365"/></g>
+  <g fill="#b4dc6e"><circle cx="110" cy="132" r="18"/><circle cx="372" cy="136" r="16"/></g>
+  <path d="M0 182C120 164 360 164 480 182V220H0Z" fill="url(#kg)"/>
+  <g>
+    <path d="M133 186V146a17 17 0 0 1 34 0V186Z" fill="#f4f7e4"/><circle cx="150" cy="120" r="14" fill="#f2c9a0"/>
+    <path d="M178 186V138a17 17 0 0 1 34 0V186Z" fill="#8cc63f"/><circle cx="195" cy="112" r="14" fill="#c98f62"/>
+    <path d="M223 186V130a17 17 0 0 1 34 0V186Z" fill="#f6d365"/><circle cx="240" cy="104" r="14" fill="#f6d5b3"/>
+    <path d="M268 186V138a17 17 0 0 1 34 0V186Z" fill="#b4dc6e"/><circle cx="285" cy="112" r="14" fill="#a8754a"/>
+    <path d="M313 186V146a17 17 0 0 1 34 0V186Z" fill="#e3efc9"/><circle cx="330" cy="120" r="14" fill="#e8b88a"/>
+  </g>
+  <g stroke="#f2c9a0" stroke-width="6" stroke-linecap="round" fill="none">
+    <path d="M165 160Q172 168 180 160"/><path d="M210 160Q217 168 225 160"/><path d="M255 160Q262 168 270 160"/><path d="M300 160Q307 168 315 160"/>
+  </g>
+  <path transform="translate(240 62) scale(1.5)" d="M0 12C-14 3-16-5-11-9C-6-13 0-9 0-5C0-9 6-13 11-9C16-5 14 3 0 12Z" fill="#f6d365"/>
+  <g fill="#f6d365" opacity=".9"><circle cx="190" cy="60" r="4"/><circle cx="296" cy="50" r="3.5"/><circle cx="120" cy="84" r="3"/><circle cx="364" cy="86" r="3"/></g>
+  </g>
+</svg>

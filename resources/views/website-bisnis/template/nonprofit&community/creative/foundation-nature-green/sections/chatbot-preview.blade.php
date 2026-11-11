@@ -1,7 +1,7 @@
 {{-- Pratinjau GreenBot di beranda (mengikuti panel pada desain). Klik pertanyaan = membuka GreenBot. --}}
 <aside class="fh-botprev" aria-label="Pratinjau {{ $cfg['brand']['bot'] }}">
     <div class="fh-botprev__top">
-        <img class="fh-botprev__mascot" src="{{ $img('mascot.png') }}" alt="Maskot robot {{ $cfg['brand']['bot'] }}" width="124" height="140" loading="lazy">
+        <img class="fh-botprev__mascot" src="{{ $img('mascot.jpg') }}" alt="Maskot robot {{ $cfg['brand']['bot'] }}" width="124" height="140" loading="lazy">
         <div class="fh-bubble">
             <strong>{{ $cfg['chatbot']['greeting'] }}</strong>
             <span>{{ $cfg['chatbot']['intro'] }}</span>

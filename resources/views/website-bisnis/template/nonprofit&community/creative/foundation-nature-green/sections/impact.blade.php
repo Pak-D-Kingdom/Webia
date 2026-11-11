@@ -1,7 +1,7 @@
 {{-- Preview Dampak Kami --}}
 <article class="fh-card fh-card--impact fh-reveal">
-    <img class="fh-card__art fh-card__art--sapling" src="{{ $img('impact-sapling.png') }}" alt="" aria-hidden="true" width="156" height="228" loading="lazy">
-    <img class="fh-card__art fh-card__art--hands" src="{{ $img('impact-hands.png') }}" alt="Tangan memegang tanah dengan tunas tanaman" width="600" height="180" loading="lazy">
+    <img class="fh-card__art fh-card__art--sapling" src="{{ $img('impact-sapling.jpg') }}" alt="" aria-hidden="true" width="156" height="228" loading="lazy">
+    <img class="fh-card__art fh-card__art--hands" src="{{ $img('impact-hands.jpg') }}" alt="Tangan memegang tanah dengan tunas tanaman" width="600" height="180" loading="lazy">
     <div class="fh-card__body">
         <header class="fh-card__head">
             <img class="fh-card__icon" src="{{ $img('icons/sec-impact.png') }}" alt="" width="30" height="30">

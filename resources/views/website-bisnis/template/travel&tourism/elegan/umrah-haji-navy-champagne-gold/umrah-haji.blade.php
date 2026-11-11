@@ -9,8 +9,9 @@
     {{-- ============ HERO BANNER ============ --}}
     <section class="uh-hero" id="beranda">
         <div class="uh-hero__bg"><img src="{{ $img('hero.svg') }}" alt="Ka'bah di Masjidil Haram saat senja" fetchpriority="high"></div>
+        <span class="uh-orb uh-orb--1" aria-hidden="true"></span>
         <div class="uh-sparks" data-sparks aria-hidden="true"></div>
-        <div class="uh-container uh-hero__in">
+        <div class="uh-container uh-hero__grid">
             <div class="uh-hero__content">
                 <p class="uh-eyebrow uh-anim" style="--d:.05s">{{ $h['eyebrow'] }}</p>
                 <h1 class="uh-hero__title uh-anim" style="--d:.15s">
@@ -37,11 +38,11 @@
                 <p>"{{ $h['quote'] }}"</p>
                 <i class="uh-orn"></i>
             </div>
+
+            @include($v . '.partials.ai-panel')
         </div>
         <div class="uh-hero__curve"></div>
     </section>
-
-    @include($v . '.partials.ai-panel')
 
     {{-- ============ BARIS 1: Paket · Jadwal · Harga ============ --}}
     <div class="uh-container uh-row1-wrap">
@@ -111,7 +112,7 @@
                     <img src="{{ $img('price-tower.svg') }}" alt="" loading="lazy">
                     <div class="uh-pricebox__in">
                         <span>Mulai dari</span>
-                        <strong>{{ $rp($d['packages'][0]['price']) }}</strong>
+                        <strong data-count="{{ $d['packages'][0]['price'] }}" data-prefix="Rp ">{{ $rp($d['packages'][0]['price']) }}</strong>
                         <small>/ pax</small>
                         <a class="uh-btn uh-btn--gold" href="{{ $r('harga') }}">Cek Harga Lengkap <svg class="uh-ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>
                     </div>

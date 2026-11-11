@@ -2,10 +2,10 @@
 <div class="fh-home">
     <div class="fh-herowrap">
         @include($v('sections.hero'))
-        @include($v('sections.chatbot-preview'))
     </div>
 
     <div class="fh-wrap fh-home__grid">
+        @include($v('sections.chatbot-preview'))
         <div class="fh-row fh-row--a">
             @include($v('sections.mission-vision'))
             @include($v('sections.programs'))

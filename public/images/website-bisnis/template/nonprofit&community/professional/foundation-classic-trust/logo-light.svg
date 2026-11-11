@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" ><defs><clipPath id="L"><rect x="0" y="0" width="32" height="64"/></clipPath><clipPath id="R"><rect x="32" y="0" width="32" height="64"/></clipPath>
+<linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd25c"/><stop offset="1" stop-color="#f0a21c"/></linearGradient>
+<linearGradient id="b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#dbe8fb"/></linearGradient></defs>
+<path d="M32 56C10 42 4 29 4 20.5A13.5 13.5 0 0 1 32 15.5 13.5 13.5 0 0 1 60 20.5C60 29 54 42 32 56Z" fill="url(#g)" clip-path="url(#L)"/><path d="M32 56C10 42 4 29 4 20.5A13.5 13.5 0 0 1 32 15.5 13.5 13.5 0 0 1 60 20.5C60 29 54 42 32 56Z" fill="url(#b)" clip-path="url(#R)"/>
+<g fill="#0a2748"><circle cx="21.5" cy="26" r="4.6"/><path d="M12.5 42c0-6.200 4-9.200 9-9.200s9 3 9 9.200z"/></g>
+<g fill="#f6b92b"><circle cx="42.500" cy="26" r="4.600"/><path d="M33.500 42c0-6.200 4-9.200 9-9.200s9 3 9 9.200z"/></g>
+<path d="M32 30.500c-3.600-2.500-5.500-4.300-5.500-6.400a2.900 2.900 0 0 1 5.500-1.200 2.900 2.900 0 0 1 5.500 1.200c0 2.100-1.900 3.900-5.500 6.400z" fill="#fff" stroke="#f0a21c" stroke-width=".8"/></svg>
