@@ -53,6 +53,39 @@ class WebiaOrderTest extends TestCase
         $this->assertSame(0, preg_match('/name="package_id"[^>]*checked/', (string) $response->getContent()));
     }
 
+    public function test_customer_cannot_order_template_outside_selected_package(): void
+    {
+        $customer = User::factory()->create();
+        $package = WebiaPackage::factory()->create();
+        $allowedTemplate = $this->template('allowed-template');
+        $blockedTemplate = $this->template('blocked-template');
+        $package->templates()->attach($allowedTemplate);
+
+        $this->actingAs($customer)->post(route('orders.store'), [
+            'package_id' => $package->id,
+            'template_id' => $blockedTemplate->id,
+        ])->assertSessionHasErrors('template_id');
+
+        $this->assertDatabaseCount('webia_orders', 0);
+    }
+
+    public function test_package_without_template_assignments_accepts_any_active_template(): void
+    {
+        $customer = User::factory()->create();
+        $package = WebiaPackage::factory()->create();
+        $template = $this->template('unrestricted-template');
+
+        $this->actingAs($customer)->post(route('orders.store'), [
+            'package_id' => $package->id,
+            'template_id' => $template->id,
+        ])->assertRedirect();
+
+        $this->assertDatabaseHas('webia_orders', [
+            'webia_package_id' => $package->id,
+            'webia_template_id' => $template->id,
+        ]);
+    }
+
     public function test_customer_can_create_order_from_active_package(): void
     {
         $customer = User::factory()->create();
@@ -352,5 +385,19 @@ class WebiaOrderTest extends TestCase
         ])->assertSessionHasErrors('address_url');
 
         $this->assertNull($order->fresh()->business_data);
+    }
+
+    private function template(string $slug): WebiaTemplate
+    {
+        return WebiaTemplate::create([
+            'name' => str($slug)->headline(),
+            'slug' => $slug,
+            'category_slug' => 'retail',
+            'category_label' => 'Retail',
+            'business_types' => ['Toko'],
+            'design_style' => 'Minimalist',
+            'description' => 'Template pengujian.',
+            'is_active' => true,
+        ]);
     }
 }
