@@ -1,0 +1,131 @@
+
+        /* Custom Paper Texture Background */
+        body {
+            background-color: #F3EDE2;
+            color: #242424;
+            cursor: default;
+        }
+
+        .gold-shimmer {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></link>
+    
+    <!-- Three.js for 3D Interactive Canvas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ink: '#242424',
+                        rose: '#D94F70',
+                        gold: '#E6B566',
+                        parchment: '#F3EDE2',
+                        'parchment-dark': '#EAE1D0',
+                        'ink-light': '#363636'
+                    },
+                    fontFamily: {
+                        playfair: ['Playfair Display', 'serif'],
+                        cormorant: ['Cormorant Garamond', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Paper Texture Background */
+        body {
+            background-color: #F3EDE2;
+            color: #242424;
+            cursor: default;
+        }
+
+        .gold-shimmer {
+            background: linear-gradient(135deg, #E6B566 0%, #FFF3D1 50%, #E6B566 100%);
+            background-size: 200% 200%;
+            animation: shimmerMove 3s infinite linear;
+        }
+
+        .rose-gold-shimmer {
+            background: linear-gradient(135deg, #D94F70 0%, #E6B566 50%, #D94F70 100%);
+            background-size: 200% 200%;
+            animation: shimmerMove 4s infinite ease-in-out;
+        }
+
+        @keyframes shimmerMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Flag Card Floating Hover Effect (As requested in image reference) */
+        .flag-card {
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            background: #FFFFFF;
+            border: 1px solid rgba(36, 36, 36, 0.15);
+        }
+        .flag-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 16px 30px -10px rgba(217, 79, 112, 0.25);
+            border-color: #D94F70;
+        }
+
+        /* Floating AI Particles Animation */
+        @keyframes floatSymbol {
+            0% { transform: translateY(0px) rotate(0deg); opacity: 0.8; }
+            50% { transform: translateY(-12px) rotate(8deg); opacity: 1; }
+            100% { transform: translateY(0px) rotate(0deg); opacity: 0.8; }
+        }
+
+        .float-symbol-1 { animation: floatSymbol 3s infinite ease-in-out; }
+        .float-symbol-2 { animation: floatSymbol 4s infinite ease-in-out 1s; }
+        .float-symbol-3 { animation: floatSymbol 3.5s infinite ease-in-out 0.5s; }
+
+        /* Continuous Infinite Flag Marquee Animation */
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            display: flex;
+            width: 200%;
+            animation: marquee 28s linear infinite;
+        }
+        .animate-marquee:hover {
+            animation-play-state: paused;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F3EDE2;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #E6B566;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #D94F70;
+        }
+    
+
+/* WEBIA integration: floating contact actions and editorial multilingual animation */
+.verba-floating-actions{position:fixed;right:22px;bottom:22px;z-index:60;display:flex;align-items:center;gap:10px}
+.verba-floating-actions a,.verba-floating-actions button{min-height:52px;border-radius:999px;padding:0 17px;display:flex;align-items:center;justify-content:center;gap:9px;font:600 11px 'Plus Jakarta Sans',sans-serif;letter-spacing:.06em;text-decoration:none;box-shadow:0 10px 28px #24242430;transition:transform .25s,box-shadow .25s;cursor:pointer}
+.verba-floating-actions a:hover,.verba-floating-actions button:hover{transform:translateY(-4px);box-shadow:0 14px 34px #24242440}
+.verba-wa{background:#496d55;color:#fff;border:1px solid #d8c49e}
+.verba-wa i{font-size:21px}
+.verba-ai-launch{background:#242424;color:#f3ede2;border:1px solid #e6b566;position:relative;overflow:hidden}
+.verba-ai-launch:before{content:'';position:absolute;inset:-80%;background:linear-gradient(110deg,transparent 42%,#e6b56655 50%,transparent 58%);animation:verbaShimmer 4s linear infinite}
+.verba-ai-letters{font:700 18px 'Cormorant Garamond',serif;color:#e6b566;display:inline-flex;gap:2px;animation:verbaTypeFloat 3.2s ease-in-out infinite}
+.verba-ai-letters span{color:#d94f70;animation:verbaLetter 2.4s ease-in-out infinite}
+.verba-request-note{font:11px/1.6 'Plus Jakarta Sans',sans-serif;color:#6b6258;background:#eae1d0;border-left:3px solid #d94f70;padding:9px 12px;border-radius:4px;margin-top:-12px}
+#bookingModal{overflow-y:auto}
+@keyframes verbaShimmer{0%{transform:translateX(-35%) rotate(15deg)}100%{transform:translateX(35%) rotate(15deg)}}
+@keyframes verbaTypeFloat{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-4px) rotate(3deg)}}
+@keyframes verbaLetter{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-5px) rotate(12deg)}}
+@media(max-width:520px){.verba-floating-actions{right:12px;bottom:12px;gap:7px}.verba-floating-actions a,.verba-floating-actions button{min-height:46px;padding:0 12px;font-size:10px}.verba-wa i{font-size:19px}}
