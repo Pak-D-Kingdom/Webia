@@ -89,6 +89,7 @@ class WebiaPackageController extends Controller
             'description' => ['required', 'string', 'max:500'],
             'old_price' => ['nullable', 'integer', 'min:0'],
             'price' => ['required', 'integer', 'min:0'],
+            'hosting_monthly_price' => ['required', 'integer', 'min:1'],
             'cms_enabled' => ['nullable', 'boolean'],
             'chatbot_monthly_quota' => ['required', 'integer', 'min:0'],
             'features' => ['required', 'string'],

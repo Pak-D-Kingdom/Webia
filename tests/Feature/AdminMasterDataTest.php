@@ -38,6 +38,7 @@ class AdminMasterDataTest extends TestCase
             'slug' => 'pixel',
             'description' => 'Landing page sederhana.',
             'price' => 499000,
+            'hosting_monthly_price' => 150000,
             'cms_enabled' => false,
             'chatbot_monthly_quota' => 500,
             'features' => "Landing page\nWhatsApp dan peta",
@@ -49,6 +50,7 @@ class AdminMasterDataTest extends TestCase
         $this->assertDatabaseHas('webia_packages', [
             'slug' => 'pixel',
             'price' => 499000,
+            'hosting_monthly_price' => 150000,
         ]);
     }
 
@@ -80,6 +82,7 @@ class AdminMasterDataTest extends TestCase
             'slug' => $package->slug,
             'description' => $package->description,
             'price' => $package->price,
+            'hosting_monthly_price' => $package->hosting_monthly_price,
             'chatbot_monthly_quota' => $package->chatbot_monthly_quota,
             'features' => implode("\n", $package->features),
             'sort_order' => $package->sort_order,
@@ -99,6 +102,7 @@ class AdminMasterDataTest extends TestCase
             'slug' => 'pixel',
             'description' => 'Landing page sederhana.',
             'price' => 499000,
+            'hosting_monthly_price' => 150000,
             'chatbot_monthly_quota' => 500,
             'features' => 'Landing page',
             'sort_order' => 1,
@@ -154,6 +158,7 @@ class AdminMasterDataTest extends TestCase
             'slug' => 'pixel',
             'description' => 'Landing page sederhana.',
             'price' => 499000,
+            'hosting_monthly_price' => 150000,
             'chatbot_monthly_quota' => 500,
             'features' => "  \n ",
             'sort_order' => 1,

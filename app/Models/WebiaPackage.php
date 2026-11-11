@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
     'description',
     'old_price',
     'price',
+    'hosting_monthly_price',
     'cms_enabled',
     'chatbot_monthly_quota',
     'features',

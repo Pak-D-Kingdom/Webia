@@ -761,6 +761,7 @@ function initializeAdminPage() {
         document.getElementById('packageDescription').value = row.dataset.description;
         document.getElementById('packagePrice').value = row.dataset.price;
         document.getElementById('packageOldPrice').value = row.dataset.oldPrice;
+        document.getElementById('packageHostingPrice').value = row.dataset.hostingPrice;
         document.getElementById('packageQuota').value = row.dataset.quota;
         document.getElementById('packageSort').value = row.dataset.sortOrder;
         document.getElementById('packageCmsEnabled').checked = row.dataset.cms === '1';

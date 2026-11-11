@@ -335,7 +335,11 @@ class WebiaOrderController extends Controller
                         'guest_email' => $guestEmail ?? $user?->email,
                         'order_number' => $this->orderNumber(),
                         'webia_package_id' => $package->id,
-                        'package_snapshot' => ['name' => $package->name, 'price' => $package->price],
+                        'package_snapshot' => [
+                            'name' => $package->name,
+                            'price' => $package->price,
+                            'hosting_monthly_price' => $package->hosting_monthly_price,
+                        ],
                         'webia_template_id' => $template?->id,
                         'template_snapshot' => $template ? [
                             'name' => $template->name,

@@ -18,6 +18,7 @@ class WebiaPackageFactory extends Factory
             'slug' => Str::slug($name),
             'description' => fake()->sentence(),
             'price' => fake()->numberBetween(100000, 3000000),
+            'hosting_monthly_price' => 150000,
             'cms_enabled' => false,
             'chatbot_monthly_quota' => 500,
             'features' => ['Landing page', 'Kontak bisnis'],

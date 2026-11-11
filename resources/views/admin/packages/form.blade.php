@@ -21,11 +21,12 @@
             @foreach ([
                 ['name', 'Nama', 'text'], ['slug', 'Slug', 'text'], ['description', 'Deskripsi', 'text'],
                 ['old_price', 'Harga lama', 'number'], ['price', 'Harga', 'number'],
+                ['hosting_monthly_price', 'Harga hosting bulanan', 'number'],
                 ['chatbot_monthly_quota', 'Kuota chatbot bulanan', 'number'], ['sort_order', 'Urutan', 'number']
             ] as [$field, $label, $type])
                 <div class="form-field">
                     <label for="{{ $field }}">{{ $label }}</label>
-                    <input id="{{ $field }}" name="{{ $field }}" type="{{ $type }}" value="{{ old($field, $package->{$field}) }}" {{ in_array($field, ['name', 'slug', 'description', 'price', 'chatbot_monthly_quota', 'sort_order']) ? 'required' : '' }}>
+                    <input id="{{ $field }}" name="{{ $field }}" type="{{ $type }}" value="{{ old($field, $package->{$field}) }}" @if ($field === 'hosting_monthly_price') min="1" @endif {{ in_array($field, ['name', 'slug', 'description', 'price', 'hosting_monthly_price', 'chatbot_monthly_quota', 'sort_order']) ? 'required' : '' }}>
                     @error($field) <p class="form-error">{{ $message }}</p> @enderror
                 </div>
             @endforeach

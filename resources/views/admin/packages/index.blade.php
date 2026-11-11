@@ -165,6 +165,7 @@
                             data-delete-url="{{ route('admin.packages.destroy', $package) }}"
                             data-description="{{ $package->description }}"
                             data-features="{{ collect($package->features)->implode("\n") }}"
+                            data-hosting-price="{{ $package->hosting_monthly_price }}"
                             data-id="{{ $package->id }}"
                             data-name="{{ $package->name }}"
                             data-old-price="{{ $package->old_price }}"
@@ -318,6 +319,10 @@
                             <span class="absolute left-3 top-2.5 font-label-md text-label-md text-on-surface-variant">Rp</span>
                             <input class="h-10 w-full rounded-lg bg-surface-container-low pl-10 pr-3 font-mono text-body-sm text-on-surface shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-primary/20" id="packageOldPrice" min="0" name="old_price" type="number">
                         </div>
+                    </div>
+                    <div class="flex flex-col gap-space-sm">
+                        <label class="font-label-md font-bold text-label-md text-on-surface" for="packageHostingPrice">Harga Hosting / Bulan <span class="text-error">*</span></label>
+                        <input class="h-10 rounded-lg bg-surface-container-low px-3 font-mono text-body-sm text-on-surface shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-primary/20" id="packageHostingPrice" min="1" name="hosting_monthly_price" required type="number">
                     </div>
                     <div class="flex flex-col gap-space-sm">
                         <label class="font-label-md font-bold text-label-md text-on-surface" for="packageQuota">Kuota Chatbot / Bulan <span class="text-error">*</span></label>
