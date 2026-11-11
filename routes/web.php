@@ -1374,7 +1374,7 @@ Route::prefix('webia/template/travel-tourism/elegan/umrah-haji-navy-champagne-go
             $currentRoute = (string) Route::currentRouteName();
             $routePrefix = substr($currentRoute, 0, (int) strrpos($currentRoute, '.'));
 
-            return view($viewBase.'.'.$view, [
+            return view($viewBase . '.' . $view, [
                 'd' => $d,
                 'page' => $name,
                 'v'    => $viewBase,
@@ -1413,7 +1413,7 @@ view()->composer(
                 ? substr($name, strlen('umrah-haji.'))
                 : 'home';
 
-            $url = fn(string $key) => route('umrah-haji.'.$key);
+            $url = fn(string $key) => route('umrah-haji.' . $key);
             $img = fn(string $file) => asset($imgBase . $file);
             $wa  = fn(string $text) => 'https://wa.me/' . $uh['brand']['whatsapp'] . '?text=' . rawurlencode($text);
 
@@ -1445,10 +1445,10 @@ view()->composer(
             foreach ($uh['packages'] as $pkg) {
                 $search[] = [
                     'label' => $pkg['name'],
-                    'text' => $pkg['duration'].' · mulai '.$pkg['price'],
-                    'url' => $url('packages').'#'.$pkg['slug'],
+                    'text' => $pkg['duration'] . ' · mulai ' . $pkg['price'],
+                    'url' => $url('packages') . '#' . $pkg['slug'],
                     'icon' => 'kaaba',
-                    'keys' => $pkg['type'].' '.$pkg['route'],
+                    'keys' => $pkg['type'] . ' ' . $pkg['route'],
                 ];
             }
             $search[] = [
@@ -1499,16 +1499,16 @@ Route::prefix('webia/template/travel-tourism/classic/umrah-haji-emerald-green')
     ->group(function () {
         $v = 'website-bisnis.template.travel&tourism.classic.umrah-haji-emerald-green';
 
-        Route::view('/', $v.'.index')->name('home');
-        Route::view('/paket', $v.'.packages')->name('packages');
-        Route::view('/jadwal', $v.'.schedules')->name('schedules');
-        Route::view('/harga', $v.'.prices')->name('prices');
-        Route::view('/hotel-pesawat', $v.'.hotel-flight')->name('hotel-flight');
-        Route::view('/itinerary', $v.'.itinerary')->name('itinerary');
-        Route::view('/tim', $v.'.team')->name('team');
-        Route::view('/persyaratan', $v.'.requirements')->name('requirements');
-        Route::view('/testimoni', $v.'.testimonials')->name('testimonials');
-        Route::view('/chatbot', $v.'.chatbot')->name('chatbot');
+        Route::view('/', $v . '.index')->name('home');
+        Route::view('/paket', $v . '.packages')->name('packages');
+        Route::view('/jadwal', $v . '.schedules')->name('schedules');
+        Route::view('/harga', $v . '.prices')->name('prices');
+        Route::view('/hotel-pesawat', $v . '.hotel-flight')->name('hotel-flight');
+        Route::view('/itinerary', $v . '.itinerary')->name('itinerary');
+        Route::view('/tim', $v . '.team')->name('team');
+        Route::view('/persyaratan', $v . '.requirements')->name('requirements');
+        Route::view('/testimoni', $v . '.testimonials')->name('testimonials');
+        Route::view('/chatbot', $v . '.chatbot')->name('chatbot');
     });
 
 Route::prefix('webia/template/professional-service/artistic/branding-creative-agency-terracotta')
@@ -1533,8 +1533,8 @@ Route::prefix('webia/template/professional-service/artistic/branding-creative-ag
                 return view($view, [
                     'page' => $name,
                     'c'    => config($conf),
-                    'r'    => fn (string $n) => route('bca-terracotta.' . $n),
-                    'img'  => fn (string $f) => asset('images/' . $path . '/' . $f),
+                    'r'    => fn(string $n) => route('bca-terracotta.' . $n),
+                    'img'  => fn(string $f) => asset('images/' . $path . '/' . $f),
                     'css'  => asset('css/' . $path . '/branding-creative-agency.css'),
                     'js'   => asset('js/' . $path . '/branding-creative-agency.js'),
                 ]);
@@ -1842,6 +1842,11 @@ Route::prefix('webia/template')->group(function () {
         '/vanguard-lawyer',
         'website-bisnis.templates.professional-service.lawyer.vanguard.vanguard'
     )->name('webia.template.vanguard-lawyer');
+
+    Route::view(
+        '/strike-branding-creative',
+        'website-bisnis.templates.professional-service.branding-creative.strike.strike'
+    )->name('webia.template.strike-branding-creative');
 });
 
 Route::get('webia/template/{path}', TemplatePreviewController::class)

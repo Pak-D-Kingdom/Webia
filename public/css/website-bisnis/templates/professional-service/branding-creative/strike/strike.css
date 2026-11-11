@@ -1,0 +1,113 @@
+
+        /* Base Setup & Refined Neo-Brutalism */
+        body {
+            background-color: #F5F0E8;
+            color: #171717;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Architectural Grid Sub-pattern */
+        .grid-pattern {
+            background-image: radial-gradient(#171717 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        /* Clean Neo-Brutalist Hard Borders */
+        .border-brutal {
+            border: 3px solid #171717;
+        }
+        .border-brutal-thick {
+            border: 4px solid #171717;
+        }
+
+        /* Smooth Elevated Button Actions */
+        .btn-brutal {
+            transition: all 0.15s cubic-bezier(0.2, 0.8, 0.2, 1);
+            border: 3px solid #171717;
+            box-shadow: 4px 4px 0px #171717;
+        }
+        .btn-brutal:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 7px 7px 0px #171717;
+        }
+        .btn-brutal:active {
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0px #171717;
+        }
+
+        /* Infinite Marquee Animation */
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            display: flex;
+            width: 200%;
+            animation: marquee 20s linear infinite;
+        }
+
+        /* Continuous Kinetic AI Widget Animations */
+        @keyframes floatRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+            animation: floatRotate 12s linear infinite;
+        }
+
+        @keyframes glitchPulse {
+            0%, 100% { transform: scale(1); box-shadow: 5px 5px 0px #171717; }
+            50% { transform: scale(1.04); box-shadow: 7px 7px 0px #FF5A36; }
+        }
+        .glitch-pulse {
+            animation: glitchPulse 2.5s infinite ease-in-out;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F5F0E8;
+            border-left: 2px solid #171717;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #FF5A36;
+            border: 2px solid #171717;
+        }
+    
+
+/* STRIKE kinetic extras */
+@keyframes stickerPop { 0%,100%{transform:rotate(-5deg) scale(1)} 50%{transform:rotate(5deg) scale(1.08)} }
+@keyframes acidOrbit { to { transform:rotate(360deg) } }
+@keyframes orangeGlitch { 0%,92%,100%{text-shadow:3px 0 #FF5A36,-3px 0 #D7FF00} 94%{text-shadow:-5px 0 #FF5A36,5px 0 #D7FF00;transform:translateX(2px)} 96%{text-shadow:4px 0 #FF5A36,-4px 0 #D7FF00;transform:translateX(-2px)} }
+.sticker-burst{animation:stickerPop 2.2s ease-in-out infinite}
+.acid-orbit{animation:acidOrbit 9s linear infinite}
+.glitch-word{animation:orangeGlitch 4s steps(1,end) infinite}
+.reveal-on-scroll{animation:revealUp .75s both;animation-timeline:view();animation-range:entry 0% entry 30%}
+@keyframes revealUp{from{opacity:.15;transform:translateY(34px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}
+
+/* Reliable standalone Brand Personality Matrix (works without Alpine) */
+.vibe-preview{min-height:340px;transition:background-color .35s,color .35s,transform .35s}
+.vibe-preview.vibe-bold{background:#FF5A36;color:#fff}
+.vibe-preview.vibe-luxury{background:#171717;color:#fff}
+.vibe-preview.vibe-playful{background:#D7FF00;color:#171717}
+.vibe-preview.vibe-corporate{background:#2563EB;color:#fff}
+.vibe-tag{background:#D7FF00;color:#171717}
+.vibe-luxury .vibe-tag{background:#F5F0E8;color:#171717}
+.vibe-playful .vibe-tag{background:#FF5A36;color:#fff}
+.vibe-corporate .vibe-tag{background:#fff;color:#171717}
+.vibe-demo{background:#171717;color:#D7FF00}
+.vibe-luxury .vibe-demo{background:#F5F0E8;color:#171717}
+.vibe-playful .vibe-demo{background:#fff;color:#FF5A36}
+.vibe-corporate .vibe-demo{background:#fff;color:#2563EB}
+.vibe-tab{background:#F5F0E8;color:#171717}
+.vibe-tab.is-active{background:#FF5A36;color:#fff;transform:translate(-2px,-2px);box-shadow:6px 6px 0 #171717}
+
+/* Project brief upload + WhatsApp send action */
+#brief input[type="file"]{max-width:100%;font-family:inherit}
+#brief input[type="file"]::file-selector-button{border:2px solid #171717;background:#F5F0E8;padding:.55rem .85rem;margin-right:.65rem;font-weight:700;cursor:pointer;box-shadow:3px 3px 0 #171717}
+#brief input[type="file"]::file-selector-button:hover{background:#D7FF00}
+#brief .btn-brutal{min-height:54px}
