@@ -29,6 +29,7 @@
 
 {{-- NAVBAR --}}
 <header class="bca-header" id="bca-header">
+    <span class="bca-progress" aria-hidden="true"></span>
     <div class="bca-wrap bca-header__in">
         <a class="bca-logo" href="{{ $r('home') }}" aria-label="{{ $c['brand']['name'] }}, ke beranda"><svg class="bca-logo__mark" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" fill="#B05237"/><g class="sun"><circle cx="20" cy="19" r="9" fill="#EDB85A"/></g><path class="h1" d="M0 28c7-5 13-5 20 0s13 5 20 0v12H0Z"/><path class="h2" d="M0 33c7-4 13-4 20 0s13 4 20 0v7H0Z"/></svg><span class="bca-logo__t"><span class="bca-logo__n">{{ $c['brand']['short'] }}</span><span class="bca-logo__s">{{ $c['brand']['sub'] }}</span></span></a>
         <button class="bca-burger" type="button" aria-expanded="false" aria-controls="bca-nav" data-bca-burger><span></span><span></span><span class="sr">Buka menu</span></button>
@@ -48,9 +49,16 @@
 @if($page !== 'home')
 <section class="bca-pagehead">
     <div class="bca-wrap">
-        <ol class="bca-crumb" aria-label="Jejak halaman"><li><a href="{{ $r('home') }}">Beranda</a></li><li aria-current="page">{{ $c['pages'][$page]['label'] }}</li></ol>
-        <h1>{{ $c['pages'][$page]['title'] }}</h1>
-        <p>{{ $c['pages'][$page]['desc'] }}</p>
+        <div class="bca-ph__t">
+            <ol class="bca-crumb" aria-label="Jejak halaman"><li><a href="{{ $r('home') }}">Beranda</a></li><li aria-current="page">{{ $c['pages'][$page]['label'] }}</li></ol>
+            <h1>{{ $c['pages'][$page]['title'] }}</h1>
+            <p>{{ $c['pages'][$page]['desc'] }}</p>
+        </div>
+        <div class="bca-ph__art" aria-hidden="true">
+            <span class="bca-ph__rays"></span>
+            <figure class="bca-ph__card" data-cap="{{ $c['pages'][$page]['label'] }}"><img src="{{ $img($c['pages'][$page]['img']) }}" alt="" width="800" height="1000"></figure>
+            <span class="bca-ph__dot bca-ph__dot--a"></span><span class="bca-ph__dot bca-ph__dot--b"></span>
+        </div>
     </div>
     <span class="bca-hills bca-hills--back" aria-hidden="true"></span>
     <span class="bca-hills" aria-hidden="true" style="--next:{{ $c['pages'][$page]['next'] }}"></span>
@@ -186,7 +194,7 @@
             <label>Kebutuhan utama
                 <select name="layanan"><option value="">Pilih layanan</option>@foreach($c['lead']['services'] as $o)<option>{{ $o }}</option>@endforeach</select>
             </label>
-            <button class="bca-btn bca-btn--solid" type="submit">{{ $c['home']['lead']['cta'] }}</button>
+            <button class="bca-send" type="submit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/></svg><span>{{ $c['home']['lead']['cta'] }}</span></button>
         </form>
     </div>
 </section>
@@ -196,13 +204,19 @@
         <div data-rv>
             <div class="bca-bigp">{!! $c['mascot'] !!}</div>
             <h2 class="bca-h2">{{ $c['home']['ai']['title'] }}</h2>
-            <p class="bca-lead" style="margin:1rem 0 1.75rem">{{ $c['home']['ai']['text'] }}</p>
+            <p class="bca-lead" style="margin:1rem 0 1.5rem">{{ $c['home']['ai']['text'] }}</p>
+            <ul class="bca-points">@foreach($c['home']['ai']['points'] as $pt)<li>{{ $pt }}</li>@endforeach</ul>
             <button class="bca-btn bca-btn--sun" type="button" data-bca-chat-open>{{ $c['home']['ai']['cta'] }}</button>
         </div>
-        <div class="bca-mock" data-rv aria-hidden="true">
-            <div class="bca-msg bca-msg--me">{{ $c['faq']['items'][3]['q'] }}</div>
-            <div class="bca-msg">{{ $c['faq']['items'][3]['a'] }}</div>
-            <div class="bca-msg bca-msg--me">{{ $c['faq']['items'][2]['q'] }}</div>
+        <div class="bca-demo" data-rv aria-hidden="true">
+            <div class="bca-chat__head"><span class="bca-chat__av">{!! $c['mascot'] !!}</span><div><strong>{{ $c['faq']['bot']['name'] }}</strong><small class="bca-chat__stat">Online, asisten konsultasi AI</small></div></div>
+            <div class="bca-demo__body">
+                <div class="bca-msg bca-msg--me">{{ $c['faq']['items'][3]['q'] }}</div>
+                <div class="bca-msg">{{ $c['faq']['items'][3]['a'] }}</div>
+                <div class="bca-msg bca-msg--me">{{ $c['faq']['items'][2]['q'] }}</div>
+                <div class="bca-msg bca-typing"><i></i><i></i><i></i></div>
+            </div>
+            <div class="bca-demo__in"><span>{{ $c['faq']['bot']['placeholder'] }}</span><b></b></div>
         </div>
     </div>
 </section>
@@ -212,17 +226,18 @@
 @if($page === 'layanan')
 <section class="bca-sec">
     <div class="bca-wrap">
-        <ul class="bca-dos">
+        <div class="bca-svcards">
             @foreach($c['services']['items'] as $s)
-            <li style="--c:{{ $s['c'] }}" data-rv>
-                <h3>{{ $s['t'] }}</h3>
-                <p>{{ $s['d'] }}</p>
-                <ul class="bca-tags">@foreach($s['list'] as $l)<li>{{ $l }}</li>@endforeach</ul>
-                <div><span class="bca-price">mulai {{ $s['price'] }}</span><small>{{ $s['time'] }}</small></div>
-            </li>
+            <article class="bca-svcard {{ ($s['dk'] ?? false) ? 'is-dk' : '' }}" style="--c:{{ $s['c'] }}" data-rv>
+                <header class="bca-svcard__h"><span class="bca-svcard__t">{{ $s['time'] }}</span><h3>{{ $s['t'] }}</h3></header>
+                <div class="bca-svcard__b">
+                    <p>{{ $s['d'] }}</p>
+                    <ul class="bca-checks">@foreach($s['list'] as $l)<li>{{ $l }}</li>@endforeach</ul>
+                    <div class="bca-svcard__f"><span class="bca-price">mulai {{ $s['price'] }}</span><a class="bca-btn bca-btn--ghost" href="{{ $r('janji') }}">Konsultasikan</a></div>
+                </div>
+            </article>
             @endforeach
-        </ul>
-        <p style="margin-top:2.5rem"><a class="bca-btn bca-btn--solid" href="{{ $r('janji') }}">Konsultasikan layanan</a></p>
+        </div>
     </div>
 </section>
 @endif
@@ -303,8 +318,8 @@
 </section>
 <section class="bca-sec">
     <div class="bca-wrap bca-split">
-        <div data-rv><h2 class="bca-h2" style="margin-bottom:1.5rem">Tambahan opsional</h2><ul class="bca-addons">@foreach($c['pricing']['addons'] as $a)<li><span>{{ $a['t'] }}</span><strong>{{ $a['p'] }}</strong></li>@endforeach</ul></div>
-        <div data-rv><h2 class="bca-h2" style="margin-bottom:1.5rem">Ketentuan pembayaran</h2><ul class="bca-terms">@foreach($c['pricing']['terms'] as $t)<li>{{ $t }}</li>@endforeach</ul></div>
+        <div class="bca-panel" data-rv><h2 class="bca-h3">Tambahan opsional</h2><ul class="bca-addons">@foreach($c['pricing']['addons'] as $a)<li><span>{{ $a['t'] }}</span><strong>{{ $a['p'] }}</strong></li>@endforeach</ul></div>
+        <div class="bca-panel" data-rv><h2 class="bca-h3">Ketentuan pembayaran</h2><ul class="bca-terms">@foreach($c['pricing']['terms'] as $t)<li>{{ $t }}</li>@endforeach</ul></div>
     </div>
 </section>
 @endif
@@ -342,7 +357,6 @@
         <form class="bca-booking" method="post" action="{{ $c['appointment']['action'] }}" novalidate data-bca-form data-bca-booking data-topic="membuat janji temu konsultasi" data-brand="{{ $c['brand']['name'] }}" data-wa="https://wa.me/{{ $c['brand']['whatsapp'] }}" data-slots="{{ json_encode($c['appointment']['slots'], 257) }}">
             @csrf
             <div class="bca-fm bca-fm--panel">
-                <div class="bca-ok" role="status" tabindex="-1" hidden>Terima kasih. WhatsApp akan terbuka dengan pesan jadwal yang siap dikirim. Jika tidak terbuka, <a data-wa-fallback href="#" target="_blank" rel="noopener">klik di sini</a>.</div>
                 <fieldset class="bca-fs"><legend>Jenis konsultasi</legend>
                     <div class="bca-opts bca-opts--3">
                         @foreach($c['appointment']['types'] as $i => $t)
@@ -386,7 +400,7 @@
                     <div><dt>Jam</dt><dd data-sum="waktu">Belum dipilih</dd></div>
                 </dl>
                 <p style="font-size:.9rem;opacity:.8">{{ $c['appointment']['note'] }}</p>
-                <button class="bca-btn bca-btn--sun" type="submit">Kirim jadwal lewat WhatsApp</button>
+                <button class="bca-send bca-send--sun" type="submit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/></svg><span>Kirim jadwal lewat WhatsApp</span></button>
             </aside>
         </form>
     </div>
@@ -405,7 +419,6 @@
         </div>
         <form class="bca-fm bca-fm--panel" method="post" action="{{ $c['lead']['action'] }}" novalidate data-bca-form data-topic="mengirim brief proyek" data-brand="{{ $c['brand']['name'] }}" data-wa="https://wa.me/{{ $c['brand']['whatsapp'] }}" data-rv>
             @csrf
-            <div class="bca-ok" role="status" tabindex="-1" hidden>Terima kasih. WhatsApp akan terbuka dengan brief Anda yang siap dikirim. Jika tidak terbuka, <a data-wa-fallback href="#" target="_blank" rel="noopener">klik di sini</a>.</div>
             <div class="bca-row">
                 <label class="bca-field">Nama<input type="text" name="nama" autocomplete="name" required><span class="bca-err" aria-live="polite"></span></label>
                 <label class="bca-field">Email<input type="email" name="email" autocomplete="email" required><span class="bca-err" aria-live="polite"></span></label>
@@ -425,7 +438,7 @@
             </div>
             <label class="bca-field">Ceritakan proyek Anda<textarea name="deskripsi" required></textarea><span class="bca-err" aria-live="polite"></span></label>
             <label class="bca-field">Tautan referensi (opsional)<input type="url" name="referensi" placeholder="https://"></label>
-            <button class="bca-btn bca-btn--solid" type="submit">Kirim brief lewat WhatsApp</button>
+            <button class="bca-send" type="submit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/></svg><span>Kirim brief lewat WhatsApp</span></button>
             <p class="bca-fnote">Brief dikirim ke tim kami lewat WhatsApp. Data Anda hanya dipakai untuk membalas permintaan ini.</p>
         </form>
     </div>
@@ -465,6 +478,19 @@
     <div class="bca-footer__credit"><div class="bca-wrap"><p>© 2026 WEBIA by D-KREASI. Seluruh hak cipta dilindungi.</p><button class="bca-top" type="button" data-top>Kembali ke atas</button></div></div>
 </footer>
 
+{{-- PESAN SUKSES FORM --}}
+<dialog class="bca-done" id="bca-done" aria-labelledby="bca-done-t">
+    <div class="bca-done__art" aria-hidden="true"><span class="bca-done__sun"></span><span class="bca-done__hills"></span><span class="bca-done__check"></span><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="bca-done__body">
+        <h2 id="bca-done-t">Pesan siap dikirim</h2>
+        <p>WhatsApp akan terbuka dengan pesan yang sudah terisi dari formulir Anda. Tinggal tekan kirim, dan tim kami segera membalas.</p>
+        <div class="bca-done__act">
+            <a class="bca-btn bca-btn--solid" data-wa-fallback href="https://wa.me/{{ $c['brand']['whatsapp'] }}" target="_blank" rel="noopener">Buka WhatsApp</a>
+            <button class="bca-btn bca-btn--ghost" type="button" data-done-close>Tutup</button>
+        </div>
+    </div>
+</dialog>
+
 {{-- DETAIL PROYEK --}}
 <dialog class="bca-lb" id="bca-lb" aria-label="Detail proyek">
     <div class="bca-lb__in">
@@ -477,16 +503,14 @@
 {{-- WHATSAPP + ASISTEN AI --}}
 <div class="bca-fab">
     <a class="bca-wa" href="https://wa.me/{{ $c['brand']['whatsapp'] }}?text={{ rawurlencode($c['brand']['wa_text']) }}" target="_blank" rel="noopener" aria-label="Chat via WhatsApp ke {{ $c['brand']['phone'] }}">
-        <span class="bca-wa__ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M12 3a9 9 0 0 0-7.800 13.500L3 21l4.600-1.200A9 9 0 1 0 12 3z"/><path fill="currentColor" d="M17.500 14.400c-.3-.1-1.700-.8-2-.9-.3-.1-.5-.1-.7.1l-.9 1.100c-.2.2-.3.2-.6.1a7 7 0 0 1-3.500-3c-.3-.4.3-.4.8-1.400.1-.2 0-.4 0-.5l-.9-2c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.200 5.200 5.200 0 0 0 1.100 2.700 11.900 11.900 0 0 0 4.600 4.100c1.700.7 2.400.8 3.200.7a2.700 2.700 0 0 0 1.800-1.300 2.200 2.200 0 0 0 .2-1.300c-.1-.1-.3-.2-.6-.3z"/></svg></span>
-        <span class="bca-wa__t"><strong>Chat WhatsApp</strong><small>Biasanya balas dalam 1 jam</small></span>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M12 3a9 9 0 0 0-7.800 13.500L3 21l4.600-1.200A9 9 0 1 0 12 3z"/><path fill="currentColor" d="M17.500 14.400c-.3-.1-1.700-.8-2-.9-.3-.1-.5-.1-.7.1l-.9 1.100c-.2.2-.3.2-.6.1a7 7 0 0 1-3.500-3c-.3-.4.3-.4.8-1.400.1-.2 0-.4 0-.5l-.9-2c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.200 5.200 5.200 0 0 0 1.100 2.700 11.900 11.900 0 0 0 4.600 4.100c1.700.7 2.400.8 3.200.7a2.700 2.700 0 0 0 1.800-1.300 2.200 2.200 0 0 0 .2-1.300c-.1-.1-.3-.2-.6-.3z"/></svg>
+        <i aria-hidden="true"></i><span class="bca-wa__tip">Chat WhatsApp</span>
     </a>
     <button class="bca-bot" type="button" aria-expanded="false" aria-controls="bca-chat" aria-label="Buka asisten AI Prisma" data-bca-chat-open>{!! $c['mascot'] !!}<span class="bca-bot__ai" aria-hidden="true">AI</span><span class="bca-bot__tip">Konsultasi dengan AI</span></button>
 </div>
 <section class="bca-chat" id="bca-chat" role="dialog" aria-label="Asisten AI {{ $c['brand']['name'] }}" data-wa="https://wa.me/{{ $c['brand']['whatsapp'] }}" data-u-layanan="{{ $r('layanan') }}" data-u-harga="{{ $r('harga') }}" data-u-janji="{{ $r('janji') }}" data-u-brief="{{ $r('brief') }}" hidden>
-    <div class="bca-chat__head"><span class="bca-chat__av">{!! $c['mascot'] !!}</span><div><strong>{{ $c['faq']['bot']['name'] }}</strong><small>Asisten konsultasi AI, online</small></div><button class="bca-chat__x" type="button" aria-label="Tutup asisten" data-bca-chat-close>&times;</button></div>
+    <div class="bca-chat__head"><span class="bca-chat__av">{!! $c['mascot'] !!}</span><div><strong>{{ $c['faq']['bot']['name'] }}</strong><small class="bca-chat__stat">Online, asisten konsultasi AI</small></div><button class="bca-chat__x" type="button" aria-label="Tutup asisten" data-bca-chat-close>&times;</button></div>
     <div class="bca-chat__log" role="log" aria-live="polite"></div>
-    <p class="bca-chat__lbl">Pertanyaan populer</p>
-    <div class="bca-chat__chips"></div>
     <form class="bca-chat__form"><input type="text" placeholder="{{ $c['faq']['bot']['placeholder'] }}" aria-label="Pertanyaan Anda" maxlength="200" autocomplete="off"><button type="submit" aria-label="Kirim pertanyaan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button></form>
     <p class="bca-chat__wa">Lebih suka bicara dengan tim? <a href="https://wa.me/{{ $c['brand']['whatsapp'] }}" target="_blank" rel="noopener">Chat WhatsApp</a></p>
 </section>

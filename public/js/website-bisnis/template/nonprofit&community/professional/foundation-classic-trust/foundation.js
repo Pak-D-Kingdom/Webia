@@ -84,7 +84,7 @@
     burger.addEventListener('click', function () { setMenu(!menu.classList.contains('is-open')); });
     $$('a', menu).forEach(function (a) { a.addEventListener('click', function () { setMenu(false); }); });
     D.addEventListener('click', function (e) { if (menu.classList.contains('is-open') && !menu.contains(e.target) && !burger.contains(e.target)) setMenu(false); });
-    W.addEventListener('resize', function () { if (W.innerWidth > 1439) setMenu(false); });
+    W.addEventListener('resize', function () { if (W.innerWidth > 1023) setMenu(false); });
     D.addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenu(false); });
   }
 
@@ -274,13 +274,18 @@
     }
     function greet() {
       if (greeted) return; greeted = true;
-      add('bot', FAQ.greeting);
-      suggest = D.createElement('div'); suggest.className = 'fd-suggest';
+      var w = D.createElement('div'); w.className = 'fd-welcome';
+      var im = D.createElement('img'); im.src = rootEl.getAttribute('data-robot') || ''; im.alt = ''; im.width = 84;
+      var tx = D.createElement('div');
+      var h = D.createElement('b'); h.textContent = 'Halo! Saya HarapanBot!';
+      var pp = D.createElement('p'); pp.textContent = 'Saya siap membantu Anda seputar program kami dan donasi. Pilih topik di bawah atau ketik pertanyaan Anda.';
+      tx.appendChild(h); tx.appendChild(pp); w.appendChild(im); w.appendChild(tx); body.appendChild(w);
+      suggest = D.createElement('div'); suggest.className = 'fd-topics';
       FAQ.quick.forEach(function (q, i) {
         var b = D.createElement('button'); b.type = 'button';
         var ic = D.createElement('span'); ic.className = 'fd-qbtn__ico'; ic.appendChild(svgIcon(ICONS[i % ICONS.length]));
-        var tx = D.createElement('span'); tx.textContent = q;
-        b.appendChild(ic); b.appendChild(tx);
+        var t = D.createElement('span'); t.textContent = q;
+        b.appendChild(ic); b.appendChild(t);
         b.addEventListener('click', function () { ask(q); });
         suggest.appendChild(b);
         var c = D.createElement('button'); c.type = 'button'; c.className = 'fd-chip'; c.textContent = q;
@@ -366,6 +371,63 @@
     });
   });
 
+
+  /* ---------- Dropdown pilihan (pengganti <select> bawaan) ---------- */
+  function enhanceSelect(sel) {
+    if (sel.__fd) return; sel.__fd = true;
+    var wrap = D.createElement('div'); wrap.className = 'fd-sel';
+    sel.parentNode.insertBefore(wrap, sel); wrap.appendChild(sel);
+    sel.classList.add('fd-sel__native'); sel.tabIndex = -1; sel.setAttribute('aria-hidden', 'true');
+    var btn = D.createElement('button'); btn.type = 'button'; btn.className = 'fd-sel__btn';
+    btn.setAttribute('aria-haspopup', 'listbox'); btn.setAttribute('aria-expanded', 'false');
+    var label = D.createElement('span'); btn.appendChild(label); btn.appendChild(svgIcon('chevron', 'fd-sel__chev'));
+    var panel = D.createElement('div'); panel.className = 'fd-sel__panel'; panel.setAttribute('role', 'listbox');
+    var opts = [];
+    Array.prototype.forEach.call(sel.options, function (o, i) {
+      var b = D.createElement('button'); b.type = 'button'; b.className = 'fd-sel__opt' + (o.value === '' ? ' is-empty' : '');
+      b.setAttribute('role', 'option'); b.tabIndex = -1;
+      var t = D.createElement('span'); t.textContent = o.text; b.appendChild(t); b.appendChild(svgIcon('check'));
+      b.addEventListener('click', function () { pick(i); });
+      panel.appendChild(b); opts.push(b);
+    });
+    wrap.appendChild(btn); wrap.appendChild(panel); sel.__fdBtn = btn;
+    var lab = sel.id && D.querySelector('label[for="' + sel.id + '"]');
+    if (lab) lab.addEventListener('click', function (e) { e.preventDefault(); btn.focus(); });
+    function sync() {
+      var o = sel.options[sel.selectedIndex];
+      label.textContent = o ? o.text : '';
+      btn.classList.toggle('is-placeholder', !sel.value);
+      opts.forEach(function (b, i) { b.setAttribute('aria-selected', i === sel.selectedIndex ? 'true' : 'false'); });
+    }
+    function open(o) {
+      wrap.classList.toggle('is-open', o); btn.setAttribute('aria-expanded', o ? 'true' : 'false');
+      if (o) { var cur = opts[sel.selectedIndex] || opts[0]; if (cur) { cur.classList.add('is-active'); if (cur.scrollIntoView) cur.scrollIntoView({ block: 'nearest' }); } }
+      else opts.forEach(function (b) { b.classList.remove('is-active'); });
+    }
+    function pick(i) {
+      sel.selectedIndex = i; sync(); open(false); btn.focus();
+      sel.dispatchEvent(new Event('input', { bubbles: true })); sel.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+    function move(d) {
+      var idx = opts.findIndex(function (b) { return b.classList.contains('is-active'); });
+      idx = Math.max(0, Math.min(opts.length - 1, (idx < 0 ? sel.selectedIndex : idx) + d));
+      opts.forEach(function (b, k) { b.classList.toggle('is-active', k === idx); });
+      if (opts[idx].scrollIntoView) opts[idx].scrollIntoView({ block: 'nearest' });
+    }
+    btn.addEventListener('click', function () { open(!wrap.classList.contains('is-open')); });
+    btn.addEventListener('keydown', function (e) {
+      var isOpen = wrap.classList.contains('is-open');
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); if (!isOpen) open(true); else move(e.key === 'ArrowDown' ? 1 : -1); }
+      else if ((e.key === 'Enter' || e.key === ' ') && isOpen) { e.preventDefault(); var a = opts.findIndex(function (b) { return b.classList.contains('is-active'); }); pick(a < 0 ? sel.selectedIndex : a); }
+      else if (e.key === 'Escape' && isOpen) { e.preventDefault(); e.stopPropagation(); open(false); }
+      else if (e.key === 'Tab') open(false);
+    });
+    D.addEventListener('click', function (e) { if (!wrap.contains(e.target)) open(false); });
+    sel.addEventListener('change', sync);
+    sync();
+  }
+  $$('.fd-input select').forEach(enhanceSelect);
+
   /* ---------- Form statis → WhatsApp ---------- */
   var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   $$('[data-fd-wa-form]').forEach(function (form) {
@@ -381,6 +443,15 @@
       $$('input[name="nominal"]', form).forEach(function (x) { x.addEventListener('change', function () { custom.value = ''; }); });
     }
 
+    var sum = $('[data-fd-summary]', form);
+    function updSummary() {
+      if (!sum) return;
+      var j = $('input[name="jenis"]:checked', form), n = $('input[name="nominal"]:checked', form), pr = $('select[name="program"]', form);
+      var amt = custom && custom.value ? Number(custom.value) : (n ? Number(n.value) : 0);
+      sum.textContent = (j ? j.getAttribute('data-v') : '-') + ' · ' + (amt ? 'Rp ' + fmt(amt) : 'nominal belum dipilih') + (pr ? ' · ' + pr.value : '');
+    }
+    form.addEventListener('change', updSummary); form.addEventListener('input', updSummary); updSummary();
+
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var firstBad = null;
@@ -393,7 +464,7 @@
         f.classList.toggle('is-invalid', bad);
         if (bad && !firstBad) firstBad = c;
       });
-      if (firstBad) { firstBad.focus(); toast('Mohon lengkapi data yang ditandai.'); return; }
+      if (firstBad) { (firstBad.__fdBtn || firstBad).focus(); toast('Mohon lengkapi data yang ditandai.'); return; }
 
       var lines = [form.getAttribute('data-title') || 'Halo Harapan Untuk Negeri Foundation', ''];
       var nominalLain = custom && custom.value ? Number(custom.value) : 0;
