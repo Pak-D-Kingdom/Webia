@@ -190,6 +190,26 @@ class WebiaTemplatePutriSeeder extends Seeder
                 'sort_order' => 66,
             ],
 
+            // Template 10 — Photography & Creative Studio · Motion Graphics & 3D Studio · Traditional / Cultural · Coral & Peach (Sesuai Screenshot)
+            [
+                'name' => 'PusakaMotion 3D Studio — Motion Graphics & 3D Studio Traditional Cultural Coral & Peach',
+                'slug' => 'photography-motiongraphics-traditionalcultural-coralpeach-putri',
+                'category_slug' => 'photography-creative-studio',
+                'category_label' => 'Photography & Creative Studio',
+                'business_types' => ['Motion Graphics & 3D Studio'],
+                'design_style' => 'Traditional / Cultural',
+                'color_theme' => 'Coral & Peach',
+                'description' => 'Website studio motion graphics & visual 3D bernuansa tradisional kultural dengan palet Coral & Peach untuk PusakaMotion 3D Studio. Menggabungkan narasi warisan Nusantara dengan CGI 3D modern, animasi kinetik motif etnik, rekonstruksi candi purbakala, kalkulator estimasi render budaya, FAQ interaktif, concierge WhatsApp, dan PusakaAI Creative Assistant.',
+                'preview_style' => 'preview-company',
+                'eyebrow' => 'CULTURAL HERITAGE CGI & KINETIC 3D STUDIO',
+                'headline' => 'Menghidupkan Pusaka Nusantara,<br>Lewat Dimensi 3D & Gerak Sinematik.',
+                'tag' => 'Photography & Creative Studio · Motion Graphics & 3D Studio · Traditional / Cultural · Coral & Peach',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/photography-motiongraphics-traditionalcultural-coralpeach-putri',
+                'is_active' => true,
+                'sort_order' => 68,
+            ],
+
             // Template Default — Technology & IT · Software House · Professional
             [
                 'name' => 'Nexora Digital — Software House',

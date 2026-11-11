@@ -543,6 +543,14 @@ Route::view(
 )->name('webia.template.photography-motiongraphics-premiumminimal-champagneglow-putri');
 
 // =====================================================
+// WEBIA - PHOTOGRAPHY & CREATIVE STUDIO — PUTRI (Motion Graphics & 3D Studio Traditional Cultural Coral & Peach)
+// =====================================================
+Route::view(
+    '/webia/template/photography-motiongraphics-traditionalcultural-coralpeach-putri',
+    'website-bisnis.templates.photography-creative.motion-graphics.photography-motiongraphics-traditionalcultural-coralpeach-putri'
+)->name('webia.template.photography-motiongraphics-traditionalcultural-coralpeach-putri');
+
+// =====================================================
 // WEBIA - SPORTS & FITNESS (GYM & FITNESS)
 // =====================================================
 Route::view(
