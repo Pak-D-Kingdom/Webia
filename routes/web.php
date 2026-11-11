@@ -134,15 +134,6 @@ Route::get(
 
 
 
-Route::view(
-    '/webia/template/madubersih-home-cleaning-vintage',
-    'website-bisnis.templates.home-services.home-cleaning-deep-cleaning.madubersih-vintage'
-)->name('webia.template.madubersih-home-cleaning-vintage');
-
-Route::view(
-    '/webia/template/astroclean-home-cleaning-cosmic',
-    'website-bisnis.templates.home-services.home-cleaning-deep-cleaning.astroclean-cosmic'
-)->name('webia.template.astroclean-home-cleaning-cosmic');
 
 
 
@@ -1834,14 +1825,6 @@ Route::prefix('webia/template')->group(function () {
         '/wildtrail-adventure-outdoor',
         'website-bisnis.templates.travel-tourism.adventure-outdoor-tour.wildtrail.wildtrail'
     )->name('webia.template.wildtrail-adventure-outdoor');
-    Route::view(
-        '/verba-translation-interpreter',
-        'website-bisnis.templates.professional-service.translation-interpreter.verba.verba'
-    )->name('webia.template.verba-translation-interpreter');
-    Route::view(
-        '/vanguard-lawyer',
-        'website-bisnis.templates.professional-service.lawyer.vanguard.vanguard'
-    )->name('webia.template.vanguard-lawyer');
 });
 
 Route::get('webia/template/{path}', TemplatePreviewController::class)

@@ -14,8 +14,11 @@ class HomeCleaningServiceTemplatesTest extends TestCase
 
     public function test_madubersih_vintage_demo_renders_its_estimator_and_cleaning_services(): void
     {
-        $this->get(route('webia.template.madubersih-home-cleaning-vintage'))
+        $this->seed(WebiaTemplateAlleSeeder::class);
+
+        $this->get(route('webia.template.preview', ['path' => 'madubersih-home-cleaning-vintage']))
             ->assertOk()
+            ->assertViewIs('website-bisnis.templates.home-services.home-cleaning-deep-cleaning.madubersih-vintage')
             ->assertSee('<title>MaduBersih - Layanan Bersih & Sanitasi Rumah Tradisi Tepercaya</title>', false)
             ->assertSee('MADU')
             ->assertSee('Kalkulator MaduBersih')
@@ -27,8 +30,11 @@ class HomeCleaningServiceTemplatesTest extends TestCase
 
     public function test_astroclean_cosmic_demo_renders_its_estimator_and_deep_cleaning_services(): void
     {
-        $this->get(route('webia.template.astroclean-home-cleaning-cosmic'))
+        $this->seed(WebiaTemplateAlleSeeder::class);
+
+        $this->get(route('webia.template.preview', ['path' => 'astroclean-home-cleaning-cosmic']))
             ->assertOk()
+            ->assertViewIs('website-bisnis.templates.home-services.home-cleaning-deep-cleaning.astroclean-cosmic')
             ->assertSee('<title>AstroClean - Spesialis Sanitasi & Deep Cleaning Rumah</title>', false)
             ->assertSee('ASTRO')
             ->assertSee('AstroClean AI Estimator')
