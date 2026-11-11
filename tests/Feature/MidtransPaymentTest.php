@@ -344,6 +344,16 @@ class MidtransPaymentTest extends TestCase
         $this->actingAs($payment->order->user)->get(route('payments.midtrans.simulate', $payment))->assertNotFound();
     }
 
+    public function test_simulate_page_and_pay_are_absent_in_production_without_server_key(): void
+    {
+        config(['app.env' => 'production', 'webia.midtrans.server_key' => null]);
+        $payment = WebiaPayment::factory()->create();
+
+        $this->get(route('payments.midtrans.simulate', $payment))->assertNotFound();
+        $this->post(route('payments.midtrans.simulate.pay', $payment))->assertNotFound();
+        $this->assertSame('created', $payment->fresh()->status);
+    }
+
     public function test_notification_marks_order_paid(): void
     {
         $order = WebiaOrder::factory()->create(['status' => 'awaiting_payment']);

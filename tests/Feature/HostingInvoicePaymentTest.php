@@ -90,4 +90,15 @@ class HostingInvoicePaymentTest extends TestCase
         $this->assertSame('paid', $payment->fresh()->status);
         $this->assertSame('paid', $payment->invoice->fresh()->status);
     }
+
+    public function test_hosting_simulate_page_and_pay_are_absent_in_production_without_server_key(): void
+    {
+        config(['app.env' => 'production', 'webia.midtrans.server_key' => null]);
+        $payment = HostingPayment::factory()->create();
+        $user = $payment->invoice->service->user;
+
+        $this->actingAs($user)->get(route('payments.midtrans.hosting.simulate', $payment))->assertNotFound();
+        $this->actingAs($user)->post(route('payments.midtrans.hosting.simulate.pay', $payment))->assertNotFound();
+        $this->assertSame('created', $payment->fresh()->status);
+    }
 }
