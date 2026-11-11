@@ -25,7 +25,7 @@
                 </ul>
 
                 <div class="inq-hero__actions">
-                    <a class="btn btn--light btn--lg" href="{{ route($cfg['route'] . 'inquiry') }}#form-inquiry">Isi Form Inquiry <svg class="ico" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+                    <a class="btn btn--light btn--lg" href="{{ $r('inquiry') }}#form-inquiry">Isi Form Inquiry <svg class="ico" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
                     <button type="button" class="btn btn--ghost btn--lg" data-ai-open><svg class="ico" aria-hidden="true"><use href="#i-sparkles"/></svg> Tanya AI dulu</button>
                 </div>
             </div>
@@ -35,7 +35,7 @@
                 <ul class="topic-grid">
                     @foreach($cfg['inquiry_types'] as $t)
                         <li>
-                            <a class="topic" href="{{ route($cfg['route'] . 'inquiry') }}?jenis={{ rawurlencode($t['label']) }}#form-inquiry">
+                            <a class="topic" href="{{ $r('inquiry') }}?jenis={{ rawurlencode($t['label']) }}#form-inquiry">
                                 <span class="topic__ico"><svg class="ico" aria-hidden="true"><use href="#i-{{ $t['icon'] }}"/></svg></span>
                                 <span class="topic__txt"><strong>{{ $t['label'] }}</strong><small>{{ $t['text'] }}</small></span>
                                 <svg class="ico topic__go" aria-hidden="true"><use href="#i-arrow-right"/></svg>
@@ -52,7 +52,7 @@
             <div class="inquiry__info">
                 <p class="eyebrow">Inquiry &amp; Konsultasi</p>
                 <h2>Ceritakan kebutuhanmu, kami bantu carikan yang terbaik.</h2>
-                <p>Tanyakan produk, harga, ketersediaan stok, pre-order, hingga kerja sama reseller. Pesanmu langsung terbuka di WhatsApp tim PureGlow.</p>
+                <p>Tanyakan produk, harga, ketersediaan stok, pre-order, hingga kerja sama reseller. Pesanmu langsung terbuka di WhatsApp tim {{ $cfg['brand']['name'] }}.</p>
 
                 <ol class="flow">
                     <li><span>1</span><div><strong>Isi formulir</strong><p>Pilih topik dan tulis pertanyaanmu.</p></div></li>
@@ -82,7 +82,7 @@
                 <button type="button" class="btn btn--soft" data-ai-open><svg class="ico"><use href="#i-sparkles"/></svg> Tanya AI Beauty Assistant dulu</button>
             </div>
 
-            <form class="form card-form" id="form-inquiry" data-wa-form data-wa-subject="Halo PureGlow, saya mengirim inquiry lewat website." novalidate>
+            <form class="form card-form" id="form-inquiry" data-wa-form data-wa-subject="Halo {{ $cfg['brand']['name'] }}, saya mengirim inquiry lewat website." novalidate>
                 <div class="card-form__head">
                     <span class="card-form__ico"><svg class="ico"><use href="#i-message"/></svg></span>
                     <div>

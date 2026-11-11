@@ -7,7 +7,7 @@
     <svg class="deco deco--page-r" aria-hidden="true"><use href="#i-branch"/></svg>
     <div class="container page-head__inner">
         <nav class="crumbs" aria-label="Breadcrumb">
-            <a href="{{ route($cfg['route'] . 'home') }}">Beranda</a>
+            <a href="{{ $r('home') }}">Beranda</a>
             <span aria-hidden="true">/</span>
             <span aria-current="page">{{ $title }}</span>
         </nav>

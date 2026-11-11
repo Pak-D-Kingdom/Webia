@@ -20,7 +20,7 @@
             </div>
 
             {{-- Form pratinjau: TIDAK dikirim ke WhatsApp. Submit hanya membuka halaman Inquiry & Konsultasi (data ikut terisi). --}}
-            <form class="iq-band__card" action="{{ route('skincare-warm-neutral.inquiry') }}" method="get">
+            <form class="iq-band__card" action="{{ $r('inquiry') }}" method="get">
                 <span class="iq-band__badge"><i class="bi bi-chat-heart"></i></span>
                 <h3>Mulai Konsultasi</h3>
                 <p class="muted small">Isi singkat di bawah, lalu lengkapi dan kirim di halaman Inquiry &amp; Konsultasi.</p>

@@ -134,6 +134,92 @@ class CustomerSiteTest extends TestCase
         $this->get($siteUrl.'/reservasi')->assertOk()->assertSee('Reservasi');
     }
 
+    #[DataProvider('retailTemplates')]
+    public function test_publishing_retail_template_renders_customer_catalog_without_demo_reviews(
+        string $templateSlug,
+        string $siteConfigPath,
+        string $demoName,
+        array $pages,
+    ): void {
+        $admin = User::factory()->admin()->create();
+        $template = $this->template($templateSlug, [
+            'name' => 'Retail Skincare',
+            'category_slug' => 'retail',
+            'category_label' => 'Retail',
+            'business_types' => ['Skincare & Beauty Store'],
+            'site_config_path' => $siteConfigPath,
+        ]);
+        $order = WebiaOrder::factory()->create([
+            'webia_template_id' => $template,
+            'template_snapshot' => [
+                'name' => $template->name,
+                'slug' => $template->slug,
+                'category_slug' => $template->category_slug,
+                'site_config_path' => $template->site_config_path,
+            ],
+            'status' => 'paid',
+            'delivery_status' => 'in_progress',
+            'business_data' => [
+                'business_name' => 'Rona Botanika',
+                'tagline' => 'Rawat kulit dengan tenang',
+                'whatsapp' => '0812-3456-7890',
+                'description' => 'Toko perawatan kulit pilihan untuk kebutuhan harian.',
+                'address' => 'Jl. Kemang Raya No. 18',
+                'city' => 'Jakarta',
+                'instagram' => '@ronabotanika',
+            ],
+        ]);
+
+        $this->actingAs($admin)->post(route('admin.orders.progress', $order), [
+            'action' => 'finish',
+        ])->assertRedirect(route('admin.orders.show', $order));
+
+        $order->refresh();
+        $siteUrl = route('sites.show', ['order' => $order->site_slug]);
+        $this->get($siteUrl)
+            ->assertOk()
+            ->assertSee('Rona Botanika')
+            ->assertSee('Rawat kulit dengan tenang')
+            ->assertSee('Jl. Kemang Raya No. 18, Jakarta')
+            ->assertSee('6281234567890', false)
+            ->assertSee('instagram.com/ronabotanika', false)
+            ->assertSee('Contoh katalog', false)
+            ->assertDontSee($demoName)
+            ->assertDontSee('(980)', false)
+            ->assertDontSee('(1.2k)', false);
+
+        foreach ($pages as $page) {
+            $this->get($siteUrl.'/'.$page)
+                ->assertOk()
+                ->assertSee('Rona Botanika')
+                ->assertDontSee($demoName);
+        }
+    }
+
+    public static function retailTemplates(): array
+    {
+        return [
+            'soft pink' => [
+                'retail-skincare-soft-pink',
+                'retail/luxury/skincare-soft-pink/skincare',
+                'Belleza',
+                ['catalog', 'price', 'stock', 'inquiry', 'shop'],
+            ],
+            'sage green' => [
+                'retail-skincare-sage-green',
+                'retail/organic/skincare-sage-green/skincare',
+                'PureGlow',
+                ['katalog', 'harga', 'stok', 'inquiry', 'belanja'],
+            ],
+            'warm neutral' => [
+                'retail-skincare-warm-neutral',
+                'retail/premium-minimal/skincare-warm-neutral/skincare',
+                'GlowEra',
+                ['katalog', 'harga', 'ketersediaan', 'inquiry', 'keranjang'],
+            ],
+        ];
+    }
+
     #[DataProvider('companyTemplates')]
     public function test_publishing_company_template_renders_customer_site(
         string $templateSlug,

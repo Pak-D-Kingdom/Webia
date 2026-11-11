@@ -18,7 +18,9 @@
         <p class="pcard__meta">{{ $p['size'] }} | {{ $p['category_name'] }}</p>
         <p class="pcard__price"><strong>{{ $p['price_fmt'] }}</strong> @if ($p['discount'])<s>{{ $p['old_fmt'] }}</s>@endif</p>
         <p class="pcard__info">
-            <span class="rate"><i class="bi bi-star-fill" aria-hidden="true"></i> {{ $p['rating'] }} ({{ $p['reviews'] }})</span>
+            @unless ($cfg['customer_site'] ?? false)
+                <span class="rate"><i class="bi bi-star-fill" aria-hidden="true"></i> {{ $p['rating'] }} ({{ $p['reviews'] }})</span>
+            @endunless
             <span class="stock stock--{{ $p['status'] }}"><i class="bi bi-circle-fill" aria-hidden="true"></i> {{ $p['status_label'] }}</span>
         </p>
         @include($ns . '.partials.add-control', ['p' => $p, 'mode' => 'block'])

@@ -41,7 +41,7 @@ Route::post('/payments/midtrans/simulate/{payment}', [MidtransController::class,
 Route::get('/payments/midtrans/hosting/simulate/{payment}', [MidtransController::class, 'simulateHostingShow'])->middleware(['auth', 'throttle:10,1'])->name('payments.midtrans.hosting.simulate');
 Route::post('/payments/midtrans/hosting/simulate/{payment}', [MidtransController::class, 'simulateHostingPay'])->middleware(['auth', 'throttle:10,1'])->name('payments.midtrans.hosting.simulate.pay');
 Route::get('/s/{order:site_slug}/{page?}', CustomerSiteController::class)
-    ->whereIn('page', ['menu', 'reservasi', 'tentang-kami', 'portofolio', 'layanan', 'keahlian', 'janji'])
+    ->whereIn('page', ['menu', 'reservasi', 'tentang-kami', 'portofolio', 'layanan', 'keahlian', 'janji', 'catalog', 'price', 'stock', 'shop', 'katalog', 'harga', 'stok', 'belanja', 'ketersediaan', 'inquiry', 'keranjang'])
     ->name('sites.show');
 
 Route::middleware('guest')->group(function (): void {
@@ -646,6 +646,8 @@ Route::prefix('webia/template/retail/luxury/skincare-soft-pink')
         $data = fn() => [
             'ns' => $ns,
             'rp' => $rp,
+            'r' => fn (string $name): string => route($rp.$name),
+            'active' => request()->route()?->getName(),
             'cfg' => config($cfg),
             'img' => asset('images/website-bisnis/template/retail/luxury/skincare-soft-pink'),
             'css' => asset('css/website-bisnis/template/retail/luxury/skincare-soft-pink/skincare.css'),
@@ -663,6 +665,8 @@ Route::prefix('webia/template/retail/luxury/skincare-soft-pink')
 $ns = 'website-bisnis.template.retail.premium-minimal.skincare-warm-neutral';
 $data = [
     'ns' => $ns,
+    'r' => fn (string $name): string => route('skincare-warm-neutral.'.$name),
+    'active' => null,
     'skin' => config('template.retail.premium-minimal.skincare-warm-neutral.skincare'),
 ];
 
@@ -681,13 +685,14 @@ Route::prefix('webia/template/retail/organic/skincare-sage-green')
     ->name('skincare-sage-green.')
     ->group(function () {
         $view = 'website-bisnis.template.retail.organic.skincare-sage-green.';
+        $data = ['r' => fn (string $name): string => route('skincare-sage-green.'.$name)];
 
-        Route::view('/', $view . 'index')->name('home');      // Beranda + preview semua fitur
-        Route::view('/katalog', $view . 'catalog')->name('catalog'); // Product catalog
-        Route::view('/harga', $view . 'price')->name('price');     // Price
-        Route::view('/stok', $view . 'stock')->name('stock');     // Stock / availability
-        Route::view('/inquiry', $view . 'inquiry')->name('inquiry'); // Inquiry (kirim ke WhatsApp)
-        Route::view('/belanja', $view . 'shop')->name('shop');       // Optional e-commerce
+        Route::view('/', $view . 'index', $data)->name('home');      // Beranda + preview semua fitur
+        Route::view('/katalog', $view . 'catalog', $data)->name('catalog'); // Product catalog
+        Route::view('/harga', $view . 'price', $data)->name('price');     // Price
+        Route::view('/stok', $view . 'stock', $data)->name('stock');     // Stock / availability
+        Route::view('/inquiry', $view . 'inquiry', $data)->name('inquiry'); // Inquiry (kirim ke WhatsApp)
+        Route::view('/belanja', $view . 'shop', $data)->name('shop');       // Optional e-commerce
     });
 
 $taNs = 'website-bisnis.template.travel&tourism.modern.travel-agent-ocean-teal';

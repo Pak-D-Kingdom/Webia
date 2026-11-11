@@ -1,7 +1,7 @@
 @extends($ns . '.layouts.app')
 
 @section('title', 'Inquiry & Konsultasi — ' . $skin['name'])
-@section('description', 'Kirim pertanyaan atau konsultasi produk GlowEra melalui WhatsApp.')
+@section('description', 'Kirim pertanyaan atau konsultasi produk '.$skin['name'].' melalui WhatsApp.')
 
 @section('content')
     @include($ns . '.partials.page-header', ['title' => 'Inquiry & Konsultasi', 'text' => $skin['inquiry']['text']])

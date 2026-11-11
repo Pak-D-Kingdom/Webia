@@ -1,7 +1,7 @@
 @extends($ns . '.layouts.app')
 
 @section('title', 'Harga Produk — ' . $skin['name'])
-@section('description', 'Daftar harga dan diskon produk skincare GlowEra.')
+@section('description', 'Daftar harga dan diskon produk skincare '.$skin['name'].'.')
 
 @section('content')
     @php
