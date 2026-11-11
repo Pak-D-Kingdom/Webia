@@ -20,9 +20,12 @@ class CustomerSiteController extends Controller
         $siteConfigPath = $order->siteConfigPath();
         abort_unless($siteConfigPath !== null, 404);
 
-        $views = str_starts_with($siteConfigPath, 'company/')
-            ? ['home' => 'index', 'tentang-kami' => 'tentang-kami', 'portofolio' => 'portofolio']
-            : ['home' => 'index', 'menu' => 'menu', 'reservasi' => 'reservasi'];
+        $isBrandingAgency = str_starts_with($siteConfigPath, 'professional-service/artistic/branding-creative-agency-terracotta/');
+        $views = match (true) {
+            $isBrandingAgency => array_fill_keys(['home', 'layanan', 'keahlian', 'portofolio', 'janji'], 'branding-creative-agency'),
+            str_starts_with($siteConfigPath, 'company/') => ['home' => 'index', 'tentang-kami' => 'tentang-kami', 'portofolio' => 'portofolio'],
+            default => ['home' => 'index', 'menu' => 'menu', 'reservasi' => 'reservasi'],
+        };
         abort_unless(isset($views[$page]), 404);
 
         $business = $order->business_data ?? [];
@@ -32,6 +35,7 @@ class CustomerSiteController extends Controller
         abort_unless(is_array($siteConfig), 404);
 
         $siteConfig = match (true) {
+            $isBrandingAgency => $this->brandingAgencyConfig($siteConfig, $business, $whatsapp),
             str_starts_with($siteConfigPath, 'company/elegan/') => $this->terracottaCompanyConfig($siteConfig, $business, $whatsapp, $instagram),
             str_starts_with($siteConfigPath, 'company/modern/') => $this->oceanTealCompanyConfig($siteConfig, $business, $whatsapp, $instagram),
             str_starts_with($siteConfigPath, 'company/classic/') => $this->warmNeutralCompanyConfig($siteConfig, $business, $whatsapp, $instagram),
@@ -50,15 +54,59 @@ class CustomerSiteController extends Controller
             'order' => $order->site_slug,
             'page' => $name === 'home' ? null : $name,
         ]).$hash;
+        $routeUrl = fn (string $name = 'home', string $hash = ''): string => $pageUrl(
+            $isBrandingAgency && in_array($name, ['harga', 'brief'], true) ? 'janji' : $name,
+            $hash,
+        );
 
         return view($view.'.'.$views[$page], [
             'v' => $view,
             'path' => $path,
+            'page' => $page,
             'currentPage' => $page,
+            'c' => $siteConfig,
             'cafe' => $siteConfig,
             'siteConfig' => $siteConfig,
             'pageUrl' => $pageUrl,
-            'routeUrl' => $pageUrl,
+            'routeUrl' => $routeUrl,
+            'r' => $routeUrl,
+            'img' => fn (string $file): string => asset('images/'.$path.'/'.$file),
+            'css' => asset('css/'.$path.'/branding-creative-agency.css'),
+            'js' => asset('js/'.$path.'/branding-creative-agency.js'),
+        ]);
+    }
+
+    private function brandingAgencyConfig(array $siteConfig, array $business, string $whatsapp): array
+    {
+        $name = $business['business_name'] ?? 'Studio Kreatif';
+        $this->replaceDemoName($siteConfig, $siteConfig['brand']['name'], $name);
+
+        return array_replace($siteConfig, [
+            'brand' => array_replace($siteConfig['brand'], [
+                'name' => $name,
+                'short' => $name,
+                'sub' => '',
+                'tagline' => ($business['tagline'] ?? null) ?: $siteConfig['brand']['tagline'],
+                'whatsapp' => $whatsapp,
+                'phone' => $business['whatsapp'] ?? '',
+                'email' => '',
+                'address' => $this->businessAddress($business),
+                'wa_text' => 'Halo '.$name.', saya ingin berkonsultasi soal branding.',
+            ]),
+            'topbar' => array_replace($siteConfig['topbar'], ['notice' => 'Konsultasikan kebutuhan branding dan materi kreatif Anda.']),
+            'nav' => ['layanan', 'keahlian', 'portofolio', 'janji'],
+            'footnav' => ['layanan', 'keahlian', 'portofolio', 'janji'],
+            'hero' => array_replace($siteConfig['hero'], [
+                'lead' => ($business['description'] ?? null) ?: $siteConfig['hero']['lead'],
+                'facts' => [],
+            ]),
+            'services' => array_replace($siteConfig['services'], [
+                'items' => array_map(fn (array $service): array => array_replace($service, ['price' => '']), $siteConfig['services']['items']),
+            ]),
+            'pricing' => array_replace($siteConfig['pricing'], ['plans' => []]),
+            'appointment' => array_replace($siteConfig['appointment'], ['slots' => []]),
+            'expertise' => array_replace($siteConfig['expertise'], ['awards' => []]),
+            'customer_site' => true,
         ]);
     }
 

@@ -197,6 +197,62 @@ class CustomerSiteTest extends TestCase
             ->assertDontSee('Pertamina');
     }
 
+    public function test_publishing_branding_agency_template_renders_customer_site_without_demo_claims(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $template = $this->template('bca-terracotta', [
+            'name' => 'Branding Creative Agency Terracotta',
+            'category_slug' => 'professional-service',
+            'category_label' => 'Professional Service',
+            'business_types' => ['Branding & Creative Agency'],
+            'site_config_path' => 'professional-service/artistic/branding-creative-agency-terracotta/branding-creative-agency',
+        ]);
+        $order = WebiaOrder::factory()->create([
+            'webia_template_id' => $template,
+            'template_snapshot' => [
+                'name' => $template->name,
+                'slug' => $template->slug,
+                'category_slug' => $template->category_slug,
+                'site_config_path' => $template->site_config_path,
+            ],
+            'status' => 'paid',
+            'delivery_status' => 'in_progress',
+            'business_data' => [
+                'business_name' => 'Ruang Rupa',
+                'tagline' => 'Identitas yang terasa milik sendiri',
+                'whatsapp' => '0812-3456-7890',
+                'description' => 'Studio branding untuk usaha Indonesia.',
+                'address' => 'Jl. Braga No. 12',
+                'city' => 'Bandung',
+            ],
+        ]);
+
+        $this->actingAs($admin)->post(route('admin.orders.progress', $order), [
+            'action' => 'finish',
+        ])->assertRedirect(route('admin.orders.show', $order));
+
+        $order->refresh();
+        $siteUrl = route('sites.show', ['order' => $order->site_slug]);
+        $this->get($siteUrl)
+            ->assertOk()
+            ->assertSee('Ruang Rupa')
+            ->assertSee('Identitas yang terasa milik sendiri')
+            ->assertSee('Studio branding untuk usaha Indonesia.')
+            ->assertSee('Jl. Braga No. 12, Bandung')
+            ->assertSee('6281234567890', false)
+            ->assertDontSee('Senja Atelier')
+            ->assertDontSee('Rp 18 juta')
+            ->assertDontSee('Slot terdekat')
+            ->assertDontSee('Penghargaan dan pengakuan')
+            ->assertDontSee('mailto:', false);
+
+        foreach (['layanan', 'keahlian', 'portofolio', 'janji'] as $page) {
+            $this->get($siteUrl.'/'.$page)->assertOk()->assertSee('Ruang Rupa');
+        }
+        $this->get($siteUrl.'/harga')->assertNotFound();
+        $this->get($siteUrl.'/brief')->assertNotFound();
+    }
+
     public static function companyTemplates(): array
     {
         return [

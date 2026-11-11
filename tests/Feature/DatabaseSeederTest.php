@@ -63,6 +63,29 @@ class DatabaseSeederTest extends TestCase
             'slug' => 'kusuma-ningrat-royal-heritage',
             'preview_view' => 'website-bisnis.templates.fnb.kusuma-ningrat-royal-heritage',
         ]);
+        $this->assertDatabaseHas('webia_templates', [
+            'slug' => 'bca-terracotta',
+            'site_config_path' => 'professional-service/artistic/branding-creative-agency-terracotta/branding-creative-agency',
+        ]);
+    }
+
+    public function test_branding_agency_backfill_updates_only_targeted_template(): void
+    {
+        $target = WebiaTemplate::where('slug', 'bca-terracotta')->firstOrFail();
+        $other = WebiaTemplate::where('slug', 'property-emerald-green')->firstOrFail();
+        $target->update(['site_config_path' => null]);
+        $other->update(['site_config_path' => 'property/example']);
+        $migration = require database_path('migrations/2026_11_11_030637_backfill_site_config_path_for_branding_agency.php');
+
+        $migration->up();
+
+        $this->assertSame('professional-service/artistic/branding-creative-agency-terracotta/branding-creative-agency', $target->fresh()->site_config_path);
+        $this->assertSame('property/example', $other->fresh()->site_config_path);
+
+        $migration->down();
+
+        $this->assertNull($target->fresh()->site_config_path);
+        $this->assertSame('property/example', $other->fresh()->site_config_path);
     }
 
     public function test_default_database_seeder_displays_templates_in_collection(): void
