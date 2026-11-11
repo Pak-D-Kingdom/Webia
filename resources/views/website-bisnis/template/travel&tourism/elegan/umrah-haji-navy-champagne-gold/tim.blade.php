@@ -3,7 +3,7 @@
 @section('title', 'Tim Pembimbing — Al Hijrah Travel')
 
 @section('content')
-@include($v . '.partials.page-hero', ['eyebrow' => 'TIM KAMI', 'title' => 'Tim Pembimbing', 'desc' => 'Didampingi oleh muthawwif berpengalaman dan profesional di bidangnya.', 'bg' => 'hero.svg'])
+@include($v . '.partials.page-hero', ['eyebrow' => 'TIM KAMI', 'title' => 'Tim Pembimbing', 'desc' => 'Didampingi oleh muthawwif berpengalaman dan profesional di bidangnya.', 'bg' => 'hero.svg', 'chips' => [count($d['team']) . ' pembimbing & tim', 'Berpengalaman', 'Ramah & sabar']])
 
 <section class="uh-section">
     <div class="uh-container">

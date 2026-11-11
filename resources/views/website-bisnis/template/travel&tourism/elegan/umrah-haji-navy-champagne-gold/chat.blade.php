@@ -3,7 +3,7 @@
 @section('title', 'AI Chat — FAQ Paket & Pendaftaran | Al Hijrah Travel')
 
 @section('content')
-@include($v . '.partials.page-hero', ['eyebrow' => 'ASISTEN AI', 'title' => 'AI Chat', 'desc' => 'Tanya apa saja tentang paket umrah, haji, jadwal, harga, dan persyaratan pendaftaran.', 'bg' => 'hero.svg'])
+@include($v . '.partials.page-hero', ['eyebrow' => 'ASISTEN AI', 'title' => 'AI Chat', 'desc' => 'Tanya apa saja tentang paket umrah, haji, jadwal, harga, dan persyaratan pendaftaran.', 'bg' => 'bot.svg', 'chips' => ['Online setiap hari', 'Jawaban instan', 'FAQ paket & pendaftaran'], 'contain' => true])
 
 <section class="uh-section">
     <div class="uh-container uh-chatpage">

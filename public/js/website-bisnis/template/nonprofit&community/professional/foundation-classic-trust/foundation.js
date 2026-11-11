@@ -5,14 +5,25 @@
 (function () {
   'use strict';
 
-  var D = document, W = window;
+  var D = document, W = window, root = D.documentElement;
   var $ = function (s, c) { return (c || D).querySelector(s); };
   var $$ = function (s, c) { return Array.prototype.slice.call((c || D).querySelectorAll(s)); };
   var FD = W.FD || {};
   var FAQ = FD.faq || { items: [], quick: [], greeting: '', fallback: '' };
   var reduced = W.matchMedia && W.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var ICONS = ['heart', 'grid', 'users', 'doc', 'news'];
 
-  D.documentElement.classList.add('fd-js');
+  root.classList.add('fd-js');
+
+  function svgIcon(id, cls) {
+    var s = D.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    s.setAttribute('class', 'fd-ico' + (cls ? ' ' + cls : ''));
+    var u = D.createElementNS('http://www.w3.org/2000/svg', 'use');
+    u.setAttribute('href', '#fd-i-' + id);
+    s.appendChild(u);
+    return s;
+  }
+  function isTyping(el) { return el && (/^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName) || el.isContentEditable); }
 
   /* ---------- Toast ---------- */
   var toastEl, toastTimer;
@@ -27,25 +38,36 @@
     toastEl.textContent = msg;
     toastEl.classList.add('is-show');
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(function () { toastEl.classList.remove('is-show'); }, 2800);
+    toastTimer = setTimeout(function () { toastEl.classList.remove('is-show'); }, 3000);
   }
   $$('[data-fd-toast]').forEach(function (el) {
     el.addEventListener('click', function (e) { e.preventDefault(); toast(el.getAttribute('data-fd-toast')); });
   });
 
-  /* ---------- Header: shadow saat scroll ---------- */
+  /* ---------- Header: bayangan saat scroll ---------- */
   var header = $('[data-fd-header]');
   function onScroll() { if (header) header.classList.toggle('is-scrolled', W.scrollY > 8); }
   onScroll();
   W.addEventListener('scroll', onScroll, { passive: true });
 
-  /* ---------- Dropdown topbar ---------- */
+  /* ---------- Dropdown donasi (topbar) ---------- */
   $$('[data-fd-drop]').forEach(function (drop) {
-    var btn = $('.fd-drop__btn', drop);
-    function set(open) { drop.classList.toggle('is-open', open); btn.setAttribute('aria-expanded', open ? 'true' : 'false'); }
+    var btn = $('.fd-drop__btn', drop), items = $$('.fd-drop__menu a', drop);
+    function set(open, focusFirst) {
+      drop.classList.toggle('is-open', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (open && focusFirst && items[0]) items[0].focus();
+    }
     btn.addEventListener('click', function (e) { e.stopPropagation(); set(!drop.classList.contains('is-open')); });
+    btn.addEventListener('keydown', function (e) { if (e.key === 'ArrowDown') { e.preventDefault(); set(true, true); } });
+    drop.addEventListener('keydown', function (e) {
+      if (!drop.classList.contains('is-open')) return;
+      var idx = items.indexOf(D.activeElement);
+      if (e.key === 'ArrowDown') { e.preventDefault(); (items[idx + 1] || items[0]).focus(); }
+      if (e.key === 'ArrowUp') { e.preventDefault(); (items[idx - 1] || items[items.length - 1]).focus(); }
+      if (e.key === 'Escape') { set(false); btn.focus(); }
+    });
     D.addEventListener('click', function (e) { if (!drop.contains(e.target)) set(false); });
-    D.addEventListener('keydown', function (e) { if (e.key === 'Escape') set(false); });
   });
 
   /* ---------- Menu mobile ---------- */
@@ -54,36 +76,100 @@
     if (!burger || !menu) return;
     menu.classList.toggle('is-open', open);
     burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    burger.setAttribute('aria-label', open ? 'Tutup menu' : 'Buka menu');
     var use = $('use', burger);
     if (use) use.setAttribute('href', open ? '#fd-i-close' : '#fd-i-menu');
   }
   if (burger && menu) {
     burger.addEventListener('click', function () { setMenu(!menu.classList.contains('is-open')); });
     $$('a', menu).forEach(function (a) { a.addEventListener('click', function () { setMenu(false); }); });
-    W.addEventListener('resize', function () { if (W.innerWidth > 1040) setMenu(false); });
+    D.addEventListener('click', function (e) { if (menu.classList.contains('is-open') && !menu.contains(e.target) && !burger.contains(e.target)) setMenu(false); });
+    W.addEventListener('resize', function () { if (W.innerWidth > 1439) setMenu(false); });
     D.addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenu(false); });
   }
 
-  /* ---------- Pencarian (navigasi ke halaman terkait) ---------- */
-  var searchBox = $('#fd-search'), searchBtn = $('[data-fd-search-toggle]');
-  if (searchBox && searchBtn) {
-    searchBtn.addEventListener('click', function () {
-      var open = !searchBox.classList.contains('is-open');
-      searchBox.classList.toggle('is-open', open);
-      searchBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
-      if (open) { var i = $('input', searchBox); if (i) setTimeout(function () { i.focus(); }, 50); }
+  /* ---------- Pencarian (modal + hasil langsung) ---------- */
+  var sm = $('#fd-search'), smInput = $('#fd-search-input'), smList = $('#fd-search-list');
+  var smLabel = $('[data-fd-search-label]'), smEmpty = $('[data-fd-search-empty]'), smTerm = $('[data-fd-search-term]');
+  var smActive = 0, smLast = null, smResults = [];
+  function norm(s) { return String(s).toLowerCase().replace(/[^a-z0-9\u00c0-\u024f\s]/g, ' ').replace(/\s+/g, ' ').trim(); }
+
+  function smScore(p, q) {
+    if (!q) return 1;
+    var t = norm(p.title), sc = 0;
+    if (t.indexOf(q) === 0) sc += 4; else if (t.indexOf(q) > -1) sc += 3;
+    p.keys.forEach(function (k) { if (k.indexOf(q) > -1 || q.indexOf(k) > -1) sc += 2; });
+    if (norm(p.desc).indexOf(q) > -1) sc += 1;
+    return sc;
+  }
+  function smRender() {
+    var q = norm(smInput.value);
+    smResults = (FD.search || []).map(function (p) { return { p: p, s: smScore(p, q) }; })
+      .filter(function (x) { return x.s > 0; })
+      .sort(function (a, b) { return b.s - a.s; });
+    smList.textContent = '';
+    smLabel.textContent = q ? 'Hasil pencarian (' + smResults.length + ')' : 'Semua halaman';
+    smEmpty.hidden = smResults.length > 0;
+    smLabel.hidden = smResults.length === 0;
+    if (!smResults.length && smTerm) smTerm.textContent = smInput.value.trim();
+    if (smActive >= smResults.length) smActive = 0;
+    smResults.forEach(function (x, i) {
+      var li = D.createElement('li'), a = D.createElement('a');
+      li.setAttribute('role', 'option'); li.id = 'fd-sr-' + i;
+      li.setAttribute('aria-selected', i === smActive ? 'true' : 'false');
+      if (i === smActive) li.className = 'is-active';
+      a.href = x.p.url;
+      var ico = D.createElement('span'); ico.className = 'fd-sm__ico'; ico.appendChild(svgIcon(x.p.icon));
+      var txt = D.createElement('span'); txt.className = 'fd-sm__txt';
+      var b = D.createElement('b'); b.textContent = x.p.title;
+      var s = D.createElement('small'); s.textContent = x.p.desc;
+      txt.appendChild(b); txt.appendChild(s);
+      a.appendChild(ico); a.appendChild(txt); a.appendChild(svgIcon('arrow', 'fd-sm__go'));
+      a.addEventListener('mousemove', function () { smSetActive(i, true); });
+      li.appendChild(a); smList.appendChild(li);
     });
+    smInput.setAttribute('aria-activedescendant', smResults.length ? 'fd-sr-' + smActive : '');
+  }
+  function smSetActive(i, noScroll) {
+    if (!smResults.length) return;
+    smActive = (i + smResults.length) % smResults.length;
+    $$('li', smList).forEach(function (li, k) {
+      li.classList.toggle('is-active', k === smActive);
+      li.setAttribute('aria-selected', k === smActive ? 'true' : 'false');
+    });
+    smInput.setAttribute('aria-activedescendant', 'fd-sr-' + smActive);
+    var cur = $('li.is-active', smList);
+    if (cur && !noScroll && cur.scrollIntoView) cur.scrollIntoView({ block: 'nearest' });
+  }
+  function smOpen() {
+    if (!sm) return;
+    smLast = D.activeElement; smActive = 0;
+    sm.hidden = false; root.classList.add('fd-lock');
+    smInput.value = ''; smRender();
+    setTimeout(function () { smInput.focus(); }, 30);
+  }
+  function smClose() {
+    if (!sm || sm.hidden) return;
+    sm.hidden = true; root.classList.remove('fd-lock');
+    if (smLast && smLast.focus) smLast.focus();
+  }
+  if (sm && smInput && smList) {
+    $$('[data-fd-search-open]').forEach(function (b) { b.addEventListener('click', smOpen); });
+    $$('[data-fd-search-close]').forEach(function (b) { b.addEventListener('click', smClose); });
+    $$('[data-fd-search-q]').forEach(function (b) {
+      b.addEventListener('click', function () { smInput.value = b.getAttribute('data-fd-search-q'); smActive = 0; smRender(); smInput.focus(); });
+    });
+    smInput.addEventListener('input', function () { smActive = 0; smRender(); });
+    smInput.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowDown') { e.preventDefault(); smSetActive(smActive + 1); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); smSetActive(smActive - 1); }
+      else if (e.key === 'Enter') { e.preventDefault(); if (smResults[smActive]) W.location.href = smResults[smActive].p.url; }
+    });
+    var smAsk = $('[data-fd-search-ask]');
+    if (smAsk) smAsk.addEventListener('click', function () { var q = smInput.value.trim(); smClose(); chatOpen(true, q || null); });
     D.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && searchBox.classList.contains('is-open')) { searchBox.classList.remove('is-open'); searchBtn.focus(); }
-    });
-    $('form', searchBox).addEventListener('submit', function (e) {
-      e.preventDefault();
-      var q = $('input', searchBox).value.trim().toLowerCase();
-      if (!q) return;
-      var hit = (FD.search || []).filter(function (p) {
-        return p.keys.some(function (k) { return q.indexOf(k) > -1 || k.indexOf(q) > -1; });
-      })[0];
-      if (hit) { W.location.href = hit.url; } else { toast('Tidak ada halaman yang cocok. Coba kata kunci lain, misalnya "donasi" atau "relawan".'); }
+      if (e.key === 'Escape') smClose();
+      else if ((e.key === '/' && !isTyping(D.activeElement) && sm.hidden) || ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k')) { e.preventDefault(); smOpen(); }
     });
   }
 
@@ -92,8 +178,8 @@
   if ('IntersectionObserver' in W && !reduced) {
     var ro = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('is-in'); ro.unobserve(en.target); } });
-    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-    reveals.forEach(function (el, i) { el.style.setProperty('--d', ((i % 4) * 0.08) + 's'); ro.observe(el); });
+    }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+    reveals.forEach(function (el, i) { el.style.setProperty('--d', ((i % 3) * 0.1) + 's'); ro.observe(el); });
   } else { reveals.forEach(function (el) { el.classList.add('is-in'); }); }
 
   /* ---------- Counter, bar & meter ---------- */
@@ -101,7 +187,7 @@
   function runCount(el) {
     var target = parseFloat(el.getAttribute('data-fd-count')) || 0, suffix = el.getAttribute('data-suffix') || '';
     if (reduced) { el.textContent = fmt(target) + suffix; return; }
-    var start = null, dur = 1600;
+    var start = null, dur = 1700;
     function step(ts) {
       if (!start) start = ts;
       var p = Math.min((ts - start) / dur, 1), eased = 1 - Math.pow(1 - p, 3);
@@ -123,22 +209,7 @@
     animEls.forEach(function (el) { ao.observe(el); });
   } else { animEls.forEach(runAnim); }
 
-  /* ---------- WhatsApp: tooltip sapaan ---------- */
-  var tip = $('[data-fd-wa-tip]');
-  if (tip) {
-    var seen = false;
-    try { seen = sessionStorage.getItem('fd-wa-tip') === '1'; } catch (e) {}
-    if (!seen) {
-      setTimeout(function () { tip.classList.add('is-show'); }, 5000);
-      setTimeout(function () { tip.classList.remove('is-show'); }, 15000);
-      try { sessionStorage.setItem('fd-wa-tip', '1'); } catch (e) {}
-    }
-    var tc = $('button', tip);
-    if (tc) tc.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); tip.classList.remove('is-show'); });
-  }
-
   /* ---------- Chatbot FAQ (program & donasi) ---------- */
-  function norm(s) { return String(s).toLowerCase().replace(/[^a-z0-9\u00c0-\u024f\s]/g, ' ').replace(/\s+/g, ' ').trim(); }
   function waUrl(text) { return 'https://wa.me/' + (FD.wa || '') + (text ? '?text=' + encodeURIComponent(text) : ''); }
 
   function findAnswer(q) {
@@ -155,101 +226,98 @@
     return best && bestScore >= 3 ? best : null;
   }
 
-  function initChat(root) {
-    if (!root || root.__fdChat) return root && root.__fdChat;
-    var body = $('.fd-chat__body', root), chips = $('.fd-chat__chips', root), form = $('form', root), input = form && $('input', form);
-    var greeted = false;
+  function initChat(rootEl) {
+    if (!rootEl) return null;
+    if (rootEl.__fdChat) return rootEl.__fdChat;
+    var body = $('.fd-chat__body', rootEl), chips = $('.fd-chat__chips', rootEl), form = $('form', rootEl), input = form && $('input', form);
+    var avatarSrc = $('.fd-chat__avatar', rootEl);
+    var greeted = false, suggest = null;
 
+    function avatar() {
+      var a = D.createElement('img');
+      a.className = 'fd-line__av'; a.alt = ''; a.width = 32; a.height = 32;
+      a.src = avatarSrc ? avatarSrc.getAttribute('src') : '';
+      return a;
+    }
     function add(role, text, link) {
-      var m = D.createElement('div');
-      m.className = 'fd-msg fd-msg--' + role;
+      var row = D.createElement('div'); row.className = 'fd-line fd-line--' + role;
+      if (role === 'bot') row.appendChild(avatar());
+      var m = D.createElement('div'); m.className = 'fd-msg fd-msg--' + role;
       m.textContent = text;
       if (link) {
-        var a = D.createElement('a');
+        var a = D.createElement('a'); a.className = 'fd-msg__act';
         a.href = link.href; a.textContent = link.label;
         if (link.external) { a.target = '_blank'; a.rel = 'noopener'; }
+        a.appendChild(svgIcon('arrow'));
         m.appendChild(D.createElement('br')); m.appendChild(a);
       }
-      body.appendChild(m);
+      row.appendChild(m); body.appendChild(row);
       body.scrollTop = body.scrollHeight;
-      return m;
+      return row;
     }
     function reply(q) {
-      var t = D.createElement('div');
-      t.className = 'fd-msg fd-msg--bot fd-typing';
-      t.innerHTML = '<i></i><i></i><i></i>';
-      body.appendChild(t); body.scrollTop = body.scrollHeight;
-
-      var tenantId = window.PAKDE_TENANT_ID || (window.FD && window.FD.tenantId);
-      var apiUrl = window.PAKDE_API_URL || 'http://localhost:8001/api/v1/chat';
-
-      if (tenantId) {
-        fetch(apiUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'X-Site-Key': 'site_webia_public' },
-          body: JSON.stringify({ layer: 'l4', tenant_id: tenantId, messages: [{ role: 'user', content: q }] })
-        }).then(function(r) { return r.json(); })
-          .then(function(data) {
-            t.remove();
-            add('bot', data.reply || data.response || FAQ.fallback);
-          })
-          .catch(function() {
-            t.remove();
-            var hit = findAnswer(q);
-            if (hit && hit.link && FD.links && FD.links[hit.link]) add('bot', hit.a, { href: FD.links[hit.link], label: 'Buka halaman terkait' });
-            else if (hit) add('bot', hit.a);
-            else add('bot', FAQ.fallback, { href: waUrl('Halo, saya ingin bertanya: ' + q), label: 'Tanya via WhatsApp', external: true });
-          });
-        return;
-      }
-
+      var row = D.createElement('div'); row.className = 'fd-line'; row.appendChild(avatar());
+      var t = D.createElement('div'); t.className = 'fd-msg fd-msg--bot fd-typing'; t.innerHTML = '<i></i><i></i><i></i>';
+      row.appendChild(t); body.appendChild(row); body.scrollTop = body.scrollHeight;
       setTimeout(function () {
-        t.remove();
+        row.remove();
         var hit = findAnswer(q);
         if (hit && hit.link && FD.links && FD.links[hit.link]) add('bot', hit.a, { href: FD.links[hit.link], label: 'Buka halaman terkait' });
         else if (hit) add('bot', hit.a);
         else add('bot', FAQ.fallback, { href: waUrl('Halo, saya ingin bertanya: ' + q), label: 'Tanya via WhatsApp', external: true });
       }, reduced ? 0 : 650 + Math.random() * 350);
     }
-    function ask(q) { q = String(q || '').trim(); if (!q) return; add('me', q); reply(q); }
+    function ask(q) {
+      q = String(q || '').trim(); if (!q) return;
+      if (suggest) { suggest.remove(); suggest = null; }
+      add('me', q); reply(q);
+    }
     function greet() {
       if (greeted) return; greeted = true;
       add('bot', FAQ.greeting);
-      FAQ.quick.forEach(function (q) {
-        var b = D.createElement('button');
-        b.type = 'button'; b.className = 'fd-chip'; b.textContent = q;
+      suggest = D.createElement('div'); suggest.className = 'fd-suggest';
+      FAQ.quick.forEach(function (q, i) {
+        var b = D.createElement('button'); b.type = 'button';
+        var ic = D.createElement('span'); ic.className = 'fd-qbtn__ico'; ic.appendChild(svgIcon(ICONS[i % ICONS.length]));
+        var tx = D.createElement('span'); tx.textContent = q;
+        b.appendChild(ic); b.appendChild(tx);
         b.addEventListener('click', function () { ask(q); });
-        chips.appendChild(b);
+        suggest.appendChild(b);
+        var c = D.createElement('button'); c.type = 'button'; c.className = 'fd-chip'; c.textContent = q;
+        c.addEventListener('click', function () { ask(q); });
+        chips.appendChild(c);
       });
+      body.appendChild(suggest);
     }
     if (form) form.addEventListener('submit', function (e) { e.preventDefault(); var v = input.value; input.value = ''; ask(v); });
-    root.__fdChat = { ask: ask, greet: greet, focus: function () { if (input) input.focus(); } };
-    return root.__fdChat;
+    rootEl.__fdChat = { ask: ask, greet: greet, focus: function () { if (input) input.focus(); } };
+    return rootEl.__fdChat;
   }
 
-  var floatChat = $('#fd-chat'), toggleBtn = $('[data-fd-chat-toggle]');
+  var floatChat = $('#fd-chat'), toggleBtn = $('[data-fd-chat-toggle]'), hint = $('[data-fd-hint]');
+  function hideHint() { if (hint) hint.hidden = true; }
   function chatOpen(open, question) {
     if (!floatChat || !toggleBtn) return;
     floatChat.hidden = !open;
-    toggleBtn.classList.toggle('is-open', open);
+    D.body.classList.toggle('fd-chat-open', open);
     toggleBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
     if (open) {
+      hideHint();
       var c = initChat(floatChat); c.greet();
       if (question) c.ask(question);
-      setTimeout(c.focus, 60);
+      setTimeout(c.focus, 80);
     }
   }
   if (floatChat && toggleBtn) {
     toggleBtn.addEventListener('click', function () { chatOpen(floatChat.hidden); });
     var closeBtn = $('[data-fd-chat-close]', floatChat);
     if (closeBtn) closeBtn.addEventListener('click', function () { chatOpen(false); toggleBtn.focus(); });
-    D.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !floatChat.hidden) { chatOpen(false); toggleBtn.focus(); } });
+    D.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !floatChat.hidden && (!sm || sm.hidden)) { chatOpen(false); toggleBtn.focus(); }
+    });
   }
   $$('[data-fd-chat-ask]').forEach(function (b) {
-    b.addEventListener('click', function () {
-      var q = b.getAttribute('data-fd-chat-ask');
-      if (floatChat) chatOpen(true, q);
-    });
+    b.addEventListener('click', function () { if (floatChat) chatOpen(true, b.getAttribute('data-fd-chat-ask')); });
   });
   $$('[data-fd-chat-form]').forEach(function (f) {
     f.addEventListener('submit', function (e) {
@@ -259,7 +327,7 @@
       chatOpen(true, v || null);
     });
   });
-  $$('[data-fd-chat-inline]').forEach(function (r) { var c = initChat(r); c.greet(); });
+  $$('[data-fd-chat-inline]').forEach(function (r) { initChat(r).greet(); });
   $$('[data-fd-inline-ask]').forEach(function (b) {
     b.addEventListener('click', function () {
       var r = $('[data-fd-chat-inline]'); if (!r) return;
@@ -267,6 +335,24 @@
       r.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' });
     });
   });
+
+  /* ---------- Sapaan HarapanBot (sekali per sesi) ---------- */
+  if (hint && floatChat) {
+    var shown = false;
+    try { shown = sessionStorage.getItem('fd-hint') === '1'; } catch (e) {}
+    var hc = $('[data-fd-hint-close]', hint);
+    if (hc) hc.addEventListener('click', hideHint);
+    $$('button[data-fd-chat-ask]', hint).forEach(function (b) { b.addEventListener('click', hideHint); });
+    if (!shown) {
+      setTimeout(function () {
+        if (floatChat.hidden && (!sm || sm.hidden)) {
+          hint.hidden = false;
+          try { sessionStorage.setItem('fd-hint', '1'); } catch (e) {}
+          setTimeout(hideHint, 14000);
+        }
+      }, 4500);
+    }
+  }
 
   /* ---------- Filter berita ---------- */
   $$('[data-fd-filter]').forEach(function (group) {
@@ -284,8 +370,6 @@
   var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   $$('[data-fd-wa-form]').forEach(function (form) {
     var ok = $('[data-fd-form-ok]', form);
-
-    // Donasi: jenis dari ?jenis= , nominal bebas membatalkan pilihan nominal cepat
     var qs = new URLSearchParams(W.location.search), jenis = qs.get('jenis');
     if (jenis) { var r = $('input[name="jenis"][value="' + jenis.replace(/[^a-z]/g, '') + '"]', form); if (r) r.checked = true; }
     var custom = $('input[name="nominal_lain"]', form);

@@ -3,7 +3,7 @@
 @section('title', 'Itinerary Perjalanan — Al Hijrah Travel')
 
 @section('content')
-@include($v . '.partials.page-hero', ['eyebrow' => 'RENCANA PERJALANAN', 'title' => 'Itinerary Perjalanan', 'desc' => 'Rangkaian perjalanan yang terstruktur dan nyaman dari keberangkatan hingga kembali.', 'bg' => 'itinerary-skyline.svg'])
+@include($v . '.partials.page-hero', ['eyebrow' => 'RENCANA PERJALANAN', 'title' => 'Itinerary Perjalanan', 'desc' => 'Rangkaian perjalanan yang terstruktur dan nyaman dari keberangkatan hingga kembali.', 'bg' => 'pkg-umrah-vip.svg', 'chips' => [count($d['itinerary']) . ' hari perjalanan', 'Ziarah Makkah & Madinah', 'Didampingi muthawwif']])
 
 <section class="uh-section">
     <div class="uh-container uh-itin">

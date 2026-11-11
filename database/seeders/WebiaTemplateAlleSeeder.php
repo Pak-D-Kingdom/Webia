@@ -386,5 +386,47 @@ class WebiaTemplateAlleSeeder extends Seeder
                 'sort_order' => 50,
             ]
         );
+
+        WebiaTemplate::updateOrCreate(
+            ['slug' => 'madubersih-home-cleaning-vintage'],
+            [
+                'name' => 'MaduBersih — Vintage Warm Bee Home Cleaning',
+                'category_slug' => 'home-services',
+                'category_label' => 'Home Services',
+                'business_types' => ['Home Cleaning & Deep Cleaning'],
+                'design_style' => 'Vintage & Traditional',
+                'color_theme' => 'Honey Gold, Warm Cream & Dark Wood',
+                'description' => 'Traditional home-cleaning landing page with cleaning and sanitizing packages, room-based cost estimator, eco-friendly service details, customer FAQs, service-area information, and WhatsApp booking.',
+                'preview_style' => 'preview-madubersih-vintage',
+                'eyebrow' => 'HOME CLEANING · VINTAGE HERITAGE',
+                'headline' => 'Kenyamanan Hakiki, Rumah Bersih Hangat Madu.',
+                'tag' => 'Home Services · Home Cleaning · Vintage Warm Bee',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/madubersih-home-cleaning-vintage',
+                'is_active' => true,
+                'sort_order' => 51,
+            ]
+        );
+
+        WebiaTemplate::updateOrCreate(
+            ['slug' => 'astroclean-home-cleaning-cosmic'],
+            [
+                'name' => 'AstroClean — Cosmic Deep Cleaning',
+                'category_slug' => 'home-services',
+                'category_label' => 'Home Services',
+                'business_types' => ['Home Cleaning & Deep Cleaning'],
+                'design_style' => 'Cosmic Modern',
+                'color_theme' => 'Midnight Navy, Cosmic Purple & Silver',
+                'description' => 'Modern deep-cleaning and home-sanitization landing page with service packages, room-based AI estimate calculator, cleaning-team credentials, service coverage, FAQs, and WhatsApp booking.',
+                'preview_style' => 'preview-astroclean-cosmic',
+                'eyebrow' => 'HOME CLEANING · COSMIC MODERN',
+                'headline' => 'Rumah Sehat Tanpa Kompromi, Bersih Bersinar Sekelas Kosmik.',
+                'tag' => 'Home Services · Home Cleaning · Cosmic Modern',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/astroclean-home-cleaning-cosmic',
+                'is_active' => true,
+                'sort_order' => 52,
+            ]
+        );
     }
 }

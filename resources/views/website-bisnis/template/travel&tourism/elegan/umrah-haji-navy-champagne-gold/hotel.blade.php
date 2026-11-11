@@ -3,11 +3,12 @@
 @section('title', 'Hotel & Pesawat — Al Hijrah Travel')
 
 @section('content')
-@include($v . '.partials.page-hero', ['eyebrow' => 'AKOMODASI & PENERBANGAN', 'title' => 'Hotel & Pesawat', 'desc' => 'Hotel bintang terbaik dan maskapai pilihan untuk perjalanan yang lebih nyaman.', 'bg' => 'hotel-flight.svg'])
+@include($v . '.partials.page-hero', ['eyebrow' => 'AKOMODASI & PENERBANGAN', 'title' => 'Hotel & Pesawat', 'desc' => 'Hotel bintang terbaik dan maskapai pilihan untuk perjalanan yang lebih nyaman.', 'bg' => 'hotel-flight.svg', 'chips' => ['Hotel bintang 3–5', 'Dekat Masjidil Haram', 'Maskapai terbaik']])
 
 <section class="uh-section">
     <div class="uh-container">
         <div class="uh-secthead" data-reveal>
+            <small>Akomodasi</small>
             <h2>Hotel di Makkah &amp; Madinah</h2>
             <p>Pilihan hotel bintang 3 hingga 5 yang dekat dengan masjid.</p>
             <i class="uh-orn"></i>
@@ -30,6 +31,7 @@
         </div>
 
         <div class="uh-secthead" data-reveal>
+            <small>Penerbangan</small>
             <h2>Maskapai Penerbangan</h2>
             <p>Maskapai terbaik dengan jadwal dan rute yang nyaman bagi jamaah.</p>
             <i class="uh-orn"></i>

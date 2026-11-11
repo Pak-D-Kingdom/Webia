@@ -14,14 +14,14 @@
                     <li><a href="{{ $r($key) }}" class="{{ $page === $key ? 'is-active' : '' }}" @if ($page === $key) aria-current="page" @endif>{{ $label }}</a></li>
                 @endforeach
             </ul>
-            <a class="uh-btn uh-btn--gold uh-menu__cta" href="{{ $wa($d['contact']['wa_daftar']) }}" target="_blank" rel="noopener">Daftar Sekarang <svg class="uh-ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="uh-btn uh-btn--gold uh-menu__cta" href="{{ $r('persyaratan') }}#form-pendaftaran">Daftar Sekarang <svg class="uh-ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </nav>
 
         <div class="uh-nav__actions">
             <button type="button" class="uh-iconbtn" data-search-open aria-label="Cari halaman" aria-haspopup="dialog">
                 <svg class="uh-ico" aria-hidden="true"><use href="#i-search"/></svg>
             </button>
-            <a class="uh-btn uh-btn--gold uh-nav__cta" href="{{ $wa($d['contact']['wa_daftar']) }}" target="_blank" rel="noopener">Daftar Sekarang <svg class="uh-ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="uh-btn uh-btn--gold uh-nav__cta" href="{{ $r('persyaratan') }}#form-pendaftaran">Daftar Sekarang <svg class="uh-ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>
             <button type="button" class="uh-burger" data-menu-toggle aria-expanded="false" aria-controls="uh-menu" aria-label="Buka menu">
                 <svg class="uh-ico uh-burger__open" aria-hidden="true"><use href="#i-menu"/></svg>
                 <svg class="uh-ico uh-burger__close" aria-hidden="true"><use href="#i-x"/></svg>

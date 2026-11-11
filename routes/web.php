@@ -139,6 +139,16 @@ Route::view(
 )->name('webia.template.matcha-clean-organic-deep-cleaning');
 
 Route::view(
+    '/webia/template/madubersih-home-cleaning-vintage',
+    'website-bisnis.templates.home-services.home-cleaning-deep-cleaning.madubersih-vintage'
+)->name('webia.template.madubersih-home-cleaning-vintage');
+
+Route::view(
+    '/webia/template/astroclean-home-cleaning-cosmic',
+    'website-bisnis.templates.home-services.home-cleaning-deep-cleaning.astroclean-cosmic'
+)->name('webia.template.astroclean-home-cleaning-cosmic');
+
+Route::view(
     '/webia/template/aurumco-catering',
     'website-bisnis.templates.fnb.aurumco-catering'
 )->name('webia.template.aurumco-catering');
@@ -310,6 +320,11 @@ Route::view(
     '/webia/template/pawlora-animal-care',
     'website-bisnis.templates.pet-animal-service.pawlora-animal-care'
 )->name('webia.template.pet-animal-service.pawlora-animal-care');
+
+Route::view(
+    '/webia/template/pawstead',
+    'website-bisnis.templates.pet-animal-service.pawstead'
+)->name('webia.template.pet-animal-service.pawstead');
 
 // WEBIA — Template Nail Art Professional Soft Pink
 // URL lama dipertahankan agar konsisten; view mengikuti struktur folder baru.
@@ -528,6 +543,14 @@ Route::view(
 )->name('webia.template.photography-motiongraphics-premiumminimal-champagneglow-putri');
 
 // =====================================================
+// WEBIA - PHOTOGRAPHY & CREATIVE STUDIO — PUTRI (Motion Graphics & 3D Studio Traditional Cultural Coral & Peach)
+// =====================================================
+Route::view(
+    '/webia/template/photography-motiongraphics-traditionalcultural-coralpeach-putri',
+    'website-bisnis.templates.photography-creative.motion-graphics.photography-motiongraphics-traditionalcultural-coralpeach-putri'
+)->name('webia.template.photography-motiongraphics-traditionalcultural-coralpeach-putri');
+
+// =====================================================
 // WEBIA - SPORTS & FITNESS (GYM & FITNESS)
 // =====================================================
 Route::view(
@@ -736,6 +759,11 @@ Route::prefix('webia/template/property/luxury/real-estate-agency-emerald-green')
         Route::view('/blog/{post}', $view . '.blog-detail')->name('blog.show');
         Route::view('/contact', $view . '.contact')->name('contact');
     });
+
+Route::view(
+    '/webia/template/property/hearthstone-property',
+    'website-bisnis.templates.property.hearthstone-property'
+)->name('webia.template.property.hearthstone-property');
 
 Route::prefix('webia/template/property/premium-minimal/real-estate-agency-nature-green')
     ->name('property.premium-minimal.nature-green.')
@@ -1603,13 +1631,13 @@ Route::prefix('webia/template/wedding-event/creative/event-organizer-purple-drea
     });
 
 Route::prefix('webia/template/travel-tourism/elegan/umrah-haji-navy-champagne-gold')
-    ->name('umrah-haji-navy.')
+    ->name('umrah-haji.')
     ->group(function () {
-        $viewBase   = 'website-bisnis.template.travel&tourism.elegan.umrah-haji-navy-champagne-gold';
-        $imgBase    = 'images/website-bisnis/template/travel&tourism/elegan/umrah-haji-navy-champagne-gold/';
-        $cssFile    = 'css/website-bisnis/template/travel&tourism/elegan/umrah-haji-navy-champagne-gold/umrah-haji.css';
-        $jsFile     = 'js/website-bisnis/template/travel&tourism/elegan/umrah-haji-navy-champagne-gold/umrah-haji.js';
-        $configKey  = 'template.travel&tourism.elegan.umrah-haji-navy-champagne-gold.umrah-haji';
+        $viewBase = 'website-bisnis.template.travel&tourism.elegan.umrah-haji-navy-champagne-gold';
+        $imgBase = 'images/website-bisnis/template/travel&tourism/elegan/umrah-haji-navy-champagne-gold/';
+        $cssFile = 'css/website-bisnis/template/travel&tourism/elegan/umrah-haji-navy-champagne-gold/umrah-haji.css';
+        $jsFile = 'js/website-bisnis/template/travel&tourism/elegan/umrah-haji-navy-champagne-gold/umrah-haji.js';
+        $configKey = 'template.travel&tourism.elegan.umrah-haji-navy-champagne-gold.umrah-haji';
         $configFile = 'template/travel&tourism/elegan/umrah-haji-navy-champagne-gold/umrah-haji.php';
 
         // Memuat data statis; jika config belum terbaca, file dimuat langsung
@@ -1629,10 +1657,10 @@ Route::prefix('webia/template/travel-tourism/elegan/umrah-haji-navy-champagne-go
 
             // Awalan nama route diambil dari route yang sedang aktif (aman di dalam group lain)
             $currentRoute = (string) Route::currentRouteName();
-            $routePrefix  = substr($currentRoute, 0, (int) strrpos($currentRoute, '.'));
+            $routePrefix = substr($currentRoute, 0, (int) strrpos($currentRoute, '.'));
 
-            return view($viewBase . '.' . $view, [
-                'd'    => $d,
+            return view($viewBase.'.'.$view, [
+                'd' => $d,
                 'page' => $name,
                 'v'    => $viewBase,
                 'css'  => asset($cssFile),
@@ -1660,13 +1688,13 @@ view()->composer(
     'website-bisnis.template.travel&tourism.classic.umrah-haji-emerald-green.*',
     function ($view) {
         $request = request();
-        $shared  = $request->attributes->get('umrah-haji.shared');
+        $shared = $request->attributes->get('umrah-haji.shared');
 
         if ($shared === null) {
-            $uh      = config('template.travel&tourism.classic.umrah-haji-emerald-green.umrah-haji');
+            $uh = config('template.travel&tourism.classic.umrah-haji-emerald-green.umrah-haji');
             $imgBase = 'images/website-bisnis/template/travel&tourism/classic/umrah-haji-emerald-green/';
-            $name    = optional(request()->route())->getName();
-            $active  = is_string($name) && str_starts_with($name, 'umrah-haji.')
+            $name = optional(request()->route())->getName();
+            $active = is_string($name) && str_starts_with($name, 'umrah-haji.')
                 ? substr($name, strlen('umrah-haji.'))
                 : 'home';
 
@@ -1693,52 +1721,52 @@ view()->composer(
                 }
                 $search[] = [
                     'label' => $item['label'],
-                    'text'  => $uh['pages'][$item['key']]['text'] ?? '',
-                    'url'   => $url($item['key']),
-                    'icon'  => $icons[$item['key']] ?? 'file',
-                    'keys'  => '',
+                    'text' => $uh['pages'][$item['key']]['text'] ?? '',
+                    'url' => $url($item['key']),
+                    'icon' => $icons[$item['key']] ?? 'file',
+                    'keys' => '',
                 ];
             }
             foreach ($uh['packages'] as $pkg) {
                 $search[] = [
                     'label' => $pkg['name'],
-                    'text'  => $pkg['duration'] . ' · mulai ' . $pkg['price'],
-                    'url'   => $url('packages') . '#' . $pkg['slug'],
-                    'icon'  => 'kaaba',
-                    'keys'  => $pkg['type'] . ' ' . $pkg['route'],
+                    'text' => $pkg['duration'].' · mulai '.$pkg['price'],
+                    'url' => $url('packages').'#'.$pkg['slug'],
+                    'icon' => 'kaaba',
+                    'keys' => $pkg['type'].' '.$pkg['route'],
                 ];
             }
             $search[] = [
                 'label' => $uh['pages']['chatbot']['title'],
-                'text'  => $uh['pages']['chatbot']['text'],
-                'url'   => $url('chatbot'),
-                'icon'  => 'message',
-                'keys'  => 'faq tanya chat bantuan',
+                'text' => $uh['pages']['chatbot']['text'],
+                'url' => $url('chatbot'),
+                'icon' => 'message',
+                'keys' => 'faq tanya chat bantuan',
             ];
 
             // FAQ chatbot (tautan sudah berupa URL penuh)
             $faq = [];
             foreach ($uh['faq'] as $f) {
                 $faq[] = [
-                    'keys'       => $f['keys'],
-                    'a'          => $f['a'],
-                    'url'        => isset($f['link']) ? $url($f['link']) : null,
+                    'keys' => $f['keys'],
+                    'a' => $f['a'],
+                    'url' => isset($f['link']) ? $url($f['link']) : null,
                     'link_label' => $f['link_label'] ?? null,
                 ];
             }
 
             $shared = [
-                'uh'     => $uh,
+                'uh' => $uh,
                 'active' => $active,
-                'url'    => $url,
-                'img'    => $img,
-                'wa'     => $wa,
-                'css'    => asset('css/website-bisnis/template/travel&tourism/classic/umrah-haji-emerald-green/umrah-haji.css'),
-                'js'     => asset('js/website-bisnis/template/travel&tourism/classic/umrah-haji-emerald-green/umrah-haji.js'),
+                'url' => $url,
+                'img' => $img,
+                'wa' => $wa,
+                'css' => asset('css/website-bisnis/template/travel&tourism/classic/umrah-haji-emerald-green/umrah-haji.css'),
+                'js' => asset('js/website-bisnis/template/travel&tourism/classic/umrah-haji-emerald-green/umrah-haji.js'),
                 'jsData' => [
-                    'wa'     => $wa($uh['hero']['wa_consult']),
-                    'ai'     => ['welcome' => $uh['ai']['welcome'], 'fallback' => $uh['ai']['fallback']],
-                    'faq'    => $faq,
+                    'wa' => $wa($uh['hero']['wa_consult']),
+                    'ai' => ['welcome' => $uh['ai']['welcome'], 'fallback' => $uh['ai']['fallback']],
+                    'faq' => $faq,
                     'search' => $search,
                 ],
             ];
@@ -1756,16 +1784,47 @@ Route::prefix('webia/template/travel-tourism/classic/umrah-haji-emerald-green')
     ->group(function () {
         $v = 'website-bisnis.template.travel&tourism.classic.umrah-haji-emerald-green';
 
-        Route::view('/', $v . '.index')->name('home');
-        Route::view('/paket', $v . '.packages')->name('packages');
-        Route::view('/jadwal', $v . '.schedules')->name('schedules');
-        Route::view('/harga', $v . '.prices')->name('prices');
-        Route::view('/hotel-pesawat', $v . '.hotel-flight')->name('hotel-flight');
-        Route::view('/itinerary', $v . '.itinerary')->name('itinerary');
-        Route::view('/tim', $v . '.team')->name('team');
-        Route::view('/persyaratan', $v . '.requirements')->name('requirements');
-        Route::view('/testimoni', $v . '.testimonials')->name('testimonials');
-        Route::view('/chatbot', $v . '.chatbot')->name('chatbot');
+        Route::view('/', $v.'.index')->name('home');
+        Route::view('/paket', $v.'.packages')->name('packages');
+        Route::view('/jadwal', $v.'.schedules')->name('schedules');
+        Route::view('/harga', $v.'.prices')->name('prices');
+        Route::view('/hotel-pesawat', $v.'.hotel-flight')->name('hotel-flight');
+        Route::view('/itinerary', $v.'.itinerary')->name('itinerary');
+        Route::view('/tim', $v.'.team')->name('team');
+        Route::view('/persyaratan', $v.'.requirements')->name('requirements');
+        Route::view('/testimoni', $v.'.testimonials')->name('testimonials');
+        Route::view('/chatbot', $v.'.chatbot')->name('chatbot');
+    });
+
+Route::prefix('webia/template/professional-service/artistic/branding-creative-agency-terracotta')
+    ->name('bca-terracotta.')
+    ->group(function () {
+        $view = 'website-bisnis.template.professional-service.artistic.branding-creative-agency-terracotta.branding-creative-agency';
+        $conf = 'template.professional-service.artistic.branding-creative-agency-terracotta.branding-creative-agency';
+        $path = 'website-bisnis/template/professional-service/artistic/branding-creative-agency-terracotta';
+
+        $pages = [
+            'home'       => '/',
+            'layanan'    => 'layanan',
+            'keahlian'   => 'keahlian',
+            'harga'      => 'harga-konsultasi',
+            'portofolio' => 'portofolio',
+            'janji'      => 'janji-temu',
+            'brief'      => 'brief-proyek',
+        ];
+
+        foreach ($pages as $name => $uri) {
+            Route::get($uri, function () use ($name, $view, $conf, $path) {
+                return view($view, [
+                    'page' => $name,
+                    'c'    => config($conf),
+                    'r'    => fn (string $n) => route('bca-terracotta.' . $n),
+                    'img'  => fn (string $f) => asset('images/' . $path . '/' . $f),
+                    'css'  => asset('css/' . $path . '/branding-creative-agency.css'),
+                    'js'   => asset('js/' . $path . '/branding-creative-agency.js'),
+                ]);
+            })->name($name);
+        }
     });
 
 

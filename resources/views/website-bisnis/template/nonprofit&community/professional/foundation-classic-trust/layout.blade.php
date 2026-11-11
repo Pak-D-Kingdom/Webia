@@ -18,7 +18,10 @@
         'chatbot'   => ['chatbot', 'faq', 'tanya', 'bantuan', 'bot'],
     ];
     $search = [];
-    foreach ($searchMap as $k => $keys) { $search[] = ['url' => $links[$k], 'keys' => $keys]; }
+    foreach ($searchMap as $k => $keys) {
+        $meta = $fd['pages'][$k];
+        $search[] = ['title' => $meta[0], 'desc' => $meta[1], 'icon' => $meta[2], 'url' => $links[$k], 'keys' => $keys];
+    }
     $clientData = [
         'wa'     => $fd['contact']['whatsapp'],
         'links'  => $links,
@@ -34,7 +37,7 @@
     <title>@yield('title', 'Harapan Untuk Negeri Foundation — Membangun Masa Depan yang Lebih Baik')</title>
     <meta name="description" content="@yield('description', 'Yayasan filantropi terpercaya: program pendidikan, kesehatan, pemberdayaan ekonomi, dan pelestarian lingkungan untuk masyarakat Indonesia.')">
     <meta name="theme-color" content="#0a2748">
-    <link rel="icon" type="image/png" href="{{ $i('logo.png') }}">
+    <link rel="icon" type="image/svg+xml" href="{{ $i('logo.svg') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">

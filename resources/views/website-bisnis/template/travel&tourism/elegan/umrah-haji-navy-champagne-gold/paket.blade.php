@@ -3,7 +3,7 @@
 @section('title', 'Paket Umrah & Haji — Al Hijrah Travel')
 
 @section('content')
-@include($v . '.partials.page-hero', ['eyebrow' => 'PAKET IBADAH', 'title' => 'Paket Umrah & Haji', 'desc' => 'Pilih paket terbaik sesuai kebutuhan dan kenyamanan perjalanan ibadah Anda.', 'bg' => 'hero.svg'])
+@include($v . '.partials.page-hero', ['eyebrow' => 'PAKET IBADAH', 'title' => 'Paket Umrah & Haji', 'desc' => 'Pilih paket terbaik sesuai kebutuhan dan kenyamanan perjalanan ibadah Anda.', 'bg' => 'pkg-umrah-reguler.svg', 'chips' => [count($d['packages']) . ' pilihan paket', 'Muthawwif berpengalaman', 'Hotel dekat masjid']])
 
 <section class="uh-section">
     <div class="uh-container" data-filter-scope>
@@ -13,12 +13,22 @@
                 <button type="button" data-filter="umrah">Umrah</button>
                 <button type="button" data-filter="haji">Haji</button>
             </div>
-            <p class="uh-toolbar__note">{{ count($d['packages']) }} paket tersedia</p>
+            <div class="uh-toolbar__right">
+                <span class="uh-toolbar__note" data-filter-count aria-live="polite">{{ count($d['packages']) }} paket tersedia</span>
+                <div class="uh-select" data-select data-sort-key>
+                    <button type="button" class="uh-select__btn" aria-haspopup="listbox" aria-expanded="false"><small>Urutkan:</small><span class="uh-select__label">Rekomendasi</span><svg class="uh-ico uh-select__caret" aria-hidden="true"><use href="#i-caret"/></svg></button>
+                    <ul class="uh-select__menu" role="listbox" aria-label="Urutkan paket">
+                        <li role="option" tabindex="-1" aria-selected="true" data-sort="order" data-label="Rekomendasi"><span>Rekomendasi</span><svg class="uh-ico" aria-hidden="true"><use href="#i-check"/></svg></li>
+                        <li role="option" tabindex="-1" aria-selected="false" data-sort="price-asc" data-label="Harga Terendah"><span>Harga Terendah</span><svg class="uh-ico" aria-hidden="true"><use href="#i-check"/></svg></li>
+                        <li role="option" tabindex="-1" aria-selected="false" data-sort="price-desc" data-label="Harga Tertinggi"><span>Harga Tertinggi</span><svg class="uh-ico" aria-hidden="true"><use href="#i-check"/></svg></li>
+                    </ul>
+                </div>
+            </div>
         </div>
 
-        <div class="uh-pkgs">
-            @foreach ($d['packages'] as $p)
-                <article class="uh-pkg" id="{{ $p['id'] }}" data-filter-item data-type="{{ $p['types'] }}" data-reveal>
+        <div class="uh-pkgs" data-sort-list>
+            @foreach ($d['packages'] as $pi => $p)
+                <article class="uh-pkg" id="{{ $p['id'] }}" data-filter-item data-sort-item data-order="{{ $pi }}" data-price="{{ $p['price'] }}" data-type="{{ $p['types'] }}" data-reveal>
                     <div class="uh-pkg__img">
                         <img src="{{ $img($p['image']) }}" alt="{{ $p['name'] }}" loading="lazy">
                         <span class="uh-badge">{{ $p['badge'] }}</span>
