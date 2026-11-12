@@ -15,16 +15,15 @@
                     <button type="button" class="uh-chip" data-filter="umrah" aria-pressed="false">Umrah</button>
                     <button type="button" class="uh-chip" data-filter="haji" aria-pressed="false">Haji</button>
                 </div>
-                <label class="uh-select">
-                    <span class="uh-select__label">Bulan</span>
-                    <select data-uh-month aria-label="Filter bulan keberangkatan">
+                <div class="uh-selectwrap">
+                    <span class="uh-selectwrap__label" id="uh-month-label">Bulan</span>
+                    <select class="uh-native" data-uh-select="pill" data-uh-month aria-labelledby="uh-month-label">
                         <option value="all">Semua bulan</option>
                         @foreach (array_unique(array_column($uh['schedules'], 'month')) as $m)
                             <option value="{{ $m }}">{{ $m }}</option>
                         @endforeach
                     </select>
-                    <svg class="uh-i" aria-hidden="true"><use href="#i-chevron-down"/></svg>
-                </label>
+                </div>
             </div>
 
             <div class="uh-card uh-card--flat">
@@ -62,6 +61,11 @@
                 </div>
                 <p class="uh-empty" data-uh-empty hidden>Belum ada jadwal untuk filter ini.</p>
             </div>
+            <ul class="uh-legend" aria-label="Keterangan status">
+                <li><span class="uh-status uh-status--ok">Tersedia</span> kursi masih banyak</li>
+                <li><span class="uh-status uh-status--warn">Terbatas</span> segera daftar, kursi menipis</li>
+                <li><span class="uh-status uh-status--full">Penuh</span> masuk daftar tunggu</li>
+            </ul>
             <p class="uh-note">Sisa kursi dapat berubah sewaktu-waktu. Konfirmasi ketersediaan terbaru melalui WhatsApp atau AI Assistant.</p>
         </div>
     </section>

@@ -9,6 +9,16 @@
                         <span class="uh-brand__tag">{{ $uh['brand']['tagline'] }}</span>
                     </span>
                 </a>
+                <p class="uh-footer__about">{{ $uh['footer']['about'] }}</p>
+                <ul class="uh-footer__social" aria-label="Media sosial">
+                    @foreach ($uh['social'] as $s)
+                        <li>
+                            <a href="{{ $s['url'] }}" target="_blank" rel="noopener noreferrer" aria-label="{{ $s['name'] }}">
+                                <svg class="uh-i" aria-hidden="true"><use href="#i-{{ $s['icon'] }}"/></svg>
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
             </div>
 
             <nav class="uh-footer__col uh-footer__col--nav" aria-label="Navigasi footer">
@@ -51,18 +61,16 @@
                         <svg class="uh-i" aria-hidden="true"><use href="#i-pin"/></svg>
                         <span>{{ $uh['brand']['address'] }}</span>
                     </li>
-                </ul>
-            </div>
-
-            <ul class="uh-footer__social" aria-label="Media sosial">
-                @foreach ($uh['social'] as $s)
                     <li>
-                        <a href="{{ $s['url'] }}" target="_blank" rel="noopener noreferrer" aria-label="{{ $s['name'] }}">
-                            <svg class="uh-i" aria-hidden="true"><use href="#i-{{ $s['icon'] }}"/></svg>
-                        </a>
+                        <svg class="uh-i" aria-hidden="true"><use href="#i-clock"/></svg>
+                        <span>{{ $uh['brand']['hours'] }}</span>
                     </li>
-                @endforeach
-            </ul>
+                </ul>
+                <a class="uh-footer__wa" href="{{ $wa($uh['hero']['wa_consult']) }}" target="_blank" rel="noopener noreferrer">
+                    <svg class="uh-i" aria-hidden="true"><use href="#i-whatsapp"/></svg>
+                    <span>Konsultasi via WhatsApp</span>
+                </a>
+            </div>
 
             <div class="uh-footer__art" aria-hidden="true">
                 <p class="uh-footer__calli">{{ $uh['footer']['calligraphy'] }}</p>
@@ -77,6 +85,12 @@
             <ul class="uh-footer__legal">
                 <li><a href="{{ $url('requirements') }}">Persyaratan Pendaftaran</a></li>
                 <li><a href="{{ $url('chatbot') }}">FAQ</a></li>
+                <li>
+                    <button type="button" class="uh-totop" data-uh-totop>
+                        <span>Kembali ke atas</span>
+                        <svg class="uh-i" aria-hidden="true"><use href="#i-chevron-down"/></svg>
+                    </button>
+                </li>
             </ul>
         </div>
     </div>

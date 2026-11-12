@@ -5,7 +5,7 @@
         <div class="meter" aria-hidden="true"><span data-cart-ship-bar></span></div>
     </div>
     <ul class="cartp__list" data-cart-list></ul>
-    <p class="cartp__empty" data-cart-empty>Keranjang masih kosong. <a href="{{ route($rp . 'catalog') }}">Pilih produk</a></p>
+    <p class="cartp__empty" data-cart-empty>Keranjang masih kosong. <a href="{{ $r('catalog') }}">Pilih produk</a></p>
     <div class="cartp__foot" data-cart-foot hidden>
         <dl class="cartp__sum"><dt>Subtotal</dt><dd data-cart-subtotal>Rp 0</dd></dl>
         <form class="cartp__form" data-checkout-form novalidate>

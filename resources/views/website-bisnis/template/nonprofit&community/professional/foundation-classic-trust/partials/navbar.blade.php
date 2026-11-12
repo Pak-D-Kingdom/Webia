@@ -7,7 +7,7 @@
         <nav class="fd-menu" id="fd-menu" aria-label="Navigasi utama">
             <ul>
                 @foreach ($fd['nav'] as $n)
-                    @php $active = $current === 'foundation-classic-trust.' . $n['route']; @endphp
+                    @php $active = $current === ('foundation-classic-trust.' . $n['route']); @endphp
                     <li><a href="{{ $r($n['route']) }}" @class(['is-active' => $active]) @if($active) aria-current="page" @endif>{{ $n['label'] }}</a></li>
                 @endforeach
             </ul>

@@ -32,6 +32,7 @@ class HostingBillingCycleTest extends TestCase
         $this->assertSame('2026-01-31', $invoice->period_start->toDateString());
         $this->assertSame('2026-02-27', $invoice->period_end->toDateString());
         $this->assertSame('active', $service->fresh()->billing_status);
+        $this->assertSame('pending_activation', $service->fresh()->operational_status);
     }
 
     public function test_cycle_day_returns_after_a_short_month(): void

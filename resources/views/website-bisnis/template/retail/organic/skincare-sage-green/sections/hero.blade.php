@@ -21,7 +21,7 @@
                 @endforeach
             </ul>
 
-            <a class="btn btn--primary btn--lg" href="{{ route($cfg['route'] . 'catalog') }}">
+            <a class="btn btn--primary btn--lg" href="{{ $r('catalog') }}">
                 {{ $cfg['hero']['cta'] }} <svg class="ico" aria-hidden="true"><use href="#i-arrow-right"/></svg>
             </a>
         </div>
@@ -35,7 +35,7 @@
                 <aside class="featured" aria-labelledby="featured-title">
                     <div class="featured__head">
                         <h2 id="featured-title">Produk Pilihan<br>Untuk Kulit Sehatmu</h2>
-                        <a class="link-arrow" href="{{ route($cfg['route'] . 'catalog') }}">Lihat Semua <svg class="ico" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+                        <a class="link-arrow" href="{{ $r('catalog') }}">Lihat Semua <svg class="ico" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
                     </div>
                     <div class="featured__card">
                         <div class="featured__media">
@@ -49,7 +49,9 @@
                             <p>{{ $fp['tagline'] }}</p>
                             <p class="pcard__price"><strong>Rp {{ number_format($fp['price'], 0, ',', '.') }}</strong> <del>Rp {{ number_format($fp['old_price'], 0, ',', '.') }}</del></p>
                             <p class="pcard__meta">
-                                <span class="rating"><svg class="ico"><use href="#i-star"/></svg>{{ number_format($fp['rating'], 1, '.', '') }} <small>({{ $fp['reviews'] }})</small></span>
+                                @unless ($cfg['customer_site'] ?? false)
+                                    <span class="rating"><svg class="ico"><use href="#i-star"/></svg>{{ number_format($fp['rating'], 1, '.', '') }} <small>({{ $fp['reviews'] }})</small></span>
+                                @endunless
                                 <span class="stock stock--{{ $fp['status'] }}"><i></i> Stok Tersedia</span>
                             </p>
                         </div>

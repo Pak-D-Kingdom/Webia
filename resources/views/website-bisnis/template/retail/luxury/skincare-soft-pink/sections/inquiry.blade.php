@@ -3,7 +3,7 @@
     <div class="inq__grid">
         <div class="inq__info">
             <h2>Inquiry Produk</h2>
-            <p>Tanyakan produk, stok, harga, atau kerja sama reseller. Tim Belleza membalas langsung lewat WhatsApp pada jam layanan.</p>
+            <p>Tanyakan produk, stok, harga, atau kerja sama reseller. Tim {{ $cfg['brand']['name'] }} membalas langsung lewat WhatsApp pada jam layanan.</p>
             <ul class="inq__list">
                 <li><i class="bi bi-whatsapp" aria-hidden="true"></i><span><strong>WhatsApp</strong><a href="https://wa.me/{{ $c['whatsapp'] }}" target="_blank" rel="noopener">Chat sekarang</a></span></li>
                 <li><i class="bi bi-envelope" aria-hidden="true"></i><span><strong>Email</strong><a href="mailto:{{ $c['email'] }}">{{ $c['email'] }}</a></span></li>
@@ -13,7 +13,7 @@
                 @endif
             </ul>
             @unless ($full)
-                <a class="more" href="{{ route($rp . 'inquiry') }}">Buka halaman inquiry <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+                <a class="more" href="{{ $r('inquiry') }}">Buka halaman inquiry <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
             @endunless
         </div>
         <div class="inq__form">

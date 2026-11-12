@@ -20,7 +20,7 @@ return [
         'address' => 'Jakarta, Indonesia',
         'hours' => 'Sen - Min : 08.00 - 21.00',
         'email' => 'info@nurrahmattravel.co.id',
-        'phone_display' => '+62 812 3456 7890',
+        'phone_display' => '+62 895-6303-00345',
         'whatsapp' => '62895630300345',
         'credit' => '© 2026 WEBIA by D-KREASI. Seluruh hak cipta dilindungi.',
     ],
@@ -691,6 +691,17 @@ return [
             ],
         ],
         'wa_register' => 'Assalamu\'alaikum Nur Rahmat Travel, saya ingin mendaftar paket umrah/haji. Mohon informasi langkah selanjutnya.',
+        'form' => [
+            'eyebrow' => 'Pendaftaran awal',
+            'title' => 'Daftar via WhatsApp',
+            'text' => 'Isi data singkat di bawah ini. Pesan akan terisi otomatis dan dikirim ke WhatsApp tim Nur Rahmat Travel untuk dilanjutkan ke proses pendaftaran.',
+            'points' => [
+                'Konsultasi paket tanpa biaya',
+                'Dibalas pada jam operasional tim',
+                'Data hanya dikirim ke WhatsApp tim kami',
+            ],
+            'intro' => 'Assalamu\'alaikum Nur Rahmat Travel, saya ingin mendaftar umrah/haji dengan data berikut:',
+        ],
     ],
     'testimonials' => [
         'title' => 'Testimoni Jemaah',
@@ -794,45 +805,62 @@ return [
             'link_label' => 'Lihat persyaratan',
         ],
     ],
+    'search_popular' => [
+        ['Harga paket', 'harga'],
+        ['Jadwal', 'jadwal'],
+        ['Persyaratan', 'syarat'],
+        ['Hotel', 'hotel'],
+        ['Itinerary', 'itinerary'],
+    ],
     'pages' => [
         'packages' => [
+            'icon' => 'kaaba',
             'title' => 'Paket Umrah & Haji',
             'text' => 'Pilih paket terbaik sesuai kebutuhan dan impian Anda.',
         ],
         'schedules' => [
+            'icon' => 'calendar',
             'title' => 'Jadwal Keberangkatan',
             'text' => 'Pilih tanggal keberangkatan yang sesuai dengan rencana Anda.',
         ],
         'prices' => [
+            'icon' => 'tag',
             'title' => 'Harga Paket',
             'text' => 'Nikmati harga terbaik dengan fasilitas premium dan pelayanan profesional.',
         ],
         'hotel-flight' => [
+            'icon' => 'hotel',
             'title' => 'Hotel & Pesawat',
             'text' => 'Hotel bintang 3-5 dan maskapai pilihan untuk kenyamanan perjalanan Anda.',
         ],
         'itinerary' => [
+            'icon' => 'route',
             'title' => 'Itinerary Perjalanan',
             'text' => 'Rangkaian perjalanan yang terstruktur dan nyaman dari keberangkatan hingga kembali.',
         ],
         'team' => [
+            'icon' => 'guide',
             'title' => 'Tim Pembimbing',
             'text' => 'Dibimbing oleh pembimbing berpengalaman dan tersertifikasi.',
         ],
         'requirements' => [
+            'icon' => 'file',
             'title' => 'Persyaratan Pendaftaran',
             'text' => 'Siapkan dokumen yang dibutuhkan untuk kelancaran proses pendaftaran.',
         ],
         'testimonials' => [
+            'icon' => 'star',
             'title' => 'Testimoni Jemaah',
             'text' => 'Kisah nyata dari jamaah yang telah merasakan layanan terbaik kami.',
         ],
         'chatbot' => [
+            'icon' => 'message',
             'title' => 'AI Assistant',
             'text' => 'Tanya apa saja tentang paket umrah, haji, jadwal, harga, dan persyaratan pendaftaran.',
         ],
     ],
     'footer' => [
+        'about' => 'Mitra perjalanan ibadah umrah dan haji Anda: pembimbing berpengalaman, fasilitas nyaman, dan pendampingan penuh dari keberangkatan hingga kembali ke tanah air.',
         'nav_a' => [
             ['home', 'Beranda'],
             ['packages', 'Paket Umrah & Haji'],

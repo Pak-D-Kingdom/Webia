@@ -33,36 +33,42 @@ return [
             'label' => 'Layanan',
             'title' => 'Layanan studio',
             'desc' => 'Enam layanan yang bisa dipesan terpisah atau digabung dalam satu alur kerja.',
+            'img' => 'portfolio-warung-tenggara.svg',
             'next' => '#FBF6EF',
         ],
         'keahlian' => [
             'label' => 'Keahlian',
             'title' => 'Keahlian kami',
             'desc' => 'Perpaduan strategi, cerita, dan rupa yang sudah teruji di berbagai industri.',
+            'img' => 'expertise-venn.svg',
             'next' => '#F3E6D8',
         ],
         'harga' => [
             'label' => 'Harga & Konsultasi',
             'title' => 'Harga dan konsultasi',
             'desc' => 'Paket yang jelas, tanpa biaya tersembunyi. Mulai dengan konsultasi gratis.',
+            'img' => 'portfolio-gula-lontar.svg',
             'next' => '#FBF6EF',
         ],
         'portofolio' => [
             'label' => 'Portofolio',
             'title' => 'Portofolio',
             'desc' => 'Proyek pilihan dari klien kami: kemasan, identitas, dan kampanye.',
+            'img' => 'portfolio-atap-merah.svg',
             'next' => '#FBF6EF',
         ],
         'janji' => [
             'label' => 'Janji Temu',
             'title' => 'Buat janji temu',
             'desc' => 'Pilih jenis konsultasi, tanggal, dan jam. Kami konfirmasi lewat WhatsApp.',
+            'img' => 'studio-desk.svg',
             'next' => '#F3E6D8',
         ],
         'brief' => [
             'label' => 'Kirim Brief',
             'title' => 'Kirim brief proyek',
             'desc' => 'Ceritakan kebutuhan Anda. Tim kami membalas dalam satu hari kerja.',
+            'img' => 'portfolio-rumah-pinus.svg',
             'next' => '#F3E6D8',
         ],
     ],
@@ -122,6 +128,7 @@ return [
             'title' => 'Konsultasi cepat dengan asisten AI',
             'text' => 'Tanyakan layanan, harga, durasi, atau cara bekerja sama. Asisten kami menjawab kapan saja dan mengarahkan Anda ke tim bila perlu.',
             'cta' => 'Mulai bertanya',
+            'points' => ['Jawaban instan kapan saja', 'Rekomendasi paket sesuai kebutuhan', 'Terhubung ke tim lewat WhatsApp'],
         ],
     ],
     'services' => [
@@ -441,6 +448,28 @@ return [
             'greet' => 'Halo, saya Prisma, asisten konsultasi Senja Atelier. Pilih pertanyaan di bawah atau ketik sendiri.',
             'fallback' => 'Saya belum punya jawaban untuk itu. Tim kami siap membantu langsung lewat WhatsApp atau konsultasi gratis.',
             'placeholder' => 'Tulis pertanyaan Anda',
+        ],
+        'topics' => [
+            [
+                't' => 'Layanan',
+                's' => 'Apa yang kami kerjakan',
+                'q' => 'Layanan apa saja yang tersedia?',
+            ],
+            [
+                't' => 'Harga',
+                's' => 'Kisaran biaya paket',
+                'q' => 'Berapa biaya branding di sini?',
+            ],
+            [
+                't' => 'Konsultasi',
+                's' => 'Gratis 30 menit',
+                'q' => 'Apakah konsultasi awal gratis?',
+            ],
+            [
+                't' => 'Alur kerja',
+                's' => 'Dari brief sampai serah terima',
+                'q' => 'Bagaimana alur kerjanya?',
+            ],
         ],
         'items' => [
             [

@@ -2,7 +2,7 @@
      - compact (preview beranda): TIDAK mengirim ke WhatsApp, hanya membuka halaman Inquiry dengan data terisi (GET).
      - penuh (halaman Inquiry): dikirim ke WhatsApp oleh skincare.js (data-inquiry-form). --}}
 @php $compact = $compact ?? false; @endphp
-<form class="iform" @if ($compact) action="{{ route($rp . 'inquiry') }}" method="get" @else data-inquiry-form novalidate @endif>
+<form class="iform" @if ($compact) action="{{ $r('inquiry') }}" method="get" @else data-inquiry-form novalidate @endif>
     <div class="iform__row">
         <label class="field">
             <span>Nama lengkap</span>
