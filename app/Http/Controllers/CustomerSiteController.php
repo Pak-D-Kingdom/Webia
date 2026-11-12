@@ -309,6 +309,13 @@ class CustomerSiteController extends Controller
             }
         }
 
+        // Sembunyikan floating button atau chat demo bawaan template statis agar tidak tabrakan dengan widget AI resmi Webia
+        $html = str_replace(
+            ['id="chat"', 'id="fab"', 'class="classic-chat-panel"', 'id="classic-chat-panel"'],
+            ['id="chat" style="display:none!important;"', 'id="fab" style="display:none!important;"', 'class="classic-chat-panel" style="display:none!important;"', 'id="classic-chat-panel" style="display:none!important;"'],
+            $html
+        );
+
         return $html;
     }
 

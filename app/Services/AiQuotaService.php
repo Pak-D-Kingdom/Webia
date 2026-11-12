@@ -665,7 +665,7 @@ public static function simulateChat(string $tenantId, string $message): array
         $aiBaseUrl = rtrim(config('services.ai_engine.url', 'http://127.0.0.1:8001'), '/');
 
         try {
-            $res = Http::timeout(15)->post("{$aiBaseUrl}/api/v1/chat", [
+            $res = Http::timeout(45)->post("{$aiBaseUrl}/api/v1/chat", [
                 'layer' => 'l4',
                 'tenant_id' => $tenantId,
                 'messages' => [
@@ -691,9 +691,45 @@ public static function simulateChat(string $tenantId, string $message): array
         $layanan = $knowledge['layanan'] ?? '';
         $faq = $knowledge['faq_raw'] ?? ($knowledge['faq'] ?? '');
         $profil = $knowledge['profil'] ?? '';
+        $kebijakan = $knowledge['kebijakan'] ?? '';
         $msgLower = strtolower($message);
 
-        // 1. Pertanyaan seputar Lokasi / Jam Operasional / Alamat / Kontak
+        // Ambil nama bisnis dari profil jika tersedia
+        $bizName = '';
+        if (preg_match('/#+\s*(?:Profil\s*Bisnis\s*:?\s*)?(.*?)$/m', $profil, $mbiz)) {
+            $bizName = trim($mbiz[1]);
+        }
+
+        // 1. Pertanyaan seputar "jasa apa", "ini toko apa", sapaan, atau perkenalan
+        if (preg_match('/(jasa\s*apa|layanan\s*apa|ini\s*(?:apa|toko\s*apa|tempat\s*apa)|kamu\s*siapa|tentang|profil|deskripsi|halo|hai|pagi|siang|malam)/i', $message)) {
+            $intro = [];
+            if (!empty($profil)) {
+                $cleanProfil = trim(preg_replace('/^#+\s+.*$/m', '', $profil));
+                $intro[] = $cleanProfil;
+            }
+            if (!empty($layanan)) {
+                // Ambil daftar layanan utama
+                if (preg_match_all('/^[-*]\s+\*\*(.*?)\*\*(?::\s*(.*?))?$/m', $layanan, $svcMatches, PREG_SET_ORDER)) {
+                    $svcList = [];
+                    foreach (array_slice($svcMatches, 0, 4) as $sm) {
+                        $svcList[] = "• **" . trim($sm[1]) . "**" . (!empty($sm[2]) ? ": " . trim($sm[2]) : "");
+                    }
+                    if (!empty($svcList)) {
+                        $intro[] = "Layanan utama kami meliputi:\n" . implode("\n", $svcList);
+                    }
+                }
+            }
+            if (!empty($intro)) {
+                return [
+                    'status' => 'success',
+                    'reply' => implode("\n\n", $intro) . "\n\nSilakan tanyakan seputar daftar harga, lokasi, atau cara pemesanan kami! 😊",
+                    'meta' => ['source' => 'local_knowledge_profil_intro', 'is_simulation' => true],
+                    'engine_recorded' => false,
+                ];
+            }
+        }
+
+        // 2. Pertanyaan seputar Lokasi / Jam Operasional / Alamat / Kontak
         if (preg_match('/(lokasi|alamat|di\s*mana|jam|buka|tutup|operasional|hari\s*apa|kontak|wa|whatsapp|telepon)/i', $message)) {
             if (!empty($profil)) {
                 $cleanProfil = trim(preg_replace('/^#+\s+.*$/m', '', $profil));
@@ -706,35 +742,43 @@ public static function simulateChat(string $tenantId, string $message): array
             }
         }
 
-        // 2. Pertanyaan seputar Cara Pesan / Order / Penjemputan / Syarat
-        if (preg_match('/(pesan|order|antar|jemput|pick\s*up|delivery|cara|syarat|aturan|berapa\s*lama|waktu\s*pengerjaan)/i', $message)) {
+        // 3. Pertanyaan seputar Cara Pesan / Order / Booking / Reservasi / Penjemputan / Syarat
+        if (preg_match('/(pesan|order|booking|reservasi|antar|jemput|pick\s*up|delivery|cara|syarat|aturan|berapa\s*lama|waktu\s*pengerjaan)/i', $message)) {
+            $orderInfo = [];
             if (!empty($faq)) {
                 $cleanFaq = trim(preg_replace('/^#+\s+.*$/m', '', $faq));
+                $orderInfo[] = $cleanFaq;
+            }
+            if (!empty($kebijakan)) {
+                $cleanKebijakan = trim(preg_replace('/^#+\s+.*$/m', '', $kebijakan));
+                $orderInfo[] = $cleanKebijakan;
+            }
+            if (!empty($orderInfo)) {
                 return [
                     'status' => 'success',
-                    'reply' => "Berikut informasi pemesanan dan pertanyaan umum kami:\n\n" . trim($cleanFaq) . "\n\nSilakan hubungi WhatsApp kami untuk respon pemesanan langsung! 😊",
+                    'reply' => "Berikut informasi pemesanan dan ketentuan layanan kami:\n\n" . implode("\n\n", $orderInfo) . "\n\nSilakan hubungi kami via WhatsApp untuk respon pemesanan langsung! 😊",
                     'meta' => ['source' => 'local_knowledge_faq', 'is_simulation' => true],
                     'engine_recorded' => false,
                 ];
             }
         }
 
-        // 3. Pertanyaan seputar Tarif / Harga / Kiloan / Biaya / Layanan
-        if (preg_match('/(harga|tarif|biaya|kilo|paket|ongkos|cuci|layanan|produk|laundry|diskon|promo|sepatu|bed\s*cover)/i', $message)) {
+        // 4. Pertanyaan seputar Tarif / Harga / Kiloan / Biaya / Layanan / Servis
+        if (preg_match('/(harga|tarif|biaya|kilo|paket|ongkos|cuci|layanan|servis|produk|laundry|diskon|promo|sepatu|bed\s*cover|per\s*kilo|bisa\s*apa)/i', $message)) {
             if (!empty($layanan)) {
                 $cleanLayanan = trim(preg_replace('/^#+\s+.*$/m', '', $layanan));
                 return [
                     'status' => 'success',
-                    'reply' => "Berikut adalah daftar layanan dan tarif kami:\n\n" . trim($cleanLayanan) . "\n\nAda yang ingin Anda pesan atau tanyakan lebih lanjut? 😊",
+                    'reply' => "Berikut adalah daftar layanan dan rincian tarif kami:\n\n" . trim($cleanLayanan) . "\n\nAda yang ingin Anda tanyakan atau pesan lebih lanjut? 😊",
                     'meta' => ['source' => 'local_knowledge_layanan', 'is_simulation' => true],
                     'engine_recorded' => false,
                 ];
             }
         }
 
-        // 4. Pencocokan kata kunci paragraf demi paragraf di seluruh berkas knowledge
-        $allDocs = [$layanan, $faq, $profil];
-        $words = array_filter(explode(' ', preg_replace('/[^a-zA-Z0-9\s]/', '', $msgLower)), fn($w) => strlen($w) >= 4);
+        // 5. Pencocokan kata kunci paragraf demi paragraf di seluruh berkas knowledge
+        $allDocs = [$layanan, $faq, $profil, $kebijakan];
+        $words = array_filter(explode(' ', preg_replace('/[^a-zA-Z0-9\s]/', '', $msgLower)), fn($w) => strlen($w) >= 3);
         foreach ($allDocs as $doc) {
             if (empty($doc)) continue;
             $paragraphs = preg_split('/\n\s*\n/', $doc);
@@ -755,9 +799,29 @@ public static function simulateChat(string $tenantId, string $message): array
             }
         }
 
+        // 6. Jika tidak cocok sama sekali, sajikan ringkasan bisnis dari profil + layanan (bukan generik kosong)
+        $fallbackSummary = [];
+        if (!empty($profil)) {
+            $cleanP = trim(preg_replace('/^#+\s+.*$/m', '', $profil));
+            $fallbackSummary[] = $cleanP;
+        }
+        if (!empty($layanan)) {
+            $cleanL = trim(preg_replace('/^#+\s+.*$/m', '', $layanan));
+            $fallbackSummary[] = $cleanL;
+        }
+
+        if (!empty($fallbackSummary)) {
+            return [
+                'status' => 'success',
+                'reply' => "Informasi mengenai " . ($bizName ?: 'layanan kami') . ":\n\n" . implode("\n\n", $fallbackSummary) . "\n\nAda pertanyaan khusus seputar tarif atau pemesanan yang ingin Anda tanyakan? 😊",
+                'meta' => ['source' => 'local_knowledge_summary', 'is_simulation' => true],
+                'engine_recorded' => false,
+            ];
+        }
+
         return [
             'status' => 'success',
-            'reply' => "Halo! Terima kasih atas pertanyaannya. Kami siap membantu Anda. Anda dapat menanyakan seputar **daftar harga**, **lokasi & jam operasional**, maupun **cara pemesanan** kepada kami! 😊",
+            'reply' => "Halo! Kami siap membantu Anda seputar daftar harga, lokasi, jam operasional, dan pemesanan. Silakan ajukan pertanyaan atau hubungi WhatsApp kami langsung! 😊",
             'meta' => ['is_simulation' => true],
             'engine_recorded' => false,
         ];
@@ -781,6 +845,14 @@ public static function simulateChat(string $tenantId, string $message): array
                         PDO::ATTR_ERRMODE => PDO::ERRMODE_SILENT,
                         PDO::ATTR_TIMEOUT => 2,
                     ]);
+
+                    // Proteksi anti-double counting: cek apakah dalam 6 detik terakhir sudah ada interaksi tercatat untuk tenant ini
+                    $check = $pdo->prepare("SELECT COUNT(*) FROM usages WHERE tenant_id = ? AND created_at >= datetime('now', '-6 seconds')");
+                    $check->execute([$tenantId]);
+                    if ((int)$check->fetchColumn() > 0) {
+                        return true;
+                    }
+
                     $stmt = $pdo->prepare("INSERT INTO usages (session_id, layer, tenant_id, prompt_tokens, completion_tokens, total_tokens, latency_ms, provider, model, is_fallback, created_at) VALUES (?, 'L4', ?, 45, 60, 105, 120, ?, ?, 0, datetime('now'))");
                     $sessionId = 'sess_' . substr(md5(uniqid($tenantId, true)), 0, 12);
                     return $stmt->execute([$sessionId, $tenantId, $provider, $model]);

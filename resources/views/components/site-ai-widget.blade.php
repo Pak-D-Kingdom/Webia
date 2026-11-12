@@ -937,14 +937,19 @@
     function toggleChat(show) {
         if (show === undefined) {
             win.classList.toggle('hidden');
-            if (!win.classList.contains('hidden')) {
-                input.focus();
-            }
         } else if (show) {
             win.classList.remove('hidden');
-            input.focus();
         } else {
             win.classList.add('hidden');
+        }
+
+        const isHidden = win.classList.contains('hidden');
+        if (btn) {
+            btn.style.display = isHidden ? 'inline-flex' : 'none';
+        }
+        if (!isHidden && input) {
+            input.focus();
+            msgs.scrollTop = msgs.scrollHeight;
         }
     }
 
