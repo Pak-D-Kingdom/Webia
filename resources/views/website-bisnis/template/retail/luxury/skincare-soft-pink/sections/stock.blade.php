@@ -8,10 +8,10 @@
     <div class="sec-head">
         <div>
             <h2>Stok &amp; Ketersediaan</h2>
-            <p>Cek ketersediaan produk Belleza secara langsung sebelum memesan.</p>
+            <p>Cek ketersediaan produk {{ $cfg['brand']['name'] }} secara langsung sebelum memesan.</p>
         </div>
         @unless ($full)
-            <a class="more" href="{{ route($rp . 'stock') }}">Lihat Semua <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+            <a class="more" href="{{ $r('stock') }}">Lihat Semua <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
         @endunless
     </div>
 
@@ -40,10 +40,10 @@
                     <p class="scard__qty">@if ($p['stock'] > 0)<strong>{{ $p['stock'] }}</strong> unit tersisa @else Sedang kosong, restock segera @endif</p>
                     <div class="scard__act">
                         @if ($p['status'] === 'out')
-                            <a class="btn btn--ghost btn--sm" href="{{ route($rp . 'inquiry', ['topic' => 'stok', 'product' => $p['slug']]) }}"><i class="bi bi-bell" aria-hidden="true"></i> Tanya restock</a>
+                            <a class="btn btn--ghost btn--sm" href="{{ $r('inquiry').'?'.http_build_query(['topic' => 'stok', 'product' => $p['slug']]) }}"><i class="bi bi-bell" aria-hidden="true"></i> Tanya restock</a>
                         @else
                             @include($ns . '.partials.add-control', ['p' => $p, 'mode' => 'sm'])
-                            <a class="btn btn--ghost btn--sm" href="{{ route($rp . 'inquiry', ['topic' => 'stok', 'product' => $p['slug']]) }}"><i class="bi bi-chat-dots" aria-hidden="true"></i> Cek stok</a>
+                            <a class="btn btn--ghost btn--sm" href="{{ $r('inquiry').'?'.http_build_query(['topic' => 'stok', 'product' => $p['slug']]) }}"><i class="bi bi-chat-dots" aria-hidden="true"></i> Cek stok</a>
                         @endif
                     </div>
                 </div>

@@ -23,6 +23,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->role === 'admin';
     }
 
+    public function orders(): HasMany
+    {
+        return $this->hasMany(WebiaOrder::class);
+    }
+
     public function hostingServices(): HasMany
     {
         return $this->hasMany(HostingService::class);

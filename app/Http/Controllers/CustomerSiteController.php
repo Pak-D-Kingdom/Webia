@@ -20,9 +20,16 @@ class CustomerSiteController extends Controller
         $siteConfigPath = $order->siteConfigPath();
         abort_unless($siteConfigPath !== null, 404);
 
-        $views = str_starts_with($siteConfigPath, 'company/')
-            ? ['home' => 'index', 'tentang-kami' => 'tentang-kami', 'portofolio' => 'portofolio']
-            : ['home' => 'index', 'menu' => 'menu', 'reservasi' => 'reservasi'];
+        $isBrandingAgency = str_starts_with($siteConfigPath, 'professional-service/artistic/branding-creative-agency-terracotta/');
+        $isRetail = str_starts_with($siteConfigPath, 'retail/');
+        $views = match (true) {
+            $isBrandingAgency => array_fill_keys(['home', 'layanan', 'keahlian', 'portofolio', 'janji'], 'branding-creative-agency'),
+            str_starts_with($siteConfigPath, 'company/') => ['home' => 'index', 'tentang-kami' => 'tentang-kami', 'portofolio' => 'portofolio'],
+            str_starts_with($siteConfigPath, 'retail/luxury/') => ['home' => 'index', 'catalog' => 'catalog', 'price' => 'price', 'stock' => 'stock', 'inquiry' => 'inquiry', 'shop' => 'shop'],
+            str_starts_with($siteConfigPath, 'retail/organic/') => ['home' => 'index', 'katalog' => 'catalog', 'harga' => 'price', 'stok' => 'stock', 'inquiry' => 'inquiry', 'belanja' => 'shop'],
+            str_starts_with($siteConfigPath, 'retail/premium-minimal/') => ['home' => 'index', 'katalog' => 'katalog', 'harga' => 'harga', 'ketersediaan' => 'ketersediaan', 'inquiry' => 'inquiry', 'keranjang' => 'keranjang'],
+            default => ['home' => 'index', 'menu' => 'menu', 'reservasi' => 'reservasi'],
+        };
         abort_unless(isset($views[$page]), 404);
 
         $business = $order->business_data ?? [];
@@ -32,14 +39,18 @@ class CustomerSiteController extends Controller
         abort_unless(is_array($siteConfig), 404);
 
         $siteConfig = match (true) {
+            $isBrandingAgency => $this->brandingAgencyConfig($siteConfig, $business, $whatsapp),
             str_starts_with($siteConfigPath, 'company/elegan/') => $this->terracottaCompanyConfig($siteConfig, $business, $whatsapp, $instagram),
             str_starts_with($siteConfigPath, 'company/modern/') => $this->oceanTealCompanyConfig($siteConfig, $business, $whatsapp, $instagram),
             str_starts_with($siteConfigPath, 'company/classic/') => $this->warmNeutralCompanyConfig($siteConfig, $business, $whatsapp, $instagram),
+            str_starts_with($siteConfigPath, 'retail/luxury/') => $this->luxuryRetailConfig($siteConfig, $business, $whatsapp, $instagram),
+            str_starts_with($siteConfigPath, 'retail/organic/') => $this->organicRetailConfig($siteConfig, $business, $whatsapp, $instagram),
+            str_starts_with($siteConfigPath, 'retail/premium-minimal/') => $this->premiumRetailConfig($siteConfig, $business, $whatsapp, $instagram),
             str_starts_with($siteConfigPath, 'f&b/vintage/') => $this->vintageSiteConfig($siteConfig, $business, $order, $whatsapp, $instagram),
             str_starts_with($siteConfigPath, 'f&b/elegan/') => $this->eleganSiteConfig($siteConfig, $business, $order, $whatsapp, $instagram),
             default => $this->minimalisSiteConfig($siteConfig, $business, $order, $whatsapp, $instagram),
         };
-        if (! str_starts_with($siteConfigPath, 'company/')) {
+        if (! str_starts_with($siteConfigPath, 'company/') && ! $isRetail) {
             config(['cafe' => $siteConfig]);
         }
 
@@ -50,15 +61,69 @@ class CustomerSiteController extends Controller
             'order' => $order->site_slug,
             'page' => $name === 'home' ? null : $name,
         ]).$hash;
+        $routeUrl = fn (string $name = 'home', string $hash = ''): string => $pageUrl(
+            $isBrandingAgency && in_array($name, ['harga', 'brief'], true) ? 'janji' : $name,
+            $hash,
+        );
+        $retailPageUrl = fn (string $name = 'home', string $hash = ''): string => $pageUrl(
+            $this->retailPageName($siteConfigPath, $name),
+            $hash,
+        );
+        $assetPath = 'website-bisnis/template/'.$templatePath;
 
         return view($view.'.'.$views[$page], [
             'v' => $view,
             'path' => $path,
+            'page' => $page,
             'currentPage' => $page,
+            'c' => $siteConfig,
             'cafe' => $siteConfig,
+            'cfg' => $siteConfig,
+            'skin' => $siteConfig,
             'siteConfig' => $siteConfig,
             'pageUrl' => $pageUrl,
-            'routeUrl' => $pageUrl,
+            'routeUrl' => $routeUrl,
+            'r' => $isRetail ? $retailPageUrl : $routeUrl,
+            'rp' => null,
+            'ns' => $view,
+            'active' => $this->retailRouteKey($siteConfigPath, $page),
+            'img' => $isRetail ? asset('images/'.$assetPath) : fn (string $file): string => asset('images/'.$path.'/'.$file),
+            'css' => asset('css/'.($isRetail ? $assetPath : $path).'/'.($isRetail ? 'skincare' : 'branding-creative-agency').'.css'),
+            'js' => asset('js/'.($isRetail ? $assetPath : $path).'/'.($isRetail ? 'skincare' : 'branding-creative-agency').'.js'),
+        ]);
+    }
+
+    private function brandingAgencyConfig(array $siteConfig, array $business, string $whatsapp): array
+    {
+        $name = $business['business_name'] ?? 'Studio Kreatif';
+        $this->replaceDemoName($siteConfig, $siteConfig['brand']['name'], $name);
+
+        return array_replace($siteConfig, [
+            'brand' => array_replace($siteConfig['brand'], [
+                'name' => $name,
+                'short' => $name,
+                'sub' => '',
+                'tagline' => ($business['tagline'] ?? null) ?: $siteConfig['brand']['tagline'],
+                'whatsapp' => $whatsapp,
+                'phone' => $business['whatsapp'] ?? '',
+                'email' => '',
+                'address' => $this->businessAddress($business),
+                'wa_text' => 'Halo '.$name.', saya ingin berkonsultasi soal branding.',
+            ]),
+            'topbar' => array_replace($siteConfig['topbar'], ['notice' => 'Konsultasikan kebutuhan branding dan materi kreatif Anda.']),
+            'nav' => ['layanan', 'keahlian', 'portofolio', 'janji'],
+            'footnav' => ['layanan', 'keahlian', 'portofolio', 'janji'],
+            'hero' => array_replace($siteConfig['hero'], [
+                'lead' => ($business['description'] ?? null) ?: $siteConfig['hero']['lead'],
+                'facts' => [],
+            ]),
+            'services' => array_replace($siteConfig['services'], [
+                'items' => array_map(fn (array $service): array => array_replace($service, ['price' => '']), $siteConfig['services']['items']),
+            ]),
+            'pricing' => array_replace($siteConfig['pricing'], ['plans' => []]),
+            'appointment' => array_replace($siteConfig['appointment'], ['slots' => []]),
+            'expertise' => array_replace($siteConfig['expertise'], ['awards' => []]),
+            'customer_site' => true,
         ]);
     }
 
@@ -147,6 +212,112 @@ class CustomerSiteController extends Controller
             'clients' => [],
             'faq' => array_values(array_filter($siteConfig['faq'], fn (array $item): bool => ! in_array($item['id'], ['sertifikasi', 'klien'], true))),
         ]);
+    }
+
+    private function luxuryRetailConfig(array $siteConfig, array $business, string $whatsapp, string $instagram): array
+    {
+        $name = $business['business_name'] ?? 'Toko Skincare';
+        $this->replaceDemoName($siteConfig, $siteConfig['brand']['name'], $name);
+
+        return array_replace($siteConfig, [
+            'brand' => array_replace($siteConfig['brand'], [
+                'name' => $name,
+                'tagline' => ($business['tagline'] ?? null) ?: $siteConfig['brand']['tagline'],
+            ]),
+            'contact' => array_replace($siteConfig['contact'], [
+                'whatsapp' => $whatsapp,
+                'phone_display' => $business['whatsapp'] ?? '',
+                'email' => '',
+                'address' => $this->businessAddress($business),
+            ]),
+            'social' => $instagram === '' ? [] : [['icon' => 'bi-instagram', 'label' => 'Instagram', 'url' => 'https://instagram.com/'.$instagram]],
+            'hero' => array_replace($siteConfig['hero'], [
+                'title' => ($business['tagline'] ?? null) ?: $siteConfig['hero']['title'],
+                'text' => ($business['description'] ?? null) ?: $siteConfig['hero']['text'],
+            ]),
+            'customer_site' => true,
+        ]);
+    }
+
+    private function organicRetailConfig(array $siteConfig, array $business, string $whatsapp, string $instagram): array
+    {
+        $name = $business['business_name'] ?? 'Toko Skincare';
+        $this->replaceDemoName($siteConfig, $siteConfig['brand']['name'], $name);
+
+        return array_replace($siteConfig, [
+            'brand' => array_replace($siteConfig['brand'], [
+                'name' => $name,
+                'tagline' => ($business['tagline'] ?? null) ?: $siteConfig['brand']['tagline'],
+                'title' => $name.' - '.(($business['tagline'] ?? null) ?: $siteConfig['brand']['tagline']),
+                'description' => ($business['description'] ?? null) ?: $siteConfig['brand']['description'],
+            ]),
+            'whatsapp' => array_replace($siteConfig['whatsapp'], [
+                'number' => $whatsapp,
+                'display' => $business['whatsapp'] ?? '',
+                'greeting' => 'Halo '.$name.', saya ingin bertanya tentang produk.',
+            ]),
+            'contact' => array_replace($siteConfig['contact'], [
+                'address' => $this->businessAddress($business),
+                'email' => '',
+            ]),
+            'socials' => $instagram === '' ? [] : [['icon' => 'instagram', 'label' => 'Instagram', 'url' => 'https://instagram.com/'.$instagram]],
+            'hero' => array_replace($siteConfig['hero'], [
+                'title' => ($business['tagline'] ?? null) ?: $siteConfig['hero']['title'],
+                'text' => ($business['description'] ?? null) ?: $siteConfig['hero']['text'],
+            ]),
+            'customer_site' => true,
+        ]);
+    }
+
+    private function premiumRetailConfig(array $siteConfig, array $business, string $whatsapp, string $instagram): array
+    {
+        $name = $business['business_name'] ?? 'Toko Skincare';
+        $this->replaceDemoName($siteConfig, $siteConfig['name'], $name);
+
+        return array_replace($siteConfig, [
+            'name' => $name,
+            'tagline' => ($business['tagline'] ?? null) ?: $siteConfig['tagline'],
+            'whatsapp' => $whatsapp,
+            'whatsapp_display' => $business['whatsapp'] ?? '',
+            'contact' => array_replace($siteConfig['contact'], [
+                'address' => $this->businessAddress($business),
+                'phone' => $business['whatsapp'] ?? '',
+                'email' => '',
+            ]),
+            'social' => $instagram === '' ? [] : [['icon' => 'bi-instagram', 'label' => 'Instagram', 'url' => 'https://instagram.com/'.$instagram]],
+            'hero' => array_replace($siteConfig['hero'], [
+                'title' => ($business['tagline'] ?? null) ?: $siteConfig['hero']['title'],
+                'text' => ($business['description'] ?? null) ?: $siteConfig['hero']['text'],
+            ]),
+            'customer_site' => true,
+        ]);
+    }
+
+    private function retailPageName(string $siteConfigPath, string $name): string
+    {
+        return match (true) {
+            str_starts_with($siteConfigPath, 'retail/luxury/') => $name === 'index' ? 'home' : $name,
+            str_starts_with($siteConfigPath, 'retail/organic/') => [
+                'home' => 'home', 'catalog' => 'katalog', 'price' => 'harga', 'stock' => 'stok', 'inquiry' => 'inquiry', 'shop' => 'belanja',
+            ][$name] ?? $name,
+            default => [
+                'home' => 'home', 'catalog' => 'katalog', 'price' => 'harga', 'stock' => 'ketersediaan', 'inquiry' => 'inquiry', 'cart' => 'keranjang',
+            ][$name] ?? $name,
+        };
+    }
+
+    private function retailRouteKey(string $siteConfigPath, string $page): string
+    {
+        return match (true) {
+            $page === 'home' && str_starts_with($siteConfigPath, 'retail/luxury/') => 'index',
+            str_starts_with($siteConfigPath, 'retail/organic/') => array_search($page, [
+                'home' => 'home', 'catalog' => 'katalog', 'price' => 'harga', 'stock' => 'stok', 'inquiry' => 'inquiry', 'shop' => 'belanja',
+            ], true) ?: $page,
+            str_starts_with($siteConfigPath, 'retail/premium-minimal/') => array_search($page, [
+                'home' => 'home', 'catalog' => 'katalog', 'price' => 'harga', 'stock' => 'ketersediaan', 'inquiry' => 'inquiry', 'cart' => 'keranjang',
+            ], true) ?: $page,
+            default => $page,
+        };
     }
 
     private function replaceDemoName(array &$siteConfig, string $demoName, string $name): void

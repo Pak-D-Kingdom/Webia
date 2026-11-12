@@ -1,6 +1,6 @@
 @extends($ns . '.layouts.app')
 
-@section('title', 'Stok & Ketersediaan - Belleza')
+@section('title', 'Stok & Ketersediaan - '.$cfg['brand']['name'])
 @section('page', 'stock')
 
 @section('content')

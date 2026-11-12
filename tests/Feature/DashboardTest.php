@@ -15,6 +15,15 @@ class DashboardTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_user_orders_relation_returns_only_owned_orders(): void
+    {
+        $customer = User::factory()->create();
+        $ownedOrder = WebiaOrder::factory()->for($customer)->create();
+        WebiaOrder::factory()->create();
+
+        $this->assertTrue($customer->orders()->sole()->is($ownedOrder));
+    }
+
     public function test_customer_dashboard_shows_latest_active_order_and_only_own_history(): void
     {
         $customer = User::factory()->create(['name' => 'Ayu']);

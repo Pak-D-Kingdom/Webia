@@ -154,7 +154,8 @@ class Midtrans
 
         // Akun hanya dibuat setelah pembayaran terkonfirmasi, dan itu pun setelah commit.
         if ($paid) {
-            app(AccountProvisioner::class)->provision($order);
+            $order = app(AccountProvisioner::class)->provision($order);
+            app(HostingProvisioner::class)->provision($order);
         }
     }
 
