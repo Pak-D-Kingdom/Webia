@@ -33,25 +33,8 @@ class CustomerSiteController extends Controller
             // Personalisasi konten teks, judul, nomor kontak, dan branding klien
             $renderedHtml = $this->personalizeTemplateHtml($renderedHtml, $tenantTemplate, $business, $order, $whatsapp, $instagram);
 
-            // Injeksi otomatis widget AI Assistant & Zero Lost Lead Fallback dengan Tema Terpilih
-            $rawWidgetTheme = $business['ai_widget_theme'] ?? ($order->business_data['ai_widget_theme'] ?? 'auto');
-            $resolvedTheme = AiQuotaService::resolveWidgetTheme($rawWidgetTheme, $order->category_slug ?? '');
-
-            $widgetHtml = view('components.site-ai-widget', [
-                'order' => $order,
-                'business' => $business,
-                'whatsapp' => $whatsapp,
-                'siteSlug' => $order->site_slug,
-                'widgetTheme' => $resolvedTheme['slug'],
-                'widgetIcon' => $resolvedTheme['icon'],
-                'widgetThemeMeta' => $resolvedTheme,
-            ])->render();
-
-            if (str_contains($renderedHtml, '</body>')) {
-                $renderedHtml = str_replace('</body>', $widgetHtml . "\n</body>", $renderedHtml);
-            } else {
-                $renderedHtml .= $widgetHtml;
-            }
+            // Integrasi Widget Chatbot: Kembali ke desain asli template website klien masing-masing
+            $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
 
             return response($renderedHtml);
         }
@@ -100,25 +83,8 @@ class CustomerSiteController extends Controller
             'routeUrl' => $pageUrl,
         ])->render();
 
-        // Injeksi otomatis widget AI Assistant & Zero Lost Lead Fallback dengan Tema Terpilih
-        $rawWidgetTheme = $business['ai_widget_theme'] ?? ($order->business_data['ai_widget_theme'] ?? 'auto');
-        $resolvedTheme = AiQuotaService::resolveWidgetTheme($rawWidgetTheme, $order->category_slug ?? '');
-
-        $widgetHtml = view('components.site-ai-widget', [
-            'order' => $order,
-            'business' => $business,
-            'whatsapp' => $whatsapp,
-            'siteSlug' => $order->site_slug,
-            'widgetTheme' => $resolvedTheme['slug'],
-            'widgetIcon' => $resolvedTheme['icon'],
-            'widgetThemeMeta' => $resolvedTheme,
-        ])->render();
-
-        if (str_contains($renderedHtml, '</body>')) {
-            $renderedHtml = str_replace('</body>', $widgetHtml . "\n</body>", $renderedHtml);
-        } else {
-            $renderedHtml .= $widgetHtml;
-        }
+        // Integrasi Widget Chatbot: Kembali ke desain asli template website klien masing-masing
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
 
         return response($renderedHtml);
     }
@@ -308,13 +274,6 @@ class CustomerSiteController extends Controller
                 $html = str_replace($search, $replace, $html);
             }
         }
-
-        // Sembunyikan floating button atau chat demo bawaan template statis agar tidak tabrakan dengan widget AI resmi Webia
-        $html = str_replace(
-            ['id="chat"', 'id="fab"', 'class="classic-chat-panel"', 'id="classic-chat-panel"'],
-            ['id="chat" style="display:none!important;"', 'id="fab" style="display:none!important;"', 'class="classic-chat-panel" style="display:none!important;"', 'id="classic-chat-panel" style="display:none!important;"'],
-            $html
-        );
 
         return $html;
     }
@@ -591,5 +550,172 @@ class CustomerSiteController extends Controller
             'reply' => $replyData['reply'] ?? 'Terima kasih atas pertanyaannya. Ada yang bisa kami bantu lagi?',
             'whatsapp_url' => $waUrl,
         ]);
+    }
+
+    /**
+     * Integrasi cerdas AI Chatbot:
+     * - Jika template website memiliki widget/panel chat bawaan, gunakan UI asli template dan hubungkan ke AI backend via bridge script.
+     * - Jika template belum memiliki UI chat bawaan, sematkan widget floating yang temanya otomatis selaras dengan kategori template.
+     */
+    private function attachAiChatWidget(
+        string $html,
+        WebiaOrder $order,
+        array $business,
+        string $whatsapp
+    ): string {
+        $cleanWa = preg_replace('/[^0-9]/', '', $whatsapp);
+        if (str_starts_with($cleanWa, '0')) {
+            $cleanWa = '62' . substr($cleanWa, 1);
+        }
+        $bizName = $business['business_name'] ?? 'Toko';
+        $waChatUrl = "https://wa.me/{$cleanWa}?text=" . rawurlencode("Halo {$bizName}, saya ingin bertanya mengenai layanan dan produk Anda.");
+        $chatUrl = route('sites.chat', ['order' => $order->site_slug]);
+        $csrfToken = csrf_token();
+
+        // Cek apakah template memiliki elemen chat bawaan (misal #chat, #agChat, .classic-chat-panel, .chatbox, dll.)
+        $hasNativeChat = str_contains($html, 'id="chat"')
+            || str_contains($html, 'id="agChat"')
+            || str_contains($html, 'class="classic-chat-panel"')
+            || str_contains($html, 'data-chat')
+            || str_contains($html, 'class="chat-panel"');
+
+        if ($hasNativeChat) {
+            // Gunakan widget UI bawaan asli template dan sambungkan ke AI backend
+            $bridgeScript = <<<HTML
+<script id="webia-native-ai-bridge">
+(function() {
+    const chatUrl = "{$chatUrl}";
+    const csrfToken = "{$csrfToken}";
+    const defaultWaUrl = "{$waChatUrl}";
+
+    // 1. Hooking untuk template dengan ask(q) & say(t, role) (Bengkel Otto, Glow Lab, Bangun Karsa, dll.)
+    function bindAskHook() {
+        if (typeof window.ask === 'function') {
+            window.ask = async function(query) {
+                if (!query || !query.trim()) return;
+                const text = query.trim();
+
+                if (typeof window.say === 'function') {
+                    window.say(text, 'u');
+                }
+
+                let typingEl = null;
+                const ms = document.getElementById('ms');
+                if (ms) {
+                    typingEl = document.createElement('div');
+                    typingEl.className = 'm b webia-typing-note';
+                    typingEl.style.cssText = 'opacity:0.75; font-style:italic;';
+                    typingEl.textContent = 'Mengetik jawaban...';
+                    ms.appendChild(typingEl);
+                    ms.scrollTop = ms.scrollHeight;
+                }
+
+                try {
+                    const res = await fetch(chatUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': csrfToken
+                        },
+                        body: JSON.stringify({ message: text })
+                    });
+
+                    if (typingEl) typingEl.remove();
+                    const data = await res.json();
+                    const reply = data.reply || 'Ada yang bisa kami bantu seputar layanan kami?';
+
+                    if (typeof window.say === 'function') {
+                        window.say(reply, 'b');
+                    }
+
+                    const waLinkEl = document.getElementById('wa') || document.getElementById('cw') || document.getElementById('rw');
+                    if (waLinkEl) {
+                        waLinkEl.href = data.whatsapp_url || defaultWaUrl;
+                    }
+                } catch (err) {
+                    if (typingEl) typingEl.remove();
+                    if (typeof window.say === 'function') {
+                        window.say('Mohon maaf, terjadi kendala jaringan. Silakan hubungi kami via WhatsApp.', 'b');
+                    }
+                }
+            };
+        }
+
+        const cf = document.getElementById('cf');
+        const ci = document.getElementById('ci');
+        if (cf && ci) {
+            cf.onsubmit = function(e) {
+                e.preventDefault();
+                const v = ci.value.trim();
+                if (v) {
+                    ci.value = '';
+                    if (typeof window.ask === 'function') {
+                        window.ask(v);
+                    }
+                }
+            };
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bindAskHook);
+    } else {
+        bindAskHook();
+    }
+    setTimeout(bindAskHook, 500);
+
+    // 2. Hooking untuk template dengan form sederhana seperti Ruby Academy
+    document.addEventListener('DOMContentLoaded', function() {
+        const sendBtn = document.getElementById('send');
+        const msgInput = document.getElementById('msg');
+        const replySmall = document.getElementById('reply');
+        if (sendBtn && msgInput) {
+            sendBtn.onclick = async function(e) {
+                e.preventDefault();
+                const text = msgInput.value.trim();
+                if (!text) return;
+                if (replySmall) replySmall.textContent = 'Menghubungi asisten...';
+                try {
+                    const res = await fetch(chatUrl, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-TOKEN': csrfToken},
+                        body: JSON.stringify({ message: text })
+                    });
+                    const data = await res.json();
+                    if (replySmall) replySmall.textContent = data.reply || 'Silakan hubungi WhatsApp kami.';
+                    msgInput.value = '';
+                } catch(err) {
+                    if (replySmall) replySmall.textContent = 'Terjadi kesalahan jaringan.';
+                }
+            };
+        }
+    });
+})();
+</script>
+HTML;
+
+            if (str_contains($html, '</body>')) {
+                return str_replace('</body>', $bridgeScript . "\n</body>", $html);
+            }
+            return $html . $bridgeScript;
+        }
+
+        // Jika template tidak memiliki elemen chat bawaan, sematkan widget floating yang warnanya selaras
+        $resolvedTheme = AiQuotaService::resolveWidgetTheme('auto', $order->category_slug ?? '');
+        $widgetHtml = view('components.site-ai-widget', [
+            'order' => $order,
+            'business' => $business,
+            'whatsapp' => $whatsapp,
+            'siteSlug' => $order->site_slug,
+            'widgetTheme' => $resolvedTheme['slug'],
+            'widgetIcon' => $resolvedTheme['icon'],
+            'widgetThemeMeta' => $resolvedTheme,
+        ])->render();
+
+        if (str_contains($html, '</body>')) {
+            return str_replace('</body>', $widgetHtml . "\n</body>", $html);
+        }
+        return $html . $widgetHtml;
     }
 }

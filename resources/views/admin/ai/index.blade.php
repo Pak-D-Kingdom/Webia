@@ -479,9 +479,9 @@ Apakah ingin tambah kuota atau upgrade paket website agar chatbot tetap aktif me
                                 <div class="flex flex-col">
                                     <span class="font-label-md text-label-md font-semibold text-on-surface">{{ $client['template_name'] }}</span>
                                     <span class="font-caption text-caption text-primary font-mono">{{ $client['tenant_id'] }}</span>
-                                    <span class="inline-flex items-center gap-1 mt-1 text-[10.5px] font-semibold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md w-fit" title="Desain Widget AI Klien">
-                                        <span class="material-symbols-outlined text-[12px] text-pink-600">palette</span>
-                                        <span>{{ $client['widget_theme'] === 'auto' ? 'Auto (Industri)' : ucwords(str_replace('_', ' ', $client['widget_theme'])) }}</span>
+                                    <span class="inline-flex items-center gap-1 mt-1 text-[10.5px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md w-fit" title="Desain Widget AI Klien">
+                                        <span class="material-symbols-outlined text-[12px] text-emerald-600">verified</span>
+                                        <span>Desain Asli Template</span>
                                     </span>
                                 </div>
                             </td>
@@ -652,7 +652,7 @@ Apakah ingin tambah kuota atau upgrade paket website agar chatbot tetap aktif me
             </div>
             <div class="btn-text-content">
                 <span class="btn-title">Desain Widget AI</span>
-                <span class="btn-desc" id="dropWidgetThemeDesc">10 Preset Desain Visual</span>
+                <span class="btn-desc" id="dropWidgetThemeDesc">Sesuai Template Website</span>
             </div>
             <span class="material-symbols-outlined" style="font-size: 16px; color: #94a3b8;">chevron_right</span>
         </button>
@@ -1005,6 +1005,15 @@ Apakah ingin tambah kuota atau upgrade paket website agar chatbot tetap aktif me
                 <span>Pratinjau Live Website</span>
                 <span class="material-symbols-outlined text-[13px]">open_in_new</span>
             </a>
+        </div>
+
+        {{-- Callout Desain Asli Template --}}
+        <div class="p-3 rounded-xl mt-2.5 flex items-start gap-2.5 text-xs bg-emerald-50 border border-emerald-200 text-emerald-950">
+            <span class="material-symbols-outlined text-emerald-600 text-base shrink-0 mt-0.5">verified</span>
+            <div>
+                <p class="font-bold">Desain Chatbot Mengikuti Template Website Klien (Native)</p>
+                <p class="text-[11px] text-emerald-800 mt-0.5 leading-relaxed">Chatbot website klien ini otomatis menyatu dengan tombol launcher, tipografi, dan gaya visual asli dari template websitenya, serta terhubung aktif ke backend AI dan knowledge base bisnis klien.</p>
+            </div>
         </div>
 
         {{-- Grid Pilihan 10 Preset Tema + Auto (Bebas Border Hitam Kaku) --}}
