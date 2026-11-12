@@ -871,6 +871,25 @@ class WebiaTemplateSeeder extends Seeder
                 'is_active' => true,
                 'sort_order' => 43,
             ],
+            [
+                'name' => 'STRIKE® — Neo Brutalist Creative Agency',
+                'slug' => 'strike-branding-creative',
+                'category_slug' => 'professional-service',
+                'category_label' => 'Professional Service',
+                'business_types' => ['Branding & Creative Agency'],
+                'design_style' => 'Bold',
+                'color_theme' => 'Neo Brutalist',
+                'description' => 'High-impact branding studio with kinetic identity explorations, interactive portfolio, brand discovery, and project brief generator.',
+                'preview_style' => 'preview-neo-brutalist',
+                'eyebrow' => 'Independent Creative Studio',
+                'headline' => 'We Craft High-Impact Brand Identities',
+                'tag' => 'Branding & Creative Agency',
+                'preview_folder' => 'strike',
+                'template_url' => '/webia/template/strike-branding-creative',
+                'is_active' => true,
+                'sort_order' => 41,
+            ],
+
         ];
 
         foreach ($templates as $template) {

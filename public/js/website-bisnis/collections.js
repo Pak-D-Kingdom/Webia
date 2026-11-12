@@ -35,9 +35,42 @@ document.addEventListener('DOMContentLoaded', () => {
         {id:'transportation-logistics',name:'Transportation & Logistics',types:['Logistics Company','Delivery Service','Moving Company']},
         {id:'agriculture-farming',name:'Agriculture & Farming',types:['Agribisnis & Perdagangan Komoditas Pertanian','Perlengkapan & Peralatan Pertanian','Peternakan & Budidaya Hewan']},
         {id:'nonprofit-community',name:'Nonprofit & Community',types:['Foundation','Social Organization','Volunteer Group']},
-        {id:'technology-it',name:'Technology & IT',types:['Software House','Data Analytics','Hardware & Computer Networking']}
+        {id:'technology-it',name:'Technology & IT',types:['Software House','Data Analytics','Hardware & Computer Networking']},
+        {id:'remote-workforce',name:'Remote Workforce & Virtual Assistance',types:['Virtual Assistant Agency','Remote Customer Support Outsourcing','Virtual Executive Assistant Service','Remote Operations Management Service']},
+        {id:'museum-digital-heritage',name:'Museum & Digital Heritage',types:['Digital Museum Platform','Virtual Museum & 3D Exhibition','Interactive Heritage Exhibition','Museum Collection & Artifact Database']},
+        {id:'libraries-digital-archives',name:'Libraries & Digital Archives',types:['Digital Library Platform','Historical Document Archive','Genealogy & Family History Research','Manuscript Digitization Service']},
+        {id:'traditional-textiles-heritage-fashion',name:'Traditional Textiles & Heritage Fashion',types:['Batik Artisan Brand','Traditional Weaving Producer','Traditional Costume Rental','Heritage Textile Conservation Service']},
+        {id:'specialty-beverage',name:'Specialty Beverage & Drink Concepts',types:['Specialty Matcha / Others Brand','Specialty Tea Subscription','Beverage Brand','Non-Alcoholic Craft Beverage Brand']},
+        {id:'food-subscription',name:'Food Subscription & Meal Solutions',types:['Healthy Meal Prep Subscription','Diet & Calorie-Controlled Meal Service','Weekly Family Meal Plan Provider']},
+        {id:'home-appliance-electronics-care',name:'Home Appliance & Electronics Care',types:['Home Appliance Installation Service','Air Conditioner Repair & Maintenance']},
+        {id:'live-commerce',name:'Live Commerce & Social Selling',types:['Live Shopping Production Studio']},
+        {id:'digital-products-knowledge-commerce',name:'Digital Products & Knowledge Commerce',types:['Digital Asset Marketplace']},
+        {id:'electric-mobility-ev',name:'Electric Mobility & EV Ecosystem',types:['EV Charging Station Operator','Electric Vehicle Fleet Management','Electric Vehicle Conversion Specialist']},
+        {id:'smart-home-building-tech',name:'Smart Home & Building Technology',types:['Smart Home Installation Service','IoT Home Automation Consultant','Smart Building Integration Company']},
+        {id:'mobility-vehicle-rental',name:'Mobility & Vehicle Rental',types:['Self-Drive Car Rental','Motorcycle Rental Service']},
+        {id:'home-organization-storage',name:'Home Organization & Storage',types:['Professional Home Organizer']},
+        {id:'music-education-instrument',name:'Music Education & Instrument Services',types:['Private Music Academy']},
+        {id:'aquatic-water-recreation',name:'Aquatic & Water Recreation',types:['Diving School & Certification']},
+        {id:'sports-aquatic-education',name:'Sports & Aquatic Education',types:['Swimming School & Lessons (Baby–Adult)','Private Swimming Instructor']},
+        {id:'creative-arts-hobby-classes',name:'Creative Arts & Hobby Classes',types:['Kids Coloring & Drawing Class','Painting & Watercolor Course','Acrylic & Canvas Painting Workshop','Sketching & Illustration Class']},
+        {id:'music-lessons-performing-arts',name:'Music Lessons & Performing Arts',types:['Piano & Keyboard Lesson','Guitar & Bass Lessons','Vocal & Singing Course','Violin & Classical Instrument Lessons','Drum Lessons']},
+        {id:'racket-sports-academy',name:'Racket Sports Academy',types:['Padel Academy & Training','Badminton Academy & Coaching','Tennis Academy & Lessons','Table Tennis Training Center']},
+        {id:'team-sports-academy',name:'Team Sports Academy',types:['Volleyball Academy','Basketball Training Academy','Futsal Academy','Football & Soccer School']},
+        {id:'martial-arts-self-defense',name:'Martial Arts & Self Defense Academy',types:['Karate & Taekwondo School','Boxing & Kickboxing Academy','Brazilian Jiu-Jitsu Academy','Pencak Silat Training School']},
+        {id:'performing-arts-stage-training',name:'Performing Arts & Stage Training',types:['Modeling & Catwalk Class','Acting & Drama School']}
     ];
-    const styles = ['Modern','Classic','Elegant','Minimalist','Vintage','Professional','Luxury','Playful & Colorful','Bold','Futuristic','Futuristic & Neon','Artistic','Friendly','Premium Minimal'];
+    const styles = [
+        'Modern','Classic','Elegant','Minimalist','Vintage','Professional','Luxury','Playful & Colorful','Bold','Futuristic','Futuristic & Neon','Artistic','Friendly','Premium Minimal',
+        'Modern Corporate','Professional Minimalist','Elegant Corporate','Swiss Minimalist','Editorial Classic','Immersive Futuristic','Artistic Experimental','Archival Minimalist',
+        'Academic Minimalist','Vintage Editorial','Heritage Classic','Scholarly Editorial','Ethnic Contemporary','Organic Artisan','Regal Traditional','Heritage Editorial',
+        'Japanese Minimalist','Botanical Elegant','Bold Contemporary','Playful Modern','Organic Modern','Sporty Minimalist','Warm Contemporary','Modern Industrial',
+        'Technical Corporate','Bold Digital','Creative Tech','Sustainable Futuristic','High-Tech Corporate','Industrial Futuristic','Modern Smart Living',
+        'Futuristic Minimalist','Architectural Modern','Dynamic Automotive','Urban Adventure','Scandinavian Minimalist','Classic Contemporary','Ocean Adventure',
+        'Fresh Aquatic Playful','Clean Sporty','Playful Illustrative','Artistic Watercolor','Bold Artistic','Handcrafted Editorial','Elegant Classical',
+        'Urban Creative','Expressive Contemporary','Refined Classical','Bold Rhythmic','Energetic Sporty','Dynamic Athletic','Premium Sport Club',
+        'Modern Competitive','Energetic Team Sport','Urban Athletic','Bold Sporty','Professional Athletic','Traditional Discipline','Industrial Grit',
+        'Tactical Modern','Cultural Heritage','High-Fashion Editorial','Dramatic Cinematic'
+    ];
     const selectedCategories = new Set();
     const selectedTypes = new Set();
     let selectedStyle = '';
