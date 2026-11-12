@@ -201,9 +201,9 @@ class CustomerSiteController extends Controller
                 'demo_address' => 'Jl. Senopati Raya No. 88, Surabaya',
             ],
             'tenant_property_01' => [
-                'view' => 'website-bisnis.templates.property.property-traditional',
-                'demo_name' => 'Pusaka Asri Residence',
-                'demo_short' => 'Pusaka Asri',
+                'view' => 'website-bisnis.templates.property.hearthstone-property',
+                'demo_name' => 'Hearthstone Property',
+                'demo_short' => 'Hearthstone',
                 'demo_phone' => '0812-3456-7890',
                 'demo_address' => 'Kawasan Residensial Asri, Surabaya',
             ],
@@ -572,9 +572,21 @@ class CustomerSiteController extends Controller
         $chatUrl = route('sites.chat', ['order' => $order->site_slug]);
         $csrfToken = csrf_token();
 
-        // Cek apakah template memiliki elemen chat bawaan (misal #chat, #agChat, .classic-chat-panel, .chatbox, dll.)
+        // Cek apakah template memiliki elemen chat bawaan atau merupakan template klien resmi
         $hasNativeChat = str_contains($html, 'id="chat"')
+            || str_contains($html, 'id="ch"')
+            || str_contains($html, 'id="lw-chat"')
+            || str_contains($html, 'id="ai-modal"')
+            || str_contains($html, 'id="aiChatBox"')
+            || str_contains($html, 'id="ai-chat-modal"')
+            || str_contains($html, 'id="ascChatPanel"')
+            || str_contains($html, 'id="lb-chat"')
             || str_contains($html, 'id="agChat"')
+            || str_contains($html, 'class="chat"')
+            || str_contains($html, 'class="asc-chat-panel"')
+            || str_contains($html, 'class="lb-chat"')
+            || str_contains($html, 'class="lw-chat"')
+            || str_contains($html, 'data-lw-chat-open')
             || str_contains($html, 'class="classic-chat-panel"')
             || str_contains($html, 'data-chat')
             || str_contains($html, 'class="chat-panel"');
@@ -588,6 +600,20 @@ class CustomerSiteController extends Controller
     const csrfToken = "{$csrfToken}";
     const defaultWaUrl = "{$waChatUrl}";
 
+    async function sendToAi(message) {
+        const res = await fetch(chatUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': csrfToken
+            },
+            body: JSON.stringify({ message: message })
+        });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return await res.json();
+    }
+
     // 1. Hooking untuk template dengan ask(q) & say(t, role) (Bengkel Otto, Glow Lab, Bangun Karsa, dll.)
     function bindAskHook() {
         if (typeof window.ask === 'function') {
@@ -600,7 +626,7 @@ class CustomerSiteController extends Controller
                 }
 
                 let typingEl = null;
-                const ms = document.getElementById('ms');
+                const ms = document.getElementById('ms') || document.getElementById('msgs');
                 if (ms) {
                     typingEl = document.createElement('div');
                     typingEl.className = 'm b webia-typing-note';
@@ -611,18 +637,8 @@ class CustomerSiteController extends Controller
                 }
 
                 try {
-                    const res = await fetch(chatUrl, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json',
-                            'X-CSRF-TOKEN': csrfToken
-                        },
-                        body: JSON.stringify({ message: text })
-                    });
-
+                    const data = await sendToAi(text);
                     if (typingEl) typingEl.remove();
-                    const data = await res.json();
                     const reply = data.reply || 'Ada yang bisa kami bantu seputar layanan kami?';
 
                     if (typeof window.say === 'function') {
@@ -663,9 +679,9 @@ class CustomerSiteController extends Controller
     } else {
         bindAskHook();
     }
-    setTimeout(bindAskHook, 500);
+    setTimeout(bindAskHook, 400);
 
-    // 2. Hooking untuk template dengan form sederhana seperti Ruby Academy
+    // 2. Hooking untuk Ruby Academy (input #msg, button #send, reply #reply)
     document.addEventListener('DOMContentLoaded', function() {
         const sendBtn = document.getElementById('send');
         const msgInput = document.getElementById('msg');
@@ -677,18 +693,484 @@ class CustomerSiteController extends Controller
                 if (!text) return;
                 if (replySmall) replySmall.textContent = 'Menghubungi asisten...';
                 try {
-                    const res = await fetch(chatUrl, {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-TOKEN': csrfToken},
-                        body: JSON.stringify({ message: text })
-                    });
-                    const data = await res.json();
+                    const data = await sendToAi(text);
                     if (replySmall) replySmall.textContent = data.reply || 'Silakan hubungi WhatsApp kami.';
                     msgInput.value = '';
                 } catch(err) {
                     if (replySmall) replySmall.textContent = 'Terjadi kesalahan jaringan.';
                 }
             };
+        }
+    });
+
+    // 3. Hooking untuk Laundry Mint Fresh (FreshBot AI masot robot)
+    document.addEventListener('DOMContentLoaded', function() {
+        const lwForm = document.querySelector('[data-lw-chat-form]');
+        const lwLog = document.querySelector('[data-lw-chat-log]');
+        const lwInput = document.getElementById('lw-chat-input');
+        if (lwForm && lwLog) {
+            function addLwMsg(role, text) {
+                const el = document.createElement('div');
+                el.className = 'lw-msg lw-msg--' + role;
+                el.textContent = text;
+                lwLog.appendChild(el);
+                lwLog.scrollTop = lwLog.scrollHeight;
+                return el;
+            }
+
+            async function handleLwSend(text) {
+                if (!text || !text.trim()) return;
+                addLwMsg('user', text.trim());
+                const typing = addLwMsg('bot', 'Mengetik jawaban...');
+                typing.style.opacity = '0.7';
+                try {
+                    const data = await sendToAi(text.trim());
+                    typing.remove();
+                    addLwMsg('bot', data.reply || 'Ada yang bisa kami bantu?');
+                } catch (e) {
+                    typing.remove();
+                    addLwMsg('bot', 'Mohon maaf, terjadi kendala jaringan.');
+                }
+            }
+
+            lwForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                if (lwInput && lwInput.value) {
+                    const val = lwInput.value;
+                    lwInput.value = '';
+                    handleLwSend(val);
+                }
+            }, true);
+
+            document.querySelectorAll('[data-lw-chat-topic]').forEach(function(btn) {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    const q = this.textContent.trim();
+                    handleLwSend(q);
+                }, true);
+            });
+        }
+    });
+
+    // 4. Hooking untuk AgriTernak Organic (window.handleAiSubmit & window.appendAiMessage)
+    function bindAgriHook() {
+        if (typeof window.handleAiSubmit === 'function' || document.getElementById('ai-chat-box')) {
+            window.handleAiSubmit = async function(event) {
+                if (event) event.preventDefault();
+                const input = document.getElementById('ai-input');
+                if (!input) return;
+                const query = input.value.trim();
+                if (!query) return;
+
+                if (typeof window.appendAiMessage === 'function') {
+                    window.appendAiMessage(query, 'user');
+                }
+                input.value = '';
+
+                const chatBox = document.getElementById('ai-chat-box');
+                let typingDiv = null;
+                if (chatBox) {
+                    typingDiv = document.createElement('div');
+                    typingDiv.className = 'flex items-start gap-3';
+                    typingDiv.innerHTML = '<div class="p-3 rounded-2xl rounded-tl-none bg-organic-surface-container-high text-xs italic opacity-75">Mengetik balasan...</div>';
+                    chatBox.appendChild(typingDiv);
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                }
+
+                try {
+                    const data = await sendToAi(query);
+                    if (typingDiv) typingDiv.remove();
+                    if (typeof window.appendAiMessage === 'function') {
+                        window.appendAiMessage(data.reply || 'Ada yang bisa kami bantu seputar agrikultur organik?', 'bot');
+                    }
+                } catch(e) {
+                    if (typingDiv) typingDiv.remove();
+                    if (typeof window.appendAiMessage === 'function') {
+                        window.appendAiMessage('Mohon maaf, terjadi kendala jaringan.', 'bot');
+                    }
+                }
+            };
+        }
+    }
+    setTimeout(bindAgriHook, 400);
+
+    // 5. Hooking untuk Azure Smile Clinic (#ascChatForm, #ascChatInput, #ascChatMessages)
+    document.addEventListener('DOMContentLoaded', function() {
+        const ascForm = document.getElementById('ascChatForm');
+        const ascInput = document.getElementById('ascChatInput');
+        const ascMsgs = document.getElementById('ascChatMessages');
+        if (ascForm && ascMsgs) {
+            function addAscBubble(text, isUser) {
+                const p = document.createElement('p');
+                p.className = 'asc-chat-bubble';
+                if (isUser) {
+                    p.style.cssText = 'background:var(--asc-primary,#0070f3); color:#fff; align-self:flex-end; border-radius:12px 12px 0 12px; margin-left:auto;';
+                }
+                p.textContent = text;
+                ascMsgs.appendChild(p);
+                ascMsgs.scrollTop = ascMsgs.scrollHeight;
+                return p;
+            }
+
+            async function handleAscChat(text) {
+                if (!text || !text.trim()) return;
+                addAscBubble(text.trim(), true);
+                const typing = addAscBubble('Mengetik jawaban...', false);
+                typing.style.opacity = '0.7';
+                try {
+                    const data = await sendToAi(text.trim());
+                    typing.remove();
+                    addAscBubble(data.reply || 'Ada yang bisa kami bantu mengenai perawatan gigi Anda?', false);
+                } catch(e) {
+                    typing.remove();
+                    addAscBubble('Mohon maaf, terjadi gangguan jaringan.', false);
+                }
+            }
+
+            ascForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                if (ascInput && ascInput.value) {
+                    const q = ascInput.value;
+                    ascInput.value = '';
+                    handleAscChat(q);
+                }
+            }, true);
+
+            document.querySelectorAll('.asc-chat-quick button').forEach(function(b) {
+                b.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    handleAscChat(this.textContent.trim());
+                }, true);
+            });
+        }
+    });
+
+    // 6. Hooking untuk Laut Biru Seafood (#lb-chat-form, #lb-chat-input, #lb-messages)
+    document.addEventListener('DOMContentLoaded', function() {
+        const lbForm = document.getElementById('lb-chat-form');
+        const lbInput = document.getElementById('lb-chat-input');
+        const lbMsgs = document.getElementById('lb-messages');
+        if (lbForm && lbMsgs) {
+            function addLbMsg(text, isUser) {
+                const div = document.createElement('div');
+                div.className = isUser ? 'lb-msg lb-msg-user' : 'lb-msg lb-msg-bot';
+                div.style.cssText = isUser ? 'background:var(--lb-blue,#0284c7); color:#fff; align-self:flex-end; border-radius:12px 12px 2px 12px; padding:8px 12px; max-width:85%; margin-bottom:8px;' : 'background:#f1f5f9; color:#0f172a; align-self:flex-start; border-radius:12px 12px 12px 2px; padding:8px 12px; max-width:85%; margin-bottom:8px;';
+                div.textContent = text;
+                lbMsgs.appendChild(div);
+                lbMsgs.scrollTop = lbMsgs.scrollHeight;
+                return div;
+            }
+
+            async function handleLbChat(text) {
+                if (!text || !text.trim()) return;
+                addLbMsg(text.trim(), true);
+                const typing = addLbMsg('Mengetik jawaban...', false);
+                typing.style.opacity = '0.7';
+                try {
+                    const data = await sendToAi(text.trim());
+                    typing.remove();
+                    addLbMsg(data.reply || 'Ada yang bisa kami bantu seputar menu seafood?', false);
+                } catch(e) {
+                    typing.remove();
+                    addLbMsg('Mohon maaf, terjadi kendala jaringan.', false);
+                }
+            }
+
+            lbForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                if (lbInput && lbInput.value) {
+                    const q = lbInput.value;
+                    lbInput.value = '';
+                    handleLbChat(q);
+                }
+            }, true);
+        }
+    });
+
+    // 7. Hooking untuk Arya Sanjaya (window.handleAiChat, #ai-input, #ai-chat-body)
+    function bindAryaHook() {
+        if (typeof window.handleAiChat === 'function' || document.getElementById('ai-modal-box')) {
+            window.handleAiChat = async function(e) {
+                if (e) e.preventDefault();
+                const input = document.getElementById('ai-input');
+                if (!input) return;
+                const query = input.value.trim();
+                if (!query) return;
+
+                const chatBody = document.getElementById('ai-chat-body');
+                if (chatBody) {
+                    const userDiv = document.createElement('div');
+                    userDiv.className = 'flex gap-3 justify-end';
+                    userDiv.innerHTML = '<div class="p-3 bg-arya-ruby-800 text-white rounded text-xs max-w-[80%] leading-relaxed">' + query + '</div>';
+                    chatBody.appendChild(userDiv);
+
+                    const typingDiv = document.createElement('div');
+                    typingDiv.className = 'flex gap-3';
+                    typingDiv.innerHTML = '<div class="p-3 bg-white border border-stone-200 rounded text-xs text-stone-500 italic">Mengetik balasan...</div>';
+                    chatBody.appendChild(typingDiv);
+                    chatBody.scrollTop = chatBody.scrollHeight;
+
+                    input.value = '';
+
+                    try {
+                        const data = await sendToAi(query);
+                        typingDiv.remove();
+                        const botDiv = document.createElement('div');
+                        botDiv.className = 'flex gap-3';
+                        botDiv.innerHTML = '<div class="p-3 bg-white border border-stone-200 rounded text-xs text-arya-charcoal-900 leading-relaxed shadow-sm">' + (data.reply || 'Ada yang bisa saya bantu seputar karya tulis saya?') + '</div>';
+                        chatBody.appendChild(botDiv);
+                        chatBody.scrollTop = chatBody.scrollHeight;
+                    } catch(err) {
+                        typingDiv.remove();
+                    }
+                }
+            };
+        }
+    }
+    setTimeout(bindAryaHook, 400);
+
+    // 8. Hooking untuk CocoExpress (window.handleAiMessage, #aiChatBox, #aiInput, #chatMessages)
+    function bindCocoHook() {
+        if (typeof window.handleAiMessage === 'function' || document.getElementById('aiChatBox')) {
+            window.handleAiMessage = async function(event) {
+                if (event) event.preventDefault();
+                const input = document.getElementById('aiInput');
+                if (!input) return;
+                const q = input.value.trim();
+                if (!q) return;
+
+                const chatMessages = document.getElementById('chatMessages');
+                if (chatMessages) {
+                    const uMsg = document.createElement('div');
+                    uMsg.className = 'bg-coco-caramel text-white p-3 rounded-2xl rounded-tr-none text-right shadow-sm';
+                    uMsg.textContent = q;
+                    chatMessages.appendChild(uMsg);
+
+                    const tMsg = document.createElement('div');
+                    tMsg.className = 'bg-white p-3 rounded-2xl rounded-tl-none border border-coco-caramel/20 text-coco-dark italic opacity-75';
+                    tMsg.textContent = 'ChocoBot sedang mencari info...';
+                    chatMessages.appendChild(tMsg);
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                    input.value = '';
+
+                    try {
+                        const data = await sendToAi(q);
+                        tMsg.remove();
+                        const bMsg = document.createElement('div');
+                        bMsg.className = 'bg-white p-3 rounded-2xl rounded-tl-none border border-coco-caramel/20 text-coco-dark shadow-sm';
+                        bMsg.textContent = data.reply || 'Ada yang bisa saya bantu seputar pengiriman paket Anda?';
+                        chatMessages.appendChild(bMsg);
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    } catch(e) {
+                        tMsg.remove();
+                    }
+                }
+            };
+        }
+    }
+    setTimeout(bindCocoHook, 400);
+
+    // 9. Hooking untuk Artistic Terracotta Studio (window.sendChatMessage, #chat-input, #chat-messages)
+    function bindTerraHook() {
+        if (typeof window.sendChatMessage === 'function' || document.getElementById('ai-chat-modal')) {
+            window.sendChatMessage = async function() {
+                const input = document.getElementById('chat-input');
+                if (!input) return;
+                const q = input.value.trim();
+                if (!q) return;
+
+                const messagesContainer = document.getElementById('chat-messages');
+                if (messagesContainer) {
+                    const uDiv = document.createElement('div');
+                    uDiv.className = 'flex justify-end';
+                    uDiv.innerHTML = '<div class="bg-terra-700 text-terra-100 rounded-2xl rounded-tr-none p-3 text-xs max-w-[80%]">' + q + '</div>';
+                    messagesContainer.appendChild(uDiv);
+
+                    const tDiv = document.createElement('div');
+                    tDiv.className = 'flex justify-start';
+                    tDiv.innerHTML = '<div class="bg-terra-800 text-terra-200 border border-terra-700 rounded-2xl rounded-tl-none p-3 text-xs italic">Menyiapkan jawaban desain...</div>';
+                    messagesContainer.appendChild(tDiv);
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+                    input.value = '';
+
+                    try {
+                        const data = await sendToAi(q);
+                        tDiv.remove();
+                        const bDiv = document.createElement('div');
+                        bDiv.className = 'flex justify-start';
+                        bDiv.innerHTML = '<div class="bg-terra-800 text-terra-100 border border-terra-700 rounded-2xl rounded-tl-none p-3 text-xs max-w-[80%]">' + (data.reply || 'Ada yang bisa saya bantu seputar interior dan furnitur?') + '</div>';
+                        messagesContainer.appendChild(bDiv);
+                        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                    } catch(e) {
+                        tDiv.remove();
+                    }
+                }
+            };
+        }
+    }
+    setTimeout(bindTerraHook, 400);
+
+    // 10. Hooking untuk Wildtrail & Baitul Safar (#qb button, #ms)
+    document.addEventListener('DOMContentLoaded', function() {
+        const qb = document.getElementById('qb');
+        const ms = document.getElementById('ms');
+        if (qb && ms) {
+            qb.addEventListener('click', async function(e) {
+                const btn = e.target.closest('button');
+                if (!btn) return;
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                const q = btn.textContent.trim();
+
+                const uDiv = document.createElement('div');
+                uDiv.className = 'm u';
+                uDiv.textContent = q;
+                ms.appendChild(uDiv);
+
+                const tDiv = document.createElement('div');
+                tDiv.className = 'm';
+                tDiv.style.opacity = '0.75';
+                tDiv.textContent = 'Mengetik balasan...';
+                ms.appendChild(tDiv);
+                ms.scrollTop = ms.scrollHeight;
+
+                try {
+                    const data = await sendToAi(q);
+                    tDiv.remove();
+                    const bDiv = document.createElement('div');
+                    bDiv.className = 'm';
+                    bDiv.textContent = data.reply || 'Ada yang bisa kami bantu?';
+                    ms.appendChild(bDiv);
+                    ms.scrollTop = ms.scrollHeight;
+                } catch(err) {
+                    tDiv.remove();
+                }
+            }, true);
+        }
+    });
+
+    // 11. Hooking untuk Pawtopia Animal Care (.chips button, #msgs)
+    document.addEventListener('DOMContentLoaded', function() {
+        const pawChips = document.querySelector('#chat .chips');
+        const pawMsgs = document.getElementById('msgs');
+        if (pawChips && pawMsgs) {
+            pawChips.addEventListener('click', async function(e) {
+                const btn = e.target.closest('button');
+                if (!btn) return;
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                const q = btn.textContent.trim();
+
+                const uDiv = document.createElement('div');
+                uDiv.className = 'm me';
+                uDiv.textContent = q;
+                pawMsgs.appendChild(uDiv);
+
+                const tDiv = document.createElement('div');
+                tDiv.className = 'm bot';
+                tDiv.style.opacity = '0.75';
+                tDiv.textContent = 'Sedang mencari info hewan...';
+                pawMsgs.appendChild(tDiv);
+                pawMsgs.scrollTop = pawMsgs.scrollHeight;
+
+                try {
+                    const data = await sendToAi(q);
+                    tDiv.remove();
+                    const bDiv = document.createElement('div');
+                    bDiv.className = 'm bot';
+                    bDiv.textContent = data.reply || 'Ada yang bisa kami bantu seputar anabul Anda?';
+                    pawMsgs.appendChild(bDiv);
+                    pawMsgs.scrollTop = pawMsgs.scrollHeight;
+                } catch(err) {
+                    tDiv.remove();
+                }
+            }, true);
+        }
+    });
+
+    // 12. Hooking untuk Hearthstone Property (.cq button, #msgs)
+    document.addEventListener('DOMContentLoaded', function() {
+        const hearthCq = document.querySelector('#chat .cq');
+        const msgs = document.getElementById('msgs');
+        if (hearthCq && msgs) {
+            hearthCq.addEventListener('click', async function(e) {
+                const btn = e.target.closest('button');
+                if (!btn) return;
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                const q = btn.textContent.trim();
+
+                const uDiv = document.createElement('div');
+                uDiv.className = 'm me';
+                uDiv.textContent = q;
+                msgs.appendChild(uDiv);
+
+                const tDiv = document.createElement('div');
+                tDiv.className = 'm bot';
+                tDiv.style.opacity = '0.75';
+                tDiv.textContent = 'Mengecek ketersediaan properti...';
+                msgs.appendChild(tDiv);
+                msgs.scrollTop = ms.scrollHeight;
+
+                try {
+                    const data = await sendToAi(q);
+                    tDiv.remove();
+                    const bDiv = document.createElement('div');
+                    bDiv.className = 'm bot';
+                    bDiv.textContent = data.reply || 'Ada yang bisa kami bantu mengenai unit hunian ini?';
+                    msgs.appendChild(bDiv);
+                    msgs.scrollTop = msgs.scrollHeight;
+                } catch(err) {
+                    tDiv.remove();
+                }
+            }, true);
+        }
+    });
+
+    // 13. Hooking untuk IRONPULSE (#ch, [data-q], #ms)
+    document.addEventListener('DOMContentLoaded', function() {
+        const ch = document.getElementById('ch');
+        if (ch) {
+            ch.addEventListener('click', async function(e) {
+                const btn = e.target.closest('[data-q]');
+                if (!btn) return;
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                const q = btn.textContent.trim();
+
+                const msPulse = document.getElementById('ms');
+                if (msPulse) {
+                    const uP = document.createElement('p');
+                    uP.className = 'u';
+                    uP.textContent = q;
+                    msPulse.appendChild(uP);
+
+                    const tP = document.createElement('p');
+                    tP.style.opacity = '0.75';
+                    tP.style.fontStyle = 'italic';
+                    tP.textContent = 'Pulse AI sedang mengecek program...';
+                    msPulse.appendChild(tP);
+                    msPulse.scrollTop = msPulse.scrollHeight;
+
+                    try {
+                        const data = await sendToAi(q);
+                        tP.remove();
+                        const bP = document.createElement('p');
+                        bP.textContent = data.reply || 'Ada yang ingin ditanyakan seputar latihan dan membership?';
+                        msPulse.appendChild(bP);
+                        msPulse.scrollTop = msPulse.scrollHeight;
+                    } catch(err) {
+                        tP.remove();
+                    }
+                }
+            }, true);
         }
     });
 })();
@@ -701,7 +1183,7 @@ HTML;
             return $html . $bridgeScript;
         }
 
-        // Jika template tidak memiliki elemen chat bawaan, sematkan widget floating yang warnanya selaras
+        // Fallback untuk website lama di luar template modern klien
         $resolvedTheme = AiQuotaService::resolveWidgetTheme('auto', $order->category_slug ?? '');
         $widgetHtml = view('components.site-ai-widget', [
             'order' => $order,
