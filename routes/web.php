@@ -1413,7 +1413,7 @@ view()->composer(
                 ? substr($name, strlen($prefix))
                 : 'home';
 
-            $url = fn(string $key) => route('umrah-haji.' . $key);
+            $url = fn(string $key) => route($prefix . $key);
             $img = fn(string $file) => asset($imgBase . $file);
             $wa  = fn(string $text) => 'https://wa.me/' . $uh['brand']['whatsapp'] . '?text=' . rawurlencode($text);
 

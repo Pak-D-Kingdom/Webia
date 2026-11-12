@@ -16,6 +16,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Schema;
 use PDO;
 
 class CustomerAccountsSeeder extends Seeder
@@ -35,15 +36,15 @@ class CustomerAccountsSeeder extends Seeder
         $endOfMonth = $now->copy()->endOfMonth();
 
         // 1. Reset data customer lama
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        HostingPayment::truncate();
-        HostingTask::truncate();
-        HostingPriceChange::truncate();
-        HostingInvoice::truncate();
-        HostingService::truncate();
-        WebiaOrder::truncate();
-        User::where('role', '!=', 'admin')->delete();
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        Schema::withoutForeignKeyConstraints(function (): void {
+            HostingPayment::truncate();
+            HostingTask::truncate();
+            HostingPriceChange::truncate();
+            HostingInvoice::truncate();
+            HostingService::truncate();
+            WebiaOrder::truncate();
+            User::where('role', '!=', 'admin')->delete();
+        });
 
         // Reset SQLite AI app.db
         $sqliteCandidates = [
@@ -57,10 +58,11 @@ class CustomerAccountsSeeder extends Seeder
                 try {
                     $pdo = new PDO("sqlite:{$p}");
                     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                    $pdo->exec("DELETE FROM usages;");
-                    $pdo->exec("DELETE FROM tenants;");
+                    $pdo->exec('DELETE FROM usages;');
+                    $pdo->exec('DELETE FROM tenants;');
                     break;
-                } catch (\Throwable $e) {}
+                } catch (\Throwable $e) {
+                }
             }
         }
 
@@ -226,7 +228,7 @@ class CustomerAccountsSeeder extends Seeder
                     'price' => 120000,
                     'cycle_day' => 15,
                     'due_days' => 5,
-                ]
+                ],
             ],
             [
                 'email' => 'amanda.klinik@gmail.com',
@@ -247,7 +249,7 @@ class CustomerAccountsSeeder extends Seeder
                     'price' => 150000,
                     'cycle_day' => 5,
                     'paid_days_ago' => 4,
-                ]
+                ],
             ],
             [
                 'email' => 'maya.laundry@gmail.com',
@@ -268,7 +270,7 @@ class CustomerAccountsSeeder extends Seeder
                     'price' => 100000,
                     'cycle_day' => 1,
                     'overdue_days' => 4,
-                ]
+                ],
             ],
             [
                 'email' => 'joko.tani@gmail.com',
@@ -305,7 +307,7 @@ class CustomerAccountsSeeder extends Seeder
                     'price' => 150000,
                     'cycle_day' => 18,
                     'due_days' => 8,
-                ]
+                ],
             ],
             [
                 'email' => 'siti.resto@gmail.com',
@@ -326,7 +328,7 @@ class CustomerAccountsSeeder extends Seeder
                     'price' => 150000,
                     'cycle_day' => 3,
                     'paid_days_ago' => 6,
-                ]
+                ],
             ],
             [
                 'email' => 'dimas.kreatif@gmail.com',
@@ -346,7 +348,7 @@ class CustomerAccountsSeeder extends Seeder
                     'website' => 'Dimas Visuals Personal Brand',
                     'price' => 150000,
                     'cycle_day' => 10,
-                ]
+                ],
             ],
             [
                 'email' => 'drh.sarah@gmail.com',
@@ -366,7 +368,7 @@ class CustomerAccountsSeeder extends Seeder
                     'website' => 'Pawtopia Animal Care',
                     'price' => 150000,
                     'cycle_day' => 28,
-                ]
+                ],
             ],
 
             // === TIER NEXUS (2.500) ===
@@ -389,7 +391,7 @@ class CustomerAccountsSeeder extends Seeder
                     'price' => 175000,
                     'cycle_day' => 2,
                     'overdue_days' => 5,
-                ]
+                ],
             ],
             [
                 'email' => 'budi.logistik@gmail.com',
@@ -410,7 +412,7 @@ class CustomerAccountsSeeder extends Seeder
                     'price_old' => 250000,
                     'price_new' => 180000,
                     'cycle_day' => 20,
-                ]
+                ],
             ],
             [
                 'email' => 'denny.mebel@gmail.com',
@@ -431,7 +433,7 @@ class CustomerAccountsSeeder extends Seeder
                     'price' => 180000,
                     'cycle_day' => 7,
                     'paid_days_ago' => 3,
-                ]
+                ],
             ],
             [
                 'email' => 'h.ahmad@gmail.com',
@@ -452,7 +454,7 @@ class CustomerAccountsSeeder extends Seeder
                     'price' => 175000,
                     'cycle_day' => 16,
                     'due_days' => 6,
-                ]
+                ],
             ],
 
             // === TIER INFINITY (5.000) ===
@@ -474,7 +476,7 @@ class CustomerAccountsSeeder extends Seeder
                     'website' => 'Ruby Academy Cendekia',
                     'price' => 250000,
                     'cycle_day' => 8,
-                ]
+                ],
             ],
             [
                 'email' => 'rahmat.konsultan@gmail.com',
@@ -495,7 +497,7 @@ class CustomerAccountsSeeder extends Seeder
                     'price' => 250000,
                     'cycle_day' => 4,
                     'paid_days_ago' => 5,
-                ]
+                ],
             ],
             [
                 'email' => 'kevin.fitness@gmail.com',
@@ -516,7 +518,7 @@ class CustomerAccountsSeeder extends Seeder
                     'price' => 250000,
                     'cycle_day' => 14,
                     'due_days' => 4,
-                ]
+                ],
             ],
             [
                 'email' => 'iwan.properti@gmail.com',
@@ -601,7 +603,7 @@ class CustomerAccountsSeeder extends Seeder
                     $pdo->beginTransaction();
                     $stmtU = $pdo->prepare("INSERT INTO usages (session_id, layer, tenant_id, prompt_tokens, completion_tokens, total_tokens, latency_ms, provider, model, is_fallback, created_at) VALUES (?, 'L4', ?, 45, 60, 105, 120, 'google', 'gemini-1.5-flash', 0, ?)");
                     for ($k = 0; $k < $insertCount; $k++) {
-                        $sessId = 'sess_' . substr(md5($c['site_slug'] . $k), 0, 12);
+                        $sessId = 'sess_'.substr(md5($c['site_slug'].$k), 0, 12);
                         $daysSub = $k % 10;
                         $timestamp = $now->copy()->subDays($daysSub)->toDateTimeString();
                         $stmtU->execute([$sessId, $c['site_slug'], $timestamp]);
@@ -626,14 +628,14 @@ class CustomerAccountsSeeder extends Seeder
                     'operational_status' => 'active',
                 ]);
 
-                $invNum = 'HST-' . $now->format('Ym') . '-' . str_pad((string)$invoiceSerial++, 6, '0', STR_PAD_LEFT);
+                $invNum = 'HST-'.$now->format('Ym').'-'.str_pad((string) $invoiceSerial++, 6, '0', STR_PAD_LEFT);
 
                 if ($hType === 'unpaid') {
                     HostingInvoice::create([
                         'hosting_service_id' => $hs->id,
                         'invoice_number' => $invNum,
-                        'billing_key' => 'HST-KEY-' . $hs->id . '-' . $now->format('Ym'),
-                        'label' => 'Tagihan Hosting Siklus ' . $now->translatedFormat('F Y'),
+                        'billing_key' => 'HST-KEY-'.$hs->id.'-'.$now->format('Ym'),
+                        'label' => 'Tagihan Hosting Siklus '.$now->translatedFormat('F Y'),
                         'period_start' => $startOfMonth->toDateString(),
                         'period_end' => $endOfMonth->toDateString(),
                         'issued_at' => $now->copy()->subDays(2),
@@ -646,8 +648,8 @@ class CustomerAccountsSeeder extends Seeder
                     HostingInvoice::create([
                         'hosting_service_id' => $hs->id,
                         'invoice_number' => $invNum,
-                        'billing_key' => 'HST-KEY-' . $hs->id . '-' . $now->format('Ym'),
-                        'label' => 'Tagihan Hosting Siklus ' . $now->translatedFormat('F Y'),
+                        'billing_key' => 'HST-KEY-'.$hs->id.'-'.$now->format('Ym'),
+                        'label' => 'Tagihan Hosting Siklus '.$now->translatedFormat('F Y'),
                         'period_start' => $startOfMonth->toDateString(),
                         'period_end' => $endOfMonth->toDateString(),
                         'issued_at' => $now->copy()->subDays(6),
@@ -660,8 +662,8 @@ class CustomerAccountsSeeder extends Seeder
                     HostingInvoice::create([
                         'hosting_service_id' => $hs->id,
                         'invoice_number' => $invNum,
-                        'billing_key' => 'HST-KEY-' . $hs->id . '-' . $now->format('Ym'),
-                        'label' => 'Tagihan Hosting Siklus ' . $now->translatedFormat('F Y') . ' (Menunggak)',
+                        'billing_key' => 'HST-KEY-'.$hs->id.'-'.$now->format('Ym'),
+                        'label' => 'Tagihan Hosting Siklus '.$now->translatedFormat('F Y').' (Menunggak)',
                         'period_start' => $startOfMonth->toDateString(),
                         'period_end' => $endOfMonth->toDateString(),
                         'issued_at' => $now->copy()->subDays(12),
@@ -672,12 +674,12 @@ class CustomerAccountsSeeder extends Seeder
                     ]);
                 } elseif ($hType === 'multi_invoice') {
                     // Invoice 1: Bulan Lalu (Paid)
-                    $invNumPrev = 'HST-' . $now->copy()->subMonth()->format('Ym') . '-' . str_pad((string)$invoiceSerial++, 6, '0', STR_PAD_LEFT);
+                    $invNumPrev = 'HST-'.$now->copy()->subMonth()->format('Ym').'-'.str_pad((string) $invoiceSerial++, 6, '0', STR_PAD_LEFT);
                     HostingInvoice::create([
                         'hosting_service_id' => $hs->id,
                         'invoice_number' => $invNumPrev,
-                        'billing_key' => 'HST-KEY-' . $hs->id . '-' . $now->copy()->subMonth()->format('Ym'),
-                        'label' => 'Tagihan Hosting Siklus ' . $now->copy()->subMonth()->translatedFormat('F Y'),
+                        'billing_key' => 'HST-KEY-'.$hs->id.'-'.$now->copy()->subMonth()->format('Ym'),
+                        'label' => 'Tagihan Hosting Siklus '.$now->copy()->subMonth()->translatedFormat('F Y'),
                         'period_start' => $now->copy()->subMonth()->startOfMonth()->toDateString(),
                         'period_end' => $now->copy()->subMonth()->endOfMonth()->toDateString(),
                         'issued_at' => $now->copy()->subDays(40),
@@ -690,8 +692,8 @@ class CustomerAccountsSeeder extends Seeder
                     HostingInvoice::create([
                         'hosting_service_id' => $hs->id,
                         'invoice_number' => $invNum,
-                        'billing_key' => 'HST-KEY-' . $hs->id . '-' . $now->format('Ym'),
-                        'label' => 'Tagihan Hosting Siklus ' . $now->translatedFormat('F Y'),
+                        'billing_key' => 'HST-KEY-'.$hs->id.'-'.$now->format('Ym'),
+                        'label' => 'Tagihan Hosting Siklus '.$now->translatedFormat('F Y'),
                         'period_start' => $startOfMonth->toDateString(),
                         'period_end' => $endOfMonth->toDateString(),
                         'issued_at' => $now->copy()->subDays(1),
@@ -703,8 +705,8 @@ class CustomerAccountsSeeder extends Seeder
                 } elseif ($hType === 'cancelled_replaced') {
                     $invCancelled = HostingInvoice::create([
                         'hosting_service_id' => $hs->id,
-                        'invoice_number' => $invNum . '-CAN',
-                        'billing_key' => 'HST-KEY-' . $hs->id . '-' . $now->format('Ym') . '-OLD',
+                        'invoice_number' => $invNum.'-CAN',
+                        'billing_key' => 'HST-KEY-'.$hs->id.'-'.$now->format('Ym').'-OLD',
                         'label' => 'Tagihan Hosting (Dibatalkan Admin)',
                         'period_start' => $startOfMonth->toDateString(),
                         'period_end' => $endOfMonth->toDateString(),
@@ -718,8 +720,8 @@ class CustomerAccountsSeeder extends Seeder
                     HostingInvoice::create([
                         'hosting_service_id' => $hs->id,
                         'invoice_number' => $invNum,
-                        'billing_key' => 'HST-KEY-' . $hs->id . '-' . $now->format('Ym') . '-NEW',
-                        'label' => 'Tagihan Hosting Pengganti Siklus ' . $now->translatedFormat('F Y'),
+                        'billing_key' => 'HST-KEY-'.$hs->id.'-'.$now->format('Ym').'-NEW',
+                        'label' => 'Tagihan Hosting Pengganti Siklus '.$now->translatedFormat('F Y'),
                         'period_start' => $startOfMonth->toDateString(),
                         'period_end' => $endOfMonth->toDateString(),
                         'issued_at' => $now->copy()->subDays(2),
