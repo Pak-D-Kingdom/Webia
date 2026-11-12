@@ -474,15 +474,11 @@ Apakah ingin tambah kuota atau upgrade paket website agar chatbot tetap aktif me
                                 </div>
                             </td>
 
-                            <!-- Template, Tenant ID & Widget Theme -->
+                            <!-- Template & Tenant ID -->
                             <td class="px-3 py-3.5 md:px-4">
                                 <div class="flex flex-col">
                                     <span class="font-label-md text-label-md font-semibold text-on-surface">{{ $client['template_name'] }}</span>
                                     <span class="font-caption text-caption text-primary font-mono">{{ $client['tenant_id'] }}</span>
-                                    <span class="inline-flex items-center gap-1 mt-1 text-[10.5px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md w-fit" title="Desain Widget AI Klien">
-                                        <span class="material-symbols-outlined text-[12px] text-emerald-600">verified</span>
-                                        <span>Desain Asli Template</span>
-                                    </span>
                                 </div>
                             </td>
 
