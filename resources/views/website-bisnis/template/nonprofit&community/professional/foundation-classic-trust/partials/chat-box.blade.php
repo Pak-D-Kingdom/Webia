@@ -1,6 +1,6 @@
 {{-- Jendela chat. $mode = 'float' | 'inline' --}}
 @php $inline = ($mode ?? 'float') === 'inline'; @endphp
-<section class="fd-chat {{ $inline ? 'fd-chat--inline' : 'fd-chat--float' }}" @unless($inline) id="fd-chat" hidden @else data-fd-chat-inline @endunless aria-label="HarapanBot — FAQ program dan donasi">
+<section class="fd-chat {{ $inline ? 'fd-chat--inline' : 'fd-chat--float' }}" @unless($inline) id="fd-chat" hidden @else data-fd-chat-inline @endunless data-robot="{{ $i('bot.svg') }}" aria-label="HarapanBot — FAQ program dan donasi">
     <div class="fd-chat__head">
         <span class="fd-chat__avatarwrap"><img class="fd-chat__avatar" src="{{ $i('bot-head.svg') }}" alt="" width="52" height="52"><i class="fd-chat__online"></i></span>
         <div class="fd-chat__who"><b>HarapanBot</b><small>Asisten AI · FAQ program &amp; donasi</small></div>

@@ -1399,32 +1399,27 @@ view()->composer(
     'website-bisnis.template.travel&tourism.classic.umrah-haji-emerald-green.*',
     function ($view) {
         $request = request();
-        $shared = $request->attributes->get('umrah-haji.shared');
+        $shared  = $request->attributes->get('umrah-haji-emerald-green.shared');
 
         if ($shared === null) {
-            $uh = config('template.travel&tourism.classic.umrah-haji-emerald-green.umrah-haji');
+            $uh      = config('template.travel&tourism.classic.umrah-haji-emerald-green.umrah-haji');
             $imgBase = 'images/website-bisnis/template/travel&tourism/classic/umrah-haji-emerald-green/';
-            $name = optional(request()->route())->getName();
-            $active = is_string($name) && str_starts_with($name, 'umrah-haji.')
-                ? substr($name, strlen('umrah-haji.'))
+            $prefix  = 'umrah-haji-emerald-green.';
+            $name    = optional($request->route())->getName();
+            $active  = is_string($name) && str_starts_with($name, $prefix)
+                ? substr($name, strlen($prefix))
                 : 'home';
 
-            $url = fn(string $key) => route('umrah-haji.'.$key);
-            $img = fn(string $file) => asset($imgBase . $file);
-            $wa  = fn(string $text) => 'https://wa.me/' . $uh['brand']['whatsapp'] . '?text=' . rawurlencode($text);
+            $url = fn (string $key) => route($prefix . $key);
+            $img = fn (string $file) => asset($imgBase . $file);
+            $wa  = fn (string $text) => 'https://wa.me/' . $uh['brand']['whatsapp'] . '?text=' . rawurlencode($text);
 
             $icons = [
-                'packages' => 'kaaba',
-                'schedules' => 'calendar',
-                'prices' => 'tag',
-                'hotel-flight' => 'hotel',
-                'itinerary' => 'route',
-                'team' => 'guide',
-                'requirements' => 'file',
-                'testimonials' => 'star',
+                'packages' => 'kaaba', 'schedules' => 'calendar', 'prices' => 'tag', 'hotel-flight' => 'hotel',
+                'itinerary' => 'route', 'team' => 'guide', 'requirements' => 'file', 'testimonials' => 'star',
             ];
 
-            // indeks pencarian di navbar
+            // indeks pencarian
             $search = [];
             foreach ($uh['nav'] as $item) {
                 if ($item['key'] === 'home') {
@@ -1432,79 +1427,85 @@ view()->composer(
                 }
                 $search[] = [
                     'label' => $item['label'],
-                    'text' => $uh['pages'][$item['key']]['text'] ?? '',
-                    'url' => $url($item['key']),
-                    'icon' => $icons[$item['key']] ?? 'file',
-                    'keys' => '',
+                    'text'  => $uh['pages'][$item['key']]['text'] ?? '',
+                    'url'   => $url($item['key']),
+                    'icon'  => $icons[$item['key']] ?? 'file',
+                    'group' => 'Halaman',
+                    'keys'  => '',
                 ];
             }
             foreach ($uh['packages'] as $pkg) {
                 $search[] = [
                     'label' => $pkg['name'],
-                    'text' => $pkg['duration'].' · mulai '.$pkg['price'],
-                    'url' => $url('packages').'#'.$pkg['slug'],
-                    'icon' => 'kaaba',
-                    'keys' => $pkg['type'].' '.$pkg['route'],
+                    'text'  => $pkg['duration'] . ' · mulai ' . $pkg['price'],
+                    'url'   => $url('packages') . '#' . $pkg['slug'],
+                    'icon'  => 'kaaba',
+                    'group' => 'Paket',
+                    'keys'  => $pkg['type'] . ' ' . $pkg['route'],
                 ];
             }
             $search[] = [
                 'label' => $uh['pages']['chatbot']['title'],
-                'text' => $uh['pages']['chatbot']['text'],
-                'url' => $url('chatbot'),
-                'icon' => 'message',
-                'keys' => 'faq tanya chat bantuan',
+                'text'  => $uh['pages']['chatbot']['text'],
+                'url'   => $url('chatbot'),
+                'icon'  => 'message',
+                'group' => 'Halaman',
+                'keys'  => 'faq tanya chat bantuan',
             ];
 
             // FAQ chatbot (tautan sudah berupa URL penuh)
             $faq = [];
             foreach ($uh['faq'] as $f) {
                 $faq[] = [
-                    'keys' => $f['keys'],
-                    'a' => $f['a'],
-                    'url' => isset($f['link']) ? $url($f['link']) : null,
+                    'keys'       => $f['keys'],
+                    'a'          => $f['a'],
+                    'url'        => isset($f['link']) ? $url($f['link']) : null,
                     'link_label' => $f['link_label'] ?? null,
                 ];
             }
 
             $shared = [
-                'uh' => $uh,
+                'uh'     => $uh,
                 'active' => $active,
-                'url' => $url,
-                'img' => $img,
-                'wa' => $wa,
-                'css' => asset('css/website-bisnis/template/travel&tourism/classic/umrah-haji-emerald-green/umrah-haji.css'),
-                'js' => asset('js/website-bisnis/template/travel&tourism/classic/umrah-haji-emerald-green/umrah-haji.js'),
+                'url'    => $url,
+                'img'    => $img,
+                'wa'     => $wa,
+                'css'    => asset('css/website-bisnis/template/travel&tourism/classic/umrah-haji-emerald-green/umrah-haji.css'),
+                'js'     => asset('js/website-bisnis/template/travel&tourism/classic/umrah-haji-emerald-green/umrah-haji.js'),
                 'jsData' => [
-                    'wa' => $wa($uh['hero']['wa_consult']),
-                    'ai' => ['welcome' => $uh['ai']['welcome'], 'fallback' => $uh['ai']['fallback']],
-                    'faq' => $faq,
-                    'search' => $search,
+                    'wa'        => $wa($uh['hero']['wa_consult']),
+                    'waNumber'  => $uh['brand']['whatsapp'],
+                    'waIntro'   => $uh['requirements']['form']['intro'],
+                    'popular'   => $uh['search_popular'],
+                    'ai'        => ['welcome' => $uh['ai']['welcome'], 'fallback' => $uh['ai']['fallback']],
+                    'faq'       => $faq,
+                    'search'    => $search,
                 ],
             ];
 
-            $request->attributes->set('umrah-haji.shared', $shared);
+            $request->attributes->set('umrah-haji-emerald-green.shared', $shared);
         }
 
         $view->with($shared);
     }
 );
 
-// ---- Rute halaman (Route::view: tanpa controller, tanpa Closure) ----
+// ---- Halaman ----
 Route::prefix('webia/template/travel-tourism/classic/umrah-haji-emerald-green')
-    ->name('umrah-haji.')
+    ->name('umrah-haji-emerald-green.')
     ->group(function () {
         $v = 'website-bisnis.template.travel&tourism.classic.umrah-haji-emerald-green';
 
-        Route::view('/', $v.'.index')->name('home');
-        Route::view('/paket', $v.'.packages')->name('packages');
-        Route::view('/jadwal', $v.'.schedules')->name('schedules');
-        Route::view('/harga', $v.'.prices')->name('prices');
-        Route::view('/hotel-pesawat', $v.'.hotel-flight')->name('hotel-flight');
-        Route::view('/itinerary', $v.'.itinerary')->name('itinerary');
-        Route::view('/tim', $v.'.team')->name('team');
-        Route::view('/persyaratan', $v.'.requirements')->name('requirements');
-        Route::view('/testimoni', $v.'.testimonials')->name('testimonials');
-        Route::view('/chatbot', $v.'.chatbot')->name('chatbot');
+        Route::view('/', $v . '.index')->name('home');
+        Route::view('/paket', $v . '.packages')->name('packages');
+        Route::view('/jadwal', $v . '.schedules')->name('schedules');
+        Route::view('/harga', $v . '.prices')->name('prices');
+        Route::view('/hotel-pesawat', $v . '.hotel-flight')->name('hotel-flight');
+        Route::view('/itinerary', $v . '.itinerary')->name('itinerary');
+        Route::view('/tim', $v . '.team')->name('team');
+        Route::view('/persyaratan', $v . '.requirements')->name('requirements');
+        Route::view('/testimoni', $v . '.testimonials')->name('testimonials');
+        Route::view('/chatbot', $v . '.chatbot')->name('chatbot');
     });
 
 Route::prefix('webia/template/professional-service/artistic/branding-creative-agency-terracotta')
@@ -1538,6 +1539,65 @@ Route::prefix('webia/template/professional-service/artistic/branding-creative-ag
         }
     });
 
+Route::prefix('webia/template/home-services/organic/home-renovation-repair-sage-green')
+    ->name('webia.template.home-services.organic.home-renovation-repair-sage-green.')
+    ->group(function () {
+        $view = 'website-bisnis.template.home-services.organic.home-renovation-repair-sage-green';
+
+        Route::view('/', "{$view}.home", ['page' => 'home'])->name('home');
+        Route::view('/layanan', "{$view}.pages.layanan", ['page' => 'layanan'])->name('layanan');
+        Route::view('/paket-layanan', "{$view}.pages.paket-layanan", ['page' => 'paket-layanan'])->name('paket-layanan');
+        Route::view('/galeri', "{$view}.pages.galeri", ['page' => 'galeri'])->name('galeri');
+        Route::view('/proyek', "{$view}.pages.proyek", ['page' => 'proyek'])->name('proyek');
+        Route::view('/area-layanan', "{$view}.pages.area-layanan", ['page' => 'area-layanan'])->name('area-layanan');
+        Route::view('/proses-kerja', "{$view}.pages.proses-kerja", ['page' => 'proses-kerja'])->name('proses-kerja');
+        Route::view('/permintaan-penawaran', "{$view}.pages.permintaan-penawaran", ['page' => 'permintaan-penawaran'])->name('permintaan-penawaran');
+        Route::view('/booking-survei', "{$view}.pages.booking-survei", ['page' => 'booking-survei'])->name('booking-survei');
+    });
+
+Route::prefix('webia/template/home-services/vintage/home-renovation-repair-chocolate-luxe')
+    ->name('webia.template.home-services.vintage.home-renovation-repair-chocolate-luxe.')
+    ->group(function () {
+        $view = 'website-bisnis.template.home-services.vintage.home-renovation-repair-chocolate-luxe.home-renovation-repair';
+
+        // Beranda (preview semua section + AI chatbot)
+        Route::view('/', $view, ['page' => 'home'])->name('home');
+
+        // Halaman tersendiri tiap section
+        Route::view('/layanan', $view, ['page' => 'layanan'])->name('layanan');                              // Renovation & repair services
+        Route::view('/paket-layanan', $view, ['page' => 'paket'])->name('paket');                            // Service packages
+        Route::view('/galeri', $view, ['page' => 'galeri'])->name('galeri');                                 // Before-after gallery
+        Route::view('/proyek-kami', $view, ['page' => 'proyek'])->name('proyek');                            // Past projects
+        Route::view('/area-layanan', $view, ['page' => 'area'])->name('area');                               // Service coverage
+        Route::view('/proses-kerja', $view, ['page' => 'proses'])->name('proses');                           // Work process
+        Route::view('/permintaan-penawaran', $view, ['page' => 'penawaran'])->name('penawaran');             // Quotation request
+        Route::view('/booking-survei', $view, ['page' => 'survei'])->name('survei');                         // Site survey booking
+    });
+
+Route::prefix('webia/template/interior-architecture/rustic/architecture-building-design-chocolate-luxe')
+    ->name('webia.template.architecture-building-design.')
+    ->group(function () {
+        $v = 'website-bisnis.template.interior&architecture.rustic.architecture-building-design-chocolate-luxe';
+
+        Route::view('/',            $v . '.beranda')->name('beranda');
+        Route::view('/portofolio',  $v . '.portofolio')->name('portofolio');
+        Route::view('/proyek',      $v . '.proyek')->name('proyek');
+        Route::view('/layanan',     $v . '.layanan')->name('layanan');
+        Route::view('/denah-3d',    $v . '.denah-3d')->name('denah-3d');
+        Route::view('/proses',      $v . '.proses')->name('proses');
+        Route::view('/sertifikasi', $v . '.sertifikasi')->name('sertifikasi');
+        Route::view('/konsultasi',  $v . '.konsultasi')->name('konsultasi');
+        Route::view('/penawaran',   $v . '.penawaran')->name('penawaran');
+    });
+    
+$prefix = '/webia/template/libraries-digital-archives/modern/digital-library-platform-ocean-blue';
+$view = 'website-bisnis.template.libraries-digital-archives.modern.digital-library-platform-ocean-blue';
+
+Route::get($prefix, fn () => view($view.'.index'))->name('webia.dl.home');
+
+foreach (['katalog', 'kategori', 'detail-buku', 'baca', 'koleksi-pilihan', 'terbaru', 'terpopuler', 'akademik', 'keanggotaan', 'tentang-kami', 'knowledge-hub', 'artikel', 'faq', 'kontak', 'masuk', 'daftar', 'dashboard', 'pinjaman', 'riwayat', 'wishlist', 'profil'] as $slug) {
+    Route::get($prefix.'/'.$slug, fn () => view($view.'.page', ['page' => $slug]))->name('webia.dl.'.$slug);
+}
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------
 

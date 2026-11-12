@@ -81,7 +81,7 @@
         $$('button:not([disabled])', menu).forEach(function (b) { on(b, 'click', function () { set(false); }); });
     })();
 
-    /* ---------- pencarian ---------- */
+    /* ---------- pencarian (kelompok hasil, sorotan kata, navigasi keyboard) ---------- */
     (function search() {
         var box = $('[data-uh-search]');
         if (!box) { return; }
@@ -90,61 +90,131 @@
         var form = $('[data-uh-search-form]', box);
         var index = Array.isArray(DATA.search) ? DATA.search : [];
         var lastFocus = null;
+        var rows = [];
+        var active = -1;
 
+        function highlight(el, text, q) {
+            var i = q ? text.toLowerCase().indexOf(q.toLowerCase()) : -1;
+            if (i < 0) { el.textContent = text; return; }
+            el.appendChild(doc.createTextNode(text.slice(0, i)));
+            var m = doc.createElement('mark');
+            m.textContent = text.slice(i, i + q.length);
+            el.appendChild(m);
+            el.appendChild(doc.createTextNode(text.slice(i + q.length)));
+        }
+        function setActive(n) {
+            if (!rows.length) { active = -1; input.removeAttribute('aria-activedescendant'); return; }
+            active = (n + rows.length) % rows.length;
+            rows.forEach(function (r, i) {
+                r.li.classList.toggle('is-active', i === active);
+                r.li.setAttribute('aria-selected', i === active ? 'true' : 'false');
+            });
+            input.setAttribute('aria-activedescendant', rows[active].li.id);
+            rows[active].li.scrollIntoView({ block: 'nearest' });
+        }
         function render(q) {
-            var n = norm(q);
-            var hits = index.filter(function (it) {
-                if (!n) { return true; }
-                return norm(it.label + ' ' + (it.text || '') + ' ' + (it.keys || '')).indexOf(n) !== -1;
-            }).slice(0, 8);
+            var raw = q.trim();
+            var n = norm(raw);
+            var hits = index.map(function (it) {
+                var hay = norm(it.label + ' ' + (it.text || '') + ' ' + (it.keys || ''));
+                var score = !n ? 1 : (norm(it.label).indexOf(n) !== -1 ? 3 : (hay.indexOf(n) !== -1 ? 1 : 0));
+                return { it: it, score: score };
+            }).filter(function (h) { return h.score > 0; });
+            if (n) { hits.sort(function (a, b) { return b.score - a.score; }); }
+            hits = hits.slice(0, 9);
+
             list.innerHTML = '';
+            rows = [];
             if (!hits.length) {
                 var empty = doc.createElement('li');
                 empty.className = 'uh-search__empty';
-                empty.textContent = 'Tidak ada hasil untuk "' + q + '". Coba kata kunci lain, misalnya "harga" atau "jadwal".';
+                var t = doc.createElement('p');
+                t.textContent = 'Tidak ada hasil untuk "' + raw + '".';
+                var sub = doc.createElement('small');
+                sub.textContent = 'Coba kata kunci lain, atau tanyakan langsung ke tim kami.';
+                var acts = doc.createElement('div');
+                var wa = doc.createElement('a');
+                wa.className = 'uh-msg__link';
+                wa.href = DATA.wa || '#'; wa.target = '_blank'; wa.rel = 'noopener noreferrer';
+                var ws = doc.createElement('span'); ws.textContent = 'Tanya via WhatsApp';
+                wa.appendChild(ws); wa.appendChild(icon('whatsapp'));
+                acts.appendChild(wa);
+                empty.appendChild(t); empty.appendChild(sub); empty.appendChild(acts);
                 list.appendChild(empty);
+                setActive(-1);
                 return;
             }
-            hits.forEach(function (it) {
+            var group = null;
+            hits.forEach(function (h, i) {
+                if (h.it.group !== group) {
+                    group = h.it.group;
+                    var gl = doc.createElement('li');
+                    gl.className = 'uh-search__group';
+                    gl.setAttribute('role', 'presentation');
+                    gl.textContent = group || 'Hasil';
+                    list.appendChild(gl);
+                }
                 var li = doc.createElement('li');
+                li.id = 'uh-so-' + i;
+                li.setAttribute('role', 'option');
+                li.setAttribute('aria-selected', 'false');
                 var a = doc.createElement('a');
-                a.href = it.url;
-                a.appendChild(icon(it.icon || 'file'));
-                var span = doc.createElement('span');
+                a.href = h.it.url;
+                var ico = doc.createElement('span');
+                ico.className = 'uh-search__ico';
+                ico.appendChild(icon(h.it.icon || 'file'));
+                var txt = doc.createElement('span');
+                txt.className = 'uh-search__txt';
                 var strong = doc.createElement('strong');
-                strong.textContent = it.label;
+                highlight(strong, h.it.label, raw);
                 var small = doc.createElement('small');
-                small.textContent = it.text || '';
-                span.appendChild(strong);
-                span.appendChild(small);
-                a.appendChild(span);
+                small.textContent = h.it.text || '';
+                txt.appendChild(strong); txt.appendChild(small);
+                a.appendChild(ico); a.appendChild(txt); a.appendChild(icon('chevron-right'));
                 li.appendChild(a);
+                on(li, 'mouseenter', function () { setActive(i); });
                 list.appendChild(li);
+                rows.push({ li: li, url: h.it.url });
             });
+            setActive(n ? 0 : -1);
         }
         function open() {
             lastFocus = doc.activeElement;
             box.hidden = false;
             doc.body.style.overflow = 'hidden';
-            render('');
             input.value = '';
+            render('');
             window.setTimeout(function () { input.focus(); }, 30);
         }
         function close() {
+            if (box.hidden) { return; }
             box.hidden = true;
             doc.body.style.overflow = '';
             if (lastFocus && lastFocus.focus) { lastFocus.focus(); }
         }
         $$('[data-uh-search-open]').forEach(function (b) { on(b, 'click', open); });
         $$('[data-uh-search-close]', box).forEach(function (b) { on(b, 'click', close); });
+        $$('[data-uh-search-term]', box).forEach(function (b) {
+            on(b, 'click', function () { input.value = b.getAttribute('data-uh-search-term'); render(input.value); input.focus(); });
+        });
         on(input, 'input', function () { render(input.value); });
+        on(input, 'keydown', function (e) {
+            if (e.key === 'ArrowDown') { e.preventDefault(); setActive(active + 1); }
+            else if (e.key === 'ArrowUp') { e.preventDefault(); setActive(active - 1); }
+        });
         on(form, 'submit', function (e) {
             e.preventDefault();
-            var first = $('a', list);
-            if (first) { window.location.href = first.href; }
+            var r = rows[active >= 0 ? active : 0];
+            if (r) { window.location.href = r.url; }
         });
         on(doc, 'keydown', function (e) {
-            if (e.key === 'Escape' && !box.hidden) { close(); }
+            if (e.key === 'Escape') { close(); return; }
+            var tag = (doc.activeElement && doc.activeElement.tagName) || '';
+            var typing = /INPUT|TEXTAREA|SELECT/.test(tag) || (doc.activeElement && doc.activeElement.isContentEditable);
+            if (box.hidden && ((e.key === '/' && !typing) || ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k'))) {
+                e.preventDefault();
+                open();
+            }
         });
     })();
 
@@ -284,6 +354,209 @@
         update();
     });
 
+    /* ---------- dropdown kustom (menggantikan <select> bawaan, tetap sinkron dengan select aslinya) ---------- */
+    (function dropdowns() {
+        var uid = 0;
+        $$('select[data-uh-select]').forEach(function (sel) {
+            uid++;
+            var variant = sel.getAttribute('data-uh-select');
+            var wrap = doc.createElement('div');
+            wrap.className = 'uh-dd' + (variant === 'pill' ? ' uh-dd--pill' : '');
+            sel.parentNode.insertBefore(wrap, sel);
+            wrap.appendChild(sel);
+            sel.tabIndex = -1;
+            sel.setAttribute('aria-hidden', 'true');
+
+            var btn = doc.createElement('button');
+            btn.type = 'button';
+            btn.className = 'uh-dd__btn';
+            btn.setAttribute('aria-haspopup', 'listbox');
+            btn.setAttribute('aria-expanded', 'false');
+            var val = doc.createElement('span');
+            val.className = 'uh-dd__value';
+            val.id = 'uh-dd-val-' + uid;
+            btn.appendChild(val);
+            btn.appendChild(icon('chevron-down'));
+
+            var lbl = sel.id ? $('label[for="' + sel.id + '"]') : null;
+            var labelId = sel.getAttribute('aria-labelledby') || (lbl && (lbl.id = lbl.id || 'uh-dd-lbl-' + uid));
+            btn.setAttribute('aria-labelledby', (labelId ? labelId + ' ' : '') + val.id);
+
+            var ul = doc.createElement('ul');
+            ul.className = 'uh-dd__list';
+            ul.id = 'uh-dd-list-' + uid;
+            ul.setAttribute('role', 'listbox');
+            ul.hidden = true;
+            btn.setAttribute('aria-controls', ul.id);
+            wrap.appendChild(btn);
+            wrap.appendChild(ul);
+
+            var opts = [];
+            var cur = -1;
+            Array.prototype.forEach.call(sel.options, function (o, i) {
+                var li = doc.createElement('li');
+                li.className = 'uh-dd__opt';
+                li.setAttribute('role', 'option');
+                li.id = ul.id + '-' + i;
+                var t = doc.createElement('span');
+                t.textContent = o.textContent;
+                li.appendChild(t);
+                li.appendChild(icon('check'));
+                if (o.disabled) { li.setAttribute('aria-disabled', 'true'); }
+                on(li, 'mousedown', function (e) { e.preventDefault(); });
+                on(li, 'click', function () { if (!o.disabled) { choose(i); } });
+                on(li, 'mouseenter', function () { highlightOpt(i); });
+                ul.appendChild(li);
+                opts.push(li);
+            });
+
+            function sync() {
+                var i = sel.selectedIndex < 0 ? 0 : sel.selectedIndex;
+                val.textContent = sel.options[i] ? sel.options[i].textContent : '';
+                val.classList.toggle('is-placeholder', !!sel.options[i] && sel.options[i].value === '' && sel.hasAttribute('required'));
+                opts.forEach(function (li, n) { li.setAttribute('aria-selected', n === i ? 'true' : 'false'); });
+            }
+            function highlightOpt(i) {
+                cur = i;
+                opts.forEach(function (li, n) { li.classList.toggle('is-active', n === i); });
+                if (opts[i]) { btn.setAttribute('aria-activedescendant', opts[i].id); opts[i].scrollIntoView({ block: 'nearest' }); }
+            }
+            function isOpen() { return !ul.hidden; }
+            function setOpen(open) {
+                ul.hidden = !open;
+                wrap.classList.toggle('is-open', open);
+                btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+                if (open) { highlightOpt(sel.selectedIndex < 0 ? 0 : sel.selectedIndex); } else { btn.removeAttribute('aria-activedescendant'); }
+            }
+            function choose(i) {
+                sel.selectedIndex = i;
+                sel.dispatchEvent(new Event('change', { bubbles: true }));
+                sync();
+                setOpen(false);
+                btn.focus();
+            }
+            function move(step) {
+                var n = cur;
+                do { n = (n + step + opts.length) % opts.length; } while (sel.options[n] && sel.options[n].disabled && n !== cur);
+                highlightOpt(n);
+            }
+            on(btn, 'click', function () { setOpen(!isOpen()); });
+            on(btn, 'keydown', function (e) {
+                if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    if (!isOpen()) { setOpen(true); } else { move(e.key === 'ArrowDown' ? 1 : -1); }
+                } else if (e.key === 'Home' && isOpen()) { e.preventDefault(); highlightOpt(0); }
+                else if (e.key === 'End' && isOpen()) { e.preventDefault(); highlightOpt(opts.length - 1); }
+                else if ((e.key === 'Enter' || e.key === ' ') && isOpen()) { e.preventDefault(); choose(cur); }
+                else if (e.key === 'Escape' && isOpen()) { e.preventDefault(); e.stopPropagation(); setOpen(false); }
+                else if (e.key === 'Tab' && isOpen()) { setOpen(false); }
+                else if (e.key.length === 1 && /\S/.test(e.key)) {
+                    var ch = e.key.toLowerCase();
+                    for (var k = 1; k <= opts.length; k++) {
+                        var n = (cur + k + opts.length) % opts.length;
+                        if (sel.options[n].textContent.trim().toLowerCase().indexOf(ch) === 0) { if (!isOpen()) { setOpen(true); } highlightOpt(n); break; }
+                    }
+                }
+            });
+            on(doc, 'click', function (e) { if (isOpen() && !wrap.contains(e.target)) { setOpen(false); } });
+            on(sel, 'change', sync);
+            if (lbl) { on(lbl, 'click', function (e) { e.preventDefault(); btn.focus(); }); }
+            var formEl = sel.form;
+            if (formEl) { on(formEl, 'reset', function () { window.setTimeout(sync, 0); }); }
+            sync();
+        });
+    })();
+
+    /* ---------- form pendaftaran → WhatsApp ---------- */
+    $$('[data-uh-waform]').forEach(function (form) {
+        var hint = $('.uh-form__hint', form);
+        var hintDefault = hint ? hint.textContent : '';
+        var fields = $$('.uh-field', form);
+
+        function fieldOf(el) { return el.closest('.uh-field'); }
+        function setError(el, msg) {
+            var f = fieldOf(el);
+            if (!f) { return; }
+            var m = $('[data-uh-msg]', f);
+            f.classList.toggle('is-invalid', !!msg);
+            f.classList.toggle('is-valid', !msg && !!el.value);
+            if (m) { m.textContent = msg || ''; m.hidden = !msg; }
+            el.setAttribute('aria-invalid', msg ? 'true' : 'false');
+        }
+        function phoneDigits(v) {
+            var d = String(v || '').replace(/[^\d+]/g, '').replace(/^\+/, '');
+            if (d.charAt(0) === '0') { d = '62' + d.slice(1); }
+            return d;
+        }
+        function check(el) {
+            var v = String(el.value || '').trim();
+            var msg = '';
+            if (el.hasAttribute('data-uh-required') && !v) { msg = el.getAttribute('data-uh-required'); }
+            else if (el.name === 'name' && v.length < 3) { msg = 'Nama minimal 3 karakter'; }
+            else if (el.name === 'phone') {
+                var d = phoneDigits(v);
+                if (!/^\d{9,15}$/.test(d)) { msg = 'Nomor tidak valid. Contoh: 0812-3456-7890'; }
+            }
+            setError(el, msg);
+            return !msg;
+        }
+        var validated = $$('[data-uh-required], input[name="phone"]', form);
+        validated.forEach(function (el) {
+            on(el, 'blur', function () { if (el.value || fieldOf(el).classList.contains('is-invalid')) { check(el); } });
+            on(el, 'input', function () { if (fieldOf(el).classList.contains('is-invalid')) { check(el); } });
+            on(el, 'change', function () { check(el); });
+        });
+
+        /* stepper jumlah jemaah */
+        $$('[data-uh-stepper]', form).forEach(function (st) {
+            var inp = $('input', st);
+            function clamp() {
+                var n = parseInt(inp.value, 10);
+                if (isNaN(n)) { n = 1; }
+                inp.value = Math.min(Math.max(n, +inp.min || 1), +inp.max || 50);
+            }
+            $$('[data-step]', st).forEach(function (b) {
+                on(b, 'click', function () { inp.value = (parseInt(inp.value, 10) || 1) + parseInt(b.getAttribute('data-step'), 10); clamp(); });
+            });
+            on(inp, 'change', clamp);
+        });
+
+        on(form, 'submit', function (e) {
+            e.preventDefault();
+            var firstBad = null;
+            validated.forEach(function (el) { if (!check(el) && !firstBad) { firstBad = el; } });
+            if (firstBad) {
+                var target = firstBad.tagName === 'SELECT' ? $('.uh-dd__btn', fieldOf(firstBad)) || firstBad : firstBad;
+                target.focus();
+                return;
+            }
+            var get = function (n) { var el = form.elements[n]; return el ? String(el.value || '').trim() : ''; };
+            var lines = [
+                (DATA.waIntro || 'Assalamu\u2019alaikum, saya ingin mendaftar umrah/haji dengan data berikut:'),
+                '',
+                'Nama: ' + get('name'),
+                'No. WhatsApp: ' + get('phone'),
+                'Paket: ' + get('package'),
+                'Jadwal: ' + (get('date') || 'Belum menentukan'),
+                'Jumlah jemaah: ' + (get('pax') || '1')
+            ];
+            if (get('note')) { lines.push('Catatan: ' + get('note')); }
+            var url = 'https://wa.me/' + (DATA.waNumber || '') + '?text=' + encodeURIComponent(lines.join('\n'));
+            var w = window.open(url, '_blank', 'noopener');
+            if (!w) { window.location.href = url; }
+            if (hint) {
+                hint.textContent = 'Membuka WhatsApp… jika tidak terbuka otomatis, izinkan pop-up lalu kirim ulang.';
+                hint.classList.add('is-ok');
+                window.setTimeout(function () { hint.textContent = hintDefault; hint.classList.remove('is-ok'); }, 6000);
+            }
+        });
+    });
+
+    /* ---------- kembali ke atas ---------- */
+    $$('[data-uh-totop]').forEach(function (b) {
+        on(b, 'click', function () { window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' }); });
+    });
+
     /* ---------- bubble chatbot mengambang ---------- */
     (function chatBubble() {
         var chat = $('[data-uh-chat]');
@@ -296,9 +569,8 @@
     })();
 
     /* ---------- AI Chatbot (FAQ paket & pendaftaran) ---------- */
-    (function chatbot() {
-        var win = $('[data-uh-chatbot]');
-        if (!win) { return; }
+    // Satu mesin chat dipakai bersama oleh halaman Chatbot dan panel melayang.
+    function createChat(win) {
         var log = $('[data-uh-chat-log]', win);
         var form = $('[data-uh-chat-form]', win);
         var input = $('[data-uh-chat-input]', win);
@@ -308,7 +580,7 @@
 
         function scrollDown() { log.scrollTop = log.scrollHeight; }
 
-        function bubble(role, text, links, extra) {
+        function bubble(role, text, links) {
             var row = doc.createElement('div');
             row.className = 'uh-msg uh-msg--' + role;
             var b = doc.createElement('div');
@@ -329,7 +601,6 @@
                 });
                 b.appendChild(holder);
             }
-            if (extra) { b.appendChild(extra); }
             row.appendChild(b);
             log.appendChild(row);
             scrollDown();
@@ -398,16 +669,63 @@
             input.focus();
         });
         $$('[data-q]', win).forEach(function (b) { on(b, 'click', function () { ask(b.getAttribute('data-q')); }); });
+
+        return { ask: ask, focus: function () { if (input) { input.focus(); } } };
+    }
+
+    /* halaman Chatbot (jendela penuh) */
+    var chatPage = $('[data-uh-chatbot]');
+    if (chatPage) {
+        var pageChat = createChat(chatPage);
         $$('[data-uh-chat-ask]').forEach(function (b) {
             on(b, 'click', function () {
-                ask(b.getAttribute('data-uh-chat-ask'));
-                win.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+                pageChat.ask(b.getAttribute('data-uh-chat-ask'));
+                chatPage.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
             });
         });
-
         try {
-            var q = new URLSearchParams(window.location.search).get('q');
-            if (q) { window.setTimeout(function () { ask(q.slice(0, 200)); }, 500); }
+            var qs = new URLSearchParams(window.location.search).get('q');
+            if (qs) { window.setTimeout(function () { pageChat.ask(qs.slice(0, 200)); }, 500); }
         } catch (e) { /* URLSearchParams tidak tersedia */ }
+    }
+
+    /* panel chat melayang: dibuka oleh semua tombol [data-uh-chat-open] */
+    (function chatPanel() {
+        var panel = $('[data-uh-cpanel]');
+        if (!panel || chatPage) { return; }
+        var launcher = $('[data-uh-chat]');
+        var fab = $('.uh-chat__fab');
+        var inst = null;
+        var lastFocus = null;
+
+        function isOpen() { return !panel.hidden; }
+        function open(q) {
+            if (!isOpen()) {
+                lastFocus = doc.activeElement;
+                panel.hidden = false;
+                if (launcher) { launcher.classList.add('is-open'); }
+                if (fab) { fab.setAttribute('aria-expanded', 'true'); }
+                if (!inst) { inst = createChat(panel); }
+                window.setTimeout(function () { inst.focus(); }, 60);
+            }
+            if (q) { inst.ask(q); }
+        }
+        function close() {
+            if (!isOpen()) { return; }
+            panel.hidden = true;
+            if (launcher) { launcher.classList.remove('is-open'); }
+            if (fab) { fab.setAttribute('aria-expanded', 'false'); }
+            if (lastFocus && lastFocus.focus) { lastFocus.focus(); }
+        }
+
+        $$('[data-uh-chat-open]').forEach(function (a) {
+            on(a, 'click', function (e) {
+                e.preventDefault();
+                if (a === fab && isOpen()) { close(); return; }
+                open(a.getAttribute('data-q'));
+            });
+        });
+        on($('[data-uh-cpanel-close]', panel), 'click', close);
+        on(doc, 'keydown', function (e) { if (e.key === 'Escape') { close(); } });
     })();
 })();

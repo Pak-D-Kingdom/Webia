@@ -29,6 +29,7 @@
 
     @include('website-bisnis.template.travel&tourism.classic.umrah-haji-emerald-green.partials.footer')
     @include('website-bisnis.template.travel&tourism.classic.umrah-haji-emerald-green.partials.search')
+    @include('website-bisnis.template.travel&tourism.classic.umrah-haji-emerald-green.partials.chatbot-panel')
     @include('website-bisnis.template.travel&tourism.classic.umrah-haji-emerald-green.partials.chatbot-button')
     @include('website-bisnis.template.travel&tourism.classic.umrah-haji-emerald-green.partials.whatsapp-button')
 

@@ -11,7 +11,7 @@
         <div class="uh-container">
             <div class="uh-pricegrid">
                 @foreach ($uh['prices']['items'] as $it)
-                    <article class="uh-pricecard" id="{{ $it['slug'] }}">
+                    <article class="uh-pricecard @if ($it['tag'] === 'Best Seller') uh-pricecard--feat @endif" id="{{ $it['slug'] }}">
                         <header class="uh-pricecard__head">
                             <span class="uh-tag">{{ $it['tag'] }}</span>
                             <h2 class="uh-pricecard__title">{{ $it['package'] }}</h2>

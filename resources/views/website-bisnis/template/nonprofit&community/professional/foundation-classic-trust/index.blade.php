@@ -6,6 +6,7 @@
 @section('title', 'Harapan Untuk Negeri Foundation — Membangun Masa Depan yang Lebih Baik')
 
 @section('content')
+<div class="fd-top">
 {{-- ===== HERO BANNER + PREVIEW AI CHATBOT ===== --}}
 <section class="fd-hero" aria-labelledby="fd-hero-title">
     <div class="fd-hero__bg" aria-hidden="true">
@@ -15,7 +16,7 @@
         @endforeach
     </div>
     <div class="fd-wrap fd-hero__in">
-        <div class="fd-hero__img"><img src="{{ $i('hero.jpg') }}" alt="Relawan Harapan Untuk Negeri Foundation bersama anak-anak di depan gedung yayasan" width="2034" height="810" fetchpriority="high"></div>
+        <div class="fd-hero__img"><img src="{{ $i('hero.jpg') }}" alt="Relawan Harapan Untuk Negeri Foundation bersama anak-anak di depan gedung yayasan" width="2040" height="810" fetchpriority="high"></div>
 
         <div class="fd-hero__text">
             <span class="fd-badge"><svg class="fd-ico fd-ico--fill"><use href="#fd-i-heart"/></svg>{{ $fd['brand']['tagline'] }}</span>
@@ -89,7 +90,7 @@
         <article class="fd-card fd-c-impact fd-reveal">
             <span class="fd-c-impact__ring" aria-hidden="true"></span>
             <div class="fd-card__body">
-                <div class="fd-ch fd-ch--light"><h2 class="fd-ch__title">Dampak Kami</h2><a class="fd-ch__more fd-ch__more--gold" href="{{ $r('impact') }}">Lihat Dampak <svg class="fd-ico"><use href="#fd-i-arrow"/></svg></a></div>
+                <div class="fd-ch"><h2 class="fd-ch__title"><a class="fd-stretch" href="{{ $r('impact') }}">Dampak Kami</a></h2></div>
                 <p class="fd-card__text">Bersama, kita telah memberikan manfaat untuk banyak orang.</p>
                 <div class="fd-impact__stats">
                     @foreach ($fd['impact']['stats'] as $s)
@@ -113,8 +114,8 @@
                 <div class="fd-donategrid">
                     @foreach ($fd['donation']['options'] as $o)
                         <a class="fd-donateitem" href="{{ route('foundation-classic-trust.donation', ['jenis' => $o['key']]) }}">
-                            <img src="{{ $i($o['icon']) }}" alt="" width="48" height="48" loading="lazy">
-                            <span><b>{{ $o['title'] }}</b><small>{{ $o['sub'] }}</small></span>
+                            <img src="{{ $i($o['icon']) }}" alt="" width="40" height="40" loading="lazy">
+                            <b>{{ $o['title'] }}</b><small>({{ $o['sub'] }})</small>
                         </a>
                     @endforeach
                 </div>
@@ -180,5 +181,6 @@
             <img src="{{ $i('quote.jpg') }}" alt="Kebaikan kecil, bisa membawa perubahan besar." loading="lazy" width="1095" height="942">
         </article>
     </div>
+</div>
 </div>
 @endsection
