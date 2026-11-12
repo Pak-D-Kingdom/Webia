@@ -63,6 +63,29 @@ class DatabaseSeederTest extends TestCase
             'slug' => 'kusuma-ningrat-royal-heritage',
             'preview_view' => 'website-bisnis.templates.fnb.kusuma-ningrat-royal-heritage',
         ]);
+        $this->assertDatabaseHas('webia_templates', [
+            'slug' => 'bca-terracotta',
+            'site_config_path' => 'professional-service/artistic/branding-creative-agency-terracotta/branding-creative-agency',
+        ]);
+    }
+
+    public function test_branding_agency_backfill_updates_only_targeted_template(): void
+    {
+        $target = WebiaTemplate::where('slug', 'bca-terracotta')->firstOrFail();
+        $other = WebiaTemplate::where('slug', 'property-emerald-green')->firstOrFail();
+        $target->update(['site_config_path' => null]);
+        $other->update(['site_config_path' => 'property/example']);
+        $migration = require database_path('migrations/2026_11_11_030637_backfill_site_config_path_for_branding_agency.php');
+
+        $migration->up();
+
+        $this->assertSame('professional-service/artistic/branding-creative-agency-terracotta/branding-creative-agency', $target->fresh()->site_config_path);
+        $this->assertSame('property/example', $other->fresh()->site_config_path);
+
+        $migration->down();
+
+        $this->assertNull($target->fresh()->site_config_path);
+        $this->assertSame('property/example', $other->fresh()->site_config_path);
     }
 
     public function test_default_database_seeder_displays_templates_in_collection(): void
@@ -105,18 +128,19 @@ class DatabaseSeederTest extends TestCase
             ->assertSee('webia-ai-launcher');
     }
 
-    #[DataProvider('salonTemplates')]
-    public function test_salon_templates_are_seeded_renderable_and_listed(
+    #[DataProvider('renderableTemplates')]
+    public function test_templates_are_seeded_renderable_and_listed(
         string $slug,
         string $templateUrl,
         string $previewView,
         string $name,
+        string $categorySlug,
     ): void {
         $this->assertDatabaseHas('webia_templates', [
             'slug' => $slug,
             'template_url' => $templateUrl,
             'preview_view' => $previewView,
-            'category_slug' => 'beauty',
+            'category_slug' => $categorySlug,
         ]);
 
         $this->get($templateUrl)
@@ -129,7 +153,7 @@ class DatabaseSeederTest extends TestCase
             ->assertSee($templateUrl, false);
     }
 
-    public static function salonTemplates(): array
+    public static function renderableTemplates(): array
     {
         return [
             'modern sage' => [
@@ -137,18 +161,35 @@ class DatabaseSeederTest extends TestCase
                 '/webia/template/salon-modern-sage',
                 'website-bisnis.templates.salon-modern-sage',
                 'Sage Bloom Salon',
+                'beauty',
             ],
             'classic warm neutral' => [
                 'salon-classic-warm-neutral',
                 '/webia/template/salon-classic-warm-neutral',
                 'website-bisnis.templates.salon-classic-warm-neutral',
                 'Maison Élise Salon',
+                'beauty',
             ],
             'elegant soft pink' => [
                 'salon-elegant-soft-pink',
                 '/webia/template/salon-elegant-soft-pink',
                 'website-bisnis.templates.salon-elegant-soft-pink',
                 'Rosé Atelier',
+                'beauty',
+            ],
+            'verba' => [
+                'verba-translation-interpreter',
+                '/webia/template/verba-translation-interpreter',
+                'website-bisnis.templates.professional-service.translation-interpreter.verba.verba',
+                'VERBA — Editorial Translation House',
+                'professional-service',
+            ],
+            'vanguard' => [
+                'vanguard-lawyer',
+                '/webia/template/vanguard-lawyer',
+                'website-bisnis.templates.professional-service.lawyer.vanguard.vanguard',
+                'VANGUARD — Heritage Counsel',
+                'professional-service',
             ],
         ];
     }

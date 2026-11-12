@@ -8,7 +8,7 @@
 
     <div class="container footer__grid">
         <div class="footer__brand">
-            <a class="brand brand--light" href="{{ route($cfg['route'] . 'home') }}">
+            <a class="brand brand--light" href="{{ $r('home') }}">
                 <span class="brand__mark"><svg class="ico" aria-hidden="true"><use href="#i-logo"/></svg></span>
                 <span class="brand__text">
                     <strong>{{ $cfg['brand']['name'] }}</strong>
@@ -22,7 +22,7 @@
             <h3>Navigasi</h3>
             <ul>
                 @foreach($cfg['nav'] as $item)
-                    <li><a href="{{ route($cfg['route'] . $item['route']) }}">{{ $item['label'] }}</a></li>
+                    <li><a href="{{ $r($item['route']) }}">{{ $item['label'] }}</a></li>
                 @endforeach
             </ul>
         </nav>
@@ -31,9 +31,9 @@
             <h3>Customer Care</h3>
             <ul>
                 <li><button type="button" data-ai-open>AI FAQ</button></li>
-                <li><a href="{{ route($cfg['route'] . 'inquiry') }}">Kirim Inquiry</a></li>
-                <li><a href="{{ route($cfg['route'] . 'stock') }}">Cek Ketersediaan Stok</a></li>
-                <li><a href="{{ route($cfg['route'] . 'price') }}">Daftar Harga</a></li>
+                <li><a href="{{ $r('inquiry') }}">Kirim Inquiry</a></li>
+                <li><a href="{{ $r('stock') }}">Cek Ketersediaan Stok</a></li>
+                <li><a href="{{ $r('price') }}">Daftar Harga</a></li>
                 <li><a href="https://wa.me/{{ $cfg['whatsapp']['number'] }}" target="_blank" rel="noopener noreferrer">Chat WhatsApp</a></li>
             </ul>
         </div>

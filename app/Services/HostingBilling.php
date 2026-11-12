@@ -126,7 +126,7 @@ class HostingBilling
                 $invoice->update(['invoice_number' => 'HST-'.$periodStart->format('Ym').'-'.str_pad((string) $invoice->id, 6, '0', STR_PAD_LEFT)]);
 
                 if ($lockedService->billing_status === 'scheduled') {
-                    $lockedService->update(['billing_status' => 'active', 'operational_status' => 'active']);
+                    $lockedService->update(['billing_status' => 'active']);
                 }
             });
         } catch (QueryException $exception) {

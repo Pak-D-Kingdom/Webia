@@ -403,6 +403,7 @@ class WebiaTemplateAlleSeeder extends Seeder
                 'tag' => 'Home Services · Home Cleaning · Vintage Warm Bee',
                 'preview_folder' => null,
                 'template_url' => '/webia/template/madubersih-home-cleaning-vintage',
+                'preview_view' => 'website-bisnis.templates.home-services.home-cleaning-deep-cleaning.madubersih-vintage',
                 'is_active' => true,
                 'sort_order' => 51,
             ]
@@ -424,6 +425,7 @@ class WebiaTemplateAlleSeeder extends Seeder
                 'tag' => 'Home Services · Home Cleaning · Cosmic Modern',
                 'preview_folder' => null,
                 'template_url' => '/webia/template/astroclean-home-cleaning-cosmic',
+                'preview_view' => 'website-bisnis.templates.home-services.home-cleaning-deep-cleaning.astroclean-cosmic',
                 'is_active' => true,
                 'sort_order' => 52,
             ]

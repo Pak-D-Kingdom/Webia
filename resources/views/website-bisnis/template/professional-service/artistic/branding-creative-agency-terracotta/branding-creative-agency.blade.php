@@ -21,7 +21,7 @@
     <div class="bca-wrap bca-topbar__in">
         <p>{{ $c['topbar']['notice'] }}</p>
         <div class="bca-topbar__links">
-            <a href="mailto:{{ $c['brand']['email'] }}">{{ $c['brand']['email'] }}</a>
+            @if($c['brand']['email'])<a href="mailto:{{ $c['brand']['email'] }}">{{ $c['brand']['email'] }}</a>@endif
             <a href="tel:+{{ $c['brand']['whatsapp'] }}">{{ $c['brand']['phone'] }}</a>
         </div>
     </div>
@@ -39,7 +39,7 @@
                 <li><a href="{{ $r($k) }}" class="{{ $page === $k ? 'is-on' : '' }}">{{ $c['pages'][$k]['label'] }}</a></li>
                 @endforeach
             </ul>
-            <a class="bca-btn bca-btn--solid" href="{{ $r('brief') }}">{{ $c['pages']['brief']['label'] }}</a>
+            @if(empty($c['customer_site']))<a class="bca-btn bca-btn--solid" href="{{ $r('brief') }}">{{ $c['pages']['brief']['label'] }}</a>@endif
         </nav>
     </div>
 </header>
@@ -98,7 +98,7 @@
                 <div class="bca-pc__b">
                     <p>{{ $s['d'] }}</p>
                     <ul class="bca-pc__list">@foreach($s['list'] as $l)<li>{{ $l }}</li>@endforeach</ul>
-                    <p class="bca-pc__price">mulai {{ $s['price'] }}</p>
+                    @if($s['price'])<p class="bca-pc__price">mulai {{ $s['price'] }}</p>@endif
                     <a class="bca-more" href="{{ $r('layanan') }}">Lihat detail</a>
                 </div>
             </article>
@@ -123,6 +123,7 @@
     </div>
 </section>
 
+@if(empty($c['customer_site']))
 <section class="bca-sec">
     <div class="bca-wrap">
         <div class="bca-sh" data-rv>
@@ -144,6 +145,7 @@
         </div>
     </div>
 </section>
+@endif
 
 <section class="bca-sec bca-sec--plaster">
     <div class="bca-wrap">
@@ -175,12 +177,13 @@
             <h2 class="bca-h2">{{ $c['home']['appointment']['title'] }}</h2>
             <p class="bca-lead" style="margin:1rem 0 1.5rem">{{ $c['home']['appointment']['text'] }}</p>
             <ul class="bca-checks">@foreach($c['appointment']['types'] as $t)<li><strong>{{ $t['t'] }}</strong>, {{ $t['dur'] }}</li>@endforeach</ul>
-            <p style="margin:1.5rem 0">Slot terdekat: <span class="bca-next" data-bca-next data-slot="{{ $c['appointment']['slots'][0] }}">memuat jadwal</span></p>
+            @if($c['appointment']['slots'])<p style="margin:1.5rem 0">Slot terdekat: <span class="bca-next" data-bca-next data-slot="{{ $c['appointment']['slots'][0] }}">memuat jadwal</span></p>@endif
             <a class="bca-btn bca-btn--sun" href="{{ $r('janji') }}">{{ $c['home']['appointment']['cta'] }}</a>
         </div>
     </div>
 </section>
 
+@if(empty($c['customer_site']))
 <section class="bca-sec">
     <div class="bca-wrap bca-split">
         <div data-rv>
@@ -221,6 +224,7 @@
     </div>
 </section>
 @endif
+@endif
 
 {{-- ===================== LAYANAN ===================== --}}
 @if($page === 'layanan')
@@ -236,6 +240,12 @@
                     <div class="bca-svcard__f"><span class="bca-price">mulai {{ $s['price'] }}</span><a class="bca-btn bca-btn--ghost" href="{{ $r('janji') }}">Konsultasikan</a></div>
                 </div>
             </article>
+            <li style="--c:{{ $s['c'] }}" data-rv>
+                <h3>{{ $s['t'] }}</h3>
+                <p>{{ $s['d'] }}</p>
+                <ul class="bca-tags">@foreach($s['list'] as $l)<li>{{ $l }}</li>@endforeach</ul>
+                <div>@if($s['price'])<span class="bca-price">mulai {{ $s['price'] }}</span>@endif<small>{{ $s['time'] }}</small></div>
+            </li>
             @endforeach
         </div>
     </div>
@@ -269,12 +279,14 @@
         <ul class="bca-inds" data-rv>@foreach($c['expertise']['industries'] as $n)<li>{{ $n }}</li>@endforeach</ul>
     </div>
 </section>
+@if($c['expertise']['awards'])
 <section class="bca-sec">
     <div class="bca-wrap bca-split bca-split--l">
         <h2 class="bca-h2" data-rv>Penghargaan dan pengakuan</h2>
         <ul class="bca-awards" data-rv>@foreach($c['expertise']['awards'] as $a)<li><strong>{{ $a['y'] }}</strong><span style="color:var(--pinus);font-weight:700">{{ $a['n'] }}</span><span>Proyek {{ $a['p'] }}</span></li>@endforeach</ul>
     </div>
 </section>
+@endif
 @endif
 
 {{-- ===================== HARGA & KONSULTASI ===================== --}}
@@ -354,7 +366,7 @@
 @if($page === 'janji')
 <section class="bca-sec bca-sec--plaster">
     <div class="bca-wrap">
-        <form class="bca-booking" method="post" action="{{ $c['appointment']['action'] }}" novalidate data-bca-form data-bca-booking data-topic="membuat janji temu konsultasi" data-brand="{{ $c['brand']['name'] }}" data-wa="https://wa.me/{{ $c['brand']['whatsapp'] }}" data-slots="{{ json_encode($c['appointment']['slots'], 257) }}">
+        <form class="bca-booking" method="post" action="{{ $c['appointment']['action'] }}" novalidate data-bca-form data-bca-booking data-topic="membuat janji temu konsultasi" data-brand="{{ $c['brand']['name'] }}" data-wa="https://wa.me/{{ $c['brand']['whatsapp'] }}" data-slots="{{ json_encode($c['appointment']['slots'] ?: ['Hubungi via WhatsApp'], 257) }}">
             @csrf
             <div class="bca-fm bca-fm--panel">
                 <fieldset class="bca-fs"><legend>Jenis konsultasi</legend>
@@ -466,7 +478,7 @@
             <div>
                 <h3>Hubungi</h3>
                 <ul class="bca-fcontact">
-                    <li><small>Email</small><a href="mailto:{{ $c['brand']['email'] }}">{{ $c['brand']['email'] }}</a></li>
+                    @if($c['brand']['email'])<li><small>Email</small><a href="mailto:{{ $c['brand']['email'] }}">{{ $c['brand']['email'] }}</a></li>@endif
                     <li><small>WhatsApp</small><a href="https://wa.me/{{ $c['brand']['whatsapp'] }}" target="_blank" rel="noopener">{{ $c['brand']['phone'] }}</a></li>
                     <li><small>Studio</small>{{ $c['brand']['address'] }}</li>
                     <li><small>Jam kerja</small>{{ $c['brand']['hours'] }}</li>

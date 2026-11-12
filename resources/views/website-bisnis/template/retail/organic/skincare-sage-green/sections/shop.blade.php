@@ -63,7 +63,7 @@
                 <h2>Siap Masuk Keranjang</h2>
                 <p>Pilih produk, masukkan ke keranjang, lalu selesaikan pesanan lewat WhatsApp.</p>
             </div>
-            <a class="link-arrow" href="{{ route($cfg['route'] . 'shop') }}">Mulai Belanja <svg class="ico" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+            <a class="link-arrow" href="{{ $r('shop') }}">Mulai Belanja <svg class="ico" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
         </div>
         <div class="pgrid pgrid--shopprev">
             @foreach($cfg['products'] as $p)

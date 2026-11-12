@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Models\HostingService;
+use App\Models\HostingTask;
 use App\Models\User;
 use App\Models\WebiaOrder;
 use App\Models\WebiaPayment;
@@ -342,6 +344,43 @@ class MidtransPaymentTest extends TestCase
         $payment = WebiaPayment::factory()->create();
 
         $this->actingAs($payment->order->user)->get(route('payments.midtrans.simulate', $payment))->assertNotFound();
+    }
+
+    public function test_simulate_page_and_pay_are_absent_in_production_without_server_key(): void
+    {
+        config(['app.env' => 'production', 'webia.midtrans.server_key' => null]);
+        $payment = WebiaPayment::factory()->create();
+
+        $this->get(route('payments.midtrans.simulate', $payment))->assertNotFound();
+        $this->post(route('payments.midtrans.simulate.pay', $payment))->assertNotFound();
+        $this->assertSame('created', $payment->fresh()->status);
+    }
+
+    public function test_paid_order_provisions_hosting_service_and_deploy_task_once(): void
+    {
+        $order = WebiaOrder::factory()->create([
+            'status' => 'awaiting_payment',
+            'order_number' => 'WEB-261111-ABCD',
+            'package_snapshot' => ['name' => 'Pixel', 'price' => 499000, 'hosting_monthly_price' => 150000],
+        ]);
+        $payment = WebiaPayment::factory()->create(['webia_order_id' => $order->id]);
+        $payload = ['transaction_status' => 'settlement'];
+
+        app(Midtrans::class)->applyNotification($payment, $payload);
+        app(Midtrans::class)->applyNotification($payment, $payload);
+
+        $service = HostingService::sole();
+        $this->assertSame($order->id, $service->webia_order_id);
+        $this->assertSame($order->user_id, $service->user_id);
+        $this->assertSame('web-261111-abcd.sites.webia.id', $service->domain);
+        $this->assertSame(150000, $service->monthly_price);
+        $this->assertSame('pending_activation', $service->operational_status);
+        $this->assertDatabaseHas('hosting_tasks', [
+            'hosting_service_id' => $service->id,
+            'type' => 'deploy_website',
+            'status' => 'pending',
+        ]);
+        $this->assertSame(1, HostingTask::where('type', 'deploy_website')->count());
     }
 
     public function test_notification_marks_order_paid(): void
