@@ -11,7 +11,9 @@
         <li><span class="spec__ico"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg></span><span><small>Jam Operasional</small><b>{{ $c['hours'] }}</b></span></li>
         <li><span class="spec__ico"><svg class="i" aria-hidden="true"><use href="#i-pin"/></svg></span><span><small>Kantor Kami</small><b>{{ $c['address'] }}</b></span></li>
         <li><span class="spec__ico"><svg class="i" aria-hidden="true"><use href="#i-phone"/></svg></span><span><small>Telepon</small><b><a href="tel:{{ $c['phone_tel'] }}">{{ $c['phone'] }}</a></b></span></li>
-        <li><span class="spec__ico"><svg class="i" aria-hidden="true"><use href="#i-mail"/></svg></span><span><small>Email</small><b><a href="mailto:{{ $c['email'] }}">{{ $c['email'] }}</a></b></span></li>
+        @if ($c['email'])
+            <li><span class="spec__ico"><svg class="i" aria-hidden="true"><use href="#i-mail"/></svg></span><span><small>Email</small><b><a href="mailto:{{ $c['email'] }}">{{ $c['email'] }}</a></b></span></li>
+        @endif
     </ul>
 </section>
 

@@ -24,6 +24,6 @@
 
   <div class="book-card__actions">
     <a class="btn btn--primary btn--block" href="{{ $waUrl }}" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true"><use href="#i-whatsapp"/></svg><span>Booking Sekarang</span> <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
-    <a class="book-card__link" href="{{ route('coral-peach.booking') }}">Atur jadwal lengkap <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+    <a class="book-card__link" href="{{ $r('coral-peach.booking') }}">Atur jadwal lengkap <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
   </div>
 </section>

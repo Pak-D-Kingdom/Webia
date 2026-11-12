@@ -9,7 +9,7 @@
 
   @php $s = $site['search']; @endphp
   <div class="container section">
-    <form class="filter panel" data-filter-form action="{{ route('coral-peach.property') }}" method="get" role="search" aria-label="Filter properti">
+    <form class="filter panel" data-filter-form action="{{ $r('coral-peach.property') }}" method="get" role="search" aria-label="Filter properti">
       <div class="filter__field filter__field--grow">
         <label for="f-q">Cari</label>
         <input id="f-q" type="search" name="q" placeholder="Nama properti atau lokasi" autocomplete="off">

@@ -41,7 +41,7 @@ Route::post('/payments/midtrans/simulate/{payment}', [MidtransController::class,
 Route::get('/payments/midtrans/hosting/simulate/{payment}', [MidtransController::class, 'simulateHostingShow'])->middleware(['auth', 'throttle:10,1'])->name('payments.midtrans.hosting.simulate');
 Route::post('/payments/midtrans/hosting/simulate/{payment}', [MidtransController::class, 'simulateHostingPay'])->middleware(['auth', 'throttle:10,1'])->name('payments.midtrans.hosting.simulate.pay');
 Route::get('/s/{order:site_slug}/{page?}', CustomerSiteController::class)
-    ->whereIn('page', ['menu', 'reservasi', 'tentang-kami', 'portofolio', 'layanan', 'keahlian', 'janji', 'catalog', 'price', 'stock', 'shop', 'katalog', 'harga', 'stok', 'belanja', 'ketersediaan', 'inquiry', 'keranjang', 'dokter-staff', 'jadwal', 'appointment', 'faq', 'kebijakan', 'services', 'doctors', 'schedule', 'policy', 'dokter', 'booking'])
+    ->where('page', '[A-Za-z0-9-]+(?:/[A-Za-z0-9-]+)?')
     ->name('sites.show');
 Route::post('/s/{order:site_slug}/chat', [CustomerSiteController::class, 'chat'])
     ->middleware('throttle:60,1')
@@ -515,24 +515,28 @@ Route::prefix('webia/template/property/professional/real-estate-agency-coral-pea
     ->name('coral-peach.')
     ->group(function () {
         $view = 'website-bisnis.template.property.professional.real-estate-agency-coral-peach';
-        $site = fn() => config('template.property.professional.real-estate-agency-coral-peach.real-estate-agency');
+        $data = fn() => [
+            'site' => config('template.property.professional.real-estate-agency-coral-peach.real-estate-agency'),
+            'r' => fn(string $name, array|string $parameters = []): string => route($name, $parameters),
+            'isActive' => fn(string $pattern): bool => request()->routeIs($pattern),
+        ];
 
-        Route::get('/', fn() => view("$view.index", ['site' => $site()]))->name('home');
-        Route::get('/property', fn() => view("$view.property", ['site' => $site()]))->name('property');
-        Route::get('/specification', fn() => view("$view.specification", ['site' => $site()]))->name('specification');
-        Route::get('/price', fn() => view("$view.price", ['site' => $site()]))->name('price');
-        Route::get('/about-us', fn() => view("$view.about", ['site' => $site()]))->name('about');
-        Route::get('/gallery', fn() => view("$view.gallery", ['site' => $site()]))->name('gallery');
-        Route::get('/booking', fn() => view("$view.booking", ['site' => $site()]))->name('booking');
-        Route::get('/blog', fn() => view("$view.blog", ['site' => $site()]))->name('blog');
-        Route::get('/blog/{slug}', function (string $slug) use ($view, $site) {
-            $data = $site();
-            $post = collect($data['blog']['posts'])->firstWhere('slug', $slug);
+        Route::get('/', fn() => view("$view.index", $data()))->name('home');
+        Route::get('/property', fn() => view("$view.property", $data()))->name('property');
+        Route::get('/specification', fn() => view("$view.specification", $data()))->name('specification');
+        Route::get('/price', fn() => view("$view.price", $data()))->name('price');
+        Route::get('/about-us', fn() => view("$view.about", $data()))->name('about');
+        Route::get('/gallery', fn() => view("$view.gallery", $data()))->name('gallery');
+        Route::get('/booking', fn() => view("$view.booking", $data()))->name('booking');
+        Route::get('/blog', fn() => view("$view.blog", $data()))->name('blog');
+        Route::get('/blog/{slug}', function (string $slug) use ($view, $data) {
+            $viewData = $data();
+            $post = collect($viewData['site']['blog']['posts'])->firstWhere('slug', $slug);
             abort_if(! $post, 404);
 
-            return view("$view.blog-show", ['site' => $data, 'post' => $post]);
+            return view("$view.blog-show", [...$viewData, 'post' => $post]);
         })->name('blog.show');
-        Route::get('/contact', fn() => view("$view.contact", ['site' => $site()]))->name('contact');
+        Route::get('/contact', fn() => view("$view.contact", $data()))->name('contact');
     });
 
 $elNs = 'website-bisnis.template.e-learning.modern.e-learning-ocean-blue';

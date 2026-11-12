@@ -10,7 +10,9 @@
 
                 <ul class="rea-inquiry__contact">
                     <li>{{ $icon('phone') }}<a href="tel:{{ preg_replace('/[^+\d]/', '', $site['phone']) }}">{{ $site['phone'] }}</a></li>
-                    <li>{{ $icon('mail') }}<a href="mailto:{{ $site['email'] }}">{{ $site['email'] }}</a></li>
+                    @if ($site['email'])
+                        <li>{{ $icon('mail') }}<a href="mailto:{{ $site['email'] }}">{{ $site['email'] }}</a></li>
+                    @endif
                     <li>{{ $icon('clock') }}<span>{{ $site['hours'] }}</span></li>
                     <li>{{ $icon('whatsapp', 'rea-icon--fill') }}<span>Your message is sent via WhatsApp</span></li>
                 </ul>

@@ -41,6 +41,31 @@ class DatabaseSeederTest extends TestCase
         $this->assertSame('property/example', $other->fresh()->site_config_path);
     }
 
+    public function test_property_backfill_updates_only_targeted_templates(): void
+    {
+        $targets = WebiaTemplate::whereIn('slug', [
+            'property-emerald-green',
+            'property-nature-green',
+            'property-coral-peach',
+        ])->get()->keyBy('slug');
+        $other = WebiaTemplate::where('slug', 'company-terracotta')->firstOrFail();
+        $targets->each->update(['site_config_path' => null]);
+        $other->update(['site_config_path' => 'company/example']);
+        $migration = require database_path('migrations/2026_11_12_064341_backfill_site_config_path_for_property_templates.php');
+
+        $migration->up();
+
+        $this->assertSame('property/luxury/real-estate-agency-emerald-green/real-estate-agency', $targets['property-emerald-green']->fresh()->site_config_path);
+        $this->assertSame('property/premium-minimal/real-estate-agency-nature-green/real-estate-agency', $targets['property-nature-green']->fresh()->site_config_path);
+        $this->assertSame('property/professional/real-estate-agency-coral-peach/real-estate-agency', $targets['property-coral-peach']->fresh()->site_config_path);
+        $this->assertSame('company/example', $other->fresh()->site_config_path);
+
+        $migration->down();
+
+        $targets->each(fn (WebiaTemplate $template): mixed => $this->assertNull($template->fresh()->site_config_path));
+        $this->assertSame('company/example', $other->fresh()->site_config_path);
+    }
+
     public function test_database_seeder_creates_the_webia_catalog(): void
     {
         Artisan::call('db:seed', ['--no-interaction' => true]);
@@ -58,6 +83,18 @@ class DatabaseSeederTest extends TestCase
         $this->assertDatabaseHas('webia_templates', [
             'slug' => 'company-warm-neutral',
             'site_config_path' => 'company/classic/company-profile-warm-neutral/company-profile',
+        ]);
+        $this->assertDatabaseHas('webia_templates', [
+            'slug' => 'property-emerald-green',
+            'site_config_path' => 'property/luxury/real-estate-agency-emerald-green/real-estate-agency',
+        ]);
+        $this->assertDatabaseHas('webia_templates', [
+            'slug' => 'property-nature-green',
+            'site_config_path' => 'property/premium-minimal/real-estate-agency-nature-green/real-estate-agency',
+        ]);
+        $this->assertDatabaseHas('webia_templates', [
+            'slug' => 'property-coral-peach',
+            'site_config_path' => 'property/professional/real-estate-agency-coral-peach/real-estate-agency',
         ]);
         $this->assertDatabaseHas('webia_templates', [
             'slug' => 'kusuma-ningrat-royal-heritage',
