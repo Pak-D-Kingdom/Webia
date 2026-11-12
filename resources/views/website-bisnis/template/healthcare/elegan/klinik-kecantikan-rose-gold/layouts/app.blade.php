@@ -2,7 +2,10 @@
     Layout utama — RoseGlow Clinic (Elegan / Rose Gold)
     Variabel dari route: $cfg, $tpl, $rp, $page
 --}}
-@php $c = config($cfg); @endphp
+@php
+    $c = $c ?? config($cfg);
+    $r = $r ?? fn (string $name, array|string $parameters = []) => route($rp . $name, $parameters);
+@endphp
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -26,6 +29,9 @@
     @include($tpl . '.partials.topbar')
     @include($tpl . '.partials.navbar')
 
+    @if ($c['customer_site'] ?? false)
+        <p class="rg-container"><strong>{!! 'Contoh layanan & harga:' !!}</strong> layanan dan harga berikut merupakan konten demo.</p>
+    @endif
     <main id="rgMain">
         @yield('content')
     </main>

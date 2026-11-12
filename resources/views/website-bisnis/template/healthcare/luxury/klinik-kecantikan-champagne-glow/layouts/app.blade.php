@@ -4,6 +4,7 @@
     Data: $c (config), $v (prefix view), $img (URL dasar gambar) dikirim dari routes/web.php.
 --}}
 @php
+    $r = $r ?? fn (string $name, array|string $parameters = []) => route($name, $parameters);
     $cssUrl = asset('css/website-bisnis/template/healthcare/luxury/klinik-kecantikan-champagne-glow/klinik-kecantikan.css');
     $jsUrl  = asset('js/website-bisnis/template/healthcare/luxury/klinik-kecantikan-champagne-glow/klinik-kecantikan.js');
     $active = trim($__env->yieldContent('active', 'home'));
@@ -14,12 +15,12 @@
     // Data untuk JS (pencarian cepat, AI assistant, jadwal, WhatsApp). Statis, tanpa backend.
     $searchIndex = [];
     foreach ($c['nav'] as $n) {
-        $searchIndex[] = ['t' => $n['label'], 'd' => 'Halaman', 'u' => route($n['route']) . (isset($n['anchor']) ? '#' . $n['anchor'] : '')];
+        $searchIndex[] = ['t' => $n['label'], 'd' => 'Halaman', 'u' => $r($n['route']) . (isset($n['anchor']) ? '#' . $n['anchor'] : '')];
     }
-    foreach ($c['services'] as $s)  { $searchIndex[] = ['t' => $s['title'], 'd' => 'Layanan — ' . $s['short'], 'u' => route('glow.services') . '#' . $s['slug']]; }
-    foreach ($c['doctors'] as $d)   { $searchIndex[] = ['t' => $d['name'], 'd' => $d['role'], 'u' => route('glow.doctors') . '#' . $d['slug']]; }
-    foreach ($c['faq'] as $i => $f)  { $searchIndex[] = ['t' => $f['q'], 'd' => 'FAQ', 'u' => route('glow.faq') . '#faq-' . ($i + 1)]; }
-    foreach ($c['policy'] as $p)    { $searchIndex[] = ['t' => $p['title'], 'd' => 'Kebijakan', 'u' => route('glow.policy') . '#' . $p['slug']]; }
+    foreach ($c['services'] as $s)  { $searchIndex[] = ['t' => $s['title'], 'd' => 'Layanan — ' . $s['short'], 'u' => $r('glow.services') . '#' . $s['slug']]; }
+    foreach ($c['doctors'] as $d)   { $searchIndex[] = ['t' => $d['name'], 'd' => $d['role'], 'u' => $r('glow.doctors') . '#' . $d['slug']]; }
+    foreach ($c['faq'] as $i => $f)  { $searchIndex[] = ['t' => $f['q'], 'd' => 'FAQ', 'u' => $r('glow.faq') . '#faq-' . ($i + 1)]; }
+    foreach ($c['policy'] as $p)    { $searchIndex[] = ['t' => $p['title'], 'd' => 'Kebijakan', 'u' => $r('glow.policy') . '#' . $p['slug']]; }
 
     $jsData = [
         'wa'          => $waNumber,
@@ -58,6 +59,9 @@
     @include($v . '.partials.topbar')
     @include($v . '.partials.navbar')
 
+    @if ($c['customer_site'] ?? false)
+        <p class="cg-container"><strong>{!! 'Contoh layanan & harga:' !!}</strong> layanan dan harga berikut merupakan konten demo.</p>
+    @endif
     <main id="cg-main" class="cg-main">
         @yield('content')
     </main>

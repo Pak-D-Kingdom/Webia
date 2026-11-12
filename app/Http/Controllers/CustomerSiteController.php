@@ -26,12 +26,16 @@ class CustomerSiteController extends Controller
 
         $isBrandingAgency = str_starts_with($siteConfigPath, 'professional-service/artistic/branding-creative-agency-terracotta/');
         $isRetail = str_starts_with($siteConfigPath, 'retail/');
+        $isHealthcare = str_starts_with($siteConfigPath, 'healthcare/');
         $views = match (true) {
             $isBrandingAgency => array_fill_keys(['home', 'layanan', 'keahlian', 'portofolio', 'janji'], 'branding-creative-agency'),
             str_starts_with($siteConfigPath, 'company/') => ['home' => 'index', 'tentang-kami' => 'tentang-kami', 'portofolio' => 'portofolio'],
             str_starts_with($siteConfigPath, 'retail/luxury/') => ['home' => 'index', 'catalog' => 'catalog', 'price' => 'price', 'stock' => 'stock', 'inquiry' => 'inquiry', 'shop' => 'shop'],
             str_starts_with($siteConfigPath, 'retail/organic/') => ['home' => 'index', 'katalog' => 'catalog', 'harga' => 'price', 'stok' => 'stock', 'inquiry' => 'inquiry', 'belanja' => 'shop'],
             str_starts_with($siteConfigPath, 'retail/premium-minimal/') => ['home' => 'index', 'katalog' => 'katalog', 'harga' => 'harga', 'ketersediaan' => 'ketersediaan', 'inquiry' => 'inquiry', 'keranjang' => 'keranjang'],
+            str_starts_with($siteConfigPath, 'healthcare/professional/') => ['home' => 'index', 'layanan' => 'services', 'dokter-staff' => 'doctors', 'jadwal' => 'schedule', 'appointment' => 'appointment', 'faq' => 'faq', 'kebijakan' => 'policy'],
+            str_starts_with($siteConfigPath, 'healthcare/luxury/') => ['home' => 'index', 'services' => 'services', 'doctors' => 'doctors', 'schedule' => 'schedule', 'appointment' => 'appointment', 'faq' => 'faq', 'policy' => 'policy'],
+            str_starts_with($siteConfigPath, 'healthcare/elegan/') => ['home' => 'index', 'layanan' => 'services', 'dokter' => 'doctors', 'jadwal' => 'schedule', 'booking' => 'appointment', 'faq' => 'faq', 'kebijakan' => 'policy'],
             default => ['home' => 'index', 'menu' => 'menu', 'reservasi' => 'reservasi'],
         };
         abort_unless(isset($views[$page]), 404);
@@ -50,6 +54,9 @@ class CustomerSiteController extends Controller
             str_starts_with($siteConfigPath, 'retail/luxury/') => $this->luxuryRetailConfig($siteConfig, $business, $whatsapp, $instagram),
             str_starts_with($siteConfigPath, 'retail/organic/') => $this->organicRetailConfig($siteConfig, $business, $whatsapp, $instagram),
             str_starts_with($siteConfigPath, 'retail/premium-minimal/') => $this->premiumRetailConfig($siteConfig, $business, $whatsapp, $instagram),
+            str_starts_with($siteConfigPath, 'healthcare/professional/') => $this->cleanWhiteHealthcareConfig($siteConfig, $business, $whatsapp, $instagram),
+            str_starts_with($siteConfigPath, 'healthcare/luxury/') => $this->champagneHealthcareConfig($siteConfig, $business, $whatsapp, $instagram),
+            str_starts_with($siteConfigPath, 'healthcare/elegan/') => $this->roseGoldHealthcareConfig($siteConfig, $business, $whatsapp, $instagram),
             str_starts_with($siteConfigPath, 'f&b/vintage/') => $this->vintageSiteConfig($siteConfig, $business, $order, $whatsapp, $instagram),
             str_starts_with($siteConfigPath, 'f&b/elegan/') => $this->eleganSiteConfig($siteConfig, $business, $order, $whatsapp, $instagram),
             default => $this->minimalisSiteConfig($siteConfig, $business, $order, $whatsapp, $instagram),
@@ -73,9 +80,26 @@ class CustomerSiteController extends Controller
             $this->retailPageName($siteConfigPath, $name),
             $hash,
         );
-        $assetPath = 'website-bisnis/template/'.$templatePath;
+        $healthcarePageUrl = function (string $name = 'home', array|string $parameters = '') use ($pageUrl, $siteConfigPath): string {
+            $url = $pageUrl($this->healthcarePageName($siteConfigPath, $name));
 
-        $renderedHtml = view($view.'.'.$views[$page], [
+            return is_array($parameters) && $parameters !== []
+                ? $url.'?'.http_build_query($parameters)
+                : $url.$parameters;
+        };
+        $assetPath = 'website-bisnis/template/'.$templatePath;
+        $customerRoute = match (true) {
+            $isRetail => $retailPageUrl,
+            $isHealthcare => $healthcarePageUrl,
+            default => $routeUrl,
+        };
+        $healthcareViewData = $isHealthcare ? [
+            'clinic' => $siteConfig,
+            'tpl' => $view,
+            'rp' => '',
+        ] : [];
+
+        $renderedHtml = view($view.'.'.$views[$page], array_merge([
             'order' => $order,
             'v' => $view,
             'path' => $path,
@@ -87,8 +111,16 @@ class CustomerSiteController extends Controller
             'skin' => $siteConfig,
             'siteConfig' => $siteConfig,
             'pageUrl' => $pageUrl,
-            'routeUrl' => $pageUrl,
-        ])->render();
+            'routeUrl' => $routeUrl,
+            'r' => $customerRoute,
+            'ns' => $view,
+            'active' => $isRetail ? $this->retailRouteKey($siteConfigPath, $page) : $views[$page],
+            'img' => str_starts_with($siteConfigPath, 'healthcare/luxury/')
+                ? asset('images/'.$assetPath)
+                : ($isRetail ? asset('images/'.$assetPath) : fn (string $file): string => asset('images/'.$path.'/'.$file)),
+            'css' => asset('css/'.($isRetail ? $assetPath : $path).'/'.($isRetail ? 'skincare' : 'branding-creative-agency').'.css'),
+            'js' => asset('js/'.($isRetail ? $assetPath : $path).'/'.($isRetail ? 'skincare' : 'branding-creative-agency').'.js'),
+        ], $healthcareViewData))->render();
 
         // Injeksi otomatis widget AI Assistant & Zero Lost Lead Fallback
         $widgetHtml = view('components.site-ai-widget', [
@@ -99,12 +131,46 @@ class CustomerSiteController extends Controller
         ])->render();
 
         if (str_contains($renderedHtml, '</body>')) {
-            $renderedHtml = str_replace('</body>', $widgetHtml . "\n</body>", $renderedHtml);
+            $renderedHtml = str_replace('</body>', $widgetHtml."\n</body>", $renderedHtml);
         } else {
             $renderedHtml .= $widgetHtml;
         }
 
         return response($renderedHtml);
+    }
+
+    private function brandingAgencyConfig(array $siteConfig, array $business, string $whatsapp): array
+    {
+        $name = $business['business_name'] ?? 'Studio Kreatif';
+        $this->replaceDemoName($siteConfig, $siteConfig['brand']['name'], $name);
+
+        return array_replace($siteConfig, [
+            'brand' => array_replace($siteConfig['brand'], [
+                'name' => $name,
+                'short' => $name,
+                'sub' => '',
+                'tagline' => ($business['tagline'] ?? null) ?: $siteConfig['brand']['tagline'],
+                'whatsapp' => $whatsapp,
+                'phone' => $business['whatsapp'] ?? '',
+                'email' => '',
+                'address' => $this->businessAddress($business),
+                'wa_text' => 'Halo '.$name.', saya ingin berkonsultasi soal branding.',
+            ]),
+            'topbar' => array_replace($siteConfig['topbar'], ['notice' => 'Konsultasikan kebutuhan branding dan materi kreatif Anda.']),
+            'nav' => ['layanan', 'keahlian', 'portofolio', 'janji'],
+            'footnav' => ['layanan', 'keahlian', 'portofolio', 'janji'],
+            'hero' => array_replace($siteConfig['hero'], [
+                'lead' => ($business['description'] ?? null) ?: $siteConfig['hero']['lead'],
+                'facts' => [],
+            ]),
+            'services' => array_replace($siteConfig['services'], [
+                'items' => array_map(fn (array $service): array => array_replace($service, ['price' => '']), $siteConfig['services']['items']),
+            ]),
+            'pricing' => array_replace($siteConfig['pricing'], ['plans' => []]),
+            'appointment' => array_replace($siteConfig['appointment'], ['slots' => []]),
+            'expertise' => array_replace($siteConfig['expertise'], ['awards' => []]),
+            'customer_site' => true,
+        ]);
     }
 
     private function terracottaCompanyConfig(array $siteConfig, array $business, string $whatsapp, string $instagram): array
@@ -271,6 +337,101 @@ class CustomerSiteController extends Controller
             ]),
             'customer_site' => true,
         ]);
+    }
+
+    private function cleanWhiteHealthcareConfig(array $siteConfig, array $business, string $whatsapp, string $instagram): array
+    {
+        $name = $business['business_name'] ?? 'Klinik Kecantikan';
+        $this->replaceDemoName($siteConfig, $siteConfig['brand']['name'], $name);
+
+        return array_replace($siteConfig, [
+            'brand' => array_replace($siteConfig['brand'], [
+                'name' => $name,
+                'tagline' => ($business['tagline'] ?? null) ?: $siteConfig['brand']['tagline'],
+            ]),
+            'contact' => array_replace($siteConfig['contact'], [
+                'phone' => $business['whatsapp'] ?? '',
+                'whatsapp' => $whatsapp,
+                'email' => '',
+                'address' => $this->businessAddress($business),
+            ]),
+            'social' => $instagram === '' ? [] : [['label' => 'Instagram', 'icon' => 'instagram', 'url' => 'https://instagram.com/'.$instagram]],
+            'hero' => array_replace($siteConfig['hero'], [
+                'text' => ($business['description'] ?? null) ?: $siteConfig['hero']['text'],
+                'trust' => [],
+            ]),
+            'notifications' => [],
+            'customer_site' => true,
+        ]);
+    }
+
+    private function champagneHealthcareConfig(array $siteConfig, array $business, string $whatsapp, string $instagram): array
+    {
+        $name = $business['business_name'] ?? 'Klinik Kecantikan';
+        $this->replaceDemoName($siteConfig, $siteConfig['brand']['name'], $name);
+
+        return array_replace($siteConfig, [
+            'brand' => array_replace($siteConfig['brand'], [
+                'name' => $name,
+                'tagline' => ($business['tagline'] ?? null) ?: $siteConfig['brand']['tagline'],
+                'description' => ($business['description'] ?? null) ?: $siteConfig['brand']['description'],
+            ]),
+            'contact' => array_replace($siteConfig['contact'], [
+                'address' => $this->businessAddress($business),
+                'phone' => $business['whatsapp'] ?? '',
+                'phone_raw' => '+'.$whatsapp,
+                'email' => '',
+                'whatsapp' => $whatsapp,
+            ]),
+            'social' => $instagram === '' ? [] : [['label' => 'Instagram', 'icon' => 'bi-instagram', 'url' => 'https://instagram.com/'.$instagram]],
+            'hero' => array_replace($siteConfig['hero'], [
+                'text' => ($business['description'] ?? null) ?: $siteConfig['hero']['text'],
+                'badges' => [],
+            ]),
+            'customer_site' => true,
+        ]);
+    }
+
+    private function roseGoldHealthcareConfig(array $siteConfig, array $business, string $whatsapp, string $instagram): array
+    {
+        $name = $business['business_name'] ?? 'Klinik Kecantikan';
+        $this->replaceDemoName($siteConfig, $siteConfig['brand']['name'], $name);
+
+        return array_replace($siteConfig, [
+            'brand' => array_replace($siteConfig['brand'], [
+                'name' => $name,
+                'tagline' => ($business['tagline'] ?? null) ?: $siteConfig['brand']['tagline'],
+            ]),
+            'contact' => array_replace($siteConfig['contact'], [
+                'phone' => $business['whatsapp'] ?? '',
+                'whatsapp' => $whatsapp,
+                'booking_whatsapp' => $whatsapp,
+                'email' => '',
+                'address' => $this->businessAddress($business),
+            ]),
+            'socials' => $instagram === '' ? [] : [['label' => 'Instagram', 'icon' => 'bi-instagram', 'url' => 'https://instagram.com/'.$instagram]],
+            'hero' => array_replace($siteConfig['hero'], [
+                'text' => ($business['description'] ?? null) ?: $siteConfig['hero']['text'],
+                'trust' => [],
+            ]),
+            'notifications' => [],
+            'customer_site' => true,
+        ]);
+    }
+
+    private function healthcarePageName(string $siteConfigPath, string $name): string
+    {
+        $name = Str::afterLast($name, '.');
+
+        return match (true) {
+            str_starts_with($siteConfigPath, 'healthcare/professional/') => [
+                'home' => 'home', 'services' => 'layanan', 'doctors' => 'dokter-staff', 'schedule' => 'jadwal', 'appointment' => 'appointment', 'faq' => 'faq', 'policy' => 'kebijakan',
+            ][$name] ?? $name,
+            str_starts_with($siteConfigPath, 'healthcare/luxury/') => $name,
+            default => [
+                'index' => 'home', 'services' => 'layanan', 'doctors' => 'dokter', 'schedule' => 'jadwal', 'appointment' => 'booking', 'faq' => 'faq', 'policy' => 'kebijakan',
+            ][$name] ?? $name,
+        };
     }
 
     private function retailPageName(string $siteConfigPath, string $name): string
@@ -440,7 +601,7 @@ class CustomerSiteController extends Controller
     public function chat(Request $request, WebiaOrder $order): JsonResponse
     {
         abort_unless(
-            $order->delivery_status === 'delivered' && !empty($order->site_slug),
+            $order->delivery_status === 'delivered' && ! empty($order->site_slug),
             404
         );
 
@@ -453,10 +614,10 @@ class CustomerSiteController extends Controller
         $waRaw = $business['whatsapp'] ?? '081234567890';
         $waDigits = preg_replace('/[^0-9]/', '', $waRaw);
         if (str_starts_with($waDigits, '0')) {
-            $waDigits = '62' . substr($waDigits, 1);
+            $waDigits = '62'.substr($waDigits, 1);
         }
         $bizName = $business['business_name'] ?? 'Toko';
-        $waUrl = "https://wa.me/{$waDigits}?text=" . rawurlencode("Halo {$bizName}, saya ingin bertanya langsung seputar layanan dan produk Anda.");
+        $waUrl = "https://wa.me/{$waDigits}?text=".rawurlencode("Halo {$bizName}, saya ingin bertanya langsung seputar layanan dan produk Anda.");
 
         // Cek Kuota AI Tenant
         $quota = AiQuotaService::getTenantQuota(
@@ -465,7 +626,7 @@ class CustomerSiteController extends Controller
             (int) ($order->package?->chatbot_monthly_quota ?? 500)
         );
 
-        if (!empty($quota['is_quota_exhausted'])) {
+        if (! empty($quota['is_quota_exhausted'])) {
             return response()->json([
                 'status' => 'quota_exhausted',
                 'reply' => 'Mohon maaf, saat ini asisten AI tidak dapat digunakan. Silakan hubungi customer service kami langsung via WhatsApp agar pesan Anda segera dibantu!',

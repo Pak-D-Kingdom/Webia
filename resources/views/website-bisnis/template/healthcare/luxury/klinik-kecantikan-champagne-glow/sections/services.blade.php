@@ -11,7 +11,7 @@
                 <h2 id="cg-services-title" class="cg-sechead__title">Our Services</h2>
                 <p class="cg-sechead__sub">Solusi perawatan kecantikan lengkap untuk kulit yang lebih sehat dan bercahaya.</p>
             </div>
-            <a class="cg-link" href="{{ route('glow.services') }}">Lihat Semua Layanan <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+            <a class="cg-link" href="{{ $r('glow.services') }}">Lihat Semua Layanan <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
         </header>
     @else
         <h2 id="cg-services-title" class="cg-sr">Daftar layanan {{ $c['brand']['name'] }}</h2>
@@ -33,12 +33,12 @@
                         @endforeach
                     </ul>
                     <p class="cg-service__meta"><i class="bi bi-clock" aria-hidden="true"></i> Estimasi {{ $s['duration'] }}</p>
-                    <a class="cg-btn cg-btn--primary cg-btn--sm" href="{{ route('glow.appointment') }}?layanan={{ $s['slug'] }}">
+                    <a class="cg-btn cg-btn--primary cg-btn--sm" href="{{ $r('glow.appointment') }}?layanan={{ $s['slug'] }}">
                         Booking Layanan <i class="bi bi-arrow-right" aria-hidden="true"></i>
                     </a>
                 @else
                     <p class="cg-service__desc">{{ $s['short'] }}</p>
-                    <a class="cg-service__more" href="{{ route('glow.services') }}#{{ $s['slug'] }}">
+                    <a class="cg-service__more" href="{{ $r('glow.services') }}#{{ $s['slug'] }}">
                         Selengkapnya <i class="bi bi-arrow-right" aria-hidden="true"></i>
                     </a>
                 @endif

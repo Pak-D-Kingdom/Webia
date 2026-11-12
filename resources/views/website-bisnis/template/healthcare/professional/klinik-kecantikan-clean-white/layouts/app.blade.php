@@ -7,15 +7,16 @@
     $v      = $v ?? 'website-bisnis.template.healthcare.professional.klinik-kecantikan-clean-white.';
     $clinic = $clinic ?? config('template.healthcare.professional.klinik-kecantikan-clean-white.klinik-kecantikan');
     $img    = $img ?? fn (string $file) => asset($clinic['paths']['images'] . '/' . $file);
+    $r      = $r ?? fn (string $name, array|string $parameters = []) => route($name, $parameters);
 
     $routes = [
-        'home'        => route('klinik-kecantikan.home'),
-        'services'    => route('klinik-kecantikan.services'),
-        'doctors'     => route('klinik-kecantikan.doctors'),
-        'schedule'    => route('klinik-kecantikan.schedule'),
-        'appointment' => route('klinik-kecantikan.appointment'),
-        'faq'         => route('klinik-kecantikan.faq'),
-        'policy'      => route('klinik-kecantikan.policy'),
+        'home'        => $r('klinik-kecantikan.home'),
+        'services'    => $r('klinik-kecantikan.services'),
+        'doctors'     => $r('klinik-kecantikan.doctors'),
+        'schedule'    => $r('klinik-kecantikan.schedule'),
+        'appointment' => $r('klinik-kecantikan.appointment'),
+        'faq'         => $r('klinik-kecantikan.faq'),
+        'policy'      => $r('klinik-kecantikan.policy'),
     ];
 
     // Data ringan untuk JavaScript (jadwal, asisten AI, pencarian)
@@ -66,6 +67,9 @@
     @include($v . 'partials.topbar')
     @include($v . 'partials.navbar')
 
+    @if ($clinic['customer_site'] ?? false)
+        <p class="gl-container"><strong>{!! 'Contoh layanan & harga:' !!}</strong> layanan dan harga berikut merupakan konten demo.</p>
+    @endif
     <main id="gl-main" class="gl-main" tabindex="-1">
         @yield('content')
     </main>

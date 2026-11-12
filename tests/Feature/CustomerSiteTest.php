@@ -220,6 +220,92 @@ class CustomerSiteTest extends TestCase
         ];
     }
 
+    #[DataProvider('healthcareTemplates')]
+    public function test_publishing_healthcare_template_renders_customer_site_with_demo_service_notice(
+        string $templateSlug,
+        string $siteConfigPath,
+        string $demoName,
+        array $pages,
+    ): void {
+        $admin = User::factory()->admin()->create();
+        $template = $this->template($templateSlug, [
+            'name' => 'Klinik Kecantikan',
+            'category_slug' => 'healthcare',
+            'category_label' => 'Healthcare',
+            'business_types' => ['Klinik Kecantikan'],
+            'site_config_path' => $siteConfigPath,
+        ]);
+        $order = WebiaOrder::factory()->create([
+            'webia_template_id' => $template,
+            'template_snapshot' => [
+                'name' => $template->name,
+                'slug' => $template->slug,
+                'category_slug' => $template->category_slug,
+                'site_config_path' => $template->site_config_path,
+            ],
+            'status' => 'paid',
+            'delivery_status' => 'in_progress',
+            'business_data' => [
+                'business_name' => 'Klinik Arunika',
+                'tagline' => 'Perawatan aman untuk percaya diri',
+                'whatsapp' => '0812-3456-7890',
+                'description' => 'Klinik perawatan kulit dengan konsultasi personal.',
+                'address' => 'Jl. Senopati No. 21',
+                'city' => 'Jakarta',
+                'instagram' => '@klinikarunika',
+            ],
+        ]);
+
+        $this->actingAs($admin)->post(route('admin.orders.progress', $order), [
+            'action' => 'finish',
+        ])->assertRedirect(route('admin.orders.show', $order));
+
+        $order->refresh();
+        $siteUrl = route('sites.show', ['order' => $order->site_slug]);
+        $this->get($siteUrl)
+            ->assertOk()
+            ->assertSee('Klinik Arunika')
+            ->assertSee('Perawatan aman untuk percaya diri')
+            ->assertSee('Jl. Senopati No. 21, Jakarta')
+            ->assertSee('6281234567890', false)
+            ->assertSee('instagram.com/klinikarunika', false)
+            ->assertSee('Contoh layanan & harga', false)
+            ->assertDontSee($demoName)
+            ->assertDontSee('info@', false);
+
+        foreach ($pages as $page) {
+            $this->get($siteUrl.'/'.$page)
+                ->assertOk()
+                ->assertSee('Klinik Arunika')
+                ->assertSee('Contoh layanan & harga', false)
+                ->assertDontSee($demoName);
+        }
+    }
+
+    public static function healthcareTemplates(): array
+    {
+        return [
+            'clean white' => [
+                'healthcare-clean-white',
+                'healthcare/professional/klinik-kecantikan-clean-white/klinik-kecantikan',
+                'GlowAesthetics',
+                ['layanan', 'dokter-staff', 'jadwal', 'appointment', 'faq', 'kebijakan'],
+            ],
+            'champagne glow' => [
+                'healthcare-champagne-glow',
+                'healthcare/luxury/klinik-kecantikan-champagne-glow/klinik-kecantikan',
+                'GlowClinic',
+                ['services', 'doctors', 'schedule', 'appointment', 'faq', 'policy'],
+            ],
+            'rose gold' => [
+                'healthcare-rose-gold',
+                'healthcare/elegan/klinik-kecantikan-rose-gold/klinik-kecantikan',
+                'RoseGlow Clinic',
+                ['layanan', 'dokter', 'jadwal', 'booking', 'faq', 'kebijakan'],
+            ],
+        ];
+    }
+
     #[DataProvider('companyTemplates')]
     public function test_publishing_company_template_renders_customer_site(
         string $templateSlug,

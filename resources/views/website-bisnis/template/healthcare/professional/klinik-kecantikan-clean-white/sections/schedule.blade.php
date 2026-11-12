@@ -20,7 +20,7 @@
             <span class="gl-panel__icon"><svg class="gl-ic" aria-hidden="true"><use href="#gl-i-calendar"/></svg></span>
             <h2 class="gl-panel__title">Jadwal Praktik</h2>
             <p class="gl-panel__text">Lihat jadwal dokter dan pilih waktu yang sesuai dengan Anda.</p>
-            <a class="gl-btn gl-btn--outline gl-btn--sm" href="{{ route('klinik-kecantikan.schedule') }}">
+            <a class="gl-btn gl-btn--outline gl-btn--sm" href="{{ $r('klinik-kecantikan.schedule') }}">
                 Lihat Semua Jadwal
                 <svg class="gl-ic gl-ic--sm" aria-hidden="true"><use href="#gl-i-arrow-right"/></svg>
             </a>
@@ -48,7 +48,7 @@
                 @endforeach
             </ul>
 
-            <a class="gl-link gl-schedule__more" href="{{ route('klinik-kecantikan.schedule') }}">
+            <a class="gl-link gl-schedule__more" href="{{ $r('klinik-kecantikan.schedule') }}">
                 Lihat Jadwal Lengkap
                 <svg class="gl-ic gl-ic--sm" aria-hidden="true"><use href="#gl-i-arrow-right"/></svg>
             </a>
@@ -88,7 +88,7 @@
                         <p class="gl-slot__role">{{ $doc['role'] }}</p>
                         <span class="gl-status {{ $isFull ? 'gl-status--full' : '' }}">{{ $isFull ? 'Penuh' : 'Tersedia' }}</span>
                         @unless ($isFull)
-                            <a class="gl-btn gl-btn--primary gl-btn--xs" href="{{ route('klinik-kecantikan.appointment', ['dokter' => $doc['id'], 'tanggal' => $now->format('Y-m-d'), 'jam' => substr($slot['time'], 0, 5)]) }}">Booking</a>
+                            <a class="gl-btn gl-btn--primary gl-btn--xs" href="{{ $r('klinik-kecantikan.appointment', ['dokter' => $doc['id'], 'tanggal' => $now->format('Y-m-d'), 'jam' => substr($slot['time'], 0, 5)]) }}">Booking</a>
                         @endunless
                     </li>
                 @endforeach

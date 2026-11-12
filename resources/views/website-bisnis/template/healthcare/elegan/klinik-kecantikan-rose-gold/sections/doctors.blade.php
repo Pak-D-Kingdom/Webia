@@ -7,12 +7,12 @@
         <p class="rg-eyebrow rg-eyebrow--soft">{{ $di['eyebrow'] }}</p>
         <h2 id="rgDocTitle" class="rg-h2">{{ $di['title'] }}</h2>
         <p class="rg-lead">{{ $di['text'] }}</p>
-        <a class="rg-btn rg-btn--outline" href="{{ route($rp . 'doctors') }}">Lihat Semua Dokter <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+        <a class="rg-btn rg-btn--outline" href="{{ $r('doctors') }}">Lihat Semua Dokter <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
     </div>
     <ul class="rg-doc-grid">
         @foreach ($c['doctors'] as $d)
             <li>
-                <a class="rg-card rg-doc" href="{{ route($rp . 'doctors') }}#{{ $d['slug'] }}">
+                <a class="rg-card rg-doc" href="{{ $r('doctors') }}#{{ $d['slug'] }}">
                     <span class="rg-doc__img"><img src="{{ asset($c['images_dir'] . '/' . $d['image']) }}" alt="{{ $d['name'] }}" loading="lazy" width="545" height="395"></span>
                     <h3>{{ $d['name'] }}</h3>
                     <p>{{ $d['role'] }}</p>
@@ -53,7 +53,7 @@
                                 <div><dt>Fokus</dt><dd>{{ $d['focus'] }}</dd></div>
                                 <div><dt>Praktik</dt><dd>{{ count($d['days']) > 5 ? 'Senin – Sabtu' : implode(', ', $d['days']) }}, {{ $d['time'] }}</dd></div>
                             </dl>
-                            <a class="rg-btn rg-btn--outline rg-btn--sm" href="{{ route($rp . 'appointment') }}?dokter={{ $d['slug'] }}">Booking dengan {{ \Illuminate\Support\Str::before($d['name'], ',') }}</a>
+                            <a class="rg-btn rg-btn--outline rg-btn--sm" href="{{ $r('appointment') }}?dokter={{ $d['slug'] }}">Booking dengan {{ \Illuminate\Support\Str::before($d['name'], ',') }}</a>
                         </div>
                     </article>
                 </li>

@@ -10,7 +10,7 @@
             <p>{{ $sc['text'] }}</p>
         </div>
     </div>
-    <a class="rg-btn rg-btn--outline rg-btn--sm" href="{{ route($rp . 'schedule') }}">Lihat Semua Jadwal <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+    <a class="rg-btn rg-btn--outline rg-btn--sm" href="{{ $r('schedule') }}">Lihat Semua Jadwal <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
     <dl class="rg-hours">
         @foreach ($sc['hours'] as $hr)
             <div class="{{ $hr['open'] ? '' : 'is-closed' }}"><dt>{{ $hr['day'] }}</dt><dd>{{ $hr['time'] }}</dd></div>
@@ -28,7 +28,7 @@
                 @endforeach
             </dl>
             <p class="rg-note"><i class="bi bi-info-circle" aria-hidden="true"></i>{{ $sc['note'] }}</p>
-            <a class="rg-btn rg-btn--primary" href="{{ route($rp . 'appointment') }}">Booking Appointment</a>
+            <a class="rg-btn rg-btn--primary" href="{{ $r('appointment') }}">Booking Appointment</a>
         </div>
 
         <div class="rg-card rg-sched-full__matrix">
@@ -45,7 +45,7 @@
                     <tbody>
                         @foreach ($c['doctors'] as $d)
                             <tr>
-                                <th scope="row"><a href="{{ route($rp . 'doctors') }}#{{ $d['slug'] }}">{{ $d['name'] }}</a><small>{{ $d['role'] }}</small></th>
+                                <th scope="row"><a href="{{ $r('doctors') }}#{{ $d['slug'] }}">{{ $d['name'] }}</a><small>{{ $d['role'] }}</small></th>
                                 @foreach ($sc['week'] as $day)
                                     <td>
                                         @if (in_array($day, $d['days']))

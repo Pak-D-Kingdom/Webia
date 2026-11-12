@@ -20,7 +20,7 @@
                 @endforeach
             </ul>
 
-            <a class="cg-btn cg-btn--primary" href="{{ route('glow.appointment') }}">
+            <a class="cg-btn cg-btn--primary" href="{{ $r('glow.appointment') }}">
                 Book Appointment <i class="bi bi-arrow-right" aria-hidden="true"></i>
             </a>
         </div>
@@ -35,7 +35,7 @@
             <div class="cg-facility__body">
                 <h2>{{ $c['hero']['facility']['title'] }}</h2>
                 <p>{{ $c['hero']['facility']['text'] }}</p>
-                <a class="cg-btn cg-btn--ghost cg-btn--sm" href="{{ route('glow.home') }}#location">
+                <a class="cg-btn cg-btn--ghost cg-btn--sm" href="{{ $r('glow.home') }}#location">
                     {{ $c['hero']['facility']['cta'] }} <i class="bi bi-arrow-right" aria-hidden="true"></i>
                 </a>
             </div>

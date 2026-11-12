@@ -11,7 +11,7 @@
         </header>
         <p class="cg-card__sub">Pesan jadwal perawatan Anda sekarang.</p>
 
-        <form class="cg-form" action="{{ route('glow.appointment') }}" method="get" data-cg-preview-form>
+        <form class="cg-form" action="{{ $r('glow.appointment') }}" method="get" data-cg-preview-form>
             <div class="cg-field">
                 <label class="cg-sr" for="pv-nama">Nama lengkap</label>
                 <i class="bi bi-person" aria-hidden="true"></i>
@@ -109,7 +109,7 @@
             <div class="cg-formrow cg-formrow--wide">
                 <label class="cg-check">
                     <input type="checkbox" name="setuju" required>
-                    <span>Saya menyetujui <a href="{{ route('glow.policy') }}#privasi" target="_blank" rel="noopener">Kebijakan Privasi</a> dan <a href="{{ route('glow.policy') }}#pembatalan" target="_blank" rel="noopener">Kebijakan Pembatalan</a>.</span>
+                    <span>Saya menyetujui <a href="{{ $r('glow.policy') }}#privasi" target="_blank" rel="noopener">Kebijakan Privasi</a> dan <a href="{{ $r('glow.policy') }}#pembatalan" target="_blank" rel="noopener">Kebijakan Pembatalan</a>.</span>
                 </label>
                 <p class="cg-error" data-error-for="setuju" hidden></p>
             </div>

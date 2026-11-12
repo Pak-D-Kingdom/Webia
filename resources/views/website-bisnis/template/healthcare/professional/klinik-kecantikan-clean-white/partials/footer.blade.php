@@ -4,7 +4,7 @@
 
     <div class="gl-container gl-footer__grid">
         <div class="gl-footer__brand">
-            <a class="gl-brand" href="{{ route('klinik-kecantikan.home') }}" aria-label="{{ $clinic['brand']['name'] }}">
+            <a class="gl-brand" href="{{ $r('klinik-kecantikan.home') }}" aria-label="{{ $clinic['brand']['name'] }}">
                 <svg class="gl-brand__logo" aria-hidden="true"><use href="#gl-i-lotus"/></svg>
                 <span class="gl-brand__text">
                     <strong>{{ $clinic['brand']['name'] }}</strong>
@@ -19,7 +19,7 @@
                 <h2 class="gl-footer__title">{{ $heading }}</h2>
                 <ul>
                     @foreach ($links as $l)
-                        <li><a href="{{ route($l['route']) . ($l['hash'] ? '#' . $l['hash'] : '') }}">{{ $l['label'] }}</a></li>
+                        <li><a href="{{ $r($l['route']) . ($l['hash'] ? '#' . $l['hash'] : '') }}">{{ $l['label'] }}</a></li>
                     @endforeach
                 </ul>
             </nav>
@@ -29,7 +29,9 @@
             <h2 class="gl-footer__title">Kontak Kami</h2>
             <ul class="gl-footer__contact">
                 <li><svg class="gl-ic" aria-hidden="true"><use href="#gl-i-phone"/></svg><a href="tel:{{ preg_replace('/\s+/', '', $clinic['contact']['phone']) }}">{{ $clinic['contact']['phone'] }}</a></li>
-                <li><svg class="gl-ic" aria-hidden="true"><use href="#gl-i-mail"/></svg><a href="mailto:{{ $clinic['contact']['email'] }}">{{ $clinic['contact']['email'] }}</a></li>
+                @if ($clinic['contact']['email'])
+                    <li><svg class="gl-ic" aria-hidden="true"><use href="#gl-i-mail"/></svg><a href="mailto:{{ $clinic['contact']['email'] }}">{{ $clinic['contact']['email'] }}</a></li>
+                @endif
                 <li><svg class="gl-ic" aria-hidden="true"><use href="#gl-i-map-pin"/></svg><span>{{ $clinic['contact']['address'] }}</span></li>
             </ul>
         </div>

@@ -12,13 +12,13 @@
             <p class="rg-eyebrow">{{ $si['eyebrow'] }}</p>
             <h2 id="rgSvcTitle" class="rg-h2">{{ $si['title'] }}</h2>
             <p class="rg-lead">{{ $si['text'] }}</p>
-            <a class="rg-btn rg-btn--primary" href="{{ route($rp . 'services') }}">Lihat Semua Layanan <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+            <a class="rg-btn rg-btn--primary" href="{{ $r('services') }}">Lihat Semua Layanan <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
         </div>
 
         <ul class="rg-svc-grid">
             @foreach ($c['services'] as $s)
                 <li>
-                    <a class="rg-card rg-svc" href="{{ route($rp . 'services') }}#{{ $s['slug'] }}">
+                    <a class="rg-card rg-svc" href="{{ $r('services') }}#{{ $s['slug'] }}">
                         <span class="rg-svc__img"><img src="{{ asset($c['images_dir'] . '/' . $s['image']) }}" alt="{{ $s['name'] }}" loading="lazy" width="550" height="295"></span>
                         <h3>{{ $s['name'] }}</h3>
                         <p>{{ $s['short'] }}</p>
@@ -64,7 +64,7 @@
                                     <strong>Rp {{ number_format($s['price'], 0, ',', '.') }}</strong>
                                     <span><i class="bi bi-clock" aria-hidden="true"></i>{{ $s['duration'] }}</span>
                                 </div>
-                                <a class="rg-btn rg-btn--primary rg-btn--sm" href="{{ route($rp . 'appointment') }}?layanan={{ $s['slug'] }}">Booking</a>
+                                <a class="rg-btn rg-btn--primary rg-btn--sm" href="{{ $r('appointment') }}?layanan={{ $s['slug'] }}">Booking</a>
                             </div>
                         </div>
                     </article>

@@ -1,6 +1,6 @@
 {{-- Halaman Dokter & Staff --}}
 @extends($tpl . '.layouts.app')
-@php $c = config($cfg); @endphp
+@php $c = $c ?? config($cfg); @endphp
 
 @section('title', 'Dokter & Staff — ' . $c['brand']['name'])
 

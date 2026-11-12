@@ -10,14 +10,14 @@
         <ul class="cg-linklist">
             @foreach ($c['policy'] as $p)
                 <li>
-                    <a href="{{ route('glow.policy') }}#{{ $p['slug'] }}">
+                    <a href="{{ $r('glow.policy') }}#{{ $p['slug'] }}">
                         <span class="cg-linklist__icon" aria-hidden="true"><i class="bi {{ $p['icon'] }}"></i></span>
                         <span class="cg-linklist__text">{{ $p['title'] }}<small>{{ $p['intro'] }}</small></span>
                     </a>
                 </li>
             @endforeach
             <li>
-                <a href="{{ route('glow.faq') }}">
+                <a href="{{ $r('glow.faq') }}">
                     <span class="cg-linklist__icon" aria-hidden="true"><i class="bi bi-question-circle"></i></span>
                     <span class="cg-linklist__text">FAQ<small>Jawaban untuk pertanyaan yang sering diajukan.</small></span>
                 </a>
@@ -31,7 +31,7 @@
                     @foreach ($c['policy'] as $p)
                         <li><a href="#{{ $p['slug'] }}" data-cg-policy-link><i class="bi {{ $p['icon'] }}" aria-hidden="true"></i> {{ $p['title'] }}</a></li>
                     @endforeach
-                    <li><a href="{{ route('glow.faq') }}"><i class="bi bi-question-circle" aria-hidden="true"></i> FAQ</a></li>
+                    <li><a href="{{ $r('glow.faq') }}"><i class="bi bi-question-circle" aria-hidden="true"></i> FAQ</a></li>
                 </ul>
             </nav>
 

@@ -4,7 +4,7 @@
     <img class="cg-pagehead__lotus" src="{{ $img }}/lotus-right.jpg" alt="" width="592" height="472" loading="eager" decoding="async">
     <div class="cg-container cg-pagehead__inner">
         <nav class="cg-crumb" aria-label="Breadcrumb">
-            <a href="{{ route('glow.home') }}">Home</a>
+            <a href="{{ $r('glow.home') }}">Home</a>
             <i class="bi bi-chevron-right" aria-hidden="true"></i>
             <span aria-current="page">{{ $heading }}</span>
         </nav>

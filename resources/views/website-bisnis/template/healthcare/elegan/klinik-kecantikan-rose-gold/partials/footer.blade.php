@@ -5,7 +5,7 @@
 
     <div class="rg-container rg-footer__grid">
         <div class="rg-footer__brand">
-            <a class="rg-brand" href="{{ route($rp . 'index') }}">
+            <a class="rg-brand" href="{{ $r('index') }}">
                 @include($tpl . '.partials.logo')
                 <span class="rg-brand__text">
                     <strong>{{ $c['brand']['name'] }}</strong>
@@ -18,7 +18,7 @@
             <h2 class="rg-footer__h">Navigasi</h2>
             <ul>
                 @foreach ($c['footer']['nav'] as $l)
-                    <li><a href="{{ route($rp . $l['route']) }}">{{ $l['label'] }}</a></li>
+                    <li><a href="{{ $r($l['route']) }}">{{ $l['label'] }}</a></li>
                 @endforeach
             </ul>
         </nav>
@@ -27,7 +27,7 @@
             <h2 class="rg-footer__h">Informasi</h2>
             <ul>
                 @foreach ($c['footer']['info'] as $l)
-                    <li><a href="{{ route($rp . $l['route']) }}{{ isset($l['hash']) ? '#' . $l['hash'] : '' }}">{{ $l['label'] }}</a></li>
+                    <li><a href="{{ $r($l['route']) }}{{ isset($l['hash']) ? '#' . $l['hash'] : '' }}">{{ $l['label'] }}</a></li>
                 @endforeach
             </ul>
         </nav>
@@ -36,7 +36,9 @@
             <h2 class="rg-footer__h">Kontak Kami</h2>
             <ul class="rg-footer__contact">
                 <li><i class="bi bi-telephone" aria-hidden="true"></i><a href="tel:{{ preg_replace('/\s+/', '', $c['contact']['phone']) }}">{{ $c['contact']['phone'] }}</a></li>
-                <li><i class="bi bi-envelope" aria-hidden="true"></i><a href="mailto:{{ $c['contact']['email'] }}">{{ $c['contact']['email'] }}</a></li>
+                @if ($c['contact']['email'])
+                    <li><i class="bi bi-envelope" aria-hidden="true"></i><a href="mailto:{{ $c['contact']['email'] }}">{{ $c['contact']['email'] }}</a></li>
+                @endif
                 <li><i class="bi bi-geo-alt" aria-hidden="true"></i><span>{{ $c['contact']['address'] }}</span></li>
             </ul>
         </div>
