@@ -20,6 +20,43 @@ class CustomerSiteController extends Controller
             404,
         );
 
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $instagram = ltrim($business['instagram'] ?? '', '@');
+
+        // 1. Cek apakah ada Template Khusus Klien (Dedicated Category Template)
+        $tenantTemplate = $this->resolveTenantTemplateView($order);
+
+        if ($tenantTemplate && view()->exists($tenantTemplate['view'])) {
+            $renderedHtml = view($tenantTemplate['view'])->render();
+
+            // Personalisasi konten teks, judul, nomor kontak, dan branding klien
+            $renderedHtml = $this->personalizeTemplateHtml($renderedHtml, $tenantTemplate, $business, $order, $whatsapp, $instagram);
+
+            // Injeksi otomatis widget AI Assistant & Zero Lost Lead Fallback dengan Tema Terpilih
+            $rawWidgetTheme = $business['ai_widget_theme'] ?? ($order->business_data['ai_widget_theme'] ?? 'auto');
+            $resolvedTheme = AiQuotaService::resolveWidgetTheme($rawWidgetTheme, $order->category_slug ?? '');
+
+            $widgetHtml = view('components.site-ai-widget', [
+                'order' => $order,
+                'business' => $business,
+                'whatsapp' => $whatsapp,
+                'siteSlug' => $order->site_slug,
+                'widgetTheme' => $resolvedTheme['slug'],
+                'widgetIcon' => $resolvedTheme['icon'],
+                'widgetThemeMeta' => $resolvedTheme,
+            ])->render();
+
+            if (str_contains($renderedHtml, '</body>')) {
+                $renderedHtml = str_replace('</body>', $widgetHtml . "\n</body>", $renderedHtml);
+            } else {
+                $renderedHtml .= $widgetHtml;
+            }
+
+            return response($renderedHtml);
+        }
+
+        // 2. Fallback ke sistem config template lama jika view khusus belum terdaftar
         $page = $page ?? 'home';
         $siteConfigPath = $order->siteConfigPath();
         abort_unless($siteConfigPath !== null, 404);
@@ -29,9 +66,6 @@ class CustomerSiteController extends Controller
             : ['home' => 'index', 'menu' => 'menu', 'reservasi' => 'reservasi'];
         abort_unless(isset($views[$page]), 404);
 
-        $business = $order->business_data ?? [];
-        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
-        $instagram = ltrim($business['instagram'] ?? '', '@');
         $siteConfig = config('template.'.str_replace('/', '.', $siteConfigPath));
         abort_unless(is_array($siteConfig), 404);
 
@@ -87,6 +121,195 @@ class CustomerSiteController extends Controller
         }
 
         return response($renderedHtml);
+    }
+
+    /**
+     * Resolusi template blade terbaik di Webia sesuai kategori dan profil tiap klien
+     */
+    public function resolveTenantTemplateView(WebiaOrder $order): ?array
+    {
+        $tenantTemplateMap = [
+            'tenant_automotive_01' => [
+                'view' => 'website-bisnis.templates.automotive.otto-artistic-workshop',
+                'demo_name' => 'Bengkel Otto',
+                'demo_short' => 'Otto',
+                'demo_phone' => '0812-3456-7890',
+                'demo_address' => 'Jalan Mesin Kencang No. 8, Bandung',
+            ],
+            'tenant_beauty_01' => [
+                'view' => 'website-bisnis.templates.beauty.glow-lab-creative-beauty-clinic',
+                'demo_name' => 'GLOW LAB',
+                'demo_short' => 'glow lab',
+                'demo_phone' => '0812-3456-7890',
+                'demo_address' => 'Jl. Senopati No. 45, Jakarta Selatan',
+            ],
+            'tenant_laundry_01' => [
+                'view' => 'website-bisnis.template.home-services.minimalis.laundry-mint-fresh.pages.index',
+                'demo_name' => 'FreshWash Laundry',
+                'demo_short' => 'FreshWash',
+                'demo_phone' => '0812-3456-7890',
+                'demo_address' => 'Jl. Pandanaran No. 102, Semarang',
+            ],
+            'tenant_agriculture_01' => [
+                'view' => 'website-bisnis.templates.agriculture.agriternak-organic-ethical-precision',
+                'demo_name' => 'AgriTernak Organic',
+                'demo_short' => 'AgriTernak',
+                'demo_phone' => '0812-3456-7890',
+                'demo_address' => 'Kawasan Agro Mandiri, Malang',
+            ],
+            'tenant_healthcare_01' => [
+                'view' => 'website-bisnis.templates.healthcare.dental.azure-smile-clinic',
+                'demo_name' => 'Azure Smile Clinic',
+                'demo_short' => 'Azure Smile',
+                'demo_phone' => '0812-3456-7890',
+                'demo_address' => 'Jl. Raya Darmo No. 45, Surabaya',
+            ],
+            'tenant_fnb_01' => [
+                'view' => 'website-bisnis.templates.fnb.restaurant.laut-biru-seafood',
+                'demo_name' => 'Laut Biru Seafood',
+                'demo_short' => 'Laut Biru',
+                'demo_phone' => '0812-3456-7890',
+                'demo_address' => 'Jl. Malioboro No. 24, Yogyakarta',
+            ],
+            'tenant_personal_brand_01' => [
+                'view' => 'website-bisnis.templates.personal-brand.author-writer.arya-sanjaya-ruby-editorial',
+                'demo_name' => 'Arya Sanjaya',
+                'demo_short' => 'AryaSanjaya',
+                'demo_phone' => '0812-3456-7890',
+                'demo_address' => 'Jakarta Barat',
+            ],
+            'tenant_pet_01' => [
+                'view' => 'website-bisnis.templates.pet-animal-service.pawtopia-animal-care',
+                'demo_name' => 'Pawtopia Animal Care',
+                'demo_short' => 'Pawtopia',
+                'demo_phone' => '0812-3456-7890',
+                'demo_address' => 'Jl. Pajajaran No. 88, Bogor',
+            ],
+            'tenant_travel_01' => [
+                'view' => 'website-bisnis.templates.travel-tourism.adventure-outdoor-tour.wildtrail.wildtrail',
+                'demo_name' => 'WILDTRAIL',
+                'demo_short' => 'Wildtrail',
+                'demo_phone' => '0812-3456-7890',
+                'demo_address' => 'Jl. Sunset Road No. 88, Denpasar Bali',
+            ],
+            'tenant_logistics_01' => [
+                'view' => 'website-bisnis.templates.transportation-logistics.delivery-service.cocoexpress.cocoexpress',
+                'demo_name' => 'COCOEXPRESS',
+                'demo_short' => 'CocoExpress',
+                'demo_phone' => '0812-3456-7890',
+                'demo_address' => 'Kawasan Pergudangan Tanjung Priok, Jakarta Utara',
+            ],
+            'tenant_furniture_01' => [
+                'view' => 'website-bisnis.templates.interior-architecture.interior-design-studio.artistic-terracotta.artistic-terracotta',
+                'demo_name' => 'Terracotta Studio',
+                'demo_short' => 'Terracotta',
+                'demo_phone' => '0812-3456-7890',
+                'demo_address' => 'Sentra Ukir Tahunan, Jepara',
+            ],
+            'tenant_umrah_01' => [
+                'view' => 'website-bisnis.templates.travel-tourism.umrah-haji.baitul-safar.baitul-safar',
+                'demo_name' => 'Baitul Safar Umrah & Haji',
+                'demo_short' => 'Baitul Safar',
+                'demo_phone' => '0812-3456-7890',
+                'demo_address' => 'Jl. Ahmad Yani No. 120, Surabaya',
+            ],
+            'tenant_education_01' => [
+                'view' => 'website-bisnis.templates.education.ruby-academy-classic-school',
+                'demo_name' => 'Ruby Academy',
+                'demo_short' => 'Ruby Academy',
+                'demo_phone' => '0812-3456-7890',
+                'demo_address' => 'Jl. Dago Asri No. 15, Bandung',
+            ],
+            'tenant_professional_service_01' => [
+                'view' => 'website-bisnis.templates.company.bangun-karsa-contractor-professional',
+                'demo_name' => 'Bangun Karsa Contractor',
+                'demo_short' => 'Bangun Karsa',
+                'demo_phone' => '0812-3456-7890',
+                'demo_address' => 'Gedung Wisma Antara Lt. 8, Jakarta Pusat',
+            ],
+            'tenant_fitness_01' => [
+                'view' => 'website-bisnis.templates.sports-fitness.gym-fitness-center.ironpulse.ironpulse',
+                'demo_name' => 'IRONPULSE Mega Athletic Gym',
+                'demo_short' => 'IRONPULSE',
+                'demo_phone' => '0812-3456-7890',
+                'demo_address' => 'Jl. Senopati Raya No. 88, Surabaya',
+            ],
+            'tenant_property_01' => [
+                'view' => 'website-bisnis.templates.property.property-traditional',
+                'demo_name' => 'Pusaka Asri Residence',
+                'demo_short' => 'Pusaka Asri',
+                'demo_phone' => '0812-3456-7890',
+                'demo_address' => 'Kawasan Residensial Asri, Surabaya',
+            ],
+        ];
+
+        if (!empty($order->site_slug) && isset($tenantTemplateMap[$order->site_slug])) {
+            return $tenantTemplateMap[$order->site_slug];
+        }
+
+        // Cek apakah order memiliki template DB dengan preview_view
+        if ($order->template && filled($order->template->preview_view) && view()->exists($order->template->preview_view)) {
+            return [
+                'view' => $order->template->preview_view,
+                'demo_name' => $order->template->name,
+                'demo_short' => $order->template->name,
+                'demo_phone' => '0812-3456-7890',
+                'demo_address' => 'Indonesia',
+            ];
+        }
+
+        return null;
+    }
+
+    /**
+     * Personalisasi HTML template dengan data autentik bisnis klien
+     */
+    private function personalizeTemplateHtml(
+        string $html,
+        array $tenantTemplate,
+        array $business,
+        WebiaOrder $order,
+        string $whatsapp,
+        string $instagram
+    ): string {
+        $bizName = $business['business_name'] ?? 'Bisnis';
+        $ownerName = $business['owner_name'] ?? $order->user?->name ?? 'Pemilik';
+        $phone = $business['whatsapp'] ?? '081234567890';
+        $city = $business['city'] ?? 'Indonesia';
+        $address = $this->businessAddress($business);
+
+        $replacements = [];
+
+        // Prioritas penggantian nama demo
+        if (!empty($tenantTemplate['demo_name'])) {
+            $replacements[$tenantTemplate['demo_name']] = $bizName;
+        }
+        if (!empty($tenantTemplate['demo_short']) && $tenantTemplate['demo_short'] !== ($tenantTemplate['demo_name'] ?? '')) {
+            $replacements[$tenantTemplate['demo_short']] = $bizName;
+        }
+
+        if (!empty($tenantTemplate['demo_phone'])) {
+            $replacements[$tenantTemplate['demo_phone']] = $phone;
+        }
+
+        if (!empty($tenantTemplate['demo_address'])) {
+            $replacements[$tenantTemplate['demo_address']] = $address ?: ($bizName . ', ' . $city);
+        }
+
+        // Ganti nomor WhatsApp link (href="https://wa.me/...")
+        $cleanWa = $this->whatsappNumber($phone);
+        $html = preg_replace('/href="https?:\/\/wa\.me\/[0-9]+[^"]*"/i', 'href="https://wa.me/' . $cleanWa . '?text=' . rawurlencode("Halo {$bizName}, saya ingin bertanya mengenai produk dan layanan Anda.") . '"', $html);
+
+        // Ganti <title> agar sesuai identitas klien
+        $html = preg_replace('/<title>(.*?)<\/title>/i', '<title>' . e($bizName) . ' – Layanan Terbaik di ' . e($city) . '</title>', $html, 1);
+
+        foreach ($replacements as $search => $replace) {
+            if ($search !== '' && $search !== null) {
+                $html = str_replace($search, $replace, $html);
+            }
+        }
+
+        return $html;
     }
 
     private function terracottaCompanyConfig(array $siteConfig, array $business, string $whatsapp, string $instagram): array
