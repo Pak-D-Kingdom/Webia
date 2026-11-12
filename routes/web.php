@@ -650,7 +650,7 @@ Route::prefix('webia/template/retail/luxury/skincare-soft-pink')
             'ns' => $ns,
             'rp' => $rp,
             'r' => fn (string $name): string => route($rp.$name),
-            'active' => request()->route()?->getName(),
+            'active' => str(request()->route()?->getName() ?? '')->afterLast('.')->toString(),
             'cfg' => config($cfg),
             'img' => asset('images/website-bisnis/template/retail/luxury/skincare-soft-pink'),
             'css' => asset('css/website-bisnis/template/retail/luxury/skincare-soft-pink/skincare.css'),
