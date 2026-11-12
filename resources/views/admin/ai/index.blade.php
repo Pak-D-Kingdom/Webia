@@ -130,48 +130,6 @@
         border-color: #cbd5e1 !important;
     }
 
-    /* Modal Desain Widget AI - Bebas Border Hitam Kaku */
-    .widget-theme-card {
-        background: #ffffff !important;
-        border: 1.5px solid #edf2f7 !important;
-        border-radius: 16px !important;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03) !important;
-        padding: 13px !important;
-        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
-        cursor: pointer !important;
-    }
-
-    .widget-theme-card:hover {
-        border-color: #cbd5e1 !important;
-        background: #fafbfc !important;
-        box-shadow: 0 6px 16px -4px rgba(0, 0, 0, 0.06) !important;
-        transform: translateY(-1px);
-    }
-
-    .widget-theme-card.is-active {
-        border-color: #4f46e5 !important;
-        background: #f5f7ff !important;
-        box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2), 0 6px 16px -4px rgba(79, 70, 229, 0.12) !important;
-    }
-
-    .widget-theme-stage {
-        border-radius: 12px !important;
-        border: none !important;
-        padding: 18px 12px !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-    }
-
-    .widget-swatch-circle {
-        width: 14px !important;
-        height: 14px !important;
-        border-radius: 9999px !important;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15) !important;
-        border: none !important;
-        display: inline-block !important;
-    }
-
     .know-editor-textarea {
         width: 100% !important;
         border: 1px solid #cbd5e1 !important;
@@ -574,7 +532,6 @@ Apakah ingin tambah kuota atau upgrade paket website agar chatbot tetap aktif me
                                         data-wa-url="{{ $waUrl }}"
                                         data-order-url="{{ $client['order'] ? route('admin.orders.show', $client['order']) : '' }}"
                                         data-order-number="{{ $client['order'] ? $client['order']->order_number : '' }}"
-                                        data-widget-theme="{{ $client['widget_theme'] ?? 'auto' }}"
                                         data-live-url="{{ route('sites.show', ['order' => $client['tenant_id']]) }}"
                                         onclick="openClientActionPopup(this, event)"
                                         title="Buka Pilihan Aksi Klien"
@@ -637,18 +594,6 @@ Apakah ingin tambah kuota atau upgrade paket website agar chatbot tetap aktif me
             <div class="btn-text-content">
                 <span class="btn-title">Ubah Paket &amp; Kuota</span>
                 <span class="btn-desc">Upgrade tier atau top-up pesan</span>
-            </div>
-            <span class="material-symbols-outlined" style="font-size: 16px; color: #94a3b8;">chevron_right</span>
-        </button>
-
-        <!-- Opsi 2.5: Desain Widget AI Klien -->
-        <button type="button" onclick="triggerActionWidgetTheme()" class="dropdown-action-btn">
-            <div class="btn-icon-box" style="background: #fdf2f8; color: #db2777;">
-                <span class="material-symbols-outlined" style="font-size: 17px;">palette</span>
-            </div>
-            <div class="btn-text-content">
-                <span class="btn-title">Desain Widget AI</span>
-                <span class="btn-desc" id="dropWidgetThemeDesc">Sesuai Template Website</span>
             </div>
             <span class="material-symbols-outlined" style="font-size: 16px; color: #94a3b8;">chevron_right</span>
         </button>
@@ -973,110 +918,6 @@ Apakah ingin tambah kuota atau upgrade paket website agar chatbot tetap aktif me
     </div>
 </div>
 
-<!-- Modal Dialog: Pilihan 10 Template Desain Widget AI Klien (Bebas Border Hitam Kaku) -->
-<div id="widgetThemeModal" class="fixed inset-0 z-[70] hidden items-center justify-center p-3 md:p-6 bg-slate-900/60 backdrop-blur-sm">
-    <div class="w-full max-w-2xl rounded-2xl p-6 shadow-2xl transition-all max-h-[90vh] flex flex-col overflow-hidden" style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);">
-        {{-- Header Modal --}}
-        <div class="flex items-center justify-between pb-4" style="border-bottom: 1px solid #f1f5f9;">
-            <div class="flex items-center gap-2.5">
-                <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-pink-50 text-pink-600 shrink-0">
-                    <span class="material-symbols-outlined text-xl">palette</span>
-                </div>
-                <div>
-                    <h3 class="text-sm font-bold text-slate-900">Pilih Desain Widget: <span id="wtModalHeaderTenantName" class="text-indigo-600 font-bold"></span></h3>
-                    <p class="text-[11px] text-slate-500">Pilihan ini khusus disimpan untuk klien ini saja. Klien website lain tetap memakai desainnya masing-masing.</p>
-                </div>
-            </div>
-            <button type="button" onclick="closeWidgetThemeModal()" class="cursor-pointer text-slate-400 hover:text-slate-700 font-bold text-xl w-7 h-7 rounded-lg flex items-center justify-center hover:bg-slate-100 transition-colors">&times;</button>
-        </div>
-
-        {{-- Info Tenant Banner --}}
-        <div class="py-2.5 px-3.5 rounded-xl mt-3 flex items-center justify-between gap-3 text-xs" style="background: #f8fafc; border: 1px solid #f1f5f9;">
-            <div class="flex items-center gap-2 min-w-0">
-                <span class="material-symbols-outlined text-indigo-600 text-base">storefront</span>
-                <span id="wtModalTenantName" class="font-bold text-slate-800 truncate"></span>
-                <span id="wtModalTenantId" class="font-mono text-[10px] text-indigo-600 font-semibold"></span>
-            </div>
-            <a id="wtModalLiveLink" href="#" target="_blank" class="inline-flex items-center gap-1 text-[11px] font-bold text-indigo-600 hover:text-indigo-800 hover:underline shrink-0">
-                <span>Pratinjau Live Website</span>
-                <span class="material-symbols-outlined text-[13px]">open_in_new</span>
-            </a>
-        </div>
-
-        {{-- Callout Desain Asli Template --}}
-        <div class="p-3 rounded-xl mt-2.5 flex items-start gap-2.5 text-xs bg-emerald-50 border border-emerald-200 text-emerald-950">
-            <span class="material-symbols-outlined text-emerald-600 text-base shrink-0 mt-0.5">verified</span>
-            <div>
-                <p class="font-bold">Desain Chatbot Mengikuti Template Website Klien (Native)</p>
-                <p class="text-[11px] text-emerald-800 mt-0.5 leading-relaxed">Chatbot website klien ini otomatis menyatu dengan tombol launcher, tipografi, dan gaya visual asli dari template websitenya, serta terhubung aktif ke backend AI dan knowledge base bisnis klien.</p>
-            </div>
-        </div>
-
-        {{-- Grid Pilihan 10 Preset Tema + Auto (Bebas Border Hitam Kaku) --}}
-        <div class="flex-1 overflow-y-auto py-3 space-y-2 pr-1">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                @if (isset($widgetThemes))
-                    @foreach ($widgetThemes as $key => $t)
-                        <label class="widget-theme-card relative flex flex-col justify-between group">
-                            <input type="radio" name="selected_widget_theme" value="{{ $key }}" class="sr-only" onchange="previewSelectedTheme('{{ $key }}')">
-                            
-                            {{-- Header Kartu: Nama Tema & Indikator Aktif --}}
-                            <div class="flex items-center justify-between pb-2 mb-2" style="border-bottom: 1px solid #f8fafc;">
-                                <div class="flex items-center gap-2 min-w-0">
-                                    <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background: {{ $t['primary_color'] }};"></span>
-                                    <span class="font-bold text-xs text-slate-800 truncate">{{ $t['name'] }}</span>
-                                </div>
-                                <div class="flex items-center gap-1 shrink-0">
-                                    <span class="theme-check-icon hidden text-indigo-600 material-symbols-outlined text-[18px] font-bold">check_circle</span>
-                                </div>
-                            </div>
-
-                            {{-- Preview Utama: Contoh Nyata Widget (Logo & Tanya AI) Tanpa Border Hitam --}}
-                            <div class="widget-theme-stage w-full" style="background: {{ $t['preview_bg'] ?? '#f8fafc' }};">
-                                {{-- Tombol Floating Widget: Logo + Tanya AI --}}
-                                <div class="inline-flex items-center gap-2 px-4 py-2 text-white font-bold text-xs shadow-md transition-transform group-hover:scale-105"
-                                     style="background: {{ $t['gradient'] ?? $t['primary_color'] }}; border-radius: {{ $t['launcher_radius'] ?? '9999px' }}; border: none;">
-                                    {{-- Logo AI General --}}
-                                    <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M12 2L14.8 8.2L21 11L14.8 13.8L12 20L9.2 13.8L3 11L9.2 8.2L12 2Z"></path>
-                                        <path d="M19 17L19.7 18.7L21.5 19.5L19.7 20.3L19 22L18.3 20.3L16.5 19.5L18.3 18.7L19 17Z"></path>
-                                    </svg>
-                                    <span class="tracking-wide">Tanya AI</span>
-                                    <span class="w-2 h-2 rounded-full bg-emerald-400 ring-2 ring-white/60 ml-0.5"></span>
-                                </div>
-                            </div>
-
-                            {{-- Palet Warna Mini (Tanpa Border Hitam) --}}
-                            <div class="flex items-center justify-between pt-2 mt-2 text-[10px] text-slate-500 font-medium" style="border-top: 1px solid #f8fafc;">
-                                <span>Karakter Tema</span>
-                                <div class="flex items-center gap-1.5" title="Warna Header, Tombol & Balon Chat">
-                                    <span class="widget-swatch-circle" style="background: {{ $t['header_bg'] }};"></span>
-                                    <span class="widget-swatch-circle" style="background: {{ $t['primary_color'] }};"></span>
-                                    <span class="widget-swatch-circle" style="background: {{ $t['user_bubble'] }};"></span>
-                                </div>
-                            </div>
-                        </label>
-                    @endforeach
-                @endif
-            </div>
-        </div>
-
-        {{-- Footer Modal --}}
-        <div class="pt-3 flex items-center justify-between gap-2 mt-auto" style="border-top: 1px solid #f1f5f9;">
-            <span id="wtStatusNotice" class="text-xs text-emerald-600 font-bold hidden"></span>
-            <div class="flex items-center gap-2 ml-auto">
-                <button type="button" onclick="closeWidgetThemeModal()" class="px-3.5 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer" style="border: 1px solid #e2e8f0; background: #ffffff;">
-                    Batal
-                </button>
-                <button type="button" id="wtSubmitBtn" onclick="saveWidgetTheme()" class="px-4 py-1.5 rounded-lg text-white text-xs font-bold shadow-xs hover:bg-indigo-700 transition-all flex items-center gap-1.5 cursor-pointer" style="background: #4f46e5; border: none;">
-                    <span class="material-symbols-outlined text-[15px]">check</span>
-                    <span>Terapkan Desain</span>
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <script>
     let activeClientQuota = 500;
     let selectedQuickAdd = null;
@@ -1120,7 +961,6 @@ Apakah ingin tambah kuota atau upgrade paket website agar chatbot tetap aktif me
             waUrl: d.waUrl || '#',
             orderUrl: d.orderUrl || '',
             orderNumber: d.orderNumber || '',
-            widgetTheme: d.widgetTheme || 'auto',
             liveUrl: d.liveUrl || ''
         };
 
@@ -1129,11 +969,6 @@ Apakah ingin tambah kuota atau upgrade paket website agar chatbot tetap aktif me
         document.getElementById('dropTenantId').innerText = activeActionClient.tenantId;
         document.getElementById('dropTierBadge').innerText = activeActionClient.packageTier.toUpperCase();
         document.getElementById('dropWaLink').href = activeActionClient.waUrl;
-
-        const themeDesc = document.getElementById('dropWidgetThemeDesc');
-        if (themeDesc) {
-            themeDesc.innerText = activeActionClient.widgetTheme === 'auto' ? 'Otomatis (Kategori)' : activeActionClient.widgetTheme.replace('_', ' ').toUpperCase();
-        }
 
         const orderLink = document.getElementById('dropOrderLink');
         const orderText = document.getElementById('dropOrderText');
@@ -1193,105 +1028,6 @@ Apakah ingin tambah kuota atau upgrade paket website agar chatbot tetap aktif me
         const c = activeActionClient;
         closeClientActionDropdown();
         openTierModal(c.tenantId, c.tenantName, c.packageTier, c.monthlyQuota);
-    };
-
-    let activeWidgetTenantId = null;
-
-    window.triggerActionWidgetTheme = function() {
-        if (!activeActionClient) return;
-        const c = activeActionClient;
-        closeClientActionDropdown();
-        openWidgetThemeModal(c);
-    };
-
-    window.openWidgetThemeModal = function(client) {
-        activeWidgetTenantId = client.tenantId;
-        const tenantName = client.tenantName || client.tenantId;
-        const headerEl = document.getElementById('wtModalHeaderTenantName');
-        if (headerEl) headerEl.innerText = tenantName;
-        document.getElementById('wtModalTenantName').innerText = tenantName;
-        document.getElementById('wtModalTenantId').innerText = client.tenantId;
-        document.getElementById('wtModalLiveLink').href = client.liveUrl || `/s/${client.tenantId}`;
-        
-        selectThemeInModal(client.widgetTheme || 'auto');
-
-        const modal = document.getElementById('widgetThemeModal');
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
-    };
-
-    window.closeWidgetThemeModal = function() {
-        const modal = document.getElementById('widgetThemeModal');
-        if (!modal) return;
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
-    };
-
-    window.selectThemeInModal = function(themeKey) {
-        document.querySelectorAll('input[name="selected_widget_theme"]').forEach(r => {
-            const isMatch = r.value === themeKey;
-            r.checked = isMatch;
-            const card = r.closest('.widget-theme-card');
-            if (card) {
-                const checkIcon = card.querySelector('.theme-check-icon');
-                if (isMatch) {
-                    card.classList.add('is-active');
-                    if (checkIcon) checkIcon.classList.remove('hidden');
-                } else {
-                    card.classList.remove('is-active');
-                    if (checkIcon) checkIcon.classList.add('hidden');
-                }
-            }
-        });
-    };
-
-    window.previewSelectedTheme = function(themeKey) {
-        selectThemeInModal(themeKey);
-    };
-
-    window.saveWidgetTheme = async function() {
-        if (!activeWidgetTenantId) return;
-        const selectedInput = document.querySelector('input[name="selected_widget_theme"]:checked');
-        if (!selectedInput) return;
-
-        const theme = selectedInput.value;
-        const btn = document.getElementById('wtSubmitBtn');
-        const notice = document.getElementById('wtStatusNotice');
-        btn.disabled = true;
-        btn.innerHTML = `<span class="material-symbols-outlined text-[15px] animate-spin">refresh</span> <span>Menyimpan...</span>`;
-
-        try {
-            const csrfToken = document.querySelector('input[name="_token"]')?.value || '{{ csrf_token() }}';
-            const res = await fetch(`/admin/ai-quotas/${activeWidgetTenantId}/widget-theme`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken
-                },
-                body: JSON.stringify({ widget_theme: theme })
-            });
-            const data = await res.json();
-            
-            notice.innerText = '✓ Desain widget berhasil diterapkan!';
-            notice.classList.remove('hidden');
-
-            // Update dataset pada tombol aksi klien di tabel
-            const triggerBtn = document.querySelector(`button[data-tenant-id="${activeWidgetTenantId}"]`);
-            if (triggerBtn) {
-                triggerBtn.dataset.widgetTheme = theme;
-            }
-
-            setTimeout(() => {
-                notice.classList.add('hidden');
-                closeWidgetThemeModal();
-            }, 1000);
-        } catch (e) {
-            alert('Gagal menyimpan desain widget: ' + e.message);
-        } finally {
-            btn.disabled = false;
-            btn.innerHTML = `<span class="material-symbols-outlined text-[15px]">check</span> <span>Terapkan Desain</span>`;
-        }
     };
 
     window.openTierFromKnowledge = function() {
