@@ -8,6 +8,7 @@ use App\Models\WebiaTemplate;
 use App\Services\AiQuotaService;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -116,7 +117,7 @@ class CustomerAiController extends Controller
     /**
      * Klien menambahkan Pertanyaan & Jawaban (FAQ) baru untuk melatih AI websitenya.
      */
-    public function storeFaq(Request $request): RedirectResponse
+    public function storeFaq(Request $request): RedirectResponse|JsonResponse
     {
         $request->validate([
             'question' => 'required|string|min:4|max:255',
@@ -130,7 +131,11 @@ class CustomerAiController extends Controller
             ->first();
 
         if (! $order || empty($order->site_slug)) {
-            return redirect()->back()->with('error', 'Website Anda belum memiliki ID asisten AI aktif.');
+            $err = 'Website Anda belum memiliki ID asisten AI aktif.';
+            if ($request->wantsJson() || $request->ajax()) {
+                return response()->json(['status' => 'error', 'message' => $err], 400);
+            }
+            return redirect()->back()->with('error', $err);
         }
 
         $res = AiQuotaService::appendTenantFaq(
@@ -139,11 +144,21 @@ class CustomerAiController extends Controller
             $request->input('answer')
         );
 
-        if (($res['status'] ?? '') === 'success') {
-            return redirect()->back()->with('success', 'Pertanyaan & Jawaban baru berhasil disimpan! Asisten AI website Anda kini langsung dapat menjawabnya.');
+        $isSuccess = (($res['status'] ?? '') === 'success');
+        $msg = $isSuccess
+            ? 'Pertanyaan & Jawaban baru berhasil disimpan! Asisten AI website Anda kini langsung dapat menjawabnya.'
+            : 'Gagal menyimpan FAQ ke AI Assistant. Silakan coba lagi.';
+
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'status' => $isSuccess ? 'success' : 'error',
+                'message' => $msg,
+            ], $isSuccess ? 200 : 500);
         }
 
-        return redirect()->back()->with('error', 'Gagal menyimpan FAQ ke AI Assistant. Silakan coba lagi.');
+        return $isSuccess
+            ? redirect()->back()->with('success', $msg)
+            : redirect()->back()->with('error', $msg);
     }
 
     /**
@@ -186,7 +201,7 @@ class CustomerAiController extends Controller
      * Memperbarui informasi operasional & pengaturan terpadu asisten AI bisnis klien
      * secara aman tanpa merusak dokumen markdown knowledge base.
      */
-    public function updateBusinessInfo(Request $request): RedirectResponse
+    public function updateBusinessInfo(Request $request): RedirectResponse|JsonResponse
     {
         $request->validate([
             'welcome_message' => 'nullable|string|max:255',
@@ -203,7 +218,11 @@ class CustomerAiController extends Controller
             ->first();
 
         if (! $order || empty($order->site_slug)) {
-            return redirect()->back()->with('error', 'Website Anda belum memiliki ID asisten AI aktif.');
+            $err = 'Website Anda belum memiliki ID asisten AI aktif.';
+            if ($request->wantsJson() || $request->ajax()) {
+                return response()->json(['status' => 'error', 'message' => $err], 400);
+            }
+            return redirect()->back()->with('error', $err);
         }
 
         // Tentukan alamat fisik atau operasional online
@@ -218,11 +237,36 @@ class CustomerAiController extends Controller
             'alamat' => $alamat,
             'pengumuman' => $request->input('pengumuman'),
         ]);
-                if (($res['status'] ?? '') === 'success') {
-            return redirect()->back()->with('success', 'Pengaturan & informasi bisnis berhasil disimpan! Asisten AI website Anda langsung diperbarui.');
+
+        $isSuccess = (($res['status'] ?? '') === 'success');
+        if ($isSuccess) {
+            $bizData = $order->business_data ?? [];
+            if ($request->filled('welcome_message')) {
+                $bizData['welcome_message'] = $request->input('welcome_message');
+            }
+            if ($request->filled('whatsapp_cs')) {
+                $bizData['whatsapp'] = $request->input('whatsapp_cs');
+            }
+            if (!empty($alamat)) {
+                $bizData['address'] = $alamat;
+            }
+            $order->update(['business_data' => $bizData]);
         }
 
-        return redirect()->back()->with('error', 'Gagal memperbarui informasi bisnis ke AI. Silakan coba lagi.');
+        $msg = $isSuccess
+            ? 'Pengaturan & informasi bisnis berhasil disimpan! Asisten AI website Anda langsung diperbarui.'
+            : 'Gagal memperbarui informasi bisnis ke AI. Silakan coba lagi.';
+
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'status' => $isSuccess ? 'success' : 'error',
+                'message' => $msg,
+            ], $isSuccess ? 200 : 500);
+        }
+
+        return $isSuccess
+            ? redirect()->back()->with('success', $msg)
+            : redirect()->back()->with('error', $msg);
     }
 
 public function simulateChat(Request $request): JsonResponse

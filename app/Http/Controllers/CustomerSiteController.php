@@ -3,12 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\WebiaOrder;
+use App\Services\AiQuotaService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class CustomerSiteController extends Controller
 {
-    public function __invoke(WebiaOrder $order, ?string $page = null): View
+    public function __invoke(WebiaOrder $order, ?string $page = null): View|Response
     {
         abort_unless(
             $order->delivery_status === 'delivered'
@@ -71,7 +75,8 @@ class CustomerSiteController extends Controller
         );
         $assetPath = 'website-bisnis/template/'.$templatePath;
 
-        return view($view.'.'.$views[$page], [
+        $renderedHtml = view($view.'.'.$views[$page], [
+            'order' => $order,
             'v' => $view,
             'path' => $path,
             'page' => $page,
@@ -82,49 +87,24 @@ class CustomerSiteController extends Controller
             'skin' => $siteConfig,
             'siteConfig' => $siteConfig,
             'pageUrl' => $pageUrl,
-            'routeUrl' => $routeUrl,
-            'r' => $isRetail ? $retailPageUrl : $routeUrl,
-            'rp' => null,
-            'ns' => $view,
-            'active' => $this->retailRouteKey($siteConfigPath, $page),
-            'img' => $isRetail ? asset('images/'.$assetPath) : fn (string $file): string => asset('images/'.$path.'/'.$file),
-            'css' => asset('css/'.($isRetail ? $assetPath : $path).'/'.($isRetail ? 'skincare' : 'branding-creative-agency').'.css'),
-            'js' => asset('js/'.($isRetail ? $assetPath : $path).'/'.($isRetail ? 'skincare' : 'branding-creative-agency').'.js'),
-        ]);
-    }
+            'routeUrl' => $pageUrl,
+        ])->render();
 
-    private function brandingAgencyConfig(array $siteConfig, array $business, string $whatsapp): array
-    {
-        $name = $business['business_name'] ?? 'Studio Kreatif';
-        $this->replaceDemoName($siteConfig, $siteConfig['brand']['name'], $name);
+        // Injeksi otomatis widget AI Assistant & Zero Lost Lead Fallback
+        $widgetHtml = view('components.site-ai-widget', [
+            'order' => $order,
+            'business' => $business,
+            'whatsapp' => $whatsapp,
+            'siteSlug' => $order->site_slug,
+        ])->render();
 
-        return array_replace($siteConfig, [
-            'brand' => array_replace($siteConfig['brand'], [
-                'name' => $name,
-                'short' => $name,
-                'sub' => '',
-                'tagline' => ($business['tagline'] ?? null) ?: $siteConfig['brand']['tagline'],
-                'whatsapp' => $whatsapp,
-                'phone' => $business['whatsapp'] ?? '',
-                'email' => '',
-                'address' => $this->businessAddress($business),
-                'wa_text' => 'Halo '.$name.', saya ingin berkonsultasi soal branding.',
-            ]),
-            'topbar' => array_replace($siteConfig['topbar'], ['notice' => 'Konsultasikan kebutuhan branding dan materi kreatif Anda.']),
-            'nav' => ['layanan', 'keahlian', 'portofolio', 'janji'],
-            'footnav' => ['layanan', 'keahlian', 'portofolio', 'janji'],
-            'hero' => array_replace($siteConfig['hero'], [
-                'lead' => ($business['description'] ?? null) ?: $siteConfig['hero']['lead'],
-                'facts' => [],
-            ]),
-            'services' => array_replace($siteConfig['services'], [
-                'items' => array_map(fn (array $service): array => array_replace($service, ['price' => '']), $siteConfig['services']['items']),
-            ]),
-            'pricing' => array_replace($siteConfig['pricing'], ['plans' => []]),
-            'appointment' => array_replace($siteConfig['appointment'], ['slots' => []]),
-            'expertise' => array_replace($siteConfig['expertise'], ['awards' => []]),
-            'customer_site' => true,
-        ]);
+        if (str_contains($renderedHtml, '</body>')) {
+            $renderedHtml = str_replace('</body>', $widgetHtml . "\n</body>", $renderedHtml);
+        } else {
+            $renderedHtml .= $widgetHtml;
+        }
+
+        return response($renderedHtml);
     }
 
     private function terracottaCompanyConfig(array $siteConfig, array $business, string $whatsapp, string $instagram): array
@@ -451,5 +431,57 @@ class CustomerSiteController extends Controller
         $digits = preg_replace('/\D/', '', $number) ?? '';
 
         return Str::startsWith($digits, '0') ? '62'.substr($digits, 1) : $digits;
+    }
+
+    /**
+     * Endpoint API publik percakapan asisten AI live site klien
+     * dilengkapi fitur proteksi kuota & Zero Lost Lead Fallback.
+     */
+    public function chat(Request $request, WebiaOrder $order): JsonResponse
+    {
+        abort_unless(
+            $order->delivery_status === 'delivered' && !empty($order->site_slug),
+            404
+        );
+
+        $request->validate([
+            'message' => 'required|string|min:1|max:500',
+        ]);
+
+        $message = trim((string) $request->input('message'));
+        $business = $order->business_data ?? [];
+        $waRaw = $business['whatsapp'] ?? '081234567890';
+        $waDigits = preg_replace('/[^0-9]/', '', $waRaw);
+        if (str_starts_with($waDigits, '0')) {
+            $waDigits = '62' . substr($waDigits, 1);
+        }
+        $bizName = $business['business_name'] ?? 'Toko';
+        $waUrl = "https://wa.me/{$waDigits}?text=" . rawurlencode("Halo {$bizName}, saya ingin bertanya langsung seputar layanan dan produk Anda.");
+
+        // Cek Kuota AI Tenant
+        $quota = AiQuotaService::getTenantQuota(
+            $order->site_slug,
+            $order->package?->slug ?? 'pixel',
+            (int) ($order->package?->chatbot_monthly_quota ?? 500)
+        );
+
+        if (!empty($quota['is_quota_exhausted'])) {
+            return response()->json([
+                'status' => 'quota_exhausted',
+                'reply' => 'Mohon maaf, saat ini asisten AI tidak dapat digunakan. Silakan hubungi customer service kami langsung via WhatsApp agar pesan Anda segera dibantu!',
+                'whatsapp_url' => $waUrl,
+                'whatsapp_number' => $waRaw,
+            ]);
+        }
+
+        // Jalankan percakapan AI & catat konsumsi kuota
+        $replyData = AiQuotaService::simulateChat($order->site_slug, $message);
+        AiQuotaService::recordUsage($order->site_slug);
+
+        return response()->json([
+            'status' => 'success',
+            'reply' => $replyData['reply'] ?? 'Terima kasih atas pertanyaannya. Ada yang bisa kami bantu lagi?',
+            'whatsapp_url' => $waUrl,
+        ]);
     }
 }

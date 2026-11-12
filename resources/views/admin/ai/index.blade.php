@@ -100,54 +100,88 @@
     .know-tab-btn {
         display: inline-flex !important;
         align-items: center !important;
-        gap: 5px !important;
-        padding: 6px 12px !important;
+        gap: 6px !important;
+        padding: 7px 14px !important;
         font-size: 11.5px !important;
-        font-weight: 600 !important;
-        border-radius: 8px !important;
+        font-weight: 700 !important;
+        border-radius: 10px !important;
         cursor: pointer !important;
-        border: none !important;
+        border: 1px solid transparent !important;
         white-space: nowrap !important;
-        transition: all 0.15s ease !important;
+        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
     }
 
     .know-tab-btn.active {
         background-color: #4f46e5 !important;
         color: #ffffff !important;
-        box-shadow: 0 2px 4px rgba(79, 70, 229, 0.2) !important;
+        border-color: #4338ca !important;
+        box-shadow: 0 4px 10px -2px rgba(79, 70, 229, 0.35) !important;
     }
 
     .know-tab-btn.inactive {
-        background-color: transparent !important;
+        background-color: #f8fafc !important;
         color: #64748b !important;
+        border-color: #e2e8f0 !important;
     }
 
     .know-tab-btn.inactive:hover {
         background-color: #f1f5f9 !important;
-        color: #1e293b !important;
+        color: #0f172a !important;
+        border-color: #cbd5e1 !important;
     }
 
     .know-editor-textarea {
         width: 100% !important;
         border: 1px solid #cbd5e1 !important;
-        border-radius: 10px !important;
-        padding: 10px 12px !important;
+        border-radius: 12px !important;
+        padding: 12px 14px !important;
         font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
-        font-size: 12px !important;
-        line-height: 1.6 !important;
+        font-size: 12.5px !important;
+        line-height: 1.65 !important;
         color: #0f172a !important;
         background-color: #f8fafc !important;
         box-sizing: border-box !important;
         resize: vertical !important;
-        min-height: 180px !important;
-        transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+        min-height: 190px !important;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease !important;
     }
 
     .know-editor-textarea:focus {
         background-color: #ffffff !important;
         border-color: #4f46e5 !important;
         outline: none !important;
-        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12) !important;
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.14) !important;
+    }
+
+    .quick-snippet-chip {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 4px !important;
+        padding: 3px 8px !important;
+        font-size: 10.5px !important;
+        font-weight: 600 !important;
+        border-radius: 6px !important;
+        cursor: pointer !important;
+        border: 1px solid #cbd5e1 !important;
+        background-color: #ffffff !important;
+        color: #334155 !important;
+        transition: all 0.15s ease !important;
+        user-select: none !important;
+    }
+
+    .quick-snippet-chip:hover {
+        background-color: #eef2ff !important;
+        border-color: #c7d2fe !important;
+        color: #4338ca !important;
+    }
+
+    .quick-add-btn {
+        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+
+    .quick-add-btn:hover {
+        transform: translateY(-1px) !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
     }
 </style>
 <div class="mb-space-md flex flex-col gap-space-md">
@@ -294,38 +328,57 @@
     <!-- Search & Filter Bar (Identik dengan Admin Orders Toolbar) -->
     <div class="flex flex-col items-center justify-between gap-space-md rounded-xl bg-surface-container-lowest p-space-md shadow-sm lg:flex-row">
         <!-- Search Input Form -->
-        <form method="GET" action="{{ route('admin.ai.index') }}" class="relative flex w-full items-center lg:w-96">
+        <form method="GET" action="{{ route('admin.ai.index') }}" class="relative flex w-full items-center lg:w-80">
             @if ($statusFilter !== 'semua')
                 <input type="hidden" name="status" value="{{ $statusFilter }}">
+            @endif
+            @if ($categoryFilter !== 'semua')
+                <input type="hidden" name="kategori" value="{{ $categoryFilter }}">
             @endif
             <span class="material-symbols-outlined pointer-events-none absolute left-space-sm text-lg text-outline">search</span>
             <input aria-label="Cari klien atau bisnis" class="h-9 w-full rounded-lg bg-surface-container-low pl-9 pr-3 font-body-sm text-body-sm text-on-surface placeholder:text-outline transition-all focus:bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary/20" name="q" value="{{ $search }}" placeholder="Cari nama bisnis, klien, atau tenant ID..." type="text">
         </form>
 
-        <!-- Status Filter Tabs -->
-        <nav aria-label="Filter status kuota" class="flex flex-wrap items-center gap-space-xs">
-            <span class="font-caption text-caption uppercase tracking-wider text-outline">Status:</span>
-            
-            <a class="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 font-label-sm text-label-sm transition-all {{ $statusFilter === 'semua' ? 'bg-primary-container font-bold text-on-primary shadow-sm' : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface' }}" href="{{ route('admin.ai.index', array_filter(['q' => $search], fn($v) => !empty($v))) }}">
-                Semua
-                <span class="rounded-full px-1.5 py-0.2 font-caption text-caption {{ $statusFilter === 'semua' ? 'bg-white/25 text-on-primary' : 'bg-surface-container-high text-on-surface-variant' }}">{{ $totalClients }}</span>
-            </a>
+        <!-- Filter Controls (Kategori Industri & Status Kuota) -->
+        <div class="flex flex-wrap items-center gap-space-md w-full lg:w-auto justify-end">
+            <!-- Filter Kategori Dropdown -->
+            <div class="flex items-center gap-1.5">
+                <span class="font-caption text-caption uppercase tracking-wider text-outline">Industri:</span>
+                <select onchange="window.location.href=this.value" class="h-9 rounded-lg bg-surface-container-low px-2.5 font-body-sm text-body-sm text-on-surface border border-outline-variant/60 focus:outline-none focus:ring-2 focus:ring-primary/20 cursor-pointer">
+                    <option value="{{ route('admin.ai.index', array_merge(request()->except('kategori'), ['kategori' => 'semua'])) }}" {{ $categoryFilter === 'semua' ? 'selected' : '' }}>Semua Industri</option>
+                    @foreach ($categories as $cat)
+                        <option value="{{ route('admin.ai.index', array_merge(request()->except('kategori'), ['kategori' => $cat])) }}" {{ strtolower($categoryFilter) === strtolower($cat) ? 'selected' : '' }}>
+                            {{ ucwords($cat) }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
 
-            <a class="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 font-label-sm text-label-sm transition-all {{ $statusFilter === 'kritis' ? 'bg-primary-container font-bold text-on-primary shadow-sm' : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface' }}" href="{{ route('admin.ai.index', array_merge(array_filter(['q' => $search], fn($v) => !empty($v)), ['status' => 'kritis'])) }}">
-                Kritis (≥80%)
-                <span class="rounded-full px-1.5 py-0.2 font-caption text-caption {{ $statusFilter === 'kritis' ? 'bg-white/25 text-on-primary' : 'bg-surface-container-high text-on-surface-variant' }}">{{ $criticalCount }}</span>
-            </a>
+            <!-- Status Filter Tabs -->
+            <nav aria-label="Filter status kuota" class="flex flex-wrap items-center gap-space-xs">
+                <span class="font-caption text-caption uppercase tracking-wider text-outline">Status:</span>
+                
+                <a class="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 font-label-sm text-label-sm transition-all {{ $statusFilter === 'semua' ? 'bg-primary-container font-bold text-on-primary shadow-sm' : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface' }}" href="{{ route('admin.ai.index', array_merge(request()->except('status'), ['status' => 'semua'])) }}">
+                    Semua
+                    <span class="rounded-full px-1.5 py-0.2 font-caption text-caption {{ $statusFilter === 'semua' ? 'bg-white/25 text-on-primary' : 'bg-surface-container-high text-on-surface-variant' }}">{{ $totalClients }}</span>
+                </a>
 
-            <a class="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 font-label-sm text-label-sm transition-all {{ $statusFilter === 'waspada' ? 'bg-primary-container font-bold text-on-primary shadow-sm' : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface' }}" href="{{ route('admin.ai.index', array_merge(array_filter(['q' => $search], fn($v) => !empty($v)), ['status' => 'waspada'])) }}">
-                Waspada (80–99%)
-                <span class="rounded-full px-1.5 py-0.2 font-caption text-caption {{ $statusFilter === 'waspada' ? 'bg-white/25 text-on-primary' : 'bg-surface-container-high text-on-surface-variant' }}">{{ $warningCount }}</span>
-            </a>
+                <a class="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 font-label-sm text-label-sm transition-all {{ $statusFilter === 'kritis' ? 'bg-primary-container font-bold text-on-primary shadow-sm' : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface' }}" href="{{ route('admin.ai.index', array_merge(request()->except('status'), ['status' => 'kritis'])) }}">
+                    Kritis (≥80%)
+                    <span class="rounded-full px-1.5 py-0.2 font-caption text-caption {{ $statusFilter === 'kritis' ? 'bg-white/25 text-on-primary' : 'bg-surface-container-high text-on-surface-variant' }}">{{ $criticalCount }}</span>
+                </a>
 
-            <a class="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 font-label-sm text-label-sm transition-all {{ $statusFilter === 'habis' ? 'bg-primary-container font-bold text-on-primary shadow-sm' : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface' }}" href="{{ route('admin.ai.index', array_merge(array_filter(['q' => $search], fn($v) => !empty($v)), ['status' => 'habis'])) }}">
-                Habis (100%)
-                <span class="rounded-full px-1.5 py-0.2 font-caption text-caption {{ $statusFilter === 'habis' ? 'bg-white/25 text-on-primary' : 'bg-surface-container-high text-on-surface-variant' }}">{{ $exhaustedCount }}</span>
-            </a>
-        </nav>
+                <a class="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 font-label-sm text-label-sm transition-all {{ $statusFilter === 'waspada' ? 'bg-primary-container font-bold text-on-primary shadow-sm' : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface' }}" href="{{ route('admin.ai.index', array_merge(request()->except('status'), ['status' => 'waspada'])) }}">
+                    Waspada (80–99%)
+                    <span class="rounded-full px-1.5 py-0.2 font-caption text-caption {{ $statusFilter === 'waspada' ? 'bg-white/25 text-on-primary' : 'bg-surface-container-high text-on-surface-variant' }}">{{ $warningCount }}</span>
+                </a>
+
+                <a class="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 font-label-sm text-label-sm transition-all {{ $statusFilter === 'habis' ? 'bg-primary-container font-bold text-on-primary shadow-sm' : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface' }}" href="{{ route('admin.ai.index', array_merge(request()->except('status'), ['status' => 'habis'])) }}">
+                    Habis (100%)
+                    <span class="rounded-full px-1.5 py-0.2 font-caption text-caption {{ $statusFilter === 'habis' ? 'bg-white/25 text-on-primary' : 'bg-surface-container-high text-on-surface-variant' }}">{{ $exhaustedCount }}</span>
+                </a>
+            </nav>
+        </div>
     </div>
 
     <!-- Tabel Monitoring Kuota AI Klien -->
@@ -366,7 +419,14 @@ Apakah ingin tambah kuota atau upgrade paket website agar chatbot tetap aktif me
                                         {{ strtoupper(substr($client['client_name'], 0, 1)) }}
                                     </div>
                                     <div class="flex min-w-0 flex-col">
-                                        <span class="truncate font-label-md text-label-md font-semibold text-on-surface">{{ $client['business_name'] }}</span>
+                                        <div class="flex items-center gap-1.5">
+                                            <span class="truncate font-label-md text-label-md font-semibold text-on-surface">{{ $client['business_name'] }}</span>
+                                            @if (!empty($client['order']?->site_slug))
+                                                <a href="{{ route('sites.show', ['order' => $client['order']->site_slug]) }}" target="_blank" rel="noopener" title="Buka Live Website Klien" class="inline-flex items-center text-outline hover:text-primary transition-colors">
+                                                    <span class="material-symbols-outlined text-[15px]">open_in_new</span>
+                                                </a>
+                                            @endif
+                                        </div>
                                         <span class="font-caption text-caption text-on-surface-variant">{{ $client['client_name'] }} · {{ $client['client_email'] }}</span>
                                     </div>
                                 </div>
@@ -659,54 +719,58 @@ Apakah ingin tambah kuota atau upgrade paket website agar chatbot tetap aktif me
 
 <!-- Modal Dialog: Kelola Pengetahuan AI Bisnis (Upgraded Clean UI/UX) -->
 <div id="knowledgeModal" class="fixed inset-0 z-[70] hidden items-center justify-center p-3 md:p-6 bg-slate-900/60 backdrop-blur-sm">
-    <div class="knowledge-modal-card animate-in fade-in zoom-in-95 duration-150">
+    <div class="knowledge-modal-card animate-in fade-in zoom-in-95 duration-150" style="max-width: 620px; width: 100%;">
         {{-- Header Modal --}}
-        <div class="flex items-center justify-between border-b border-surface-container px-6 py-3.5 bg-surface-container-lowest">
-            <div class="flex items-center gap-3">
+        <div class="flex items-center justify-between border-b border-surface-container px-5 py-3 bg-surface-container-lowest">
+            <div class="flex items-center gap-2.5">
                 <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary shrink-0">
                     <span class="material-symbols-outlined text-xl">psychology</span>
                 </div>
                 <div>
-                    <h3 class="font-headline-sm text-sm md:text-base font-bold text-on-surface">Kelola Pengetahuan AI Bisnis</h3>
-                    <p class="font-caption text-xs text-on-surface-variant">Basis informasi bot: profil usaha, katalog, kebijakan, FAQ resmi &amp; pertanyaan pengunjung.</p>
+                    <h3 class="font-headline-sm text-sm font-bold text-on-surface">Kelola Pengetahuan AI Bisnis</h3>
+                    <p class="font-caption text-[11px] text-on-surface-variant">Pusat data kecerdasan buatan untuk chatbot website klien</p>
                 </div>
             </div>
             <button type="button" onclick="closeKnowledgeModal()" class="cursor-pointer text-on-surface-variant hover:text-on-surface font-bold text-xl w-7 h-7 rounded-lg flex items-center justify-center hover:bg-surface-container-low transition-colors">&times;</button>
         </div>
 
-        {{-- Strip Info Tenant & Status --}}
-        <div class="px-6 py-2.5 bg-surface-container-low border-b border-surface-container flex flex-wrap items-center justify-between gap-2 text-xs">
+        {{-- Hero Strip Info Tenant & Status --}}
+        <div class="px-5 py-2.5 bg-gradient-to-r from-slate-50 via-indigo-50/20 to-slate-50 border-b border-surface-container flex flex-wrap items-center justify-between gap-2 text-xs">
             <div class="flex items-center gap-2 min-w-0">
-                <span class="material-symbols-outlined text-on-surface-variant text-[15px]">storefront</span>
-                <span id="knowTenantName" class="font-bold text-on-surface truncate"></span>
-                <span id="knowTenantId" class="font-mono text-[10px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded ml-1"></span>
+                <div class="w-6 h-6 rounded-md bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-[15px]">storefront</span>
+                </div>
+                <div class="min-w-0">
+                    <span id="knowTenantName" class="font-bold text-on-surface truncate text-xs block"></span>
+                    <span id="knowTenantId" class="font-mono text-[10px] font-bold text-primary"></span>
+                </div>
             </div>
-            <div class="flex items-center gap-3">
-                <span id="knowCurrentTierBadge" class="rounded-full bg-surface-container-high px-2 py-0.5 text-[11px] font-bold text-on-surface-variant"></span>
-                <button type="button" onclick="openTierFromKnowledge()" class="text-[11px] font-bold text-primary hover:underline cursor-pointer flex items-center gap-1">
-                    <span class="material-symbols-outlined text-[13px]">tune</span> Ubah Paket &rarr;
+            <div class="flex items-center gap-2">
+                <span id="knowCurrentTierBadge" class="rounded-full bg-white border border-outline-variant px-2 py-0.5 text-[10.5px] font-bold text-on-surface-variant shadow-2xs"></span>
+                <button type="button" onclick="openTierFromKnowledge()" class="text-[10.5px] font-bold text-primary hover:underline cursor-pointer flex items-center gap-1 bg-primary/5 hover:bg-primary/10 px-2 py-0.5 rounded-md transition-colors">
+                    <span class="material-symbols-outlined text-[12px]">tune</span> Ubah Paket &rarr;
                 </button>
             </div>
         </div>
 
         {{-- Loading State --}}
-        <div id="knowLoading" class="py-14 flex flex-col items-center justify-center gap-2.5">
-            <div class="h-8 w-8 animate-spin rounded-full border-3 border-primary border-t-transparent"></div>
+        <div id="knowLoading" class="py-12 flex flex-col items-center justify-center gap-2">
+            <div class="h-7 w-7 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
             <span class="text-xs text-on-surface-variant font-medium">Memuat berkas knowledge base &amp; data AI...</span>
         </div>
 
         {{-- Content Area --}}
-        <div id="knowContent" class="hidden flex-1 overflow-y-auto px-6 py-3.5 space-y-3">
+        <div id="knowContent" class="hidden flex-1 overflow-y-auto px-5 py-3 space-y-3">
             {{-- Modern Segmented Tab Bar (5 Tabs) --}}
-            <div class="flex border-b border-surface-container gap-1 pb-2 overflow-x-auto">
+            <div class="flex gap-1.5 pb-2 overflow-x-auto border-b border-surface-container">
                 <button type="button" id="tabBtnProfil" onclick="switchKnowTab('profil')" class="know-tab-btn active">
-                    <span class="material-symbols-outlined text-[15px]">storefront</span> Profil
+                    <span class="material-symbols-outlined text-[15px]">storefront</span> Profil Usaha
                 </button>
                 <button type="button" id="tabBtnLayanan" onclick="switchKnowTab('layanan')" class="know-tab-btn inactive">
-                    <span class="material-symbols-outlined text-[15px]">inventory_2</span> Layanan
+                    <span class="material-symbols-outlined text-[15px]">inventory_2</span> Layanan &amp; Harga
                 </button>
                 <button type="button" id="tabBtnKebijakan" onclick="switchKnowTab('kebijakan')" class="know-tab-btn inactive">
-                    <span class="material-symbols-outlined text-[15px]">gavel</span> Kebijakan
+                    <span class="material-symbols-outlined text-[15px]">gavel</span> Kebijakan Layanan
                 </button>
                 <button type="button" id="tabBtnFaq" onclick="switchKnowTab('faq')" class="know-tab-btn inactive">
                     <span class="material-symbols-outlined text-[15px]">quiz</span> FAQ Resmi
@@ -719,87 +783,132 @@ Apakah ingin tambah kuota atau upgrade paket website agar chatbot tetap aktif me
             </div>
 
             {{-- Tab 1: Profil --}}
-            <div id="tabPanelProfil" class="space-y-1.5">
-                <div class="rounded-lg bg-blue-50/70 border border-blue-200/60 p-2 text-xs text-blue-900 flex items-start gap-2">
-                    <span class="material-symbols-outlined text-[15px] text-blue-700 shrink-0 mt-0.5">info</span>
-                    <span><strong>Profil Bisnis:</strong> Deskripsi usaha, alamat cabang, jam buka, dan sapaan resmi yang disampaikan bot kepada pengunjung.</span>
+            <div id="tabPanelProfil" class="space-y-2">
+                {{-- Smart Workspace Control Bar --}}
+                <div class="flex items-center justify-between flex-wrap gap-2 p-2.5 rounded-xl bg-blue-50/70 border border-blue-200/60 text-xs">
+                    <div class="flex items-center gap-1.5">
+                        <span class="font-mono text-[11px] font-bold text-blue-900 bg-blue-100/80 px-2 py-0.5 rounded">📄 profil.md</span>
+                        <span class="text-blue-800 text-[11.5px]">Identitas usaha, alamat cabang, jam operasional, dan sapaan bot.</span>
+                    </div>
+                    <div class="flex items-center gap-1 flex-wrap">
+                        <button type="button" onclick="insertSnippet('knowProfilInput', 'charCountProfil', '- **Sapaan**: Halo! Senang Anda mampir ke website kami. Ada yang bisa kami bantu? 😊')" class="quick-snippet-chip">
+                            + Sapaan
+                        </button>
+                        <button type="button" onclick="insertSnippet('knowProfilInput', 'charCountProfil', '- **Jam Operasional**: Senin – Sabtu: 08.00 – 21.00 WIB, Minggu: Tutup')" class="quick-snippet-chip">
+                            + Jam Buka
+                        </button>
+                        <button type="button" onclick="insertSnippet('knowProfilInput', 'charCountProfil', '- **Alamat**: Jl. Contoh No. 123, Kota Surabaya (Patokan: Depan Alun-Alun)')" class="quick-snippet-chip">
+                            + Alamat
+                        </button>
+                    </div>
                 </div>
                 <div class="relative">
                     <textarea id="knowProfilInput" rows="7" oninput="updateCharCount('knowProfilInput', 'charCountProfil')" class="know-editor-textarea" placeholder="Contoh: Toko Roti Syifa adalah toko roti keluarga sejak 2018..."></textarea>
-                    <div id="charCountProfil" class="text-[10.5px] text-slate-500 text-right mt-1 font-mono">0 karakter</div>
+                    <div class="flex justify-between items-center mt-1">
+                        <span class="text-[10px] text-slate-400">Gunakan format markdown `- **Label**: Nilai` untuk hasil RAG AI terbaik.</span>
+                        <div id="charCountProfil" class="text-[10.5px] text-slate-500 font-mono">0 karakter</div>
+                    </div>
                 </div>
             </div>
 
             {{-- Tab 2: Layanan --}}
-            <div id="tabPanelLayanan" class="space-y-1.5 hidden">
-                <div class="rounded-lg bg-indigo-50/70 border border-indigo-200/60 p-2 text-xs text-indigo-900 flex items-start gap-2">
-                    <span class="material-symbols-outlined text-[15px] text-indigo-700 shrink-0 mt-0.5">info</span>
-                    <span><strong>Layanan &amp; Katalog:</strong> Rincian harga, menu produk, atau paket servis saat pengunjung menanyakan tarif.</span>
+            <div id="tabPanelLayanan" class="space-y-2 hidden">
+                {{-- Smart Workspace Control Bar --}}
+                <div class="flex items-center justify-between flex-wrap gap-2 p-2.5 rounded-xl bg-indigo-50/70 border border-indigo-200/60 text-xs">
+                    <div class="flex items-center gap-1.5">
+                        <span class="font-mono text-[11px] font-bold text-indigo-900 bg-indigo-100/80 px-2 py-0.5 rounded">📄 layanan.md</span>
+                        <span class="text-indigo-800 text-[11.5px]">Katalog produk, daftar harga, dan paket layanan unggulan.</span>
+                    </div>
+                    <div class="flex items-center gap-1 flex-wrap">
+                        <button type="button" onclick="insertSnippet('knowLayananInput', 'charCountLayanan', '### Paket Layanan &amp; Tarif\n- **Paket Standar**: Rp150.000 (Konsultasi &amp; Pengerjaan Cepat)\n- **Paket Lengkap**: Rp350.000 (Semua Fitur + Garansi 1 Bulan)')" class="quick-snippet-chip">
+                            + Format Tarif
+                        </button>
+                    </div>
                 </div>
                 <div class="relative">
                     <textarea id="knowLayananInput" rows="7" oninput="updateCharCount('knowLayananInput', 'charCountLayanan')" class="know-editor-textarea" placeholder="Contoh: Paket Website Personal Rp499.000..."></textarea>
-                    <div id="charCountLayanan" class="text-[10.5px] text-slate-500 text-right mt-1 font-mono">0 karakter</div>
+                    <div class="flex justify-between items-center mt-1">
+                        <span class="text-[10px] text-slate-400">Rincian harga mempermudah bot merespon saat calon pelanggan bertanya tarif.</span>
+                        <div id="charCountLayanan" class="text-[10.5px] text-slate-500 font-mono">0 karakter</div>
+                    </div>
                 </div>
             </div>
 
             {{-- Tab 3: Kebijakan --}}
-            <div id="tabPanelKebijakan" class="space-y-1.5 hidden">
-                <div class="rounded-lg bg-emerald-50/70 border border-emerald-200/60 p-2 text-xs text-emerald-900 flex items-start gap-2">
-                    <span class="material-symbols-outlined text-[15px] text-emerald-700 shrink-0 mt-0.5">info</span>
-                    <span><strong>Kebijakan &amp; Syarat:</strong> Ketentuan pemesanan, jam operasional, garansi, proses pembayaran, refund, dan privasi.</span>
+            <div id="tabPanelKebijakan" class="space-y-2 hidden">
+                {{-- Smart Workspace Control Bar --}}
+                <div class="flex items-center justify-between flex-wrap gap-2 p-2.5 rounded-xl bg-emerald-50/70 border border-emerald-200/60 text-xs">
+                    <div class="flex items-center gap-1.5">
+                        <span class="font-mono text-[11px] font-bold text-emerald-900 bg-emerald-100/80 px-2 py-0.5 rounded">📄 kebijakan.md</span>
+                        <span class="text-emerald-800 text-[11.5px]">Ketentuan pemesanan, proses refund, syarat DP, dan garansi.</span>
+                    </div>
+                    <div class="flex items-center gap-1 flex-wrap">
+                        <button type="button" onclick="insertSnippet('knowKebijakanInput', 'charCountKebijakan', '### Ketentuan Pemesanan &amp; Pembayaran\n- Pembayaran DP minimal 50% di awal sebelum pesanan diproses.\n- Pelunasan dilakukan setelah pekerjaan selesai terverifikasi.')" class="quick-snippet-chip">
+                            + Format Pembayaran
+                        </button>
+                    </div>
                 </div>
                 <div class="relative">
                     <textarea id="knowKebijakanInput" rows="7" oninput="updateCharCount('knowKebijakanInput', 'charCountKebijakan')" class="know-editor-textarea" placeholder="Contoh: Pembayaran DP minimal 50%, sisa dilunasi setelah..."></textarea>
-                    <div id="charCountKebijakan" class="text-[10.5px] text-slate-500 text-right mt-1 font-mono">0 karakter</div>
+                    <div class="flex justify-between items-center mt-1">
+                        <span class="text-[10px] text-slate-400">Bot akan merujuk kebijakan ini untuk menjawab pertanyaan syarat dan komplain.</span>
+                        <div id="charCountKebijakan" class="text-[10.5px] text-slate-500 font-mono">0 karakter</div>
+                    </div>
                 </div>
             </div>
 
             {{-- Tab 4: FAQ --}}
-            <div id="tabPanelFaq" class="space-y-1.5 hidden">
-                <div class="flex items-center justify-between rounded-lg bg-purple-50/70 border border-purple-200/60 p-2 text-xs text-purple-900">
-                    <div class="flex items-start gap-2">
-                        <span class="material-symbols-outlined text-[15px] text-purple-700 shrink-0 mt-0.5">info</span>
-                        <span><strong>FAQ Resmi:</strong> Format Tanya-Jawab di-cache secara semantik dan dijawab instan (&lt;20ms).</span>
+            <div id="tabPanelFaq" class="space-y-2 hidden">
+                {{-- Smart Workspace Control Bar --}}
+                <div class="flex items-center justify-between flex-wrap gap-2 p-2.5 rounded-xl bg-purple-50/70 border border-purple-200/60 text-xs">
+                    <div class="flex items-center gap-1.5">
+                        <span class="font-mono text-[11px] font-bold text-purple-900 bg-purple-100/80 px-2 py-0.5 rounded">📄 faq.md</span>
+                        <span class="text-purple-800 text-[11.5px]">Tanya-Jawab resmi yang dijawab instan via Semantic Cache (&lt;20ms).</span>
                     </div>
-                    <button type="button" onclick="insertFaqTemplate()" class="cursor-pointer text-[11px] font-bold text-primary hover:underline bg-white px-2 py-0.5 rounded border border-purple-200 flex items-center gap-1 shrink-0">
-                        <span class="material-symbols-outlined text-[12px]">add</span> + Template Q&amp;A
-                    </button>
+                    <div class="flex items-center gap-1 flex-wrap">
+                        <button type="button" onclick="insertFaqTemplate()" class="quick-snippet-chip font-bold text-primary">
+                            <span class="material-symbols-outlined text-[12px]">add</span> + Tambah Q&amp;A
+                        </button>
+                    </div>
                 </div>
                 <div class="relative">
                     <textarea id="knowFaqInput" rows="7" oninput="updateCharCount('knowFaqInput', 'charCountFaq')" placeholder="Q: Apakah melayani konsultasi gratis?&#10;A: Ya, kami menyediakan konsultasi gratis melalui WhatsApp kami." class="know-editor-textarea"></textarea>
-                    <div id="charCountFaq" class="text-[10.5px] text-slate-500 text-right mt-1 font-mono">0 karakter</div>
+                    <div class="flex justify-between items-center mt-1">
+                        <span class="text-[10px] text-slate-400">Format: Baris `Q: [Pertanyaan]` diikuti baris `A: [Jawaban]`.</span>
+                        <div id="charCountFaq" class="text-[10.5px] text-slate-500 font-mono">0 karakter</div>
+                    </div>
                 </div>
             </div>
 
             {{-- Tab 5: Pertanyaan Pengunjung Belum Terjawab --}}
-            <div id="tabPanelUnanswered" class="space-y-2 hidden">
-                <div class="rounded-lg bg-amber-500/10 border border-amber-500/20 p-2.5 text-xs text-amber-900 flex items-start gap-2">
-                    <span class="material-symbols-outlined text-[16px] text-amber-700 shrink-0 mt-0.5">lightbulb</span>
+            <div id="tabPanelUnanswered" class="space-y-2.5 hidden">
+                <div class="rounded-xl bg-amber-500/10 border border-amber-500/20 p-3 text-xs text-amber-900 flex items-start gap-2.5">
+                    <span class="material-symbols-outlined text-lg text-amber-600 shrink-0 mt-0.5">lightbulb</span>
                     <div>
-                        <strong class="block mb-0.5">Peluang Penyempurnaan Knowledge:</strong>
-                        <span>Pertanyaan di bawah sering diajukan pelanggan namun belum ada di database bot. Klik <strong>"Jadikan FAQ"</strong> untuk langsung memasukkannya.</span>
+                        <strong class="block mb-0.5 font-bold">Peluang Penyempurnaan Knowledge Base:</strong>
+                        <span class="text-amber-800 leading-relaxed">Pertanyaan di bawah diajukan oleh calon pelanggan namun memicu *fallback* / belum ada di database bot. Klik <strong>"Jadikan FAQ"</strong> untuk langsung memasukkannya ke daftar FAQ resmi.</span>
                     </div>
                 </div>
-                <div id="unansweredListContainer" class="space-y-1.5 max-h-[260px] overflow-y-auto pr-1">
+                <div id="unansweredListContainer" class="space-y-2 max-h-[260px] overflow-y-auto pr-1">
                     {{-- Dinamis via JS --}}
                 </div>
             </div>
 
             {{-- Status simpan alert --}}
-            <div id="knowSaveStatus" class="hidden rounded-lg p-2.5 text-xs font-bold transition-all"></div>
+            <div id="knowSaveStatus" class="hidden rounded-xl p-3 text-xs font-bold transition-all shadow-xs"></div>
         </div>
 
         {{-- Footer Modal --}}
-        <div class="px-6 py-3 border-t border-surface-container bg-surface-container-lowest flex justify-between items-center text-xs">
-            <span class="text-on-surface-variant flex items-center gap-1 text-[11px]">
-                <span class="material-symbols-outlined text-[14px] text-primary">sync</span>
-                Perubahan langsung disinkronkan ke FAISS AI Engine.
+        <div class="px-6 py-3.5 border-t border-surface-container bg-surface-container-lowest flex justify-between items-center text-xs">
+            <span class="text-on-surface-variant flex items-center gap-1.5 text-[11px] font-medium">
+                <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                Tersinkronisasi otomatis ke FAISS Vector Engine
             </span>
             <div class="flex items-center gap-2">
-                <button type="button" onclick="closeKnowledgeModal()" class="cursor-pointer rounded-lg border border-outline-variant px-3.5 py-1.5 text-xs font-bold text-on-surface-variant hover:bg-surface-container-low transition-colors">
+                <button type="button" onclick="closeKnowledgeModal()" class="cursor-pointer rounded-xl border border-outline-variant px-4 py-2 text-xs font-bold text-on-surface-variant hover:bg-surface-container-low transition-colors">
                     Tutup
                 </button>
-                <button type="button" id="btnSaveKnowledge" onclick="saveKnowledgeData()" class="cursor-pointer rounded-lg bg-primary px-3.5 py-1.5 text-xs font-bold text-on-primary shadow-sm hover:bg-primary/90 flex items-center gap-1.5 transition-all">
+                <button type="button" id="btnSaveKnowledge" onclick="saveKnowledgeData()" class="cursor-pointer rounded-xl bg-primary px-4 py-2 text-xs font-bold text-on-primary shadow-sm hover:bg-primary/90 flex items-center gap-1.5 transition-all">
                     <span class="material-symbols-outlined text-[16px]">save</span>
                     Simpan Knowledge Base
                 </button>
@@ -1038,6 +1147,16 @@ Apakah ingin tambah kuota atau upgrade paket website agar chatbot tetap aktif me
         label.innerText = `${len.toLocaleString('id-ID')} karakter · ${words.toLocaleString('id-ID')} kata`;
     }
 
+    window.insertSnippet = function(textareaId, counterId, snippet) {
+        const input = document.getElementById(textareaId);
+        if (!input) return;
+        const currentVal = input.value.trim();
+        input.value = currentVal ? (currentVal + "\n\n" + snippet) : snippet;
+        updateCharCount(textareaId, counterId);
+        input.focus();
+        input.setSelectionRange(input.value.length, input.value.length);
+    };
+
     function insertFaqTemplate() {
         const input = document.getElementById('knowFaqInput');
         if (!input) return;
@@ -1107,15 +1226,20 @@ Apakah ingin tambah kuota atau upgrade paket website agar chatbot tetap aktif me
                     list.forEach(item => {
                         const safeQ = item.question.replace(/'/g, "\\'");
                         html += `
-                            <div class="flex items-center justify-between p-3 rounded-xl border border-outline-variant bg-surface-container-lowest hover:bg-surface-container-low transition-colors shadow-xs">
-                                <div class="min-w-0 pr-3">
-                                    <strong class="text-xs text-on-surface block leading-snug">${item.question}</strong>
-                                    <span class="inline-flex items-center gap-1 text-[11px] text-amber-800 font-semibold mt-0.5">
-                                        <span class="h-1.5 w-1.5 rounded-full bg-amber-500"></span> Ditanyakan ${item.count} kali oleh pengunjung
-                                    </span>
+                            <div class="flex items-center justify-between p-3.5 rounded-xl border border-outline-variant/80 bg-surface-container-lowest hover:border-primary/40 hover:bg-surface-container-low transition-all shadow-2xs">
+                                <div class="min-w-0 pr-3 flex items-start gap-2.5">
+                                    <div class="w-7 h-7 rounded-lg bg-amber-500/10 text-amber-600 flex items-center justify-center shrink-0 mt-0.5">
+                                        <span class="material-symbols-outlined text-[16px]">chat_bubble</span>
+                                    </div>
+                                    <div>
+                                        <strong class="text-xs text-on-surface block leading-snug font-bold">${item.question}</strong>
+                                        <span class="inline-flex items-center gap-1.5 text-[10.5px] text-amber-900 font-semibold mt-1 bg-amber-500/15 px-2 py-0.5 rounded-md">
+                                            <span class="h-1.5 w-1.5 rounded-full bg-amber-500"></span> Ditanyakan ${item.count}x oleh pengunjung
+                                        </span>
+                                    </div>
                                 </div>
-                                <button type="button" onclick="adoptAsFaq('${safeQ}')" class="shrink-0 cursor-pointer text-xs font-bold text-primary bg-primary/10 hover:bg-primary hover:text-on-primary px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-[15px]">add</span> Jadikan FAQ
+                                <button type="button" onclick="adoptAsFaq('${safeQ}')" class="shrink-0 cursor-pointer text-xs font-bold text-primary bg-primary/10 hover:bg-primary hover:text-on-primary px-3 py-1.5 rounded-xl transition-all flex items-center gap-1 shadow-2xs hover:shadow-xs">
+                                    <span class="material-symbols-outlined text-[15px]">add_circle</span> Jadikan FAQ
                                 </button>
                             </div>
                         `;

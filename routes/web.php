@@ -43,6 +43,9 @@ Route::post('/payments/midtrans/hosting/simulate/{payment}', [MidtransController
 Route::get('/s/{order:site_slug}/{page?}', CustomerSiteController::class)
     ->whereIn('page', ['menu', 'reservasi', 'tentang-kami', 'portofolio', 'layanan', 'keahlian', 'janji', 'catalog', 'price', 'stock', 'shop', 'katalog', 'harga', 'stok', 'belanja', 'ketersediaan', 'inquiry', 'keranjang'])
     ->name('sites.show');
+Route::post('/s/{order:site_slug}/chat', [CustomerSiteController::class, 'chat'])
+    ->middleware('throttle:60,1')
+    ->name('sites.chat');
 
 Route::middleware('guest')->group(function (): void {
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');

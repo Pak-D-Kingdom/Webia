@@ -11,6 +11,29 @@
 
         @if (session('status')) <p role="status">{{ session('status') }}</p> @endif
 
+        @if (!empty($aiQuotaAlert))
+            <div class="dashboard-empty customer-recent-card" style="border-left: 4px solid {{ $aiQuotaAlert['type'] === 'exhausted' ? '#ef4444' : '#f59e0b' }}; background: {{ $aiQuotaAlert['type'] === 'exhausted' ? '#fef2f2' : '#fffbeb' }}; margin-bottom: 1.5rem; padding: 1rem 1.25rem;">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+                    <div style="display: flex; gap: 0.75rem; align-items: center;">
+                        <span class="material-symbols-outlined" style="color: {{ $aiQuotaAlert['type'] === 'exhausted' ? '#dc2626' : '#d97706' }}; font-size: 26px;">
+                            {{ $aiQuotaAlert['type'] === 'exhausted' ? 'error' : 'warning' }}
+                        </span>
+                        <div>
+                            <h3 style="font-size: 0.95rem; font-weight: 700; color: {{ $aiQuotaAlert['type'] === 'exhausted' ? '#991b1b' : '#92400e' }}; margin: 0 0 0.2rem 0;">
+                                {{ $aiQuotaAlert['title'] }}
+                            </h3>
+                            <p style="font-size: 0.85rem; color: {{ $aiQuotaAlert['type'] === 'exhausted' ? '#7f1d1d' : '#78350f' }}; margin: 0; line-height: 1.45;">
+                                {{ $aiQuotaAlert['message'] }}
+                            </p>
+                        </div>
+                    </div>
+                    <a href="{{ route('customer.ai') }}" class="customer-open-site" style="background: {{ $aiQuotaAlert['type'] === 'exhausted' ? '#dc2626' : '#d97706' }}; color: #ffffff; border: none; font-size: 0.82rem; padding: 0.5rem 0.95rem; text-decoration: none; border-radius: 8px; font-weight: 600; white-space: nowrap;">
+                        Kelola Kuota & AI
+                    </a>
+                </div>
+            </div>
+        @endif
+
         @if ($activeOrder)
             <div class="dashboard-grid customer-dash-grid">
                 <div class="dashboard-empty customer-order-card">

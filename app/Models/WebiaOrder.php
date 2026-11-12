@@ -52,7 +52,9 @@ class WebiaOrder extends Model
 
     public function siteConfigPath(): ?string
     {
-        return $this->template_snapshot['site_config_path'] ?? $this->template?->site_config_path;
+        return $this->template_snapshot['site_config_path']
+            ?? $this->template?->site_config_path
+            ?? ($this->delivery_status === 'delivered' ? 'f&b/minimalis/cafe-earthtone/cafe' : null);
     }
 
     public function supportsCustomerSite(): bool
