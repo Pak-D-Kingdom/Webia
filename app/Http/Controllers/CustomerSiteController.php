@@ -572,28 +572,8 @@ class CustomerSiteController extends Controller
         $chatUrl = route('sites.chat', ['order' => $order->site_slug]);
         $csrfToken = csrf_token();
 
-        // Cek apakah template memiliki elemen chat bawaan atau merupakan template klien resmi
-        $hasNativeChat = str_contains($html, 'id="chat"')
-            || str_contains($html, 'id="ch"')
-            || str_contains($html, 'id="lw-chat"')
-            || str_contains($html, 'id="ai-modal"')
-            || str_contains($html, 'id="aiChatBox"')
-            || str_contains($html, 'id="ai-chat-modal"')
-            || str_contains($html, 'id="ascChatPanel"')
-            || str_contains($html, 'id="lb-chat"')
-            || str_contains($html, 'id="agChat"')
-            || str_contains($html, 'class="chat"')
-            || str_contains($html, 'class="asc-chat-panel"')
-            || str_contains($html, 'class="lb-chat"')
-            || str_contains($html, 'class="lw-chat"')
-            || str_contains($html, 'data-lw-chat-open')
-            || str_contains($html, 'class="classic-chat-panel"')
-            || str_contains($html, 'data-chat')
-            || str_contains($html, 'class="chat-panel"');
-
-        if ($hasNativeChat) {
-            // Gunakan widget UI bawaan asli template dan sambungkan ke AI backend
-            $bridgeScript = <<<HTML
+        // Gunakan widget UI bawaan asli template klien dan sambungkan langsung ke AI backend Webia
+        $bridgeScript = <<<HTML
 <script id="webia-native-ai-bridge">
 (function() {
     const chatUrl = "{$chatUrl}";
@@ -1177,27 +1157,9 @@ class CustomerSiteController extends Controller
 </script>
 HTML;
 
-            if (str_contains($html, '</body>')) {
-                return str_replace('</body>', $bridgeScript . "\n</body>", $html);
-            }
-            return $html . $bridgeScript;
-        }
-
-        // Fallback untuk website lama di luar template modern klien
-        $resolvedTheme = AiQuotaService::resolveWidgetTheme('auto', $order->category_slug ?? '');
-        $widgetHtml = view('components.site-ai-widget', [
-            'order' => $order,
-            'business' => $business,
-            'whatsapp' => $whatsapp,
-            'siteSlug' => $order->site_slug,
-            'widgetTheme' => $resolvedTheme['slug'],
-            'widgetIcon' => $resolvedTheme['icon'],
-            'widgetThemeMeta' => $resolvedTheme,
-        ])->render();
-
         if (str_contains($html, '</body>')) {
-            return str_replace('</body>', $widgetHtml . "\n</body>", $html);
+            return str_replace('</body>', $bridgeScript . "\n</body>", $html);
         }
-        return $html . $widgetHtml;
+        return $html . $bridgeScript;
     }
 }
