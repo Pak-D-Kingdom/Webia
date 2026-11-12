@@ -665,7 +665,7 @@ public static function simulateChat(string $tenantId, string $message): array
         $aiBaseUrl = rtrim(config('services.ai_engine.url', 'http://127.0.0.1:8001'), '/');
 
         try {
-            $res = Http::timeout(4)->post("{$aiBaseUrl}/api/v1/chat", [
+            $res = Http::timeout(15)->post("{$aiBaseUrl}/api/v1/chat", [
                 'layer' => 'l4',
                 'tenant_id' => $tenantId,
                 'messages' => [
@@ -680,32 +680,86 @@ public static function simulateChat(string $tenantId, string $message): array
                         'status' => 'success',
                         'reply' => $content,
                         'meta' => $json['meta'] ?? [],
+                        'engine_recorded' => true,
                     ];
                 }
             }
         } catch (Throwable $e) {}
 
-        // Fallback cerdas berdasarkan knowledge lokal jika AI engine belum dihidupkan
+        // Fallback cerdas berbasis berkas Markdown Knowledge Base tenant jika AI engine offline
         $knowledge = self::getTenantKnowledge($tenantId);
-        $faq = $knowledge['faq'] ?? '';
+        $layanan = $knowledge['layanan'] ?? '';
+        $faq = $knowledge['faq_raw'] ?? ($knowledge['faq'] ?? '');
+        $profil = $knowledge['profil'] ?? '';
+        $msgLower = strtolower($message);
 
-        // Cek apakah ada kecocokan di FAQ
-        $reply = "Halo! Terima kasih atas pertanyaannya. Saat ini kami siap melayani pesanan Anda sesuai daftar katalog dan jam operasional kami. Silakan hubungi kami untuk informasi selengkapnya!";
-        if (!empty($faq)) {
-            $lines = explode("
-", $faq);
-            foreach ($lines as $line) {
-                if (str_contains(strtolower($line), strtolower(substr($message, 0, 10)))) {
-                    $reply = "Berdasarkan informasi FAQ kami: " . trim(strip_tags($line));
-                    break;
+        // 1. Pertanyaan seputar Lokasi / Jam Operasional / Alamat / Kontak
+        if (preg_match('/(lokasi|alamat|di\s*mana|jam|buka|tutup|operasional|hari\s*apa|kontak|wa|whatsapp|telepon)/i', $message)) {
+            if (!empty($profil)) {
+                $cleanProfil = trim(preg_replace('/^#+\s+.*$/m', '', $profil));
+                return [
+                    'status' => 'success',
+                    'reply' => "Berikut informasi lokasi dan jam operasional kami:\n\n" . trim($cleanProfil) . "\n\nSilakan kunjungi kami atau hubungi WhatsApp kami langsung jika membutuhkan bantuan! 😊",
+                    'meta' => ['source' => 'local_knowledge_profil', 'is_simulation' => true],
+                    'engine_recorded' => false,
+                ];
+            }
+        }
+
+        // 2. Pertanyaan seputar Cara Pesan / Order / Penjemputan / Syarat
+        if (preg_match('/(pesan|order|antar|jemput|pick\s*up|delivery|cara|syarat|aturan|berapa\s*lama|waktu\s*pengerjaan)/i', $message)) {
+            if (!empty($faq)) {
+                $cleanFaq = trim(preg_replace('/^#+\s+.*$/m', '', $faq));
+                return [
+                    'status' => 'success',
+                    'reply' => "Berikut informasi pemesanan dan pertanyaan umum kami:\n\n" . trim($cleanFaq) . "\n\nSilakan hubungi WhatsApp kami untuk respon pemesanan langsung! 😊",
+                    'meta' => ['source' => 'local_knowledge_faq', 'is_simulation' => true],
+                    'engine_recorded' => false,
+                ];
+            }
+        }
+
+        // 3. Pertanyaan seputar Tarif / Harga / Kiloan / Biaya / Layanan
+        if (preg_match('/(harga|tarif|biaya|kilo|paket|ongkos|cuci|layanan|produk|laundry|diskon|promo|sepatu|bed\s*cover)/i', $message)) {
+            if (!empty($layanan)) {
+                $cleanLayanan = trim(preg_replace('/^#+\s+.*$/m', '', $layanan));
+                return [
+                    'status' => 'success',
+                    'reply' => "Berikut adalah daftar layanan dan tarif kami:\n\n" . trim($cleanLayanan) . "\n\nAda yang ingin Anda pesan atau tanyakan lebih lanjut? 😊",
+                    'meta' => ['source' => 'local_knowledge_layanan', 'is_simulation' => true],
+                    'engine_recorded' => false,
+                ];
+            }
+        }
+
+        // 4. Pencocokan kata kunci paragraf demi paragraf di seluruh berkas knowledge
+        $allDocs = [$layanan, $faq, $profil];
+        $words = array_filter(explode(' ', preg_replace('/[^a-zA-Z0-9\s]/', '', $msgLower)), fn($w) => strlen($w) >= 4);
+        foreach ($allDocs as $doc) {
+            if (empty($doc)) continue;
+            $paragraphs = preg_split('/\n\s*\n/', $doc);
+            foreach ($paragraphs as $para) {
+                $paraClean = trim(strip_tags($para));
+                if (empty($paraClean) || str_starts_with($paraClean, '#')) continue;
+                $paraLower = strtolower($paraClean);
+                foreach ($words as $word) {
+                    if (str_contains($paraLower, $word)) {
+                        return [
+                            'status' => 'success',
+                            'reply' => $paraClean,
+                            'meta' => ['source' => 'local_knowledge_match', 'is_simulation' => true],
+                            'engine_recorded' => false,
+                        ];
+                    }
                 }
             }
         }
 
         return [
             'status' => 'success',
-            'reply' => $reply,
+            'reply' => "Halo! Terima kasih atas pertanyaannya. Kami siap membantu Anda. Anda dapat menanyakan seputar **daftar harga**, **lokasi & jam operasional**, maupun **cara pemesanan** kepada kami! 😊",
             'meta' => ['is_simulation' => true],
+            'engine_recorded' => false,
         ];
     }
 
@@ -735,5 +789,213 @@ public static function simulateChat(string $tenantId, string $message): array
         }
 
         return false;
+    }
+
+    /**
+     * Katalog 10 Preset Desain Template Widget AI Website Klien.
+     */
+    public static function getWidgetThemes(): array
+    {
+        return [
+            'auto' => [
+                'slug' => 'auto',
+                'name' => 'Otomatis (Ikuti Kategori)',
+                'icon' => '✨',
+                'primary_color' => '#4f46e5',
+                'gradient' => 'linear-gradient(135deg, #4f46e5 0%, #ec4899 100%)',
+                'header_bg' => 'linear-gradient(135deg, #1e1b4b 0%, #312e81 100%)',
+                'header_text' => '#ffffff',
+                'user_bubble' => '#4f46e5',
+                'bot_bubble' => '#ffffff',
+                'bot_text' => '#0f172a',
+                'preview_bg' => '#f8fafc',
+                'launcher_radius' => '9999px',
+                'badge' => 'Smart Auto',
+            ],
+            'earthy_cafe' => [
+                'slug' => 'earthy_cafe',
+                'name' => 'Earthy Cafe & Terracotta',
+                'icon' => '✨',
+                'primary_color' => '#8B5A2B',
+                'gradient' => 'linear-gradient(135deg, #8B5A2B 0%, #A0522D 100%)',
+                'header_bg' => 'linear-gradient(135deg, #3E2723 0%, #4E342E 100%)',
+                'header_text' => '#FFF8E7',
+                'user_bubble' => '#8B5A2B',
+                'bot_bubble' => '#ffffff',
+                'bot_text' => '#3E2723',
+                'preview_bg' => '#FAF7F2',
+                'launcher_radius' => '9999px',
+                'badge' => 'Warm Cozy',
+            ],
+            'ocean_teal' => [
+                'slug' => 'ocean_teal',
+                'name' => 'Ocean Teal & Modern Slate',
+                'icon' => '✨',
+                'primary_color' => '#0D9488',
+                'gradient' => 'linear-gradient(135deg, #0D9488 0%, #0284C7 100%)',
+                'header_bg' => 'linear-gradient(135deg, #0F172A 0%, #134E4A 100%)',
+                'header_text' => '#F0FDFA',
+                'user_bubble' => '#0D9488',
+                'bot_bubble' => '#ffffff',
+                'bot_text' => '#0F172A',
+                'preview_bg' => '#F0FDFA',
+                'launcher_radius' => '9999px',
+                'badge' => 'Modern Pro',
+            ],
+            'luxury_gold' => [
+                'slug' => 'luxury_gold',
+                'name' => 'Luxury Champagne & Gold',
+                'icon' => '✨',
+                'primary_color' => '#C59B27',
+                'gradient' => 'linear-gradient(135deg, #C59B27 0%, #9A7B2C 100%)',
+                'header_bg' => 'linear-gradient(135deg, #0A0D14 0%, #171510 100%)',
+                'header_text' => '#FBF3D5',
+                'user_bubble' => '#9A7B2C',
+                'bot_bubble' => '#ffffff',
+                'bot_text' => '#1C1917',
+                'preview_bg' => '#FCFBF7',
+                'launcher_radius' => '9999px',
+                'badge' => 'Premium Concierge',
+            ],
+            'pastel_rose' => [
+                'slug' => 'pastel_rose',
+                'name' => 'Pastel Rose & Blush',
+                'icon' => '✨',
+                'primary_color' => '#EC4899',
+                'gradient' => 'linear-gradient(135deg, #EC4899 0%, #F43F5E 100%)',
+                'header_bg' => 'linear-gradient(135deg, #831843 0%, #9D174D 100%)',
+                'header_text' => '#FFF1F2',
+                'user_bubble' => '#E11D48',
+                'bot_bubble' => '#ffffff',
+                'bot_text' => '#4C0519',
+                'preview_bg' => '#FFF5F7',
+                'launcher_radius' => '9999px',
+                'badge' => 'Soft & Beauty',
+            ],
+            'forest_moss' => [
+                'slug' => 'forest_moss',
+                'name' => 'Forest Moss & Botanical',
+                'icon' => '✨',
+                'primary_color' => '#15803D',
+                'gradient' => 'linear-gradient(135deg, #15803D 0%, #047857 100%)',
+                'header_bg' => 'linear-gradient(135deg, #064E3B 0%, #022C22 100%)',
+                'header_text' => '#ECFDF5',
+                'user_bubble' => '#15803D',
+                'bot_bubble' => '#ffffff',
+                'bot_text' => '#052E16',
+                'preview_bg' => '#F0FDF4',
+                'launcher_radius' => '9999px',
+                'badge' => 'Natural Eco',
+            ],
+            'dark_cyber' => [
+                'slug' => 'dark_cyber',
+                'name' => 'Dark Cyber & Sporty Orange',
+                'icon' => '✨',
+                'primary_color' => '#EA580C',
+                'gradient' => 'linear-gradient(135deg, #EA580C 0%, #F97316 100%)',
+                'header_bg' => 'linear-gradient(135deg, #0A0A0A 0%, #171717 100%)',
+                'header_text' => '#FAFAFA',
+                'user_bubble' => '#EA580C',
+                'bot_bubble' => '#262626',
+                'bot_text' => '#F3F4F6',
+                'preview_bg' => '#121212',
+                'launcher_radius' => '10px',
+                'badge' => 'High Contrast',
+            ],
+            'classic_concierge' => [
+                'slug' => 'classic_concierge',
+                'name' => 'Classic Concierge (Charcoal)',
+                'icon' => '✨',
+                'primary_color' => '#334155',
+                'gradient' => 'linear-gradient(135deg, #334155 0%, #1E293B 100%)',
+                'header_bg' => 'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)',
+                'header_text' => '#F8FAFC',
+                'user_bubble' => '#334155',
+                'bot_bubble' => '#ffffff',
+                'bot_text' => '#0F172A',
+                'preview_bg' => '#F8FAFC',
+                'launcher_radius' => '8px',
+                'badge' => 'Formal Trust',
+            ],
+            'frosted_glass' => [
+                'slug' => 'frosted_glass',
+                'name' => 'Frosted Glassmorphism',
+                'icon' => '✨',
+                'primary_color' => '#8B5CF6',
+                'gradient' => 'linear-gradient(135deg, rgba(99, 102, 241, 0.9) 0%, rgba(168, 85, 247, 0.9) 100%)',
+                'header_bg' => 'linear-gradient(135deg, rgba(30, 27, 75, 0.95) 0%, rgba(76, 29, 149, 0.95) 100%)',
+                'header_text' => '#FFFFFF',
+                'user_bubble' => '#6366F1',
+                'bot_bubble' => '#ffffff',
+                'bot_text' => '#1E1B4B',
+                'preview_bg' => '#F5F3FF',
+                'launcher_radius' => '9999px',
+                'badge' => 'Glass Glow',
+            ],
+            'clean_minimal' => [
+                'slug' => 'clean_minimal',
+                'name' => 'Clean Minimalist (Apple Slate)',
+                'icon' => '✨',
+                'primary_color' => '#18181B',
+                'gradient' => 'linear-gradient(135deg, #18181B 0%, #27272A 100%)',
+                'header_bg' => 'linear-gradient(135deg, #18181B 0%, #27272A 100%)',
+                'header_text' => '#FFFFFF',
+                'user_bubble' => '#18181B',
+                'bot_bubble' => '#ffffff',
+                'bot_text' => '#18181B',
+                'preview_bg' => '#FAFAFA',
+                'launcher_radius' => '9999px',
+                'badge' => 'Clean Slate',
+            ],
+            'citrus_playful' => [
+                'slug' => 'citrus_playful',
+                'name' => 'Citrus Pop & Playful',
+                'icon' => '✨',
+                'primary_color' => '#F59E0B',
+                'gradient' => 'linear-gradient(135deg, #F97316 0%, #FBBF24 100%)',
+                'header_bg' => 'linear-gradient(135deg, #C2410C 0%, #D97706 100%)',
+                'header_text' => '#FFFFFF',
+                'user_bubble' => '#EA580C',
+                'bot_bubble' => '#ffffff',
+                'bot_text' => '#78350F',
+                'preview_bg' => '#FFFBEB',
+                'launcher_radius' => '9999px',
+                'badge' => 'Fresh & Active',
+            ],
+        ];
+    }
+
+    /**
+     * Tentukan tema akhir widget yang digunakan oleh live site klien.
+     */
+    public static function resolveWidgetTheme(?string $preferredTheme, ?string $category = null): array
+    {
+        $themes = self::getWidgetThemes();
+        $pref = strtolower(trim((string) $preferredTheme));
+
+        if (! empty($pref) && $pref !== 'auto' && isset($themes[$pref])) {
+            return array_merge($themes[$pref], ['is_auto' => false]);
+        }
+
+        // Resolusi otomatis berbasis kategori template klien
+        $cat = strtolower(trim((string) $category));
+        $mapped = match (true) {
+            str_contains($cat, 'fnb') || str_contains($cat, 'cafe') || str_contains($cat, 'resto') || str_contains($cat, 'bakery') => 'earthy_cafe',
+            str_contains($cat, 'beauty') || str_contains($cat, 'salon') || str_contains($cat, 'spa') || str_contains($cat, 'skin') => 'pastel_rose',
+            str_contains($cat, 'company') || str_contains($cat, 'corporate') || str_contains($cat, 'tech') || str_contains($cat, 'modern') => 'ocean_teal',
+            str_contains($cat, 'luxury') || str_contains($cat, 'jewelry') => 'luxury_gold',
+            str_contains($cat, 'agri') || str_contains($cat, 'tani') || str_contains($cat, 'organic') => 'forest_moss',
+            str_contains($cat, 'auto') || str_contains($cat, 'motor') || str_contains($cat, 'gym') || str_contains($cat, 'fit') => 'dark_cyber',
+            str_contains($cat, 'law') || str_contains($cat, 'legal') || str_contains($cat, 'pajak') || str_contains($cat, 'notaris') || str_contains($cat, 'logist') || str_contains($cat, 'prop') => 'classic_concierge',
+            str_contains($cat, 'kreatif') || str_contains($cat, 'personal') || str_contains($cat, 'brand') || str_contains($cat, 'creative') => 'frosted_glass',
+            str_contains($cat, 'pet') || str_contains($cat, 'animal') || str_contains($cat, 'event') || str_contains($cat, 'edu') || str_contains($cat, 'bimbel') || str_contains($cat, 'kursus') => 'citrus_playful',
+            str_contains($cat, 'health') || str_contains($cat, 'medik') || str_contains($cat, 'klinik') || str_contains($cat, 'service') || str_contains($cat, 'laundry') => 'ocean_teal',
+            str_contains($cat, 'furnitur') || str_contains($cat, 'interior') => 'earthy_cafe',
+            str_contains($cat, 'travel') || str_contains($cat, 'tour') || str_contains($cat, 'umrah') => 'luxury_gold',
+            default => 'clean_minimal',
+        };
+
+        $resolved = $themes[$mapped] ?? $themes['clean_minimal'];
+        return array_merge($resolved, ['is_auto' => true, 'resolved_from_category' => $cat]);
     }
 }

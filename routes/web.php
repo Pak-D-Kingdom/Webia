@@ -123,6 +123,7 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
         Route::get('ai-quotas/{tenant_id}/knowledge', [AdminAiQuotaController::class, 'getKnowledge'])->name('ai.knowledge.get');
         Route::post('ai-quotas/{tenant_id}/knowledge', [AdminAiQuotaController::class, 'saveKnowledge'])->name('ai.knowledge.save');
         Route::get('ai-quotas/{tenant_id}/unanswered', [AdminAiQuotaController::class, 'getUnanswered'])->name('ai.unanswered');
+        Route::post('ai-quotas/{tenant_id}/widget-theme', [AdminAiQuotaController::class, 'updateWidgetTheme'])->name('ai.widget-theme.update');
     });
 });
 

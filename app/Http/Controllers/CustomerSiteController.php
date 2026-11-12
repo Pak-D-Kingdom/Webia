@@ -66,12 +66,18 @@ class CustomerSiteController extends Controller
             'routeUrl' => $pageUrl,
         ])->render();
 
-        // Injeksi otomatis widget AI Assistant & Zero Lost Lead Fallback
+        // Injeksi otomatis widget AI Assistant & Zero Lost Lead Fallback dengan Tema Terpilih
+        $rawWidgetTheme = $business['ai_widget_theme'] ?? ($order->business_data['ai_widget_theme'] ?? 'auto');
+        $resolvedTheme = AiQuotaService::resolveWidgetTheme($rawWidgetTheme, $order->category_slug ?? '');
+
         $widgetHtml = view('components.site-ai-widget', [
             'order' => $order,
             'business' => $business,
             'whatsapp' => $whatsapp,
             'siteSlug' => $order->site_slug,
+            'widgetTheme' => $resolvedTheme['slug'],
+            'widgetIcon' => $resolvedTheme['icon'],
+            'widgetThemeMeta' => $resolvedTheme,
         ])->render();
 
         if (str_contains($renderedHtml, '</body>')) {
@@ -344,9 +350,11 @@ class CustomerSiteController extends Controller
             ]);
         }
 
-        // Jalankan percakapan AI & catat konsumsi kuota
+        // Jalankan percakapan AI & catat konsumsi kuota hanya jika belum dicatat oleh AI Engine
         $replyData = AiQuotaService::simulateChat($order->site_slug, $message);
-        AiQuotaService::recordUsage($order->site_slug);
+        if (empty($replyData['engine_recorded'])) {
+            AiQuotaService::recordUsage($order->site_slug);
+        }
 
         return response()->json([
             'status' => 'success',

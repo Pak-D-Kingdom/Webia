@@ -218,7 +218,8 @@ class CustomerAccountsSeeder extends Seeder
                 'cat' => 'automotive',
                 'phone' => '081234560101',
                 'city' => 'Surabaya',
-                'used_quota' => 486, // 97.2% -> WARNING
+                'widget_theme' => 'dark_cyber',
+                'used_quota' => 120, // Kuota aman untuk testing
                 'hosting' => [
                     'type' => 'unpaid',
                     'domain' => 'pakdemotor.id',
@@ -239,7 +240,8 @@ class CustomerAccountsSeeder extends Seeder
                 'cat' => 'beauty',
                 'phone' => '081234560102',
                 'city' => 'Jakarta Selatan',
-                'used_quota' => 500, // 100.0% -> HABIS / BLOCKED
+                'widget_theme' => 'pastel_rose',
+                'used_quota' => 150, // Kuota aman untuk testing
                 'hosting' => [
                     'type' => 'paid',
                     'domain' => 'glowclinic.id',
@@ -260,6 +262,7 @@ class CustomerAccountsSeeder extends Seeder
                 'cat' => 'services',
                 'phone' => '081234560103',
                 'city' => 'Semarang',
+                'widget_theme' => 'ocean_teal',
                 'used_quota' => 180, // 36.0% -> NORMAL
                 'hosting' => [
                     'type' => 'overdue',
@@ -281,6 +284,7 @@ class CustomerAccountsSeeder extends Seeder
                 'cat' => 'agriculture',
                 'phone' => '081234560104',
                 'city' => 'Malang',
+                'widget_theme' => 'forest_moss',
                 'used_quota' => 25, // 5.0% -> FRESH
                 'hosting' => null, // NON-HOSTING (EMPTY STATE)
             ],
@@ -297,7 +301,8 @@ class CustomerAccountsSeeder extends Seeder
                 'cat' => 'healthcare',
                 'phone' => '081234560201',
                 'city' => 'Surabaya',
-                'used_quota' => 1500, // 100.0% -> HABIS / BLOCKED
+                'widget_theme' => 'ocean_teal',
+                'used_quota' => 120, // Kuota aman untuk testing
                 'hosting' => [
                     'type' => 'unpaid',
                     'domain' => 'kliniksehat.id',
@@ -318,6 +323,7 @@ class CustomerAccountsSeeder extends Seeder
                 'cat' => 'fnb',
                 'phone' => '081234560202',
                 'city' => 'Yogyakarta',
+                'widget_theme' => 'earthy_cafe',
                 'used_quota' => 1380, // 92.0% -> WARNING
                 'hosting' => [
                     'type' => 'paid',
@@ -339,6 +345,7 @@ class CustomerAccountsSeeder extends Seeder
                 'cat' => 'personal-brand',
                 'phone' => '081234560203',
                 'city' => 'Jakarta Barat',
+                'widget_theme' => 'clean_minimal',
                 'used_quota' => 350, // 23.3% -> NORMAL
                 'hosting' => [
                     'type' => 'multi_invoice',
@@ -359,6 +366,7 @@ class CustomerAccountsSeeder extends Seeder
                 'cat' => 'pet-animal-service',
                 'phone' => '081234560204',
                 'city' => 'Bogor',
+                'widget_theme' => 'citrus_playful',
                 'used_quota' => 85, // 5.7% -> FRESH
                 'hosting' => [
                     'type' => 'active_no_invoice',
@@ -381,6 +389,7 @@ class CustomerAccountsSeeder extends Seeder
                 'cat' => 'travel-tourism',
                 'phone' => '081234560301',
                 'city' => 'Denpasar Bali',
+                'widget_theme' => 'ocean_teal',
                 'used_quota' => 2380, // 95.2% -> WARNING
                 'hosting' => [
                     'type' => 'overdue',
@@ -402,6 +411,7 @@ class CustomerAccountsSeeder extends Seeder
                 'cat' => 'logistics',
                 'phone' => '081234560302',
                 'city' => 'Jakarta Utara',
+                'widget_theme' => 'classic_concierge',
                 'used_quota' => 2500, // 100.0% -> HABIS / BLOCKED
                 'hosting' => [
                     'type' => 'cancelled_replaced',
@@ -423,6 +433,7 @@ class CustomerAccountsSeeder extends Seeder
                 'cat' => 'furniture',
                 'phone' => '081234560303',
                 'city' => 'Jepara',
+                'widget_theme' => 'earthy_cafe',
                 'used_quota' => 1150, // 46.0% -> NORMAL
                 'hosting' => [
                     'type' => 'paid',
@@ -444,6 +455,7 @@ class CustomerAccountsSeeder extends Seeder
                 'cat' => 'travel-tourism',
                 'phone' => '081234560304',
                 'city' => 'Surabaya',
+                'widget_theme' => 'forest_moss',
                 'used_quota' => 160, // 6.4% -> FRESH
                 'hosting' => [
                     'type' => 'unpaid',
@@ -467,6 +479,7 @@ class CustomerAccountsSeeder extends Seeder
                 'cat' => 'education',
                 'phone' => '081234560401',
                 'city' => 'Bandung',
+                'widget_theme' => 'clean_minimal',
                 'used_quota' => 5000, // 100.0% -> HABIS / BLOCKED
                 'hosting' => [
                     'type' => 'multi_invoice',
@@ -487,6 +500,7 @@ class CustomerAccountsSeeder extends Seeder
                 'cat' => 'services',
                 'phone' => '081234560402',
                 'city' => 'Jakarta Pusat',
+                'widget_theme' => 'classic_concierge',
                 'used_quota' => 4450, // 89.0% -> WARNING
                 'hosting' => [
                     'type' => 'paid',
@@ -508,6 +522,7 @@ class CustomerAccountsSeeder extends Seeder
                 'cat' => 'fitness',
                 'phone' => '081234560403',
                 'city' => 'Surabaya',
+                'widget_theme' => 'dark_cyber',
                 'used_quota' => 2100, // 42.0% -> NORMAL
                 'hosting' => [
                     'type' => 'unpaid',
@@ -529,6 +544,7 @@ class CustomerAccountsSeeder extends Seeder
                 'cat' => 'property',
                 'phone' => '081234560404',
                 'city' => 'Surabaya',
+                'widget_theme' => 'luxury_gold',
                 'used_quota' => 220, // 4.4% -> FRESH
                 'hosting' => null, // NON-HOSTING (EMPTY STATE)
             ],
@@ -577,6 +593,7 @@ class CustomerAccountsSeeder extends Seeder
                     'owner_name' => $c['name'],
                     'whatsapp' => $c['phone'],
                     'city' => $c['city'],
+                    'ai_widget_theme' => $c['widget_theme'] ?? 'auto',
                 ],
                 'delivery_status' => 'delivered',
                 'site_slug' => $c['site_slug'],

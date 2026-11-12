@@ -71,6 +71,7 @@ class AdminAiQuotaController extends Controller
                 'status_category' => $statusCategory,
                 'is_exhausted' => $isExhausted,
                 'is_warning' => $isWarning,
+                'widget_theme' => $matchedOrder?->business_data['ai_widget_theme'] ?? 'auto',
             ];
         }
 
@@ -136,6 +137,7 @@ class AdminAiQuotaController extends Controller
         $daysUntilReset = max(1, (int) Carbon::now()->diffInDays($endOfMonth, false));
         $lastSyncedTime = Carbon::now()->locale('id')->format('H:i:s') . ' WIB';
         $cacheStats = AiQuotaService::getCacheStats();
+        $widgetThemes = AiQuotaService::getWidgetThemes();
 
         return view('admin.ai.index', compact(
             'filteredClients',
@@ -154,7 +156,8 @@ class AdminAiQuotaController extends Controller
             'resetDateFormatted',
             'daysUntilReset',
             'lastSyncedTime',
-            'cacheStats'
+            'cacheStats',
+            'widgetThemes'
         ));
     }
 
@@ -290,5 +293,42 @@ class AdminAiQuotaController extends Controller
             'tenant_id' => $tenantId,
             'unanswered_queries' => $unanswered,
         ]);
+    }
+
+    /**
+     * Memperbarui template desain widget AI klien dari Superadmin.
+     */
+    public function updateWidgetTheme(Request $request, string $tenantId): JsonResponse|RedirectResponse
+    {
+        $request->validate([
+            'widget_theme' => 'required|string',
+        ]);
+
+        $theme = strtolower($request->input('widget_theme'));
+        $allowed = array_keys(AiQuotaService::getWidgetThemes());
+        if (! in_array($theme, $allowed, true)) {
+            $theme = 'auto';
+        }
+
+        $order = WebiaOrder::where('site_slug', $tenantId)->first();
+        if ($order) {
+            $businessData = $order->business_data ?? [];
+            $businessData['ai_widget_theme'] = $theme;
+            $order->business_data = $businessData;
+            $order->save();
+        }
+
+        $themeInfo = AiQuotaService::getWidgetThemes()[$theme] ?? ['name' => $theme];
+
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'status' => 'success',
+                'message' => "Desain widget untuk '{$tenantId}' berhasil diubah ke {$themeInfo['name']}.",
+                'theme' => $theme,
+                'theme_info' => $themeInfo,
+            ]);
+        }
+
+        return redirect()->back()->with('success', "Desain widget klien '{$tenantId}' berhasil diubah ke {$themeInfo['name']}.");
     }
 }
