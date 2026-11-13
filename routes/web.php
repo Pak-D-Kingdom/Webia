@@ -654,7 +654,7 @@ Route::prefix('webia/template/retail/luxury/skincare-soft-pink')
             'ns' => $ns,
             'rp' => $rp,
             'r' => fn(string $name): string => route($rp . $name),
-            'active' => request()->route()?->getName(),
+            'active' => str(request()->route()?->getName() ?? '')->afterLast('.')->toString(),
             'cfg' => config($cfg),
             'img' => asset('images/website-bisnis/template/retail/luxury/skincare-soft-pink'),
             'css' => asset('css/website-bisnis/template/retail/luxury/skincare-soft-pink/skincare.css'),
@@ -1916,17 +1916,9 @@ Route::prefix('webia/template')->group(function () {
         'website-bisnis.templates.professional-service.branding-creative.strike.strike'
     )->name('webia.template.strike-branding-creative');
     Route::view(
-        '/webia/template/fnb/healthy-meal-prep/fresh-harvest',
-        'website-bisnis.templates.fnb.healthy-meal-prep.fresh-harvest'
-    )->name('webia.template.fnb.healthy-meal-prep.fresh-harvest');
-    Route::view(
         '/blushbowl-diet-meal',
         'website-bisnis.templates.food-subscription.diet-meal.blushbowl.blushbowl'
     )->name('webia.template.blushbowl.diet-meal');
-    Route::view(
-        '/sodatable-family-meal-plan',
-        'website-bisnis.templates.food-subscription.weekly-family-meal-plan.sodatable.sodatable'
-    )->name('webia.template.sodatable-family-meal-plan');
 });
 
 Route::get('webia/template/{path}', TemplatePreviewController::class)
