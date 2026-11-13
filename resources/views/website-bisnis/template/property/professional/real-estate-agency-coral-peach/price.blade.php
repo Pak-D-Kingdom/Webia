@@ -40,7 +40,7 @@
                 <td data-label="KT / KM">{{ $p['beds'] }} / {{ $p['baths'] }}</td>
                 <td data-label="LT / LB">{{ $p['land'] }} / {{ $p['building'] }} m²</td>
                 <td data-label="Harga" class="price-table__price">Rp {{ number_format($p['price'], 0, ',', '.') }}</td>
-                <td><a class="btn btn--primary btn--sm" href="{{ route('coral-peach.specification') }}?unit={{ $p['slug'] }}">Detail</a></td>
+                <td><a class="btn btn--primary btn--sm" href="{{ $r('coral-peach.specification') }}?unit={{ $p['slug'] }}">Detail</a></td>
               </tr>
             @endforeach
           </tbody>

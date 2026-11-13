@@ -1,4 +1,4 @@
-@php($r = $e['route'])
+@php($rp = $e['route'])
 @php($h = $e['hero'])
 <section class="nl-hero" aria-labelledby="hero-title">
     <div class="nl-container nl-hero__grid">
@@ -7,17 +7,19 @@
             <h1 id="hero-title">{{ $h['title'] }} <span class="nl-grad">{{ $h['title_2'] }}</span></h1>
             <p class="nl-hero__text">{{ $h['text'] }}</p>
 
-            <ul class="nl-feats">
-                @foreach($h['features'] as $f)
-                    <li>
-                        <span class="nl-feats__ic"><svg class="ic"><use href="#i-{{ $f['icon'] }}"/></svg></span>
-                        <span><strong>{{ $f['value'] }}</strong><small>{{ $f['label'] }}</small></span>
-                    </li>
-                @endforeach
-            </ul>
+            @unless($customerSite)
+                <ul class="nl-feats">
+                    @foreach($h['features'] as $f)
+                        <li>
+                            <span class="nl-feats__ic"><svg class="ic"><use href="#i-{{ $f['icon'] }}"/></svg></span>
+                            <span><strong>{{ $f['value'] }}</strong><small>{{ $f['label'] }}</small></span>
+                        </li>
+                    @endforeach
+                </ul>
+            @endunless
 
             <div class="nl-hero__search">
-                <form class="nl-search" action="{{ route($r.'programs') }}" method="get" role="search" data-hero-search>
+                <form class="nl-search" action="{{ $r($rp.'programs') }}" method="get" role="search" data-hero-search>
                     <svg class="ic"><use href="#i-search"/></svg>
                     <label class="nl-sr" for="hero-q">Cari kursus</label>
                     <input id="hero-q" type="search" name="q" placeholder="{{ $h['search'] }}" autocomplete="off"
@@ -27,7 +29,7 @@
                 </form>
                 <ul class="nl-suggest" id="hero-suggest" role="listbox" aria-label="Saran pencarian" hidden data-suggest-list></ul>
                 <p class="nl-popular"><span>Populer:</span>
-                    @foreach($h['popular'] as $term)<a href="{{ route($r.'programs', ['q' => $term]) }}">{{ $term }}</a>@endforeach
+                    @foreach($h['popular'] as $term)<a href="{{ $r($rp.'programs', ['q' => $term]) }}">{{ $term }}</a>@endforeach
                 </p>
             </div>
         </div>
@@ -42,12 +44,12 @@
                     <h2 id="journey-title">{{ $h['journey_title'] }}</h2>
                     <p>{{ $h['journey_text'] }}</p>
                 </div>
-                <a class="nl-round" href="{{ route($r.'programs') }}" aria-label="Lihat semua program"><svg class="ic"><use href="#i-arrow"/></svg></a>
+                <a class="nl-round" href="{{ $r($rp.'programs') }}" aria-label="Lihat semua program"><svg class="ic"><use href="#i-arrow"/></svg></a>
             </div>
             <ul class="nl-cats">
                 @foreach($e['categories'] as $key => $c)
                     <li>
-                        <a href="{{ route($r.'programs', ['cat' => $key]) }}">
+                        <a href="{{ $r($rp.'programs', ['cat' => $key]) }}">
                             <span class="nl-cats__ic"><svg class="ic"><use href="#i-{{ $c['icon'] }}"/></svg></span>
                             <span>{{ $c['label'] }}</span>
                         </a>

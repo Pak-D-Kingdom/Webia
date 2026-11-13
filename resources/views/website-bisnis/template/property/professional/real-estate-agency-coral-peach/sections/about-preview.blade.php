@@ -12,6 +12,6 @@
         <li><strong>{{ $st['value'] }}</strong><small>{{ $st['label'] }}</small></li>
       @endforeach
     </ul>
-    <a class="btn btn--primary btn--sm" href="{{ route('coral-peach.about') }}">Selengkapnya <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+    <a class="btn btn--primary btn--sm" href="{{ $r('coral-peach.about') }}">Selengkapnya <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
   </div>
 </section>

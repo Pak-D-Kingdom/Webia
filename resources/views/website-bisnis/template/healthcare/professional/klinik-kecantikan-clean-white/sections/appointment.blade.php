@@ -23,7 +23,7 @@
                     </ul>
                 </div>
 
-                <form class="gl-appt__mini" action="{{ route('klinik-kecantikan.appointment') }}" method="get">
+                <form class="gl-appt__mini" action="{{ $r('klinik-kecantikan.appointment') }}" method="get">
                     <div class="gl-field">
                         <label for="gl-mini-nama">Nama lengkap</label>
                         <input id="gl-mini-nama" type="text" name="nama" placeholder="Nama Anda" autocomplete="name" required>
@@ -111,7 +111,7 @@
                 <div class="gl-field gl-field--check">
                     <label class="gl-check">
                         <input type="checkbox" name="setuju" required data-label="Persetujuan">
-                        <span>Saya menyetujui <a href="{{ route('klinik-kecantikan.policy') }}#privasi" target="_blank" rel="noopener">Kebijakan Privasi</a> dan <a href="{{ route('klinik-kecantikan.policy') }}#syarat-ketentuan" target="_blank" rel="noopener">Syarat & Ketentuan</a>.</span>
+                        <span>Saya menyetujui <a href="{{ $r('klinik-kecantikan.policy') }}#privasi" target="_blank" rel="noopener">Kebijakan Privasi</a> dan <a href="{{ $r('klinik-kecantikan.policy') }}#syarat-ketentuan" target="_blank" rel="noopener">Syarat & Ketentuan</a>.</span>
                     </label>
                     <p class="gl-field__error" data-error-for="setuju" role="alert"></p>
                 </div>

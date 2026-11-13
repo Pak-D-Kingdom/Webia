@@ -6,12 +6,12 @@
     <div class="rg-container">
         <div class="rg-policy-head">
             <h2 id="rgPolTitle" class="rg-h3">Kebijakan &amp; Ketentuan</h2>
-            <a class="rg-btn rg-btn--outline rg-btn--sm" href="{{ route($rp . 'policy') }}">Lihat Semua Kebijakan <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+            <a class="rg-btn rg-btn--outline rg-btn--sm" href="{{ $r('policy') }}">Lihat Semua Kebijakan <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
         </div>
         <ul class="rg-policy-grid">
             @foreach ($c['policy'] as $p)
                 <li>
-                    <a class="rg-card rg-pol" href="{{ route($rp . 'policy') }}#{{ $p['id'] }}">
+                    <a class="rg-card rg-pol" href="{{ $r('policy') }}#{{ $p['id'] }}">
                         <span class="rg-roundicon"><i class="bi {{ $p['icon'] }}" aria-hidden="true"></i></span>
                         <div>
                             <h3>{{ $p['title'] }}</h3>
@@ -47,7 +47,9 @@
                     </ol>
                 </article>
             @endforeach
-            <p class="rg-note"><i class="bi bi-info-circle" aria-hidden="true"></i>Pertanyaan tentang kebijakan ini? Hubungi {{ $c['contact']['email'] }}.</p>
+            @if ($c['contact']['email'])
+                <p class="rg-note"><i class="bi bi-info-circle" aria-hidden="true"></i>Pertanyaan tentang kebijakan ini? Hubungi {{ $c['contact']['email'] }}.</p>
+            @endif
         </div>
     </div>
 </section>

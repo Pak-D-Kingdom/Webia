@@ -13,7 +13,7 @@
                     <h2>Cek Stok Real-time</h2>
                     <p>Pastikan produk favoritmu tersedia sebelum checkout.</p>
                 </div>
-                <a class="link-arrow" href="{{ route($cfg['route'] . 'stock') }}">Lihat Semua Stok <svg class="ico" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+                <a class="link-arrow" href="{{ $r('stock') }}">Lihat Semua Stok <svg class="ico" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
             </div>
         @endif
 
@@ -66,7 +66,7 @@
                         @if($full)
                             <div class="stock-card__act">
                                 @if($p['status'] === 'habis')
-                                    <a class="btn btn--soft btn--sm" href="https://wa.me/{{ $cfg['whatsapp']['number'] }}?text={{ rawurlencode('Halo PureGlow, tolong kabari saya jika ' . $p['name'] . ' sudah tersedia kembali.') }}" target="_blank" rel="noopener noreferrer"><svg class="ico"><use href="#i-bell"/></svg> Kabari Saya</a>
+                                    <a class="btn btn--soft btn--sm" href="https://wa.me/{{ $cfg['whatsapp']['number'] }}?text={{ rawurlencode('Halo ' . $cfg['brand']['name'] . ', tolong kabari saya jika ' . $p['name'] . ' sudah tersedia kembali.') }}" target="_blank" rel="noopener noreferrer"><svg class="ico"><use href="#i-bell"/></svg> Kabari Saya</a>
                                 @else
                                     <button type="button" class="btn btn--primary btn--sm" data-add-cart="{{ $p['slug'] }}"><svg class="ico"><use href="#i-plus"/></svg> Keranjang</button>
                                 @endif

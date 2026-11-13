@@ -78,14 +78,14 @@
                     'jadwal'  => 'Jam praktik: ' . collect($c['schedule']['hours'])->map(fn ($h) => $h['day'] . ' ' . $h['time'])->implode('; ') . '. Ketersediaan tiap dokter bisa dilihat di halaman Jadwal.',
                     'lokasi'  => 'Kami berada di ' . $c['contact']['address'] . '. Telepon ' . $c['contact']['phone'] . '.',
                     'booking' => 'Anda bisa booking lewat halaman Booking Appointment atau WhatsApp. Tim kami akan mengonfirmasi jadwal.',
-                    'klinik'  => $c['brand']['name'] . ' — ' . $c['contact']['address'] . '. Telepon ' . $c['contact']['phone'] . ', email ' . $c['contact']['email'] . '.',
+                    'klinik'  => $c['brand']['name'] . ' — ' . $c['contact']['address'] . '. Telepon ' . $c['contact']['phone'] . ($c['contact']['email'] ? ', email ' . $c['contact']['email'] : '') . '.',
                     'produk'  => $a['produk'],
                     'edukasi' => $a['edukasi'],
                 ],
                 'links' => [
-                    'layanan' => ['label' => 'Lihat semua layanan', 'url' => route($rp . 'services')],
-                    'jadwal'  => ['label' => 'Lihat jadwal', 'url' => route($rp . 'schedule')],
-                    'booking' => ['label' => 'Booking sekarang', 'url' => route($rp . 'appointment')],
+                    'layanan' => ['label' => 'Lihat semua layanan', 'url' => $r('services')],
+                    'jadwal'  => ['label' => 'Lihat jadwal', 'url' => $r('schedule')],
+                    'booking' => ['label' => 'Booking sekarang', 'url' => $r('appointment')],
                     'lokasi'  => ['label' => 'Buka peta', 'url' => $c['contact']['maps_url']],
                 ],
             ], JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP) !!}

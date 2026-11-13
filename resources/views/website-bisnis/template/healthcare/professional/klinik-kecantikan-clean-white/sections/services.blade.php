@@ -12,7 +12,7 @@
                 <p class="gl-eyebrow">Layanan Kami</p>
                 <h2 class="gl-title" id="gl-services-title">Perawatan Terbaik untuk Kecantikan Anda</h2>
                 <p class="gl-lead">Kami menyediakan berbagai layanan perawatan kulit dan aesthetic dengan standar keamanan tinggi.</p>
-                <a class="gl-btn gl-btn--primary" href="{{ route('klinik-kecantikan.services') }}">
+                <a class="gl-btn gl-btn--primary" href="{{ $r('klinik-kecantikan.services') }}">
                     Lihat Semua Layanan
                     <svg class="gl-ic gl-ic--sm" aria-hidden="true"><use href="#gl-i-arrow-right"/></svg>
                 </a>
@@ -21,7 +21,7 @@
             <ul class="gl-cards gl-cards--services">
                 @foreach ($clinic['services'] as $s)
                     <li>
-                        <a class="gl-card gl-service" href="{{ route('klinik-kecantikan.services') }}#{{ $s['slug'] }}">
+                        <a class="gl-card gl-service" href="{{ $r('klinik-kecantikan.services') }}#{{ $s['slug'] }}">
                             <img class="gl-service__icon" src="{{ $img($s['image']) }}" alt="" width="64" height="64" loading="lazy" decoding="async">
                             <h3 class="gl-service__name">{{ $s['name'] }}</h3>
                             <p class="gl-service__short">{{ $s['short'] }}</p>
@@ -55,7 +55,7 @@
                                 <div><dt>Harga</dt><dd>{{ $s['price'] }}</dd></div>
                                 <div><dt>Durasi</dt><dd>{{ $s['duration'] }}</dd></div>
                             </dl>
-                            <a class="gl-btn gl-btn--primary gl-btn--block" href="{{ route('klinik-kecantikan.appointment', ['layanan' => $s['slug']]) }}">
+                            <a class="gl-btn gl-btn--primary gl-btn--block" href="{{ $r('klinik-kecantikan.appointment', ['layanan' => $s['slug']]) }}">
                                 Booking Layanan Ini
                             </a>
                         </article>

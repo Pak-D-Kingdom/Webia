@@ -761,13 +761,17 @@ function initializeAdminPage() {
         document.getElementById('packageDescription').value = row.dataset.description;
         document.getElementById('packagePrice').value = row.dataset.price;
         document.getElementById('packageOldPrice').value = row.dataset.oldPrice;
+        document.getElementById('packageHostingPrice').value = row.dataset.hostingPrice;
         document.getElementById('packageQuota').value = row.dataset.quota;
         document.getElementById('packageSort').value = row.dataset.sortOrder;
         document.getElementById('packageCmsEnabled').checked = row.dataset.cms === '1';
+        const templateIds = new Set(row.dataset.templateIds.split(',').filter(Boolean));
+        pkgForm.querySelectorAll('[data-package-template]').forEach((input) => { input.checked = templateIds.has(input.value); });
         document.getElementById('packagePublishActive').checked = row.dataset.active === '1';
         document.getElementById('packagePublishDraft').checked = row.dataset.active !== '1';
       } else {
         pkgForm.reset();
+        pkgForm.querySelectorAll('[data-package-template]').forEach((input) => { input.checked = false; });
         document.getElementById('packagePublishActive').checked = true;
         document.getElementById('packageSort').value = String(pkgRows.reduce((max, r) => Math.max(max, Number(r.dataset.sortOrder)), 0) + 1);
       }

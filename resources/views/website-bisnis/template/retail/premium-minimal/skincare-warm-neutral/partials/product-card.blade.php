@@ -17,7 +17,9 @@
             <strong>Rp {{ number_format($p['price'], 0, ',', '.') }}</strong>
             @if (($p['old_price'] ?? 0) > $p['price'])<s>Rp {{ number_format($p['old_price'], 0, ',', '.') }}</s>@endif
         </div>
-        <div class="pcard__rate"><i class="bi bi-star-fill"></i><b>{{ number_format($p['rating'], 1) }}</b><span>({{ $p['reviews'] }})</span></div>
+        @unless ($skin['customer_site'] ?? false)
+            <div class="pcard__rate"><i class="bi bi-star-fill"></i><b>{{ number_format($p['rating'], 1) }}</b><span>({{ $p['reviews'] }})</span></div>
+        @endunless
         <div class="pcard__stock">@include($ns . '.partials.stock-badge', ['stock' => $p['stock']])</div>
         <div class="pcard__actions">
             @if ($p['stock'] > 0)

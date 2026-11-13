@@ -15,10 +15,10 @@
 --}}
 @php
     // Nama view dasar (untuk include layouts/partials/sections) dan awalan nama route
-    $v = 'website-bisnis.template.property.luxury.real-estate-agency-emerald-green';
+    $v = $v ?? 'website-bisnis.template.property.luxury.real-estate-agency-emerald-green';
 
     // Data halaman dari config
-    $cfg        = config('template.property.luxury.real-estate-agency-emerald-green.real-estate-agency');
+    $cfg        = $cfg ?? config('template.property.luxury.real-estate-agency-emerald-green.real-estate-agency');
     $paths      = $cfg['paths'];
     $site       = $cfg['site'];
     $navItems   = $cfg['nav'];
@@ -45,7 +45,7 @@
 
     // Helper
     $img   = fn (string $file): string => asset($paths['images'] . '/' . $file);
-    $route = fn (string $name = 'index', string $hash = '', array $params = []): string => route($v . '.' . $name, $params) . $hash;
+    $route = $route ?? fn (string $name = 'index', string $hash = '', array $params = []): string => route($v . '.' . $name, $params) . $hash;
     $icon  = fn (string $name, string $class = ''): \Illuminate\Support\HtmlString => new \Illuminate\Support\HtmlString(
         '<svg class="rea-icon ' . e($class) . '" aria-hidden="true" focusable="false"><use href="#i-' . e($name) . '"></use></svg>'
     );
@@ -122,6 +122,10 @@
 
 @include($v . '.partials.topbar')
 @include($v . '.partials.navbar')
+
+@if ($cfg['customer_site'] ?? false)
+    <p class="rea-container"><strong>Contoh properti:</strong> properti dan harga berikut merupakan konten demo.</p>
+@endif
 
 <main id="main">
     @foreach ($blocks as $block)

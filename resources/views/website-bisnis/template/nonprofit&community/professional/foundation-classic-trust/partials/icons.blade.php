@@ -24,5 +24,13 @@
     <symbol id="fd-i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.500"/><path d="M2.500 20a6.500 6.500 0 0 1 13 0M16 4.800a3.500 3.500 0 0 1 0 6.400M18.500 14.200A6.500 6.500 0 0 1 21.500 20"/></symbol>
     <symbol id="fd-i-news" viewBox="0 0 24 24"><path d="M5 4h11a2 2 0 0 1 2 2v14H7a2 2 0 0 1-2-2z"/><path d="M18 9h2v9a2 2 0 0 1-2 2M8.500 8h6M8.500 12h6M8.500 16h4"/></symbol>
     <symbol id="fd-i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.500 9.500a2.500 2.500 0 1 1 3.500 2.300c-.7.400-1 .9-1 1.700M12 17h.01"/></symbol>
+    <symbol id="fd-i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+    <symbol id="fd-i-message" viewBox="0 0 24 24"><path d="M4 5h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H9l-5 4V6a1 1 0 0 1 1-1z"/><path d="M8 10h8M8 13h5"/></symbol>
+    <symbol id="fd-i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="fd-i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></symbol>
+    <symbol id="fd-i-circle-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12.500 3 3 5-6"/></symbol>
+    <symbol id="fd-i-coin" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M14.500 9.200c-.4-.8-1.300-1.200-2.500-1.200-1.500 0-2.500.7-2.500 1.800 0 2.600 5.200 1.200 5.200 3.900 0 1.100-1.100 1.800-2.700 1.800-1.300 0-2.300-.5-2.700-1.400M12 6.500V8m0 8v1.500"/></symbol>
+    <symbol id="fd-i-tag" viewBox="0 0 24 24"><path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.500" cy="8.500" r="1.200"/></symbol>
+    <symbol id="fd-i-star" viewBox="0 0 24 24"><path d="m12 3 2.800 5.800 6.200.9-4.500 4.400 1.100 6.200L12 17.300 6.400 20.300l1.100-6.200L3 9.700l6.200-.9z"/></symbol>
   </defs>
 </svg>

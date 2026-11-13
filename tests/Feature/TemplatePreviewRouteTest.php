@@ -3,9 +3,11 @@
 namespace Tests\Feature;
 
 use App\Http\Controllers\WebsiteBisnis\TemplatePreviewController;
+use Database\Seeders\WebiaTemplateSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class TemplatePreviewRouteTest extends TestCase
@@ -21,6 +23,74 @@ class TemplatePreviewRouteTest extends TestCase
 
         $this->assertSame('webia.template.preview', $route->getName());
         $this->assertSame(TemplatePreviewController::class, $route->getControllerClass());
+    }
+
+    #[DataProvider('elearningPreviews')]
+    public function test_elearning_preview_keeps_demo_content(
+        string $url,
+        string $demoName,
+        string $email,
+        string $subpageUrl,
+    ): void {
+        $this->get($url)
+            ->assertOk()
+            ->assertSee($demoName)
+            ->assertSee($email)
+            ->assertSee($subpageUrl, false)
+            ->assertDontSee('Contoh program & harga');
+    }
+
+    public static function elearningPreviews(): array
+    {
+        return [
+            'ocean blue' => [
+                '/webia/template/e-learning/modern/e-learning-ocean-blue',
+                'E-learna',
+                'hello@elearna.id',
+                '/webia/template/e-learning/modern/e-learning-ocean-blue/programs',
+            ],
+            'pastel mix' => [
+                '/webia/template/e-learning/playful-colorful/e-learning-pastel-mix',
+                'EduPlus',
+                'hello@eduplus.id',
+                '/webia/template/e-learning/playful-colorful/e-learning-pastel-mix/programs',
+            ],
+            'dark mode' => [
+                '/webia/template/e-learning/futuristic/e-learning-dark-mode',
+                'NovaLearn',
+                'support@novalearn.id',
+                '/webia/template/e-learning/futuristic/e-learning-dark-mode/programs',
+            ],
+        ];
+    }
+
+    public function test_fresh_harvest_uses_its_catalog_url_without_a_duplicate_prefix_route(): void
+    {
+        $this->seed(WebiaTemplateSeeder::class);
+
+        $route = app('router')->getRoutes()->match(Request::create(
+            '/webia/template/fnb/healthy-meal-prep/fresh-harvest',
+            'GET',
+        ));
+
+        $this->assertSame('webia.template.preview', $route->getName());
+        $this->get('/webia/template/fnb/healthy-meal-prep/fresh-harvest')
+            ->assertOk()
+            ->assertViewIs('website-bisnis.templates.fnb.healthy-meal-prep.fresh-harvest');
+        $this->get('/webia/template/webia/template/fnb/healthy-meal-prep/fresh-harvest')
+            ->assertNotFound();
+    }
+
+    public function test_blushbowl_catalog_url_renders_its_preview(): void
+    {
+        $this->get('/webia/template/blushbowl-diet-meal')
+            ->assertOk()
+            ->assertViewIs('website-bisnis.templates.food-subscription.diet-meal.blushbowl.blushbowl');
+    }
+
+    public function test_unavailable_sodatable_preview_returns_not_found(): void
+    {
+        $this->get('/webia/template/sodatable-family-meal-plan')->assertNotFound();
     }
 
     public function test_active_database_template_renders_its_preview_view(): void

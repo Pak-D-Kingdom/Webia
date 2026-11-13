@@ -10,7 +10,7 @@
                 <h2 id="ctaTitle">{{ $reg['cta']['title'] }}</h2>
                 <p>{{ $reg['cta']['text'] }}</p>
             </div>
-            <a class="el-btn el-btn--white el-btn--lg" href="{{ route('elearning.registration') }}">{{ $reg['cta']['button'] }}<svg class="el-ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="el-btn el-btn--white el-btn--lg" href="{{ $r('elearning.registration') }}">{{ $reg['cta']['button'] }}<svg class="el-ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </div>
     </div>
 </section>

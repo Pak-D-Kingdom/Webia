@@ -4,7 +4,7 @@
   <img class="footer__leaf" src="{{ asset($img.'/leaf-branch.svg') }}" alt="" aria-hidden="true" loading="lazy">
   <div class="container footer__grid">
     <div class="footer__brand">
-      <a class="logo logo--light" href="{{ route('coral-peach.home') }}" aria-label="{{ $b['name'] }}">
+      <a class="logo logo--light" href="{{ $r('coral-peach.home') }}" aria-label="{{ $b['name'] }}">
         <svg class="logo__mark" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M6 22 24 6l18 16"/><path d="M11 19v22h26V19"/><path d="M18 41V30a6 6 0 0 1 12 0v11"/><path d="M33 12V7h4v9"/><circle cx="24" cy="21" r="2.2" fill="#fff" stroke="none"/>
         </svg>
@@ -16,7 +16,7 @@
       <h2 class="footer__title">Navigasi</h2>
       <ul class="footer__nav">
         @foreach ($site['nav'] as $n)
-          <li><a href="{{ route($n['route']) }}{{ $n['hash'] ? '#'.$n['hash'] : '' }}">{{ $n['label'] }}</a></li>
+          <li><a href="{{ $r($n['route']) }}{{ $n['hash'] ? '#'.$n['hash'] : '' }}">{{ $n['label'] }}</a></li>
         @endforeach
       </ul>
     </nav>
@@ -25,7 +25,9 @@
       <h2 class="footer__title">Kontak Kami</h2>
       <ul class="footer__contact">
         <li><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg><a href="tel:{{ $c['phone_link'] }}">{{ $c['phone'] }}</a></li>
-        <li><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg><a href="mailto:{{ $c['email'] }}">{{ $c['email'] }}</a></li>
+        @if ($c['email'])
+          <li><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg><a href="mailto:{{ $c['email'] }}">{{ $c['email'] }}</a></li>
+        @endif
         <li><svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg><span>{{ $c['address'] }}</span></li>
       </ul>
     </div>

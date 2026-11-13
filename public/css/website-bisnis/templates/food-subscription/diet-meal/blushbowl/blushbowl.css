@@ -1,0 +1,161 @@
+/* Formal Cursor & Smooth Base */
+    html, body {
+      cursor: default;
+      background-color: #FAF4EC;
+      color: #493B38;
+      overflow-x: hidden;
+    }
+    a, button, select, input[type="range"], input[type="checkbox"], input[type="radio"], summary, [role="button"] {
+      cursor: pointer;
+    }
+    input[type="text"], input[type="number"], input[type="email"], input[type="tel"], input[type="date"], textarea {
+      cursor: text;
+    }
+
+    /* Kinetic Keyframe Animations Across All Sections */
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-12px) rotate(2deg); }
+    }
+    @keyframes floatReverse {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(11px) rotate(-2.5deg); }
+    }
+    @keyframes spinOrbit {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @keyframes spinOrbitReverse {
+      0% { transform: rotate(360deg); }
+      100% { transform: rotate(0deg); }
+    }
+    @keyframes pulseGlow {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(100, 125, 104, 0.45); }
+      50% { transform: scale(1.04); box-shadow: 0 0 0 12px rgba(100, 125, 104, 0); }
+    }
+    @keyframes blobMorph {
+      0%, 100% { border-radius: 58% 42% 48% 52% / 44% 55% 45% 56%; }
+      33% { border-radius: 45% 55% 60% 40% / 55% 42% 58% 45%; }
+      66% { border-radius: 62% 38% 42% 58% / 48% 60% 40% 52%; }
+    }
+    @keyframes wigglePlayful {
+      0%, 100% { transform: rotate(-3deg) scale(1); }
+      50% { transform: rotate(3deg) scale(1.06); }
+    }
+    @keyframes bounceGentle {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    @keyframes shimmerSweep {
+      0% { transform: translateX(-130%) skewX(-20deg); }
+      100% { transform: translateX(240%) skewX(-20deg); }
+    }
+    @keyframes driftDiagonal {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      50% { transform: translate(14px, -16px) rotate(12deg); }
+    }
+    @keyframes marqueeScroll {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
+    }
+    @keyframes marqueeReverse {
+      0% { transform: translateX(-50%); }
+      100% { transform: translateX(0%); }
+    }
+    @keyframes neonParticleRise {
+      0% { transform: translate(0, 0) scale(0.4); opacity: 0; }
+      25% { opacity: 1; }
+      80% { opacity: 0.9; }
+      100% { transform: translate(var(--dx, 10px), var(--dy, -46px)) scale(1.15); opacity: 0; }
+    }
+    @keyframes caloriePulse {
+      0%, 100% {
+        box-shadow: 0 0 12px rgba(57, 255, 20, 0.5), 0 0 24px rgba(100, 125, 104, 0.55);
+        transform: scale(1);
+      }
+      50% {
+        box-shadow: 0 0 22px rgba(57, 255, 20, 0.9), 0 0 38px rgba(74, 222, 128, 0.7);
+        transform: scale(1.06);
+      }
+    }
+
+    .animate-float-slow { animation: floatSlow 5.5s ease-in-out infinite; }
+    .animate-float-reverse { animation: floatReverse 6.2s ease-in-out infinite; }
+    .animate-orbit { animation: spinOrbit 22s linear infinite; }
+    .animate-orbit-fast { animation: spinOrbit 10s linear infinite; }
+    .animate-orbit-reverse { animation: spinOrbitReverse 16s linear infinite; }
+    .animate-pulse-glow { animation: pulseGlow 2.8s infinite; }
+    .animate-blob { animation: blobMorph 9s ease-in-out infinite; }
+    .animate-wiggle { animation: wigglePlayful 3.2s ease-in-out infinite; }
+    .animate-bounce-gentle { animation: bounceGentle 2.4s ease-in-out infinite; }
+    .animate-drift { animation: driftDiagonal 7.5s ease-in-out infinite; }
+
+    .animate-marquee {
+      display: flex;
+      width: max-content;
+      animation: marqueeScroll 30s linear infinite;
+    }
+    .animate-marquee-reverse {
+      display: flex;
+      width: max-content;
+      animation: marqueeReverse 32s linear infinite;
+    }
+    .animate-marquee:hover,
+    .animate-marquee-reverse:hover {
+      animation-play-state: paused;
+    }
+
+    /* Shimmer Effect on Primary CTAs */
+    .btn-shimmer {
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-shimmer::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 42%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+      animation: shimmerSweep 3.2s infinite;
+      pointer-events: none;
+    }
+
+    /* Scroll Reveal */
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1), transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .reveal-on-scroll.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Floating AI Neon Particles */
+    .ai-neon-btn {
+      animation: caloriePulse 2.3s ease-in-out infinite;
+    }
+    .neon-particle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 9999px;
+      background: #39FF14;
+      box-shadow: 0 0 8px #39FF14, 0 0 16px #4ADE80;
+      pointer-events: none;
+      animation: neonParticleRise var(--dur, 2.5s) ease-out infinite;
+      animation-delay: var(--delay, 0s);
+    }
+
+    /* Section Scroll Offset for Fixed Header */
+    section[id] {
+      scroll-margin-top: 116px;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #FAF4EC; }
+    ::-webkit-scrollbar-thumb { background: #D9A7A0; border-radius: 999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #647D68; }

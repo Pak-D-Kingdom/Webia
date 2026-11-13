@@ -14,11 +14,11 @@
         'categories' => $cfg['categories'],
         'ai'       => $cfg['ai'],
         'routes'   => [
-            'catalog' => route($cfg['route'] . 'catalog'),
-            'price'   => route($cfg['route'] . 'price'),
-            'stock'   => route($cfg['route'] . 'stock'),
-            'shop'    => route($cfg['route'] . 'shop'),
-            'inquiry' => route($cfg['route'] . 'inquiry'),
+            'catalog' => $r('catalog'),
+            'price'   => $r('price'),
+            'stock'   => $r('stock'),
+            'shop'    => $r('shop'),
+            'inquiry' => $r('inquiry'),
         ],
     ];
 @endphp
@@ -48,6 +48,9 @@
     @include($cfg['view'] . 'partials.navbar')
 
     <main id="main">
+        @if ($cfg['customer_site'] ?? false)
+            <p class="container"><strong>Contoh katalog:</strong> produk, harga, dan stok berikut merupakan konten demo.</p>
+        @endif
         @yield('content')
     </main>
 

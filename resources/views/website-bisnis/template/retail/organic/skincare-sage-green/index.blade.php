@@ -1,10 +1,10 @@
 @php
     $active = 'home';
-    $cfg = config('template.retail.organic.skincare-sage-green.skincare');
+    $cfg ??= config('template.retail.organic.skincare-sage-green.skincare');
 @endphp
 @extends($cfg['view'] . 'layouts.app')
 
-@section('title', 'PureGlow — Natural Skincare & Beauty')
+@section('title', str_replace('PureGlow', $cfg['brand']['name'], 'PureGlow — Natural Skincare & Beauty'))
 
 @section('content')
     @include($cfg['view'] . 'sections.hero')

@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable([
-    'user_id', 'website_name', 'domain', 'monthly_price', 'activation_date', 'billing_cycle_day',
+    'user_id', 'webia_order_id', 'website_name', 'domain', 'monthly_price', 'activation_date', 'billing_cycle_day',
     'stopped_at', 'billing_status', 'operational_status',
 ])]
 class HostingService extends Model
@@ -21,6 +21,11 @@ class HostingService extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function order(): BelongsTo
+    {
+        return $this->belongsTo(WebiaOrder::class, 'webia_order_id');
     }
 
     public function invoices(): HasMany

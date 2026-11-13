@@ -31,10 +31,10 @@
                             <h2 class="uh-pkcard__title">{{ $pkg['name'] }}</h2>
                             <p class="uh-pkcard__desc">{{ $pkg['desc'] }}</p>
                             <dl class="uh-facts">
-                                <div><dt>Durasi</dt><dd>{{ $pkg['duration'] }}</dd></div>
-                                <div><dt>Rute</dt><dd>{{ $pkg['route'] }}</dd></div>
-                                <div><dt>Hotel</dt><dd>{{ $pkg['hotel'] }}</dd></div>
-                                <div><dt>Pesawat</dt><dd>{{ $pkg['airline'] }}</dd></div>
+                                <div><svg class="uh-i uh-facts__ico" aria-hidden="true"><use href="#i-calendar"/></svg><dt>Durasi</dt><dd>{{ $pkg['duration'] }}</dd></div>
+                                <div><svg class="uh-i uh-facts__ico" aria-hidden="true"><use href="#i-route"/></svg><dt>Rute</dt><dd>{{ $pkg['route'] }}</dd></div>
+                                <div><svg class="uh-i uh-facts__ico" aria-hidden="true"><use href="#i-hotel"/></svg><dt>Hotel</dt><dd>{{ $pkg['hotel'] }}</dd></div>
+                                <div><svg class="uh-i uh-facts__ico" aria-hidden="true"><use href="#i-plane"/></svg><dt>Pesawat</dt><dd>{{ $pkg['airline'] }}</dd></div>
                             </dl>
                             <details class="uh-more">
                                 <summary>Fasilitas paket</summary>

@@ -1,4 +1,4 @@
-<section class="services" aria-label="Layanan Belleza">
+<section class="services" aria-label="Layanan {{ $cfg['brand']['name'] }}">
     <div class="container">
         <ul class="services__list">
             @foreach ($cfg['services'] as $s)

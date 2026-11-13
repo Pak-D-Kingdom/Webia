@@ -20,7 +20,12 @@
     burger.addEventListener('click', function () { menu(!header.classList.contains('is-open')); });
     $$('#bca-nav a').forEach(function (a) { a.addEventListener('click', function () { menu(false); }); });
   }
-  window.addEventListener('scroll', function () { if (header) header.classList.toggle('is-stuck', window.scrollY > 8); }, { passive: true });
+  var bar = $('.bca-progress');
+  function onScroll() {
+    if (header) header.classList.toggle('is-stuck', window.scrollY > 8);
+    if (bar) { var h = document.documentElement.scrollHeight - window.innerHeight; bar.style.setProperty('--p', h > 0 ? Math.min(1, window.scrollY / h) : 0); }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
   window.addEventListener('resize', function () { if (window.innerWidth >= 960) menu(false); else if (header && header.classList.contains('is-open')) setHH(); });
 
   /* Reveal */
@@ -144,6 +149,19 @@
     return lines.join('\n');
   }
 
+  /* Pop-up sukses form */
+  var done = $('#bca-done');
+  function showDone(url) {
+    if (!done) return;
+    var fb = $('[data-wa-fallback]', done); if (fb) fb.href = url;
+    if (typeof done.showModal === 'function') { if (!done.open) done.showModal(); } else { done.setAttribute('open', ''); }
+  }
+  if (done) {
+    var dc = $('[data-done-close]', done);
+    if (dc) dc.addEventListener('click', function () { if (done.close) done.close(); else done.removeAttribute('open'); });
+    done.addEventListener('click', function (e) { if (e.target === done && done.close) done.close(); });
+  }
+
   /* Formulir: prefill + validasi */
   $$('[data-bca-form]').forEach(function (form) {
     var qs = new URLSearchParams(window.location.search);
@@ -187,14 +205,71 @@
       if (!act || act === '#') { /* Mode WhatsApp: pesan siap kirim ke nomor studio */
         e.preventDefault();
         var url = (form.getAttribute('data-wa') || 'https://wa.me/') + '?text=' + encodeURIComponent(waText(form));
-        var ok = $('.bca-ok', form), fb = ok && $('[data-wa-fallback]', ok);
-        if (fb) fb.href = url;
         window.open(url, '_blank', 'noopener');
-        if (ok) { ok.hidden = false; ok.scrollIntoView({ behavior: 'smooth', block: 'center' }); ok.focus({ preventScroll: true }); }
+        showDone(url);
       } else { var s = $('button[type=submit]', form); if (s) s.disabled = true; }
     });
   });
 
+
+  /* Dropdown kustom (select asli tetap menyimpan nilai) */
+  var ddn = 0;
+  function enhanceSelect(sel) {
+    var wrap = document.createElement('div'); wrap.className = 'bca-dd';
+    sel.parentNode.insertBefore(wrap, sel);
+    var btn = document.createElement('button'); btn.type = 'button'; btn.className = 'bca-dd__btn'; btn.setAttribute('aria-haspopup', 'listbox'); btn.setAttribute('aria-expanded', 'false');
+    var list = document.createElement('ul'); list.className = 'bca-dd__list'; list.setAttribute('role', 'listbox'); list.hidden = true; list.id = 'bca-dd-' + (++ddn);
+    btn.setAttribute('aria-controls', list.id);
+    wrap.appendChild(btn); wrap.appendChild(list); wrap.appendChild(sel);
+    sel.classList.add('bca-dd__native'); sel.tabIndex = -1; sel.setAttribute('aria-hidden', 'true');
+    var items = [], act = -1;
+    $$('option', sel).forEach(function (o, i) {
+      var li = document.createElement('li'); li.className = 'bca-dd__opt'; li.setAttribute('role', 'option'); li.id = list.id + '-' + i; li.setAttribute('data-i', i); li.textContent = o.text;
+      items.push(li); list.appendChild(li);
+    });
+    function sync() {
+      var o = sel.options[sel.selectedIndex]; btn.textContent = o ? o.text : ''; btn.classList.toggle('is-empty', !sel.value);
+      items.forEach(function (li, i) { li.setAttribute('aria-selected', String(i === sel.selectedIndex)); });
+    }
+    function setActive(i) {
+      act = Math.max(0, Math.min(items.length - 1, i));
+      items.forEach(function (li, k) { li.classList.toggle('is-active', k === act); });
+      var li = items[act]; btn.setAttribute('aria-activedescendant', li.id);
+      if (li.offsetTop < list.scrollTop) list.scrollTop = li.offsetTop;
+      else if (li.offsetTop + li.offsetHeight > list.scrollTop + list.clientHeight) list.scrollTop = li.offsetTop + li.offsetHeight - list.clientHeight;
+    }
+    function open() {
+      if (!list.hidden) return;
+      var r = btn.getBoundingClientRect(); wrap.classList.toggle('is-up', window.innerHeight - r.bottom < 270 && r.top > 270);
+      list.hidden = false; wrap.classList.add('is-open'); btn.setAttribute('aria-expanded', 'true'); setActive(Math.max(0, sel.selectedIndex));
+    }
+    function close(refocus) {
+      if (list.hidden) return;
+      list.hidden = true; wrap.classList.remove('is-open'); btn.setAttribute('aria-expanded', 'false'); btn.removeAttribute('aria-activedescendant');
+      if (refocus) btn.focus();
+    }
+    function choose(i) { sel.selectedIndex = i; sel.dispatchEvent(new Event('change', { bubbles: true })); sync(); close(true); }
+    btn.addEventListener('click', function () { if (list.hidden) open(); else close(); });
+    btn.addEventListener('keydown', function (e) {
+      var k = e.key;
+      if (list.hidden) { if (k === 'ArrowDown' || k === 'ArrowUp' || k === 'Enter' || k === ' ') { e.preventDefault(); open(); } return; }
+      if (k === 'ArrowDown') { e.preventDefault(); setActive(act + 1); }
+      else if (k === 'ArrowUp') { e.preventDefault(); setActive(act - 1); }
+      else if (k === 'Home') { e.preventDefault(); setActive(0); }
+      else if (k === 'End') { e.preventDefault(); setActive(items.length - 1); }
+      else if (k === 'Enter' || k === ' ') { e.preventDefault(); choose(act); }
+      else if (k === 'Escape') { e.preventDefault(); e.stopPropagation(); close(true); }
+      else if (k === 'Tab') { close(); }
+    });
+    list.addEventListener('mousedown', function (e) { e.preventDefault(); });
+    list.addEventListener('mousemove', function (e) { var li = e.target.closest('.bca-dd__opt'); if (li) setActive(Number(li.getAttribute('data-i'))); });
+    list.addEventListener('click', function (e) { var li = e.target.closest('.bca-dd__opt'); if (li) choose(Number(li.getAttribute('data-i'))); });
+    document.addEventListener('click', function (e) { if (!wrap.contains(e.target)) close(); });
+    sel.addEventListener('change', sync);
+    if (sel.form) sel.form.addEventListener('reset', function () { setTimeout(sync, 0); });
+    sync();
+  }
+  $$('select').forEach(enhanceSelect);
 
   /* Parallax hero (pointer halus saja) */
   var art = $('.bca-hero__art'), fine = window.matchMedia && window.matchMedia('(pointer:fine)').matches, calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
@@ -215,14 +290,36 @@
   var chat = $('#bca-chat'), dataEl = $('#bca-faq-data'), cfg = null;
   if (chat && dataEl) { try { cfg = JSON.parse(dataEl.textContent); } catch (e) { cfg = null; } }
   if (chat && cfg) {
-    var log = $('.bca-chat__log', chat), chips = $('.bca-chat__chips', chat), cform = $('.bca-chat__form', chat), input = $('input', cform);
-    var fab = $('.bca-bot'), greeted = false, lastFocus = null;
+    var log = $('.bca-chat__log', chat), cform = $('.bca-chat__form', chat), input = $('input', cform);
+    var fab = $('.bca-bot'), greeted = false, lastFocus = null, asked = {}, topics = cfg.topics || [], tq = {};
+    topics.forEach(function (t) { tq[t.q] = 1; });
     var stop = ['yang', 'dan', 'di', 'ke', 'dari', 'untuk', 'apa', 'apakah', 'bagaimana', 'berapa', 'saya', 'anda', 'itu', 'ini', 'ada', 'bisa', 'dengan', 'atau', 'kami', 'kamu', 'mau', 'nya'];
     function tok(s) { return s.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').split(/\s+/).filter(function (w) { return w.length > 2 && stop.indexOf(w) < 0; }); }
+    function toEnd() { log.scrollTop = log.scrollHeight; }
     function msg(text, me, link) {
       var d = document.createElement('div'); d.className = 'bca-msg' + (me ? ' bca-msg--me' : ''); d.textContent = text;
       if (link && link.href) { d.appendChild(document.createElement('br')); var a = document.createElement('a'); a.href = link.href; a.textContent = link.text; if (link.ext) { a.target = '_blank'; a.rel = 'noopener'; } d.appendChild(a); }
-      log.appendChild(d); log.scrollTop = log.scrollHeight; return d;
+      log.appendChild(d); toEnd(); return d;
+    }
+    function drop(sel) { $$(sel, log).forEach(function (n) { n.parentNode.removeChild(n); }); }
+    function sugg(n, skipTopics) {
+      var left = cfg.items.filter(function (it) { return !asked[it.q] && !(skipTopics && tq[it.q]); }).slice(0, n);
+      drop('.bca-sugg'); if (!left.length) return;
+      var box = document.createElement('div'); box.className = 'bca-sugg';
+      var l = document.createElement('p'); l.className = 'bca-sugg__l'; l.textContent = 'Pertanyaan lain'; box.appendChild(l);
+      var row = document.createElement('div'); row.className = 'bca-sugg__r';
+      left.forEach(function (it) { var b = document.createElement('button'); b.type = 'button'; b.textContent = it.q; b.addEventListener('click', function () { ask(it.q); }); row.appendChild(b); });
+      box.appendChild(row); log.appendChild(box); toEnd();
+    }
+    function topicBox() {
+      if (!topics.length) return;
+      var box = document.createElement('div'); box.className = 'bca-topics';
+      topics.forEach(function (t, i) {
+        var b = document.createElement('button'); b.type = 'button'; b.className = 'bca-topic'; b.style.setProperty('--i', i);
+        var a = document.createElement('strong'); a.textContent = t.t; var c = document.createElement('small'); c.textContent = t.s;
+        b.appendChild(a); b.appendChild(c); b.addEventListener('click', function () { ask(t.q); }); box.appendChild(b);
+      });
+      log.appendChild(box);
     }
     function answer(q) {
       var qt = tok(q), best = null, top = 0;
@@ -237,21 +334,17 @@
     }
     function ask(q) {
       q = q.trim(); if (!q) return;
-      msg(q, true);
+      asked[q] = 1; drop('.bca-sugg'); msg(q, true);
       var t = document.createElement('div'); t.className = 'bca-msg bca-typing'; t.innerHTML = '<i></i><i></i><i></i>'; t.setAttribute('aria-label', 'Prisma sedang mengetik');
-      log.appendChild(t); log.scrollTop = log.scrollHeight;
+      log.appendChild(t); toEnd();
       var r = answer(q);
-      setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); msg(r.t, false, r.link); }, 650);
+      setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); msg(r.t, false, r.link); sugg(3, false); }, 650);
     }
-    cfg.items.slice(0, 6).forEach(function (it) {
-      var b = document.createElement('button'); b.type = 'button'; b.textContent = it.q;
-      b.addEventListener('click', function () { ask(it.q); }); chips.appendChild(b);
-    });
     function open() {
       lastFocus = document.activeElement; chat.hidden = false;
       if (fab) fab.setAttribute('aria-expanded', 'true');
-      if (!greeted) { msg(cfg.bot.greet, false); greeted = true; }
-      setTimeout(function () { input.focus(); }, 50);
+      if (!greeted) { msg(cfg.bot.greet, false); topicBox(); sugg(3, true); greeted = true; }
+      setTimeout(function () { input.focus({ preventScroll: true }); }, 50);
     }
     function close() {
       chat.hidden = true; if (fab) fab.setAttribute('aria-expanded', 'false');

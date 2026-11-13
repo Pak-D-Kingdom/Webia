@@ -3,6 +3,20 @@
 return [
     'dkreasi_url' => env('DKREASI_URL'),
 
+    'hosting' => [
+        'site_domain' => env('HOSTING_SITE_DOMAIN', 'sites.webia.id'),
+        'ssh' => [
+            'binary' => env('HOSTING_SSH_BINARY', 'ssh'),
+            'host' => env('HOSTING_SSH_HOST'),
+            'port' => (int) env('HOSTING_SSH_PORT', 22),
+            'user' => env('HOSTING_SSH_USER'),
+            'private_key' => env('HOSTING_SSH_PRIVATE_KEY'),
+            'known_hosts' => env('HOSTING_SSH_KNOWN_HOSTS'),
+            'deploy_command' => env('HOSTING_DEPLOY_COMMAND'),
+            'timeout' => (int) env('HOSTING_DEPLOY_TIMEOUT', 120),
+        ],
+    ],
+
     /*
     | Rekening transfer manual yang tampil pada instruksi pembayaran customer di halaman order.
     | Dummy awal: ganti dengan rekening aktif WEBIA sebelum production.

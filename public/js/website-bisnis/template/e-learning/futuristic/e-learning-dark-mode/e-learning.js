@@ -352,7 +352,7 @@
     }
     function valueOf(f) { return f.tagName === 'SELECT' ? (f.value ? f.options[f.selectedIndex].text : '') : f.value.trim(); }
     function waUrl(number, title, pairs) {
-        var lines = ['*' + title + ' - NovaLearn*', ''];
+        var lines = ['*' + title + ' - ' + (document.body.dataset.brand || 'NovaLearn') + '*', ''];
         pairs.forEach(function (p) { if (p[1]) { lines.push(p[0] + ': ' + p[1]); } });
         return 'https://wa.me/' + number + '?text=' + encodeURIComponent(lines.join('\n'));
     }

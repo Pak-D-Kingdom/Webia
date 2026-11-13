@@ -1,4 +1,4 @@
-@php($r = $e['route'])
+@php($rp = $e['route'])
 @php($full = $full ?? false)
 <section @class(['nl-sec nl-sec--programs', 'nl-card' => ! $full]) id="programs" aria-labelledby="programs-title">
     @if(! $full)
@@ -7,7 +7,7 @@
                 <h2 id="programs-title">Program Unggulan</h2>
                 <p>Kursus terbaik pilihan untuk meningkatkan skill dan karier kamu.</p>
             </div>
-            <a class="nl-link" href="{{ route($r.'programs') }}">Lihat Semua <svg class="ic"><use href="#i-arrow"/></svg></a>
+            <a class="nl-link" href="{{ $r($rp.'programs') }}">Lihat Semua <svg class="ic"><use href="#i-arrow"/></svg></a>
         </div>
     @else
         <h2 class="nl-sr" id="programs-title">Daftar program</h2>
@@ -53,19 +53,19 @@
             <article class="nl-program" data-level="{{ strtolower($p['level']) }}" data-cat="{{ $p['cat'] }}" data-i="{{ $loop->index }}"
                      data-price="{{ $p['price'] }}" data-hours="{{ $p['hours'] }}" data-name="{{ strtolower($p['title']) }}"
                      data-k="{{ strtolower($p['title'].' '.$p['level'].' '.($e['categories'][$p['cat']]['label'] ?? '')) }}">
-                <a class="nl-program__media" href="{{ route($r.'registration', ['program' => $p['slug']]) }}" tabindex="-1" aria-hidden="true">
+                <a class="nl-program__media" href="{{ $r($rp.'registration', ['program' => $p['slug']]) }}" tabindex="-1" aria-hidden="true">
                     <img src="{{ asset($e['img'].'/'.$p['img']) }}" alt="" loading="lazy" width="326" height="180">
                     <span class="nl-level nl-level--{{ strtolower($p['level']) }}">{{ $p['level'] }}</span>
                 </a>
                 <div class="nl-program__body">
-                    <h3><a href="{{ route($r.'registration', ['program' => $p['slug']]) }}">{{ $p['title'] }}</a></h3>
+                    <h3><a href="{{ $r($rp.'registration', ['program' => $p['slug']]) }}">{{ $p['title'] }}</a></h3>
                     <p class="nl-meta">
                         <span><svg class="ic"><use href="#i-file"/></svg>{{ $p['modules'] }} Modul</span>
                         <span><svg class="ic"><use href="#i-clock"/></svg>{{ $p['hours'] }} Jam</span>
                     </p>
                     <div class="nl-program__foot">
                         <strong>Rp {{ number_format($p['price'], 0, ',', '.') }}</strong>
-                        <a class="nl-round nl-round--sm" href="{{ route($r.'registration', ['program' => $p['slug']]) }}" aria-label="Daftar {{ $p['title'] }}"><svg class="ic"><use href="#i-arrow"/></svg></a>
+                        <a class="nl-round nl-round--sm" href="{{ $r($rp.'registration', ['program' => $p['slug']]) }}" aria-label="Daftar {{ $p['title'] }}"><svg class="ic"><use href="#i-arrow"/></svg></a>
                     </div>
                 </div>
             </article>

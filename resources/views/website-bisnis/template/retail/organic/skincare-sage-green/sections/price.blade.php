@@ -10,9 +10,9 @@
             <div>
                 <p class="eyebrow">Harga Transparan</p>
                 <h2>Daftar Harga Produk</h2>
-                <p>Harga promo terbaik untuk produk pilihan PureGlow.</p>
+                <p>Harga promo terbaik untuk produk pilihan {{ $cfg['brand']['name'] }}.</p>
             </div>
-            <a class="link-arrow" href="{{ route($cfg['route'] . 'price') }}">Lihat Semua Harga <svg class="ico" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+            <a class="link-arrow" href="{{ $r('price') }}">Lihat Semua Harga <svg class="ico" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
         </div>
     @else
         <div class="toolbar">
@@ -71,7 +71,7 @@
                             @if($full)
                                 <td data-label="Aksi" class="dtable__act">
                                     @if($p['status'] === 'habis')
-                                        <a class="btn btn--soft btn--sm" href="https://wa.me/{{ $cfg['whatsapp']['number'] }}?text={{ rawurlencode('Halo PureGlow, saya ingin pre-order ' . $p['name'] . '.') }}" target="_blank" rel="noopener noreferrer">Pre-order</a>
+                                        <a class="btn btn--soft btn--sm" href="https://wa.me/{{ $cfg['whatsapp']['number'] }}?text={{ rawurlencode('Halo ' . $cfg['brand']['name'] . ', saya ingin pre-order ' . $p['name'] . '.') }}" target="_blank" rel="noopener noreferrer">Pre-order</a>
                                     @else
                                         <button type="button" class="btn btn--primary btn--sm" data-add-cart="{{ $p['slug'] }}"><svg class="ico"><use href="#i-plus"/></svg> Keranjang</button>
                                     @endif
@@ -99,7 +99,7 @@
                 <h3>Butuh harga khusus reseller atau paket hemat?</h3>
                 <p>Tim kami siap memberikan penawaran terbaik lewat WhatsApp.</p>
             </div>
-            <a class="btn btn--primary" href="{{ route($cfg['route'] . 'inquiry') }}">Minta Penawaran <svg class="ico" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+            <a class="btn btn--primary" href="{{ $r('inquiry') }}">Minta Penawaran <svg class="ico" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
         </div>
     @endif
 </section>

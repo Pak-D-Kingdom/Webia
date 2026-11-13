@@ -1,7 +1,7 @@
 <footer class="footer">
     <div class="container footer__grid">
         <div class="footer__brand">
-            <a class="brand" href="{{ route('skincare-warm-neutral.home') }}">
+            <a class="brand" href="{{ $r('home') }}">
                 <img class="brand__leaf" src="{{ asset($skin['img'] . '/logo-leaf.png') }}" alt="" width="44" height="42">
                 <span class="brand__txt"><b>{{ $skin['name'] }}</b><small>{{ $skin['tagline'] }}</small></span>
             </a>
@@ -10,11 +10,11 @@
         <div class="footer__col">
             <h4>Navigasi</h4>
             <ul>
-                <li><a href="{{ route('skincare-warm-neutral.home') }}">Beranda</a></li>
-                <li><a href="{{ route('skincare-warm-neutral.catalog') }}">Katalog</a></li>
-                <li><a href="{{ route('skincare-warm-neutral.price') }}">Harga</a></li>
-                <li><a href="{{ route('skincare-warm-neutral.stock') }}">Ketersediaan</a></li>
-                <li><a href="{{ route('skincare-warm-neutral.inquiry') }}">Inquiry</a></li>
+                <li><a href="{{ $r('home') }}">Beranda</a></li>
+                <li><a href="{{ $r('catalog') }}">Katalog</a></li>
+                <li><a href="{{ $r('price') }}">Harga</a></li>
+                <li><a href="{{ $r('stock') }}">Ketersediaan</a></li>
+                <li><a href="{{ $r('inquiry') }}">Inquiry</a></li>
             </ul>
         </div>
 
@@ -22,7 +22,7 @@
             <h4>Kategori</h4>
             <ul>
                 @foreach (array_slice($skin['categories'], 1, 5) as $c)
-                    <li><a href="{{ route('skincare-warm-neutral.catalog') }}?kategori={{ $c['slug'] }}">{{ $c['label'] }}</a></li>
+                    <li><a href="{{ $r('catalog') }}?kategori={{ $c['slug'] }}">{{ $c['label'] }}</a></li>
                 @endforeach
             </ul>
         </div>

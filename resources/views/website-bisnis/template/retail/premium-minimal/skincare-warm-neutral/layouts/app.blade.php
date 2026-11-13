@@ -1,11 +1,11 @@
 @php
     $routes = [
-        'home'    => route('skincare-warm-neutral.home'),
-        'catalog' => route('skincare-warm-neutral.catalog'),
-        'price'   => route('skincare-warm-neutral.price'),
-        'stock'   => route('skincare-warm-neutral.stock'),
-        'inquiry' => route('skincare-warm-neutral.inquiry'),
-        'cart'    => route('skincare-warm-neutral.cart'),
+        'home'    => $r('home'),
+        'catalog' => $r('catalog'),
+        'price'   => $r('price'),
+        'stock'   => $r('stock'),
+        'inquiry' => $r('inquiry'),
+        'cart'    => $r('cart'),
     ];
     $jsCfg = [
         'brand'        => $skin['name'],
@@ -46,6 +46,9 @@
     @include($ns . '.partials.navbar')
 
     <main id="main">
+        @if ($skin['customer_site'] ?? false)
+            <p class="container"><strong>Contoh katalog:</strong> produk, harga, dan stok berikut merupakan konten demo.</p>
+        @endif
         @yield('content')
     </main>
 

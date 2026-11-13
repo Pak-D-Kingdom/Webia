@@ -25,10 +25,10 @@
     <div class="b-grid b-grid--page" data-blog-grid>
       @foreach ($bl['posts'] as $post)
         <article class="b-card reveal" data-cat="{{ $post['cat'] }}" data-title="{{ strtolower($post['title'].' '.$post['excerpt']) }}">
-          <a class="b-card__media" href="{{ route('coral-peach.blog.show', $post['slug']) }}" tabindex="-1" aria-hidden="true"><img src="{{ asset($img.'/'.$post['image']) }}" alt="" loading="lazy" width="465" height="300"></a>
+          <a class="b-card__media" href="{{ $r('coral-peach.blog.show', $post['slug']) }}" tabindex="-1" aria-hidden="true"><img src="{{ asset($img.'/'.$post['image']) }}" alt="" loading="lazy" width="465" height="300"></a>
           <div class="b-card__body">
             <p class="b-card__meta"><span class="tag">{{ $post['cat_label'] }}</span><time>{{ $post['date'] }}</time><span>· {{ $post['read'] }} baca</span></p>
-            <h2 class="b-card__title"><a href="{{ route('coral-peach.blog.show', $post['slug']) }}">{{ $post['title'] }}</a></h2>
+            <h2 class="b-card__title"><a href="{{ $r('coral-peach.blog.show', $post['slug']) }}">{{ $post['title'] }}</a></h2>
             <p class="b-card__excerpt">{{ $post['excerpt'] }}</p>
             <span class="link-more" aria-hidden="true">Baca selengkapnya <svg class="icon"><use href="#i-arrow-right"/></svg></span>
           </div>

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\WebiaOrder;
 use App\Models\WebiaOrderLog;
 use App\Services\AccountProvisioner;
+use App\Services\HostingProvisioner;
 use App\Services\OrderMail;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -159,7 +160,8 @@ class WebiaOrderController extends Controller
 
         if ($newStatus === 'paid') {
             // Jalur sama dengan webhook Midtrans: buat/tautkan akun lalu antrekan email kredensial.
-            app(AccountProvisioner::class)->provision($order);
+            $order = app(AccountProvisioner::class)->provision($order);
+            app(HostingProvisioner::class)->provision($order);
         } else {
             $this->orderMail->notifyCustomer($order, $newStatus);
         }

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 #[Fillable([
     'user_id', 'guest_name', 'guest_email', 'order_number', 'webia_package_id', 'package_snapshot', 'webia_template_id', 'template_snapshot', 'category_slug',
@@ -42,6 +43,11 @@ class WebiaOrder extends Model
     public function payments(): HasMany
     {
         return $this->hasMany(WebiaPayment::class);
+    }
+
+    public function hostingService(): HasOne
+    {
+        return $this->hasOne(HostingService::class);
     }
 
     public function siteConfigPath(): ?string

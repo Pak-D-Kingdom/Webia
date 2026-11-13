@@ -15,18 +15,18 @@
                     <li><i class="bi {{ $f['icon'] }}" aria-hidden="true"></i><span><strong>{{ $f['title'] }}</strong>{{ $f['sub'] }}</span></li>
                 @endforeach
             </ul>
-            <a class="btn btn--rose btn--lg" href="{{ route($rp . 'catalog') }}">Jelajahi Sekarang <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+            <a class="btn btn--rose btn--lg" href="{{ $r('catalog') }}">Jelajahi Sekarang <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
         </div>
 
         <div class="hero__visual">
-            <img src="{{ $img }}/hero-model.jpg" alt="Model Belleza dengan rangkaian produk skincare premium" width="1140" height="516" fetchpriority="high">
+            <img src="{{ $img }}/hero-model.jpg" alt="Model {{ $cfg['brand']['name'] }} dengan rangkaian produk skincare premium" width="1140" height="516" fetchpriority="high">
         </div>
 
         @if ($fp)
             <aside class="fav" aria-label="Produk favorit">
                 <div class="fav__head">
                     <h2>Produk Favorit</h2>
-                    <a class="more" href="{{ route($rp . 'catalog') }}">Lihat Semua <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+                    <a class="more" href="{{ $r('catalog') }}">Lihat Semua <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
                 </div>
                 <p class="fav__sub">Pilihan terbaik untuk kamu</p>
                 <div class="fav__body">
@@ -39,7 +39,9 @@
                         <p class="fav__desc">{{ $fp['desc'] }}</p>
                         <p class="pcard__price"><strong>{{ $fp['price_fmt'] }}</strong> <s>{{ $fp['old_fmt'] }}</s></p>
                         <p class="pcard__info">
-                            <span class="rate"><i class="bi bi-star-fill" aria-hidden="true"></i> {{ $fp['rating'] }} ({{ $fp['reviews'] }})</span>
+                            @unless ($cfg['customer_site'] ?? false)
+                                <span class="rate"><i class="bi bi-star-fill" aria-hidden="true"></i> {{ $fp['rating'] }} ({{ $fp['reviews'] }})</span>
+                            @endunless
                             <span class="stock stock--{{ $fp['status'] }}"><i class="bi bi-circle-fill" aria-hidden="true"></i> {{ $fp['status_label'] }}</span>
                         </p>
                     </div>

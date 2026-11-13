@@ -1,6 +1,6 @@
 <header class="el-navbar" data-navbar>
     <div class="el-container el-navbar__inner">
-        <a class="el-brand" href="{{ route('elearning.home') }}" aria-label="{{ $e['brand']['name'] }} — beranda">
+        <a class="el-brand" href="{{ $r('elearning.home') }}" aria-label="{{ $e['brand']['name'] }} — beranda">
             <img src="{{ $img('logo-mark.png') }}" alt="" width="48" height="41">
             <span class="el-brand__text"><strong>{{ $e['brand']['name'] }}</strong><small>{{ $e['brand']['tagline'] }}</small></span>
         </a>
@@ -13,9 +13,9 @@
                         @if ($isChat)
                             <button type="button" class="el-nav__link" data-open-chat>{{ $item['label'] }}</button>
                         @else
-                            <a class="el-nav__link {{ request()->routeIs($item['route']) ? 'is-active' : '' }}"
-                               href="{{ route($item['route']) }}"
-                               @if (request()->routeIs($item['route'])) aria-current="page" @endif>{{ $item['label'] }}</a>
+                            <a class="el-nav__link {{ $isActive($item['route']) ? 'is-active' : '' }}"
+                               href="{{ $r($item['route']) }}"
+                               @if ($isActive($item['route'])) aria-current="page" @endif>{{ $item['label'] }}</a>
                         @endif
                     </li>
                 @endforeach
@@ -30,7 +30,7 @@
                 <button type="button" class="el-icon-btn" aria-label="Cari program" aria-expanded="false" aria-controls="elSearch" data-search-toggle>
                     <svg class="el-ico" aria-hidden="true"><use href="#i-search"/></svg>
                 </button>
-                <form class="el-search" id="elSearch" action="{{ route('elearning.programs') }}" method="get" role="search" hidden>
+                <form class="el-search" id="elSearch" action="{{ $r('elearning.programs') }}" method="get" role="search" hidden>
                     <label class="el-sr" for="elSearchInput">Cari program</label>
                     <input id="elSearchInput" type="search" name="q" placeholder="Cari program, mis. Python" autocomplete="off">
                     <button type="submit" class="el-btn el-btn--primary el-btn--sm">Cari</button>

@@ -1,4 +1,4 @@
-@php($r = $e['route'])
+@php($rp = $e['route'])
 @php($full = $full ?? false)
 @php($g = $e['registration'])
 <section class="nl-sec nl-sec--registration" id="registration" aria-labelledby="registration-title">
@@ -9,8 +9,8 @@
             <h2 id="registration-title">{{ $g['title'] }}</h2>
             <p>{{ $g['text'] }}</p>
             <div class="nl-banner__cta">
-                <a class="nl-btn nl-btn--primary" href="{{ route($r.'programs') }}">Lihat Program <svg class="ic"><use href="#i-arrow"/></svg></a>
-                @unless($full)<a class="nl-btn nl-btn--ghost" href="{{ route($r.'registration') }}#form-registrasi">Daftar Sekarang</a>@endunless
+                <a class="nl-btn nl-btn--primary" href="{{ $r($rp.'programs') }}">Lihat Program <svg class="ic"><use href="#i-arrow"/></svg></a>
+                @unless($full)<a class="nl-btn nl-btn--ghost" href="{{ $r($rp.'registration') }}#form-registrasi">Daftar Sekarang</a>@endunless
             </div>
         </div>
     </div>
@@ -29,7 +29,7 @@
             {{-- Tanpa backend: data dikirim ke WhatsApp admin lewat JS (atribut data-wa-form) --}}
             <form class="nl-card nl-form" id="form-registrasi" data-wa-form data-wa="{{ $e['whatsapp']['number'] }}" data-wa-title="Pendaftaran Baru" novalidate aria-labelledby="form-title">
                 <h2 id="form-title">Formulir Registrasi</h2>
-                <p class="nl-form__hint"><svg class="ic"><use href="#i-whatsapp"/></svg>Data pendaftaranmu akan dikirim ke WhatsApp admin NovaLearn ({{ $e['whatsapp']['display'] }}).</p>
+                <p class="nl-form__hint"><svg class="ic"><use href="#i-whatsapp"/></svg>Data pendaftaranmu akan dikirim ke WhatsApp admin {{ $e['brand']['name'] }} ({{ $e['whatsapp']['display'] }}).</p>
                 <div class="nl-form__grid">
                     <div class="nl-field"><label for="reg-name">Nama lengkap</label>
                         <input id="reg-name" name="name" type="text" autocomplete="name" required aria-describedby="reg-name-err"><small class="nl-err" id="reg-name-err"></small></div>

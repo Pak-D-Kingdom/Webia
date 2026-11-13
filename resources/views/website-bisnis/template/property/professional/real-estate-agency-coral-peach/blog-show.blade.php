@@ -17,7 +17,7 @@
 
   @include('website-bisnis.template.property.professional.real-estate-agency-coral-peach.partials.page-header', [
     'image'    => $post['cover'],
-    'parent'   => ['label' => 'Blog', 'url' => route('coral-peach.blog')],
+    'parent'   => ['label' => 'Blog', 'url' => $r('coral-peach.blog')],
     'crumb'    => 'Artikel',
     'title'    => $post['title'],
     'subtitle' => $post['cat_label'].' · '.$post['date'].' · '.$post['read'].' baca',
@@ -63,7 +63,7 @@
             <a href="https://www.facebook.com/sharer/sharer.php?u={{ rawurlencode($shareUrl) }}" target="_blank" rel="noopener noreferrer" aria-label="Bagikan ke Facebook"><svg class="icon" aria-hidden="true"><use href="#i-facebook"/></svg></a>
             <button type="button" data-copy-link aria-label="Salin tautan artikel"><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg></button>
           </div>
-          <a class="link-more" href="{{ route('coral-peach.blog') }}"><svg class="icon" aria-hidden="true" style="transform:rotate(180deg)"><use href="#i-arrow-right"/></svg> Kembali ke Blog</a>
+          <a class="link-more" href="{{ $r('coral-peach.blog') }}"><svg class="icon" aria-hidden="true" style="transform:rotate(180deg)"><use href="#i-arrow-right"/></svg> Kembali ke Blog</a>
         </div>
       </div>
     </article>
@@ -75,9 +75,9 @@
           <ul class="side-posts">
             @foreach ($related as $rp)
               <li class="side-post">
-                <a class="side-post__img" href="{{ route('coral-peach.blog.show', $rp['slug']) }}" tabindex="-1" aria-hidden="true"><img src="{{ asset($img.'/'.$rp['image']) }}" alt="" loading="lazy" width="96" height="72"></a>
+                <a class="side-post__img" href="{{ $r('coral-peach.blog.show', $rp['slug']) }}" tabindex="-1" aria-hidden="true"><img src="{{ asset($img.'/'.$rp['image']) }}" alt="" loading="lazy" width="96" height="72"></a>
                 <div>
-                  <a class="side-post__title" href="{{ route('coral-peach.blog.show', $rp['slug']) }}">{{ $rp['title'] }}</a>
+                  <a class="side-post__title" href="{{ $r('coral-peach.blog.show', $rp['slug']) }}">{{ $rp['title'] }}</a>
                   <small>{{ $rp['date'] }} · {{ $rp['read'] }}</small>
                 </div>
               </li>
@@ -89,17 +89,17 @@
       <section class="side-cta">
         <h2>Butuh konsultasi properti?</h2>
         <p>Tim Coral Homes siap membantu Anda memilih unit yang paling sesuai.</p>
-        <a class="btn btn--light btn--block" href="{{ route('coral-peach.contact') }}">Hubungi Kami <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+        <a class="btn btn--light btn--block" href="{{ $r('coral-peach.contact') }}">Hubungi Kami <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
       </section>
     </aside>
 
     @if ($prev || $next)
       <nav class="article-nav" aria-label="Artikel sebelumnya dan berikutnya">
         @if ($prev)
-          <a class="article-nav__item" href="{{ route('coral-peach.blog.show', $prev['slug']) }}"><small>← Artikel sebelumnya</small><strong>{{ $prev['title'] }}</strong></a>
+          <a class="article-nav__item" href="{{ $r('coral-peach.blog.show', $prev['slug']) }}"><small>← Artikel sebelumnya</small><strong>{{ $prev['title'] }}</strong></a>
         @else <span></span> @endif
         @if ($next)
-          <a class="article-nav__item article-nav__item--next" href="{{ route('coral-peach.blog.show', $next['slug']) }}"><small>Artikel berikutnya →</small><strong>{{ $next['title'] }}</strong></a>
+          <a class="article-nav__item article-nav__item--next" href="{{ $r('coral-peach.blog.show', $next['slug']) }}"><small>Artikel berikutnya →</small><strong>{{ $next['title'] }}</strong></a>
         @endif
       </nav>
     @endif

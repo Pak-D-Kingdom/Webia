@@ -41,26 +41,63 @@ class CustomerSiteController extends Controller
 
         // 2. Fallback ke sistem config template lama jika view khusus belum terdaftar
         $page = $page ?? 'home';
+        [$pageSection, $pageIdentifier] = array_pad(explode('/', $page, 2), 2, null);
         $siteConfigPath = $order->siteConfigPath();
         abort_unless($siteConfigPath !== null, 404);
 
-        $views = str_starts_with($siteConfigPath, 'company/')
-            ? ['home' => 'index', 'tentang-kami' => 'tentang-kami', 'portofolio' => 'portofolio']
-            : ['home' => 'index', 'menu' => 'menu', 'reservasi' => 'reservasi'];
-        abort_unless(isset($views[$page]), 404);
+        $isBrandingAgency = str_starts_with($siteConfigPath, 'professional-service/artistic/branding-creative-agency-terracotta/');
+        $isRetail = str_starts_with($siteConfigPath, 'retail/');
+        $isHealthcare = str_starts_with($siteConfigPath, 'healthcare/');
+        $isProperty = str_starts_with($siteConfigPath, 'property/');
+        $isElearning = str_starts_with($siteConfigPath, 'e-learning/');
+        $pageKey = match (true) {
+            $pageIdentifier !== null && $pageSection === 'blog' => 'blog.show',
+            $pageIdentifier !== null && $pageSection === 'property' => 'property.show',
+            $pageIdentifier !== null && $pageSection === 'properties' => 'property.show',
+            default => $page,
+        };
+        $views = match (true) {
+            $isBrandingAgency => array_fill_keys(['home', 'layanan', 'keahlian', 'portofolio', 'janji'], 'branding-creative-agency'),
+            str_starts_with($siteConfigPath, 'company/') => ['home' => 'index', 'tentang-kami' => 'tentang-kami', 'portofolio' => 'portofolio'],
+            str_starts_with($siteConfigPath, 'retail/luxury/') => ['home' => 'index', 'catalog' => 'catalog', 'price' => 'price', 'stock' => 'stock', 'inquiry' => 'inquiry', 'shop' => 'shop'],
+            str_starts_with($siteConfigPath, 'retail/organic/') => ['home' => 'index', 'katalog' => 'catalog', 'harga' => 'price', 'stok' => 'stock', 'inquiry' => 'inquiry', 'belanja' => 'shop'],
+            str_starts_with($siteConfigPath, 'retail/premium-minimal/') => ['home' => 'index', 'katalog' => 'katalog', 'harga' => 'harga', 'ketersediaan' => 'ketersediaan', 'inquiry' => 'inquiry', 'keranjang' => 'keranjang'],
+            str_starts_with($siteConfigPath, 'healthcare/professional/') => ['home' => 'index', 'layanan' => 'services', 'dokter-staff' => 'doctors', 'jadwal' => 'schedule', 'appointment' => 'appointment', 'faq' => 'faq', 'kebijakan' => 'policy'],
+            str_starts_with($siteConfigPath, 'healthcare/luxury/') => ['home' => 'index', 'services' => 'services', 'doctors' => 'doctors', 'schedule' => 'schedule', 'appointment' => 'appointment', 'faq' => 'faq', 'policy' => 'policy'],
+            str_starts_with($siteConfigPath, 'healthcare/elegan/') => ['home' => 'index', 'layanan' => 'services', 'dokter' => 'doctors', 'jadwal' => 'schedule', 'booking' => 'appointment', 'faq' => 'faq', 'kebijakan' => 'policy'],
+            str_starts_with($siteConfigPath, 'property/luxury/') => ['home' => 'index', 'property' => 'property', 'property.show' => 'property-detail', 'about' => 'about', 'gallery' => 'gallery', 'booking' => 'booking', 'blog' => 'blog', 'blog.show' => 'blog-detail', 'contact' => 'contact'],
+            str_starts_with($siteConfigPath, 'property/premium-minimal/') => ['home' => 'index', 'properties' => 'properties', 'property.show' => 'property', 'about-us' => 'about', 'gallery' => 'gallery', 'booking' => 'booking', 'blog' => 'blog', 'blog.show' => 'article', 'contact' => 'contact'],
+            str_starts_with($siteConfigPath, 'property/professional/') => ['home' => 'index', 'property' => 'property', 'specification' => 'specification', 'price' => 'price', 'about-us' => 'about', 'gallery' => 'gallery', 'booking' => 'booking', 'blog' => 'blog', 'blog.show' => 'blog-show', 'contact' => 'contact'],
+            $isElearning => ['home' => 'index', 'programs' => 'programs', 'schedules' => 'schedules', 'teachers' => 'teachers', 'pricing' => 'pricing', 'registration' => 'registration', 'course-content' => 'course-content', 'member-area' => 'member-area'],
+            default => ['home' => 'index', 'menu' => 'menu', 'reservasi' => 'reservasi'],
+        };
+        abort_unless(isset($views[$pageKey]), 404);
 
         $siteConfig = config('template.'.str_replace('/', '.', $siteConfigPath));
         abort_unless(is_array($siteConfig), 404);
 
         $siteConfig = match (true) {
+            $isBrandingAgency => $this->brandingAgencyConfig($siteConfig, $business, $whatsapp),
             str_starts_with($siteConfigPath, 'company/elegan/') => $this->terracottaCompanyConfig($siteConfig, $business, $whatsapp, $instagram),
             str_starts_with($siteConfigPath, 'company/modern/') => $this->oceanTealCompanyConfig($siteConfig, $business, $whatsapp, $instagram),
             str_starts_with($siteConfigPath, 'company/classic/') => $this->warmNeutralCompanyConfig($siteConfig, $business, $whatsapp, $instagram),
+            str_starts_with($siteConfigPath, 'retail/luxury/') => $this->luxuryRetailConfig($siteConfig, $business, $whatsapp, $instagram),
+            str_starts_with($siteConfigPath, 'retail/organic/') => $this->organicRetailConfig($siteConfig, $business, $whatsapp, $instagram),
+            str_starts_with($siteConfigPath, 'retail/premium-minimal/') => $this->premiumRetailConfig($siteConfig, $business, $whatsapp, $instagram),
+            str_starts_with($siteConfigPath, 'healthcare/professional/') => $this->cleanWhiteHealthcareConfig($siteConfig, $business, $whatsapp, $instagram),
+            str_starts_with($siteConfigPath, 'healthcare/luxury/') => $this->champagneHealthcareConfig($siteConfig, $business, $whatsapp, $instagram),
+            str_starts_with($siteConfigPath, 'healthcare/elegan/') => $this->roseGoldHealthcareConfig($siteConfig, $business, $whatsapp, $instagram),
+            str_starts_with($siteConfigPath, 'property/luxury/') => $this->emeraldPropertyConfig($siteConfig, $business, $whatsapp, $instagram),
+            str_starts_with($siteConfigPath, 'property/premium-minimal/') => $this->naturePropertyConfig($siteConfig, $business, $whatsapp, $instagram),
+            str_starts_with($siteConfigPath, 'property/professional/') => $this->coralPropertyConfig($siteConfig, $business, $whatsapp, $instagram),
+            str_starts_with($siteConfigPath, 'e-learning/modern/') => $this->oceanElearningConfig($siteConfig, $business, $whatsapp, $instagram),
+            str_starts_with($siteConfigPath, 'e-learning/playful-colorful/') => $this->pastelElearningConfig($siteConfig, $business, $whatsapp, $instagram),
+            str_starts_with($siteConfigPath, 'e-learning/futuristic/') => $this->darkElearningConfig($siteConfig, $business, $whatsapp, $instagram),
             str_starts_with($siteConfigPath, 'f&b/vintage/') => $this->vintageSiteConfig($siteConfig, $business, $order, $whatsapp, $instagram),
             str_starts_with($siteConfigPath, 'f&b/elegan/') => $this->eleganSiteConfig($siteConfig, $business, $order, $whatsapp, $instagram),
             default => $this->minimalisSiteConfig($siteConfig, $business, $order, $whatsapp, $instagram),
         };
-        if (! str_starts_with($siteConfigPath, 'company/')) {
+        if (! str_starts_with($siteConfigPath, 'company/') && ! $isRetail && ! $isProperty) {
             config(['cafe' => $siteConfig]);
         }
 
@@ -71,17 +108,91 @@ class CustomerSiteController extends Controller
             'order' => $order->site_slug,
             'page' => $name === 'home' ? null : $name,
         ]).$hash;
+        $routeUrl = fn (string $name = 'home', string $hash = ''): string => $pageUrl(
+            $isBrandingAgency && in_array($name, ['harga', 'brief'], true) ? 'janji' : $name,
+            $hash,
+        );
+        $retailPageUrl = fn (string $name = 'home', string $hash = ''): string => $pageUrl(
+            $this->retailPageName($siteConfigPath, $name),
+            $hash,
+        );
+        $healthcarePageUrl = function (string $name = 'home', array|string $parameters = '') use ($pageUrl, $siteConfigPath): string {
+            $url = $pageUrl($this->healthcarePageName($siteConfigPath, $name));
 
-        $renderedHtml = view($view.'.'.$views[$page], [
+            return is_array($parameters) && $parameters !== []
+                ? $url.'?'.http_build_query($parameters)
+                : $url.$parameters;
+        };
+        $propertyPageUrl = function (string $name = 'home', array|string $parameters = [], string $hash = '') use ($pageUrl, $siteConfigPath): string {
+            $parameters = is_array($parameters) ? $parameters : [$parameters];
+            $page = $this->propertyPageName($siteConfigPath, $name, $parameters);
+
+            return $pageUrl($page).$hash;
+        };
+        $emeraldRoute = fn (string $name = 'index', string $hash = '', array $parameters = []): string => $propertyPageUrl($name, $parameters, $hash);
+        $elearningPageUrl = function (string $name = 'home', array $parameters = []) use ($pageUrl): string {
+            $url = $pageUrl(Str::afterLast($name, '.'));
+
+            return $parameters === [] ? $url : $url.'?'.http_build_query($parameters);
+        };
+        $assetPath = 'website-bisnis/template/'.$templatePath;
+        $customerRoute = match (true) {
+            $isRetail => $retailPageUrl,
+            $isHealthcare => $healthcarePageUrl,
+            $isProperty => $propertyPageUrl,
+            $isElearning => $elearningPageUrl,
+            default => $routeUrl,
+        };
+        $healthcareViewData = $isHealthcare ? [
+            'clinic' => $siteConfig,
+            'tpl' => $view,
+            'rp' => '',
+        ] : [];
+        $propertyViewData = $isProperty ? $this->propertyViewData(
+            $siteConfigPath,
+            $siteConfig,
+            $view,
+            $pageKey,
+            $pageIdentifier,
+            $propertyPageUrl,
+            $emeraldRoute,
+        ) : [];
+        $elearningViewData = $isElearning ? [
+            str_starts_with($siteConfigPath, 'e-learning/playful-colorful/') ? 't' : 'e' => $siteConfig,
+            'r' => $elearningPageUrl,
+            'isActive' => fn (string $name): bool => Str::afterLast($name, '.') === $pageKey,
+        ] : [];
+
+        $renderedHtml = view($view.'.'.$views[$pageKey], array_merge([
             'order' => $order,
             'v' => $view,
             'path' => $path,
+            'page' => $page,
             'currentPage' => $page,
+            'c' => $siteConfig,
             'cafe' => $siteConfig,
+            'cfg' => $siteConfig,
+            'skin' => $siteConfig,
             'siteConfig' => $siteConfig,
             'pageUrl' => $pageUrl,
-            'routeUrl' => $pageUrl,
-        ])->render();
+            'routeUrl' => $routeUrl,
+            'r' => $customerRoute,
+            'ns' => $view,
+            'active' => $isRetail ? $this->retailRouteKey($siteConfigPath, $page) : $views[$pageKey],
+            'img' => str_starts_with($siteConfigPath, 'healthcare/luxury/')
+                ? asset('images/'.$assetPath)
+                : ($isRetail ? asset('images/'.$assetPath) : fn (string $file): string => asset('images/'.$path.'/'.$file)),
+            'css' => asset('css/'.($isRetail ? $assetPath : $path).'/'.($isRetail ? 'skincare' : 'branding-creative-agency').'.css'),
+            'js' => asset('js/'.($isRetail ? $assetPath : $path).'/'.($isRetail ? 'skincare' : 'branding-creative-agency').'.js'),
+        ], $healthcareViewData, $propertyViewData, $elearningViewData))->render();
+
+        if ($isProperty) {
+            $renderedHtml = str_replace(
+                ['GreenHaven', 'GreenEstate', 'Coral Homes'],
+                $business['business_name'] ?? 'Agensi Properti',
+                $renderedHtml,
+            );
+        }
 
         // Integrasi Widget Chatbot: Kembali ke desain asli template website klien masing-masing
         $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
@@ -278,6 +389,41 @@ class CustomerSiteController extends Controller
         return $html;
     }
 
+    private function brandingAgencyConfig(array $siteConfig, array $business, string $whatsapp): array
+    {
+        $name = $business['business_name'] ?? 'Studio Kreatif';
+        $this->replaceDemoName($siteConfig, $siteConfig['brand']['name'], $name);
+
+        return array_replace($siteConfig, [
+            'brand' => array_replace($siteConfig['brand'], [
+                'name' => $name,
+                'short' => $name,
+                'sub' => '',
+                'tagline' => ($business['tagline'] ?? null) ?: $siteConfig['brand']['tagline'],
+                'whatsapp' => $whatsapp,
+                'phone' => $business['whatsapp'] ?? '',
+                'email' => '',
+                'address' => $this->businessAddress($business),
+                'wa_text' => 'Halo '.$name.', saya ingin berkonsultasi soal branding.',
+            ]),
+            'topbar' => array_replace($siteConfig['topbar'], ['notice' => 'Konsultasikan kebutuhan branding dan materi kreatif Anda.']),
+            'nav' => ['layanan', 'keahlian', 'portofolio', 'janji'],
+            'footnav' => ['layanan', 'keahlian', 'portofolio', 'janji'],
+            'hero' => array_replace($siteConfig['hero'], [
+                'lead' => ($business['description'] ?? null) ?: $siteConfig['hero']['lead'],
+                'facts' => [],
+            ]),
+            'services' => array_replace($siteConfig['services'], [
+                'items' => array_map(fn (array $service): array => array_replace($service, ['price' => '']), $siteConfig['services']['items']),
+            ]),
+            'pricing' => array_replace($siteConfig['pricing'], ['plans' => []]),
+            'appointment' => array_replace($siteConfig['appointment'], ['slots' => []]),
+            'expertise' => array_replace($siteConfig['expertise'], ['awards' => []]),
+            'customer_site' => true,
+        ]);
+    }
+    }
+
     private function terracottaCompanyConfig(array $siteConfig, array $business, string $whatsapp, string $instagram): array
     {
         $name = $business['business_name'] ?? 'Perusahaan';
@@ -363,6 +509,449 @@ class CustomerSiteController extends Controller
             'clients' => [],
             'faq' => array_values(array_filter($siteConfig['faq'], fn (array $item): bool => ! in_array($item['id'], ['sertifikasi', 'klien'], true))),
         ]);
+    }
+
+    private function luxuryRetailConfig(array $siteConfig, array $business, string $whatsapp, string $instagram): array
+    {
+        $name = $business['business_name'] ?? 'Toko Skincare';
+        $this->replaceDemoName($siteConfig, $siteConfig['brand']['name'], $name);
+
+        return array_replace($siteConfig, [
+            'brand' => array_replace($siteConfig['brand'], [
+                'name' => $name,
+                'tagline' => ($business['tagline'] ?? null) ?: $siteConfig['brand']['tagline'],
+            ]),
+            'contact' => array_replace($siteConfig['contact'], [
+                'whatsapp' => $whatsapp,
+                'phone_display' => $business['whatsapp'] ?? '',
+                'email' => '',
+                'address' => $this->businessAddress($business),
+            ]),
+            'social' => $instagram === '' ? [] : [['icon' => 'bi-instagram', 'label' => 'Instagram', 'url' => 'https://instagram.com/'.$instagram]],
+            'hero' => array_replace($siteConfig['hero'], [
+                'title' => ($business['tagline'] ?? null) ?: $siteConfig['hero']['title'],
+                'text' => ($business['description'] ?? null) ?: $siteConfig['hero']['text'],
+            ]),
+            'customer_site' => true,
+        ]);
+    }
+
+    private function organicRetailConfig(array $siteConfig, array $business, string $whatsapp, string $instagram): array
+    {
+        $name = $business['business_name'] ?? 'Toko Skincare';
+        $this->replaceDemoName($siteConfig, $siteConfig['brand']['name'], $name);
+
+        return array_replace($siteConfig, [
+            'brand' => array_replace($siteConfig['brand'], [
+                'name' => $name,
+                'tagline' => ($business['tagline'] ?? null) ?: $siteConfig['brand']['tagline'],
+                'title' => $name.' - '.(($business['tagline'] ?? null) ?: $siteConfig['brand']['tagline']),
+                'description' => ($business['description'] ?? null) ?: $siteConfig['brand']['description'],
+            ]),
+            'whatsapp' => array_replace($siteConfig['whatsapp'], [
+                'number' => $whatsapp,
+                'display' => $business['whatsapp'] ?? '',
+                'greeting' => 'Halo '.$name.', saya ingin bertanya tentang produk.',
+            ]),
+            'contact' => array_replace($siteConfig['contact'], [
+                'address' => $this->businessAddress($business),
+                'email' => '',
+            ]),
+            'socials' => $instagram === '' ? [] : [['icon' => 'instagram', 'label' => 'Instagram', 'url' => 'https://instagram.com/'.$instagram]],
+            'hero' => array_replace($siteConfig['hero'], [
+                'title' => ($business['tagline'] ?? null) ?: $siteConfig['hero']['title'],
+                'text' => ($business['description'] ?? null) ?: $siteConfig['hero']['text'],
+            ]),
+            'customer_site' => true,
+        ]);
+    }
+
+    private function premiumRetailConfig(array $siteConfig, array $business, string $whatsapp, string $instagram): array
+    {
+        $name = $business['business_name'] ?? 'Toko Skincare';
+        $this->replaceDemoName($siteConfig, $siteConfig['name'], $name);
+
+        return array_replace($siteConfig, [
+            'name' => $name,
+            'tagline' => ($business['tagline'] ?? null) ?: $siteConfig['tagline'],
+            'whatsapp' => $whatsapp,
+            'whatsapp_display' => $business['whatsapp'] ?? '',
+            'contact' => array_replace($siteConfig['contact'], [
+                'address' => $this->businessAddress($business),
+                'phone' => $business['whatsapp'] ?? '',
+                'email' => '',
+            ]),
+            'social' => $instagram === '' ? [] : [['icon' => 'bi-instagram', 'label' => 'Instagram', 'url' => 'https://instagram.com/'.$instagram]],
+            'hero' => array_replace($siteConfig['hero'], [
+                'title' => ($business['tagline'] ?? null) ?: $siteConfig['hero']['title'],
+                'text' => ($business['description'] ?? null) ?: $siteConfig['hero']['text'],
+            ]),
+            'customer_site' => true,
+        ]);
+    }
+
+    private function cleanWhiteHealthcareConfig(array $siteConfig, array $business, string $whatsapp, string $instagram): array
+    {
+        $name = $business['business_name'] ?? 'Klinik Kecantikan';
+        $this->replaceDemoName($siteConfig, $siteConfig['brand']['name'], $name);
+
+        return array_replace($siteConfig, [
+            'brand' => array_replace($siteConfig['brand'], [
+                'name' => $name,
+                'tagline' => ($business['tagline'] ?? null) ?: $siteConfig['brand']['tagline'],
+            ]),
+            'contact' => array_replace($siteConfig['contact'], [
+                'phone' => $business['whatsapp'] ?? '',
+                'whatsapp' => $whatsapp,
+                'email' => '',
+                'address' => $this->businessAddress($business),
+            ]),
+            'social' => $instagram === '' ? [] : [['label' => 'Instagram', 'icon' => 'instagram', 'url' => 'https://instagram.com/'.$instagram]],
+            'hero' => array_replace($siteConfig['hero'], [
+                'text' => ($business['description'] ?? null) ?: $siteConfig['hero']['text'],
+                'trust' => [],
+            ]),
+            'notifications' => [],
+            'customer_site' => true,
+        ]);
+    }
+
+    private function champagneHealthcareConfig(array $siteConfig, array $business, string $whatsapp, string $instagram): array
+    {
+        $name = $business['business_name'] ?? 'Klinik Kecantikan';
+        $this->replaceDemoName($siteConfig, $siteConfig['brand']['name'], $name);
+
+        return array_replace($siteConfig, [
+            'brand' => array_replace($siteConfig['brand'], [
+                'name' => $name,
+                'tagline' => ($business['tagline'] ?? null) ?: $siteConfig['brand']['tagline'],
+                'description' => ($business['description'] ?? null) ?: $siteConfig['brand']['description'],
+            ]),
+            'contact' => array_replace($siteConfig['contact'], [
+                'address' => $this->businessAddress($business),
+                'phone' => $business['whatsapp'] ?? '',
+                'phone_raw' => '+'.$whatsapp,
+                'email' => '',
+                'whatsapp' => $whatsapp,
+            ]),
+            'social' => $instagram === '' ? [] : [['label' => 'Instagram', 'icon' => 'bi-instagram', 'url' => 'https://instagram.com/'.$instagram]],
+            'hero' => array_replace($siteConfig['hero'], [
+                'text' => ($business['description'] ?? null) ?: $siteConfig['hero']['text'],
+                'badges' => [],
+            ]),
+            'customer_site' => true,
+        ]);
+    }
+
+    private function roseGoldHealthcareConfig(array $siteConfig, array $business, string $whatsapp, string $instagram): array
+    {
+        $name = $business['business_name'] ?? 'Klinik Kecantikan';
+        $this->replaceDemoName($siteConfig, $siteConfig['brand']['name'], $name);
+
+        return array_replace($siteConfig, [
+            'brand' => array_replace($siteConfig['brand'], [
+                'name' => $name,
+                'tagline' => ($business['tagline'] ?? null) ?: $siteConfig['brand']['tagline'],
+            ]),
+            'contact' => array_replace($siteConfig['contact'], [
+                'phone' => $business['whatsapp'] ?? '',
+                'whatsapp' => $whatsapp,
+                'booking_whatsapp' => $whatsapp,
+                'email' => '',
+                'address' => $this->businessAddress($business),
+            ]),
+            'socials' => $instagram === '' ? [] : [['label' => 'Instagram', 'icon' => 'bi-instagram', 'url' => 'https://instagram.com/'.$instagram]],
+            'hero' => array_replace($siteConfig['hero'], [
+                'text' => ($business['description'] ?? null) ?: $siteConfig['hero']['text'],
+                'trust' => [],
+            ]),
+            'notifications' => [],
+            'customer_site' => true,
+        ]);
+    }
+
+    private function emeraldPropertyConfig(array $siteConfig, array $business, string $whatsapp, string $instagram): array
+    {
+        $name = $business['business_name'] ?? 'Agensi Properti';
+        $this->replaceDemoName($siteConfig, $siteConfig['site']['name'], $name);
+
+        return array_replace($siteConfig, [
+            'site' => array_replace($siteConfig['site'], [
+                'name' => $name,
+                'tagline' => ($business['tagline'] ?? null) ?: $siteConfig['site']['tagline'],
+                'address' => $this->businessAddress($business),
+                'email' => '',
+                'phone' => $business['whatsapp'] ?? '',
+                'social' => $instagram === '' ? [] : [['icon' => 'instagram', 'label' => 'Instagram', 'url' => 'https://instagram.com/'.$instagram]],
+            ]),
+            'about' => array_replace($siteConfig['about'], ['text' => [($business['description'] ?? null) ?: $siteConfig['about']['text'][0]]]),
+            'whatsapp' => array_replace($siteConfig['whatsapp'], ['number' => $whatsapp]),
+            'customer_site' => true,
+        ]);
+    }
+
+    private function naturePropertyConfig(array $siteConfig, array $business, string $whatsapp, string $instagram): array
+    {
+        $name = $business['business_name'] ?? 'Agensi Properti';
+        $this->replaceDemoName($siteConfig, $siteConfig['brand']['name'], $name);
+
+        return array_replace($siteConfig, [
+            'brand' => array_replace($siteConfig['brand'], [
+                'name' => $name,
+                'tagline' => ($business['tagline'] ?? null) ?: $siteConfig['brand']['tagline'],
+            ]),
+            'contact' => array_replace($siteConfig['contact'], [
+                'address' => $this->businessAddress($business),
+                'email' => '',
+                'phone' => $business['whatsapp'] ?? '',
+                'phone_tel' => '+'.$whatsapp,
+                'whatsapp' => $whatsapp,
+            ]),
+            'socials' => $instagram === '' ? [] : [['label' => 'Instagram', 'icon' => 'instagram', 'url' => 'https://instagram.com/'.$instagram]],
+            'hero' => array_replace($siteConfig['hero'], ['desc' => ($business['description'] ?? null) ?: $siteConfig['hero']['desc']]),
+            'about' => array_replace($siteConfig['about'], ['text' => ($business['description'] ?? null) ?: $siteConfig['about']['text']]),
+            'customer_site' => true,
+        ]);
+    }
+
+    private function coralPropertyConfig(array $siteConfig, array $business, string $whatsapp, string $instagram): array
+    {
+        $name = $business['business_name'] ?? 'Agensi Properti';
+        $this->replaceDemoName($siteConfig, $siteConfig['brand']['name'], $name);
+
+        return array_replace($siteConfig, [
+            'brand' => array_replace($siteConfig['brand'], [
+                'name' => $name,
+                'upper' => Str::upper($name),
+                'tagline' => ($business['tagline'] ?? null) ?: $siteConfig['brand']['tagline'],
+            ]),
+            'contact' => array_replace($siteConfig['contact'], [
+                'address' => $this->businessAddress($business),
+                'address_line1' => $business['address'] ?? '',
+                'address_line2' => $business['city'] ?? '',
+                'email' => '',
+                'email_extra' => '',
+                'phone' => $business['whatsapp'] ?? '',
+                'phone_link' => '+'.$whatsapp,
+                'whatsapp' => $whatsapp,
+                'whatsapp_leads' => $whatsapp,
+            ]),
+            'socials' => $instagram === '' ? [] : [['name' => 'Instagram', 'icon' => 'instagram', 'url' => 'https://instagram.com/'.$instagram]],
+            'hero' => array_replace($siteConfig['hero'], ['text' => ($business['description'] ?? null) ?: $siteConfig['hero']['text']]),
+            'about' => array_replace($siteConfig['about'], [
+                'text' => [($business['description'] ?? null) ?: $siteConfig['about']['text'][0]],
+                'stats' => [],
+            ]),
+            'customer_site' => true,
+        ]);
+    }
+
+    private function oceanElearningConfig(array $siteConfig, array $business, string $whatsapp, string $instagram): array
+    {
+        $name = $business['business_name'] ?? 'Akademi Online';
+        $this->replaceDemoName($siteConfig, $siteConfig['brand']['name'], $name);
+
+        return array_replace($siteConfig, [
+            'brand' => array_replace($siteConfig['brand'], [
+                'name' => $name,
+                'tagline' => ($business['tagline'] ?? null) ?: $siteConfig['brand']['tagline'],
+            ]),
+            'contact' => array_replace($siteConfig['contact'], [
+                'address' => $this->businessAddress($business),
+                'email' => '',
+                'phone' => $business['whatsapp'] ?? '',
+                'whatsapp' => $whatsapp,
+            ]),
+            'registration' => array_replace($siteConfig['registration'], [
+                'whatsapp' => $whatsapp,
+                'whatsapp_display' => $business['whatsapp'] ?? '',
+            ]),
+            'social' => $instagram === '' ? [] : [['key' => 'instagram', 'label' => 'Instagram', 'url' => 'https://instagram.com/'.$instagram]],
+            'hero' => array_replace($siteConfig['hero'], ['text' => ($business['description'] ?? null) ?: $siteConfig['hero']['text']]),
+            'customer_site' => true,
+        ]);
+    }
+
+    private function pastelElearningConfig(array $siteConfig, array $business, string $whatsapp, string $instagram): array
+    {
+        $name = $business['business_name'] ?? 'Akademi Online';
+        $this->replaceDemoName($siteConfig, $siteConfig['brand']['name'], $name);
+
+        return array_replace($siteConfig, [
+            'meta' => array_replace($siteConfig['meta'], ['title' => $name]),
+            'brand' => array_replace($siteConfig['brand'], [
+                'name' => $name,
+                'tagline' => ($business['tagline'] ?? null) ?: $siteConfig['brand']['tagline'],
+            ]),
+            'contact' => array_replace($siteConfig['contact'], [
+                'address' => $this->businessAddress($business),
+                'email' => '',
+                'phone' => $business['whatsapp'] ?? '',
+                'phone_e164' => '+'.$whatsapp,
+                'whatsapp' => $whatsapp,
+                'form_whatsapp' => $whatsapp,
+                'form_whatsapp_display' => $business['whatsapp'] ?? '',
+            ]),
+            'socials' => $instagram === '' ? [] : [['label' => 'Instagram', 'icon' => 'bi-instagram', 'url' => 'https://instagram.com/'.$instagram]],
+            'hero' => array_replace($siteConfig['hero'], [
+                'desc' => ($business['description'] ?? null) ?: $siteConfig['hero']['desc'],
+                'stats' => [],
+            ]),
+            'customer_site' => true,
+        ]);
+    }
+
+    private function darkElearningConfig(array $siteConfig, array $business, string $whatsapp, string $instagram): array
+    {
+        $name = $business['business_name'] ?? 'Akademi Online';
+        $this->replaceDemoName($siteConfig, $siteConfig['brand']['name'], $name);
+
+        return array_replace($siteConfig, [
+            'brand' => array_replace($siteConfig['brand'], [
+                'name' => $name,
+                'tagline' => ($business['tagline'] ?? null) ?: $siteConfig['brand']['tagline'],
+            ]),
+            'topbar' => array_replace($siteConfig['topbar'], [
+                'address' => $this->businessAddress($business),
+                'email' => '',
+                'phone' => $business['whatsapp'] ?? '',
+                'phone_href' => '+'.$whatsapp,
+            ]),
+            'socials' => $instagram === '' ? [] : [['icon' => 'instagram', 'label' => 'Instagram', 'url' => 'https://instagram.com/'.$instagram]],
+            'whatsapp' => array_replace($siteConfig['whatsapp'], [
+                'number' => $whatsapp,
+                'display' => $business['whatsapp'] ?? '',
+            ]),
+            'hero' => array_replace($siteConfig['hero'], [
+                'text' => ($business['description'] ?? null) ?: $siteConfig['hero']['text'],
+                'features' => [],
+            ]),
+            'customer_site' => true,
+        ]);
+    }
+
+    private function propertyPageName(string $siteConfigPath, string $name, array $parameters): string
+    {
+        $name = Str::afterLast($name, '.');
+
+        return match (true) {
+            str_starts_with($siteConfigPath, 'property/luxury/') => match ($name) {
+                'index' => 'home',
+                'show' => isset($parameters['post']) ? 'blog/'.$parameters['post'] : 'property/'.$parameters['slug'],
+                default => $name,
+            },
+            str_starts_with($siteConfigPath, 'property/premium-minimal/') => match ($name) {
+                'home' => 'home',
+                'property' => 'properties/'.$parameters['slug'],
+                'show' => 'blog/'.$parameters['slug'],
+                'about' => 'about-us',
+                default => $name,
+            },
+            default => match ($name) {
+                'home' => 'home',
+                'about' => 'about-us',
+                'show' => 'blog/'.($parameters['slug'] ?? $parameters[0]),
+                default => $name,
+            },
+        };
+    }
+
+    private function propertyViewData(
+        string $siteConfigPath,
+        array $siteConfig,
+        string $view,
+        string $pageKey,
+        ?string $pageIdentifier,
+        callable $propertyPageUrl,
+        callable $emeraldRoute,
+    ): array {
+        if (str_starts_with($siteConfigPath, 'property/luxury/')) {
+            return array_filter([
+                'cfg' => $siteConfig,
+                'route' => $emeraldRoute,
+                'slug' => $pageKey === 'property.show' ? $pageIdentifier : null,
+                'post' => $pageKey === 'blog.show' ? $pageIdentifier : null,
+            ], fn (mixed $value): bool => $value !== null);
+        }
+
+        if (str_starts_with($siteConfigPath, 'property/premium-minimal/')) {
+            $property = $pageKey === 'property.show' ? collect($siteConfig['properties'])->firstWhere('slug', $pageIdentifier) : null;
+            $post = $pageKey === 'blog.show' ? collect($siteConfig['blog'])->firstWhere('slug', $pageIdentifier) : null;
+            abort_if($pageKey === 'property.show' && ! $property, 404);
+            abort_if($pageKey === 'blog.show' && ! $post, 404);
+
+            return array_filter([
+                't' => $siteConfig,
+                'ns' => $view.'.',
+                'active' => match ($pageKey) {
+                    'property.show' => 'properties',
+                    'blog.show' => 'blog',
+                    default => Str::before($pageKey === 'about-us' ? 'about' : $pageKey, '.'),
+                },
+                'r' => $propertyPageUrl,
+                'img' => fn (string $file): string => asset($siteConfig['assets']['images'].'/'.$file),
+                'property' => $property,
+                'post' => $post,
+            ], fn (mixed $value): bool => $value !== null);
+        }
+
+        $post = $pageKey === 'blog.show' ? collect($siteConfig['blog']['posts'])->firstWhere('slug', $pageIdentifier) : null;
+        abort_if($pageKey === 'blog.show' && ! $post, 404);
+        $currentRoute = 'coral-peach.'.match ($pageKey) {
+            'home' => 'home',
+            'about-us' => 'about',
+            'blog.show' => 'blog.show',
+            default => $pageKey,
+        };
+
+        return array_filter([
+            'site' => $siteConfig,
+            'r' => $propertyPageUrl,
+            'isActive' => fn (string $pattern): bool => Str::is($pattern, $currentRoute),
+            'post' => $post,
+        ], fn (mixed $value): bool => $value !== null);
+    }
+
+    private function healthcarePageName(string $siteConfigPath, string $name): string
+    {
+        $name = Str::afterLast($name, '.');
+
+        return match (true) {
+            str_starts_with($siteConfigPath, 'healthcare/professional/') => [
+                'home' => 'home', 'services' => 'layanan', 'doctors' => 'dokter-staff', 'schedule' => 'jadwal', 'appointment' => 'appointment', 'faq' => 'faq', 'policy' => 'kebijakan',
+            ][$name] ?? $name,
+            str_starts_with($siteConfigPath, 'healthcare/luxury/') => $name,
+            default => [
+                'index' => 'home', 'services' => 'layanan', 'doctors' => 'dokter', 'schedule' => 'jadwal', 'appointment' => 'booking', 'faq' => 'faq', 'policy' => 'kebijakan',
+            ][$name] ?? $name,
+        };
+    }
+
+    private function retailPageName(string $siteConfigPath, string $name): string
+    {
+        return match (true) {
+            str_starts_with($siteConfigPath, 'retail/luxury/') => $name === 'index' ? 'home' : $name,
+            str_starts_with($siteConfigPath, 'retail/organic/') => [
+                'home' => 'home', 'catalog' => 'katalog', 'price' => 'harga', 'stock' => 'stok', 'inquiry' => 'inquiry', 'shop' => 'belanja',
+            ][$name] ?? $name,
+            default => [
+                'home' => 'home', 'catalog' => 'katalog', 'price' => 'harga', 'stock' => 'ketersediaan', 'inquiry' => 'inquiry', 'cart' => 'keranjang',
+            ][$name] ?? $name,
+        };
+    }
+
+    private function retailRouteKey(string $siteConfigPath, string $page): string
+    {
+        return match (true) {
+            $page === 'home' && str_starts_with($siteConfigPath, 'retail/luxury/') => 'index',
+            str_starts_with($siteConfigPath, 'retail/organic/') => array_search($page, [
+                'home' => 'home', 'catalog' => 'katalog', 'price' => 'harga', 'stock' => 'stok', 'inquiry' => 'inquiry', 'shop' => 'belanja',
+            ], true) ?: $page,
+            str_starts_with($siteConfigPath, 'retail/premium-minimal/') => array_search($page, [
+                'home' => 'home', 'catalog' => 'katalog', 'price' => 'harga', 'stock' => 'ketersediaan', 'inquiry' => 'inquiry', 'cart' => 'keranjang',
+            ], true) ?: $page,
+            default => $page,
+        };
     }
 
     private function replaceDemoName(array &$siteConfig, string $demoName, string $name): void
@@ -505,7 +1094,7 @@ class CustomerSiteController extends Controller
     public function chat(Request $request, WebiaOrder $order): JsonResponse
     {
         abort_unless(
-            $order->delivery_status === 'delivered' && !empty($order->site_slug),
+            $order->delivery_status === 'delivered' && ! empty($order->site_slug),
             404
         );
 
@@ -518,10 +1107,10 @@ class CustomerSiteController extends Controller
         $waRaw = $business['whatsapp'] ?? '081234567890';
         $waDigits = preg_replace('/[^0-9]/', '', $waRaw);
         if (str_starts_with($waDigits, '0')) {
-            $waDigits = '62' . substr($waDigits, 1);
+            $waDigits = '62'.substr($waDigits, 1);
         }
         $bizName = $business['business_name'] ?? 'Toko';
-        $waUrl = "https://wa.me/{$waDigits}?text=" . rawurlencode("Halo {$bizName}, saya ingin bertanya langsung seputar layanan dan produk Anda.");
+        $waUrl = "https://wa.me/{$waDigits}?text=".rawurlencode("Halo {$bizName}, saya ingin bertanya langsung seputar layanan dan produk Anda.");
 
         // Cek Kuota AI Tenant
         $quota = AiQuotaService::getTenantQuota(
@@ -530,7 +1119,7 @@ class CustomerSiteController extends Controller
             (int) ($order->package?->chatbot_monthly_quota ?? 500)
         );
 
-        if (!empty($quota['is_quota_exhausted'])) {
+        if (! empty($quota['is_quota_exhausted'])) {
             return response()->json([
                 'status' => 'quota_exhausted',
                 'reply' => 'Mohon maaf, saat ini asisten AI tidak dapat digunakan. Silakan hubungi customer service kami langsung via WhatsApp agar pesan Anda segera dibantu!',

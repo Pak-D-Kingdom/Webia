@@ -1,6 +1,6 @@
 {{-- Halaman Booking Appointment --}}
 @extends($tpl . '.layouts.app')
-@php $c = config($cfg); @endphp
+@php $c = $c ?? config($cfg); @endphp
 
 @section('title', 'Booking Appointment — ' . $c['brand']['name'])
 

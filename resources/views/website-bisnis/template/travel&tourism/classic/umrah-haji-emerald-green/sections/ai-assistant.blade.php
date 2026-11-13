@@ -9,7 +9,7 @@
         <ul class="uh-ai__list">
             @foreach ($uh['ai']['items'] as $it)
                 <li>
-                    <a href="{{ $url('chatbot') }}?q={{ rawurlencode($it['q']) }}">
+                    <a href="{{ $url('chatbot') }}?q={{ rawurlencode($it['q']) }}" data-uh-chat-open data-q="{{ $it['q'] }}">
                         <span class="uh-ai__ico"><svg class="uh-i" aria-hidden="true"><use href="#i-{{ $it['icon'] }}"/></svg></span>
                         <span class="uh-ai__lbl">{{ $it['label'] }}</span>
                         <svg class="uh-i uh-ai__chev" aria-hidden="true"><use href="#i-chevron-right"/></svg>
@@ -17,7 +17,7 @@
                 </li>
             @endforeach
         </ul>
-        <a class="uh-ai__cta" href="{{ $url('chatbot') }}">
+        <a class="uh-ai__cta" href="{{ $url('chatbot') }}" data-uh-chat-open>
             <span>{{ $uh['ai']['button'] }}</span>
             <svg class="uh-i" aria-hidden="true"><use href="#i-arrow-right"/></svg>
         </a>

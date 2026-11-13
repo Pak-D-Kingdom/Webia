@@ -41,7 +41,7 @@
         <div class="empty" data-catalog-empty hidden>
             <svg class="ico"><use href="#i-leaf"/></svg>
             <p>Produk yang kamu cari belum ditemukan.</p>
-            <a class="btn btn--primary" href="{{ route($cfg['route'] . 'inquiry') }}">Tanyakan ke Tim Kami</a>
+            <a class="btn btn--primary" href="{{ $r('inquiry') }}">Tanyakan ke Tim Kami</a>
         </div>
     </section>
 @else
@@ -51,7 +51,7 @@
                 <h2 id="best-title">Produk Terlaris</h2>
                 <p>Produk favorit yang paling banyak dibeli pelanggan kami.</p>
             </div>
-            <a class="link-arrow" href="{{ route($cfg['route'] . 'catalog') }}">Lihat Semua <svg class="ico" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+            <a class="link-arrow" href="{{ $r('catalog') }}">Lihat Semua <svg class="ico" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
         </div>
         <div class="pgrid pgrid--preview">
             @foreach($cfg['products'] as $p)

@@ -3,7 +3,7 @@
 <section class="panel" id="gallery" aria-labelledby="gp-title">
   <header class="panel__head">
     <div><h2 class="panel__title" id="gp-title">Galeri Properti</h2><p class="panel__sub">Lihat keindahan setiap sudut properti kami</p></div>
-    <a class="link-more" href="{{ route('coral-peach.gallery') }}">Lihat Semua <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+    <a class="link-more" href="{{ $r('coral-peach.gallery') }}">Lihat Semua <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
   </header>
   <div class="g-preview">
     <a class="g-preview__main" href="{{ asset($img.'/'.$items[0]['file']) }}" data-lightbox="home-gallery" data-caption="{{ $items[0]['alt'] }}" @if($g['video']) data-video="{{ $g['video'] }}" @endif aria-label="Putar tur video properti">

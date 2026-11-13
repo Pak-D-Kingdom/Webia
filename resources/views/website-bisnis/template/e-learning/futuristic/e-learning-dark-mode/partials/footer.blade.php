@@ -1,8 +1,8 @@
-@php($r = $e['route'])
+@php($rp = $e['route'])
 <footer class="nl-footer">
     <div class="nl-container nl-footer__grid">
         <div class="nl-footer__brand">
-            <a class="nl-brand" href="{{ route($r.'home') }}">
+            <a class="nl-brand" href="{{ $r($rp.'home') }}">
                 <svg class="nl-brand__mark" viewBox="0 0 36 36" aria-hidden="true"><use href="#i-logo"/></svg>
                 <span class="nl-brand__txt"><strong>{{ $e['brand']['name'] }}</strong><small>{{ $e['brand']['tagline'] }}</small></span>
             </a>
@@ -10,7 +10,7 @@
 
         <nav aria-label="Navigasi footer">
             <h3>Navigasi</h3>
-            <ul>@foreach($e['footer']['navigasi'] as $l)<li><a href="{{ route($r.$l['route']) }}">{{ $l['label'] }}</a></li>@endforeach</ul>
+            <ul>@foreach($e['footer']['navigasi'] as $l)<li><a href="{{ $r($rp.$l['route']) }}">{{ $l['label'] }}</a></li>@endforeach</ul>
         </nav>
 
         <nav aria-label="Akses cepat">
@@ -19,7 +19,7 @@
                 @foreach($e['footer']['akses'] as $l)
                     <li>
                         @if(($l['action'] ?? null) === 'ai')<button type="button" class="nl-footer__btn" data-ai-open aria-haspopup="dialog" aria-controls="nl-ai" aria-expanded="false">{{ $l['label'] }}</button>
-                        @else<a href="{{ route($r.$l['route']) }}">{{ $l['label'] }}</a>@endif
+                        @else<a href="{{ $r($rp.$l['route']) }}">{{ $l['label'] }}</a>@endif
                     </li>
                 @endforeach
             </ul>
@@ -29,7 +29,7 @@
             <h3>Kontak Kami</h3>
             <ul class="nl-footer__contact">
                 <li><svg class="ic"><use href="#i-pin"/></svg><span>{{ $e['topbar']['address'] }}</span></li>
-                <li><svg class="ic"><use href="#i-mail"/></svg><a href="mailto:{{ $e['topbar']['email'] }}">{{ $e['topbar']['email'] }}</a></li>
+                @if(! empty($e['topbar']['email']))<li><svg class="ic"><use href="#i-mail"/></svg><a href="mailto:{{ $e['topbar']['email'] }}">{{ $e['topbar']['email'] }}</a></li>@endif
                 <li><svg class="ic"><use href="#i-phone"/></svg><a href="tel:{{ $e['topbar']['phone_href'] }}">{{ $e['topbar']['phone'] }}</a></li>
             </ul>
         </div>

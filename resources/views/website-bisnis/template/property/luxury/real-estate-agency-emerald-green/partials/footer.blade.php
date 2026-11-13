@@ -21,7 +21,9 @@
             <h2>Contact Us</h2>
             <ul class="rea-footer__contact">
                 <li>{{ $icon('phone') }}<a href="tel:{{ preg_replace('/[^+\d]/', '', $site['phone']) }}">{{ $site['phone'] }}</a></li>
-                <li>{{ $icon('mail') }}<a href="mailto:{{ $site['email'] }}">{{ $site['email'] }}</a></li>
+                @if ($site['email'])
+                    <li>{{ $icon('mail') }}<a href="mailto:{{ $site['email'] }}">{{ $site['email'] }}</a></li>
+                @endif
                 <li>{{ $icon('pin') }}<span>{{ $site['address'] }}</span></li>
             </ul>
         </div>

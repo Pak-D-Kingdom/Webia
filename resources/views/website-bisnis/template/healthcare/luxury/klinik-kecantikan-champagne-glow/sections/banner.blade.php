@@ -9,7 +9,7 @@
         <div class="cg-banner__body">
             <h2 class="cg-banner__title">Keindahan Alami<br>untuk Kulit Sehatmu</h2>
             <p>Dapatkan perawatan eksklusif dengan teknologi terbaru dan produk skincare berkualitas.</p>
-            <a class="cg-btn cg-btn--primary cg-btn--sm" href="{{ route('glow.appointment') }}">
+            <a class="cg-btn cg-btn--primary cg-btn--sm" href="{{ $r('glow.appointment') }}">
                 Lihat Promo <i class="bi bi-arrow-right" aria-hidden="true"></i>
             </a>
         </div>

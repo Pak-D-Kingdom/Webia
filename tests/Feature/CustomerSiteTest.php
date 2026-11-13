@@ -134,6 +134,370 @@ class CustomerSiteTest extends TestCase
         $this->get($siteUrl.'/reservasi')->assertOk()->assertSee('Reservasi');
     }
 
+    #[DataProvider('retailTemplates')]
+    public function test_publishing_retail_template_renders_customer_catalog_without_demo_reviews(
+        string $templateSlug,
+        string $siteConfigPath,
+        string $demoName,
+        array $pages,
+    ): void {
+        $admin = User::factory()->admin()->create();
+        $template = $this->template($templateSlug, [
+            'name' => 'Retail Skincare',
+            'category_slug' => 'retail',
+            'category_label' => 'Retail',
+            'business_types' => ['Skincare & Beauty Store'],
+            'site_config_path' => $siteConfigPath,
+        ]);
+        $order = WebiaOrder::factory()->create([
+            'webia_template_id' => $template,
+            'template_snapshot' => [
+                'name' => $template->name,
+                'slug' => $template->slug,
+                'category_slug' => $template->category_slug,
+                'site_config_path' => $template->site_config_path,
+            ],
+            'status' => 'paid',
+            'delivery_status' => 'in_progress',
+            'business_data' => [
+                'business_name' => 'Rona Botanika',
+                'tagline' => 'Rawat kulit dengan tenang',
+                'whatsapp' => '0812-3456-7890',
+                'description' => 'Toko perawatan kulit pilihan untuk kebutuhan harian.',
+                'address' => 'Jl. Kemang Raya No. 18',
+                'city' => 'Jakarta',
+                'instagram' => '@ronabotanika',
+            ],
+        ]);
+
+        $this->actingAs($admin)->post(route('admin.orders.progress', $order), [
+            'action' => 'finish',
+        ])->assertRedirect(route('admin.orders.show', $order));
+
+        $order->refresh();
+        $siteUrl = route('sites.show', ['order' => $order->site_slug]);
+        $this->get($siteUrl)
+            ->assertOk()
+            ->assertSee('Rona Botanika')
+            ->assertSee('Rawat kulit dengan tenang')
+            ->assertSee('Jl. Kemang Raya No. 18, Jakarta')
+            ->assertSee('6281234567890', false)
+            ->assertSee('instagram.com/ronabotanika', false)
+            ->assertSee('Contoh katalog', false)
+            ->assertDontSee($demoName)
+            ->assertDontSee('(980)', false)
+            ->assertDontSee('(1.2k)', false);
+
+        foreach ($pages as $page) {
+            $this->get($siteUrl.'/'.$page)
+                ->assertOk()
+                ->assertSee('Rona Botanika')
+                ->assertDontSee($demoName);
+        }
+    }
+
+    public static function retailTemplates(): array
+    {
+        return [
+            'soft pink' => [
+                'retail-skincare-soft-pink',
+                'retail/luxury/skincare-soft-pink/skincare',
+                'Belleza',
+                ['catalog', 'price', 'stock', 'inquiry', 'shop'],
+            ],
+            'sage green' => [
+                'retail-skincare-sage-green',
+                'retail/organic/skincare-sage-green/skincare',
+                'PureGlow',
+                ['katalog', 'harga', 'stok', 'inquiry', 'belanja'],
+            ],
+            'warm neutral' => [
+                'retail-skincare-warm-neutral',
+                'retail/premium-minimal/skincare-warm-neutral/skincare',
+                'GlowEra',
+                ['katalog', 'harga', 'ketersediaan', 'inquiry', 'keranjang'],
+            ],
+        ];
+    }
+
+    #[DataProvider('healthcareTemplates')]
+    public function test_publishing_healthcare_template_renders_customer_site_with_demo_service_notice(
+        string $templateSlug,
+        string $siteConfigPath,
+        string $demoName,
+        array $pages,
+    ): void {
+        $admin = User::factory()->admin()->create();
+        $template = $this->template($templateSlug, [
+            'name' => 'Klinik Kecantikan',
+            'category_slug' => 'healthcare',
+            'category_label' => 'Healthcare',
+            'business_types' => ['Klinik Kecantikan'],
+            'site_config_path' => $siteConfigPath,
+        ]);
+        $order = WebiaOrder::factory()->create([
+            'webia_template_id' => $template,
+            'template_snapshot' => [
+                'name' => $template->name,
+                'slug' => $template->slug,
+                'category_slug' => $template->category_slug,
+                'site_config_path' => $template->site_config_path,
+            ],
+            'status' => 'paid',
+            'delivery_status' => 'in_progress',
+            'business_data' => [
+                'business_name' => 'Klinik Arunika',
+                'tagline' => 'Perawatan aman untuk percaya diri',
+                'whatsapp' => '0812-3456-7890',
+                'description' => 'Klinik perawatan kulit dengan konsultasi personal.',
+                'address' => 'Jl. Senopati No. 21',
+                'city' => 'Jakarta',
+                'instagram' => '@klinikarunika',
+            ],
+        ]);
+
+        $this->actingAs($admin)->post(route('admin.orders.progress', $order), [
+            'action' => 'finish',
+        ])->assertRedirect(route('admin.orders.show', $order));
+
+        $order->refresh();
+        $siteUrl = route('sites.show', ['order' => $order->site_slug]);
+        $this->get($siteUrl)
+            ->assertOk()
+            ->assertSee('Klinik Arunika')
+            ->assertSee('Perawatan aman untuk percaya diri')
+            ->assertSee('Jl. Senopati No. 21, Jakarta')
+            ->assertSee('6281234567890', false)
+            ->assertSee('instagram.com/klinikarunika', false)
+            ->assertSee('Contoh layanan & harga', false)
+            ->assertDontSee($demoName)
+            ->assertDontSee('info@', false);
+
+        foreach ($pages as $page) {
+            $this->get($siteUrl.'/'.$page)
+                ->assertOk()
+                ->assertSee('Klinik Arunika')
+                ->assertSee('Contoh layanan & harga', false)
+                ->assertDontSee($demoName);
+        }
+    }
+
+    public static function healthcareTemplates(): array
+    {
+        return [
+            'clean white' => [
+                'healthcare-clean-white',
+                'healthcare/professional/klinik-kecantikan-clean-white/klinik-kecantikan',
+                'GlowAesthetics',
+                ['layanan', 'dokter-staff', 'jadwal', 'appointment', 'faq', 'kebijakan'],
+            ],
+            'champagne glow' => [
+                'healthcare-champagne-glow',
+                'healthcare/luxury/klinik-kecantikan-champagne-glow/klinik-kecantikan',
+                'GlowClinic',
+                ['services', 'doctors', 'schedule', 'appointment', 'faq', 'policy'],
+            ],
+            'rose gold' => [
+                'healthcare-rose-gold',
+                'healthcare/elegan/klinik-kecantikan-rose-gold/klinik-kecantikan',
+                'RoseGlow Clinic',
+                ['layanan', 'dokter', 'jadwal', 'booking', 'faq', 'kebijakan'],
+            ],
+        ];
+    }
+
+    #[DataProvider('propertyTemplates')]
+    public function test_publishing_property_template_renders_customer_site_without_demo_business_claims(
+        string $templateSlug,
+        string $siteConfigPath,
+        string $demoName,
+        array $pages,
+        string $detailPath,
+        string $blogPath,
+    ): void {
+        $admin = User::factory()->admin()->create();
+        $template = $this->template($templateSlug, [
+            'name' => 'Real Estate Agency',
+            'category_slug' => 'property',
+            'category_label' => 'Property',
+            'business_types' => ['Real Estate Agency'],
+            'site_config_path' => $siteConfigPath,
+        ]);
+        $order = WebiaOrder::factory()->create([
+            'webia_template_id' => $template,
+            'template_snapshot' => [
+                'name' => $template->name,
+                'slug' => $template->slug,
+                'category_slug' => $template->category_slug,
+                'site_config_path' => $template->site_config_path,
+            ],
+            'status' => 'paid',
+            'delivery_status' => 'in_progress',
+            'business_data' => [
+                'business_name' => 'Arunika Properti',
+                'tagline' => 'Hunian pilihan untuk keluarga',
+                'whatsapp' => '0812-3456-7890',
+                'description' => 'Agensi properti dengan pendampingan personal.',
+                'address' => 'Jl. Merdeka No. 17',
+                'city' => 'Bandung',
+                'instagram' => '@arunikaproperti',
+            ],
+        ]);
+
+        $this->actingAs($admin)->post(route('admin.orders.progress', $order), [
+            'action' => 'finish',
+        ])->assertRedirect(route('admin.orders.show', $order));
+
+        $order->refresh();
+        $siteUrl = route('sites.show', ['order' => $order->site_slug]);
+        $response = $this->get($siteUrl)
+            ->assertOk()
+            ->assertSee('Arunika Properti')
+            ->assertSee('Jl. Merdeka No. 17, Bandung')
+            ->assertSee('6281234567890', false)
+            ->assertSee('instagram.com/arunikaproperti', false)
+            ->assertSee('Contoh properti', false)
+            ->assertSee($siteUrl.'/'.$detailPath, false)
+            ->assertSee($siteUrl.'/'.$blogPath, false)
+            ->assertDontSee($demoName)
+            ->assertDontSee('62895630300345', false)
+            ->assertDontSee('mailto:', false);
+
+        $this->assertStringContainsString('hunian pilihan untuk keluarga', strtolower($response->getContent()));
+
+        foreach ($pages as $page) {
+            $this->get($siteUrl.'/'.$page)->assertOk()->assertSee('Arunika Properti');
+        }
+
+        $this->get($siteUrl.'/'.$detailPath)->assertOk()->assertSee('Arunika Properti');
+        $blogResponse = $this->get($siteUrl.'/'.$blogPath)->assertOk()->assertSee('Arunika Properti');
+        if ($templateSlug === 'property-coral-peach') {
+            $blogResponse->assertSee('href="'.$siteUrl.'/blog" class="is-active"', false);
+        }
+
+        $this->get($siteUrl.'/property/tidak-ada')->assertNotFound();
+        $this->get($siteUrl.'/properties/tidak-ada')->assertNotFound();
+        $this->get($siteUrl.'/blog/tidak-ada')->assertNotFound();
+    }
+
+    public static function propertyTemplates(): array
+    {
+        return [
+            'emerald green' => [
+                'property-emerald-green',
+                'property/luxury/real-estate-agency-emerald-green/real-estate-agency',
+                'GreenHaven',
+                ['property', 'about', 'gallery', 'booking', 'blog', 'contact'],
+                'property/modern-luxury-villa-bukit-indah',
+                'blog/checklist-membeli-villa-di-bali',
+            ],
+            'nature green' => [
+                'property-nature-green',
+                'property/premium-minimal/real-estate-agency-nature-green/real-estate-agency',
+                'GreenEstate',
+                ['properties', 'about-us', 'gallery', 'booking', 'blog', 'contact'],
+                'properties/emerald-residence',
+                'blog/tips-memilih-rumah-asri-dan-nyaman',
+            ],
+            'coral peach' => [
+                'property-coral-peach',
+                'property/professional/real-estate-agency-coral-peach/real-estate-agency',
+                'Coral Homes',
+                ['property', 'specification', 'price', 'about-us', 'gallery', 'booking', 'blog', 'contact'],
+                'specification?unit=the-grand-residence',
+                'blog/tips-memilih-rumah-pertama',
+            ],
+        ];
+    }
+
+    #[DataProvider('elearningTemplates')]
+    public function test_publishing_elearning_template_renders_customer_site(
+        string $templateSlug,
+        string $siteConfigPath,
+        string $demoName,
+    ): void {
+        $admin = User::factory()->admin()->create();
+        $template = $this->template($templateSlug, [
+            'name' => 'Online Course',
+            'category_slug' => 'e-learning',
+            'category_label' => 'E-Learning',
+            'business_types' => ['Online Course & E-Learning'],
+            'site_config_path' => $siteConfigPath,
+        ]);
+        $order = WebiaOrder::factory()->create([
+            'webia_template_id' => $template,
+            'template_snapshot' => [
+                'name' => $template->name,
+                'slug' => $template->slug,
+                'category_slug' => $template->category_slug,
+                'site_config_path' => $template->site_config_path,
+            ],
+            'status' => 'paid',
+            'delivery_status' => 'in_progress',
+            'business_data' => [
+                'business_name' => 'Akademi Cakrawala',
+                'tagline' => 'Belajar praktis untuk masa depan',
+                'whatsapp' => '0812-3456-7890',
+                'description' => 'Kelas online praktis bersama mentor berpengalaman.',
+                'address' => 'Jl. Merdeka No. 17',
+                'city' => 'Bandung',
+                'instagram' => '@akademicakrawala',
+            ],
+        ]);
+
+        $this->actingAs($admin)->post(route('admin.orders.progress', $order), [
+            'action' => 'finish',
+        ])->assertRedirect(route('admin.orders.show', $order));
+
+        $order->refresh();
+        $siteUrl = route('sites.show', ['order' => $order->site_slug]);
+        $response = $this->get($siteUrl)
+            ->assertOk()
+            ->assertSee('Akademi Cakrawala')
+            ->assertSee('Belajar praktis untuk masa depan')
+            ->assertSee('Kelas online praktis bersama mentor berpengalaman.')
+            ->assertSee('Jl. Merdeka No. 17, Bandung')
+            ->assertSee('6281234567890', false)
+            ->assertSee('instagram.com/akademicakrawala', false)
+            ->assertSeeText('Contoh program & harga')
+            ->assertDontSee($demoName, false)
+            ->assertDontSee('62895630300345', false)
+            ->assertDontSee('mailto:', false);
+
+        foreach (['programs', 'schedules', 'teachers', 'pricing', 'registration', 'course-content', 'member-area'] as $page) {
+            $this->get($siteUrl.'/'.$page)
+                ->assertOk()
+                ->assertSee('Akademi Cakrawala')
+                ->assertSee($siteUrl.'/programs', false)
+                ->assertDontSee($demoName, false)
+                ->assertDontSee('mailto:', false);
+        }
+
+        $this->get($siteUrl.'/programs/tidak-ada')->assertNotFound();
+        $this->get($siteUrl.'/programs/tidak-ada/lebih')->assertNotFound();
+    }
+
+    public static function elearningTemplates(): array
+    {
+        return [
+            'ocean blue' => [
+                'elearning-ocean-blue',
+                'e-learning/modern/e-learning-ocean-blue/e-learning',
+                'E-learna',
+            ],
+            'pastel mix' => [
+                'elearning-pastel-mix',
+                'e-learning/playful-colorful/e-learning-pastel-mix/e-learning',
+                'EduPlus',
+            ],
+            'dark mode' => [
+                'elearning-dark-mode',
+                'e-learning/futuristic/e-learning-dark-mode/e-learning',
+                'NovaLearn',
+            ],
+        ];
+    }
+
     #[DataProvider('companyTemplates')]
     public function test_publishing_company_template_renders_customer_site(
         string $templateSlug,
@@ -195,6 +559,62 @@ class CustomerSiteTest extends TestCase
             ->assertDontSee($order->user->email)
             ->assertDontSee('ISO 9001')
             ->assertDontSee('Pertamina');
+    }
+
+    public function test_publishing_branding_agency_template_renders_customer_site_without_demo_claims(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $template = $this->template('bca-terracotta', [
+            'name' => 'Branding Creative Agency Terracotta',
+            'category_slug' => 'professional-service',
+            'category_label' => 'Professional Service',
+            'business_types' => ['Branding & Creative Agency'],
+            'site_config_path' => 'professional-service/artistic/branding-creative-agency-terracotta/branding-creative-agency',
+        ]);
+        $order = WebiaOrder::factory()->create([
+            'webia_template_id' => $template,
+            'template_snapshot' => [
+                'name' => $template->name,
+                'slug' => $template->slug,
+                'category_slug' => $template->category_slug,
+                'site_config_path' => $template->site_config_path,
+            ],
+            'status' => 'paid',
+            'delivery_status' => 'in_progress',
+            'business_data' => [
+                'business_name' => 'Ruang Rupa',
+                'tagline' => 'Identitas yang terasa milik sendiri',
+                'whatsapp' => '0812-3456-7890',
+                'description' => 'Studio branding untuk usaha Indonesia.',
+                'address' => 'Jl. Braga No. 12',
+                'city' => 'Bandung',
+            ],
+        ]);
+
+        $this->actingAs($admin)->post(route('admin.orders.progress', $order), [
+            'action' => 'finish',
+        ])->assertRedirect(route('admin.orders.show', $order));
+
+        $order->refresh();
+        $siteUrl = route('sites.show', ['order' => $order->site_slug]);
+        $this->get($siteUrl)
+            ->assertOk()
+            ->assertSee('Ruang Rupa')
+            ->assertSee('Identitas yang terasa milik sendiri')
+            ->assertSee('Studio branding untuk usaha Indonesia.')
+            ->assertSee('Jl. Braga No. 12, Bandung')
+            ->assertSee('6281234567890', false)
+            ->assertDontSee('Senja Atelier')
+            ->assertDontSee('Rp 18 juta')
+            ->assertDontSee('Slot terdekat')
+            ->assertDontSee('Penghargaan dan pengakuan')
+            ->assertDontSee('mailto:', false);
+
+        foreach (['layanan', 'keahlian', 'portofolio', 'janji'] as $page) {
+            $this->get($siteUrl.'/'.$page)->assertOk()->assertSee('Ruang Rupa');
+        }
+        $this->get($siteUrl.'/harga')->assertNotFound();
+        $this->get($siteUrl.'/brief')->assertNotFound();
     }
 
     public static function companyTemplates(): array

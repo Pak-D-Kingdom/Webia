@@ -20,16 +20,18 @@
             </h1>
             <p class="hero__desc">{{ $t['hero']['desc'] }}</p>
 
-            <ul class="stats">
-                @foreach ($t['hero']['stats'] as $s)
-                    <li class="stat">
-                        <span class="stat__icon tone-{{ $s['tone'] }}"><i class="bi {{ $s['icon'] }}" aria-hidden="true"></i></span>
-                        <span class="stat__txt"><strong>{{ $s['title'] }}</strong><small>{{ $s['text'] }}</small></span>
-                    </li>
-                @endforeach
-            </ul>
+            @unless ($customerSite)
+                <ul class="stats">
+                    @foreach ($t['hero']['stats'] as $s)
+                        <li class="stat">
+                            <span class="stat__icon tone-{{ $s['tone'] }}"><i class="bi {{ $s['icon'] }}" aria-hidden="true"></i></span>
+                            <span class="stat__txt"><strong>{{ $s['title'] }}</strong><small>{{ $s['text'] }}</small></span>
+                        </li>
+                    @endforeach
+                </ul>
+            @endunless
 
-            <form class="hero__search" action="{{ route($rp.'programs') }}" method="get" role="search">
+            <form class="hero__search" action="{{ $r($rp.'programs') }}" method="get" role="search">
                 <i class="bi bi-search" aria-hidden="true"></i>
                 <label class="sr-only" for="hero-q">Cari kursus</label>
                 <input id="hero-q" type="search" name="q" placeholder="{{ $t['hero']['search_placeholder'] }}" autocomplete="off">
@@ -44,12 +46,12 @@
         <aside class="popular" data-reveal aria-labelledby="popular-title">
             <header class="panel__head">
                 <h2 id="popular-title"><i class="bi bi-fire c-orange" aria-hidden="true"></i> Kursus Populer</h2>
-                <a class="link-more" href="{{ route($rp.'programs') }}">Lihat Semua <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+                <a class="link-more" href="{{ $r($rp.'programs') }}">Lihat Semua <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
             </header>
             <ul class="popular__grid">
                 @foreach ($t['popular'] as $c)
                     <li>
-                        <a class="tile tone-{{ $c['tone'] }}" href="{{ route($rp.'programs', ['cat' => $c['category']]) }}">
+                        <a class="tile tone-{{ $c['tone'] }}" href="{{ $r($rp.'programs', ['cat' => $c['category']]) }}">
                             <img src="{{ $img.$c['image'] }}" alt="" width="52" height="52" loading="lazy">
                             <span>{{ $c['title'] }}</span>
                         </a>

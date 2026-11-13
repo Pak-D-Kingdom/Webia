@@ -10,9 +10,9 @@
         <div class="banner__copy">
             <h2>{{ $b['title'] }}</h2>
             <p>{{ $b['text'] }}</p>
-            <a class="btn btn--primary btn--sm" href="{{ route($cfg['route'] . 'catalog') }}">{{ $b['cta'] }} <svg class="ico" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+            <a class="btn btn--primary btn--sm" href="{{ $r('catalog') }}">{{ $b['cta'] }} <svg class="ico" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
         </div>
-        <img class="banner__img" src="{{ $img }}/{{ $b['image'] }}" alt="Krim alami PureGlow di atas batu" width="210" height="150" loading="lazy">
+        <img class="banner__img" src="{{ $img }}/{{ $b['image'] }}" alt="Krim alami {{ $cfg['brand']['name'] }} di atas batu" width="210" height="150" loading="lazy">
     </aside>
 @else
     <aside class="banner banner--care" aria-label="Promo perawatan">
@@ -20,7 +20,7 @@
         <div class="banner__copy">
             <h2>{{ $b['title'] }}</h2>
             <p>{{ $b['text'] }}</p>
-            <a class="btn btn--primary btn--sm" href="{{ route($cfg['route'] . 'shop') }}">{{ $b['cta'] }} <svg class="ico" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+            <a class="btn btn--primary btn--sm" href="{{ $r('shop') }}">{{ $b['cta'] }} <svg class="ico" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
         </div>
         <svg class="deco deco--banner-r" aria-hidden="true"><use href="#i-branch"/></svg>
     </aside>

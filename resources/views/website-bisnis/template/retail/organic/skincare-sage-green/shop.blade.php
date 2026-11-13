@@ -1,11 +1,11 @@
 @php
     $active = 'shop';
-    $cfg = config('template.retail.organic.skincare-sage-green.skincare');
+    $cfg ??= config('template.retail.organic.skincare-sage-green.skincare');
 @endphp
 @extends($cfg['view'] . 'layouts.app')
 
-@section('title', 'Belanja Online — PureGlow')
-@section('description', 'Belanja produk PureGlow secara online. Checkout cepat lewat WhatsApp.')
+@section('title', str_replace('PureGlow', $cfg['brand']['name'], 'Belanja Online — PureGlow'))
+@section('description', str_replace('PureGlow', $cfg['brand']['name'], 'Belanja produk PureGlow secara online. Checkout cepat lewat WhatsApp.'))
 
 @section('content')
     @include($cfg['view'] . 'partials.page-head', [

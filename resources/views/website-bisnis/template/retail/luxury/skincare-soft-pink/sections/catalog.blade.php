@@ -6,10 +6,10 @@
     <div class="sec-head">
         <div>
             <h2>{{ $full ? 'Katalog Produk' : 'Produk Terlaris' }}</h2>
-            <p>{{ $full ? 'Seluruh koleksi skincare & beauty Belleza dengan kualitas terbaik.' : 'Produk paling diminati dengan kualitas terbaik dari Belleza.' }}</p>
+            <p>{{ $full ? 'Seluruh koleksi skincare & beauty '.$cfg['brand']['name'].' dengan kualitas terbaik.' : 'Produk paling diminati dengan kualitas terbaik dari '.$cfg['brand']['name'].'.' }}</p>
         </div>
         @unless ($full)
-            <a class="more" href="{{ route($rp . 'catalog') }}">Lihat Semua <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+            <a class="more" href="{{ $r('catalog') }}">Lihat Semua <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
         @endunless
     </div>
 

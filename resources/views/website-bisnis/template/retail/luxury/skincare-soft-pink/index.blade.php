@@ -1,6 +1,6 @@
 @extends($ns . '.layouts.app')
 
-@section('title', 'Belleza - Timeless Beauty for a Brighter You')
+@section('title', $cfg['brand']['name'].' - Timeless Beauty for a Brighter You')
 @section('page', 'home')
 
 @section('content')

@@ -12,10 +12,10 @@
             <p class="rg-hero__text">{{ $h['text'] }}</p>
 
             <div class="rg-hero__actions">
-                <a class="rg-btn rg-btn--primary rg-btn--lg" href="{{ route($rp . 'appointment') }}">
+                <a class="rg-btn rg-btn--primary rg-btn--lg" href="{{ $r('appointment') }}">
                     <i class="bi bi-calendar2-check" aria-hidden="true"></i>Booking Appointment
                 </a>
-                <a class="rg-btn rg-btn--outline rg-btn--lg" href="{{ route($rp . 'services') }}">
+                <a class="rg-btn rg-btn--outline rg-btn--lg" href="{{ $r('services') }}">
                     Jelajahi Layanan <i class="bi bi-caret-right-fill" aria-hidden="true"></i>
                 </a>
             </div>

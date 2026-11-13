@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 use RuntimeException;
 use Throwable;
@@ -78,6 +79,9 @@ class WebiaOrderController extends Controller
 
         $package = WebiaPackage::findOrFail($validated['package_id']);
         $template = isset($validated['template_id']) ? WebiaTemplate::findOrFail($validated['template_id']) : null;
+        if ($template !== null && $package->templates()->exists() && ! $package->templates()->whereKey($template)->exists()) {
+            throw ValidationException::withMessages(['template_id' => 'Template tidak tersedia dalam paket yang dipilih.']);
+        }
         $addons = WebiaAddon::whereKey($validated['addon_ids'] ?? [])->get();
 
         // Guest belum punya akun: nama/email disimpan di order; akun dibuat setelah pembayaran lunas.
@@ -294,6 +298,7 @@ class WebiaOrderController extends Controller
     public function saveBusinessData(Request $request, WebiaOrder $order): RedirectResponse
     {
         abort_unless($order->user_id === $request->user()->id, 404);
+        abort_unless($order->status === 'paid' && $order->delivery_status !== 'delivered', 422);
 
         $requiredForSite = $order->supportsCustomerSite() ? 'required' : 'nullable';
         $validated = $request->validate([
@@ -331,7 +336,11 @@ class WebiaOrderController extends Controller
                         'guest_email' => $guestEmail ?? $user?->email,
                         'order_number' => $this->orderNumber(),
                         'webia_package_id' => $package->id,
-                        'package_snapshot' => ['name' => $package->name, 'price' => $package->price],
+                        'package_snapshot' => [
+                            'name' => $package->name,
+                            'price' => $package->price,
+                            'hosting_monthly_price' => $package->hosting_monthly_price,
+                        ],
                         'webia_template_id' => $template?->id,
                         'template_snapshot' => $template ? [
                             'name' => $template->name,

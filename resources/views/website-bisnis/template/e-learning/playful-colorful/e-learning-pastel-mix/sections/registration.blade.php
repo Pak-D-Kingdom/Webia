@@ -11,7 +11,7 @@
         <div class="cta__body">
             <h2 id="registration-title">{{ $reg['title'] }}</h2>
             <p>{{ $reg['desc'] }}</p>
-            <a class="btn btn--primary btn--lg" href="{{ route($rp.'registration') }}">{{ $reg['cta'] }} <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+            <a class="btn btn--primary btn--lg" href="{{ $r($rp.'registration') }}">{{ $reg['cta'] }} <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
         </div>
     </section>
 @else
@@ -19,7 +19,7 @@
         <div class="reg__grid">
             <div class="card form-card">
                 <h2 id="registration-title">Formulir Pendaftaran</h2>
-                <p class="muted">Isi data berikut. Setelah dikirim, pesan pendaftaranmu otomatis disiapkan di WhatsApp EduPlus ({{ $t['contact']['form_whatsapp_display'] }}).</p>
+                <p class="muted">Isi data berikut. Setelah dikirim, pesan pendaftaranmu otomatis disiapkan di WhatsApp {{ $t['brand']['name'] }} ({{ $t['contact']['form_whatsapp_display'] }}).</p>
 
                 <form class="form" method="get" action="https://wa.me/{{ $t['contact']['form_whatsapp'] }}" target="_blank" novalidate data-wa-form="registration">
                     <div class="form__grid">

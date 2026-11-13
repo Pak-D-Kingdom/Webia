@@ -4,8 +4,12 @@
   <div class="container topbar__inner">
     <ul class="topbar__list">
       <li><svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg><span>{{ $c['address'] }}</span></li>
-      <li class="hide-md"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg><a href="mailto:{{ $c['email'] }}">{{ $c['email'] }}</a></li>
-      <li class="hide-lg"><svg class="icon" aria-hidden="true"><use href="#i-whatsapp"/></svg><a href="mailto:{{ $c['email_extra'] }}">{{ $c['email_extra'] }}</a></li>
+      @if ($c['email'])
+        <li class="hide-md"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg><a href="mailto:{{ $c['email'] }}">{{ $c['email'] }}</a></li>
+      @endif
+      @if ($c['email_extra'])
+        <li class="hide-lg"><svg class="icon" aria-hidden="true"><use href="#i-whatsapp"/></svg><a href="mailto:{{ $c['email_extra'] }}">{{ $c['email_extra'] }}</a></li>
+      @endif
       <li class="hide-sm"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><span>{{ $c['hours'] }}</span></li>
     </ul>
     <div class="topbar__right">

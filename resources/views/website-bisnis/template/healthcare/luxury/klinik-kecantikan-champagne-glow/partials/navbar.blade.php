@@ -1,7 +1,7 @@
 {{-- Navbar sticky: logo, menu, pencarian, tombol Book Appointment, menu mobile --}}
 <header class="cg-header" data-cg-header>
     <div class="cg-container cg-nav">
-        <a class="cg-logo" href="{{ route('glow.home') }}" aria-label="{{ $c['brand']['name'] }} — beranda">
+        <a class="cg-logo" href="{{ $r('glow.home') }}" aria-label="{{ $c['brand']['name'] }} — beranda">
             <svg class="cg-logo__mark" aria-hidden="true"><use href="#ic-logo"/></svg>
             <span class="cg-logo__text">
                 <strong>{{ $c['brand']['name'] }}</strong>
@@ -15,7 +15,7 @@
                     @continue(($item['in_navbar'] ?? true) === false)
                     @php
                         $isAnchor = isset($item['anchor']);
-                        $href = route($item['route']) . ($isAnchor ? '#' . $item['anchor'] : '');
+                        $href = $r($item['route']) . ($isAnchor ? '#' . $item['anchor'] : '');
                         $isActive = ! $isAnchor && $active === $item['key'];
                     @endphp
                     <li>
@@ -31,13 +31,15 @@
 
             {{-- Hanya tampil di mobile/tablet (di dalam drawer) --}}
             <div class="cg-menu__foot">
-                <a class="cg-btn cg-btn--primary cg-btn--block" href="{{ route('glow.appointment') }}">
+                <a class="cg-btn cg-btn--primary cg-btn--block" href="{{ $r('glow.appointment') }}">
                     Book Appointment <i class="bi bi-arrow-right" aria-hidden="true"></i>
                 </a>
                 <ul class="cg-menu__contact">
                     <li><i class="bi bi-geo-alt" aria-hidden="true"></i> {{ $c['contact']['address'] }}</li>
                     <li><a href="tel:{{ $c['contact']['phone_raw'] }}"><i class="bi bi-telephone" aria-hidden="true"></i> {{ $c['contact']['phone'] }}</a></li>
-                    <li><a href="mailto:{{ $c['contact']['email'] }}"><i class="bi bi-envelope" aria-hidden="true"></i> {{ $c['contact']['email'] }}</a></li>
+                    @if ($c['contact']['email'])
+                        <li><a href="mailto:{{ $c['contact']['email'] }}"><i class="bi bi-envelope" aria-hidden="true"></i> {{ $c['contact']['email'] }}</a></li>
+                    @endif
                 </ul>
             </div>
         </nav>
@@ -46,7 +48,7 @@
             <button type="button" class="cg-icon-btn cg-icon-btn--lg" data-cg-search-open aria-label="Cari di situs">
                 <i class="bi bi-search" aria-hidden="true"></i>
             </button>
-            <a class="cg-btn cg-btn--primary cg-nav__cta" href="{{ route('glow.appointment') }}">
+            <a class="cg-btn cg-btn--primary cg-nav__cta" href="{{ $r('glow.appointment') }}">
                 Book Appointment <i class="bi bi-arrow-right" aria-hidden="true"></i>
             </a>
             <button type="button" class="cg-burger" data-cg-burger aria-expanded="false" aria-controls="cg-menu" aria-label="Buka menu">

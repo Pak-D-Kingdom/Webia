@@ -21,6 +21,6 @@
       <li title="Luas tanah"><svg class="icon" aria-hidden="true"><use href="#i-area"/></svg>{{ $p['land'] }} m²</li>
     </ul>
     <p class="p-card__price">Rp {{ number_format($p['price'], 0, ',', '.') }}</p>
-    <a class="btn btn--primary btn--sm" href="{{ route('coral-peach.specification') }}?unit={{ $p['slug'] }}">Detail <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+    <a class="btn btn--primary btn--sm" href="{{ $r('coral-peach.specification') }}?unit={{ $p['slug'] }}">Detail <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
   </div>
 </article>
