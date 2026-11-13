@@ -26,7 +26,8 @@ return [
 
     // Nomor tujuan semua WhatsApp (format internasional tanpa + atau 0 di depan)
     'whatsapp' => [
-        'number'   => '62895630300345',
+        'number'   => '62895630300345',          // +62 895-6303-00345 (semua form & tombol WhatsApp)
+        'display'  => '+62 895-6303-00345',
         'greeting' => 'Halo RenovatePro, saya ingin berkonsultasi tentang renovasi rumah saya.',
     ],
 
@@ -49,42 +50,18 @@ return [
     'show_testimonial' => true,
 
     /*
-    | Navigasi. "pages" = halaman yang membuat item ini aktif.
-    | "slug" relatif terhadap base_path; boleh memakai #anchor.
+    | Navigasi (tanpa dropdown). "pages" = halaman yang membuat item ini aktif.
+    | "slug" relatif terhadap base_path.
     */
     'nav' => [
-        ['key' => 'home', 'label' => 'Beranda', 'slug' => '', 'icon' => 'home', 'pages' => ['home']],
-        ['key' => 'layanan', 'label' => 'Layanan', 'slug' => 'layanan', 'pages' => ['layanan'], 'children' => [
-            ['label' => 'Renovasi Rumah',        'slug' => 'layanan#renovasi-rumah'],
-            ['label' => 'Perbaikan Bangunan',    'slug' => 'layanan#perbaikan-bangunan'],
-            ['label' => 'Desain Interior',       'slug' => 'layanan#desain-interior'],
-            ['label' => 'Eksterior & Taman',     'slug' => 'layanan#eksterior-taman'],
-            ['label' => 'Instalasi & Finishing', 'slug' => 'layanan#instalasi-finishing'],
-        ]],
-        ['key' => 'paket', 'label' => 'Paket Layanan', 'slug' => 'paket-layanan', 'pages' => ['paket'], 'children' => [
-            ['label' => 'Paket Basic',     'slug' => 'paket-layanan#basic'],
-            ['label' => 'Paket Premium',   'slug' => 'paket-layanan#premium'],
-            ['label' => 'Paket Exclusive', 'slug' => 'paket-layanan#exclusive'],
-        ]],
-        ['key' => 'galeri', 'label' => 'Galeri', 'slug' => 'galeri', 'pages' => ['galeri'], 'children' => [
-            ['label' => 'Rumah Dua Lantai', 'slug' => 'galeri#rumah-dua-lantai'],
-            ['label' => 'Ruang Tamu',       'slug' => 'galeri#ruang-tamu'],
-            ['label' => 'Dapur',            'slug' => 'galeri#dapur'],
-        ]],
-        ['key' => 'proyek', 'label' => 'Proyek Kami', 'slug' => 'proyek-kami', 'pages' => ['proyek'], 'children' => [
-            ['label' => 'Semua Proyek',     'slug' => 'proyek-kami'],
-            ['label' => 'Interior',         'slug' => 'proyek-kami#interior'],
-            ['label' => 'Eksterior',        'slug' => 'proyek-kami#eksterior'],
-        ]],
-        ['key' => 'area', 'label' => 'Area Layanan', 'slug' => 'area-layanan', 'pages' => ['area'], 'children' => [
-            ['label' => 'Peta Cakupan',      'slug' => 'area-layanan'],
-            ['label' => 'Cek Area Layanan',  'slug' => 'area-layanan#cek-area'],
-        ]],
-        ['key' => 'tentang', 'label' => 'Tentang Kami', 'slug' => 'proses-kerja', 'pages' => ['proses', 'survei'], 'children' => [
-            ['label' => 'Proses Kerja Kami',       'slug' => 'proses-kerja'],
-            ['label' => 'Booking Survei Lokasi',   'slug' => 'booking-survei'],
-        ]],
-        ['key' => 'kontak', 'label' => 'Kontak', 'slug' => 'permintaan-penawaran', 'pages' => ['penawaran']],
+        ['key' => 'home',    'label' => 'Beranda',       'slug' => '',                     'icon' => 'home', 'pages' => ['home']],
+        ['key' => 'layanan', 'label' => 'Layanan',       'slug' => 'layanan',              'pages' => ['layanan']],
+        ['key' => 'paket',   'label' => 'Paket Layanan', 'slug' => 'paket-layanan',        'pages' => ['paket']],
+        ['key' => 'galeri',  'label' => 'Galeri',        'slug' => 'galeri',               'pages' => ['galeri']],
+        ['key' => 'proyek',  'label' => 'Proyek Kami',   'slug' => 'proyek-kami',          'pages' => ['proyek']],
+        ['key' => 'area',    'label' => 'Area Layanan',  'slug' => 'area-layanan',         'pages' => ['area']],
+        ['key' => 'tentang', 'label' => 'Tentang Kami',  'slug' => 'proses-kerja',         'pages' => ['proses']],
+        ['key' => 'kontak',  'label' => 'Kontak',        'slug' => 'permintaan-penawaran', 'pages' => ['penawaran', 'survei']],
     ],
 
     'cta' => ['label' => 'Konsultasi Sekarang', 'slug' => 'permintaan-penawaran'],
@@ -100,14 +77,14 @@ return [
 
     // Halaman → judul & deskripsi header halaman
     'pages' => [
-        'layanan'  => ['slug' => 'layanan',              'title' => 'Layanan Renovasi & Perbaikan', 'script' => 'Solusi lengkap untuk rumah Anda', 'text' => 'Lima layanan utama yang kami kerjakan dari awal sampai serah terima, dengan tenaga ahli di setiap bidang.'],
-        'paket'    => ['slug' => 'paket-layanan',        'title' => 'Paket Layanan',                'script' => 'Pilihan paket terbaik sesuai kebutuhan Anda', 'text' => 'Bandingkan tiga paket kami, lalu minta penawaran tertulis setelah survei lokasi.'],
-        'galeri'   => ['slug' => 'galeri',               'title' => 'Galeri Before - After',        'script' => 'Lihat hasil nyata dari proyek kami', 'text' => 'Geser pegangan di tengah gambar untuk membandingkan kondisi sebelum dan sesudah renovasi.'],
-        'proyek'   => ['slug' => 'proyek-kami',          'title' => 'Proyek Kami',                  'script' => 'Portofolio proyek renovasi dan perbaikan kami', 'text' => 'Sebagian proyek yang sudah kami selesaikan untuk hunian keluarga di berbagai kota.'],
-        'area'     => ['slug' => 'area-layanan',         'title' => 'Area Layanan',                 'script' => 'Kami melayani berbagai wilayah di seluruh Indonesia', 'text' => 'Cek apakah lokasi rumah Anda sudah terjangkau tim kami.'],
-        'proses'   => ['slug' => 'proses-kerja',         'title' => 'Proses Kerja Kami',            'script' => 'Proses mudah, transparan, dan profesional', 'text' => 'Lima tahap kerja yang sama untuk setiap proyek, dari konsultasi sampai serah terima.'],
-        'penawaran'=> ['slug' => 'permintaan-penawaran', 'title' => 'Permintaan Penawaran',         'script' => 'Dapatkan penawaran harga terbaik sekarang juga', 'text' => 'Isi formulir singkat berikut. Pesan Anda langsung terkirim ke WhatsApp tim kami.'],
-        'survei'   => ['slug' => 'booking-survei',       'title' => 'Booking Survei Lokasi',        'script' => 'Jadwalkan survei langsung ke lokasi rumah Anda', 'text' => 'Pilih tanggal dan jam yang paling nyaman. Tim kami akan mengonfirmasi lewat WhatsApp.'],
+        'layanan'  => ['slug' => 'layanan', 'visual' => 'gallery-after.jpg',              'title' => 'Layanan Renovasi & Perbaikan', 'script' => 'Solusi lengkap untuk rumah Anda', 'text' => 'Lima layanan utama yang kami kerjakan dari awal sampai serah terima, dengan tenaga ahli di setiap bidang.'],
+        'paket'    => ['slug' => 'paket-layanan', 'visual' => 'project-living.jpg',        'title' => 'Paket Layanan',                'script' => 'Pilihan paket terbaik sesuai kebutuhan Anda', 'text' => 'Bandingkan tiga paket kami, lalu minta penawaran tertulis setelah survei lokasi.'],
+        'galeri'   => ['slug' => 'galeri', 'visual' => 'project-exterior.jpg',               'title' => 'Galeri Before - After',        'script' => 'Lihat hasil nyata dari proyek kami', 'text' => 'Geser pegangan di tengah gambar untuk membandingkan kondisi sebelum dan sesudah renovasi.'],
+        'proyek'   => ['slug' => 'proyek-kami', 'visual' => 'project-kitchen.jpg',          'title' => 'Proyek Kami',                  'script' => 'Portofolio proyek renovasi dan perbaikan kami', 'text' => 'Sebagian proyek yang sudah kami selesaikan untuk hunian keluarga di berbagai kota.'],
+        'area'     => ['slug' => 'area-layanan', 'visual' => 'project-house.jpg',         'title' => 'Area Layanan',                 'script' => 'Kami melayani berbagai wilayah di seluruh Indonesia', 'text' => 'Cek apakah lokasi rumah Anda sudah terjangkau tim kami.'],
+        'proses'   => ['slug' => 'proses-kerja', 'visual' => 'penawaran.jpg',         'title' => 'Proses Kerja Kami',            'script' => 'Proses mudah, transparan, dan profesional', 'text' => 'Lima tahap kerja yang sama untuk setiap proyek, dari konsultasi sampai serah terima.'],
+        'penawaran'=> ['slug' => 'permintaan-penawaran', 'visual' => 'booking-house.jpg', 'title' => 'Permintaan Penawaran',         'script' => 'Dapatkan penawaran harga terbaik sekarang juga', 'text' => 'Isi formulir singkat berikut. Pesan Anda langsung terkirim ke WhatsApp tim kami.'],
+        'survei'   => ['slug' => 'booking-survei', 'visual' => 'gallery-before.jpg',       'title' => 'Booking Survei Lokasi',        'script' => 'Jadwalkan survei langsung ke lokasi rumah Anda', 'text' => 'Pilih tanggal dan jam yang paling nyaman. Tim kami akan mengonfirmasi lewat WhatsApp.'],
     ],
 
     'services' => [
@@ -136,16 +113,35 @@ return [
     // price = angka (untuk estimasi chatbot); price_label = tampilan
     'price_unit' => 'per m²',
     'packages' => [
-        ['id' => 'basic', 'name' => 'Paket Basic', 'from' => 'Mulai dari', 'price' => 3500000, 'price_label' => 'Rp 3.500.000', 'popular' => false,
+        ['id' => 'basic', 'name' => 'Paket Basic', 'short' => 'Basic', 'icon' => 'tools', 'from' => 'Mulai dari', 'price' => 3500000, 'price_label' => 'Rp 3.500.000', 'popular' => false,
          'tagline' => 'Untuk perbaikan ringan dan penyegaran ruangan.',
          'features' => ['Survei & konsultasi awal', 'Perbaikan ringan & pengecatan', 'Material standar pilihan', 'Garis waktu kerja tertulis', 'Garansi pengerjaan']],
-        ['id' => 'premium', 'name' => 'Paket Premium', 'from' => 'Mulai dari', 'price' => 7500000, 'price_label' => 'Rp 7.500.000', 'popular' => true,
+        ['id' => 'premium', 'name' => 'Paket Premium', 'short' => 'Premium', 'icon' => 'helmet', 'from' => 'Mulai dari', 'price' => 7500000, 'price_label' => 'Rp 7.500.000', 'popular' => true,
          'tagline' => 'Pilihan paling seimbang untuk renovasi menyeluruh.',
          'features' => ['Semua isi Paket Basic', 'Gambar kerja & rencana anggaran', 'Material kualitas menengah-atas', 'Pengawas proyek di lokasi', 'Laporan progres berkala']],
-        ['id' => 'exclusive', 'name' => 'Paket Exclusive', 'from' => 'Mulai dari', 'price' => 12500000, 'price_label' => 'Rp 12.500.000', 'popular' => false,
+        ['id' => 'exclusive', 'name' => 'Paket Exclusive', 'short' => 'Exclusive', 'icon' => 'sofa', 'from' => 'Mulai dari', 'price' => 12500000, 'price_label' => 'Rp 12.500.000', 'popular' => false,
          'tagline' => 'Renovasi total dengan desain dan material pilihan.',
          'features' => ['Semua isi Paket Premium', 'Desain interior & eksterior lengkap', 'Material premium & furnitur custom', 'Manajer proyek khusus', 'Perawatan setelah serah terima']],
     ],
+
+    // Tabel perbandingan paket (urutan nilai: Basic, Premium, Exclusive). true/false = ada/tidak; string = teks.
+    'package_compare' => [
+        ['label' => 'Survei & konsultasi awal',          'v' => [true, true, true]],
+        ['label' => 'Perbaikan ringan & pengecatan',     'v' => [true, true, true]],
+        ['label' => 'Garis waktu kerja tertulis',        'v' => [true, true, true]],
+        ['label' => 'Garansi pengerjaan',                'v' => [true, true, true]],
+        ['label' => 'Gambar kerja & rencana anggaran',   'v' => [false, true, true]],
+        ['label' => 'Pengawas proyek di lokasi',         'v' => [false, true, true]],
+        ['label' => 'Laporan progres berkala',           'v' => [false, true, true]],
+        ['label' => 'Desain interior & eksterior lengkap', 'v' => [false, false, true]],
+        ['label' => 'Furnitur custom',                   'v' => [false, false, true]],
+        ['label' => 'Manajer proyek khusus',             'v' => [false, false, true]],
+        ['label' => 'Perawatan setelah serah terima',    'v' => [false, false, true]],
+        ['label' => 'Kelas material',                    'v' => ['Standar', 'Menengah-atas', 'Premium']],
+    ],
+
+    // Kalkulator estimasi pada halaman Paket Layanan
+    'calc' => ['min' => 10, 'max' => 300, 'step' => 5, 'default' => 40],
 
     'gallery' => [
         ['id' => 'rumah-dua-lantai', 'title' => 'Rumah Dua Lantai', 'caption' => 'Fasad dirombak total dengan kayu, batu, dan pencahayaan hangat.', 'before' => 'gallery-before.jpg', 'after' => 'gallery-after.jpg'],
@@ -179,11 +175,11 @@ return [
     ],
 
     'process' => [
-        ['n' => 1, 'icon' => 'chat',   'title' => 'Konsultasi Awal',   'short' => 'Konsultasi Awal',   'desc' => 'Ceritakan kebutuhan, gaya yang Anda suka, dan anggaran. Kami bantu merumuskan lingkup pekerjaan.'],
-        ['n' => 2, 'icon' => 'pin',    'title' => 'Survei Lokasi',     'short' => 'Survei Lokasi',     'desc' => 'Tim datang ke rumah Anda untuk mengukur, memeriksa kondisi bangunan, dan mencatat hal teknis.'],
-        ['n' => 3, 'icon' => 'doc',    'title' => 'Penawaran Harga',   'short' => 'Penawaran Harga',   'desc' => 'Anda menerima rincian biaya, material, dan jadwal secara tertulis sebelum pekerjaan dimulai.'],
-        ['n' => 4, 'icon' => 'helmet', 'title' => 'Pelaksanaan Proyek','short' => 'Pelaksanaan Proyek','desc' => 'Pekerjaan dimulai sesuai jadwal dengan pengawas di lokasi dan laporan progres berkala.'],
-        ['n' => 5, 'icon' => 'check',  'title' => 'Serah Terima',      'short' => 'Serah Terima',      'desc' => 'Kami cek hasil bersama Anda, merapikan sisa catatan, lalu menyerahkan rumah dalam kondisi siap huni.'],
+        ['n' => 1, 'icon' => 'chat', 'image' => 'testimoni-budi.jpg', 'outputs' => ['Ringkasan kebutuhan Anda', 'Gambaran gaya dan anggaran'],   'title' => 'Konsultasi Awal',   'short' => 'Konsultasi Awal',   'desc' => 'Ceritakan kebutuhan, gaya yang Anda suka, dan anggaran. Kami bantu merumuskan lingkup pekerjaan.'],
+        ['n' => 2, 'icon' => 'pin', 'image' => 'booking-house.jpg', 'outputs' => ['Pengukuran ruangan', 'Catatan kondisi bangunan'],    'title' => 'Survei Lokasi',     'short' => 'Survei Lokasi',     'desc' => 'Tim datang ke rumah Anda untuk mengukur, memeriksa kondisi bangunan, dan mencatat hal teknis.'],
+        ['n' => 3, 'icon' => 'doc', 'image' => 'penawaran.jpg', 'outputs' => ['Rincian biaya dan material', 'Jadwal kerja tertulis'],    'title' => 'Penawaran Harga',   'short' => 'Penawaran Harga',   'desc' => 'Anda menerima rincian biaya, material, dan jadwal secara tertulis sebelum pekerjaan dimulai.'],
+        ['n' => 4, 'icon' => 'helmet', 'image' => 'project-kitchen.jpg', 'outputs' => ['Pengawas di lokasi', 'Laporan progres berkala'], 'title' => 'Pelaksanaan Proyek','short' => 'Pelaksanaan Proyek','desc' => 'Pekerjaan dimulai sesuai jadwal dengan pengawas di lokasi dan laporan progres berkala.'],
+        ['n' => 5, 'icon' => 'check', 'image' => 'gallery-after.jpg', 'outputs' => ['Pengecekan hasil bersama', 'Rumah siap huni'],  'title' => 'Serah Terima',      'short' => 'Serah Terima',      'desc' => 'Kami cek hasil bersama Anda, merapikan sisa catatan, lalu menyerahkan rumah dalam kondisi siap huni.'],
     ],
 
     'testimonial' => [

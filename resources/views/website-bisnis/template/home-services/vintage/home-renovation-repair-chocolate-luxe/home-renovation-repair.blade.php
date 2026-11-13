@@ -44,6 +44,8 @@
 
     $rrData = [
         'wa'       => $cfg['whatsapp']['number'],
+        'waShow'   => $cfg['whatsapp']['display'],
+        'calc'     => $cfg['calc'],
         'greeting' => $cfg['whatsapp']['greeting'],
         'base'     => $base,
         'unit'     => $cfg['price_unit'],
@@ -69,7 +71,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,500&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset($cssFile) }}?v={{ $assetVer }}">
-    <script>document.documentElement.className = 'rr-js';</script>
+    <script>document.documentElement.className = 'rr-js'; setTimeout(function () { var d = document.documentElement; if (!d.classList.contains('rr-ready')) { d.classList.add('rr-fallback'); } }, 4000);</script>
 </head>
 <body class="rr rr-page-{{ $page }}" data-rr-page="{{ $page }}">
 <a class="rr-skip" href="#rr-main">Lewati ke konten utama</a>
@@ -109,6 +111,17 @@
         <symbol id="i-youtube" viewBox="0 0 24 24"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="m10 9.5 5 2.5-5 2.5z"/></symbol>
         <symbol id="i-tiktok" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></symbol>
         <symbol id="i-linkedin" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></symbol>
+        <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></symbol>
+        <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></symbol>
+        <symbol id="i-minus" viewBox="0 0 24 24"><path d="M7 12h10"/></symbol>
+        <symbol id="i-chevl" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></symbol>
+        <symbol id="i-stamp" viewBox="0 0 120 120">
+            <path id="rr-circ" d="M60 60m-45 0a45 45 0 1 1 90 0a45 45 0 1 1 -90 0" fill="none"/>
+            <circle cx="60" cy="60" r="57" fill="none" stroke="currentColor" stroke-width="1.2"/>
+            <circle cx="60" cy="60" r="31" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="2 3"/>
+            <text font-size="8.4" font-weight="600" fill="currentColor" font-family="Poppins, sans-serif"><textPath href="#rr-circ" textLength="272" lengthAdjust="spacing">RENOVATEPRO • BUILD BETTER • LIVE BETTER •</textPath></text>
+            <path d="M46 63 60 51l14 12M50 61v13h20V61" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </symbol>
         <symbol id="i-leaf" viewBox="0 0 120 220">
             <path d="M60 218C58 160 62 100 78 6" fill="none" stroke="#4d5a26" stroke-width="3" stroke-linecap="round"/>
             <path d="M62 190C30 188 8 168 4 140c28 0 52 16 58 50Z" fill="#6f7f38"/>
@@ -148,19 +161,11 @@
         <nav class="rr-menu-wrap" id="rr-menu" aria-label="Navigasi utama">
             <ul class="rr-menu">
                 @foreach ($cfg['nav'] as $item)
-                    <li class="rr-menu__li @if (in_array($page, $item['pages'])) is-active @endif @if (! empty($item['children'])) has-sub @endif">
+                    <li class="rr-menu__li @if (in_array($page, $item['pages'])) is-active @endif">
                         <a class="rr-menu__a" href="{{ $u($item['slug']) }}" @if (in_array($page, $item['pages'])) aria-current="page" @endif>
                             @if (! empty($item['icon']))<svg class="rr-i" aria-hidden="true"><use href="#i-{{ $item['icon'] }}"/></svg>@endif
                             <span>{{ $item['label'] }}</span>
                         </a>
-                        @if (! empty($item['children']))
-                            <button type="button" class="rr-menu__tg" aria-expanded="false" aria-label="Submenu {{ $item['label'] }}"><svg class="rr-i" aria-hidden="true"><use href="#i-chev"/></svg></button>
-                            <ul class="rr-sub">
-                                @foreach ($item['children'] as $child)
-                                    <li><a href="{{ $u($child['slug']) }}">{{ $child['label'] }}</a></li>
-                                @endforeach
-                            </ul>
-                        @endif
                     </li>
                 @endforeach
             </ul>
@@ -235,7 +240,8 @@
                 @foreach ($cfg['packages'] as $p)
                     <article class="rr-pkgmini @if (! empty($p['popular'])) is-pop @endif">
                         @if (! empty($p['popular']))<span class="rr-pkgmini__flag">Paling Populer</span>@endif
-                        <h3>{{ $p['name'] }}</h3>
+                        <span class="rr-pkgmini__pre">Paket</span>
+                        <h3>{{ $p['short'] }}</h3>
                         <small>{{ $p['from'] }}</small>
                         <strong>{{ $p['price_label'] }}</strong>
                         <a class="rr-btn rr-btn--sm @if (! empty($p['popular'])) rr-btn--gold @else rr-btn--light @endif" href="{{ $u('paket-layanan') }}#{{ $p['id'] }}"><span>Pilih Paket</span><svg class="rr-i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
@@ -333,13 +339,43 @@
 
 @else
 {{-- ============ HEADER HALAMAN DALAM ============ --}}
-<section class="rr-pagehero">
-    <div class="rr-pagehero__bg" style="background-image:url('{{ $img('hero-bg.jpg') }}')"></div>
-    <div class="rr-container rr-pagehero__in">
-        <nav class="rr-crumb" aria-label="Breadcrumb"><a href="{{ $u() }}">Beranda</a><svg class="rr-i" aria-hidden="true"><use href="#i-chevr"/></svg><span>{{ $pageInfo['title'] }}</span></nav>
-        <p class="rr-script">{{ $pageInfo['script'] }}</p>
-        <h1>{{ $pageInfo['title'] }}</h1>
-        <p class="rr-pagehero__text">{{ $pageInfo['text'] }}</p>
+<section class="rr-ph">
+    <div class="rr-ph__bg" style="background-image:url('{{ $img('hero-bg.jpg') }}')"></div>
+    <div class="rr-dust rr-dust--ph" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="rr-container rr-ph__in">
+        <div class="rr-ph__copy">
+            <nav class="rr-crumb" aria-label="Breadcrumb"><a href="{{ $u() }}"><svg class="rr-i" aria-hidden="true"><use href="#i-home"/></svg>Beranda</a><svg class="rr-i" aria-hidden="true"><use href="#i-chevr"/></svg><span>{{ $pageInfo['title'] }}</span></nav>
+            <p class="rr-script">{{ $pageInfo['script'] }}</p>
+            <h1>{{ $pageInfo['title'] }}</h1>
+            <span class="rr-orn" aria-hidden="true"><i></i><svg viewBox="0 0 24 24"><path d="M12 3l2.2 5.2L20 9l-4.2 3.8L17 19l-5-3-5 3 1.2-6.2L4 9l5.8-.8z"/></svg><i></i></span>
+            <p class="rr-ph__text">{{ $pageInfo['text'] }}</p>
+            @if ($page === 'layanan')
+                <ul class="rr-ph__chips" aria-label="Loncat ke layanan">@foreach ($cfg['services'] as $s)<li><a href="#{{ $s['id'] }}"><svg class="rr-i" aria-hidden="true"><use href="#i-{{ $s['icon'] }}"/></svg>{{ $s['title'] }}</a></li>@endforeach</ul>
+            @endif
+            @if ($page === 'paket')
+                <ul class="rr-ph__chips" aria-label="Loncat ke paket">@foreach ($cfg['packages'] as $p)<li><a href="#{{ $p['id'] }}"><svg class="rr-i" aria-hidden="true"><use href="#i-{{ $p['icon'] }}"/></svg>{{ $p['name'] }}</a></li>@endforeach<li><a href="#hitung"><svg class="rr-i" aria-hidden="true"><use href="#i-ruler"/></svg>Hitung estimasi</a></li></ul>
+            @endif
+            @if ($page === 'galeri')
+                <ul class="rr-ph__chips" aria-label="Loncat ke galeri">@foreach ($cfg['gallery'] as $g)<li><a href="#{{ $g['id'] }}"><svg class="rr-i" aria-hidden="true"><use href="#i-camera"/></svg>{{ $g['title'] }}</a></li>@endforeach</ul>
+            @endif
+            @if ($page === 'proses')
+                <ul class="rr-ph__chips" aria-label="Loncat ke langkah">@foreach ($cfg['process'] as $st)<li><a href="#langkah-{{ $st['n'] }}"><svg class="rr-i" aria-hidden="true"><use href="#i-{{ $st['icon'] }}"/></svg>{{ $st['n'] }}. {{ $st['short'] }}</a></li>@endforeach</ul>
+            @endif
+            @if ($page === 'area')
+                <ul class="rr-ph__chips"><li><a href="#cek-area"><svg class="rr-i" aria-hidden="true"><use href="#i-pin"/></svg>Cek area Anda</a></li></ul>
+            @endif
+            @if ($page === 'penawaran')
+                <ul class="rr-ph__chips"><li><a href="{{ $u('booking-survei') }}"><svg class="rr-i" aria-hidden="true"><use href="#i-calendar"/></svg>Jadwalkan survei lokasi</a></li></ul>
+            @endif
+            @if ($page === 'survei')
+                <ul class="rr-ph__chips"><li><a href="{{ $u('permintaan-penawaran') }}"><svg class="rr-i" aria-hidden="true"><use href="#i-doc"/></svg>Minta penawaran dulu</a></li></ul>
+            @endif
+        </div>
+        <figure class="rr-ph__visual" aria-hidden="true">
+            <span class="rr-ph__ring"></span>
+            <div class="rr-ph__frame"><img src="{{ $img($pageInfo['visual']) }}" alt="" width="640" height="440" loading="eager"></div>
+            <svg class="rr-ph__stamp" viewBox="0 0 120 120"><use href="#i-stamp"/></svg>
+        </figure>
     </div>
 </section>
 
@@ -366,21 +402,68 @@
 
 @if ($page === 'paket')
     {{-- ---- Service packages ---- --}}
-    <div class="rr-pkgrid">
+    <div class="rr-pks">
         @foreach ($cfg['packages'] as $p)
-            <article class="rr-card rr-pkgcard @if (! empty($p['popular'])) is-pop @endif" id="{{ $p['id'] }}" data-rr-in>
-                @if (! empty($p['popular']))<span class="rr-pkgcard__flag">Paling Populer</span>@endif
-                <h2>{{ $p['name'] }}</h2>
-                <p class="rr-pkgcard__tag">{{ $p['tagline'] }}</p>
-                <p class="rr-pkgcard__price"><small>{{ $p['from'] }}</small><strong>{{ $p['price_label'] }}</strong><small>{{ $cfg['price_unit'] }}</small></p>
-                <ul class="rr-ticks">
-                    @foreach ($p['features'] as $f)<li><svg class="rr-i" aria-hidden="true"><use href="#i-check"/></svg>{{ $f }}</li>@endforeach
+            <article class="rr-pk @if (! empty($p['popular'])) is-pop @endif" id="{{ $p['id'] }}" data-rr-in>
+                @if (! empty($p['popular']))<span class="rr-pk__flag"><svg class="rr-i rr-i--star" aria-hidden="true"><use href="#i-star"/></svg>Paling Populer</span>@endif
+                <header class="rr-pk__head">
+                    <span class="rr-pk__ic"><svg class="rr-i" aria-hidden="true"><use href="#i-{{ $p['icon'] }}"/></svg></span>
+                    <h2>{{ $p['name'] }}</h2>
+                    <p>{{ $p['tagline'] }}</p>
+                </header>
+                <p class="rr-pk__price"><small>{{ $p['from'] }}</small><strong data-rr-count="{{ $p['price'] }}">{{ $p['price_label'] }}</strong><em>{{ $cfg['price_unit'] }}</em></p>
+                <ul class="rr-pk__list">
+                    @foreach ($p['features'] as $f)<li><svg class="rr-i" aria-hidden="true"><use href="#i-check"/></svg><span>{{ $f }}</span></li>@endforeach
                 </ul>
-                <a class="rr-btn @if (! empty($p['popular'])) rr-btn--gold @else rr-btn--dark @endif" href="{{ $u('permintaan-penawaran') }}?paket={{ $p['id'] }}"><span>Pilih Paket</span><svg class="rr-i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                <a class="rr-btn @if (! empty($p['popular'])) rr-btn--gold @else rr-btn--dark @endif" href="{{ $u('permintaan-penawaran') }}?paket={{ $p['id'] }}"><span>Pilih {{ $p['name'] }}</span><svg class="rr-i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
             </article>
         @endforeach
     </div>
-    <p class="rr-note">Harga di atas adalah harga mulai dari ({{ $cfg['price_unit'] }}). Penawaran final dibuat tertulis setelah survei lokasi.</p>
+
+    <section class="rr-card rr-calc" id="hitung" data-rr-in data-rr-calc data-unit="{{ $cfg['price_unit'] }}">
+        <header class="rr-calc__head"><span class="rr-pk__ic"><svg class="rr-i" aria-hidden="true"><use href="#i-ruler"/></svg></span><div><h2>Hitung Estimasi Awal</h2><p>Pilih paket dan geser luas area. Hasilnya perkiraan kasar, biaya final menunggu survei lokasi.</p></div></header>
+        <div class="rr-calc__grid">
+            <div class="rr-calc__in">
+                <fieldset class="rr-seg"><legend>Paket</legend>
+                    @foreach ($cfg['packages'] as $p)
+                        <label><input type="radio" name="calc-paket" value="{{ $p['id'] }}" data-price="{{ $p['price'] }}" @if (! empty($p['popular'])) checked @endif><span>{{ $p['short'] }}</span></label>
+                    @endforeach
+                </fieldset>
+                <div class="rr-rng">
+                    <label for="calc-luas">Luas area yang dikerjakan</label>
+                    <output for="calc-luas" data-rr-calc-area>{{ $cfg['calc']['default'] }} m²</output>
+                    <input id="calc-luas" type="range" min="{{ $cfg['calc']['min'] }}" max="{{ $cfg['calc']['max'] }}" step="{{ $cfg['calc']['step'] }}" value="{{ $cfg['calc']['default'] }}">
+                    <span class="rr-rng__ticks"><i>{{ $cfg['calc']['min'] }} m²</i><i>{{ $cfg['calc']['max'] }} m²</i></span>
+                </div>
+            </div>
+            <div class="rr-calc__out" aria-live="polite">
+                <small>Perkiraan biaya</small>
+                <strong data-rr-calc-low>Rp 0</strong>
+                <span>sampai <b data-rr-calc-high>Rp 0</b></span>
+                <a class="rr-btn rr-btn--gold" data-rr-calc-cta href="{{ $u('permintaan-penawaran') }}"><span>Minta Penawaran</span><svg class="rr-i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            </div>
+        </div>
+    </section>
+
+    <section class="rr-card rr-cmpt" data-rr-in>
+        <header class="rr-cmpt__head"><h2>Bandingkan Paket</h2><p>Lihat sekilas apa saja yang Anda dapatkan di setiap paket.</p></header>
+        <div class="rr-cmpt__wrap" role="region" aria-label="Tabel perbandingan paket" tabindex="0">
+            <table class="rr-table">
+                <thead><tr><th scope="col"><span class="rr-sr">Fitur</span></th>@foreach ($cfg['packages'] as $p)<th scope="col" @if (! empty($p['popular'])) class="is-pop" @endif>{{ $p['short'] }}</th>@endforeach</tr></thead>
+                <tbody>
+                    @foreach ($cfg['package_compare'] as $row)
+                        <tr>
+                            <th scope="row">{{ $row['label'] }}</th>
+                            @foreach ($row['v'] as $cell)
+                                <td @if ($loop->index === 1) class="is-pop" @endif>@if ($cell === true)<svg class="rr-i rr-yes" aria-label="Termasuk"><use href="#i-check"/></svg>@elseif ($cell === false)<svg class="rr-i rr-no" aria-label="Tidak termasuk"><use href="#i-minus"/></svg>@else<span>{{ $cell }}</span>@endif</td>
+                            @endforeach
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <p class="rr-note">Harga adalah harga mulai dari ({{ $cfg['price_unit'] }}). Penawaran final dibuat tertulis setelah survei lokasi.</p>
 @endif
 
 @if ($page === 'galeri')
@@ -433,11 +516,11 @@
                 <h2>Wilayah layanan</h2>
                 <ul>@foreach ($cfg['areas'] as $a)<li><strong>{{ $a['name'] }}</strong><span>{{ $a['cities'] }}</span></li>@endforeach</ul>
             </section>
-            <section class="rr-card rr-check" id="cek-area" data-rr-in>
-                <h2>Cek Area Layanan</h2>
+            <section class="rr-card rr-fc rr-check" id="cek-area" data-rr-in>
+                <header class="rr-fc__head"><span class="rr-fc__ic"><svg class="rr-i" aria-hidden="true"><use href="#i-pin"/></svg></span><div><h2>Cek Area Layanan</h2><p>Pilih wilayah dan ketik kota Anda.</p></div></header>
                 <form class="rr-form" data-rr-form="area" novalidate>
-                    <div class="rr-field"><label for="ar-wilayah">Wilayah</label><span class="rr-select"><select id="ar-wilayah" name="wilayah" required><option value="">Pilih wilayah</option>@foreach ($cfg['areas'] as $a)<option value="{{ $a['name'] }}">{{ $a['name'] }}</option>@endforeach<option value="Lainnya">Wilayah lain</option></select><svg class="rr-i" aria-hidden="true"><use href="#i-chev"/></svg></span></div>
-                    <div class="rr-field"><label for="ar-kota">Kota / kecamatan</label><input id="ar-kota" name="kota" type="text" placeholder="Contoh: Bandung" autocomplete="address-level2" required></div>
+                    <div class="rr-field"><label for="ar-wilayah">Wilayah</label><span class="rr-select"><select id="ar-wilayah" name="wilayah" required data-placeholder="Pilih wilayah" data-icon="pin"><option value="">Pilih wilayah</option>@foreach ($cfg['areas'] as $a)<option value="{{ $a['name'] }}">{{ $a['name'] }}</option>@endforeach<option value="Lainnya">Wilayah lain</option></select></span></div>
+                    <div class="rr-field"><label for="ar-kota">Kota / kecamatan</label><span class="rr-ctl"><svg class="rr-i" aria-hidden="true"><use href="#i-pin"/></svg><input id="ar-kota" name="kota" type="text" placeholder="Contoh: Bandung" autocomplete="address-level2" required></span></div>
                     <button class="rr-btn rr-btn--dark" type="submit"><span>Cek Sekarang</span><svg class="rr-i" aria-hidden="true"><use href="#i-arrow"/></svg></button>
                     <div class="rr-check__res" aria-live="polite"></div>
                 </form>
@@ -448,49 +531,91 @@
 
 @if ($page === 'proses')
     {{-- ---- Work process ---- --}}
-    <ol class="rr-timeline">
+    <ol class="rr-flow" data-rr-flow>
+        <li class="rr-flow__line" aria-hidden="true"><i data-rr-flow-fill></i></li>
         @foreach ($cfg['process'] as $st)
-            <li class="rr-card rr-tl" id="langkah-{{ $st['n'] }}" data-rr-in>
-                <span class="rr-tl__ic"><svg class="rr-i" aria-hidden="true"><use href="#i-{{ $st['icon'] }}"/></svg></span>
-                <div><h2><span>{{ $st['n'] }}.</span> {{ $st['title'] }}</h2><p>{{ $st['desc'] }}</p></div>
+            <li class="rr-step @if ($loop->index % 2 === 1) is-right @endif" id="langkah-{{ $st['n'] }}" data-rr-step>
+                <span class="rr-step__node" aria-hidden="true"><b>{{ $st['n'] }}</b></span>
+                <article class="rr-step__card">
+                    <div class="rr-step__media"><img src="{{ $img($st['image']) }}" alt="" width="640" height="360" loading="lazy"><span class="rr-step__ic"><svg class="rr-i" aria-hidden="true"><use href="#i-{{ $st['icon'] }}"/></svg></span></div>
+                    <div class="rr-step__body">
+                        <small>Langkah {{ $st['n'] }} dari 5</small>
+                        <h2>{{ $st['title'] }}</h2>
+                        <p>{{ $st['desc'] }}</p>
+                        <p class="rr-step__get">Yang Anda dapatkan</p>
+                        <ul class="rr-step__out">@foreach ($st['outputs'] as $o)<li><svg class="rr-i" aria-hidden="true"><use href="#i-check"/></svg>{{ $o }}</li>@endforeach</ul>
+                    </div>
+                </article>
             </li>
         @endforeach
     </ol>
+    <section class="rr-flowend" data-rr-in>
+        <div><h2>Siap memulai langkah pertama?</h2><p>Jadwalkan survei lokasi atau kirim kebutuhan Anda untuk mendapat penawaran.</p></div>
+        <div class="rr-flowend__act"><a class="rr-btn rr-btn--gold" href="{{ $u('booking-survei') }}"><svg class="rr-i" aria-hidden="true"><use href="#i-calendar"/></svg><span>Booking Survei</span></a><a class="rr-btn rr-btn--ghost" href="{{ $u('permintaan-penawaran') }}"><span>Minta Penawaran</span><svg class="rr-i" aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
+    </section>
 @endif
 
 @if ($page === 'penawaran')
     {{-- ---- Quotation request ---- --}}
     <div class="rr-formgrid">
-        <section class="rr-card rr-formcard" data-rr-in>
-            <h2>Formulir Permintaan Penawaran</h2>
+        <section class="rr-card rr-fc" data-rr-in>
+            <header class="rr-fc__head"><span class="rr-fc__ic"><svg class="rr-i" aria-hidden="true"><use href="#i-doc"/></svg></span><div><h2>Formulir Permintaan Penawaran</h2><p>Tiga bagian singkat. Pesan terkirim ke WhatsApp {{ $cfg['whatsapp']['display'] }}.</p></div></header>
+            <div class="rr-prog" data-rr-progress aria-hidden="true"><i></i><span>0%</span></div>
             <form class="rr-form" data-rr-form="quote" novalidate>
-                <div class="rr-cols">
-                    <div class="rr-field"><label for="q-nama">Nama lengkap</label><input id="q-nama" name="nama" type="text" autocomplete="name" placeholder="Nama Anda" required></div>
-                    <div class="rr-field"><label for="q-wa">Nomor WhatsApp</label><input id="q-wa" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" placeholder="08xx xxxx xxxx" required></div>
+                <fieldset class="rr-fs">
+                    <legend><b>1</b>Data kontak</legend>
+                    <div class="rr-cols">
+                        <div class="rr-field"><label for="q-nama">Nama lengkap</label><span class="rr-ctl"><svg class="rr-i" aria-hidden="true"><use href="#i-user"/></svg><input id="q-nama" name="nama" type="text" autocomplete="name" placeholder="Nama Anda" required></span></div>
+                        <div class="rr-field"><label for="q-wa">Nomor WhatsApp</label><span class="rr-ctl"><svg class="rr-i" aria-hidden="true"><use href="#i-phone"/></svg><input id="q-wa" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" placeholder="08xx xxxx xxxx" required></span></div>
+                    </div>
+                    <div class="rr-field"><label for="q-email">Email <em>(opsional)</em></label><span class="rr-ctl"><svg class="rr-i" aria-hidden="true"><use href="#i-mail"/></svg><input id="q-email" name="email" type="email" autocomplete="email" placeholder="Alamat email Anda"></span></div>
+                </fieldset>
+                <fieldset class="rr-fs">
+                    <legend><b>2</b>Kebutuhan renovasi</legend>
+                    <div class="rr-field" data-group="layanan"><span class="rr-field__lbl" id="q-layanan-l">Jenis layanan</span>
+                        <div class="rr-tiles" role="radiogroup" aria-labelledby="q-layanan-l">
+                            @foreach ($cfg['services'] as $s)<label class="rr-tile"><input type="radio" name="layanan" value="{{ $s['id'] }}" data-label="{{ $s['title'] }}" required><span class="rr-tile__in"><svg class="rr-i" aria-hidden="true"><use href="#i-{{ $s['icon'] }}"/></svg><b>{{ $s['title'] }}</b></span></label>@endforeach
+                        </div>
+                    </div>
+                    <div class="rr-field" data-group="paket"><span class="rr-field__lbl" id="q-paket-l">Paket yang diminati</span>
+                        <div class="rr-pills" role="radiogroup" aria-labelledby="q-paket-l">
+                            <label class="rr-pill"><input type="radio" name="paket" value="" data-label="" checked><span>Belum tahu</span></label>
+                            @foreach ($cfg['packages'] as $p)<label class="rr-pill"><input type="radio" name="paket" value="{{ $p['id'] }}" data-label="{{ $p['name'] }}"><span>{{ $p['short'] }}<small>{{ $p['price_label'] }}</small></span></label>@endforeach
+                        </div>
+                    </div>
+                    <div class="rr-cols">
+                        <div class="rr-field"><label for="q-lokasi">Kota / lokasi proyek</label><span class="rr-ctl"><svg class="rr-i" aria-hidden="true"><use href="#i-pin"/></svg><input id="q-lokasi" name="lokasi" type="text" autocomplete="address-level2" placeholder="Contoh: Jakarta Selatan" required></span></div>
+                        <div class="rr-field"><label for="q-luas">Perkiraan luas area <em>(opsional)</em></label><span class="rr-ctl rr-ctl--unit"><svg class="rr-i" aria-hidden="true"><use href="#i-ruler"/></svg><input id="q-luas" name="luas" type="number" min="1" max="10000" inputmode="numeric" placeholder="Contoh: 40"><u>m²</u></span></div>
+                    </div>
+                </fieldset>
+                <fieldset class="rr-fs">
+                    <legend><b>3</b>Detail tambahan</legend>
+                    <div class="rr-field"><label for="q-catatan">Kebutuhan Anda <em>(opsional)</em></label><span class="rr-ctl rr-ctl--area"><svg class="rr-i" aria-hidden="true"><use href="#i-pen"/></svg><textarea id="q-catatan" name="catatan" rows="4" maxlength="500" placeholder="Ceritakan kondisi rumah dan hal yang ingin diubah"></textarea></span><span class="rr-count" data-rr-count-for="q-catatan">0/500</span></div>
+                </fieldset>
+                <div class="rr-form__foot">
+                    <button class="rr-btn rr-btn--gold rr-btn--lg" type="submit"><svg class="rr-i rr-i--whatsapp" aria-hidden="true"><use href="#i-whatsapp"/></svg><span>Kirim ke WhatsApp</span></button>
+                    <p class="rr-form__msg" aria-live="polite"></p>
                 </div>
-                <div class="rr-field"><label for="q-email">Email (opsional)</label><input id="q-email" name="email" type="email" autocomplete="email" placeholder="Alamat email Anda"></div>
-                <div class="rr-cols">
-                    <div class="rr-field"><label for="q-layanan">Jenis layanan</label><span class="rr-select"><select id="q-layanan" name="layanan" required><option value="">Pilih layanan</option>@foreach ($cfg['services'] as $s)<option value="{{ $s['id'] }}">{{ $s['title'] }}</option>@endforeach</select><svg class="rr-i" aria-hidden="true"><use href="#i-chev"/></svg></span></div>
-                    <div class="rr-field"><label for="q-paket">Paket</label><span class="rr-select"><select id="q-paket" name="paket"><option value="">Belum tahu</option>@foreach ($cfg['packages'] as $p)<option value="{{ $p['id'] }}">{{ $p['name'] }}</option>@endforeach</select><svg class="rr-i" aria-hidden="true"><use href="#i-chev"/></svg></span></div>
-                </div>
-                <div class="rr-cols">
-                    <div class="rr-field"><label for="q-lokasi">Kota / lokasi proyek</label><input id="q-lokasi" name="lokasi" type="text" autocomplete="address-level2" placeholder="Contoh: Jakarta Selatan" required></div>
-                    <div class="rr-field"><label for="q-luas">Perkiraan luas area (m²)</label><input id="q-luas" name="luas" type="number" min="1" inputmode="numeric" placeholder="Contoh: 40"></div>
-                </div>
-                <div class="rr-field"><label for="q-catatan">Kebutuhan Anda</label><textarea id="q-catatan" name="catatan" rows="4" placeholder="Ceritakan kondisi rumah dan hal yang ingin diubah"></textarea></div>
-                <button class="rr-btn rr-btn--gold rr-btn--lg" type="submit"><svg class="rr-i rr-i--whatsapp" aria-hidden="true"><use href="#i-whatsapp"/></svg><span>Kirim ke WhatsApp</span></button>
-                <p class="rr-form__msg" aria-live="polite"></p>
             </form>
+            <div class="rr-done" hidden>
+                <span class="rr-done__ic"><svg class="rr-i" aria-hidden="true"><use href="#i-check"/></svg></span>
+                <h3>Pesan siap dikirim!</h3>
+                <p>WhatsApp akan terbuka dengan pesan Anda. Jika belum terbuka, tekan tombol di bawah ini.</p>
+                <div class="rr-done__act"><a class="rr-btn rr-btn--wa" data-rr-wa href="{{ $waLink }}" target="_blank" rel="noopener"><svg class="rr-i rr-i--whatsapp" aria-hidden="true"><use href="#i-whatsapp"/></svg><span>Buka WhatsApp</span></a><button type="button" class="rr-btn rr-btn--light" data-rr-again><span>Isi formulir lagi</span></button></div>
+            </div>
         </section>
-        <aside class="rr-card rr-side" data-rr-in>
-            <img src="{{ $img('penawaran.jpg') }}" alt="Gambar kerja dan alat ukur renovasi" width="444" height="258" loading="lazy">
-            <h2>Hubungi kami langsung</h2>
-            <ul class="rr-side__list">
-                <li><svg class="rr-i" aria-hidden="true"><use href="#i-phone"/></svg><a href="{{ $cfg['contact']['phone_href'] }}">{{ $cfg['contact']['phone'] }}</a></li>
-                <li><svg class="rr-i" aria-hidden="true"><use href="#i-mail"/></svg><a href="mailto:{{ $cfg['contact']['email'] }}">{{ $cfg['contact']['email'] }}</a></li>
-                <li><svg class="rr-i" aria-hidden="true"><use href="#i-pin"/></svg><span>{{ $cfg['contact']['address'] }}</span></li>
-            </ul>
-            <a class="rr-btn rr-btn--wa" href="{{ $waLink }}" target="_blank" rel="noopener"><svg class="rr-i rr-i--whatsapp" aria-hidden="true"><use href="#i-whatsapp"/></svg><span>Chat via WhatsApp</span></a>
+        <aside class="rr-side" data-rr-in>
+            <section class="rr-card rr-pv"><h2><svg class="rr-i rr-i--whatsapp" aria-hidden="true"><use href="#i-whatsapp"/></svg>Pratinjau pesan WhatsApp</h2>
+                <div class="rr-pv__chat"><div class="rr-pv__bubble" data-rr-preview="quote"></div></div>
+                <p class="rr-pv__to">Dikirim ke <b>{{ $cfg['whatsapp']['display'] }}</b></p>
+            </section>
+            <section class="rr-card rr-side__card"><img src="{{ $img('penawaran.jpg') }}" alt="Gambar kerja dan alat ukur renovasi" width="592" height="344" loading="lazy">
+                <ul class="rr-side__list">
+                    <li><svg class="rr-i" aria-hidden="true"><use href="#i-phone"/></svg><a href="{{ $cfg['contact']['phone_href'] }}">{{ $cfg['contact']['phone'] }}</a></li>
+                    <li><svg class="rr-i" aria-hidden="true"><use href="#i-mail"/></svg><a href="mailto:{{ $cfg['contact']['email'] }}">{{ $cfg['contact']['email'] }}</a></li>
+                    <li><svg class="rr-i" aria-hidden="true"><use href="#i-pin"/></svg><span>{{ $cfg['contact']['address'] }}</span></li>
+                </ul>
+            </section>
         </aside>
     </div>
 @endif
@@ -498,35 +623,60 @@
 @if ($page === 'survei')
     {{-- ---- Site survey booking ---- --}}
     <div class="rr-formgrid">
-        <section class="rr-card rr-formcard" data-rr-in>
-            <h2>Jadwalkan Survei Lokasi</h2>
+        <section class="rr-card rr-fc" data-rr-in>
+            <header class="rr-fc__head"><span class="rr-fc__ic"><svg class="rr-i" aria-hidden="true"><use href="#i-calendar"/></svg></span><div><h2>Jadwalkan Survei Lokasi</h2><p>Pilih tanggal dan jam. Konfirmasi dikirim lewat WhatsApp {{ $cfg['whatsapp']['display'] }}.</p></div></header>
+            <div class="rr-prog" data-rr-progress aria-hidden="true"><i></i><span>0%</span></div>
             <form class="rr-form" data-rr-form="survey" novalidate>
-                <div class="rr-cols">
-                    <div class="rr-field"><label for="s-nama">Nama lengkap</label><input id="s-nama" name="nama" type="text" autocomplete="name" placeholder="Nama Anda" required></div>
-                    <div class="rr-field"><label for="s-wa">Nomor WhatsApp</label><input id="s-wa" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" placeholder="08xx xxxx xxxx" required></div>
-                </div>
-                <div class="rr-field"><label for="s-alamat">Alamat lokasi rumah</label><textarea id="s-alamat" name="alamat" rows="3" placeholder="Nama jalan, nomor, kota" required></textarea></div>
-                <div class="rr-cols">
-                    <div class="rr-field"><label for="s-wilayah">Wilayah</label><span class="rr-select"><select id="s-wilayah" name="wilayah" required><option value="">Pilih wilayah</option>@foreach ($cfg['areas'] as $a)<option value="{{ $a['name'] }}">{{ $a['name'] }}</option>@endforeach<option value="Lainnya">Wilayah lain</option></select><svg class="rr-i" aria-hidden="true"><use href="#i-chev"/></svg></span></div>
-                    <div class="rr-field"><label for="s-layanan">Jenis layanan</label><span class="rr-select"><select id="s-layanan" name="layanan" required><option value="">Pilih layanan</option>@foreach ($cfg['services'] as $s)<option value="{{ $s['id'] }}">{{ $s['title'] }}</option>@endforeach</select><svg class="rr-i" aria-hidden="true"><use href="#i-chev"/></svg></span></div>
-                </div>
-                <div class="rr-field"><label for="s-tanggal">Tanggal survei</label><input id="s-tanggal" name="tanggal" type="date" required></div>
-                <fieldset class="rr-field rr-slots"><legend>Jam survei</legend>
-                    @foreach ($cfg['survey_slots'] as $slot)<label class="rr-chip"><input type="radio" name="waktu" value="{{ $slot }}" required><span>{{ $slot }}</span></label>@endforeach
+                <fieldset class="rr-fs">
+                    <legend><b>1</b>Data kontak</legend>
+                    <div class="rr-cols">
+                        <div class="rr-field"><label for="s-nama">Nama lengkap</label><span class="rr-ctl"><svg class="rr-i" aria-hidden="true"><use href="#i-user"/></svg><input id="s-nama" name="nama" type="text" autocomplete="name" placeholder="Nama Anda" required></span></div>
+                        <div class="rr-field"><label for="s-wa">Nomor WhatsApp</label><span class="rr-ctl"><svg class="rr-i" aria-hidden="true"><use href="#i-phone"/></svg><input id="s-wa" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" placeholder="08xx xxxx xxxx" required></span></div>
+                    </div>
                 </fieldset>
-                <div class="rr-field"><label for="s-catatan">Catatan (opsional)</label><textarea id="s-catatan" name="catatan" rows="3" placeholder="Contoh: akses masuk, kontak yang bisa dihubungi"></textarea></div>
-                <button class="rr-btn rr-btn--gold rr-btn--lg" type="submit"><svg class="rr-i rr-i--whatsapp" aria-hidden="true"><use href="#i-whatsapp"/></svg><span>Booking via WhatsApp</span></button>
-                <p class="rr-form__msg" aria-live="polite"></p>
+                <fieldset class="rr-fs">
+                    <legend><b>2</b>Lokasi rumah</legend>
+                    <div class="rr-field"><label for="s-alamat">Alamat lengkap</label><span class="rr-ctl rr-ctl--area"><svg class="rr-i" aria-hidden="true"><use href="#i-pin"/></svg><textarea id="s-alamat" name="alamat" rows="3" placeholder="Nama jalan, nomor, kota" required></textarea></span></div>
+                    <div class="rr-cols">
+                        <div class="rr-field"><label for="s-wilayah">Wilayah</label><span class="rr-select"><select id="s-wilayah" name="wilayah" required data-placeholder="Pilih wilayah" data-icon="pin"><option value="">Pilih wilayah</option>@foreach ($cfg['areas'] as $a)<option value="{{ $a['name'] }}">{{ $a['name'] }}</option>@endforeach<option value="Lainnya">Wilayah lain</option></select></span></div>
+                        <div class="rr-field"><label for="s-layanan">Jenis layanan</label><span class="rr-select"><select id="s-layanan" name="layanan" required data-placeholder="Pilih layanan" data-icon="tools"><option value="">Pilih layanan</option>@foreach ($cfg['services'] as $s)<option value="{{ $s['id'] }}">{{ $s['title'] }}</option>@endforeach</select></span></div>
+                    </div>
+                </fieldset>
+                <fieldset class="rr-fs">
+                    <legend><b>3</b>Jadwal survei</legend>
+                    <div class="rr-field"><label for="s-tanggal">Tanggal</label><span class="rr-ctl rr-ctl--date" data-rr-date><svg class="rr-i" aria-hidden="true"><use href="#i-calendar"/></svg><input id="s-tanggal" name="tanggal" type="date" required></span></div>
+                    <div class="rr-field rr-slots" data-group="waktu"><span class="rr-field__lbl" id="s-waktu-l">Jam kunjungan</span>
+                        <div class="rr-slotgrid" role="radiogroup" aria-labelledby="s-waktu-l">
+                            @foreach ($cfg['survey_slots'] as $slot)<label class="rr-slot"><input type="radio" name="waktu" value="{{ $slot }}" data-label="{{ $slot }}" required><span><svg class="rr-i" aria-hidden="true"><use href="#i-clock"/></svg>{{ $slot }}</span></label>@endforeach
+                        </div>
+                    </div>
+                    <div class="rr-field"><label for="s-catatan">Catatan <em>(opsional)</em></label><span class="rr-ctl rr-ctl--area"><svg class="rr-i" aria-hidden="true"><use href="#i-pen"/></svg><textarea id="s-catatan" name="catatan" rows="3" maxlength="300" placeholder="Contoh: akses masuk, kontak yang bisa dihubungi"></textarea></span><span class="rr-count" data-rr-count-for="s-catatan">0/300</span></div>
+                </fieldset>
+                <div class="rr-form__foot">
+                    <button class="rr-btn rr-btn--gold rr-btn--lg" type="submit"><svg class="rr-i rr-i--whatsapp" aria-hidden="true"><use href="#i-whatsapp"/></svg><span>Booking via WhatsApp</span></button>
+                    <p class="rr-form__msg" aria-live="polite"></p>
+                </div>
             </form>
+            <div class="rr-done" hidden>
+                <span class="rr-done__ic"><svg class="rr-i" aria-hidden="true"><use href="#i-check"/></svg></span>
+                <h3>Permintaan survei siap dikirim!</h3>
+                <p>WhatsApp akan terbuka dengan jadwal pilihan Anda. Jika belum terbuka, tekan tombol di bawah ini.</p>
+                <div class="rr-done__act"><a class="rr-btn rr-btn--wa" data-rr-wa href="{{ $waLink }}" target="_blank" rel="noopener"><svg class="rr-i rr-i--whatsapp" aria-hidden="true"><use href="#i-whatsapp"/></svg><span>Buka WhatsApp</span></a><button type="button" class="rr-btn rr-btn--light" data-rr-again><span>Atur jadwal lain</span></button></div>
+            </div>
         </section>
-        <aside class="rr-card rr-side" data-rr-in>
-            <img src="{{ $img('booking-house.jpg') }}" alt="Rumah yang akan disurvei" width="441" height="270" loading="lazy">
-            <h2>Saat survei, tim kami akan</h2>
-            <ul class="rr-ticks">
-                <li><svg class="rr-i" aria-hidden="true"><use href="#i-ruler"/></svg>Mengukur ruangan dan area kerja</li>
-                <li><svg class="rr-i" aria-hidden="true"><use href="#i-helmet"/></svg>Memeriksa kondisi bangunan</li>
-                <li><svg class="rr-i" aria-hidden="true"><use href="#i-chat"/></svg>Berdiskusi tentang kebutuhan dan anggaran</li>
-            </ul>
+        <aside class="rr-side" data-rr-in>
+            <section class="rr-card rr-pv"><h2><svg class="rr-i rr-i--whatsapp" aria-hidden="true"><use href="#i-whatsapp"/></svg>Pratinjau pesan WhatsApp</h2>
+                <div class="rr-pv__chat"><div class="rr-pv__bubble" data-rr-preview="survey"></div></div>
+                <p class="rr-pv__to">Dikirim ke <b>{{ $cfg['whatsapp']['display'] }}</b></p>
+            </section>
+            <section class="rr-card rr-side__card"><img src="{{ $img('booking-house.jpg') }}" alt="Rumah yang akan disurvei" width="588" height="360" loading="lazy">
+                <h2>Saat survei, tim kami akan</h2>
+                <ul class="rr-ticks">
+                    <li><svg class="rr-i" aria-hidden="true"><use href="#i-ruler"/></svg>Mengukur ruangan dan area kerja</li>
+                    <li><svg class="rr-i" aria-hidden="true"><use href="#i-helmet"/></svg>Memeriksa kondisi bangunan</li>
+                    <li><svg class="rr-i" aria-hidden="true"><use href="#i-chat"/></svg>Berdiskusi tentang kebutuhan dan anggaran</li>
+                </ul>
+            </section>
         </aside>
     </div>
 @endif

@@ -12,7 +12,7 @@
             <div class="uh-teamgrid">
                 @foreach ($uh['guides']['items'] as $g)
                     <article class="uh-gcard">
-                        <span class="uh-gcard__photo"><img src="{{ $img($g['image']) }}" alt="Foto {{ $g['name'] }}" width="148" height="148" loading="lazy"></span>
+                        <span class="uh-gcard__photo"><img src="{{ $img($g['image']) }}" alt="Foto {{ $g['name'] }}" width="148" height="148" loading="lazy"><b class="uh-gcard__years"><span>{{ $g['years'] }}</span> th</b></span>
                         <h2 class="uh-gcard__name">{{ $g['name'] }}</h2>
                         <p class="uh-gcard__role">{{ $g['role'] }}</p>
                         <ul class="uh-gcard__meta">

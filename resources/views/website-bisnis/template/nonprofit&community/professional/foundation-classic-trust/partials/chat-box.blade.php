@@ -4,6 +4,7 @@
     <div class="fd-chat__head">
         <span class="fd-chat__avatarwrap"><img class="fd-chat__avatar" src="{{ $i('bot-head.svg') }}" alt="" width="52" height="52"><i class="fd-chat__online"></i></span>
         <div class="fd-chat__who"><b>HarapanBot</b><small>Asisten AI · FAQ program &amp; donasi</small></div>
+        <button type="button" class="fd-chat__reset" data-fd-chat-reset aria-label="Mulai ulang percakapan" title="Mulai ulang"><svg class="fd-ico"><use href="#fd-i-refresh"/></svg></button>
         @unless($inline)
             <button type="button" class="fd-chat__close" data-fd-chat-close aria-label="Tutup chat"><svg class="fd-ico"><use href="#fd-i-close"/></svg></button>
         @endunless

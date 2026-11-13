@@ -18,7 +18,7 @@
         <div class="fd-grid fd-grid--3">
             @foreach ($fd['news'] as $n)
                 <article id="{{ $n['slug'] }}" class="fd-pcard fd-ncard fd-reveal" data-cat="{{ $n['category'] }}" style="scroll-margin-top:90px">
-                    <img src="{{ $i($n['image']) }}" alt="" loading="lazy">
+                    <img src="{{ $i($n['art']) }}" alt="" loading="lazy" width="800" height="500">
                     <div class="fd-pcard__body">
                         <div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span class="fd-tag {{ $n['category'] === 'Acara' ? 'fd-tag--gold' : '' }}">{{ $n['category'] }}</span><small class="fd-note" style="display:inline-flex;gap:5px;align-items:center"><svg class="fd-ico" style="width:13px;height:13px"><use href="#fd-i-calendar"/></svg>{{ $n['date'] }}</small></div>
                         <h3>{{ $n['title'] }}</h3>

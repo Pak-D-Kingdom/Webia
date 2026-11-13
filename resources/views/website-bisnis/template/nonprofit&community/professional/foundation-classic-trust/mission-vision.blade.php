@@ -20,7 +20,7 @@
                 @endforeach
             </ul>
         </div>
-        <div class="fd-media fd-reveal"><img src="{{ $i('mission-seed.jpg') }}" alt="Tangan menggenggam tanah dengan tunas tanaman muda" loading="lazy" style="aspect-ratio:1/1"></div>
+        <div class="fd-media fd-media--sm fd-reveal"><img src="{{ $i('mission-seed.jpg') }}" alt="Tangan menggenggam tanah dengan tunas tanaman muda" loading="lazy" style="aspect-ratio:1/1"></div>
     </div>
 </section>
 

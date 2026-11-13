@@ -294,6 +294,9 @@
       });
       body.appendChild(suggest);
     }
+    function reset() { body.textContent = ''; chips.textContent = ''; greeted = false; suggest = null; greet(); }
+    var rb = $('[data-fd-chat-reset]', rootEl);
+    if (rb) rb.addEventListener('click', reset);
     if (form) form.addEventListener('submit', function (e) { e.preventDefault(); var v = input.value; input.value = ''; ask(v); });
     rootEl.__fdChat = { ask: ask, greet: greet, focus: function () { if (input) input.focus(); } };
     return rootEl.__fdChat;
@@ -443,21 +446,75 @@
       $$('input[name="nominal"]', form).forEach(function (x) { x.addEventListener('change', function () { custom.value = ''; }); });
     }
 
-    var sum = $('[data-fd-summary]', form);
+    var sum = $('[data-fd-summary]', form), panels = $$('[data-fd-for]', form);
+    var bar = $('[data-fd-progress-bar]', form), ptxt = $('[data-fd-progress-text]', form);
+    var HINTS = {
+      sekarang: 'Donasi sekali waktu, langsung tersalurkan ke program prioritas.',
+      rutin: 'Berbagi setiap bulan — atur nominal, tanggal, dan durasi sesuai kemampuan Anda.',
+      barang: 'Salurkan buku, pakaian layak, alat kesehatan, atau kebutuhan pokok langsung ke penerima.',
+      program: 'Pilih program tematik yang ingin Anda dukung, lalu tentukan nominalnya.'
+    };
+    function curType() { var j = $('input[name="jenis"]:checked', form); return j ? j.value : 'sekarang'; }
+    function applyType() {
+      if (!panels.length) return;
+      var t = curType();
+      panels.forEach(function (p) {
+        var on = p.getAttribute('data-fd-for').split(' ').indexOf(t) > -1;
+        if (p.hidden === on) { p.hidden = !on; if (on) { p.classList.remove('fd-dyn--in'); void p.offsetWidth; p.classList.add('fd-dyn--in'); } }
+        $$('input,select,textarea', p).forEach(function (c) { c.disabled = !on; });
+      });
+      var nt = $('[data-fd-nominal-title]', form), pt = $('[data-fd-prog-title]', form), th = $('[data-fd-typehint]', form);
+      if (nt) nt.textContent = t === 'rutin' ? 'Nominal per bulan' : (t === 'program' ? 'Nominal donasi program' : 'Pilih nominal');
+      if (pt) pt.textContent = t === 'program' ? 'Pilih program tematik' : 'Arahkan ke program';
+      if (th) th.textContent = HINTS[t] || '';
+      var n = 0;
+      $$('.fd-step__n', form).forEach(function (el) {
+        var host = el.closest('[data-fd-for]');
+        if (host && host.hidden) return;
+        el.textContent = ++n;
+      });
+    }
     function updSummary() {
       if (!sum) return;
-      var j = $('input[name="jenis"]:checked', form), n = $('input[name="nominal"]:checked', form), pr = $('select[name="program"]', form);
+      var t = curType(), j = $('input[name="jenis"]:checked', form), title = j ? j.getAttribute('data-v') : '-';
+      var n = $('input[name="nominal"]:checked', form), pr = $('select[name="program"]', form);
       var amt = custom && custom.value ? Number(custom.value) : (n ? Number(n.value) : 0);
-      sum.textContent = (j ? j.getAttribute('data-v') : '-') + ' · ' + (amt ? 'Rp ' + fmt(amt) : 'nominal belum dipilih') + (pr ? ' · ' + pr.value : '');
+      var txt;
+      if (t === 'barang') {
+        var br = $('input[name="barang"]:checked', form), me = $('input[name="metode"]:checked', form);
+        txt = title + ' · ' + (br ? br.value : '-') + ' · ' + (me ? me.value : '-');
+      } else if (t === 'rutin') {
+        var tg = $('select[name="tanggal"]', form), du = $('input[name="durasi"]:checked', form);
+        txt = title + ' · ' + (amt ? 'Rp ' + fmt(amt) + '/bulan' : 'nominal belum dipilih') + ' · ' + (tg ? tg.value : '-') + ' · ' + (du ? du.value : '-');
+      } else {
+        txt = title + ' · ' + (amt ? 'Rp ' + fmt(amt) : 'nominal belum dipilih') + (pr ? ' · ' + pr.value : '');
+      }
+      sum.textContent = txt;
     }
-    form.addEventListener('change', updSummary); form.addEventListener('input', updSummary); updSummary();
+    function updProgress() {
+      if (!bar) return;
+      var req = $$('[required]', form).filter(function (c) { return !c.disabled; });
+      var done = req.filter(function (c) {
+        if (c.type === 'email' && !emailRe.test(c.value)) return false;
+        if (c.type === 'tel' && c.value.replace(/\D/g, '').length < 9) return false;
+        return c.value.trim() !== '';
+      }).length;
+      var pct = req.length ? Math.round(done / req.length * 100) : 100;
+      bar.style.width = pct + '%';
+      bar.parentNode.parentNode.classList.toggle('is-done', pct === 100);
+      if (ptxt) ptxt.textContent = pct === 100 ? 'Semua data wajib terisi — siap dikirim' : done + ' dari ' + req.length + ' data wajib terisi';
+    }
+    function refresh() { applyType(); updSummary(); updProgress(); }
+    form.addEventListener('change', refresh); form.addEventListener('input', refresh); refresh();
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var firstBad = null;
       $$('.fd-field', form).forEach(function (f) {
+        var host = f.closest('[data-fd-for]');
+        if (host && host.hidden) { f.classList.remove('is-invalid'); return; }
         var c = $('input:not([type=radio]):not([type=checkbox]), select, textarea', f);
-        if (!c) return;
+        if (!c || c.disabled) return;
         var bad = c.hasAttribute('required') && !c.value.trim();
         if (!bad && c.type === 'email' && c.value && !emailRe.test(c.value)) bad = true;
         if (!bad && c.type === 'tel' && c.value && c.value.replace(/\D/g, '').length < 9) bad = true;
@@ -469,7 +526,7 @@
       var lines = [form.getAttribute('data-title') || 'Halo Harapan Untuk Negeri Foundation', ''];
       var nominalLain = custom && custom.value ? Number(custom.value) : 0;
       $$('[name][data-label]', form).forEach(function (c) {
-        if ((c.type === 'radio' || c.type === 'checkbox') && !c.checked) return;
+        if (c.disabled || ((c.type === 'radio' || c.type === 'checkbox') && !c.checked)) return;
         var v = (c.getAttribute('data-v') || c.value).trim();
         if (c.name === 'nominal_lain') { if (!v) return; v = 'Rp ' + fmt(nominalLain); }
         else if (c.name === 'nominal') { v = 'Rp ' + fmt(v); }

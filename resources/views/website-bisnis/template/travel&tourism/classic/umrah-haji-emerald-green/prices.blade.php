@@ -9,20 +9,37 @@
 
     <section class="uh-section">
         <div class="uh-container">
+            <div class="uh-toolbar uh-toolbar--room">
+                <div class="uh-seg uh-seg--room" role="radiogroup" aria-label="Pilih tipe kamar" data-uh-roomtoggle>
+                    <span class="uh-seg__thumb" aria-hidden="true"></span>
+                    @foreach ($uh['prices']['room_types'] as $i => $rt)
+                        <button type="button" role="radio" class="uh-seg__btn @if ($i === 0) is-active @endif" @if ($i === 0) aria-checked="true" @else aria-checked="false" @endif data-room="{{ $rt[0] }}" data-room-name="{{ $rt[1] }}">
+                            <svg class="uh-i" aria-hidden="true"><use href="#i-bed"/></svg>
+                            <span>{{ $rt[1] }}</span><small>{{ $rt[2] }}</small>
+                        </button>
+                    @endforeach
+                </div>
+                <p class="uh-toolbar__result">Pilih tipe kamar untuk melihat harga pada semua paket</p>
+            </div>
+
             <div class="uh-pricegrid">
                 @foreach ($uh['prices']['items'] as $it)
                     <article class="uh-pricecard @if ($it['tag'] === 'Best Seller') uh-pricecard--feat @endif" id="{{ $it['slug'] }}">
                         <header class="uh-pricecard__head">
                             <span class="uh-tag">{{ $it['tag'] }}</span>
                             <h2 class="uh-pricecard__title">{{ $it['package'] }}</h2>
-                            <p class="uh-pricecard__from"><span>Mulai dari</span><strong>{{ $it['from'] }}</strong></p>
                         </header>
+
+                        <div class="uh-pricecard__big" data-uh-pricebox>
+                            <span class="uh-pricecard__bigl">Harga tipe <b data-uh-roomname>Quad</b></span>
+                            <strong class="uh-pricecard__bigp" data-uh-roomprice>{{ $it['from'] }}</strong>
+                        </div>
 
                         <table class="uh-table uh-table--rooms">
                             <caption class="uh-sr">Harga {{ $it['package'] }} per tipe kamar</caption>
                             <tbody>
                                 @foreach ($it['rooms'] as $r)
-                                    <tr>
+                                    <tr data-room-row="{{ $r[2] }}">
                                         <th scope="row">{{ $r[0] }}</th>
                                         <td>{{ $r[1] }}</td>
                                     </tr>
@@ -58,6 +75,38 @@
                     </article>
                 @endforeach
             </div>
+
+            <section class="uh-compare" aria-labelledby="uh-cmp-title">
+                <header class="uh-compare__head">
+                    <span class="uh-eyebrow">Bandingkan</span>
+                    <h2 id="uh-cmp-title" class="uh-compare__title">Perbandingan cepat antar paket</h2>
+                </header>
+                <div class="uh-table-wrap">
+                    <table class="uh-table uh-table--compare">
+                        <thead>
+                            <tr>
+                                <th scope="col">Paket</th>
+                                <th scope="col">Durasi</th>
+                                <th scope="col">Hotel</th>
+                                <th scope="col">Pesawat</th>
+                                <th scope="col">Mulai dari</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($uh['packages'] as $pkg)
+                                <tr>
+                                    <th scope="row"><a href="{{ $url('packages') }}#{{ $pkg['slug'] }}">{{ $pkg['name'] }}</a></th>
+                                    <td>{{ $pkg['duration'] }}</td>
+                                    <td>{{ $pkg['hotel'] }}</td>
+                                    <td>{{ $pkg['airline'] }}</td>
+                                    <td><strong>{{ $pkg['price'] }}</strong></td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
             <p class="uh-note">{{ $uh['prices']['note'] }}</p>
         </div>
     </section>

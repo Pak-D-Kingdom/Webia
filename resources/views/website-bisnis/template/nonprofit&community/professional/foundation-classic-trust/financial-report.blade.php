@@ -19,7 +19,7 @@
                 @endforeach
             </div>
         </div>
-        <div class="fd-media fd-reveal"><img src="{{ $i('report.jpg') }}" alt="Dokumen laporan keuangan dengan grafik dan kaca pembesar" loading="lazy" style="aspect-ratio:3/2"></div>
+        <div class="fd-media fd-media--sm fd-reveal"><img src="{{ $i('report.jpg') }}" alt="Dokumen laporan keuangan dengan grafik dan kaca pembesar" loading="lazy" style="aspect-ratio:3/2"></div>
     </div>
 </section>
 

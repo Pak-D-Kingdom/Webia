@@ -10,18 +10,20 @@
     <section class="uh-section">
         <div class="uh-container">
             <div class="uh-toolbar">
-                <div class="uh-filter" role="group" aria-label="Filter jenis paket" data-uh-filter="packages">
-                    <button type="button" class="uh-chip is-active" data-filter="all" aria-pressed="true">Semua</button>
-                    <button type="button" class="uh-chip" data-filter="umrah" aria-pressed="false">Umrah</button>
-                    <button type="button" class="uh-chip" data-uh-filter-btn data-filter="haji" aria-pressed="false">Haji</button>
+                <div class="uh-seg" role="group" aria-label="Filter jenis paket" data-uh-filter="packages">
+                    <span class="uh-seg__thumb" aria-hidden="true"></span>
+                    <button type="button" class="uh-seg__btn is-active" data-filter="all" aria-pressed="true"><svg class="uh-i" aria-hidden="true"><use href="#i-sparkle"/></svg><span>Semua</span><b class="uh-seg__count" data-uh-count="all"></b></button>
+                    <button type="button" class="uh-seg__btn" data-filter="umrah" aria-pressed="false"><svg class="uh-i" aria-hidden="true"><use href="#i-kaaba"/></svg><span>Umrah</span><b class="uh-seg__count" data-uh-count="umrah"></b></button>
+                    <button type="button" class="uh-seg__btn" data-filter="haji" aria-pressed="false"><svg class="uh-i" aria-hidden="true"><use href="#i-mosque"/></svg><span>Haji</span><b class="uh-seg__count" data-uh-count="haji"></b></button>
                 </div>
+                <p class="uh-toolbar__result" aria-live="polite"><strong data-uh-shown>4</strong> paket ditampilkan</p>
             </div>
 
             <div class="uh-pkpage" data-uh-filter-list="packages">
                 @foreach ($uh['packages'] as $pkg)
                     <article class="uh-pkcard" id="{{ $pkg['slug'] }}" data-type="{{ $pkg['type'] }}">
-                        <figure class="uh-pkcard__media">
-                            <img src="{{ $img($pkg['image']) }}" alt="{{ $pkg['name'] }}" width="327" height="243" loading="lazy">
+                        <figure class="uh-pkcard__media uh-frame"><img class="uh-frame__bg" src="{{ $img($pkg['image']) }}" alt="" aria-hidden="true" loading="lazy">
+                            <img src="{{ $img($pkg['image']) }}" alt="{{ $pkg['name'] }}" width="252" height="202" loading="lazy">
                             @if ($pkg['ribbon'])
                                 <span class="uh-ribbon uh-ribbon--lg">{{ $pkg['ribbon'] }}</span>
                             @endif

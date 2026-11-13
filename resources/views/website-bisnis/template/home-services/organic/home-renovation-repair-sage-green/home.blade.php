@@ -147,7 +147,7 @@
         </article>
     </div>
 
-    {{-- ============ BARIS 4: Survei · Penawaran · Testimoni · Chatbot ============ --}}
+    {{-- ============ BARIS 4: Survei · Penawaran ============ --}}
     <div class="hr-row hr-row--4">
         <article class="hr-card hr-card--survey" data-reveal>
             <div class="hr-survey__text">
@@ -168,25 +168,66 @@
             </div>
             <img class="hr-quote__img" src="{{ $img('quotation-hand.jpg') }}" alt="Tangan menulis rincian penawaran di atas denah" width="332" height="384" loading="lazy" decoding="async">
         </article>
+    </div>
 
-        <article class="hr-card hr-card--testi" id="testimoni" data-reveal>
-            <div class="hr-testi__text">
-                <h2><span class="hr-testi__mark" aria-hidden="true">“</span>Testimoni Pelanggan</h2>
-                <blockquote>“{{ $cfg['testimonial']['text'] }}”</blockquote>
-                <div class="hr-stars" role="img" aria-label="Rating {{ $cfg['testimonial']['stars'] }} dari 5">
-                    @for ($n = 0; $n < $cfg['testimonial']['stars']; $n++){{ $i('star') }}@endfor
-                    <span class="hr-testi__name">- {{ $cfg['testimonial']['name'] }}</span>
+    {{-- ============ BARIS 5: Testimoni · AI Chatbot ============ --}}
+    <div class="hr-row hr-row--5">
+        <article class="hr-card hr-card--testi" id="testimoni" data-reveal data-testi aria-roledescription="carousel" aria-label="Testimoni pelanggan">
+            <header class="hr-testi__head">
+                <span class="hr-testi__mark" aria-hidden="true">“</span>
+                <h2>Testimoni Pelanggan</h2>
+                <div class="hr-testi__nav">
+                    <button type="button" data-testi-prev aria-label="Testimoni sebelumnya">{{ $i('chevron-left') }}</button>
+                    <button type="button" data-testi-next aria-label="Testimoni berikutnya">{{ $i('chevron-right') }}</button>
                 </div>
+            </header>
+            <div class="hr-testi__stage">
+                @foreach ($cfg['testimonials'] as $t)
+                    <figure class="hr-testi__slide {{ $loop->first ? 'is-on' : '' }}" data-testi-slide @if (! $loop->first) aria-hidden="true" @endif>
+                        <span class="hr-testi__av">
+                            @if ($t['photo'])
+                                <img src="{{ $img($t['photo']) }}" alt="Foto {{ $t['name'] }}, pelanggan Renovaku" width="216" height="216" loading="lazy" decoding="async">
+                            @else
+                                <b aria-hidden="true">{{ $t['initials'] }}</b>
+                            @endif
+                        </span>
+                        <div class="hr-testi__body">
+                            <blockquote>“{{ $t['text'] }}”</blockquote>
+                            <figcaption>
+                                <span class="hr-stars" role="img" aria-label="Rating {{ $t['stars'] }} dari 5">@for ($n = 0; $n < $t['stars']; $n++){{ $i('star') }}@endfor</span>
+                                <strong>{{ $t['name'] }}</strong>
+                                <small>{{ $t['role'] }}</small>
+                            </figcaption>
+                        </div>
+                    </figure>
+                @endforeach
             </div>
-            <img class="hr-testi__photo" src="{{ $img($cfg['testimonial']['photo']) }}" alt="Foto {{ $cfg['testimonial']['name'] }}, pelanggan Renovaku" width="216" height="216" loading="lazy" decoding="async">
+            <div class="hr-testi__dots" role="tablist" aria-label="Pilih testimoni">
+                @foreach ($cfg['testimonials'] as $t)
+                    <button type="button" role="tab" data-testi-dot class="{{ $loop->first ? 'is-on' : '' }}" aria-label="Testimoni {{ $loop->iteration }}: {{ $t['name'] }}" aria-selected="{{ $loop->first ? 'true' : 'false' }}"></button>
+                @endforeach
+            </div>
         </article>
 
         <article class="hr-card hr-card--bot" data-reveal>
-            <span class="hr-bot__robot">@include($vp.'robot')</span>
-            <button type="button" class="hr-bot__btn" data-chat-open>
-                <span><strong>AI Chatbot</strong><small>Service &amp; Estimate FAQ</small></span>
-                <i>{{ $i('arrow') }}</i>
-            </button>
+            <div class="hr-bot__top">
+                <span class="hr-bot__robot">@include($vp.'robot')</span>
+                <div>
+                    <span class="hr-bot__pill"><i></i> Online</span>
+                    <h2>AI Chatbot</h2>
+                    <p>Service &amp; Estimate FAQ</p>
+                </div>
+            </div>
+            <div class="hr-bot__demo" aria-hidden="true" data-demo>
+                <p class="hr-bot__q" data-demo-q>{{ $cfg['js']['demo'][0][0] }}</p>
+                <p class="hr-bot__a" data-demo-a>{{ $cfg['js']['demo'][0][1] }}</p>
+            </div>
+            <div class="hr-bot__chips">
+                <button type="button" data-chat-ask="Estimasi Biaya">{{ $i('invoice') }}Estimasi Biaya</button>
+                <button type="button" data-chat-ask="Paket Layanan">{{ $i('crown') }}Paket Layanan</button>
+                <button type="button" data-chat-ask="Survey lokasi">{{ $i('calendar') }}Survey Lokasi</button>
+            </div>
+            <button type="button" class="hr-btn hr-btn--gold hr-btn--block" data-chat-open>{{ $i('bot') }}<span>Mulai Chat</span>{{ $i('arrow') }}</button>
         </article>
     </div>
 </div>
