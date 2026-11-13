@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const summary = document.getElementById('webia-filter-summary');
 
     const categories = [
-        {id:'fnb',name:'F&B',types:['Restaurant','Cafe','Catering','Bakery','Food Product']},
+        {id:'fnb',name:'F&B',types:['Healthy Meal Prep Subscription','Restaurant','Cafe','Catering','Bakery','Food Product']},
         {id:'beauty',name:'Beauty',types:['Salon','Nail Art & Nail Care','Beauty Clinic','Skincare & Beauty Treatment','Makeup Artist']},
         {id:'automotive',name:'Automotive',types:['Auto Detailing & Car Care','Modifikasi & Aksesori Kendaraan','Bengkel & Servis Kendaraan','Dealer & Showroom Kendaraan']},
         {id:'company',name:'Company',types:['Company Profile','Contractor','Logistics & Supply Chain']},
@@ -51,11 +51,11 @@ document.addEventListener('DOMContentLoaded', () => {
         {id:'home-organization-storage',name:'Home Organization & Storage',types:['Professional Home Organizer']},
         {id:'music-education-instrument',name:'Music Education & Instrument Services',types:['Private Music Academy']},
         {id:'aquatic-water-recreation',name:'Aquatic & Water Recreation',types:['Diving School & Certification']},
-        {id:'sports-aquatic-education',name:'Sports & Aquatic Education',types:['Swimming School & Lessons (Baby–Adult)','Private Swimming Instructor']},
+
+        {id:'sports others',name:'Sports others',types:['Swimming School & Lessons (Baby–Adult)','Private Swimming Instructor','Padel Academy & Training','Badminton Academy & Coaching','Tennis Academy & Lessons','Table Tennis Training Center','Volleyball Academy','Basketball Training Academy','Futsal Academy','Football & Soccer School']},
         {id:'creative-arts-hobby-classes',name:'Creative Arts & Hobby Classes',types:['Kids Coloring & Drawing Class','Painting & Watercolor Course','Acrylic & Canvas Painting Workshop','Sketching & Illustration Class']},
         {id:'music-lessons-performing-arts',name:'Music Lessons & Performing Arts',types:['Piano & Keyboard Lesson','Guitar & Bass Lessons','Vocal & Singing Course','Violin & Classical Instrument Lessons','Drum Lessons']},
-        {id:'racket-sports-academy',name:'Racket Sports Academy',types:['Padel Academy & Training','Badminton Academy & Coaching','Tennis Academy & Lessons','Table Tennis Training Center']},
-        {id:'team-sports-academy',name:'Team Sports Academy',types:['Volleyball Academy','Basketball Training Academy','Futsal Academy','Football & Soccer School']},
+        
         {id:'martial-arts-self-defense',name:'Martial Arts & Self Defense Academy',types:['Karate & Taekwondo School','Boxing & Kickboxing Academy','Brazilian Jiu-Jitsu Academy','Pencak Silat Training School']},
         {id:'performing-arts-stage-training',name:'Performing Arts & Stage Training',types:['Modeling & Catwalk Class','Acting & Drama School']}
     ];
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'Fresh Aquatic Playful','Clean Sporty','Playful Illustrative','Artistic Watercolor','Bold Artistic','Handcrafted Editorial','Elegant Classical',
         'Urban Creative','Expressive Contemporary','Refined Classical','Bold Rhythmic','Energetic Sporty','Dynamic Athletic','Premium Sport Club',
         'Modern Competitive','Energetic Team Sport','Urban Athletic','Bold Sporty','Professional Athletic','Traditional Discipline','Industrial Grit',
-        'Tactical Modern','Cultural Heritage','High-Fashion Editorial','Dramatic Cinematic'
+        'Tactical Modern','Cultural Heritage','High-Fashion Editorial','Dramatic Cinematic', 'Warm Family Modern'
     ];
     const selectedCategories = new Set();
     const selectedTypes = new Set();

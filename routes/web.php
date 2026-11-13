@@ -653,8 +653,8 @@ Route::prefix('webia/template/retail/luxury/skincare-soft-pink')
         $data = fn() => [
             'ns' => $ns,
             'rp' => $rp,
-            'r' => fn (string $name): string => route($rp.$name),
-            'active' => str(request()->route()?->getName() ?? '')->afterLast('.')->toString(),
+            'r' => fn(string $name): string => route($rp . $name),
+            'active' => request()->route()?->getName(),
             'cfg' => config($cfg),
             'img' => asset('images/website-bisnis/template/retail/luxury/skincare-soft-pink'),
             'css' => asset('css/website-bisnis/template/retail/luxury/skincare-soft-pink/skincare.css'),
@@ -672,7 +672,7 @@ Route::prefix('webia/template/retail/luxury/skincare-soft-pink')
 $ns = 'website-bisnis.template.retail.premium-minimal.skincare-warm-neutral';
 $data = [
     'ns' => $ns,
-    'r' => fn (string $name): string => route('skincare-warm-neutral.'.$name),
+    'r' => fn(string $name): string => route('skincare-warm-neutral.' . $name),
     'active' => null,
     'skin' => config('template.retail.premium-minimal.skincare-warm-neutral.skincare'),
 ];
@@ -692,7 +692,7 @@ Route::prefix('webia/template/retail/organic/skincare-sage-green')
     ->name('skincare-sage-green.')
     ->group(function () {
         $view = 'website-bisnis.template.retail.organic.skincare-sage-green.';
-        $data = ['r' => fn (string $name): string => route('skincare-sage-green.'.$name)];
+        $data = ['r' => fn(string $name): string => route('skincare-sage-green.' . $name)];
 
         Route::view('/', $view . 'index', $data)->name('home');      // Beranda + preview semua fitur
         Route::view('/katalog', $view . 'catalog', $data)->name('catalog'); // Product catalog
@@ -1422,8 +1422,14 @@ view()->composer(
             $wa  = fn(string $text) => 'https://wa.me/' . $uh['brand']['whatsapp'] . '?text=' . rawurlencode($text);
 
             $icons = [
-                'packages' => 'kaaba', 'schedules' => 'calendar', 'prices' => 'tag', 'hotel-flight' => 'hotel',
-                'itinerary' => 'route', 'team' => 'guide', 'requirements' => 'file', 'testimonials' => 'star',
+                'packages' => 'kaaba',
+                'schedules' => 'calendar',
+                'prices' => 'tag',
+                'hotel-flight' => 'hotel',
+                'itinerary' => 'route',
+                'team' => 'guide',
+                'requirements' => 'file',
+                'testimonials' => 'star',
             ];
 
             // indeks pencarian
@@ -1595,14 +1601,14 @@ Route::prefix('webia/template/interior-architecture/rustic/architecture-building
         Route::view('/konsultasi',  $v . '.konsultasi')->name('konsultasi');
         Route::view('/penawaran',   $v . '.penawaran')->name('penawaran');
     });
-    
+
 $prefix = '/webia/template/libraries-digital-archives/modern/digital-library-platform-ocean-blue';
 $view = 'website-bisnis.template.libraries-digital-archives.modern.digital-library-platform-ocean-blue';
 
-Route::get($prefix, fn () => view($view.'.index'))->name('webia.dl.home');
+Route::get($prefix, fn() => view($view . '.index'))->name('webia.dl.home');
 
 foreach (['katalog', 'kategori', 'detail-buku', 'baca', 'koleksi-pilihan', 'terbaru', 'terpopuler', 'akademik', 'keanggotaan', 'tentang-kami', 'knowledge-hub', 'artikel', 'faq', 'kontak', 'masuk', 'daftar', 'dashboard', 'pinjaman', 'riwayat', 'wishlist', 'profil'] as $slug) {
-    Route::get($prefix.'/'.$slug, fn () => view($view.'.page', ['page' => $slug]))->name('webia.dl.'.$slug);
+    Route::get($prefix . '/' . $slug, fn() => view($view . '.page', ['page' => $slug]))->name('webia.dl.' . $slug);
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1909,6 +1915,18 @@ Route::prefix('webia/template')->group(function () {
         '/strike-branding-creative',
         'website-bisnis.templates.professional-service.branding-creative.strike.strike'
     )->name('webia.template.strike-branding-creative');
+    Route::view(
+        '/webia/template/fnb/healthy-meal-prep/fresh-harvest',
+        'website-bisnis.templates.fnb.healthy-meal-prep.fresh-harvest'
+    )->name('webia.template.fnb.healthy-meal-prep.fresh-harvest');
+    Route::view(
+        '/blushbowl-diet-meal',
+        'website-bisnis.templates.food-subscription.diet-meal.blushbowl.blushbowl'
+    )->name('webia.template.blushbowl.diet-meal');
+    Route::view(
+        '/sodatable-family-meal-plan',
+        'website-bisnis.templates.food-subscription.weekly-family-meal-plan.sodatable.sodatable'
+    )->name('webia.template.sodatable-family-meal-plan');
 });
 
 Route::get('webia/template/{path}', TemplatePreviewController::class)
