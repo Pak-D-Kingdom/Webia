@@ -422,7 +422,6 @@ class CustomerSiteController extends Controller
             'customer_site' => true,
         ]);
     }
-    }
 
     private function terracottaCompanyConfig(array $siteConfig, array $business, string $whatsapp, string $instagram): array
     {
