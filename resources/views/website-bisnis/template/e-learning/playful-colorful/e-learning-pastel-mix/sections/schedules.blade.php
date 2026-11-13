@@ -9,7 +9,7 @@
     @if (! $full)
         <header class="panel__head">
             <h2 id="schedules-title">Jadwal Kelas</h2>
-            <a class="link-more" href="{{ route($rp.'schedules') }}">Lihat Semua <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+            <a class="link-more" href="{{ $r($rp.'schedules') }}">Lihat Semua <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
         </header>
     @else
         <h2 id="schedules-title" class="sr-only">Jadwal kelas</h2>

@@ -1,7 +1,7 @@
 {{-- Kartu program (dipakai preview beranda & halaman Programs). Param: $p --}}
 @php $lv = mb_strtolower($p['level']); @endphp
 <article class="pcard" data-category="{{ $p['category'] }}" data-level="{{ $lv }}" data-title="{{ mb_strtolower($p['title']) }}">
-    <a class="pcard__media tone-{{ $p['tone'] }}" href="{{ route($rp.'registration', ['program' => $p['slug']]) }}" tabindex="-1" aria-hidden="true">
+    <a class="pcard__media tone-{{ $p['tone'] }}" href="{{ $r($rp.'registration', ['program' => $p['slug']]) }}" tabindex="-1" aria-hidden="true">
         @if ($p['image'])
             <img src="{{ $img.$p['image'] }}" alt="" width="450" height="240" loading="lazy">
         @else
@@ -16,6 +16,6 @@
     </ul>
     <div class="pcard__foot">
         <strong class="price">Rp {{ number_format($p['price'], 0, ',', '.') }}</strong>
-        <a class="go-btn" href="{{ route($rp.'registration', ['program' => $p['slug']]) }}" aria-label="Daftar {{ $p['title'] }}"><i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+        <a class="go-btn" href="{{ $r($rp.'registration', ['program' => $p['slug']]) }}" aria-label="Daftar {{ $p['title'] }}"><i class="bi bi-arrow-right" aria-hidden="true"></i></a>
     </div>
 </article>

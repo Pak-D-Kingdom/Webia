@@ -1,6 +1,6 @@
 {{-- Catatan: di file ini hanya dipakai satu blok PHP multi-baris; jangan menambah direktif PHP satu baris di sini. --}}
 @php
-    $r    = $e['route'];
+    $rp   = $e['route'];
     $full = $full ?? false;
     $c    = $e['course'];
 
@@ -13,11 +13,11 @@
     $current = collect(array_keys($all))->first(fn ($id) => ! in_array($id, $done)) ?? 1;
 @endphp
 
-<section @class(['nl-sec nl-sec--course', 'nl-card' => ! $full]) id="course-content" aria-labelledby="course-title" data-course data-total="{{ $total }}" data-done='@json($done)'>
+<section @class(['nl-sec nl-sec--course', 'nl-card' => ! $full]) id="course-content" aria-labelledby="course-title" data-course data-total="{{ $total }}" data-done='@json($customerSite ? [] : $done)'>
     @if(! $full)
         <div class="nl-head">
             <h2 id="course-title">Course Content</h2>
-            <a class="nl-link" href="{{ route($r.'course-content') }}">Lihat Semua <svg class="ic"><use href="#i-arrow"/></svg></a>
+            <a class="nl-link" href="{{ $r($rp.'course-content') }}">Lihat Semua <svg class="ic"><use href="#i-arrow"/></svg></a>
         </div>
     @else
         <h2 class="nl-sr" id="course-title">Isi kursus</h2>
@@ -29,11 +29,13 @@
                 <img src="{{ asset($e['img'].'/course-preview.png') }}" alt="Pratinjau video kursus {{ $c['title'] }}" width="360" height="124" loading="lazy">
                 <button class="nl-play" type="button" aria-label="Putar pratinjau" data-play><svg class="ic"><use href="#i-play"/></svg></button>
             </div>
-            <p class="nl-course__now"><small>Sedang dipelajari</small><strong data-now>{{ $current }}. {{ $all[$current] }}</strong></p>
-            <div class="nl-progress-row">
-                <div class="nl-progress" role="progressbar" aria-label="Progres kursus" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ $pct }}" data-progress><i style="width:{{ $pct }}%"></i></div>
-                <span data-progress-text>{{ $pct }}%</span>
-            </div>
+            @unless($customerSite)
+                <p class="nl-course__now"><small>Sedang dipelajari</small><strong data-now>{{ $current }}. {{ $all[$current] }}</strong></p>
+                <div class="nl-progress-row">
+                    <div class="nl-progress" role="progressbar" aria-label="Progres kursus" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ $pct }}" data-progress><i style="width:{{ $pct }}%"></i></div>
+                    <span data-progress-text>{{ $pct }}%</span>
+                </div>
+            @endunless
         </div>
 
         <div class="nl-course__list">
@@ -42,13 +44,15 @@
                 @if($full)<details class="nl-acc" @if($loop->first) open @endif><summary>{{ $label }}<svg class="ic"><use href="#i-chevron"/></svg></summary>@endif
                 <ul class="nl-lessons">
                     @foreach($shown as $id => $title)
-                        <li @class(['nl-lesson', 'is-done' => in_array($id, $done), 'is-current' => $id === $current]) data-lesson="{{ $id }}">
+                        <li @class(['nl-lesson', 'is-done' => ! $customerSite && in_array($id, $done), 'is-current' => ! $customerSite && $id === $current]) data-lesson="{{ $id }}">
                             <button type="button" class="nl-lesson__btn" data-pick="{{ $id }}. {{ $title }}">
                                 <span class="nl-lesson__n">{{ $id }}.</span><span class="nl-lesson__t">{{ $title }}</span>
                             </button>
-                            <button type="button" class="nl-lesson__done" data-done-btn aria-pressed="{{ in_array($id, $done) ? 'true' : 'false' }}" aria-label="Tandai selesai: {{ $title }}">
-                                <svg class="ic ic-check"><use href="#i-check"/></svg><svg class="ic ic-play"><use href="#i-play"/></svg>
-                            </button>
+                            @unless($customerSite)
+                                <button type="button" class="nl-lesson__done" data-done-btn aria-pressed="{{ in_array($id, $done) ? 'true' : 'false' }}" aria-label="Tandai selesai: {{ $title }}">
+                                    <svg class="ic ic-check"><use href="#i-check"/></svg><svg class="ic ic-play"><use href="#i-play"/></svg>
+                                </button>
+                            @endunless
                         </li>
                     @endforeach
                 </ul>

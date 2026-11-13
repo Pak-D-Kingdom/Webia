@@ -3,7 +3,9 @@
     <div class="container topbar__in">
         <ul class="topbar__info">
             <li class="topbar__item topbar__item--addr"><i class="bi bi-geo-alt-fill" aria-hidden="true"></i><span>{{ $t['contact']['address'] }}</span></li>
-            <li class="topbar__item topbar__item--mail"><i class="bi bi-envelope-fill" aria-hidden="true"></i><a href="mailto:{{ $t['contact']['email'] }}">{{ $t['contact']['email'] }}</a></li>
+            @if (! empty($t['contact']['email']))
+                <li class="topbar__item topbar__item--mail"><i class="bi bi-envelope-fill" aria-hidden="true"></i><a href="mailto:{{ $t['contact']['email'] }}">{{ $t['contact']['email'] }}</a></li>
+            @endif
             <li class="topbar__item"><i class="bi bi-clock-fill" aria-hidden="true"></i><span>{{ $t['contact']['hours'] }}</span></li>
         </ul>
         <div class="topbar__side">

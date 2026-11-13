@@ -1,7 +1,10 @@
-{{-- Layout utama NovaLearn · E-Learning Futuristic Dark Mode --}}
+{{-- Layout utama E-Learning Futuristic Dark Mode --}}
 @php
     $e = $e ?? config('template.e-learning.futuristic.e-learning-dark-mode.e-learning');
     $v = $e['view'];
+    $r = $r ?? fn (string $name, array $parameters = []) => route($name, $parameters);
+    $isActive = $isActive ?? fn (string $name) => request()->routeIs($name);
+    $customerSite = ($e['customer_site'] ?? false) === true;
 @endphp
 <!DOCTYPE html>
 <html lang="id">
@@ -19,7 +22,7 @@
     <link rel="stylesheet" href="{{ asset($e['css'].'/e-learning.css') }}">
     @stack('head')
 </head>
-<body class="nl" data-page="@yield('page', 'home')">
+<body class="nl" data-page="@yield('page', 'home')" data-brand="{{ $e['brand']['name'] }}">
     <a class="nl-skip" href="#konten">Lewati ke konten</a>
 
     @include($v.'.partials.icons')
@@ -27,6 +30,7 @@
     @include($v.'.partials.navbar')
 
     <main id="konten">
+        @if ($customerSite)<p class="nl-sr">Contoh program & harga</p>@endif
         @yield('content')
     </main>
 

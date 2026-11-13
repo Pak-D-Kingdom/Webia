@@ -4,7 +4,7 @@
     <section id="member-area" class="panel panel--member" aria-labelledby="member-title">
         <header class="panel__head">
             <h2 id="member-title">{{ $m['title'] }}</h2>
-            <a class="link-more" href="{{ route($rp.'member-area') }}">Selengkapnya <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+            <a class="link-more" href="{{ $r($rp.'member-area') }}">Selengkapnya <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
         </header>
         <div class="member__intro">
             <img class="member__icon" src="{{ $img }}member-icon.jpg" alt="" width="276" height="204" loading="lazy">
@@ -15,14 +15,14 @@
                 <li class="tone-{{ $b['tone'] }}"><span class="member__perk-ico"><i class="bi {{ $b['icon'] }}" aria-hidden="true"></i></span><span>{{ $b['title'] }}</span></li>
             @endforeach
         </ul>
-        <a class="btn btn--primary btn--block" href="{{ route($rp.'member-area') }}">{{ $m['cta'] }} <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+        <a class="btn btn--primary btn--block" href="{{ $r($rp.'member-area') }}">{{ $m['cta'] }} <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
     </section>
 @else
     <section id="member-area" class="block member" aria-labelledby="member-title">
         <div class="member__grid">
             <div class="card form-card">
                 <h2 id="member-title">Masuk ke Member Area</h2>
-                <p class="muted">Gunakan akun EduPlus kamu untuk melanjutkan belajar.</p>
+                <p class="muted">Gunakan akun {{ $t['brand']['name'] }} kamu untuk melanjutkan belajar.</p>
                 <form class="form" method="post" action="{{ $m['action'] ?? '#' }}" novalidate data-demo-form="login">
                     @csrf
                     <div class="field">
@@ -41,7 +41,7 @@
                     <label class="check"><input type="checkbox" name="remember"><span>Ingat saya di perangkat ini</span></label>
                     <button class="btn btn--primary btn--lg btn--block" type="submit">Masuk <i class="bi bi-arrow-right" aria-hidden="true"></i></button>
                     <p class="form__note" role="status" aria-live="polite" data-form-note></p>
-                    <p class="muted center">Belum punya akun? <a href="{{ route($rp.'registration') }}">Daftar sekarang</a></p>
+                    <p class="muted center">Belum punya akun? <a href="{{ $r($rp.'registration') }}">Daftar sekarang</a></p>
                 </form>
             </div>
 

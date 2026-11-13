@@ -1,9 +1,9 @@
 @php
-    $r   = $e['route'];
+    $rp  = $e['route'];
     $ai  = $e['ai'];
     $wa  = 'https://wa.me/'.$e['whatsapp']['number'].'?text='.rawurlencode($e['whatsapp']['message']);
     $faq = collect($ai['faq'])->map(fn ($f) => [
-        'q' => $f['q'], 'k' => $f['keywords'], 'a' => $f['a'], 'u' => route($r.$f['route']),
+        'q' => $f['q'], 'k' => $f['keywords'], 'a' => $f['a'], 'u' => $r($rp.$f['route']),
     ])->values();
 @endphp
 

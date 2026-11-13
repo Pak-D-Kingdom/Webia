@@ -4,6 +4,9 @@
     $rp  = $t['route_prefix'];
     $v   = $t['view'];
     $img = asset($t['assets']['images']).'/';
+    $r = $r ?? fn (string $name, array $parameters = []) => route($name, $parameters);
+    $isActive = $isActive ?? fn (string $name) => request()->routeIs($name);
+    $customerSite = ($t['customer_site'] ?? false) === true;
     $ver = fn (string $file) => @filemtime(public_path($file)) ?: 1;
 
     // Data yang dibaca e-learning.js (chatbot, WhatsApp, newsletter).
@@ -11,6 +14,7 @@
         'whatsapp'   => 'https://wa.me/'.$t['contact']['whatsapp'].'?text='.rawurlencode($t['contact']['whatsapp_text']),
         'ai'         => ['intro' => $t['ai']['intro'], 'fallback' => $t['ai']['fallback'], 'faq' => $t['ai']['faq']],
         'formWhatsapp' => $t['contact']['form_whatsapp'],
+        'brand'        => $t['brand']['name'],
     ];
 @endphp
 <!DOCTYPE html>
@@ -38,6 +42,7 @@
     @include($v.'.partials.navbar')
 
     <main id="main" tabindex="-1">
+        @if ($customerSite)<p class="sr-only">Contoh program & harga</p>@endif
         @yield('content')
     </main>
 

@@ -237,7 +237,7 @@
     var plan = planInput ? planInput.closest('label').textContent.replace(/\s+/g, ' ').trim() : '';
 
     var lines = [
-      '*Pendaftaran Baru - E-learna*', '',
+      '*Pendaftaran Baru - ' + (document.body.dataset.brand || 'E-learna') + '*', '',
       'Nama: ' + val('name'),
       'Email: ' + val('email'),
       'No. WhatsApp: ' + val('phone'),

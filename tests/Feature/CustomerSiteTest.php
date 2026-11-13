@@ -410,6 +410,94 @@ class CustomerSiteTest extends TestCase
         ];
     }
 
+    #[DataProvider('elearningTemplates')]
+    public function test_publishing_elearning_template_renders_customer_site(
+        string $templateSlug,
+        string $siteConfigPath,
+        string $demoName,
+    ): void {
+        $admin = User::factory()->admin()->create();
+        $template = $this->template($templateSlug, [
+            'name' => 'Online Course',
+            'category_slug' => 'e-learning',
+            'category_label' => 'E-Learning',
+            'business_types' => ['Online Course & E-Learning'],
+            'site_config_path' => $siteConfigPath,
+        ]);
+        $order = WebiaOrder::factory()->create([
+            'webia_template_id' => $template,
+            'template_snapshot' => [
+                'name' => $template->name,
+                'slug' => $template->slug,
+                'category_slug' => $template->category_slug,
+                'site_config_path' => $template->site_config_path,
+            ],
+            'status' => 'paid',
+            'delivery_status' => 'in_progress',
+            'business_data' => [
+                'business_name' => 'Akademi Cakrawala',
+                'tagline' => 'Belajar praktis untuk masa depan',
+                'whatsapp' => '0812-3456-7890',
+                'description' => 'Kelas online praktis bersama mentor berpengalaman.',
+                'address' => 'Jl. Merdeka No. 17',
+                'city' => 'Bandung',
+                'instagram' => '@akademicakrawala',
+            ],
+        ]);
+
+        $this->actingAs($admin)->post(route('admin.orders.progress', $order), [
+            'action' => 'finish',
+        ])->assertRedirect(route('admin.orders.show', $order));
+
+        $order->refresh();
+        $siteUrl = route('sites.show', ['order' => $order->site_slug]);
+        $response = $this->get($siteUrl)
+            ->assertOk()
+            ->assertSee('Akademi Cakrawala')
+            ->assertSee('Belajar praktis untuk masa depan')
+            ->assertSee('Kelas online praktis bersama mentor berpengalaman.')
+            ->assertSee('Jl. Merdeka No. 17, Bandung')
+            ->assertSee('6281234567890', false)
+            ->assertSee('instagram.com/akademicakrawala', false)
+            ->assertSeeText('Contoh program & harga')
+            ->assertDontSee($demoName, false)
+            ->assertDontSee('62895630300345', false)
+            ->assertDontSee('mailto:', false);
+
+        foreach (['programs', 'schedules', 'teachers', 'pricing', 'registration', 'course-content', 'member-area'] as $page) {
+            $this->get($siteUrl.'/'.$page)
+                ->assertOk()
+                ->assertSee('Akademi Cakrawala')
+                ->assertSee($siteUrl.'/programs', false)
+                ->assertDontSee($demoName, false)
+                ->assertDontSee('mailto:', false);
+        }
+
+        $this->get($siteUrl.'/programs/tidak-ada')->assertNotFound();
+        $this->get($siteUrl.'/programs/tidak-ada/lebih')->assertNotFound();
+    }
+
+    public static function elearningTemplates(): array
+    {
+        return [
+            'ocean blue' => [
+                'elearning-ocean-blue',
+                'e-learning/modern/e-learning-ocean-blue/e-learning',
+                'E-learna',
+            ],
+            'pastel mix' => [
+                'elearning-pastel-mix',
+                'e-learning/playful-colorful/e-learning-pastel-mix/e-learning',
+                'EduPlus',
+            ],
+            'dark mode' => [
+                'elearning-dark-mode',
+                'e-learning/futuristic/e-learning-dark-mode/e-learning',
+                'NovaLearn',
+            ],
+        ];
+    }
+
     #[DataProvider('companyTemplates')]
     public function test_publishing_company_template_renders_customer_site(
         string $templateSlug,

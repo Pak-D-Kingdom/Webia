@@ -29,6 +29,7 @@ class CustomerSiteController extends Controller
         $isRetail = str_starts_with($siteConfigPath, 'retail/');
         $isHealthcare = str_starts_with($siteConfigPath, 'healthcare/');
         $isProperty = str_starts_with($siteConfigPath, 'property/');
+        $isElearning = str_starts_with($siteConfigPath, 'e-learning/');
         $pageKey = match (true) {
             $pageIdentifier !== null && $pageSection === 'blog' => 'blog.show',
             $pageIdentifier !== null && $pageSection === 'property' => 'property.show',
@@ -47,6 +48,7 @@ class CustomerSiteController extends Controller
             str_starts_with($siteConfigPath, 'property/luxury/') => ['home' => 'index', 'property' => 'property', 'property.show' => 'property-detail', 'about' => 'about', 'gallery' => 'gallery', 'booking' => 'booking', 'blog' => 'blog', 'blog.show' => 'blog-detail', 'contact' => 'contact'],
             str_starts_with($siteConfigPath, 'property/premium-minimal/') => ['home' => 'index', 'properties' => 'properties', 'property.show' => 'property', 'about-us' => 'about', 'gallery' => 'gallery', 'booking' => 'booking', 'blog' => 'blog', 'blog.show' => 'article', 'contact' => 'contact'],
             str_starts_with($siteConfigPath, 'property/professional/') => ['home' => 'index', 'property' => 'property', 'specification' => 'specification', 'price' => 'price', 'about-us' => 'about', 'gallery' => 'gallery', 'booking' => 'booking', 'blog' => 'blog', 'blog.show' => 'blog-show', 'contact' => 'contact'],
+            $isElearning => ['home' => 'index', 'programs' => 'programs', 'schedules' => 'schedules', 'teachers' => 'teachers', 'pricing' => 'pricing', 'registration' => 'registration', 'course-content' => 'course-content', 'member-area' => 'member-area'],
             default => ['home' => 'index', 'menu' => 'menu', 'reservasi' => 'reservasi'],
         };
         abort_unless(isset($views[$pageKey]), 404);
@@ -71,6 +73,9 @@ class CustomerSiteController extends Controller
             str_starts_with($siteConfigPath, 'property/luxury/') => $this->emeraldPropertyConfig($siteConfig, $business, $whatsapp, $instagram),
             str_starts_with($siteConfigPath, 'property/premium-minimal/') => $this->naturePropertyConfig($siteConfig, $business, $whatsapp, $instagram),
             str_starts_with($siteConfigPath, 'property/professional/') => $this->coralPropertyConfig($siteConfig, $business, $whatsapp, $instagram),
+            str_starts_with($siteConfigPath, 'e-learning/modern/') => $this->oceanElearningConfig($siteConfig, $business, $whatsapp, $instagram),
+            str_starts_with($siteConfigPath, 'e-learning/playful-colorful/') => $this->pastelElearningConfig($siteConfig, $business, $whatsapp, $instagram),
+            str_starts_with($siteConfigPath, 'e-learning/futuristic/') => $this->darkElearningConfig($siteConfig, $business, $whatsapp, $instagram),
             str_starts_with($siteConfigPath, 'f&b/vintage/') => $this->vintageSiteConfig($siteConfig, $business, $order, $whatsapp, $instagram),
             str_starts_with($siteConfigPath, 'f&b/elegan/') => $this->eleganSiteConfig($siteConfig, $business, $order, $whatsapp, $instagram),
             default => $this->minimalisSiteConfig($siteConfig, $business, $order, $whatsapp, $instagram),
@@ -108,11 +113,17 @@ class CustomerSiteController extends Controller
             return $pageUrl($page).$hash;
         };
         $emeraldRoute = fn (string $name = 'index', string $hash = '', array $parameters = []): string => $propertyPageUrl($name, $parameters, $hash);
+        $elearningPageUrl = function (string $name = 'home', array $parameters = []) use ($pageUrl): string {
+            $url = $pageUrl(Str::afterLast($name, '.'));
+
+            return $parameters === [] ? $url : $url.'?'.http_build_query($parameters);
+        };
         $assetPath = 'website-bisnis/template/'.$templatePath;
         $customerRoute = match (true) {
             $isRetail => $retailPageUrl,
             $isHealthcare => $healthcarePageUrl,
             $isProperty => $propertyPageUrl,
+            $isElearning => $elearningPageUrl,
             default => $routeUrl,
         };
         $healthcareViewData = $isHealthcare ? [
@@ -129,6 +140,11 @@ class CustomerSiteController extends Controller
             $propertyPageUrl,
             $emeraldRoute,
         ) : [];
+        $elearningViewData = $isElearning ? [
+            str_starts_with($siteConfigPath, 'e-learning/playful-colorful/') ? 't' : 'e' => $siteConfig,
+            'r' => $elearningPageUrl,
+            'isActive' => fn (string $name): bool => Str::afterLast($name, '.') === $pageKey,
+        ] : [];
 
         $renderedHtml = view($view.'.'.$views[$pageKey], array_merge([
             'order' => $order,
@@ -151,7 +167,7 @@ class CustomerSiteController extends Controller
                 : ($isRetail ? asset('images/'.$assetPath) : fn (string $file): string => asset('images/'.$path.'/'.$file)),
             'css' => asset('css/'.($isRetail ? $assetPath : $path).'/'.($isRetail ? 'skincare' : 'branding-creative-agency').'.css'),
             'js' => asset('js/'.($isRetail ? $assetPath : $path).'/'.($isRetail ? 'skincare' : 'branding-creative-agency').'.js'),
-        ], $healthcareViewData, $propertyViewData))->render();
+        ], $healthcareViewData, $propertyViewData, $elearningViewData))->render();
 
         if ($isProperty) {
             $renderedHtml = str_replace(
@@ -529,6 +545,90 @@ class CustomerSiteController extends Controller
             'about' => array_replace($siteConfig['about'], [
                 'text' => [($business['description'] ?? null) ?: $siteConfig['about']['text'][0]],
                 'stats' => [],
+            ]),
+            'customer_site' => true,
+        ]);
+    }
+
+    private function oceanElearningConfig(array $siteConfig, array $business, string $whatsapp, string $instagram): array
+    {
+        $name = $business['business_name'] ?? 'Akademi Online';
+        $this->replaceDemoName($siteConfig, $siteConfig['brand']['name'], $name);
+
+        return array_replace($siteConfig, [
+            'brand' => array_replace($siteConfig['brand'], [
+                'name' => $name,
+                'tagline' => ($business['tagline'] ?? null) ?: $siteConfig['brand']['tagline'],
+            ]),
+            'contact' => array_replace($siteConfig['contact'], [
+                'address' => $this->businessAddress($business),
+                'email' => '',
+                'phone' => $business['whatsapp'] ?? '',
+                'whatsapp' => $whatsapp,
+            ]),
+            'registration' => array_replace($siteConfig['registration'], [
+                'whatsapp' => $whatsapp,
+                'whatsapp_display' => $business['whatsapp'] ?? '',
+            ]),
+            'social' => $instagram === '' ? [] : [['key' => 'instagram', 'label' => 'Instagram', 'url' => 'https://instagram.com/'.$instagram]],
+            'hero' => array_replace($siteConfig['hero'], ['text' => ($business['description'] ?? null) ?: $siteConfig['hero']['text']]),
+            'customer_site' => true,
+        ]);
+    }
+
+    private function pastelElearningConfig(array $siteConfig, array $business, string $whatsapp, string $instagram): array
+    {
+        $name = $business['business_name'] ?? 'Akademi Online';
+        $this->replaceDemoName($siteConfig, $siteConfig['brand']['name'], $name);
+
+        return array_replace($siteConfig, [
+            'meta' => array_replace($siteConfig['meta'], ['title' => $name]),
+            'brand' => array_replace($siteConfig['brand'], [
+                'name' => $name,
+                'tagline' => ($business['tagline'] ?? null) ?: $siteConfig['brand']['tagline'],
+            ]),
+            'contact' => array_replace($siteConfig['contact'], [
+                'address' => $this->businessAddress($business),
+                'email' => '',
+                'phone' => $business['whatsapp'] ?? '',
+                'phone_e164' => '+'.$whatsapp,
+                'whatsapp' => $whatsapp,
+                'form_whatsapp' => $whatsapp,
+                'form_whatsapp_display' => $business['whatsapp'] ?? '',
+            ]),
+            'socials' => $instagram === '' ? [] : [['label' => 'Instagram', 'icon' => 'bi-instagram', 'url' => 'https://instagram.com/'.$instagram]],
+            'hero' => array_replace($siteConfig['hero'], [
+                'desc' => ($business['description'] ?? null) ?: $siteConfig['hero']['desc'],
+                'stats' => [],
+            ]),
+            'customer_site' => true,
+        ]);
+    }
+
+    private function darkElearningConfig(array $siteConfig, array $business, string $whatsapp, string $instagram): array
+    {
+        $name = $business['business_name'] ?? 'Akademi Online';
+        $this->replaceDemoName($siteConfig, $siteConfig['brand']['name'], $name);
+
+        return array_replace($siteConfig, [
+            'brand' => array_replace($siteConfig['brand'], [
+                'name' => $name,
+                'tagline' => ($business['tagline'] ?? null) ?: $siteConfig['brand']['tagline'],
+            ]),
+            'topbar' => array_replace($siteConfig['topbar'], [
+                'address' => $this->businessAddress($business),
+                'email' => '',
+                'phone' => $business['whatsapp'] ?? '',
+                'phone_href' => '+'.$whatsapp,
+            ]),
+            'socials' => $instagram === '' ? [] : [['icon' => 'instagram', 'label' => 'Instagram', 'url' => 'https://instagram.com/'.$instagram]],
+            'whatsapp' => array_replace($siteConfig['whatsapp'], [
+                'number' => $whatsapp,
+                'display' => $business['whatsapp'] ?? '',
+            ]),
+            'hero' => array_replace($siteConfig['hero'], [
+                'text' => ($business['description'] ?? null) ?: $siteConfig['hero']['text'],
+                'features' => [],
             ]),
             'customer_site' => true,
         ]);

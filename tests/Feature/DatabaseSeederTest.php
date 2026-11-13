@@ -66,6 +66,34 @@ class DatabaseSeederTest extends TestCase
         $this->assertSame('company/example', $other->fresh()->site_config_path);
     }
 
+    public function test_elearning_backfill_updates_only_targeted_templates(): void
+    {
+        $targets = WebiaTemplate::whereIn('slug', [
+            'elearning-ocean-blue',
+            'elearning-pastel-mix',
+            'elearning-dark-mode',
+        ])->get()->keyBy('slug');
+        $other = WebiaTemplate::where('slug', 'property-emerald-green')->firstOrFail();
+        $targets->each->update(['site_config_path' => null]);
+        $targets['elearning-dark-mode']->update(['site_config_path' => 'e-learning/custom']);
+        $other->update(['site_config_path' => 'property/example']);
+        $migration = require database_path('migrations/2026_11_12_085440_backfill_site_config_path_for_elearning_templates.php');
+
+        $migration->up();
+
+        $this->assertSame('e-learning/modern/e-learning-ocean-blue/e-learning', $targets['elearning-ocean-blue']->fresh()->site_config_path);
+        $this->assertSame('e-learning/playful-colorful/e-learning-pastel-mix/e-learning', $targets['elearning-pastel-mix']->fresh()->site_config_path);
+        $this->assertSame('e-learning/custom', $targets['elearning-dark-mode']->fresh()->site_config_path);
+        $this->assertSame('property/example', $other->fresh()->site_config_path);
+
+        $migration->down();
+
+        $this->assertSame('e-learning/modern/e-learning-ocean-blue/e-learning', $targets['elearning-ocean-blue']->fresh()->site_config_path);
+        $this->assertSame('e-learning/playful-colorful/e-learning-pastel-mix/e-learning', $targets['elearning-pastel-mix']->fresh()->site_config_path);
+        $this->assertSame('e-learning/custom', $targets['elearning-dark-mode']->fresh()->site_config_path);
+        $this->assertSame('property/example', $other->fresh()->site_config_path);
+    }
+
     public function test_database_seeder_creates_the_webia_catalog(): void
     {
         Artisan::call('db:seed', ['--no-interaction' => true]);
@@ -95,6 +123,18 @@ class DatabaseSeederTest extends TestCase
         $this->assertDatabaseHas('webia_templates', [
             'slug' => 'property-coral-peach',
             'site_config_path' => 'property/professional/real-estate-agency-coral-peach/real-estate-agency',
+        ]);
+        $this->assertDatabaseHas('webia_templates', [
+            'slug' => 'elearning-ocean-blue',
+            'site_config_path' => 'e-learning/modern/e-learning-ocean-blue/e-learning',
+        ]);
+        $this->assertDatabaseHas('webia_templates', [
+            'slug' => 'elearning-pastel-mix',
+            'site_config_path' => 'e-learning/playful-colorful/e-learning-pastel-mix/e-learning',
+        ]);
+        $this->assertDatabaseHas('webia_templates', [
+            'slug' => 'elearning-dark-mode',
+            'site_config_path' => 'e-learning/futuristic/e-learning-dark-mode/e-learning',
         ]);
         $this->assertDatabaseHas('webia_templates', [
             'slug' => 'kusuma-ningrat-royal-heritage',

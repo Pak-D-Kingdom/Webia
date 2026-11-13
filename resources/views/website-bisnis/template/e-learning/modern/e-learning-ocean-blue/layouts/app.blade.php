@@ -3,9 +3,12 @@
     Variabel $e (config), $ns (namespace view) dan $img (helper gambar) diwariskan dari halaman anak.
 --}}
 @php
-    $ns  = $ns  ?? 'website-bisnis.template.e-learning.modern.e-learning-ocean-blue';
-    $e   = $e   ?? config('template.e-learning.modern.e-learning-ocean-blue.e-learning');
-    $img = $img ?? fn ($f) => asset($e['assets']['img'].$f);
+    $ns       = $ns ?? 'website-bisnis.template.e-learning.modern.e-learning-ocean-blue';
+    $e        = $e ?? config('template.e-learning.modern.e-learning-ocean-blue.e-learning');
+    $img      = $img ?? fn ($f) => asset($e['assets']['img'].$f);
+    $r        = $r ?? fn ($name, $parameters = []) => route($name, $parameters);
+    $isActive = $isActive ?? fn ($name) => request()->routeIs($name);
+    $customerSite = ($e['customer_site'] ?? false) === true;
 @endphp
 <!DOCTYPE html>
 <html lang="id" class="el-root">
@@ -13,7 +16,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#0b3a6b">
-    <meta name="description" content="@yield('description', 'E-learna — kursus online berkualitas untuk meningkatkan skill dan mewujudkan karier impianmu.')">
+    <meta name="description" content="@yield('description', $e['brand']['name'].' — kursus online berkualitas untuk meningkatkan skill dan mewujudkan karier impianmu.')">
     <title>@yield('title', $e['brand']['name'].' — Learn Anytime, Anywhere')</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,7 +25,7 @@
     <link rel="stylesheet" href="{{ asset($e['assets']['css']) }}">
     @stack('head')
 </head>
-<body class="el-body el-page--@yield('page', 'home')">
+<body class="el-body el-page--@yield('page', 'home')" data-brand="{{ $e['brand']['name'] }}">
     <a class="el-skip" href="#main">Lewati ke konten utama</a>
 
     @include($ns.'.partials.icons')
@@ -30,6 +33,7 @@
     @include($ns.'.partials.navbar')
 
     <main id="main" class="el-main">
+        @if ($customerSite)<p class="el-sr">Contoh program & harga</p>@endif
         @yield('content')
     </main>
 

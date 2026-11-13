@@ -6,6 +6,7 @@ use App\Http\Controllers\WebsiteBisnis\TemplatePreviewController;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class TemplatePreviewRouteTest extends TestCase
@@ -21,6 +22,45 @@ class TemplatePreviewRouteTest extends TestCase
 
         $this->assertSame('webia.template.preview', $route->getName());
         $this->assertSame(TemplatePreviewController::class, $route->getControllerClass());
+    }
+
+    #[DataProvider('elearningPreviews')]
+    public function test_elearning_preview_keeps_demo_content(
+        string $url,
+        string $demoName,
+        string $email,
+        string $subpageUrl,
+    ): void {
+        $this->get($url)
+            ->assertOk()
+            ->assertSee($demoName)
+            ->assertSee($email)
+            ->assertSee($subpageUrl, false)
+            ->assertDontSee('Contoh program & harga');
+    }
+
+    public static function elearningPreviews(): array
+    {
+        return [
+            'ocean blue' => [
+                '/webia/template/e-learning/modern/e-learning-ocean-blue',
+                'E-learna',
+                'hello@elearna.id',
+                '/webia/template/e-learning/modern/e-learning-ocean-blue/programs',
+            ],
+            'pastel mix' => [
+                '/webia/template/e-learning/playful-colorful/e-learning-pastel-mix',
+                'EduPlus',
+                'hello@eduplus.id',
+                '/webia/template/e-learning/playful-colorful/e-learning-pastel-mix/programs',
+            ],
+            'dark mode' => [
+                '/webia/template/e-learning/futuristic/e-learning-dark-mode',
+                'NovaLearn',
+                'support@novalearn.id',
+                '/webia/template/e-learning/futuristic/e-learning-dark-mode/programs',
+            ],
+        ];
     }
 
     public function test_active_database_template_renders_its_preview_view(): void
