@@ -1,4 +1,4 @@
-@php($r = $e['route'])
+@php($rp = $e['route'])
 @php($full = $full ?? false)
 @php($pr = $e['pricing'])
 <section @class(['nl-sec nl-sec--pricing', 'nl-card' => ! $full]) id="pricing" aria-labelledby="pricing-title" data-pricing>
@@ -23,7 +23,7 @@
                 <ul class="nl-plan__list">
                     @foreach($p['features'] as $f)<li><svg class="ic"><use href="#i-check"/></svg>{{ $f }}</li>@endforeach
                 </ul>
-                <a class="nl-btn nl-btn--block {{ $p['popular'] ? 'nl-btn--violet' : 'nl-btn--primary' }}" href="{{ route($r.'registration', ['plan' => $p['slug']]) }}">Pilih Paket</a>
+                <a class="nl-btn nl-btn--block {{ $p['popular'] ? 'nl-btn--violet' : 'nl-btn--primary' }}" href="{{ $r($rp.'registration', ['plan' => $p['slug']]) }}">Pilih Paket</a>
             </article>
         @endforeach
     </div>

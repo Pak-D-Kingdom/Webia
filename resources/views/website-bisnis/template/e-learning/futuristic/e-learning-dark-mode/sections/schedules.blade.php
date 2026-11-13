@@ -1,10 +1,10 @@
-@php($r = $e['route'])
+@php($rp = $e['route'])
 @php($full = $full ?? false)
 <section @class(['nl-sec nl-sec--schedules', 'nl-card' => ! $full]) id="schedules" aria-labelledby="schedules-title" data-tabs>
     @if(! $full)
         <div class="nl-head">
             <h2 id="schedules-title">Jadwal Kelas</h2>
-            <a class="nl-link" href="{{ route($r.'schedules') }}">Lihat Semua <svg class="ic"><use href="#i-arrow"/></svg></a>
+            <a class="nl-link" href="{{ $r($rp.'schedules') }}">Lihat Semua <svg class="ic"><use href="#i-arrow"/></svg></a>
         </div>
     @else
         <h2 class="nl-sr" id="schedules-title">Jadwal kelas</h2>

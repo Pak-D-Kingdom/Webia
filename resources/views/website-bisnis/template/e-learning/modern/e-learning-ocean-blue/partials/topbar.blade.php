@@ -2,7 +2,9 @@
     <div class="el-container el-topbar__inner">
         <ul class="el-topbar__info">
             <li><svg class="el-ico" aria-hidden="true"><use href="#i-pin"/></svg><span>{{ $e['contact']['address'] }}</span></li>
-            <li><svg class="el-ico" aria-hidden="true"><use href="#i-mail"/></svg><a href="mailto:{{ $e['contact']['email'] }}">{{ $e['contact']['email'] }}</a></li>
+            @if (!empty($e['contact']['email']))
+                <li><svg class="el-ico" aria-hidden="true"><use href="#i-mail"/></svg><a href="mailto:{{ $e['contact']['email'] }}">{{ $e['contact']['email'] }}</a></li>
+            @endif
             <li class="el-topbar__hours"><svg class="el-ico" aria-hidden="true"><use href="#i-clock"/></svg><span>{{ $e['contact']['hours'] }}</span></li>
         </ul>
         <div class="el-topbar__right">

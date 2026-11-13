@@ -4,7 +4,7 @@
 
     <div class="el-container el-footer__grid">
         <div class="el-footer__brand">
-            <a class="el-brand el-brand--light" href="{{ route('elearning.home') }}" aria-label="{{ $e['brand']['name'] }} — beranda">
+            <a class="el-brand el-brand--light" href="{{ $r('elearning.home') }}" aria-label="{{ $e['brand']['name'] }} — beranda">
                 <img src="{{ $img('logo-mark-light.png') }}" alt="" width="52" height="46" loading="lazy">
                 <span class="el-brand__text"><strong>{{ $e['brand']['name'] }}</strong><small>{{ $e['brand']['tagline'] }}</small></span>
             </a>
@@ -17,9 +17,11 @@
                     @foreach ($links as $l)
                         @php
                             $act  = $l['action'] ?? null;
-                            $href = $act === 'mailto' ? 'mailto:'.$e['contact']['email'] : ($l['route'] ? route($l['route']) : '#');
+                            $href = $act === 'mailto' ? 'mailto:'.$e['contact']['email'] : ($l['route'] ? $r($l['route']) : '#');
                         @endphp
-                        <li><a href="{{ $href }}" @if ($act === 'chat') data-open-chat @endif>{{ $l['label'] }}</a></li>
+                        @if ($act !== 'mailto' || !empty($e['contact']['email']))
+                            <li><a href="{{ $href }}" @if ($act === 'chat') data-open-chat @endif>{{ $l['label'] }}</a></li>
+                        @endif
                     @endforeach
                 </ul>
             </nav>

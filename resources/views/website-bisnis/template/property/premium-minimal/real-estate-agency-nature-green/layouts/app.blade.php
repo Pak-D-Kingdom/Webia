@@ -20,6 +20,10 @@
     @include($ns.'partials.topbar')
     @include($ns.'partials.navbar')
 
+    @if ($t['customer_site'] ?? false)
+        <p class="container"><strong>Contoh properti:</strong> properti dan harga berikut merupakan konten demo.</p>
+    @endif
+
     <main id="main">
         @yield('content')
     </main>

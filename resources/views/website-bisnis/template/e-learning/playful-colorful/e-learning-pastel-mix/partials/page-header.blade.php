@@ -6,7 +6,7 @@
     <div class="container pagehead__in">
         <div class="pagehead__copy">
             <nav class="crumbs" aria-label="Breadcrumb">
-                <a href="{{ route($rp.'home') }}">Home</a><i class="bi bi-chevron-right" aria-hidden="true"></i><span aria-current="page">{{ $heading }}</span>
+                <a href="{{ $r($rp.'home') }}">Home</a><i class="bi bi-chevron-right" aria-hidden="true"></i><span aria-current="page">{{ $heading }}</span>
             </nav>
             <h1>{{ $heading }}</h1>
             <p>{{ $sub }}</p>

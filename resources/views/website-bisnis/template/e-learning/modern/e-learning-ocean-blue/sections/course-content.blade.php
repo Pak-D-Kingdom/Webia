@@ -10,7 +10,7 @@
                 <h2 class="el-title" id="courseTitle">{{ $e['pages']['course-content']['title'] }}</h2>
                 <p class="el-sub">{{ $e['pages']['course-content']['sub'] }}</p>
             </div>
-            @unless ($full)<a class="el-link" href="{{ route('elearning.course-content') }}">Lihat Semua <svg class="el-ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>@endunless
+            @unless ($full)<a class="el-link" href="{{ $r('elearning.course-content') }}">Lihat Semua <svg class="el-ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>@endunless
         </header>
 
         @if ($full)
@@ -34,7 +34,7 @@
                             <li><svg class="el-ico" aria-hidden="true"><use href="#i-book"/></svg>{{ count($c['modules']) }} modul · {{ collect($c['modules'])->sum('lessons') }} materi</li>
                             <li><svg class="el-ico" aria-hidden="true"><use href="#i-award"/></svg>Level {{ $c['level'] }}</li>
                         </ul>
-                        <a class="el-btn el-btn--white el-btn--sm" href="{{ route('elearning.registration', ['program' => $c['program']]) }}">Daftar kursus ini</a>
+                        <a class="el-btn el-btn--white el-btn--sm" href="{{ $r('elearning.registration', ['program' => $c['program']]) }}">Daftar kursus ini</a>
                     </div>
                 </div>
 

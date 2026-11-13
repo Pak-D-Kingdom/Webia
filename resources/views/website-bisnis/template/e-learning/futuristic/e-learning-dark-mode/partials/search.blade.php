@@ -1,36 +1,36 @@
 {{-- Pencarian global: dialog + indeks JSON (program, teacher, kategori, halaman) --}}
 @php
-    $r   = $e['route'];
+    $rp  = $e['route'];
     $idx = [];
 
     foreach ($e['programs'] as $p) {
         $cat = $e['categories'][$p['cat']]['label'] ?? '';
         $idx[] = ['type' => 'Program', 'icon' => $e['categories'][$p['cat']]['icon'] ?? 'book', 'title' => $p['title'],
                   'sub' => $p['level'].' · '.$p['modules'].' Modul · Rp '.number_format($p['price'], 0, ',', '.'),
-                  'url' => route($r.'programs', ['q' => $p['title']]),
+                  'url' => $r($rp.'programs', ['q' => $p['title']]),
                   'k'   => strtolower($p['title'].' '.$p['level'].' '.$cat)];
     }
     foreach ($e['teachers'] as $key => $t) {
-        $idx[] = ['type' => 'Teacher', 'icon' => 'user', 'title' => $t['name'], 'sub' => $t['role'].' · ★ '.$t['rating'],
-                  'url' => route($r.'teachers').'#teacher-'.$key,
+        $idx[] = ['type' => 'Teacher', 'icon' => 'user', 'title' => $t['name'], 'sub' => $t['role'].($customerSite ? '' : ' · ★ '.$t['rating']),
+                  'url' => $r($rp.'teachers').'#teacher-'.$key,
                   'k'   => strtolower($t['name'].' '.$t['role'].' '.implode(' ', $t['skills'] ?? []))];
     }
     foreach ($e['categories'] as $key => $c) {
         $idx[] = ['type' => 'Kategori', 'icon' => $c['icon'], 'title' => $c['label'], 'sub' => 'Lihat program di kategori ini',
-                  'url' => route($r.'programs', ['cat' => $key]), 'k' => strtolower($c['label'])];
+                  'url' => $r($rp.'programs', ['cat' => $key]), 'k' => strtolower($c['label'])];
     }
     $pages = [
-        ['home', 'Home', 'Beranda NovaLearn', 'beranda utama'],
+        ['home', 'Home', 'Beranda '.$e['brand']['name'], 'beranda utama'],
         ['programs', 'Programs', 'Semua program unggulan', 'kursus program belajar'],
         ['schedules', 'Schedules', 'Jadwal kelas online', 'jadwal kelas'],
         ['teachers', 'Teachers', 'Pengajar profesional', 'pengajar guru mentor'],
         ['pricing', 'Pricing', 'Harga paket belajar', 'harga paket biaya bayar'],
         ['registration', 'Registration', 'Daftar dan mulai belajar', 'daftar registrasi gabung'],
-        ['course-content', 'Course Content', 'Materi dan progres kursus', 'materi modul kursus'],
+        ['course-content', 'Course Content', $customerSite ? 'Materi kursus' : 'Materi dan progres kursus', 'materi modul kursus'],
         ['member-area', 'Member Area', 'Masuk ke area member', 'member login masuk sertifikat'],
     ];
     foreach ($pages as $pg) {
-        $idx[] = ['type' => 'Halaman', 'icon' => 'arrow', 'title' => $pg[1], 'sub' => $pg[2], 'url' => route($r.$pg[0]), 'k' => strtolower($pg[1].' '.$pg[2].' '.$pg[3])];
+        $idx[] = ['type' => 'Halaman', 'icon' => 'arrow', 'title' => $pg[1], 'sub' => $pg[2], 'url' => $r($rp.$pg[0]), 'k' => strtolower($pg[1].' '.$pg[2].' '.$pg[3])];
     }
     $idx[] = ['type' => 'Halaman', 'icon' => 'sparkle', 'title' => 'AI FAQ', 'sub' => 'Tanya Nova, asisten AI', 'url' => '#', 'act' => 'ai', 'k' => 'ai faq asisten tanya bantuan chat nova'];
 @endphp
@@ -40,7 +40,7 @@
 <div class="nl-sx" data-sx hidden>
     <div class="nl-sx__backdrop" data-sx-close></div>
     <div class="nl-sx__dialog" role="dialog" aria-modal="true" aria-label="Pencarian">
-        <form class="nl-sx__bar" role="search" action="{{ route($r.'programs') }}" method="get">
+        <form class="nl-sx__bar" role="search" action="{{ $r($rp.'programs') }}" method="get">
             <svg class="ic"><use href="#i-search"/></svg>
             <label class="nl-sr" for="nl-sx-input">Cari</label>
             <input id="nl-sx-input" type="search" name="q" placeholder="Cari program, teacher, atau halaman..." autocomplete="off"

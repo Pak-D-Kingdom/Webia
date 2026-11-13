@@ -1,4 +1,4 @@
-@php($r = $e['route'])
+@php($rp = $e['route'])
 @php($full = $full ?? false)
 @php($m = $e['member'])
 <section @class(['nl-sec nl-sec--member', 'nl-card' => ! $full]) id="member-area" aria-labelledby="member-title">
@@ -6,11 +6,13 @@
         <div class="nl-member">
             <span class="nl-member__ic"><svg class="ic"><use href="#i-user"/></svg></span>
             <h2 id="member-title">{{ $m['title'] }}</h2>
-            <p>{{ $m['text'] }}</p>
+            <p>{{ $customerSite ? 'Akses materi kursus, sertifikat, dan fitur eksklusif lainnya.' : $m['text'] }}</p>
             <ul class="nl-member__list">
-                @foreach($m['items'] as $it)<li><svg class="ic"><use href="#i-{{ $it['icon'] }}"/></svg>{{ $it['title'] }}</li>@endforeach
+                @foreach($m['items'] as $it)
+                    @if(! $customerSite || $it['title'] !== 'Progres Belajar')<li><svg class="ic"><use href="#i-{{ $it['icon'] }}"/></svg>{{ $it['title'] }}</li>@endif
+                @endforeach
             </ul>
-            <a class="nl-btn nl-btn--outline nl-btn--block" href="{{ route($r.'member-area') }}">{{ $m['cta'] }} <svg class="ic"><use href="#i-arrow"/></svg></a>
+            <a class="nl-btn nl-btn--outline nl-btn--block" href="{{ $r($rp.'member-area') }}">{{ $m['cta'] }} <svg class="ic"><use href="#i-arrow"/></svg></a>
         </div>
     @else
         <h2 class="nl-sr" id="member-title">{{ $m['title'] }}</h2>
@@ -25,15 +27,17 @@
                     <input id="log-pass" name="password" type="password" autocomplete="current-password" required aria-describedby="log-pass-err"><small class="nl-err" id="log-pass-err"></small></div>
                 <button class="nl-btn nl-btn--primary nl-btn--block" type="submit">{{ $m['cta'] }} <svg class="ic"><use href="#i-arrow"/></svg></button>
                 <p class="nl-form-msg" data-form-msg role="status" aria-live="polite"></p>
-                <p class="nl-form-alt">Belum punya akun? <a href="{{ route($r.'registration') }}">Daftar sekarang</a></p>
+                <p class="nl-form-alt">Belum punya akun? <a href="{{ $r($rp.'registration') }}">Daftar sekarang</a></p>
             </form>
 
             <ul class="nl-memberpage__items">
                 @foreach($m['items'] as $it)
-                    <li class="nl-card">
-                        <span class="nl-feats__ic"><svg class="ic"><use href="#i-{{ $it['icon'] }}"/></svg></span>
-                        <div><h3>{{ $it['title'] }}</h3><p>{{ $it['text'] }}</p></div>
-                    </li>
+                    @if(! $customerSite || $it['title'] !== 'Progres Belajar')
+                        <li class="nl-card">
+                            <span class="nl-feats__ic"><svg class="ic"><use href="#i-{{ $it['icon'] }}"/></svg></span>
+                            <div><h3>{{ $it['title'] }}</h3><p>{{ $it['text'] }}</p></div>
+                        </li>
+                    @endif
                 @endforeach
             </ul>
         </div>

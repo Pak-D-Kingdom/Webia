@@ -2,7 +2,9 @@
     <div class="container container--nav topbar__in">
         <ul class="topbar__info">
             <li><svg class="i" aria-hidden="true"><use href="#i-pin"/></svg><span>{{ $t['contact']['address'] }}</span></li>
-            <li><svg class="i" aria-hidden="true"><use href="#i-mail"/></svg><a href="mailto:{{ $t['contact']['email'] }}">{{ $t['contact']['email'] }}</a></li>
+            @if ($t['contact']['email'])
+                <li><svg class="i" aria-hidden="true"><use href="#i-mail"/></svg><a href="mailto:{{ $t['contact']['email'] }}">{{ $t['contact']['email'] }}</a></li>
+            @endif
             <li><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg><span>{{ $t['contact']['hours'] }}</span></li>
         </ul>
         <div class="topbar__side">
