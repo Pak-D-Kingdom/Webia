@@ -26,6 +26,7 @@
             @foreach ($cfg['packages'] as $p)
                 <article class="hr-pkgcard {{ $p['popular'] ? 'is-popular' : '' }}" id="{{ $p['id'] }}" data-reveal>
                     @if ($p['popular'])<span class="hr-pkg__badge">Paling Populer</span>@endif
+                    <span class="hr-pkgcard__ico">{{ $i($p['icon']) }}</span>
                     <h3>{{ $p['name'] }}</h3>
                     <p class="hr-pkg__tag">{{ $p['tagline'] }}</p>
                     <p class="hr-pkgcard__from">Harga mulai dari</p>
@@ -39,12 +40,13 @@
         </div>
 
         <header class="hr-sechead hr-sechead--sub">
+            <p class="hr-kicker">{{ $i('layers') }} Bandingkan</p>
             <h2>Perbandingan paket</h2>
             <p>Geser tabel ke samping di layar kecil.</p>
         </header>
         <div class="hr-tablewrap" data-reveal>
             <table class="hr-table">
-                <thead><tr><th scope="col">Fasilitas</th>@foreach ($cfg['packages'] as $p)<th scope="col">{{ $p['name'] }}</th>@endforeach</tr></thead>
+                <thead><tr><th scope="col">Fasilitas</th>@foreach ($cfg['packages'] as $p)<th scope="col" class="{{ $p['popular'] ? 'is-pop' : '' }}">{{ $p['name'] }}</th>@endforeach</tr></thead>
                 <tbody>
                     @foreach ($cfg['compare'] as $row)
                         <tr>
@@ -61,7 +63,26 @@
                 </tbody>
             </table>
         </div>
-        <p class="hr-note">Biaya akhir bergantung pada luas area, kondisi bangunan, dan pilihan material. Estimasi cepat tersedia di AI Chatbot.</p>
+        <p class="hr-note">{{ $i('info') }}<span>Biaya akhir bergantung pada luas area, kondisi bangunan, dan pilihan material. Estimasi cepat tersedia di AI Chatbot.</span></p>
+    </div>
+</section>
+
+<section class="hr-section hr-section--tint">
+    <div class="hr-container hr-faqwrap">
+        <header class="hr-sechead">
+            <p class="hr-kicker">{{ $i('info') }} Pertanyaan umum</p>
+            <h2>Seputar paket layanan</h2>
+            <p>Belum menemukan jawabannya? Tanyakan langsung ke asisten AI kami.</p>
+            <button type="button" class="hr-btn hr-btn--primary hr-btn--sm" data-chat-ask="Paket Layanan">{{ $i('bot') }}<span>Tanya AI Chatbot</span></button>
+        </header>
+        <div class="hr-faq" data-faq>
+            @foreach ($cfg['faq_paket'] as $f)
+                <details class="hr-faq__item" @if ($loop->first) open @endif>
+                    <summary><span>{{ $f[0] }}</span>{{ $i('chevron') }}</summary>
+                    <p>{{ $f[1] }}</p>
+                </details>
+            @endforeach
+        </div>
     </div>
 </section>
 @endsection

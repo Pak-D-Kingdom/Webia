@@ -9,6 +9,20 @@
 
     <section class="uh-section">
         <div class="uh-container">
+            <div class="uh-tssum">
+                <div class="uh-tssum__score">
+                    <strong>{{ $uh['testimonials']['rating'] }}</strong>
+                    <p class="uh-stars" role="img" aria-label="Penilaian 5 dari 5">
+                        <svg class="uh-i" aria-hidden="true"><use href="#i-star"/></svg>
+                        <svg class="uh-i" aria-hidden="true"><use href="#i-star"/></svg>
+                        <svg class="uh-i" aria-hidden="true"><use href="#i-star"/></svg>
+                        <svg class="uh-i" aria-hidden="true"><use href="#i-star"/></svg>
+                        <svg class="uh-i" aria-hidden="true"><use href="#i-star"/></svg>
+                    </p>
+                </div>
+                <p class="uh-tssum__text">{{ $uh['testimonials']['rating_label'] }}</p>
+                <a class="uh-btn uh-btn--outline uh-btn--sm" href="{{ $wa('Assalamualaikum Nur Rahmat Travel, saya ingin membagikan pengalaman umrah/haji saya.') }}" target="_blank" rel="noopener noreferrer"><svg class="uh-i" aria-hidden="true"><use href="#i-whatsapp"/></svg><span>Bagikan pengalaman Anda</span></a>
+            </div>
             <div class="uh-tsgrid">
                 @foreach ($uh['testimonials']['items'] as $t)
                     <figure class="uh-tscard">

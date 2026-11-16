@@ -11,7 +11,11 @@
                 <span><strong>{{ $fd['brand']['name'] }}</strong><em>{{ $fd['brand']['suffix'] }}</em></span>
             </a>
             <p class="fd-footer__about">Lembaga filantropi yang bekerja bersama masyarakat, relawan, dan mitra untuk pendidikan, kesehatan, ekonomi, dan lingkungan yang lebih baik.</p>
-            <p class="fd-footer__copy">{{ $fd['brand']['copyright'] }}</p>
+            <div class="fd-footer__social">
+                @foreach ($fd['social'] as $s)
+                    <a href="{{ $s['url'] }}" aria-label="{{ $s['label'] }}" title="{{ $s['label'] }}" @if($s['url'] !== '#') target="_blank" rel="noopener" @endif><svg class="fd-ico"><use href="#fd-i-{{ $s['key'] }}"/></svg></a>
+                @endforeach
+            </div>
         </div>
         @foreach ($fd['footer_nav'] as $title => $items)
             <nav class="fd-footer__col" aria-label="{{ $title }}">
@@ -30,23 +34,18 @@
                 <li><span class="fd-contact__ico"><svg class="fd-ico"><use href="#fd-i-phone"/></svg></span><a href="{{ $c['phone_href'] }}">{{ $c['phone'] }}</a></li>
                 <li><span class="fd-contact__ico"><svg class="fd-ico"><use href="#fd-i-mail"/></svg></span><a href="mailto:{{ $c['email'] }}">{{ $c['email'] }}</a></li>
             </ul>
-            <div class="fd-footer__social">
-                @foreach ($fd['social'] as $s)
-                    <a href="{{ $s['url'] }}" aria-label="{{ $s['label'] }}" @if($s['url'] !== '#') target="_blank" rel="noopener" @endif><svg class="fd-ico"><use href="#fd-i-{{ $s['key'] }}"/></svg></a>
-                @endforeach
-            </div>
         </div>
-        <div class="fd-footer__dl">
-            <h4>Download Profile</h4>
-            <div class="fd-dlcard">
-                <span class="fd-dlcard__ico"><svg class="fd-ico"><use href="#fd-i-doc"/></svg></span>
-                <p>Kenali yayasan kami lebih dekat lewat dokumen profil.</p>
-                <a class="fd-btn fd-btn--gold fd-btn--sm" href="{{ $i('profile-harapan-untuk-negeri.pdf') }}" download><svg class="fd-ico"><use href="#fd-i-download"/></svg>Download PDF</a>
-            </div>
+    </div>
+    <div class="fd-wrap">
+        <div class="fd-dlstrip">
+            <span class="fd-dlstrip__ico"><svg class="fd-ico"><use href="#fd-i-doc"/></svg></span>
+            <div><h4>Download Profile</h4><p>Kenali yayasan kami lebih dekat lewat dokumen profil lengkap.</p></div>
+            <a class="fd-btn fd-btn--gold" href="{{ $i('profile-harapan-untuk-negeri.pdf') }}" download><svg class="fd-ico"><use href="#fd-i-download"/></svg>Download PDF</a>
         </div>
     </div>
     <div class="fd-footer__bar">
         <div class="fd-wrap fd-footer__barin">
+            <span>{{ $fd['brand']['copyright'] }}</span>
             <span class="fd-legal">
                 <a href="#" data-fd-toast="Halaman Kebijakan Privasi akan segera tersedia.">Kebijakan Privasi</a><i></i>
                 <a href="#" data-fd-toast="Halaman Syarat & Ketentuan akan segera tersedia.">Syarat &amp; Ketentuan</a>

@@ -22,20 +22,32 @@
 
 <section class="hr-section">
     <div class="hr-container">
+        <div class="hr-filter" role="group" aria-label="Saring proyek" data-filter>
+            @foreach ($cfg['project_filters'] as $f)
+                <button type="button" data-filter-btn="{{ $f[0] }}" class="{{ $loop->first ? 'is-on' : '' }}" aria-pressed="{{ $loop->first ? 'true' : 'false' }}">{{ $f[1] }}</button>
+            @endforeach
+        </div>
         <div class="hr-projlist">
             @foreach ($cfg['projects'] as $p)
-                <article class="hr-proj" id="{{ $p['id'] }}" data-reveal>
-                    <img src="{{ $img($p['image']) }}" alt="{{ $p['title'] }}, {{ $p['location'] }}" width="510" height="204" loading="lazy" decoding="async">
+                <article class="hr-proj" id="{{ $p['id'] }}" data-reveal data-filter-item="{{ $p['filter'] }}">
+                    <button type="button" class="hr-zoomable hr-proj__img" data-zoom="{{ $img($p['image']) }}" data-caption="{{ $p['title'] }} — {{ $p['location'] }}" data-zoom-group="proyek" aria-label="Perbesar foto {{ $p['title'] }}">
+                        <img src="{{ $img($p['image']) }}" alt="{{ $p['title'] }}, {{ $p['location'] }}" width="510" height="204" loading="lazy" decoding="async">
+                        <span class="hr-proj__tag">{{ $p['type'] }}</span>
+                        <span class="hr-zoomable__ico">{{ $i('zoom') }}</span>
+                    </button>
                     <div class="hr-proj__body">
                         <h3>{{ $p['title'] }}</h3>
                         <p class="hr-proj__loc">{{ $i('pin') }}{{ $p['location'] }}</p>
                         <dl class="hr-proj__meta">
-                            <div><dt>Jenis pekerjaan</dt><dd>{{ $p['type'] }}</dd></div>
-                            <div><dt>Luas area</dt><dd>{{ $p['area'] }}</dd></div>
-                            <div><dt>Durasi</dt><dd>{{ $p['duration'] }}</dd></div>
-                            <div><dt>Paket</dt><dd>{{ $p['package'] }}</dd></div>
+                            <div>{{ $i('folder') }}<dt>Jenis pekerjaan</dt><dd>{{ $p['type'] }}</dd></div>
+                            <div>{{ $i('ruler') }}<dt>Luas area</dt><dd>{{ $p['area'] }}</dd></div>
+                            <div>{{ $i('clock') }}<dt>Durasi</dt><dd>{{ $p['duration'] }}</dd></div>
+                            <div>{{ $i('crown') }}<dt>Paket</dt><dd>{{ $p['package'] }}</dd></div>
                         </dl>
-                        <a class="hr-link" href="{{ $go('permintaan-penawaran') }}"><span>Ingin hasil serupa? Minta penawaran</span>{{ $i('arrow') }}</a>
+                        <div class="hr-proj__cta">
+                            <a class="hr-btn hr-btn--primary hr-btn--sm" href="{{ $go('permintaan-penawaran') }}"><span>Minta hasil serupa</span>{{ $i('arrow') }}</a>
+                            <a class="hr-link" href="{{ $go('galeri') }}"><span>Lihat galeri</span>{{ $i('arrow') }}</a>
+                        </div>
                     </div>
                 </article>
             @endforeach

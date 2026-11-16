@@ -15,6 +15,7 @@
                 <span class="fd-formcard__ico"><svg class="fd-ico"><use href="#fd-i-users"/></svg></span>
                 <div><h3>Formulir Pendaftaran Relawan</h3><p>Hanya 2 menit. Tim relawan akan menghubungi Anda lewat WhatsApp.</p></div>
             </header>
+            <div class="fd-progress" aria-live="polite"><span class="fd-progress__bar"><i data-fd-progress-bar></i></span><small data-fd-progress-text>Lengkapi data wajib</small></div>
 
             <div class="fd-step fd-step--plain"><span class="fd-step__n">1</span><b>Data diri</b></div>
             <div class="fd-form__row">
@@ -42,7 +43,7 @@
             <p class="fd-note"><svg class="fd-ico"><use href="#fd-i-lock"/></svg>Pendaftaran dikirim langsung ke WhatsApp tim relawan; tidak disimpan di situs ini.</p>
         </form>
         <aside class="fd-grid fd-reveal">
-            <div class="fd-media"><img src="{{ $i('volunteer.jpg') }}" alt="Tangan-tangan relawan terangkat" loading="lazy" style="aspect-ratio:16/10"></div>
+            <div class="fd-media fd-media--sm"><img src="{{ $i('volunteer.jpg') }}" alt="Tangan-tangan relawan terangkat" loading="lazy" style="aspect-ratio:16/10"></div>
             <div class="fd-panel">
                 <h3>Yang Anda dapatkan</h3>
                 <ul class="fd-list">

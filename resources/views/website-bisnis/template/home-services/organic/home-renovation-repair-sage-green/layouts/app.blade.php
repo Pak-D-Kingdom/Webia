@@ -12,19 +12,19 @@
 
     foreach ($cfg['pages'] as $key => $p) {
         $jsData['links'][$key] = $go($key);
-        $searchIndex[] = ['t' => $p['title'], 'd' => $p['desc'], 'u' => $go($key), 'i' => $p['icon']];
+        $searchIndex[] = ['g' => 'Halaman', 't' => $p['title'], 'd' => $p['desc'], 'u' => $go($key), 'i' => $p['icon']];
     }
     foreach ($cfg['services'] as $s) {
-        $searchIndex[] = ['t' => $s['title'], 'd' => $s['short'], 'u' => $go('layanan').'#'.$s['id'], 'i' => $s['icon']];
+        $searchIndex[] = ['g' => 'Layanan', 't' => $s['title'], 'd' => $s['short'], 'u' => $go('layanan').'#'.$s['id'], 'i' => $s['icon']];
     }
     foreach ($cfg['packages'] as $p) {
-        $searchIndex[] = ['t' => $p['name'], 'd' => $p['tagline'].' — '.$p['price'], 'u' => $go('paket-layanan').'#'.$p['id'], 'i' => 'crown'];
+        $searchIndex[] = ['g' => 'Paket', 't' => $p['name'], 'd' => $p['tagline'].' — '.$p['price'], 'u' => $go('paket-layanan').'#'.$p['id'], 'i' => 'crown'];
     }
     foreach ($cfg['projects'] as $p) {
-        $searchIndex[] = ['t' => $p['title'], 'd' => $p['location'].' · '.$p['type'], 'u' => $go('proyek').'#'.$p['id'], 'i' => 'home'];
+        $searchIndex[] = ['g' => 'Proyek', 't' => $p['title'], 'd' => $p['location'].' · '.$p['type'], 'u' => $go('proyek').'#'.$p['id'], 'i' => 'home'];
     }
     foreach ($cfg['regions'] as $n => $r) {
-        $searchIndex[] = ['t' => $r['name'], 'd' => $r['cities'], 'u' => $go('area-layanan').'#wilayah-'.$n, 'i' => 'pin'];
+        $searchIndex[] = ['g' => 'Area', 't' => $r['name'], 'd' => $r['cities'], 'u' => $go('area-layanan').'#wilayah-'.$n, 'i' => 'pin'];
     }
     $jsData['search'] = $searchIndex;
 @endphp
@@ -55,7 +55,15 @@
     </main>
 
     @include($vp.'footer')
+    @include($vp.'search')
     @include($vp.'floating')
+
+    <div class="hr-lightbox" data-lightbox hidden role="dialog" aria-modal="true" aria-label="Pratinjau gambar">
+        <button type="button" class="hr-lightbox__x" data-lightbox-close aria-label="Tutup pratinjau">{{ $i('close') }}</button>
+        <button type="button" class="hr-lightbox__nav hr-lightbox__nav--prev" data-lightbox-prev aria-label="Gambar sebelumnya">{{ $i('chevron-left') }}</button>
+        <figure><img data-lightbox-img src="" alt=""><figcaption data-lightbox-cap></figcaption></figure>
+        <button type="button" class="hr-lightbox__nav hr-lightbox__nav--next" data-lightbox-next aria-label="Gambar berikutnya">{{ $i('chevron-right') }}</button>
+    </div>
 
     <script>window.HRR = {!! json_encode($jsData, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!};</script>
     <script src="{{ asset($cfg['paths']['js'].'/home-renovation-repair.js') }}" defer></script>
