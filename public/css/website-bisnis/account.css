@@ -5945,6 +5945,11 @@ a {
     background: #eaf7f1;
 }
 
+.customer-modal--warning .customer-modal-icon {
+    color: #8a5400;
+    background: #fff6de;
+}
+
 .customer-modal-rows {
     overflow: hidden;
     border: 1px solid var(--account-line);

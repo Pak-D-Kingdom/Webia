@@ -60,6 +60,9 @@ document.addEventListener('DOMContentLoaded', function () {
   const autoOpen = document.querySelector('[data-modal-autoopen]');
   if (autoOpen) openModal(autoOpen, null);
 
+  // Halaman lama (inline script) memakai API ini untuk modal konfirmasi sendiri.
+  window.webiaModal = { open: openModal, close: closeModal };
+
   // Modal upload bukti: pilih file, tinjau (nama + ukuran), lalu hapus file kembali ke pilih.
   const uploadInput = document.querySelector('[data-upload-modal] input[type="file"]');
   if (uploadInput) {
