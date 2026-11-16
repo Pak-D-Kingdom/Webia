@@ -153,6 +153,65 @@ class WebiaOrderTest extends TestCase
             ->assertNotFound();
     }
 
+    public function test_customer_can_cancel_unpaid_order(): void
+    {
+        $order = WebiaOrder::factory()->create(['status' => 'awaiting_payment']);
+
+        $this->actingAs($order->user)
+            ->post(route('orders.cancel', $order))
+            ->assertRedirect(route('orders.index'))
+            ->assertSessionHas('status', 'Pesanan '.$order->order_number.' dibatalkan.');
+
+        $order->refresh();
+        $this->assertSame('cancelled', $order->status);
+        $this->assertDatabaseHas('webia_order_logs', [
+            'webia_order_id' => $order->id,
+            'to_status' => 'cancelled',
+        ]);
+    }
+
+    public function test_rejected_order_can_be_cancelled(): void
+    {
+        $order = WebiaOrder::factory()->create(['status' => 'rejected']);
+
+        $this->actingAs($order->user)->post(route('orders.cancel', $order))->assertRedirect();
+
+        $this->assertSame('cancelled', $order->fresh()->status);
+    }
+
+    public function test_paid_order_cannot_be_cancelled(): void
+    {
+        $order = WebiaOrder::factory()->create(['status' => 'paid']);
+
+        $this->actingAs($order->user)
+            ->post(route('orders.cancel', $order))
+            ->assertUnprocessable();
+
+        $this->assertSame('paid', $order->fresh()->status);
+    }
+
+    public function test_customer_cannot_cancel_another_customers_order(): void
+    {
+        $customer = User::factory()->create();
+        $order = WebiaOrder::factory()->create();
+
+        $this->actingAs($customer)
+            ->post(route('orders.cancel', $order))
+            ->assertNotFound();
+    }
+
+    public function test_cancelled_order_hides_payment_actions(): void
+    {
+        $order = WebiaOrder::factory()->create(['status' => 'cancelled']);
+
+        $this->actingAs($order->user)
+            ->get(route('orders.show', $order))
+            ->assertOk()
+            ->assertSee('Dibatalkan')
+            ->assertDontSee('Bayar via Midtrans')
+            ->assertDontSee('Unggah bukti transfer');
+    }
+
     public function test_customer_can_filter_orders_by_group(): void
     {
         $customer = User::factory()->create();
@@ -160,6 +219,16 @@ class WebiaOrderTest extends TestCase
         WebiaOrder::factory()->for($customer)->create(['order_number' => 'WEB-VERIFY', 'status' => 'payment_uploaded']);
         WebiaOrder::factory()->for($customer)->create(['order_number' => 'WEB-WORKING', 'status' => 'paid', 'delivery_status' => 'in_progress']);
         WebiaOrder::factory()->for($customer)->create(['order_number' => 'WEB-DONE', 'status' => 'paid', 'delivery_status' => 'delivered']);
+        WebiaOrder::factory()->create(['order_number' => 'WEB-OTHER']);
+
+        $this->actingAs($customer)->get(route('orders.index'))
+            ->assertOk()
+            ->assertViewHas('orderStats', [
+                'total' => 4,
+                'waiting' => 1,
+                'in_progress' => 1,
+                'completed' => 1,
+            ]);
 
         $this->actingAs($customer)->get(route('orders.index', ['filter' => 'menunggu_pembayaran']))
             ->assertOk()

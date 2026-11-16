@@ -45,14 +45,12 @@
                             Bayar via Midtrans
                         </h2>
                         <p class="customer-create-option-desc">QRIS, virtual account, e-wallet, atau kartu kredit di halaman pembayaran Midtrans{{ config('webia.midtrans.server_key') ? '' : ' (mode simulasi lokal)' }}.</p>
-                        <form method="POST" action="{{ route('orders.pay', $order) }}">
-                            @csrf
-                            <button class="account-submit customer-create-submit-btn" type="submit">Bayar via Midtrans</button>
-                        </form>
+                        <button class="account-submit customer-create-submit-btn" type="button" data-modal-open="#order-pay-modal">Bayar via Midtrans</button>
                         @if ($pendingPayment?->snap_redirect_url)
                             <p><a href="{{ $pendingPayment->snap_redirect_url }}">Lanjutkan sesi pembayaran sebelumnya</a></p>
                             <p class="customer-create-option-desc" data-payment-status-note role="status" aria-live="polite">Status pembayaran diperiksa otomatis.</p>
                         @endif
+                        @if ($order->status === 'rejected') <p class="form-error">Bukti sebelumnya ditolak. Periksa catatan admin dan unggah kembali.</p> @endif
                     </div>
 
                     <div class="customer-create-card">
@@ -66,11 +64,12 @@
                                     <li><strong>{{ $account['bank'] }}</strong> {{ $account['number'] }} a.n. {{ $account['holder'] }}</li>
                                 @endforeach
                             </ul>
-                            <p class="customer-create-option-desc">Transfer sesuai total ke salah satu rekening di atas, lalu unggah bukti di bawah.</p>
+                            <p class="customer-create-option-desc">Transfer sesuai total ke salah satu rekening di atas, lalu unggah bukti.</p>
                             @if (config('webia.payment_note'))<p class="customer-create-option-desc">{{ config('webia.payment_note') }}</p>@endif
                         @else
                             <p class="customer-create-option-desc">Transfer sesuai total ke rekening WEBIA yang dikonfirmasi tim, lalu unggah bukti di bawah.</p>
                         @endif
+                        <button class="account-submit customer-create-submit-btn" type="button" data-modal-open="#order-upload-modal">Unggah bukti transfer</button>
                     </div>
 
                     @if ($order->status === 'rejected' && $order->logs->where('to_status', 'rejected')->last()?->note)
@@ -83,16 +82,10 @@
                         </div>
                     @endif
 
-                    <form class="customer-create-card" method="POST" action="{{ route('orders.receipt', $order) }}" enctype="multipart/form-data">
-                        <h2 class="customer-create-legend">
-                            <span aria-hidden="true" class="material-symbols-outlined">upload_file</span>
-                            Kirim bukti pembayaran
-                        </h2>
-                        @if ($order->status === 'rejected') <p class="form-error">Bukti sebelumnya ditolak. Periksa catatan admin dan unggah kembali.</p> @endif
-                        <div class="form-field"><label for="payment_receipt">Bukti transfer JPG, PNG, atau PDF (maks. 2 MB)</label><input id="payment_receipt" name="payment_receipt" type="file" accept=".jpg,.jpeg,.png,.pdf" required>@error('payment_receipt') <p class="form-error">{{ $message }}</p> @enderror</div>
-                        <div class="form-field"><label for="payment_note">Catatan (opsional)</label><textarea id="payment_note" name="payment_note" rows="3">{{ old('payment_note') }}</textarea>@error('payment_note') <p class="form-error">{{ $message }}</p> @enderror</div>
-                        <button class="account-submit customer-create-submit-btn" type="submit">Kirim bukti</button>
-                    </form>
+                    <button class="customer-cancel-link" type="button" data-modal-open="#order-cancel-modal">
+                        <span aria-hidden="true" class="material-symbols-outlined">close_small</span>
+                        Batalkan pesanan
+                    </button>
                 @elseif ($order->status === 'payment_uploaded')
                     <section class="customer-create-card customer-verify-panel" role="status">
                         <span class="customer-verify-icon" aria-hidden="true">
@@ -216,4 +209,95 @@
             </aside>
         </div>
     </section>
+
+    @if (in_array($order->status, ['awaiting_payment', 'rejected']))
+        <x-customer-modal id="order-pay-modal" title="Pilih metode pembayaran" subtitle="Total pembayaran Rp{{ number_format($order->total_price, 0, ',', '.') }}" icon="tune">
+            <div class="customer-modal-rows">
+                <div class="customer-modal-row"><span>Midtrans</span><span>Transfer instan</span></div>
+                <div class="customer-modal-row"><span>Transfer bank</span><span>Verifikasi manual</span></div>
+                <div class="customer-modal-row"><span>Total</span><span>Rp{{ number_format($order->total_price, 0, ',', '.') }}</span></div>
+            </div>
+            <form method="POST" action="{{ route('orders.pay', $order) }}">
+                @csrf
+                <div class="customer-modal-actions" style="margin-top: 1.1rem;">
+                    <button class="customer-btn" type="button" data-modal-close>Batal</button>
+                    <button class="customer-btn customer-btn--primary" type="submit">Lanjutkan pembayaran</button>
+                </div>
+            </form>
+        </x-customer-modal>
+
+        <x-customer-modal id="order-upload-modal" variant="fullscreen" title="Unggah bukti pembayaran" subtitle="Format JPG, PNG, atau PDF. Maksimal 2 MB." icon="upload_file" :open="($errors->has('payment_receipt') || $errors->has('payment_note'))">
+            <form method="POST" action="{{ route('orders.receipt', $order) }}" enctype="multipart/form-data" data-upload-modal>
+                @csrf
+                <div class="customer-modal-upload-state">
+                    <div data-upload-pick>
+                        <div class="form-field">
+                            <label for="payment_receipt">Bukti transfer JPG, PNG, atau PDF (maks. 2 MB)</label>
+                            <input id="payment_receipt" name="payment_receipt" type="file" accept=".jpg,.jpeg,.png,.pdf" required data-modal-autofocus>
+                            @error('payment_receipt') <p class="form-error">{{ $message }}</p> @enderror
+                        </div>
+                        <div class="form-field">
+                            <label for="payment_note">Catatan (opsional)</label>
+                            <textarea id="payment_note" name="payment_note" rows="3">{{ old('payment_note') }}</textarea>
+                            @error('payment_note') <p class="form-error">{{ $message }}</p> @enderror
+                        </div>
+                    </div>
+                    <div data-upload-review hidden>
+                        <div class="customer-modal-rows">
+                            <div class="customer-modal-row"><span>File</span><strong data-upload-name>-</strong></div>
+                            <div class="customer-modal-row"><span>Ukuran</span><strong data-upload-size>-</strong></div>
+                            <div class="customer-modal-row"><span>Status</span><span>Siap dikirim</span></div>
+                        </div>
+                    </div>
+                    <div class="customer-modal-actions">
+                        <button class="customer-btn" type="button" data-modal-close>Batal</button>
+                        <label class="customer-btn customer-btn--primary" for="payment_receipt" data-upload-pick>Pilih file</label>
+                        <button class="customer-btn" type="button" data-modal-open="#order-remove-modal" data-upload-review-only hidden>Hapus file</button>
+                        <label class="customer-btn" for="payment_receipt" data-upload-review-only hidden>Ganti file</label>
+                        <button class="customer-btn customer-btn--primary" type="submit" data-upload-review-only hidden>Kirim bukti</button>
+                    </div>
+                </div>
+            </form>
+        </x-customer-modal>
+
+        <x-customer-modal id="order-remove-modal" tone="danger" title="Hapus file ini?" subtitle="File akan dilepas dari formulir upload." icon="warning">
+            <div class="customer-modal-rows">
+                <div class="customer-modal-row"><span>File</span><strong data-upload-name>-</strong></div>
+                <div class="customer-modal-row"><span>Ukuran</span><strong data-upload-size>-</strong></div>
+                <div class="customer-modal-row"><span>Aksi</span><span>Tidak dapat dibatalkan</span></div>
+            </div>
+            <div class="customer-modal-actions" style="margin-top: 1.1rem;">
+                <button class="customer-btn" type="button" data-modal-close>Kembali</button>
+                <button class="customer-btn customer-btn--danger" type="button" data-upload-clear="#order-upload-modal" data-modal-close>Hapus file</button>
+            </div>
+        </x-customer-modal>
+
+        <x-customer-modal id="order-cancel-modal" tone="danger" title="Batalkan pesanan?" subtitle="Pesanan yang sudah dibayar tidak dapat dibatalkan dari portal." icon="warning">
+            <div class="customer-modal-rows">
+                <div class="customer-modal-row"><span>Pesanan</span><span>{{ $order->order_number }}</span></div>
+                <div class="customer-modal-row"><span>Pembayaran</span><span>Menunggu</span></div>
+                <div class="customer-modal-row"><span>Dampak</span><span>Pesanan dibatalkan</span></div>
+            </div>
+            <form method="POST" action="{{ route('orders.cancel', $order) }}">
+                @csrf
+                <div class="customer-modal-actions" style="margin-top: 1.1rem;">
+                    <button class="customer-btn" type="button" data-modal-close>Kembali</button>
+                    <button class="customer-btn customer-btn--danger" type="submit">Batalkan pesanan</button>
+                </div>
+            </form>
+        </x-customer-modal>
+    @endif
+
+    @if (session('status') === 'Bukti pembayaran berhasil dikirim.')
+        <x-customer-modal id="order-receipt-sent-modal" tone="success" open title="Bukti pembayaran terkirim" subtitle="Tim WEBIA akan memverifikasi pembayaran." icon="check_circle">
+            <div class="customer-modal-rows">
+                <div class="customer-modal-row"><span>Pesanan</span><span>{{ $order->order_number }}</span></div>
+                <div class="customer-modal-row"><span>Status</span><span>Menunggu verifikasi</span></div>
+                <div class="customer-modal-row"><span>Estimasi</span><span>Maks. 1x24 jam kerja</span></div>
+            </div>
+            <div class="customer-modal-actions" style="margin-top: 1.1rem;">
+                <button class="customer-btn customer-btn--success" type="button" data-modal-close>Tutup</button>
+            </div>
+        </x-customer-modal>
+    @endif
 @endsection

@@ -7,6 +7,7 @@
         'payment_uploaded' => 'Bukti Dikirim',
         'paid' => 'Lunas',
         'rejected' => 'Ditolak',
+        'cancelled' => 'Dibatalkan',
         'not_started' => 'Belum Mulai',
         'in_progress' => 'Sedang Dikerjakan',
         'delivered' => 'Selesai',
@@ -16,7 +17,7 @@
         'paid', 'delivered' => 'success',
         'awaiting_payment', 'not_started' => 'warning',
         'payment_uploaded', 'in_progress' => 'info',
-        'rejected' => 'danger',
+        'rejected', 'cancelled' => 'danger',
         default => 'muted',
     };
     // Safely determine CSS class without operator precedence issues
@@ -25,6 +26,7 @@
         'paid', 'delivered' => 'check_circle',
         'awaiting_payment', 'payment_uploaded' => 'schedule',
         'rejected' => 'error',
+        'cancelled' => 'cancel',
         'not_started' => 'hourglass_empty',
         'in_progress' => 'pending',
         default => null,

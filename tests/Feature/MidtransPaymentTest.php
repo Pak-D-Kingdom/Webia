@@ -140,6 +140,24 @@ class MidtransPaymentTest extends TestCase
         $this->assertSame('paid', $order->fresh()->status);
     }
 
+    public function test_payment_after_cancellation_is_flagged_duplicate_for_refund(): void
+    {
+        $order = WebiaOrder::factory()->create(['status' => 'cancelled']);
+        $payment = WebiaPayment::factory()->create(['webia_order_id' => $order->id]);
+
+        app(Midtrans::class)->applyNotification($payment, [
+            'transaction_status' => 'capture',
+            'fraud_status' => 'accept',
+        ]);
+
+        $this->assertSame('duplicate', $payment->fresh()->status);
+        $this->assertSame('cancelled', $order->fresh()->status);
+        $this->assertDatabaseHas('webia_order_logs', [
+            'webia_order_id' => $order->id,
+            'to_status' => 'cancelled',
+        ]);
+    }
+
     public function test_signature_is_verified_against_server_key(): void
     {
         $midtrans = app(Midtrans::class);
