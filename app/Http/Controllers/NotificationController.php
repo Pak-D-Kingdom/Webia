@@ -32,4 +32,11 @@ class NotificationController extends Controller
 
         return back()->with('status', 'Semua notifikasi ditandai sudah dibaca.');
     }
+
+    public function destroy(Request $request, string $notification): RedirectResponse
+    {
+        $request->user()->notifications()->findOrFail($notification)->delete();
+
+        return redirect()->route('notifications.index')->with('status', 'Notifikasi dihapus.');
+    }
 }
