@@ -22,14 +22,24 @@
 
 <section class="hr-section" id="tahapan">
     <div class="hr-container">
-        <header class="hr-sechead"><h2>Lima tahap dari ide sampai serah terima</h2></header>
-        <ol class="hr-timeline">
+        <header class="hr-sechead">
+            <p class="hr-kicker">{{ $i('gear') }} Alur kerja</p>
+            <h2>Lima tahap dari ide sampai serah terima</h2>
+        </header>
+        <ol class="hr-timeline" data-timeline>
+            <span class="hr-timeline__fill" data-timeline-fill aria-hidden="true"></span>
             @foreach ($cfg['steps'] as $s)
-                <li class="hr-timeline__item" data-reveal>
+                <li class="hr-timeline__item" id="tahap-{{ $loop->iteration }}" data-reveal data-timeline-item>
                     <span class="hr-timeline__no">{{ $loop->iteration }}</span>
                     <div class="hr-timeline__card">
                         <span class="hr-step__ico">{{ $i($s['icon']) }}</span>
-                        <div><h3>{{ $s['title'] }}</h3><p>{{ $s['text'] }}</p></div>
+                        <div class="hr-timeline__txt">
+                            <div class="hr-timeline__row"><h3>{{ $s['title'] }}</h3><span class="hr-chip">{{ $i('clock') }}{{ $s['duration'] }}</span></div>
+                            <p>{{ $s['text'] }}</p>
+                            <ul class="hr-tags hr-tags--check">
+                                @foreach ($s['detail'] as $d)<li>{{ $i('check') }}{{ $d }}</li>@endforeach
+                            </ul>
+                        </div>
                     </div>
                 </li>
             @endforeach
@@ -40,9 +50,9 @@
 <section class="hr-section hr-section--tint">
     <div class="hr-container">
         <div class="hr-promise">
-            <article data-reveal>{{ $i('shield') }}<h3>Biaya transparan</h3><p>Rincian biaya tertulis sebelum pekerjaan dimulai, tanpa kejutan di tengah jalan.</p></article>
-            <article data-reveal>{{ $i('clock') }}<h3>Jadwal jelas</h3><p>Target selesai disepakati di awal dan progres dilaporkan secara berkala.</p></article>
-            <article data-reveal>{{ $i('check-circle') }}<h3>Bergaransi</h3><p>Paket Premium dan Exclusive dilengkapi garansi pekerjaan 1–2 tahun.</p></article>
+            <article data-reveal><span>{{ $i('shield') }}</span><h3>Biaya transparan</h3><p>Rincian biaya tertulis sebelum pekerjaan dimulai, tanpa kejutan di tengah jalan.</p></article>
+            <article data-reveal><span>{{ $i('clock') }}</span><h3>Jadwal jelas</h3><p>Target selesai disepakati di awal dan progres dilaporkan secara berkala.</p></article>
+            <article data-reveal><span>{{ $i('check-circle') }}</span><h3>Bergaransi</h3><p>Paket Premium dan Exclusive dilengkapi garansi pekerjaan 1–2 tahun.</p></article>
         </div>
     </div>
 </section>

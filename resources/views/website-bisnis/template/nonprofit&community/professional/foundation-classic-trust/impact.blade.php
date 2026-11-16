@@ -27,7 +27,7 @@
         <div class="fd-grid fd-grid--4">
             @foreach ($fd['programs'] as $p)
                 <a class="fd-pcard fd-reveal" href="{{ $r('programs') }}#{{ $p['slug'] }}">
-                    <img src="{{ $i($p['image']) }}" alt="" loading="lazy">
+                    <img src="{{ $i($p['art']) }}" alt="" loading="lazy" width="800" height="500">
                     <div class="fd-pcard__body"><h3>{{ $p['title'] }}</h3><div class="fd-pcard__stat"><span>{{ $p['stat'][0] }}</span><small>{{ $p['stat'][1] }}</small></div></div>
                 </a>
             @endforeach

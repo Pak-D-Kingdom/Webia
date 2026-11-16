@@ -11,13 +11,16 @@
         <div class="uh-container uh-split uh-split--even">
             <section class="uh-card uh-reqcard" data-uh-checklist aria-labelledby="uh-req-title">
                 <header class="uh-reqcard__head">
-                    <h2 id="uh-req-title" class="uh-card__title">Daftar dokumen</h2>
-                    <p class="uh-card__sub">Centang dokumen yang sudah Anda siapkan.</p>
+                    <div>
+                        <h2 id="uh-req-title" class="uh-card__title">Daftar dokumen</h2>
+                        <p class="uh-card__sub">Centang dokumen yang sudah Anda siapkan.</p>
+                    </div>
+                    <div class="uh-ring" role="progressbar" aria-label="Kesiapan dokumen" aria-valuemin="0" aria-valuemax="{{ count($uh['requirements']['items']) }}" aria-valuenow="0" data-uh-progress>
+                        <svg viewBox="0 0 44 44" aria-hidden="true"><circle class="uh-ring__bg" cx="22" cy="22" r="18"/><circle class="uh-ring__fg" cx="22" cy="22" r="18" data-uh-ring-fg/></svg>
+                        <span class="uh-ring__num"><b data-uh-progress-count>0</b>/{{ count($uh['requirements']['items']) }}</span>
+                    </div>
                 </header>
-                <div class="uh-progress" role="progressbar" aria-label="Kesiapan dokumen" aria-valuemin="0" aria-valuemax="{{ count($uh['requirements']['items']) }}" aria-valuenow="0" data-uh-progress>
-                    <span class="uh-progress__bar" data-uh-progress-bar></span>
-                </div>
-                <p class="uh-progress__text"><span data-uh-progress-count>0</span> dari {{ count($uh['requirements']['items']) }} dokumen siap</p>
+                <p class="uh-progress__text" data-uh-progress-text>Belum ada dokumen yang dicentang.</p>
                 <ul class="uh-reqlist">
                     @foreach ($uh['requirements']['items'] as $r)
                         <li>
@@ -59,15 +62,35 @@
         <div class="uh-container">
             <div class="uh-card uh-regform">
                 <div class="uh-regform__intro">
+                    <img class="uh-regform__lantern" src="{{ $img('lentera.png') }}" alt="" width="46" height="132" loading="lazy">
                     <span class="uh-eyebrow">{{ $uh['requirements']['form']['eyebrow'] }}</span>
                     <h2 class="uh-regform__title">{{ $uh['requirements']['form']['title'] }}</h2>
                     <p class="uh-regform__text">{{ $uh['requirements']['form']['text'] }}</p>
-                    <ul class="uh-checklist">
+
+                    <ol class="uh-regform__steps">
+                        @foreach ($uh['requirements']['form']['steps'] as $i => $st)
+                            <li>
+                                <span class="uh-regform__n">{{ $i + 1 }}</span>
+                                <span><strong>{{ $st[0] }}</strong><small>{{ $st[1] }}</small></span>
+                            </li>
+                        @endforeach
+                    </ol>
+
+                    <ul class="uh-regform__badges">
                         @foreach ($uh['requirements']['form']['points'] as $pt)
-                            <li><svg class="uh-i" aria-hidden="true"><use href="#i-check"/></svg><span>{{ $pt }}</span></li>
+                            <li><svg class="uh-i" aria-hidden="true"><use href="#i-check"/></svg>{{ $pt }}</li>
                         @endforeach
                     </ul>
-                    <p class="uh-regform__wa"><svg class="uh-i" aria-hidden="true"><use href="#i-whatsapp"/></svg>Dikirim ke <strong>{{ $uh['brand']['phone_display'] }}</strong></p>
+
+                    <div class="uh-regform__contact">
+                        <span class="uh-regform__cico"><svg class="uh-i" aria-hidden="true"><use href="#i-whatsapp"/></svg></span>
+                        <span class="uh-regform__ctext">
+                            <small>Dikirim ke WhatsApp</small>
+                            <strong>{{ $uh['brand']['phone_display'] }}</strong>
+                            <em><i aria-hidden="true"></i>{{ $uh['brand']['hours'] }}</em>
+                        </span>
+                    </div>
+                    <img class="uh-regform__robot" src="{{ $img('maskot-robot.png') }}" alt="" width="132" height="121" loading="lazy">
                 </div>
 
                 <form class="uh-form" data-uh-waform novalidate action="{{ $url('requirements') }}" method="get">

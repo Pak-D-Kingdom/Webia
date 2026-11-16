@@ -6,7 +6,6 @@
 @section('title', 'Harapan Untuk Negeri Foundation — Membangun Masa Depan yang Lebih Baik')
 
 @section('content')
-<div class="fd-top">
 {{-- ===== HERO BANNER + PREVIEW AI CHATBOT ===== --}}
 <section class="fd-hero" aria-labelledby="fd-hero-title">
     <div class="fd-hero__bg" aria-hidden="true">
@@ -15,9 +14,8 @@
             <span class="fd-fheart" style="--x:{{ $x }}%;--d:{{ $k * -1.7 }}s;--s:{{ 0.7 + ($k % 3) * 0.25 }}"></span>
         @endforeach
     </div>
+    <div class="fd-hero__img"><img src="{{ $i('hero.jpg') }}" alt="Relawan Harapan Untuk Negeri Foundation bersama anak-anak di depan gedung yayasan" width="2040" height="810" fetchpriority="high"></div>
     <div class="fd-wrap fd-hero__in">
-        <div class="fd-hero__img"><img src="{{ $i('hero.jpg') }}" alt="Relawan Harapan Untuk Negeri Foundation bersama anak-anak di depan gedung yayasan" width="2040" height="810" fetchpriority="high"></div>
-
         <div class="fd-hero__text">
             <span class="fd-badge"><svg class="fd-ico fd-ico--fill"><use href="#fd-i-heart"/></svg>{{ $fd['brand']['tagline'] }}</span>
             <h1 id="fd-hero-title">Membangun Masa Depan <span>yang Lebih Baik</span></h1>
@@ -27,32 +25,6 @@
                 <a class="fd-btn fd-btn--outline fd-btn--lg" href="{{ $r('programs') }}">Lihat Program <svg class="fd-ico"><use href="#fd-i-arrow"/></svg></a>
             </div>
         </div>
-
-        <aside class="fd-botcard" aria-label="Preview HarapanBot, asisten FAQ program dan donasi">
-            <div class="fd-botcard__in">
-                <div class="fd-botcard__top">
-                    <img class="fd-botcard__robot" src="{{ $i('bot.svg') }}" alt="Maskot HarapanBot" width="96" height="114">
-                    <div class="fd-bubble">
-                        <b>Halo! Saya HarapanBot!</b>
-                        <span>Saya siap membantu Anda seputar program kami dan donasi.</span>
-                        <em><i></i>Online sekarang</em>
-                    </div>
-                </div>
-                <div class="fd-botcard__list">
-                    @foreach ($fd['faq']['quick'] as $k => $q)
-                        <button type="button" class="fd-qbtn" data-fd-chat-ask="{{ $q }}">
-                            <span class="fd-qbtn__ico"><svg class="fd-ico"><use href="#fd-i-{{ $fd['faq']['quick_icons'][$k] }}"/></svg></span>
-                            <span class="fd-qbtn__txt">{{ $q }}</span>
-                            <svg class="fd-ico fd-qbtn__go"><use href="#fd-i-arrow"/></svg>
-                        </button>
-                    @endforeach
-                </div>
-                <form class="fd-botcard__form" data-fd-chat-form autocomplete="off">
-                    <input type="text" placeholder="Tulis pertanyaan Anda..." aria-label="Tulis pertanyaan Anda" maxlength="200">
-                    <button type="submit" class="fd-sendbtn" aria-label="Kirim pertanyaan"><svg class="fd-ico"><use href="#fd-i-send"/></svg></button>
-                </form>
-            </div>
-        </aside>
     </div>
 </section>
 
@@ -88,14 +60,23 @@
         </article>
 
         <article class="fd-card fd-c-impact fd-reveal">
-            <span class="fd-c-impact__ring" aria-hidden="true"></span>
+            <span class="fd-c-impact__ring" aria-hidden="true"></span><span class="fd-c-impact__ring fd-c-impact__ring--2" aria-hidden="true"></span>
             <div class="fd-card__body">
-                <div class="fd-ch"><h2 class="fd-ch__title"><a class="fd-stretch" href="{{ $r('impact') }}">Dampak Kami</a></h2></div>
-                <p class="fd-card__text">Bersama, kita telah memberikan manfaat untuk banyak orang.</p>
+                <div class="fd-impact__head">
+                    <div>
+                        <h2 class="fd-ch__title"><a class="fd-stretch" href="{{ $r('impact') }}">Dampak Kami</a></h2>
+                        <p class="fd-card__text">Bersama, kita telah memberikan manfaat untuk banyak orang.</p>
+                    </div>
+                    <div class="fd-minibars" aria-hidden="true">
+                        @foreach ($fd['impact']['by_year'] as $y)
+                            <span><i style="--h:{{ $y[1] }}%"></i><em>{{ substr($y[0], 2) }}</em></span>
+                        @endforeach
+                    </div>
+                </div>
                 <div class="fd-impact__stats">
                     @foreach ($fd['impact']['stats'] as $s)
                         <div class="fd-stat">
-                            <img src="{{ $i($s['icon']) }}" alt="" width="44" height="44">
+                            <span class="fd-stat__ico"><img src="{{ $i($s['icon']) }}" alt="" width="40" height="40"></span>
                             <strong><span data-fd-count="{{ $s['value'] }}" data-suffix="{{ $s['suffix'] }}">{{ number_format($s['value'], 0, ',', '.') }}{{ $s['suffix'] }}</span></strong>
                             <small>{{ $s['label'] }}</small>
                         </div>
@@ -181,6 +162,57 @@
             <img src="{{ $i('quote.jpg') }}" alt="Kebaikan kecil, bisa membawa perubahan besar." loading="lazy" width="1095" height="942">
         </article>
     </div>
-</div>
+
+    {{-- ===== BARIS D: Preview AI Chatbot FAQ (program & donasi) ===== --}}
+    <div class="fd-row fd-row--d">
+        <article class="fd-card fd-c-assist fd-reveal">
+            <span class="fd-c-assist__bubble fd-c-assist__bubble--1" aria-hidden="true"></span><span class="fd-c-assist__bubble fd-c-assist__bubble--2" aria-hidden="true"></span>
+            <div class="fd-assist__art" aria-hidden="true">
+                <span class="fd-assist__chip fd-assist__chip--1"><svg class="fd-ico"><use href="#fd-i-help"/></svg></span>
+                <span class="fd-assist__chip fd-assist__chip--2"><svg class="fd-ico fd-ico--fill"><use href="#fd-i-heart"/></svg></span>
+                <span class="fd-assist__chip fd-assist__chip--3"><svg class="fd-ico"><use href="#fd-i-circle-check"/></svg></span>
+                <span class="fd-assist__chip fd-assist__chip--4"><svg class="fd-ico"><use href="#fd-i-message"/></svg></span>
+            </div>
+            <div class="fd-card__body">
+                <div class="fd-ch"><span class="fd-ch__ico fd-ch__ico--gold"><svg class="fd-ico"><use href="#fd-i-message"/></svg></span><h2 class="fd-ch__title">Ada pertanyaan? Tanya HarapanBot</h2></div>
+                <p class="fd-card__text">Asisten AI kami menjawab seputar program, donasi, relawan, dan laporan dana — kapan saja, langsung dari halaman ini.</p>
+                <ul class="fd-assist__list">
+                    <li><span><svg class="fd-ico"><use href="#fd-i-clock"/></svg></span><b>Jawaban instan</b><small>Tanpa antre, tersedia setiap saat</small></li>
+                    <li><span><svg class="fd-ico"><use href="#fd-i-heart"/></svg></span><b>Program &amp; donasi</b><small>Cara berdonasi, program, dan relawan</small></li>
+                    <li><span><svg class="fd-ico"><use href="#fd-i-whatsapp"/></svg></span><b>Lanjut ke tim</b><small>Terhubung langsung ke WhatsApp kami</small></li>
+                </ul>
+                <div class="fd-assist__cta">
+                    <button type="button" class="fd-btn fd-btn--navy" data-fd-chat-ask="Bagaimana cara berdonasi?">Mulai Chat <svg class="fd-ico"><use href="#fd-i-arrow"/></svg></button>
+                    <a class="fd-btn fd-btn--outline" href="{{ $r('chatbot') }}">Lihat Semua FAQ <svg class="fd-ico"><use href="#fd-i-arrow"/></svg></a>
+                </div>
+            </div>
+        </article>
+
+        <aside class="fd-botcard" aria-label="Preview HarapanBot, asisten FAQ program dan donasi">
+            <div class="fd-botcard__in">
+                <div class="fd-botcard__top">
+                    <img class="fd-botcard__robot" src="{{ $i('bot.svg') }}" alt="Maskot HarapanBot" width="96" height="114">
+                    <div class="fd-bubble">
+                        <b>Halo! Saya HarapanBot!</b>
+                        <span>Saya siap membantu Anda seputar program kami dan donasi.</span>
+                        <em><i></i>Online sekarang</em>
+                    </div>
+                </div>
+                <div class="fd-botcard__list">
+                    @foreach ($fd['faq']['quick'] as $k => $q)
+                        <button type="button" class="fd-qbtn" data-fd-chat-ask="{{ $q }}">
+                            <span class="fd-qbtn__ico"><svg class="fd-ico"><use href="#fd-i-{{ $fd['faq']['quick_icons'][$k] }}"/></svg></span>
+                            <span class="fd-qbtn__txt">{{ $q }}</span>
+                            <svg class="fd-ico fd-qbtn__go"><use href="#fd-i-arrow"/></svg>
+                        </button>
+                    @endforeach
+                </div>
+                <form class="fd-botcard__form" data-fd-chat-form autocomplete="off">
+                    <input type="text" placeholder="Tulis pertanyaan Anda..." aria-label="Tulis pertanyaan Anda" maxlength="200">
+                    <button type="submit" class="fd-sendbtn" aria-label="Kirim pertanyaan"><svg class="fd-ico"><use href="#fd-i-send"/></svg></button>
+                </form>
+            </div>
+        </aside>
+    </div>
 </div>
 @endsection

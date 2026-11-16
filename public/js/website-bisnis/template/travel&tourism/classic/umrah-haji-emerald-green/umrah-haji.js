@@ -41,6 +41,17 @@
         return svg;
     }
 
+    /* indikator geser pada kontrol segmen (filter, tipe kamar, tab) */
+    function placeThumb(group) {
+        var thumb = $('.uh-seg__thumb', group);
+        var act = $('.uh-seg__btn.is-active, .uh-tab.is-active', group);
+        if (!thumb || !act) { return; }
+        group.style.setProperty('--thumb-x', act.offsetLeft + 'px');
+        group.style.setProperty('--thumb-w', act.offsetWidth + 'px');
+        group.classList.add('has-thumb');
+    }
+    function refreshThumbs() { $$('.uh-seg, .uh-tabs__list').forEach(placeThumb); }
+
     var DATA = readJSON('uh-data');
     root.classList.add('uh-js');
 
@@ -81,18 +92,44 @@
         $$('button:not([disabled])', menu).forEach(function (b) { on(b, 'click', function () { set(false); }); });
     })();
 
-    /* ---------- pencarian (kelompok hasil, sorotan kata, navigasi keyboard) ---------- */
+    /* ---------- pencarian: palet perintah (akses cepat, riwayat, tab hasil, sorotan, keyboard) ---------- */
     (function search() {
         var box = $('[data-uh-search]');
         if (!box) { return; }
         var input = $('[data-uh-search-input]', box);
         var list = $('[data-uh-search-results]', box);
         var form = $('[data-uh-search-form]', box);
+        var home = $('[data-uh-search-home]', box);
+        var tabsEl = $('[data-uh-search-tabs]', box);
+        var clearBtn = $('[data-uh-search-clear]', box);
+        var recentWrap = $('[data-uh-search-recent-wrap]', box);
+        var recentList = $('[data-uh-search-recent]', box);
         var index = Array.isArray(DATA.search) ? DATA.search : [];
-        var lastFocus = null;
-        var rows = [];
-        var active = -1;
+        var RKEY = 'uh-recent-v1';
+        var lastFocus = null, rows = [], active = -1, tab = 'all';
 
+        function loadRecent() { try { return JSON.parse(store('local', RKEY) || '[]') || []; } catch (e) { return []; } }
+        function saveRecent(it) {
+            var arr = loadRecent().filter(function (r) { return r.url !== it.url; });
+            arr.unshift({ label: it.label, url: it.url, icon: it.icon || 'file', text: it.text || '' });
+            store('local', RKEY, JSON.stringify(arr.slice(0, 5)));
+        }
+        function renderRecent() {
+            var arr = loadRecent();
+            recentList.innerHTML = '';
+            recentWrap.hidden = !arr.length;
+            arr.forEach(function (r) {
+                var li = doc.createElement('li');
+                var a = doc.createElement('a');
+                a.href = r.url;
+                a.appendChild(icon('clock'));
+                var t = doc.createElement('span');
+                t.textContent = r.label;
+                a.appendChild(t);
+                li.appendChild(a);
+                recentList.appendChild(li);
+            });
+        }
         function highlight(el, text, q) {
             var i = q ? text.toLowerCase().indexOf(q.toLowerCase()) : -1;
             if (i < 0) { el.textContent = text; return; }
@@ -112,15 +149,24 @@
             input.setAttribute('aria-activedescendant', rows[active].li.id);
             rows[active].li.scrollIntoView({ block: 'nearest' });
         }
+        function showHome(show) {
+            home.hidden = !show;
+            list.hidden = show;
+            tabsEl.hidden = show;
+        }
         function render(q) {
             var raw = q.trim();
             var n = norm(raw);
-            var hits = index.map(function (it) {
+            clearBtn.hidden = !raw;
+            if (!n) { rows = []; showHome(true); renderRecent(); setActive(-1); return; }
+            showHome(false);
+
+            var hits = index.filter(function (it) { return tab === 'all' || it.group === tab; }).map(function (it) {
                 var hay = norm(it.label + ' ' + (it.text || '') + ' ' + (it.keys || ''));
-                var score = !n ? 1 : (norm(it.label).indexOf(n) !== -1 ? 3 : (hay.indexOf(n) !== -1 ? 1 : 0));
+                var score = norm(it.label).indexOf(n) !== -1 ? 3 : (hay.indexOf(n) !== -1 ? 1 : 0);
                 return { it: it, score: score };
             }).filter(function (h) { return h.score > 0; });
-            if (n) { hits.sort(function (a, b) { return b.score - a.score; }); }
+            hits.sort(function (a, b) { return b.score - a.score; });
             hits = hits.slice(0, 9);
 
             list.innerHTML = '';
@@ -128,8 +174,11 @@
             if (!hits.length) {
                 var empty = doc.createElement('li');
                 empty.className = 'uh-search__empty';
+                var img = doc.createElement('span');
+                img.className = 'uh-search__emptyico';
+                img.appendChild(icon('search'));
                 var t = doc.createElement('p');
-                t.textContent = 'Tidak ada hasil untuk "' + raw + '".';
+                t.textContent = 'Tidak ada hasil untuk “' + raw + '”';
                 var sub = doc.createElement('small');
                 sub.textContent = 'Coba kata kunci lain, atau tanyakan langsung ke tim kami.';
                 var acts = doc.createElement('div');
@@ -139,23 +188,15 @@
                 var ws = doc.createElement('span'); ws.textContent = 'Tanya via WhatsApp';
                 wa.appendChild(ws); wa.appendChild(icon('whatsapp'));
                 acts.appendChild(wa);
-                empty.appendChild(t); empty.appendChild(sub); empty.appendChild(acts);
+                empty.appendChild(img); empty.appendChild(t); empty.appendChild(sub); empty.appendChild(acts);
                 list.appendChild(empty);
                 setActive(-1);
                 return;
             }
-            var group = null;
             hits.forEach(function (h, i) {
-                if (h.it.group !== group) {
-                    group = h.it.group;
-                    var gl = doc.createElement('li');
-                    gl.className = 'uh-search__group';
-                    gl.setAttribute('role', 'presentation');
-                    gl.textContent = group || 'Hasil';
-                    list.appendChild(gl);
-                }
                 var li = doc.createElement('li');
                 li.id = 'uh-so-' + i;
+                li.style.setProperty('--i', i);
                 li.setAttribute('role', 'option');
                 li.setAttribute('aria-selected', 'false');
                 var a = doc.createElement('a');
@@ -170,21 +211,31 @@
                 var small = doc.createElement('small');
                 small.textContent = h.it.text || '';
                 txt.appendChild(strong); txt.appendChild(small);
-                a.appendChild(ico); a.appendChild(txt); a.appendChild(icon('chevron-right'));
+                var badge = doc.createElement('span');
+                badge.className = 'uh-search__badge';
+                badge.textContent = h.it.group || 'Hasil';
+                a.appendChild(ico); a.appendChild(txt); a.appendChild(badge); a.appendChild(icon('chevron-right'));
+                on(a, 'click', function () { saveRecent(h.it); });
                 li.appendChild(a);
                 on(li, 'mouseenter', function () { setActive(i); });
                 list.appendChild(li);
-                rows.push({ li: li, url: h.it.url });
+                rows.push({ li: li, url: h.it.url, it: h.it });
             });
-            setActive(n ? 0 : -1);
+            setActive(0);
         }
         function open() {
             lastFocus = doc.activeElement;
             box.hidden = false;
             doc.body.style.overflow = 'hidden';
             input.value = '';
+            tab = 'all';
+            $$('[data-uh-search-tab]', box).forEach(function (b) {
+                var on_ = b.getAttribute('data-uh-search-tab') === 'all';
+                b.classList.toggle('is-active', on_);
+                b.setAttribute('aria-selected', on_ ? 'true' : 'false');
+            });
             render('');
-            window.setTimeout(function () { input.focus(); }, 30);
+            window.setTimeout(function () { input.focus(); }, 40);
         }
         function close() {
             if (box.hidden) { return; }
@@ -197,6 +248,28 @@
         $$('[data-uh-search-term]', box).forEach(function (b) {
             on(b, 'click', function () { input.value = b.getAttribute('data-uh-search-term'); render(input.value); input.focus(); });
         });
+        $$('[data-uh-search-tab]', box).forEach(function (b) {
+            on(b, 'click', function () {
+                tab = b.getAttribute('data-uh-search-tab');
+                $$('[data-uh-search-tab]', box).forEach(function (x) {
+                    var a_ = x === b;
+                    x.classList.toggle('is-active', a_);
+                    x.setAttribute('aria-selected', a_ ? 'true' : 'false');
+                });
+                render(input.value);
+                input.focus();
+            });
+        });
+        function resetTab() {
+            tab = 'all';
+            $$('[data-uh-search-tab]', box).forEach(function (b) {
+                var a_ = b.getAttribute('data-uh-search-tab') === 'all';
+                b.classList.toggle('is-active', a_);
+                b.setAttribute('aria-selected', a_ ? 'true' : 'false');
+            });
+        }
+        on(clearBtn, 'click', function () { input.value = ''; resetTab(); render(''); input.focus(); });
+        on($('[data-uh-search-wipe]', box), 'click', function () { store('local', RKEY, '[]'); renderRecent(); });
         on(input, 'input', function () { render(input.value); });
         on(input, 'keydown', function (e) {
             if (e.key === 'ArrowDown') { e.preventDefault(); setActive(active + 1); }
@@ -205,7 +278,7 @@
         on(form, 'submit', function (e) {
             e.preventDefault();
             var r = rows[active >= 0 ? active : 0];
-            if (r) { window.location.href = r.url; }
+            if (r) { saveRecent(r.it); window.location.href = r.url; }
         });
         on(doc, 'keydown', function (e) {
             if (e.key === 'Escape') { close(); return; }
@@ -248,7 +321,7 @@
 
     /* ---------- reveal saat scroll ---------- */
     (function reveal() {
-        var targets = $$('.uh-card, .uh-banner, .uh-arch, .uh-pkcard, .uh-pricecard, .uh-stay, .uh-block, .uh-gcard, .uh-tscard, .uh-timeline__item, .uh-chatwin, .uh-chataside__card');
+        var targets = $$('.uh-card, .uh-banner, .uh-arch, .uh-pkcard, .uh-pricecard, .uh-stay, .uh-block, .uh-gcard, .uh-tscard, .uh-timeline__item, .uh-chatwin, .uh-chataside__card, .uh-sch, .uh-feature, .uh-pass, .uh-compare, .uh-tssum, .uh-regform, .uh-legend');
         if (!targets.length) { return; }
         if (reduceMotion || !('IntersectionObserver' in window)) { return; }
         targets.forEach(function (el, idx) {
@@ -265,7 +338,7 @@
         window.setTimeout(function () { targets.forEach(function (el) { el.classList.add('is-in'); }); }, 2500);
     })();
 
-    /* ---------- filter (paket & jadwal) ---------- */
+    /* ---------- filter (paket & jadwal): jumlah per kategori, penghitung hasil, indikator geser ---------- */
     (function filters() {
         var groups = {};
         $$('[data-uh-filter]').forEach(function (g) { groups[g.getAttribute('data-uh-filter')] = g; });
@@ -277,7 +350,12 @@
             var scope = list.closest('.uh-container') || doc;
             var empty = $('[data-uh-empty]', scope);
             var month = $('[data-uh-month]', scope);
+            var shownEl = $('[data-uh-shown]', scope);
             var state = { type: 'all', month: 'all' };
+
+            var counts = { all: items.length };
+            items.forEach(function (it) { var t = it.getAttribute('data-type'); counts[t] = (counts[t] || 0) + 1; });
+            $$('[data-uh-count]', group).forEach(function (c) { c.textContent = String(counts[c.getAttribute('data-uh-count')] || 0); });
 
             function apply() {
                 var shown = 0;
@@ -289,6 +367,7 @@
                     it.hidden = !ok;
                     if (ok) { shown++; }
                 });
+                if (shownEl) { shownEl.textContent = String(shown); }
                 if (empty) { empty.hidden = shown !== 0; }
             }
             $$('[data-filter]', group).forEach(function (btn) {
@@ -299,12 +378,54 @@
                         b.setAttribute('aria-pressed', active ? 'true' : 'false');
                     });
                     state.type = btn.getAttribute('data-filter');
+                    refreshThumbs();
                     apply();
                 });
             });
             on(month, 'change', function () { state.month = month.value; apply(); });
+            apply();
         });
     })();
+
+    /* ---------- pilih tipe kamar (halaman Harga Paket) ---------- */
+    $$('[data-uh-roomtoggle]').forEach(function (tg) {
+        var btns = $$('[data-room]', tg);
+        var cards = $$('.uh-pricecard');
+        function set(btn) {
+            var key = btn.getAttribute('data-room');
+            var label = btn.getAttribute('data-room-name');
+            btns.forEach(function (b) {
+                var a = b === btn;
+                b.classList.toggle('is-active', a);
+                b.setAttribute('aria-checked', a ? 'true' : 'false');
+                b.tabIndex = a ? 0 : -1;
+            });
+            cards.forEach(function (card) {
+                var row = $('[data-room-row="' + key + '"]', card);
+                var price = $('[data-uh-roomprice]', card);
+                var nm = $('[data-uh-roomname]', card);
+                var boxEl = $('[data-uh-pricebox]', card);
+                $$('[data-room-row]', card).forEach(function (r) { r.classList.toggle('is-selected', r === row); });
+                if (row) { price.textContent = $('td', row).textContent; boxEl.classList.remove('is-na'); }
+                else { price.textContent = 'Tidak tersedia'; boxEl.classList.add('is-na'); }
+                nm.textContent = label;
+                boxEl.classList.remove('is-flip');
+                void boxEl.offsetWidth;
+                boxEl.classList.add('is-flip');
+            });
+            refreshThumbs();
+        }
+        btns.forEach(function (b, i) {
+            on(b, 'click', function () { set(b); });
+            on(b, 'keydown', function (e) {
+                var n = null;
+                if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { n = btns[(i + 1) % btns.length]; }
+                if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { n = btns[(i - 1 + btns.length) % btns.length]; }
+                if (n) { e.preventDefault(); set(n); n.focus(); }
+            });
+        });
+        set(btns[0]);
+    });
 
     /* ---------- tab itinerary ---------- */
     $$('[data-uh-tabs]').forEach(function (wrap) {
@@ -319,6 +440,7 @@
                 if (panel) { panel.hidden = !active; }
             });
             if (focus) { tab.focus(); }
+            refreshThumbs();
         }
         tabs.forEach(function (t, idx) {
             on(t, 'click', function () { select(t, false); });
@@ -333,21 +455,28 @@
         });
     });
 
-    /* ---------- checklist persyaratan ---------- */
+    /* ---------- checklist persyaratan (cincin kemajuan) ---------- */
     $$('[data-uh-checklist]').forEach(function (wrap) {
         var boxes = $$('[data-uh-check]', wrap);
-        var bar = $('[data-uh-progress-bar]', wrap);
+        var ring = $('[data-uh-ring-fg]', wrap);
         var prog = $('[data-uh-progress]', wrap);
         var count = $('[data-uh-progress-count]', wrap);
+        var text = $('[data-uh-progress-text]', wrap);
         var KEY = 'uh-req-v1';
+        var CIRC = 2 * Math.PI * 18;
         var saved = [];
         try { saved = JSON.parse(store('local', KEY) || '[]') || []; } catch (e) { saved = []; }
 
         function update() {
             var done = boxes.filter(function (b) { return b.checked; }).length;
-            if (bar) { bar.style.width = (boxes.length ? Math.round(done / boxes.length * 100) : 0) + '%'; }
-            if (prog) { prog.setAttribute('aria-valuenow', String(done)); }
+            var total = boxes.length;
+            if (ring) { ring.style.strokeDasharray = CIRC.toFixed(1); ring.style.strokeDashoffset = (CIRC * (1 - (total ? done / total : 0))).toFixed(1); }
+            if (prog) { prog.setAttribute('aria-valuenow', String(done)); prog.classList.toggle('is-done', total > 0 && done === total); }
             if (count) { count.textContent = String(done); }
+            if (text) {
+                text.textContent = done === 0 ? 'Belum ada dokumen yang dicentang.'
+                    : (done === total ? 'Semua dokumen siap! Lanjutkan pendaftaran lewat formulir di bawah.' : done + ' dari ' + total + ' dokumen siap, ' + (total - done) + ' lagi.');
+            }
             store('local', KEY, JSON.stringify(boxes.map(function (b) { return b.checked ? 1 : 0; })));
         }
         boxes.forEach(function (b, i) { b.checked = saved[i] === 1; on(b, 'change', update); });
@@ -728,4 +857,9 @@
         on($('[data-uh-cpanel-close]', panel), 'click', close);
         on(doc, 'keydown', function (e) { if (e.key === 'Escape') { close(); } });
     })();
+
+    refreshThumbs();
+    window.addEventListener('load', refreshThumbs);
+    window.addEventListener('resize', refreshThumbs);
+    if (doc.fonts && doc.fonts.ready) { doc.fonts.ready.then(refreshThumbs); }
 })();
