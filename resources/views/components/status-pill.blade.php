@@ -8,6 +8,8 @@
         'paid' => 'Lunas',
         'rejected' => 'Ditolak',
         'cancelled' => 'Dibatalkan',
+        'unpaid' => 'Menunggu Pembayaran',
+        'overdue' => 'Jatuh Tempo',
         'not_started' => 'Belum Mulai',
         'in_progress' => 'Sedang Dikerjakan',
         'delivered' => 'Selesai',
@@ -15,9 +17,9 @@
     $resolvedLabel = $label ?? $labelMap[$status] ?? str_replace('_', ' ', ucfirst($status));
     $resolvedTone = match ($status) {
         'paid', 'delivered' => 'success',
-        'awaiting_payment', 'not_started' => 'warning',
+        'awaiting_payment', 'not_started', 'unpaid' => 'warning',
         'payment_uploaded', 'in_progress' => 'info',
-        'rejected', 'cancelled' => 'danger',
+        'rejected', 'cancelled', 'overdue' => 'danger',
         default => 'muted',
     };
     // Safely determine CSS class without operator precedence issues

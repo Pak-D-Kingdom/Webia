@@ -44,4 +44,30 @@ class CustomerHostingInvoiceTest extends TestCase
             ->assertSee('Bulan Pertama Gratis')
             ->assertDontSee('Bayar melalui Midtrans');
     }
+
+    public function test_confirmed_payment_shows_success_modal(): void
+    {
+        $invoice = HostingInvoice::factory()->create(['status' => 'paid']);
+
+        $this->actingAs($invoice->service->user)
+            ->withSession(['status' => 'Pembayaran berhasil dikonfirmasi.'])
+            ->get(route('hosting-invoices.show', $invoice))
+            ->assertOk()
+            ->assertSee('data-modal-autoopen', false)
+            ->assertSee('Pembayaran berhasil')
+            ->assertSee('Lunas');
+    }
+
+    public function test_failed_payment_creation_shows_retry_modal(): void
+    {
+        $invoice = HostingInvoice::factory()->create(['status' => 'unpaid']);
+
+        $this->actingAs($invoice->service->user)
+            ->withSession(['status' => 'Pembayaran Midtrans gagal dibuat. Coba lagi sebentar.'])
+            ->get(route('hosting-invoices.show', $invoice))
+            ->assertOk()
+            ->assertSee('data-modal-autoopen', false)
+            ->assertSee('Pembayaran belum berhasil')
+            ->assertSee('Coba lagi');
+    }
 }
