@@ -213,21 +213,21 @@
             <div class="customer-sidebar-body">
                 <p class="customer-sidebar-label">Utama</p>
                 <nav class="customer-sidebar-nav" aria-label="Navigasi portal">
-                <a href="{{ route('dashboard') }}" @if (request()->routeIs('dashboard')) aria-current="page" @endif>
-                    <span aria-hidden="true" class="material-symbols-outlined">grid_view</span> Dashboard
-                </a>
-                <a href="{{ route('orders.index') }}" @if (request()->routeIs('orders.*')) aria-current="page" @endif>
-                    <span aria-hidden="true" class="material-symbols-outlined">shopping_bag</span> Pesanan Saya
-                </a>
-                <a href="{{ route('hosting-invoices.index') }}" @if (request()->routeIs('hosting-invoices.*')) aria-current="page" @endif>
-                    <span aria-hidden="true" class="material-symbols-outlined">receipt_long</span> Tagihan Hosting
-                </a>
-                <a href="{{ route('profile.edit') }}" @if (request()->routeIs('profile.*')) aria-current="page" @endif>
-                    <span aria-hidden="true" class="material-symbols-outlined">manage_accounts</span> Profil &amp; Keamanan
-                </a>
-                <a href="{{ route('customer.ai') }}" @if (request()->routeIs('customer.ai*')) aria-current="page" @endif>
-                    <span aria-hidden="true" class="material-symbols-outlined">smart_toy</span> Asisten AI &amp; Kuota
-                </a>
+                    <a href="{{ route('dashboard') }}" @if (request()->routeIs('dashboard')) aria-current="page" @endif>
+                        <span aria-hidden="true" class="material-symbols-outlined">grid_view</span> Dashboard
+                    </a>
+                    <a href="{{ route('orders.index') }}" @if (request()->routeIs('orders.*')) aria-current="page" @endif>
+                        <span aria-hidden="true" class="material-symbols-outlined">shopping_bag</span> Pesanan Saya
+                    </a>
+                    <a href="{{ route('hosting-invoices.index') }}" @if (request()->routeIs('hosting-invoices.*')) aria-current="page" @endif>
+                        <span aria-hidden="true" class="material-symbols-outlined">receipt_long</span> Tagihan Hosting
+                    </a>
+                    <a href="{{ route('profile.edit') }}" @if (request()->routeIs('profile.*')) aria-current="page" @endif>
+                        <span aria-hidden="true" class="material-symbols-outlined">manage_accounts</span> Profil &amp; Keamanan
+                    </a>
+                    <a href="{{ route('customer.ai') }}" @if (request()->routeIs('customer.ai*')) aria-current="page" @endif>
+                        <span aria-hidden="true" class="material-symbols-outlined">smart_toy</span> Asisten AI &amp; Kuota
+                    </a>
                 </nav>
             </div>
             <div class="customer-sidebar-foot">

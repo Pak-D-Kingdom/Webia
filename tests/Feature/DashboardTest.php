@@ -67,6 +67,56 @@ class DashboardTest extends TestCase
             ->assertSee('kopi-kawan');
     }
 
+    public function test_customer_dashboard_analytics_use_only_owned_real_data(): void
+    {
+        $this->travelTo('2026-11-13 12:00:00');
+        $customer = User::factory()->create();
+        $service = HostingService::factory()->for($customer)->create();
+        $otherService = HostingService::factory()->create();
+
+        WebiaOrder::factory()->for($customer)->create([
+            'status' => 'awaiting_payment',
+            'created_at' => '2026-09-10 12:00:00',
+        ]);
+        WebiaOrder::factory()->for($customer)->create([
+            'status' => 'paid',
+            'delivery_status' => 'in_progress',
+            'created_at' => '2026-10-10 12:00:00',
+        ]);
+        WebiaOrder::factory()->for($customer)->create([
+            'status' => 'paid',
+            'delivery_status' => 'delivered',
+            'created_at' => '2026-10-20 12:00:00',
+        ]);
+        WebiaOrder::factory()->create(['created_at' => '2026-11-01 12:00:00']);
+
+        HostingInvoice::factory()->for($service, 'service')->create([
+            'period_start' => '2026-09-01',
+            'amount' => 45000,
+        ]);
+        HostingInvoice::factory()->for($service, 'service')->create([
+            'period_start' => '2026-10-01',
+            'amount' => 90000,
+        ]);
+        HostingInvoice::factory()->for($otherService, 'service')->create([
+            'period_start' => '2026-11-01',
+            'amount' => 500000,
+        ]);
+
+        $this->actingAs($customer)
+            ->get(route('dashboard'))
+            ->assertOk()
+            ->assertViewHas('analytics', function (array $analytics): bool {
+                return $analytics['order_series'] === [1, 2, 0]
+                    && $analytics['invoice_series'] === [45000, 90000, 0]
+                    && $analytics['status_counts'] === [
+                        'waiting' => 1,
+                        'in_progress' => 1,
+                        'completed' => 1,
+                    ];
+            });
+    }
+
     public function test_customer_portal_shell_shows_sidebar_navigation_after_login(): void
     {
         $customer = User::factory()->create();
@@ -120,7 +170,7 @@ class DashboardTest extends TestCase
         $this->actingAs($customer)
             ->get(route('dashboard'))
             ->assertOk()
-            ->assertDontSee('Tagihan hosting');
+            ->assertDontSee('Perlu dibayar');
     }
 
     public function test_admin_dashboard_shows_real_operational_counts_and_attention_queue(): void
