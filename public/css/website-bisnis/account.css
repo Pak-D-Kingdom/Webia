@@ -1502,8 +1502,48 @@ a {
     background: #ffffff;
     border: 1px solid var(--account-line);
     border-radius: 8px;
+    font: inherit;
     font-size: 12px;
     font-weight: 700;
+    cursor: pointer;
+}
+
+.customer-period:hover {
+    border-color: var(--account-action);
+}
+
+.customer-period-options {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    font-size: 0.78rem;
+}
+
+.customer-period-options label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    cursor: pointer;
+}
+
+.customer-site-open {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    min-height: 44px;
+    padding: 9px 14px;
+    color: #ffffff;
+    background: var(--account-action);
+    border: 0;
+    border-radius: 8px;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.customer-site-open:hover {
+    filter: brightness(1.08);
 }
 
 .customer-period .material-symbols-outlined {

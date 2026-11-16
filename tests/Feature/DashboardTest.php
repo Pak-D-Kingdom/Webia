@@ -24,6 +24,30 @@ class DashboardTest extends TestCase
         $this->assertTrue($customer->orders()->sole()->is($ownedOrder));
     }
 
+    public function test_period_filter_changes_analytics_window(): void
+    {
+        $customer = User::factory()->create();
+        WebiaOrder::factory()->for($customer)->create(['created_at' => now()->subMonths(7)]);
+
+        $this->actingAs($customer)->get(route('dashboard'))
+            ->assertOk()
+            ->assertDontSee('7 bulan');
+
+        $this->actingAs($customer)->get(route('dashboard', ['period' => 12]))
+            ->assertOk()
+            ->assertSee('data-customer-modal', false)
+            ->assertSee('<input type="radio" name="period" value="12" checked', false);
+    }
+
+    public function test_period_filter_rejects_unknown_values(): void
+    {
+        $customer = User::factory()->create();
+
+        $this->actingAs($customer)->get(route('dashboard', ['period' => '99']))
+            ->assertOk()
+            ->assertSee('<input type="radio" name="period" value="3" checked', false);
+    }
+
     public function test_customer_dashboard_shows_latest_active_order_and_only_own_history(): void
     {
         $customer = User::factory()->create(['name' => 'Ayu']);

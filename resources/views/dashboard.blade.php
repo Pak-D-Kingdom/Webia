@@ -9,8 +9,9 @@
         $progressAngle = $statusTotal ? (($analytics['status_counts']['waiting'] + $analytics['status_counts']['in_progress']) / $statusTotal) * 360 : 0;
         $orderPeak = max(1, ...$analytics['order_series']);
         $invoicePeak = max(1, ...$analytics['invoice_series']);
-        $linePoints = collect($analytics['order_series'])->map(function (int $value, int $index) use ($orderPeak): string {
-            $x = 8 + ($index * 46);
+        $lineStep = count($analytics['labels']) > 1 ? 84 / (count($analytics['labels']) - 1) : 0;
+        $linePoints = collect($analytics['order_series'])->map(function (int $value, int $index) use ($orderPeak, $lineStep): string {
+            $x = 8 + ($index * $lineStep);
             $y = 82 - (($value / $orderPeak) * 64);
 
             return $x.','.$y;
@@ -41,7 +42,9 @@
         <section class="customer-analytics" aria-labelledby="analytics-title">
             <header class="customer-section-head">
                 <h2 id="analytics-title">Ringkasan aktivitas</h2>
-                <span class="customer-period"><span aria-hidden="true" class="material-symbols-outlined">calendar_month</span>{{ $analytics['period'] }}</span>
+                <button type="button" class="customer-period" data-modal-open="#dash-period-modal">
+                    <span aria-hidden="true" class="material-symbols-outlined">calendar_month</span>{{ $analytics['period'] }}
+                </button>
             </header>
             <div class="customer-analytics-grid">
                 <article class="customer-chart-card customer-chart-card--wide">
@@ -55,7 +58,7 @@
                             <polyline points="{{ $linePoints }}" />
                             @foreach ($analytics['order_series'] as $index => $value)
                                 @php
-                                    $x = 8 + ($index * 46);
+                                    $x = 8 + ($index * $lineStep);
                                     $y = 82 - (($value / $orderPeak) * 64);
                                 @endphp
                                 <circle cx="{{ $x }}" cy="{{ $y }}" r="1.5"><title>{{ $analytics['labels'][$index] }}: {{ $value }} pesanan</title></circle>
@@ -186,7 +189,7 @@
                                     <p>Nomor: {{ $order->order_number }}</p>
                                 </div>
                                 <x-status-pill :status="$order->delivery_status === 'delivered' ? 'delivered' : $order->status" />
-                                <a href="{{ route('orders.show', $order) }}">Detail</a>
+                                <button type="button" class="customer-detail-btn" data-modal-open="#dash-order-{{ $order->id }}">Detail</button>
                             </article>
                         @endforeach
                     </div>
@@ -212,7 +215,7 @@
                         <span>URL: <strong>{{ route('sites.show', ['order' => $deliveredSite->site_slug]) }}</strong></span>
                     </div>
                     <div class="customer-site-actions">
-                        <a href="{{ route('sites.show', ['order' => $deliveredSite->site_slug]) }}" rel="noopener" target="_blank">Buka website <span aria-hidden="true" class="material-symbols-outlined">open_in_new</span></a>
+                        <button type="button" class="customer-site-open" data-modal-open="#dash-site-modal">Buka website <span aria-hidden="true" class="material-symbols-outlined">open_in_new</span></button>
                         <a href="{{ route('customer.ai') }}">Pantau AI &amp; Kuota <span aria-hidden="true" class="material-symbols-outlined">smart_toy</span></a>
                     </div>
                 </article>
@@ -236,10 +239,72 @@
                         </div>
                         <b>{{ 'Rp '.number_format($invoice->amount, 0, ',', '.') }}</b>
                         <x-status-pill :status="$invoice->status" />
-                        <a href="{{ route('hosting-invoices.show', $invoice) }}">Detail</a>
+                        <button type="button" class="customer-detail-btn" data-modal-open="#dash-invoice-{{ $invoice->id }}">Detail</button>
                     </article>
                 @endforeach
             </section>
+        @endif
+
+        {{-- Modal pilih periode analitik --}}
+        <x-customer-modal id="dash-period-modal" title="Pilih periode analitik" subtitle="Atur rentang data yang tampil pada chart." icon="tune">
+            <form method="GET" action="{{ route('dashboard') }}">
+                <div class="customer-modal-rows">
+                    <div class="customer-modal-row"><span>Periode</span>
+                        <span class="customer-period-options">
+                            @foreach ([3, 6, 12] as $option)
+                                <label><input type="radio" name="period" value="{{ $option }}" @checked($monthsCount === $option)> {{ $option }} bulan</label>
+                            @endforeach
+                        </span>
+                    </div>
+                    <div class="customer-modal-row"><span>Data</span><span>{{ $statusTotal }} pesanan</span></div>
+                </div>
+                <div class="customer-modal-actions" style="margin-top: 1.1rem;">
+                    <button class="customer-btn" type="button" data-modal-close>Batal</button>
+                    <button class="customer-btn customer-btn--primary" type="submit">Terapkan periode</button>
+                </div>
+            </form>
+        </x-customer-modal>
+
+        @foreach ($orders as $order)
+            <x-customer-modal id="dash-order-{{ $order->id }}" title="Detail pesanan aktif" :subtitle="$order->order_number.' · '.($order->package->name ?? '-')" icon="info">
+                <div class="customer-modal-rows">
+                    <div class="customer-modal-row"><span>Nomor pesanan</span><span>{{ $order->order_number }}</span></div>
+                    <div class="customer-modal-row"><span>Status</span><x-status-pill :status="$order->delivery_status === 'delivered' ? 'delivered' : $order->status" /></div>
+                    <div class="customer-modal-row"><span>Total</span><span>Rp{{ number_format($order->total_price, 0, ',', '.') }}</span></div>
+                </div>
+                <div class="customer-modal-actions" style="margin-top: 1.1rem;">
+                    <button class="customer-btn" type="button" data-modal-close>Tutup</button>
+                    <a class="customer-btn customer-btn--primary" href="{{ route('orders.show', $order) }}">Buka halaman detail</a>
+                </div>
+            </x-customer-modal>
+        @endforeach
+
+        @foreach ($hostingInvoices as $invoice)
+            <x-customer-modal id="dash-invoice-{{ $invoice->id }}" title="Detail tagihan hosting" :subtitle="$invoice->invoice_number.' · jatuh tempo '.$invoice->due_at->translatedFormat('d M Y')" icon="info">
+                <div class="customer-modal-rows">
+                    <div class="customer-modal-row"><span>Website</span><span>{{ $invoice->service->website_name }}</span></div>
+                    <div class="customer-modal-row"><span>Periode</span><span>{{ $invoice->period_start->translatedFormat('M Y') }}–{{ $invoice->period_end->translatedFormat('M Y') }}</span></div>
+                    <div class="customer-modal-row"><span>Total</span><span>Rp{{ number_format($invoice->amount, 0, ',', '.') }}</span></div>
+                </div>
+                <div class="customer-modal-actions" style="margin-top: 1.1rem;">
+                    <button class="customer-btn" type="button" data-modal-close>Tutup</button>
+                    <a class="customer-btn customer-btn--primary" href="{{ route('hosting-invoices.show', $invoice) }}">Bayar tagihan</a>
+                </div>
+            </x-customer-modal>
+        @endforeach
+
+        @if ($deliveredSite)
+            <x-customer-modal id="dash-site-modal" tone="success" title="Website siap digunakan" :subtitle="($deliveredSite->business_data['business_name'] ?? 'Website Anda').' sudah dipublikasikan.'" icon="check_circle">
+                <div class="customer-modal-rows">
+                    <div class="customer-modal-row"><span>URL</span><span>{{ route('sites.show', ['order' => $deliveredSite->site_slug]) }}</span></div>
+                    <div class="customer-modal-row"><span>Template</span><span>{{ $deliveredSite->template?->name ?? $deliveredSite->template_snapshot['name'] ?? '-' }}</span></div>
+                    <div class="customer-modal-row"><span>Status</span><span>Sudah dipublikasi</span></div>
+                </div>
+                <div class="customer-modal-actions" style="margin-top: 1.1rem;">
+                    <button class="customer-btn" type="button" data-modal-close>Tutup</button>
+                    <a class="customer-btn customer-btn--primary" href="{{ route('sites.show', ['order' => $deliveredSite->site_slug]) }}" rel="noopener" target="_blank">Buka website</a>
+                </div>
+            </x-customer-modal>
         @endif
     </section>
 @endsection

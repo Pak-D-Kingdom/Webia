@@ -36,7 +36,8 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
-        $months = collect(range(2, 0))->map(fn (int $monthsAgo): Carbon => now()->startOfMonth()->subMonths($monthsAgo));
+        $monthsCount = in_array($request->query('period'), ['6', '12'], true) ? (int) $request->query('period') : 3;
+        $months = collect(range($monthsCount - 1, 0))->map(fn (int $monthsAgo): Carbon => now()->startOfMonth()->subMonths($monthsAgo));
         $analyticsOrders = $request->user()->orders()
             ->where('created_at', '>=', $months->first())
             ->get(['status', 'delivery_status', 'created_at']);
@@ -46,7 +47,7 @@ class DashboardController extends Controller
             ->get(['amount', 'period_start']);
         $analytics = [
             'labels' => $months->map(fn (Carbon $month): string => $month->translatedFormat('M'))->all(),
-            'period' => $months->first()->translatedFormat('M').'–'.$months->last()->translatedFormat('M Y'),
+            'period' => $months->first()->translatedFormat('M Y').'–'.$months->last()->translatedFormat('M Y'),
             'order_series' => $months->map(fn (Carbon $month): int => $analyticsOrders->filter(
                 fn ($order): bool => $order->created_at->isSameMonth($month)
             )->count())->all(),
@@ -82,6 +83,6 @@ class DashboardController extends Controller
             }
         }
 
-        return view('dashboard', compact('orders', 'activeOrder', 'deliveredSite', 'hostingInvoices', 'analytics', 'aiQuotaAlert'));
+        return view('dashboard', compact('orders', 'activeOrder', 'deliveredSite', 'hostingInvoices', 'analytics', 'aiQuotaAlert', 'monthsCount'));
     }
 }
