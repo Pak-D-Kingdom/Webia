@@ -273,6 +273,7 @@
 }
 
 .auth-field input {
+    box-sizing: border-box;
     width: 100%;
     height: 46px;
     padding: 0 16px;
