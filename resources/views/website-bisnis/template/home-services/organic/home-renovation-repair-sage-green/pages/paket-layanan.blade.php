@@ -24,13 +24,13 @@
     <div class="hr-container">
         <div class="hr-pkgpage">
             @foreach ($cfg['packages'] as $p)
-                <article class="hr-pkgcard {{ $p['popular'] ? 'is-popular' : '' }}" id="{{ $p['id'] }}" data-reveal>
+                <article class="hr-pkgcard {{ $p['popular'] ? 'is-popular' : '' }}" id="{{ $p['id'] }}" data-reveal data-tilt>
                     @if ($p['popular'])<span class="hr-pkg__badge">Paling Populer</span>@endif
                     <span class="hr-pkgcard__ico">{{ $i($p['icon']) }}</span>
                     <h3>{{ $p['name'] }}</h3>
                     <p class="hr-pkg__tag">{{ $p['tagline'] }}</p>
                     <p class="hr-pkgcard__from">Harga mulai dari</p>
-                    <p class="hr-pkgcard__price">{{ $p['price'] }}</p>
+                    <p class="hr-pkgcard__price" data-price="{{ $p['amount'] }}">{{ $p['price'] }}</p>
                     <ul class="hr-checklist hr-checklist--plain">
                         @foreach ($p['detail'] as $d)<li>{{ $i('check-circle') }}<span>{{ $d }}</span></li>@endforeach
                     </ul>

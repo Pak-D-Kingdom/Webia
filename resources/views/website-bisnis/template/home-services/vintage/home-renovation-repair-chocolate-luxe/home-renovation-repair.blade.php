@@ -27,19 +27,20 @@
     $brandName = $cfg['brand']['name'] . $cfg['brand']['accent'];
     $docTitle = $pageInfo ? $pageInfo['title'] . ' — ' . $brandName : $cfg['title'];
 
-    // Data pencarian navbar
-    $search = [['t' => 'Beranda', 'd' => $cfg['hero']['script'], 'u' => $u()]];
-    foreach ($cfg['pages'] as $p) {
-        $search[] = ['t' => $p['title'], 'd' => $p['script'], 'u' => $u($p['slug'])];
+    // Data pencarian (k = kategori, i = ikon)
+    $pageIcon = ['layanan' => 'tools', 'paket' => 'helmet', 'galeri' => 'camera', 'proyek' => 'briefcase', 'area' => 'pin', 'proses' => 'gear', 'penawaran' => 'doc', 'survei' => 'calendar'];
+    $search = [['t' => 'Beranda', 'd' => $cfg['hero']['script'], 'u' => $u(), 'k' => 'Halaman', 'i' => 'home']];
+    foreach ($cfg['pages'] as $key => $p) {
+        $search[] = ['t' => $p['title'], 'd' => $p['script'], 'u' => $u($p['slug']), 'k' => 'Halaman', 'i' => $pageIcon[$key] ?? 'doc'];
     }
     foreach ($cfg['services'] as $s) {
-        $search[] = ['t' => $s['title'], 'd' => $s['short'], 'u' => $u('layanan#' . $s['id'])];
+        $search[] = ['t' => $s['title'], 'd' => $s['short'], 'u' => $u('layanan') . '#' . $s['id'], 'k' => 'Layanan', 'i' => $s['icon']];
     }
     foreach ($cfg['packages'] as $p) {
-        $search[] = ['t' => $p['name'], 'd' => $p['tagline'], 'u' => $u('paket-layanan#' . $p['id'])];
+        $search[] = ['t' => $p['name'], 'd' => $p['tagline'], 'u' => $u('paket-layanan') . '#' . $p['id'], 'k' => 'Paket', 'i' => $p['icon']];
     }
     foreach ($cfg['projects'] as $p) {
-        $search[] = ['t' => $p['title'], 'd' => $p['place'], 'u' => $u('proyek-kami#' . $p['id'])];
+        $search[] = ['t' => $p['title'], 'd' => $p['place'] . ' — ' . $p['desc'], 'u' => $u('proyek-kami') . '#' . $p['id'], 'k' => 'Proyek', 'i' => 'briefcase'];
     }
 
     $rrData = [
@@ -174,23 +175,36 @@
 
         <div class="rr-nav__tools">
             <button class="rr-iconbtn rr-searchbtn" type="button" aria-label="Cari di situs" aria-expanded="false" aria-controls="rr-search"><svg class="rr-i" aria-hidden="true"><use href="#i-search"/></svg></button>
-            <a class="rr-btn rr-btn--dark rr-nav__cta" href="{{ $u($cfg['cta']['slug']) }}"><span>{{ $cfg['cta']['label'] }}</span><svg class="rr-i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="rr-btn rr-btn--dark rr-nav__cta" aria-label="{{ $cfg['cta']['label'] }}" href="{{ $u($cfg['cta']['slug']) }}"><span>{{ $cfg['cta']['label'] }}</span><svg class="rr-i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
             <button class="rr-iconbtn rr-burger" type="button" aria-label="Buka menu" aria-expanded="false" aria-controls="rr-menu"><svg class="rr-i" aria-hidden="true"><use href="#i-menu"/></svg></button>
-        </div>
-    </div>
-
-    <div class="rr-search" id="rr-search" hidden>
-        <div class="rr-container">
-            <form class="rr-search__form" role="search" data-rr-searchform>
-                <svg class="rr-i" aria-hidden="true"><use href="#i-search"/></svg>
-                <input type="search" id="rr-search-input" placeholder="Cari layanan, paket, atau proyek…" autocomplete="off" aria-label="Cari di situs">
-                <button type="button" class="rr-iconbtn rr-search__close" aria-label="Tutup pencarian"><svg class="rr-i" aria-hidden="true"><use href="#i-close"/></svg></button>
-            </form>
-            <ul class="rr-search__list" id="rr-search-list"></ul>
         </div>
     </div>
 </header>
 <div class="rr-scrim" hidden></div>
+
+{{-- ============ PENCARIAN ============ --}}
+<div class="rr-sx" id="rr-search" role="dialog" aria-modal="true" aria-labelledby="rr-sx-t" hidden>
+    <div class="rr-sx__bd" data-rr-sx-close></div>
+    <div class="rr-sx__panel">
+        <h2 id="rr-sx-t" class="rr-sr">Cari di situs</h2>
+        <form class="rr-sx__form" role="search" data-rr-searchform>
+            <svg class="rr-i rr-sx__ic" aria-hidden="true"><use href="#i-search"/></svg>
+            <input type="search" id="rr-search-input" placeholder="Cari layanan, paket, atau proyek…" autocomplete="off" autocapitalize="off" spellcheck="false" role="combobox" aria-expanded="true" aria-controls="rr-search-list" aria-autocomplete="list" aria-label="Cari di situs">
+            <button type="button" class="rr-sx__clear" aria-label="Hapus pencarian" hidden><svg class="rr-i" aria-hidden="true"><use href="#i-close"/></svg></button>
+            <button type="button" class="rr-sx__esc" data-rr-sx-close aria-label="Tutup pencarian"><kbd>Esc</kbd></button>
+        </form>
+        <div class="rr-sx__scroll">
+            <div class="rr-sx__quick" id="rr-sx-quick"></div>
+            <ul class="rr-sx__list" id="rr-search-list" role="listbox" aria-label="Hasil pencarian"></ul>
+        </div>
+        <span class="rr-sr" id="rr-sx-live" aria-live="polite"></span>
+        <footer class="rr-sx__foot">
+            <span class="rr-sx__hint"><kbd>↑</kbd><kbd>↓</kbd> pilih</span>
+            <span class="rr-sx__hint"><kbd>Enter</kbd> buka</span>
+            <button type="button" class="rr-sx__ask" data-rr-chat-open><svg class="rr-i" aria-hidden="true"><use href="#i-chat"/></svg><span>Tanya AI Chat</span></button>
+        </footer>
+    </div>
+</div>
 
 <main id="rr-main">
 
@@ -240,8 +254,7 @@
                 @foreach ($cfg['packages'] as $p)
                     <article class="rr-pkgmini @if (! empty($p['popular'])) is-pop @endif">
                         @if (! empty($p['popular']))<span class="rr-pkgmini__flag">Paling Populer</span>@endif
-                        <span class="rr-pkgmini__pre">Paket</span>
-                        <h3>{{ $p['short'] }}</h3>
+                        <h3><span class="rr-pkgmini__pre">Paket </span>{{ $p['short'] }}</h3>
                         <small>{{ $p['from'] }}</small>
                         <strong>{{ $p['price_label'] }}</strong>
                         <a class="rr-btn rr-btn--sm @if (! empty($p['popular'])) rr-btn--gold @else rr-btn--light @endif" href="{{ $u('paket-layanan') }}#{{ $p['id'] }}"><span>Pilih Paket</span><svg class="rr-i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
