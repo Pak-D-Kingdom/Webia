@@ -1551,6 +1551,24 @@ Route::prefix('webia/template/professional-service/artistic/branding-creative-ag
         }
     });
 
+Route::prefix('webia/template/professional-service/creative/branding-creative-agency-cobalt-pop')
+    ->name('webia.template.professional-service.creative.branding-creative-agency-cobalt-pop.')
+    ->group(function () {
+        $v = 'website-bisnis.template.professional-service.creative.branding-creative-agency-cobalt-pop.';
+
+        Route::view('/', $v . 'index')->name('home');
+        Route::view('/about-us', $v . 'about')->name('about');
+        Route::view('/services', $v . 'services')->name('services');
+        Route::view('/portfolio', $v . 'portfolio')->name('portfolio');
+        Route::view('/branding-showcase', $v . 'branding-showcase')->name('branding-showcase');
+        Route::view('/our-process', $v . 'process')->name('process');
+        Route::view('/our-team', $v . 'team')->name('team');
+        Route::view('/our-clients', $v . 'clients')->name('clients');
+        Route::view('/testimonials', $v . 'testimonials')->name('testimonials');
+        Route::view('/creative-journal', $v . 'journal')->name('journal');
+        Route::view('/contact-us', $v . 'contact')->name('contact');
+    });
+    
 Route::prefix('webia/template/home-services/organic/home-renovation-repair-sage-green')
     ->name('webia.template.home-services.organic.home-renovation-repair-sage-green.')
     ->group(function () {

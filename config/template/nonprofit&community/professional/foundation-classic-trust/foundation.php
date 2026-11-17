@@ -85,28 +85,28 @@ return [
     'programs' => [
         [
             'slug' => 'pendidikan', 'title' => 'Pendidikan untuk Semua', 'short' => "Pendidikan\nuntuk Semua",
-            'image' => 'program-pendidikan.jpg', 'art' => 'art-pendidikan.svg',
+            'image' => 'program-pendidikan.jpg', 'photo' => 'photo-pendidikan.jpg',
             'desc' => 'Beasiswa, perpustakaan desa, dan pelatihan guru agar setiap anak Indonesia dapat belajar dengan layak.',
             'points' => ['Beasiswa anak berprestasi dan kurang mampu', 'Pembangunan sudut baca dan perpustakaan desa', 'Pelatihan guru dan pendamping belajar'],
             'stat' => ['85.000+', 'anak terbantu'],
         ],
         [
             'slug' => 'kesehatan', 'title' => 'Kesehatan Masyarakat', 'short' => "Kesehatan\nMasyarakat",
-            'image' => 'program-kesehatan.jpg', 'art' => 'art-kesehatan.svg',
+            'image' => 'program-kesehatan.jpg', 'photo' => 'program-kesehatan.jpg',
             'desc' => 'Layanan kesehatan gratis, penyuluhan gizi, dan klinik keliling untuk wilayah yang sulit dijangkau.',
             'points' => ['Pemeriksaan dan pengobatan gratis', 'Penyuluhan gizi ibu dan anak', 'Klinik keliling untuk wilayah terpencil'],
             'stat' => ['62.000+', 'warga terlayani'],
         ],
         [
             'slug' => 'pemberdayaan', 'title' => 'Pemberdayaan Ekonomi', 'short' => "Pemberdayaan\nEkonomi",
-            'image' => 'program-pemberdayaan.jpg', 'art' => 'art-pemberdayaan.svg',
+            'image' => 'program-pemberdayaan.jpg', 'photo' => 'program-pemberdayaan.jpg',
             'desc' => 'Pelatihan usaha, pendampingan petani, dan akses modal agar keluarga dapat mandiri secara ekonomi.',
             'points' => ['Pelatihan kewirausahaan dan keuangan', 'Pendampingan petani dan UMKM desa', 'Akses modal usaha dan pemasaran'],
             'stat' => ['38.000+', 'keluarga mandiri'],
         ],
         [
             'slug' => 'lingkungan', 'title' => 'Pelestarian Lingkungan', 'short' => "Pelestarian\nLingkungan",
-            'image' => 'program-lingkungan.jpg', 'art' => 'art-lingkungan.svg',
+            'image' => 'program-lingkungan.jpg', 'photo' => 'photo-lingkungan.jpg',
             'desc' => 'Penanaman pohon, pengelolaan sampah, dan edukasi lingkungan bersama komunitas lokal.',
             'points' => ['Aksi tanam pohon bersama warga', 'Bank sampah dan daur ulang komunitas', 'Edukasi lingkungan di sekolah'],
             'stat' => ['120.000+', 'pohon ditanam'],
@@ -166,8 +166,8 @@ return [
         ['name' => 'BCA',          'image' => 'partner-bca.svg',      'type' => 'Mitra Perbankan'],
         ['name' => 'Bank Mandiri', 'image' => 'partner-mandiri.svg',  'type' => 'Mitra Perbankan'],
         ['name' => 'BNI',          'image' => 'partner-bni.svg',      'type' => 'Mitra Perbankan'],
-        ['name' => 'Telkom Indonesia', 'image' => 'partner-telkom.png', 'type' => 'Mitra Teknologi'],
-        ['name' => 'Unilever',     'image' => 'partner-unilever.png', 'type' => 'Mitra CSR'],
+        ['name' => 'Telkom Indonesia', 'image' => 'partner-telkom.svg', 'type' => 'Mitra Teknologi'],
+        ['name' => 'Unilever',     'image' => 'partner-unilever.svg', 'type' => 'Mitra CSR'],
     ],
 
     'volunteer' => [
@@ -180,17 +180,17 @@ return [
     ],
 
     'news' => [
-        ['slug' => 'pendidikan-desa-bangkit', 'category' => 'Berita', 'title' => 'Program Pendidikan di Desa Bangkit', 'date' => '24 Okt 2026', 'image' => 'program-pendidikan.jpg', 'art' => 'art-pendidikan.svg',
+        ['slug' => 'pendidikan-desa-bangkit', 'category' => 'Berita', 'title' => 'Program Pendidikan di Desa Bangkit', 'date' => '24 Okt 2026', 'image' => 'program-pendidikan.jpg', 'photo' => 'photo-pendidikan.jpg',
          'excerpt' => 'Lebih dari 300 anak di Desa Bangkit kini belajar di sudut baca baru dan mendapat pendampingan belajar setiap pekan.'],
-        ['slug' => 'layanan-kesehatan-gratis', 'category' => 'Berita', 'title' => 'Layanan Kesehatan Gratis untuk Warga', 'date' => '20 Okt 2026', 'image' => 'program-kesehatan.jpg', 'art' => 'art-kesehatan.svg',
+        ['slug' => 'layanan-kesehatan-gratis', 'category' => 'Berita', 'title' => 'Layanan Kesehatan Gratis untuk Warga', 'date' => '20 Okt 2026', 'image' => 'program-kesehatan.jpg', 'photo' => 'program-kesehatan.jpg',
          'excerpt' => 'Klinik keliling melayani pemeriksaan, pengobatan, dan penyuluhan gizi untuk ratusan warga di wilayah terpencil.'],
-        ['slug' => 'aksi-tanam-pohon-bersama', 'category' => 'Acara', 'title' => 'Aksi Tanam Pohon Bersama', 'date' => '15 Okt 2026', 'image' => 'program-lingkungan.jpg', 'art' => 'art-lingkungan.svg',
+        ['slug' => 'aksi-tanam-pohon-bersama', 'category' => 'Acara', 'title' => 'Aksi Tanam Pohon Bersama', 'date' => '15 Okt 2026', 'image' => 'program-lingkungan.jpg', 'photo' => 'photo-lingkungan.jpg',
          'excerpt' => 'Relawan dan warga menanam ribuan bibit pohon untuk menjaga daerah resapan air dan memperkuat lahan produktif.'],
-        ['slug' => 'pelatihan-usaha-desa', 'category' => 'Acara', 'title' => 'Pelatihan Usaha untuk Petani dan UMKM Desa', 'date' => '8 Okt 2026', 'image' => 'program-pemberdayaan.jpg', 'art' => 'art-pemberdayaan.svg',
+        ['slug' => 'pelatihan-usaha-desa', 'category' => 'Acara', 'title' => 'Pelatihan Usaha untuk Petani dan UMKM Desa', 'date' => '8 Okt 2026', 'image' => 'program-pemberdayaan.jpg', 'photo' => 'program-pemberdayaan.jpg',
          'excerpt' => 'Peserta belajar pencatatan keuangan, pengemasan produk, dan pemasaran digital bersama mentor berpengalaman.'],
-        ['slug' => 'beasiswa-2026', 'category' => 'Berita', 'title' => 'Penerima Beasiswa Harapan 2026 Diumumkan', 'date' => '1 Okt 2026', 'image' => 'program-pendidikan.jpg', 'art' => 'art-pendidikan.svg',
+        ['slug' => 'beasiswa-2026', 'category' => 'Berita', 'title' => 'Penerima Beasiswa Harapan 2026 Diumumkan', 'date' => '1 Okt 2026', 'image' => 'program-pendidikan.jpg', 'photo' => 'photo-beasiswa.jpg',
          'excerpt' => 'Sebanyak 1.200 pelajar dari 34 provinsi menerima beasiswa untuk melanjutkan pendidikan tahun ajaran baru.'],
-        ['slug' => 'klinik-keliling-baru', 'category' => 'Berita', 'title' => 'Klinik Keliling Baru Mulai Beroperasi', 'date' => '24 Sep 2026', 'image' => 'program-kesehatan.jpg', 'art' => 'art-kesehatan.svg',
+        ['slug' => 'klinik-keliling-baru', 'category' => 'Berita', 'title' => 'Klinik Keliling Baru Mulai Beroperasi', 'date' => '24 Sep 2026', 'image' => 'program-kesehatan.jpg', 'photo' => 'program-kesehatan.jpg',
          'excerpt' => 'Dua unit klinik keliling tambahan siap menjangkau desa-desa yang sulit diakses layanan kesehatan.'],
     ],
 

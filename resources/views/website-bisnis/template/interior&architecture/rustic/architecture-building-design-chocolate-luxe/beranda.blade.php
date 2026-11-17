@@ -9,16 +9,16 @@
     $u   = fn (string $p = '') => url($site['base'] . $p);
     $img = fn (string $f) => asset($site['img'] . '/' . $f);
     $thumbs = [
-        ['Rumah Modern Minimalis', 'Jakarta Selatan', 'res-01.svg'],
-        ['Gedung Perkantoran',     'Jakarta Pusat',   'com-01.svg'],
-        ['Villa Tropis Modern',    'Bali',            'vil-01.svg'],
+        ['Rumah Modern Minimalis', 'Jakarta Selatan', 'res-01.jpg'],
+        ['Gedung Perkantoran',     'Jakarta Pusat',   'com-01.jpg'],
+        ['Villa Tropis Modern',    'Bali',            'vil-01.jpg'],
     ];
 @endphp
 
 {{-- ================= HERO ================= --}}
 <section class="abd-hero" id="beranda">
     <div class="abd-hero__media" aria-hidden="true">
-        <img class="abd-hero__img" src="{{ $img('hero-villa.svg') }}" alt="" fetchpriority="high">
+        <img class="abd-hero__img" src="{{ $img('hero-villa.jpg') }}" alt="" fetchpriority="high">
         <span class="abd-hero__glow"></span>
     </div>
     <div class="abd-hero__leaves" data-leaves aria-hidden="true"></div>
@@ -74,11 +74,11 @@
                 </header>
                 <div class="abd-tiles">
                     <a class="abd-tile" href="{{ $u('/proyek#residensial') }}">
-                        <img src="{{ $img('res-03.svg') }}" alt="Ilustrasi proyek residensial" loading="lazy" width="800" height="560">
+                        <img src="{{ $img('res-03.jpg') }}" alt="Ilustrasi proyek residensial" loading="lazy" width="800" height="560">
                         <span class="abd-tile__cap">Proyek Residensial</span><span class="abd-tile__go" aria-hidden="true"><svg class="i"><use href="#i-arrow"/></svg></span>
                     </a>
                     <a class="abd-tile" href="{{ $u('/proyek#komersial') }}">
-                        <img src="{{ $img('com-02.svg') }}" alt="Ilustrasi proyek komersial" loading="lazy" width="800" height="560">
+                        <img src="{{ $img('com-02.jpg') }}" alt="Ilustrasi proyek komersial" loading="lazy" width="800" height="560">
                         <span class="abd-tile__cap">Proyek Komersial</span><span class="abd-tile__go" aria-hidden="true"><svg class="i"><use href="#i-arrow"/></svg></span>
                     </a>
                 </div>
@@ -86,7 +86,7 @@
 
             {{-- Layanan Desain Kami --}}
             <article class="abd-card abd-card--dark abd-card--layanan" data-reveal>
-                <img class="abd-card__bg" src="{{ $img('interior-service.svg') }}" alt="" loading="lazy" width="900" height="600">
+                <img class="abd-card__bg" src="{{ $img('interior-service.jpg') }}" alt="" loading="lazy" width="900" height="600">
                 <div class="abd-card__in">
                     <h2>Layanan Desain Kami</h2>
                     <p>Layanan profesional untuk berbagai kebutuhan Anda.</p>
@@ -142,7 +142,7 @@
 
             {{-- Booking Konsultasi --}}
             <article class="abd-card abd-card--dark abd-card--booking" data-reveal>
-                <img class="abd-card__bg" src="{{ $img('konsultasi-living.svg') }}" alt="" loading="lazy" width="900" height="420">
+                <img class="abd-card__bg" src="{{ $img('konsultasi-living.jpg') }}" alt="" loading="lazy" width="900" height="420">
                 <div class="abd-card__in">
                     <h2><svg class="i" aria-hidden="true"><use href="#i-calendar"/></svg>Booking Konsultasi</h2>
                     <p>Atur jadwal konsultasi dengan tim ahli kami.</p>
@@ -152,7 +152,7 @@
 
             {{-- Permintaan Penawaran --}}
             <article class="abd-card abd-card--dark abd-card--penawaran" data-reveal>
-                <img class="abd-card__bg" src="{{ $img('blueprint-desk.svg') }}" alt="" loading="lazy" width="1000" height="420">
+                <img class="abd-card__bg" src="{{ $img('blueprint-desk.jpg') }}" alt="" loading="lazy" width="1000" height="420">
                 <div class="abd-card__in">
                     <h2><svg class="i" aria-hidden="true"><use href="#i-doc"/></svg>Permintaan Penawaran</h2>
                     <p>Dapatkan penawaran terbaik untuk proyek Anda.</p>

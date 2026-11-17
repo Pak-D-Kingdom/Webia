@@ -71,7 +71,7 @@
 <dialog class="abd-dialog abd-dialog--lightbox" id="abd-lightbox" aria-label="Pratinjau gambar">
     <div class="abd-dialog__box">
         <button type="button" class="abd-iconbtn abd-dialog__x" data-dialog-close aria-label="Tutup"><svg class="i" aria-hidden="true"><use href="#i-close"/></svg></button>
-        <img src="" alt="" id="abd-lightbox-img">
+        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA=" alt="" id="abd-lightbox-img">
         <p id="abd-lightbox-cap"></p>
     </div>
 </dialog>

@@ -1,4 +1,4 @@
-<section class="uh-pagehero @if ($uh['pages'][$key]['no_subnav']) uh-pagehero--plain @endif">
+<section class="uh-pagehero">
     <div class="uh-pagehero__bg" aria-hidden="true">
         <img src="{{ $img('hero-kaaba.jpg') }}" alt="" width="1890" height="834">
         <span class="uh-pagehero__shade"></span>
@@ -19,14 +19,5 @@
                 <p class="uh-pagehero__text">{{ $uh['pages'][$key]['text'] }}</p>
             </div>
         </div>
-        @if (!$uh['pages'][$key]['no_subnav'])
-        <nav class="uh-subnav" aria-label="Pindah halaman">
-            @foreach ($uh['nav'] as $item)
-                @if ($item['key'] !== 'home')
-                    <a class="uh-subnav__link @if ($item['key'] === $active) is-active @endif" href="{{ $url($item['key']) }}" @if ($item['key'] === $active) aria-current="page" @endif>{{ $item['label'] }}</a>
-                @endif
-            @endforeach
-        </nav>
-        @endif
     </div>
 </section>

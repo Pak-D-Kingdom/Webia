@@ -14,8 +14,8 @@
                     <span class="uh-seg__thumb" aria-hidden="true"></span>
                     @foreach ($uh['prices']['room_types'] as $i => $rt)
                         <button type="button" role="radio" class="uh-seg__btn @if ($i === 0) is-active @endif" @if ($i === 0) aria-checked="true" @else aria-checked="false" @endif data-room="{{ $rt[0] }}" data-room-name="{{ $rt[1] }}">
-                            <svg class="uh-i" aria-hidden="true"><use href="#i-bed"/></svg>
-                            <span>{{ $rt[1] }}</span><small>{{ $rt[2] }}</small>
+                            <span class="uh-seg__ico"><svg class="uh-i" aria-hidden="true"><use href="#i-bed"/></svg></span>
+                            <span class="uh-seg__txt"><strong>{{ $rt[1] }}</strong><small>{{ $rt[2] }}</small></span>
                         </button>
                     @endforeach
                 </div>

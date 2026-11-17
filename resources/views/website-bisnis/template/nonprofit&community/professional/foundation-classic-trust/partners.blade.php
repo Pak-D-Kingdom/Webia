@@ -8,12 +8,22 @@
 @section('content')
 @include($fdBase . '.partials.page-hero', ['title' => 'Mitra & Sponsor', 'lead' => 'Bersama dengan berbagai pihak terpercaya untuk memperluas manfaat bagi masyarakat.'])
 
+<section class="fd-marquee" aria-label="Mitra dan sponsor kami">
+    <div class="fd-marquee__track">
+        @foreach ([1, 2] as $dup)
+            @foreach ($fd['partners'] as $p)
+                <span class="fd-marquee__item" @if($dup === 2) aria-hidden="true" @endif><img src="{{ $i($p['image']) }}" alt="@if($dup === 1){{ $p['name'] }}@endif" loading="lazy" width="360" height="240"></span>
+            @endforeach
+        @endforeach
+    </div>
+</section>
+
 <section class="fd-section">
     <div class="fd-wrap">
         <div class="fd-grid" style="grid-template-columns:repeat(auto-fit,minmax(190px,1fr))">
             @foreach ($fd['partners'] as $p)
                 <div class="fd-panel fd-reveal" style="text-align:center;padding:18px">
-                    <img src="{{ $i($p['image']) }}" alt="{{ $p['name'] }}" loading="lazy" style="margin:0 auto 12px;width:150px;aspect-ratio:72/48;object-fit:contain;animation:fd-floaty 6s ease-in-out {{ $loop->index * -1.1 }}s infinite">
+                    <img src="{{ $i($p['image']) }}" alt="{{ $p['name'] }}" loading="lazy" style="margin:0 auto 12px;width:200px;aspect-ratio:3/2;object-fit:contain;animation:fd-floaty 6s ease-in-out {{ $loop->index * -1.1 }}s infinite">
                     <b style="color:var(--fd-navy)">{{ $p['name'] }}</b><br><span class="fd-tag" style="margin-top:6px">{{ $p['type'] }}</span>
                 </div>
             @endforeach

@@ -39,5 +39,7 @@
         <symbol id="i-quote" viewBox="0 0 24 24" fill="currentColor"><path d="M4 18v-5.2C4 8.6 6 6.3 9.5 5.5l.7 1.3C8.4 7.5 7.6 8.8 7.5 10.5H10V18Zm10 0v-5.2c0-4.2 2-6.5 5.5-7.3l.7 1.3c-1.8.7-2.6 2-2.7 3.7H20V18Z"/></symbol>
         <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
         <symbol id="i-sparkle" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c.6 4.8 2.7 8.4 8 10-5.3 1.6-7.4 5.2-8 10-.6-4.8-2.7-8.4-8-10 5.3-1.6 7.4-5.2 8-10Z"/></symbol>
+        <symbol id="i-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15.5-6.2L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15.5 6.2L3 16"/><path d="M3 21v-5h5"/></symbol>
+        <symbol id="i-expand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></symbol>
     </defs>
 </svg>
