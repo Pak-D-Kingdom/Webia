@@ -196,6 +196,7 @@ class AiQuotaService
                     $pdo = new PDO("sqlite:{$sqlitePath}");
                     $stmt = $pdo->prepare('UPDATE tenants SET package_tier = :tier, monthly_message_quota = :quota WHERE id = :id');
                     $stmt->execute([':tier' => $tier, ':quota' => $limit, ':id' => $tenantId]);
+
                     return [
                         'status' => 'success',
                         'tenant_id' => $tenantId,
@@ -250,7 +251,8 @@ class AiQuotaService
                         $countsByDate[$r['usage_date']] = (int) $r['cnt'];
                     }
                     break;
-                } catch (Throwable $e) {}
+                } catch (Throwable $e) {
+                }
             }
         }
 
@@ -295,21 +297,23 @@ class AiQuotaService
 
         foreach ($lines as $line) {
             $trimmed = trim($line);
-            if (empty($trimmed) || str_starts_with($trimmed, '#')) continue;
+            if (empty($trimmed) || str_starts_with($trimmed, '#')) {
+                continue;
+            }
             if (preg_match('/^[-*]\s*\*\*(?:Q:\s*)?(.*?)\*\*/i', $trimmed, $m)) {
-                if ($currentQ && !empty($currentA)) {
+                if ($currentQ && ! empty($currentA)) {
                     $items[] = ['tanya' => $currentQ, 'jawab' => trim(implode(' ', $currentA))];
                 }
                 $currentQ = trim($m[1]);
                 $currentA = [];
             } elseif ($currentQ) {
                 $cleaned = preg_match('/^[-*]?\s*(?:A:\s*)?(.*)$/i', $trimmed, $m2) ? trim($m2[1]) : $trimmed;
-                if (!empty($cleaned)) {
+                if (! empty($cleaned)) {
                     $currentA[] = $cleaned;
                 }
             }
         }
-        if ($currentQ && !empty($currentA)) {
+        if ($currentQ && ! empty($currentA)) {
             $items[] = ['tanya' => $currentQ, 'jawab' => trim(implode(' ', $currentA))];
         }
 
@@ -328,7 +332,8 @@ class AiQuotaService
             if ($res->successful()) {
                 return $res->json();
             }
-        } catch (Throwable $e) {}
+        } catch (Throwable $e) {
+        }
 
         $candidates = [
             base_path("../AI-Assistant-DKreasi/knowledge_base/l4_tenant/{$tenantId}"),
@@ -337,8 +342,9 @@ class AiQuotaService
 
         foreach ($candidates as $dir) {
             if (is_dir($dir)) {
-                $read = fn($fn) => file_exists("{$dir}/{$fn}") ? trim(file_get_contents("{$dir}/{$fn}")) : '';
+                $read = fn ($fn) => file_exists("{$dir}/{$fn}") ? trim(file_get_contents("{$dir}/{$fn}")) : '';
                 $faqStr = $read('faq.md');
+
                 return [
                     'tenant_id' => $tenantId,
                     'profil' => $read('profil.md'),
@@ -353,8 +359,9 @@ class AiQuotaService
         // Otomatis inisialisasi starter pack jika folder belum tersedia
         $initializedDir = self::ensureTenantInitialized($tenantId);
         if ($initializedDir && is_dir($initializedDir)) {
-            $read = fn($fn) => file_exists("{$initializedDir}/{$fn}") ? trim(file_get_contents("{$initializedDir}/{$fn}")) : '';
+            $read = fn ($fn) => file_exists("{$initializedDir}/{$fn}") ? trim(file_get_contents("{$initializedDir}/{$fn}")) : '';
             $faqStr = $read('faq.md');
+
             return [
                 'tenant_id' => $tenantId,
                 'profil' => $read('profil.md'),
@@ -441,7 +448,8 @@ class AiQuotaService
                         $ins = $pdo->prepare('INSERT INTO tenants (id, name, category, is_active, created_at, package_tier, monthly_message_quota) VALUES (?, ?, ?, 1, datetime("now"), ?, ?)');
                         $ins->execute([$tenantId, $bizName ?? $tenantId, $bizCat ?? 'Bisnis', $packageTier, $monthlyQuota]);
                     }
-                } catch (Throwable $e) {}
+                } catch (Throwable $e) {
+                }
             }
         }
 
@@ -460,7 +468,8 @@ class AiQuotaService
             if ($res->successful()) {
                 return $res->json();
             }
-        } catch (Throwable $e) {}
+        } catch (Throwable $e) {
+        }
 
         $candidates = [
             base_path("../AI-Assistant-DKreasi/knowledge_base/l4_tenant/{$tenantId}"),
@@ -473,10 +482,11 @@ class AiQuotaService
         foreach ($candidates as $dir) {
             if (is_dir($dir)) {
                 foreach (['profil', 'layanan', 'kebijakan', 'faq'] as $k) {
-                    if (isset($payload[$k]) && !empty($payload[$k])) {
-                        file_put_contents("{$dir}/{$k}.md", trim($payload[$k]) . "\n");
+                    if (isset($payload[$k]) && ! empty($payload[$k])) {
+                        file_put_contents("{$dir}/{$k}.md", trim($payload[$k])."\n");
                     }
                 }
+
                 return ['status' => 'success', 'message' => 'Knowledge base berhasil diperbarui via file system.'];
             }
         }
@@ -492,10 +502,11 @@ class AiQuotaService
         $current = self::getTenantKnowledge($tenantId);
         $existingFaq = $current['faq'] ?? "# Tanya Jawab (FAQ)\n";
 
-        $newEntry = "\n* **" . trim($question) . "**  \n  " . trim($answer) . "\n";
-        $updatedFaq = rtrim($existingFaq) . $newEntry;
+        $newEntry = "\n* **".trim($question)."**  \n  ".trim($answer)."\n";
+        $updatedFaq = rtrim($existingFaq).$newEntry;
 
         $current['faq'] = $updatedFaq;
+
         return self::saveTenantKnowledge($tenantId, $current);
     }
 
@@ -510,9 +521,11 @@ class AiQuotaService
             $res = Http::timeout(2)->get("{$aiBaseUrl}/api/v1/analytics/cache");
             if ($res->successful()) {
                 $data = $res->json();
+
                 return $data['cache_metrics'] ?? [];
             }
-        } catch (Throwable $e) {}
+        } catch (Throwable $e) {
+        }
 
         return [
             'hit_ratio_percent' => 68.4,
@@ -535,9 +548,11 @@ class AiQuotaService
             $res = Http::timeout(2)->get("{$aiBaseUrl}/api/v1/tenants/{$tenantId}/unanswered");
             if ($res->successful()) {
                 $data = $res->json();
+
                 return $data['unanswered_queries'] ?? [];
             }
-        } catch (Throwable $e) {}
+        } catch (Throwable $e) {
+        }
 
         return [
             ['question' => 'Apakah melayani sistem pembayaran tempo atau cicilan?', 'count' => 4],
@@ -555,7 +570,7 @@ class AiQuotaService
         $profil = $knowledge['profil'] ?? '';
 
         // Update welcome message if provided
-        if (!empty($settings['welcome_message'])) {
+        if (! empty($settings['welcome_message'])) {
             $wm = trim($settings['welcome_message']);
             if (preg_match('/-\s+\*\*Sapaan\*\*:\s*.*$/m', $profil)) {
                 $profil = preg_replace('/-\s+\*\*Sapaan\*\*:\s*.*$/m', "- **Sapaan**: {$wm}", $profil);
@@ -566,7 +581,7 @@ class AiQuotaService
         }
 
         // Update WhatsApp CS if provided
-        if (!empty($settings['whatsapp_cs'])) {
+        if (! empty($settings['whatsapp_cs'])) {
             $wa = trim($settings['whatsapp_cs']);
             if (preg_match('/-\s+\*\*WhatsApp\*\*:\s*.*$/m', $profil)) {
                 $profil = preg_replace('/-\s+\*\*WhatsApp\*\*:\s*.*$/m', "- **WhatsApp**: {$wa}", $profil);
@@ -577,13 +592,14 @@ class AiQuotaService
         }
 
         $knowledge['profil'] = $profil;
+
         return self::saveTenantKnowledge($tenantId, $knowledge);
     }
 
     /**
      * Melakukan simulasi chat uji coba AI tenant langsung dari portal konsumen.
      */
-        /**
+    /**
      * Memperbarui informasi operasional & profil terstruktur bisnis klien
      * (Jam Operasional, Alamat Toko, Nomor Hotline, Pengumuman Terkini)
      * dan memformatnya secara aman ke dokumen knowledge base markdown.
@@ -596,7 +612,7 @@ class AiQuotaService
         // 0. Sapaan (Welcome Message)
         if (isset($data['welcome_message'])) {
             $wm = trim($data['welcome_message']);
-            if (!empty($wm)) {
+            if (! empty($wm)) {
                 if (preg_match('/-\s+\*\*Sapaan\*\*:\s*.*$/m', $profil)) {
                     $profil = preg_replace('/-\s+\*\*Sapaan\*\*:\s*.*$/m', "- **Sapaan**: {$wm}", $profil);
                 } else {
@@ -606,8 +622,8 @@ class AiQuotaService
         }
 
         // 1. WhatsApp CS & Hotline (Tersinkronisasi satu nomor)
-        $wa = !empty($data['whatsapp_cs']) ? trim($data['whatsapp_cs']) : (!empty($data['hotline']) ? trim($data['hotline']) : '');
-        if (!empty($wa)) {
+        $wa = ! empty($data['whatsapp_cs']) ? trim($data['whatsapp_cs']) : (! empty($data['hotline']) ? trim($data['hotline']) : '');
+        if (! empty($wa)) {
             if (preg_match('/-\s+\*\*WhatsApp\*\*:\s*.*$/m', $profil)) {
                 $profil = preg_replace('/-\s+\*\*WhatsApp\*\*:\s*.*$/m', "- **WhatsApp**: {$wa}", $profil);
             } else {
@@ -623,7 +639,7 @@ class AiQuotaService
         // 2. Jam Operasional
         if (isset($data['jam_operasional'])) {
             $jam = trim($data['jam_operasional']);
-            if (!empty($jam)) {
+            if (! empty($jam)) {
                 if (preg_match('/-\s+\*\*Jam Operasional\*\*:\s*.*$/m', $profil)) {
                     $profil = preg_replace('/-\s+\*\*Jam Operasional\*\*:\s*.*$/m', "- **Jam Operasional**: {$jam}", $profil);
                 } else {
@@ -635,7 +651,7 @@ class AiQuotaService
         // 3. Alamat
         if (isset($data['alamat'])) {
             $alamat = trim($data['alamat']);
-            if (!empty($alamat)) {
+            if (! empty($alamat)) {
                 if (preg_match('/-\s+\*\*Alamat\*\*:\s*.*$/m', $profil)) {
                     $profil = preg_replace('/-\s+\*\*Alamat\*\*:\s*.*$/m', "- **Alamat**: {$alamat}", $profil);
                 } else {
@@ -647,7 +663,7 @@ class AiQuotaService
         // 4. Pengumuman
         if (isset($data['pengumuman'])) {
             $pengumuman = trim($data['pengumuman']);
-            if (!empty($pengumuman)) {
+            if (! empty($pengumuman)) {
                 if (preg_match('/-\s+\*\*Pengumuman\*\*:\s*.*$/m', $profil)) {
                     $profil = preg_replace('/-\s+\*\*Pengumuman\*\*:\s*.*$/m', "- **Pengumuman**: {$pengumuman}", $profil);
                 } else {
@@ -657,10 +673,11 @@ class AiQuotaService
         }
 
         $knowledge['profil'] = $profil;
+
         return self::saveTenantKnowledge($tenantId, $knowledge);
     }
 
-public static function simulateChat(string $tenantId, string $message): array
+    public static function simulateChat(string $tenantId, string $message): array
     {
         $aiBaseUrl = rtrim(config('services.ai_engine.url', 'http://127.0.0.1:8001'), '/');
 
@@ -675,7 +692,7 @@ public static function simulateChat(string $tenantId, string $message): array
             if ($res->successful()) {
                 $json = $res->json();
                 $content = $json['message']['content'] ?? '';
-                if (!empty($content)) {
+                if (! empty($content)) {
                     return [
                         'status' => 'success',
                         'reply' => $content,
@@ -683,20 +700,21 @@ public static function simulateChat(string $tenantId, string $message): array
                     ];
                 }
             }
-        } catch (Throwable $e) {}
+        } catch (Throwable $e) {
+        }
 
         // Fallback cerdas berdasarkan knowledge lokal jika AI engine belum dihidupkan
         $knowledge = self::getTenantKnowledge($tenantId);
         $faq = $knowledge['faq'] ?? '';
 
         // Cek apakah ada kecocokan di FAQ
-        $reply = "Halo! Terima kasih atas pertanyaannya. Saat ini kami siap melayani pesanan Anda sesuai daftar katalog dan jam operasional kami. Silakan hubungi kami untuk informasi selengkapnya!";
-        if (!empty($faq)) {
-            $lines = explode("
-", $faq);
+        $reply = 'Halo! Terima kasih atas pertanyaannya. Saat ini kami siap melayani pesanan Anda sesuai daftar katalog dan jam operasional kami. Silakan hubungi kami untuk informasi selengkapnya!';
+        if (! empty($faq)) {
+            $lines = explode('
+', $faq);
             foreach ($lines as $line) {
                 if (str_contains(strtolower($line), strtolower(substr($message, 0, 10)))) {
-                    $reply = "Berdasarkan informasi FAQ kami: " . trim(strip_tags($line));
+                    $reply = 'Berdasarkan informasi FAQ kami: '.trim(strip_tags($line));
                     break;
                 }
             }
@@ -728,9 +746,11 @@ public static function simulateChat(string $tenantId, string $message): array
                         PDO::ATTR_TIMEOUT => 2,
                     ]);
                     $stmt = $pdo->prepare("INSERT INTO usages (session_id, layer, tenant_id, prompt_tokens, completion_tokens, total_tokens, latency_ms, provider, model, is_fallback, created_at) VALUES (?, 'L4', ?, 45, 60, 105, 120, ?, ?, 0, datetime('now'))");
-                    $sessionId = 'sess_' . substr(md5(uniqid($tenantId, true)), 0, 12);
+                    $sessionId = 'sess_'.substr(md5(uniqid($tenantId, true)), 0, 12);
+
                     return $stmt->execute([$sessionId, $tenantId, $provider, $model]);
-                } catch (\Throwable $e) {}
+                } catch (Throwable $e) {
+                }
             }
         }
 

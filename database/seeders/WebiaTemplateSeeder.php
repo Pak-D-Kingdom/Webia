@@ -945,8 +945,6 @@ class WebiaTemplateSeeder extends Seeder
                 'sort_order' => 42,
             ],
 
-
-
         ];
 
         foreach ($templates as $template) {

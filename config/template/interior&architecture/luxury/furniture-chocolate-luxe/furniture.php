@@ -14,39 +14,39 @@ $images = 'images/website-bisnis/template/interior&architecture/luxury/furniture
 return [
 
     'brand' => [
-        'name'    => 'LuxeFurni',
+        'name' => 'LuxeFurni',
         'tagline' => 'Premium Furniture & Custom Design',
-        'credit'  => '© 2026 WEBIA by D-KREASI. Seluruh hak cipta dilindungi.',
+        'credit' => '© 2026 WEBIA by D-KREASI. Seluruh hak cipta dilindungi.',
     ],
 
     'contact' => [
-        'address'  => 'Jakarta, Indonesia',
-        'hours'    => 'Senin - Sabtu 09:00 - 18:00',
-        'phone'    => '+62 812 3456 7890',
-        'email'    => 'hello@luxefurni.id',
+        'address' => 'Jakarta, Indonesia',
+        'hours' => 'Senin - Sabtu 09:00 - 18:00',
+        'phone' => '+62 812 3456 7890',
+        'email' => 'hello@luxefurni.id',
         // Nomor tujuan WhatsApp (format internasional tanpa + / 0 di depan).
         'whatsapp' => '62895630300345',
     ],
 
     'paths' => [
-        'css'    => 'css/website-bisnis/template/interior&architecture/luxury/furniture-chocolate-luxe/furniture.css',
-        'js'     => 'js/website-bisnis/template/interior&architecture/luxury/furniture-chocolate-luxe/furniture.js',
+        'css' => 'css/website-bisnis/template/interior&architecture/luxury/furniture-chocolate-luxe/furniture.css',
+        'js' => 'js/website-bisnis/template/interior&architecture/luxury/furniture-chocolate-luxe/furniture.js',
         'images' => $images,
     ],
 
     // Nama route (dibuat di routes/web.php).
     'routes' => [
-        'home'          => 'webia.template.furniture-chocolate-luxe.home',
-        'hero'          => 'webia.template.furniture-chocolate-luxe.hero',
-        'catalog'       => 'webia.template.furniture-chocolate-luxe.catalog',
+        'home' => 'webia.template.furniture-chocolate-luxe.home',
+        'hero' => 'webia.template.furniture-chocolate-luxe.hero',
+        'catalog' => 'webia.template.furniture-chocolate-luxe.catalog',
         'custom-design' => 'webia.template.furniture-chocolate-luxe.custom-design',
-        'materials'     => 'webia.template.furniture-chocolate-luxe.materials',
-        'dimensions'    => 'webia.template.furniture-chocolate-luxe.dimensions',
-        'gallery'       => 'webia.template.furniture-chocolate-luxe.gallery',
-        'order'         => 'webia.template.furniture-chocolate-luxe.order',
-        'lead-time'     => 'webia.template.furniture-chocolate-luxe.lead-time',
-        'quotation'     => 'webia.template.furniture-chocolate-luxe.quotation',
-        'ai-chat'       => 'webia.template.furniture-chocolate-luxe.ai-chat',
+        'materials' => 'webia.template.furniture-chocolate-luxe.materials',
+        'dimensions' => 'webia.template.furniture-chocolate-luxe.dimensions',
+        'gallery' => 'webia.template.furniture-chocolate-luxe.gallery',
+        'order' => 'webia.template.furniture-chocolate-luxe.order',
+        'lead-time' => 'webia.template.furniture-chocolate-luxe.lead-time',
+        'quotation' => 'webia.template.furniture-chocolate-luxe.quotation',
+        'ai-chat' => 'webia.template.furniture-chocolate-luxe.ai-chat',
     ],
 
     // Menu navbar (key = key halaman aktif).
@@ -64,70 +64,70 @@ return [
 
     /* ------------------------------------------------------------ HERO */
     'hero' => [
-        'eyebrow'    => 'PREMIUM FURNITURE & CUSTOM FURNITURE',
-        'title'      => 'Elegance in Every',
-        'script'     => 'Detail',
-        'text'       => 'Furniture berkualitas tinggi dengan desain eksklusif dan layanan custom sesuai kebutuhan Anda.',
-        'image'      => $images . '/hero-living.jpg',
-        'video'      => '', // isi dengan URL embed (mis. https://www.youtube.com/embed/xxxx) untuk mengaktifkan video
+        'eyebrow' => 'PREMIUM FURNITURE & CUSTOM FURNITURE',
+        'title' => 'Elegance in Every',
+        'script' => 'Detail',
+        'text' => 'Furniture berkualitas tinggi dengan desain eksklusif dan layanan custom sesuai kebutuhan Anda.',
+        'image' => $images.'/hero-living.jpg',
+        'video' => '', // isi dengan URL embed (mis. https://www.youtube.com/embed/xxxx) untuk mengaktifkan video
         'highlights' => [
             [
-                'id'    => 'custom',
-                'icon'  => 'tools',
+                'id' => 'custom',
+                'icon' => 'tools',
                 'title' => 'Custom Design',
-                'sub'   => 'Sesuai Keinginan',
-                'text'  => 'Dari sketsa hingga produk jadi, setiap potongan dirancang mengikuti gaya hidup, ukuran ruang, dan selera Anda.',
+                'sub' => 'Sesuai Keinginan',
+                'text' => 'Dari sketsa hingga produk jadi, setiap potongan dirancang mengikuti gaya hidup, ukuran ruang, dan selera Anda.',
             ],
             [
-                'id'    => 'material',
-                'icon'  => 'cube',
+                'id' => 'material',
+                'icon' => 'cube',
                 'title' => 'Premium Material',
-                'sub'   => 'Pilihan Terbaik',
-                'text'  => 'Kayu solid pilihan, kulit, kain, dan logam berkualitas dengan finishing yang tahan lama dan nyaman disentuh.',
+                'sub' => 'Pilihan Terbaik',
+                'text' => 'Kayu solid pilihan, kulit, kain, dan logam berkualitas dengan finishing yang tahan lama dan nyaman disentuh.',
             ],
             [
-                'id'    => 'team',
-                'icon'  => 'team',
+                'id' => 'team',
+                'icon' => 'team',
                 'title' => 'Profesional Team',
-                'sub'   => 'Berpengalaman',
-                'text'  => 'Desainer, tukang kayu, dan tim instalasi berpengalaman mendampingi proyek Anda dari konsultasi sampai serah terima.',
+                'sub' => 'Berpengalaman',
+                'text' => 'Desainer, tukang kayu, dan tim instalasi berpengalaman mendampingi proyek Anda dari konsultasi sampai serah terima.',
             ],
         ],
     ],
 
     /* --------------------------------------------------------- KATALOG */
     'catalog' => [
-        'title'     => 'Furniture Catalog',
-        'text'      => 'Temukan berbagai koleksi furniture premium untuk rumah dan ruang kerja Anda.',
-        'side_image' => $images . '/catalog-side.jpg',
+        'title' => 'Furniture Catalog',
+        'text' => 'Temukan berbagai koleksi furniture premium untuk rumah dan ruang kerja Anda.',
+        'side_image' => $images.'/catalog-side.jpg',
         'categories' => [
             [
-                'key' => 'sofa', 'name' => 'Sofa', 'room' => 'Living Room', 'image' => $images . '/cat-sofa.jpg',
+                'key' => 'sofa', 'name' => 'Sofa', 'room' => 'Living Room', 'image' => $images.'/cat-sofa.jpg',
                 'text' => 'Sofa empuk dengan rangka kayu solid dan pilihan upholstery kulit maupun kain premium.',
                 'items' => ['Sofa 2 & 3 Seater', 'Sofa L-Shape', 'Loveseat', 'Ottoman'],
             ],
             [
-                'key' => 'dining', 'name' => 'Meja Makan', 'room' => 'Dining Room', 'image' => $images . '/cat-dining.jpg',
+                'key' => 'dining', 'name' => 'Meja Makan', 'room' => 'Dining Room', 'image' => $images.'/cat-dining.jpg',
                 'text' => 'Meja makan kayu solid berbagai ukuran lengkap dengan kursi yang nyaman untuk keluarga.',
                 'items' => ['Meja 4-8 Orang', 'Kursi Makan', 'Buffet & Sideboard', 'Bench'],
             ],
             [
-                'key' => 'bedroom', 'name' => 'Tempat Tidur', 'room' => 'Bedroom', 'image' => $images . '/cat-bedroom.jpg',
+                'key' => 'bedroom', 'name' => 'Tempat Tidur', 'room' => 'Bedroom', 'image' => $images.'/cat-bedroom.jpg',
                 'text' => 'Tempat tidur dengan headboard empuk dan detail rapi untuk kamar yang tenang dan hangat.',
                 'items' => ['Bed Queen & King', 'Headboard Custom', 'Nakas', 'Meja Rias'],
             ],
             [
-                'key' => 'wardrobe', 'name' => 'Lemari', 'room' => 'Storage', 'image' => $images . '/cat-wardrobe.jpg',
+                'key' => 'wardrobe', 'name' => 'Lemari', 'room' => 'Storage', 'image' => $images.'/cat-wardrobe.jpg',
                 'text' => 'Lemari pakaian dan storage dengan lapisan veneer kayu, laci halus, dan handle brass.',
                 'items' => ['Lemari 2-3 Pintu', 'Lemari Sliding', 'Walk-in Closet', 'Rak Display'],
             ],
             [
-                'key' => 'chair', 'name' => 'Kursi', 'room' => 'Seating', 'image' => $images . '/cat-chair.jpg',
+                'key' => 'chair', 'name' => 'Kursi', 'room' => 'Seating', 'image' => $images.'/cat-chair.jpg',
                 'text' => 'Kursi lounge dan accent chair dengan siluet elegan, nyaman untuk duduk berjam-jam.',
                 'items' => ['Lounge Chair', 'Accent Chair', 'Bar Stool', 'Kursi Kerja'],
             ],
             [
-                'key' => 'outdoor', 'name' => 'Outdoor', 'room' => 'Outdoor Furniture', 'image' => $images . '/cat-outdoor.jpg',
+                'key' => 'outdoor', 'name' => 'Outdoor', 'room' => 'Outdoor Furniture', 'image' => $images.'/cat-outdoor.jpg',
                 'text' => 'Furniture outdoor tahan cuaca untuk teras, taman, dan area santai dengan tampilan mewah.',
                 'items' => ['Sofa Outdoor', 'Meja Kopi', 'Sun Lounger', 'Dining Set'],
             ],
@@ -136,10 +136,10 @@ return [
 
     /* --------------------------------------------------- CUSTOM DESIGN */
     'custom_design' => [
-        'title'  => 'Custom Design Options',
-        'text'   => 'Wujudkan furniture impian Anda dengan desain custom yang sesuai dengan gaya dan kebutuhan ruang.',
-        'image'  => $images . '/custom-sketch.jpg',
-        'note'   => 'Your Style, Our Craft',
+        'title' => 'Custom Design Options',
+        'text' => 'Wujudkan furniture impian Anda dengan desain custom yang sesuai dengan gaya dan kebutuhan ruang.',
+        'image' => $images.'/custom-sketch.jpg',
+        'note' => 'Your Style, Our Craft',
         'options' => [
             ['icon' => 'ruler',   'title' => 'Ukuran Sesuai Ruang',   'text' => 'Tentukan panjang, lebar, dan tinggi agar furniture pas dengan ruangan dan alur gerak Anda.'],
             ['icon' => 'cube',    'title' => 'Pilihan Material',      'text' => 'Pilih kayu solid, veneer, kulit, kain, atau logam sesuai karakter dan anggaran proyek.'],
@@ -154,8 +154,8 @@ return [
     /* ---------------------------------------------- MATERIAL & FINISHING */
     'materials' => [
         'title' => 'Materials & Finishes',
-        'text'  => 'Pilih material dan finishing terbaik dengan kualitas premium.',
-        'image' => $images . '/materials.jpg',
+        'text' => 'Pilih material dan finishing terbaik dengan kualitas premium.',
+        'image' => $images.'/materials.jpg',
         'groups' => [
             [
                 'name' => 'Material',
@@ -183,10 +183,10 @@ return [
     /* --------------------------------------------------------- DIMENSI */
     'dimensions' => [
         'title' => 'Product Dimensions',
-        'text'  => 'Sesuaikan ukuran dengan ruang Anda.',
-        'image' => $images . '/dimensions.jpg',
-        'note'  => 'Ukuran di bawah adalah ukuran standar (cm). Semua produk dapat dibuat sesuai ukuran ruang Anda.',
-        'tabs'  => [
+        'text' => 'Sesuaikan ukuran dengan ruang Anda.',
+        'image' => $images.'/dimensions.jpg',
+        'note' => 'Ukuran di bawah adalah ukuran standar (cm). Semua produk dapat dibuat sesuai ukuran ruang Anda.',
+        'tabs' => [
             'sofa' => ['label' => 'Sofa', 'rows' => [
                 ['Sofa 2 Seater', 180, 90, 85], ['Sofa 3 Seater', 220, 95, 85], ['Sofa L-Shape', 280, 170, 85], ['Loveseat', 150, 85, 82],
             ]],
@@ -211,47 +211,47 @@ return [
     /* ---------------------------------------------------------- GALERI */
     'gallery' => [
         'title' => 'Project Gallery',
-        'text'  => 'Inspirasi desain untuk hunian dan ruang kerja Anda.',
+        'text' => 'Inspirasi desain untuk hunian dan ruang kerja Anda.',
         'preview' => [
-            $images . '/gal-1.jpg',
-            $images . '/gal-2.jpg',
-            $images . '/gal-3.jpg',
+            $images.'/gal-1.jpg',
+            $images.'/gal-2.jpg',
+            $images.'/gal-3.jpg',
         ],
         'filters' => ['all' => 'Semua', 'living' => 'Living', 'dining' => 'Dining', 'bedroom' => 'Bedroom', 'office' => 'Office', 'outdoor' => 'Outdoor'],
         'items' => [
-            ['type' => 'living',  'title' => 'Living Room Penthouse', 'place' => 'Jakarta Selatan', 'image' => $images . '/hero-living.jpg'],
-            ['type' => 'dining',  'title' => 'Dining Hall Residence', 'place' => 'Surabaya',        'image' => $images . '/gal-2.jpg'],
-            ['type' => 'bedroom', 'title' => 'Master Bedroom Suite',  'place' => 'Bandung',         'image' => $images . '/gal-3.jpg'],
-            ['type' => 'living',  'title' => 'Family Lounge',         'place' => 'Tangerang',       'image' => $images . '/gal-1.jpg'],
-            ['type' => 'office',  'title' => 'Executive Study Room',  'place' => 'Jakarta Pusat',   'image' => $images . '/order-bg.jpg'],
-            ['type' => 'living',  'title' => 'Classic Seating Corner', 'place' => 'Semarang',       'image' => $images . '/catalog-side.jpg'],
-            ['type' => 'outdoor', 'title' => 'Tropical Terrace',      'place' => 'Bali',            'image' => $images . '/cat-outdoor.jpg'],
-            ['type' => 'dining',  'title' => 'Warm Dining Corner',    'place' => 'Yogyakarta',      'image' => $images . '/cat-dining.jpg'],
-            ['type' => 'bedroom', 'title' => 'Guest Bedroom',         'place' => 'Malang',          'image' => $images . '/cat-bedroom.jpg'],
+            ['type' => 'living',  'title' => 'Living Room Penthouse', 'place' => 'Jakarta Selatan', 'image' => $images.'/hero-living.jpg'],
+            ['type' => 'dining',  'title' => 'Dining Hall Residence', 'place' => 'Surabaya',        'image' => $images.'/gal-2.jpg'],
+            ['type' => 'bedroom', 'title' => 'Master Bedroom Suite',  'place' => 'Bandung',         'image' => $images.'/gal-3.jpg'],
+            ['type' => 'living',  'title' => 'Family Lounge',         'place' => 'Tangerang',       'image' => $images.'/gal-1.jpg'],
+            ['type' => 'office',  'title' => 'Executive Study Room',  'place' => 'Jakarta Pusat',   'image' => $images.'/order-bg.jpg'],
+            ['type' => 'living',  'title' => 'Classic Seating Corner', 'place' => 'Semarang',       'image' => $images.'/catalog-side.jpg'],
+            ['type' => 'outdoor', 'title' => 'Tropical Terrace',      'place' => 'Bali',            'image' => $images.'/cat-outdoor.jpg'],
+            ['type' => 'dining',  'title' => 'Warm Dining Corner',    'place' => 'Yogyakarta',      'image' => $images.'/cat-dining.jpg'],
+            ['type' => 'bedroom', 'title' => 'Guest Bedroom',         'place' => 'Malang',          'image' => $images.'/cat-bedroom.jpg'],
         ],
-        'collage' => $images . '/gallery-collage.jpg',
+        'collage' => $images.'/gallery-collage.jpg',
     ],
 
     /* ------------------------------------------------- CUSTOM ORDER FORM */
     'order' => [
         'title' => 'Custom Order Form',
-        'text'  => 'Isi form pemesanan custom furniture sesuai kebutuhan Anda.',
-        'image' => $images . '/order-bg.jpg',
+        'text' => 'Isi form pemesanan custom furniture sesuai kebutuhan Anda.',
+        'image' => $images.'/order-bg.jpg',
         'furniture_types' => ['Sofa', 'Meja Makan', 'Tempat Tidur', 'Lemari', 'Kursi', 'Outdoor', 'Lainnya'],
-        'materials'       => ['Kayu Jati Solid', 'Walnut', 'Oak', 'Kulit Asli', 'Fabric Premium', 'Belum menentukan'],
-        'finishings'      => ['Natural Oil', 'Matte Lacquer', 'Satin PU', 'Espresso Stain', 'Belum menentukan'],
+        'materials' => ['Kayu Jati Solid', 'Walnut', 'Oak', 'Kulit Asli', 'Fabric Premium', 'Belum menentukan'],
+        'finishings' => ['Natural Oil', 'Matte Lacquer', 'Satin PU', 'Espresso Stain', 'Belum menentukan'],
         'perks' => ['Sketsa desain gratis untuk pesanan custom', 'Konsultasi dengan desainer berpengalaman', 'Estimasi harga dan waktu produksi yang jelas'],
     ],
 
     /* -------------------------------------------------------- LEAD TIME */
     'lead_time' => [
         'title' => 'Production Lead Time',
-        'text'  => 'Proses produksi sesuai estimasi waktu yang jelas.',
+        'text' => 'Proses produksi sesuai estimasi waktu yang jelas.',
         'types' => [
             'standard' => ['label' => 'Produk Katalog',         'min' => 2, 'max' => 3,  'text' => 'Model katalog dengan ukuran standar.'],
-            'semi'     => ['label' => 'Semi Custom',            'min' => 3, 'max' => 5,  'text' => 'Model katalog dengan ukuran atau material disesuaikan.'],
-            'custom'   => ['label' => 'Full Custom',            'min' => 5, 'max' => 8,  'text' => 'Desain baru dari sketsa sampai produksi.'],
-            'project'  => ['label' => 'Proyek Besar / Interior', 'min' => 8, 'max' => 12, 'text' => 'Paket banyak item untuk rumah, kantor, atau hotel.'],
+            'semi' => ['label' => 'Semi Custom',            'min' => 3, 'max' => 5,  'text' => 'Model katalog dengan ukuran atau material disesuaikan.'],
+            'custom' => ['label' => 'Full Custom',            'min' => 5, 'max' => 8,  'text' => 'Desain baru dari sketsa sampai produksi.'],
+            'project' => ['label' => 'Proyek Besar / Interior', 'min' => 8, 'max' => 12, 'text' => 'Paket banyak item untuk rumah, kantor, atau hotel.'],
         ],
         'steps' => [
             ['icon' => 'chat',   'title' => 'Konsultasi & Brief',    'time' => '1 - 3 hari',    'text' => 'Diskusi kebutuhan, ukuran ruang, dan anggaran.'],
@@ -266,10 +266,10 @@ return [
     /* -------------------------------------------------------- QUOTATION */
     'quotation' => [
         'title' => 'Quotation Request',
-        'text'  => 'Dapatkan penawaran harga terbaik untuk proyek Anda.',
+        'text' => 'Dapatkan penawaran harga terbaik untuk proyek Anda.',
         'project_types' => ['Rumah Tinggal', 'Apartemen', 'Kantor', 'Hotel / Villa', 'Restoran / Cafe', 'Lainnya'],
-        'budgets'       => ['< Rp 25 juta', 'Rp 25 - 50 juta', 'Rp 50 - 100 juta', 'Rp 100 - 250 juta', '> Rp 250 juta'],
-        'timelines'     => ['Secepatnya', '1 - 2 bulan', '3 - 6 bulan', 'Masih merencanakan'],
+        'budgets' => ['< Rp 25 juta', 'Rp 25 - 50 juta', 'Rp 50 - 100 juta', 'Rp 100 - 250 juta', '> Rp 250 juta'],
+        'timelines' => ['Secepatnya', '1 - 2 bulan', '3 - 6 bulan', 'Masih merencanakan'],
         'steps' => [
             ['title' => 'Kirim Kebutuhan',   'text' => 'Isi form singkat tentang proyek dan item yang Anda perlukan.'],
             ['title' => 'Kami Hitung',       'text' => 'Tim kami menyusun rincian harga, material, dan waktu pengerjaan.'],
@@ -279,11 +279,11 @@ return [
 
     /* ---------------------------------------------------------- AI FAQ */
     'ai' => [
-        'name'     => 'Luxe',
-        'title'    => 'Tanya AI Assistant',
-        'text'     => 'Ada pertanyaan tentang produk, custom design, atau material? Chat dengan AI kami sekarang!',
-        'bubble'   => 'Halo! Saya Luxe, AI Assistant.',
-        'image'    => $images . '/mascot.jpg',
+        'name' => 'Luxe',
+        'title' => 'Tanya AI Assistant',
+        'text' => 'Ada pertanyaan tentang produk, custom design, atau material? Chat dengan AI kami sekarang!',
+        'bubble' => 'Halo! Saya Luxe, AI Assistant.',
+        'image' => $images.'/mascot.jpg',
         'greeting' => 'Halo! Saya Luxe, asisten AI LuxeFurni. Saya bisa membantu menjawab pertanyaan seputar produk dan kustomisasi furniture. Silakan pilih pertanyaan di bawah atau ketik sendiri.',
         'fallback' => 'Maaf, saya belum menemukan jawaban yang pas untuk pertanyaan itu. Anda bisa memilih salah satu pertanyaan di bawah, atau lanjutkan ke WhatsApp agar tim kami membantu langsung.',
         'suggestions' => [
@@ -367,9 +367,9 @@ return [
     /* ----------------------------------------------------------- FOOTER */
     'footer' => [
         'headline' => 'Bring Your Dream Space to Life',
-        'text'     => 'Furniture bukan hanya sekadar perabot, tapi investasi untuk kenyamanan dan kebahagiaan Anda.',
-        'image'    => $images . '/footer-room.jpg',
-        'social'   => [
+        'text' => 'Furniture bukan hanya sekadar perabot, tapi investasi untuk kenyamanan dan kebahagiaan Anda.',
+        'image' => $images.'/footer-room.jpg',
+        'social' => [
             ['icon' => 'instagram', 'label' => 'Instagram', 'url' => 'https://instagram.com/'],
             ['icon' => 'facebook',  'label' => 'Facebook',  'url' => 'https://facebook.com/'],
             ['icon' => 'youtube',   'label' => 'YouTube',   'url' => 'https://youtube.com/'],

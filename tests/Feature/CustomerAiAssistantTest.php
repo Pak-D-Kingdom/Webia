@@ -93,4 +93,48 @@ class CustomerAiAssistantTest extends TestCase
             ->assertOk()
             ->assertSee('data-ai-quota-alert', false);
     }
+
+    public function test_update_business_info_persists_data_and_handles_ai_engine_offline_gracefully(): void
+    {
+        // Fake AI engine returning connection error / 500
+        Http::fake([
+            '*/api/v1/tenants/*/knowledge' => Http::response([], 500),
+        ]);
+
+        $response = $this->actingAs($this->customer)
+            ->postJson(route('customer.ai.business-info'), [
+                'welcome_message' => 'Halo! Selamat datang di klinik kami.',
+                'whatsapp_cs' => '0812-9999-8888',
+                'alamat' => 'Jl. Pahlawan No. 10',
+            ]);
+
+        $response->assertOk()
+            ->assertJsonPath('status', 'success')
+            ->assertJsonPath('ai_synced', false);
+
+        $this->order->refresh();
+        $this->assertSame('Halo! Selamat datang di klinik kami.', $this->order->business_data['welcome_message']);
+        $this->assertSame('0812-9999-8888', $this->order->business_data['whatsapp']);
+        $this->assertSame('Jl. Pahlawan No. 10', $this->order->business_data['address']);
+    }
+
+    public function test_update_business_info_syncs_when_ai_engine_online(): void
+    {
+        Http::fake([
+            '*/api/v1/tenants/*/knowledge' => Http::response(['status' => 'success']),
+        ]);
+
+        $response = $this->actingAs($this->customer)
+            ->postJson(route('customer.ai.business-info'), [
+                'welcome_message' => 'Halo dari AI online!',
+                'whatsapp_cs' => '0812-1111-2222',
+            ]);
+
+        $response->assertOk()
+            ->assertJsonPath('status', 'success')
+            ->assertJsonPath('ai_synced', true);
+
+        $this->order->refresh();
+        $this->assertSame('Halo dari AI online!', $this->order->business_data['welcome_message']);
+    }
 }
