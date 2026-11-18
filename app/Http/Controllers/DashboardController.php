@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\HostingInvoice;
+use App\Services\AiQuotaService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class DashboardController extends Controller
 {
@@ -34,28 +36,53 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
+        $monthsCount = in_array($request->query('period'), ['6', '12'], true) ? (int) $request->query('period') : 3;
+        $months = collect(range($monthsCount - 1, 0))->map(fn (int $monthsAgo): Carbon => now()->startOfMonth()->subMonths($monthsAgo));
+        $analyticsOrders = $request->user()->orders()
+            ->where('created_at', '>=', $months->first())
+            ->get(['status', 'delivery_status', 'created_at']);
+        $analyticsInvoices = HostingInvoice::query()
+            ->whereHas('service', fn ($query) => $query->whereBelongsTo($request->user()))
+            ->where('period_start', '>=', $months->first())
+            ->get(['amount', 'period_start']);
+        $analytics = [
+            'labels' => $months->map(fn (Carbon $month): string => $month->translatedFormat('M'))->all(),
+            'period' => $months->first()->translatedFormat('M Y').'–'.$months->last()->translatedFormat('M Y'),
+            'order_series' => $months->map(fn (Carbon $month): int => $analyticsOrders->filter(
+                fn ($order): bool => $order->created_at->isSameMonth($month)
+            )->count())->all(),
+            'invoice_series' => $months->map(fn (Carbon $month): int => $analyticsInvoices->filter(
+                fn (HostingInvoice $invoice): bool => $invoice->period_start->isSameMonth($month)
+            )->sum('amount'))->all(),
+            'status_counts' => [
+                'waiting' => $analyticsOrders->whereIn('status', ['awaiting_payment', 'rejected', 'payment_uploaded'])->count(),
+                'in_progress' => $analyticsOrders->where('status', 'paid')->where('delivery_status', '!=', 'delivered')->count(),
+                'completed' => $analyticsOrders->where('delivery_status', 'delivered')->count(),
+            ],
+        ];
+
         $aiQuotaAlert = null;
         if ($deliveredSite && $deliveredSite->site_slug) {
-            $quota = \App\Services\AiQuotaService::getTenantQuota(
+            $quota = AiQuotaService::getTenantQuota(
                 $deliveredSite->site_slug,
                 $deliveredSite->package?->slug ?? 'pixel',
                 (int) ($deliveredSite->package?->chatbot_monthly_quota ?? 500)
             );
-            if (!empty($quota['is_quota_exhausted'])) {
+            if (! empty($quota['is_quota_exhausted'])) {
                 $aiQuotaAlert = [
                     'type' => 'exhausted',
                     'title' => 'Kuota Pesan Asisten AI Habis (100%)',
-                    'message' => 'Chatbot website Anda saat ini mengalihkan pengunjung ke WhatsApp karena kuota bulanan telah habis (' . number_format($quota['used_messages'], 0, ',', '.') . '/' . number_format($quota['monthly_quota'], 0, ',', '.') . ' pesan). Hubungi Admin Webia via WhatsApp untuk top-up atau upgrade paket.',
+                    'message' => 'Chatbot website Anda saat ini mengalihkan pengunjung ke WhatsApp karena kuota bulanan telah habis ('.number_format($quota['used_messages'], 0, ',', '.').'/'.number_format($quota['monthly_quota'], 0, ',', '.').' pesan). Hubungi Admin Webia via WhatsApp untuk top-up atau upgrade paket.',
                 ];
             } elseif (($quota['percentage_used'] ?? 0) >= 80) {
                 $aiQuotaAlert = [
                     'type' => 'warning',
-                    'title' => 'Peringatan: Kuota AI Tersisa Sedikit (' . $quota['percentage_used'] . '%)',
-                    'message' => 'Kuota pesan Asisten AI website Anda telah terpakai ' . $quota['percentage_used'] . '% (' . number_format($quota['used_messages'], 0, ',', '.') . '/' . number_format($quota['monthly_quota'], 0, ',', '.') . ' pesan). Disarankan upgrade atau tambah kuota agar bot tetap melayani pengunjung tanpa jeda.',
+                    'title' => 'Peringatan: Kuota AI Tersisa Sedikit ('.$quota['percentage_used'].'%)',
+                    'message' => 'Kuota pesan Asisten AI website Anda telah terpakai '.$quota['percentage_used'].'% ('.number_format($quota['used_messages'], 0, ',', '.').'/'.number_format($quota['monthly_quota'], 0, ',', '.').' pesan). Disarankan upgrade atau tambah kuota agar bot tetap melayani pengunjung tanpa jeda.',
                 ];
             }
         }
 
-        return view('dashboard', compact('orders', 'activeOrder', 'deliveredSite', 'hostingInvoices', 'aiQuotaAlert'));
+        return view('dashboard', compact('orders', 'activeOrder', 'deliveredSite', 'hostingInvoices', 'analytics', 'aiQuotaAlert', 'monthsCount'));
     }
 }

@@ -33,7 +33,14 @@ class WebiaOrderController extends Controller
     public function index(Request $request): View
     {
         $filter = $request->string('filter')->toString();
-        $query = WebiaOrder::whereBelongsTo($request->user())->with('package')->latest();
+        $ownedOrders = WebiaOrder::whereBelongsTo($request->user());
+        $orderStats = [
+            'total' => (clone $ownedOrders)->count(),
+            'waiting' => (clone $ownedOrders)->whereIn('status', ['awaiting_payment', 'rejected'])->count(),
+            'in_progress' => (clone $ownedOrders)->where('status', 'paid')->where('delivery_status', '!=', 'delivered')->count(),
+            'completed' => (clone $ownedOrders)->where('delivery_status', 'delivered')->count(),
+        ];
+        $query = (clone $ownedOrders)->with(['package', 'template'])->latest();
 
         if ($filter === 'menunggu_pembayaran') {
             $query->whereIn('status', ['awaiting_payment', 'rejected']);
@@ -49,7 +56,7 @@ class WebiaOrderController extends Controller
 
         $orders = $query->get();
 
-        return view('orders.index', compact('orders', 'filter'));
+        return view('orders.index', compact('orders', 'filter', 'orderStats'));
     }
 
     public function create(Request $request): View
@@ -191,6 +198,28 @@ class WebiaOrderController extends Controller
         $this->orderMail->notifyAdmins($order);
 
         return redirect()->route('orders.show', $order)->with('status', 'Bukti pembayaran berhasil dikirim.');
+    }
+
+    public function cancel(Request $request, WebiaOrder $order): RedirectResponse
+    {
+        abort_unless($order->user_id === $request->user()->id, 404);
+        abort_unless(in_array($order->status, ['awaiting_payment', 'rejected'], true), 422);
+
+        DB::transaction(function () use ($order, $request): void {
+            $lockedOrder = WebiaOrder::whereKey($order->id)->lockForUpdate()->firstOrFail();
+            abort_unless(in_array($lockedOrder->status, ['awaiting_payment', 'rejected'], true), 422);
+
+            $fromStatus = $lockedOrder->status;
+            $lockedOrder->update(['status' => 'cancelled']);
+            WebiaOrderLog::create([
+                'webia_order_id' => $lockedOrder->id,
+                'actor_id' => $request->user()->id,
+                'from_status' => $fromStatus,
+                'to_status' => 'cancelled',
+            ]);
+        });
+
+        return redirect()->route('orders.index')->with('status', 'Pesanan '.$order->order_number.' dibatalkan.');
     }
 
     public function pay(Request $request, WebiaOrder $order): RedirectResponse

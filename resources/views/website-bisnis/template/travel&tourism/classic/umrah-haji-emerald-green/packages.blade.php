@@ -12,9 +12,9 @@
             <div class="uh-toolbar">
                 <div class="uh-seg" role="group" aria-label="Filter jenis paket" data-uh-filter="packages">
                     <span class="uh-seg__thumb" aria-hidden="true"></span>
-                    <button type="button" class="uh-seg__btn is-active" data-filter="all" aria-pressed="true"><svg class="uh-i" aria-hidden="true"><use href="#i-sparkle"/></svg><span>Semua</span><b class="uh-seg__count" data-uh-count="all"></b></button>
-                    <button type="button" class="uh-seg__btn" data-filter="umrah" aria-pressed="false"><svg class="uh-i" aria-hidden="true"><use href="#i-kaaba"/></svg><span>Umrah</span><b class="uh-seg__count" data-uh-count="umrah"></b></button>
-                    <button type="button" class="uh-seg__btn" data-filter="haji" aria-pressed="false"><svg class="uh-i" aria-hidden="true"><use href="#i-mosque"/></svg><span>Haji</span><b class="uh-seg__count" data-uh-count="haji"></b></button>
+                    <button type="button" class="uh-seg__btn is-active" data-filter="all" aria-pressed="true"><span class="uh-seg__ico"><svg class="uh-i" aria-hidden="true"><use href="#i-sparkle"/></svg></span><span class="uh-seg__txt">Semua</span><b class="uh-seg__count" data-uh-count="all"></b></button>
+                    <button type="button" class="uh-seg__btn" data-filter="umrah" aria-pressed="false"><span class="uh-seg__ico"><svg class="uh-i" aria-hidden="true"><use href="#i-kaaba"/></svg></span><span class="uh-seg__txt">Umrah</span><b class="uh-seg__count" data-uh-count="umrah"></b></button>
+                    <button type="button" class="uh-seg__btn" data-filter="haji" aria-pressed="false"><span class="uh-seg__ico"><svg class="uh-i" aria-hidden="true"><use href="#i-mosque"/></svg></span><span class="uh-seg__txt">Haji</span><b class="uh-seg__count" data-uh-count="haji"></b></button>
                 </div>
                 <p class="uh-toolbar__result" aria-live="polite"><strong data-uh-shown>4</strong> paket ditampilkan</p>
             </div>

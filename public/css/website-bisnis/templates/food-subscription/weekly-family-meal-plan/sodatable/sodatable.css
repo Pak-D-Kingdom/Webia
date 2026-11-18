@@ -1,0 +1,164 @@
+
+    /* Formal Cursor & Warm Cream Canvas */
+    html, body {
+      cursor: default;
+      background-color: #FFF4E9;
+      color: #3E2731;
+      overflow-x: hidden;
+    }
+    a, button, select, input[type="range"], input[type="checkbox"], input[type="radio"], summary, [role="button"] {
+      cursor: pointer;
+    }
+    input[type="text"], input[type="number"], input[type="email"], input[type="tel"], input[type="date"], textarea {
+      cursor: text;
+    }
+
+    /* Kinetic Animations Across Hero, Backgrounds & Sections */
+    @keyframes floatWarm {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-13px) rotate(2deg); }
+    }
+    @keyframes floatReverse {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(12px) rotate(-2.5deg); }
+    }
+    @keyframes orbitClockwise {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @keyframes orbitCounter {
+      0% { transform: rotate(360deg); }
+      100% { transform: rotate(0deg); }
+    }
+    @keyframes blobBreathe {
+      0%, 100% { border-radius: 56% 44% 52% 48% / 46% 54% 46% 54%; transform: scale(1); }
+      33% { border-radius: 44% 56% 45% 55% / 55% 42% 58% 45%; transform: scale(1.03); }
+      66% { border-radius: 60% 40% 58% 42% / 42% 58% 40% 60%; transform: scale(0.98); }
+    }
+    @keyframes steamRise {
+      0% { transform: translateY(4px) scale(0.85); opacity: 0; }
+      40% { opacity: 0.85; }
+      100% { transform: translateY(-20px) scale(1.15); opacity: 0; }
+    }
+    @keyframes cozyWiggle {
+      0%, 100% { transform: rotate(-3deg) scale(1); }
+      50% { transform: rotate(3deg) scale(1.06); }
+    }
+    @keyframes bounceSoft {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-7px); }
+    }
+    @keyframes driftAmbient {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      50% { transform: translate(18px, -20px) rotate(14deg); }
+    }
+    @keyframes shimmerGlide {
+      0% { transform: translateX(-140%) skewX(-20deg); }
+      100% { transform: translateX(250%) skewX(-20deg); }
+    }
+    @keyframes marqueeFlow {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
+    }
+    @keyframes marqueeReverseFlow {
+      0% { transform: translateX(-50%); }
+      100% { transform: translateX(0%); }
+    }
+    @keyframes foodSparkleFloat {
+      0% { transform: translate(0, 0) scale(0.3) rotate(0deg); opacity: 0; }
+      25% { opacity: 1; }
+      80% { opacity: 0.95; }
+      100% { transform: translate(var(--sx, 12px), var(--sy, -48px)) scale(1.2) rotate(35deg); opacity: 0; }
+    }
+    @keyframes cozyGoldenGlow {
+      0%, 100% {
+        box-shadow: 0 0 14px rgba(255, 210, 105, 0.7), 0 0 28px rgba(242, 140, 120, 0.65);
+        transform: scale(1);
+      }
+      50% {
+        box-shadow: 0 0 26px rgba(255, 223, 128, 0.95), 0 0 44px rgba(155, 85, 114, 0.75);
+        transform: scale(1.06);
+      }
+    }
+
+    .animate-float-warm { animation: floatWarm 5.6s ease-in-out infinite; }
+    .animate-float-reverse { animation: floatReverse 6.4s ease-in-out infinite; }
+    .animate-orbit { animation: orbitClockwise 26s linear infinite; }
+    .animate-orbit-fast { animation: orbitClockwise 12s linear infinite; }
+    .animate-orbit-counter { animation: orbitCounter 20s linear infinite; }
+    .animate-blob-breathe { animation: blobBreathe 10s ease-in-out infinite; }
+    .animate-wiggle { animation: cozyWiggle 3.4s ease-in-out infinite; }
+    .animate-bounce-soft { animation: bounceSoft 2.6s ease-in-out infinite; }
+    .animate-drift { animation: driftAmbient 8.5s ease-in-out infinite; }
+
+    .steam-line-1 { animation: steamRise 2.4s ease-out infinite; }
+    .steam-line-2 { animation: steamRise 2.4s ease-out 0.8s infinite; }
+    .steam-line-3 { animation: steamRise 2.4s ease-out 1.6s infinite; }
+
+    .animate-marquee {
+      display: flex;
+      width: max-content;
+      animation: marqueeFlow 32s linear infinite;
+    }
+    .animate-marquee-reverse {
+      display: flex;
+      width: max-content;
+      animation: marqueeReverseFlow 34s linear infinite;
+    }
+    .animate-marquee:hover,
+    .animate-marquee-reverse:hover {
+      animation-play-state: paused;
+    }
+
+    /* Warm Shimmer CTA */
+    .btn-shimmer {
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-shimmer::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 45%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.42), transparent);
+      animation: shimmerGlide 3.4s infinite;
+      pointer-events: none;
+    }
+
+    /* Scroll Reveal */
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1), transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .reveal-on-scroll.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Floating AI Cozy Glow & Food Sparkles */
+    .ai-cozy-btn {
+      animation: cozyGoldenGlow 2.6s ease-in-out infinite;
+    }
+    .food-sparkle {
+      position: absolute;
+      font-size: 11px;
+      pointer-events: none;
+      filter: drop-shadow(0 0 6px rgba(255, 215, 110, 0.95));
+      animation: foodSparkleFloat var(--dur, 2.6s) ease-out infinite;
+      animation-delay: var(--delay, 0s);
+    }
+
+    /* Section Scroll Offset */
+    section[id] {
+      scroll-margin-top: 114px;
+    }
+
+    /* Warm Custom Scrollbar */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #FFF4E9; }
+    ::-webkit-scrollbar-thumb { background: #F28C78; border-radius: 999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #9B5572; }
+  

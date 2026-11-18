@@ -843,6 +843,7 @@ const themes = {
             orderDialogBody.innerHTML = '<p class="webia-cart-note">Formulir tidak tersedia. Coba lagi nanti.</p>';
             return null;
         }
+        form.querySelectorAll('[data-create-detail]').forEach((el) => el.remove());
         orderDialogBody.replaceChildren(form);
         form.addEventListener('submit', handleOrderSubmit);
         window.webiaInitOrderForm?.(form);

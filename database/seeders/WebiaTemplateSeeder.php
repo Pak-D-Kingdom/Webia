@@ -926,6 +926,25 @@ class WebiaTemplateSeeder extends Seeder
                 'is_active' => true,
                 'sort_order' => 41,
             ],
+            [
+                'name' => 'SodaTable Family Kitchen — Weekly Family Meal Plan',
+                'slug' => 'sodatable-family-meal-plan',
+                'category_slug' => 'food-subscription',
+                'category_label' => 'Food Subscription & Meal Solutions',
+                'business_types' => ['Weekly Family Meal Plan Provider'],
+                'design_style' => 'Warm Family Modern',
+                'color_theme' => 'Peach Soda',
+                'description' => 'Warm weekly family meal subscription with family-size planning, menu customization, budget estimation, and delivery scheduling.',
+                'preview_style' => 'preview-peach-family',
+                'eyebrow' => 'SodaTable Family Kitchen',
+                'headline' => 'Meja Makan Hangat Setiap Hari',
+                'tag' => 'Weekly Family Meal Plan',
+                'preview_folder' => 'sodatable',
+                'template_url' => '/webia/template/sodatable-family-meal-plan',
+                'is_active' => true,
+                'sort_order' => 42,
+            ],
+
 
 
         ];

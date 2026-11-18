@@ -30,17 +30,26 @@
         </div>
     </div>
 
-    <div class="abd-search" id="abd-search" hidden>
-        <div class="abd-container">
-            <form class="abd-search__form" role="search" onsubmit="return false">
-                <svg class="i" aria-hidden="true"><use href="#i-search"/></svg>
-                <input type="search" id="abd-search-input" placeholder="Cari portofolio, layanan, proyek…" autocomplete="off" aria-label="Cari di situs">
-                <button type="button" class="abd-iconbtn" data-search-toggle aria-label="Tutup pencarian"><svg class="i" aria-hidden="true"><use href="#i-close"/></svg></button>
-            </form>
-            <ul class="abd-search__list" id="abd-search-list" aria-live="polite"></ul>
-        </div>
-    </div>
+    <div class="abd-scroll" id="abd-scroll" aria-hidden="true"><i></i></div>
 </header>
+
+<div class="abd-cmdk" id="abd-search" role="dialog" aria-modal="true" aria-label="Pencarian situs" hidden>
+    <div class="abd-cmdk__bg" data-search-toggle></div>
+    <div class="abd-cmdk__panel">
+        <form class="abd-cmdk__form" role="search" onsubmit="return false">
+            <svg class="i" aria-hidden="true"><use href="#i-search"/></svg>
+            <input type="search" id="abd-search-input" placeholder="Cari portofolio, layanan, proyek…" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="true" aria-controls="abd-search-list" aria-label="Cari di situs">
+            <button type="button" class="abd-cmdk__clear" data-search-clear aria-label="Hapus pencarian" hidden><svg class="i" aria-hidden="true"><use href="#i-close"/></svg></button>
+            <button type="button" class="abd-cmdk__esc" data-search-toggle aria-label="Tutup pencarian"><kbd>Esc</kbd></button>
+        </form>
+        <div class="abd-cmdk__filters" id="abd-search-filters" role="group" aria-label="Filter hasil"></div>
+        <div class="abd-cmdk__scroll">
+            <div class="abd-cmdk__popular" id="abd-search-popular"></div>
+            <ul class="abd-cmdk__list" id="abd-search-list" role="listbox" aria-label="Hasil pencarian"></ul>
+        </div>
+        <footer class="abd-cmdk__foot"><span><kbd>↑</kbd><kbd>↓</kbd> pilih</span><span><kbd>↵</kbd> buka</span><span class="abd-cmdk__count" id="abd-search-count"></span></footer>
+    </div>
+</div>
 
 <div class="abd-drawer" id="abd-drawer" hidden>
     <div class="abd-drawer__bg" data-menu-toggle></div>

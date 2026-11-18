@@ -30,6 +30,23 @@ class ProfileUpdateTest extends TestCase
         $this->assertSame('Nama Baru', $user->fresh()->name);
     }
 
+    public function test_profile_page_shows_confirm_and_success_modals(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)->get(route('profile.edit'))
+            ->assertOk()
+            ->assertSee('data-confirm="profile-save-modal"', false)
+            ->assertSee('data-confirm="password-save-modal"', false);
+
+        $this->actingAs($user)
+            ->withSession(['status' => 'Kata sandi berhasil diperbarui.'])
+            ->get(route('profile.edit'))
+            ->assertOk()
+            ->assertSee('data-modal-autoopen', false)
+            ->assertSee('Kata sandi diperbarui', false);
+    }
+
     public function test_changing_email_requires_current_password(): void
     {
         $user = User::factory()->create(['email' => 'lama@example.com']);

@@ -8,19 +8,17 @@
     $v   = $site['view'];
     $active = trim($__env->yieldContent('active', 'beranda'));
 
-    // Index pencarian (dipakai tombol search di navbar)
+    // Index pencarian (palet pencarian di navbar)
+    $ico = ['beranda' => 'home', 'portofolio' => 'grid', 'proyek' => 'building', 'layanan' => 'compass', 'denah-3d' => 'cube', 'proses' => 'badge', 'sertifikasi' => 'badge', 'konsultasi' => 'calendar'];
     $search = [];
-    foreach ($site['nav'] as $n) {
-        if ($n['path'] !== '#kontak') { $search[] = ['t' => $n['label'], 'u' => $u($n['path']), 's' => 'Halaman']; }
-    }
-    foreach ($site['portfolio'] as $p) { $search[] = ['t' => $p['title'], 'u' => $u('/portofolio'), 's' => 'Portofolio · ' . $p['loc']]; }
-    foreach ($site['projects'] as $group => $items) { foreach ($items as $p) { $search[] = ['t' => $p['title'], 'u' => $u('/proyek#' . $group), 's' => 'Proyek ' . ucfirst($group)]; } }
-    foreach ($site['services'] as $s) { $search[] = ['t' => $s['title'], 'u' => $u('/layanan'), 's' => 'Layanan']; }
-    foreach ($site['plans'] as $p) { $search[] = ['t' => 'Denah ' . $p['title'], 'u' => $u('/denah-3d'), 's' => 'Denah & 3D Render']; }
-    foreach ($site['process'] as $p) { $search[] = ['t' => $p['title'], 'u' => $u('/proses'), 's' => 'Proses Proyek']; }
-    foreach ($site['certs'] as $c) { $search[] = ['t' => $c['title'], 'u' => $u('/sertifikasi'), 's' => 'Sertifikasi']; }
-    $search[] = ['t' => 'Booking Konsultasi', 'u' => $u('/konsultasi'), 's' => 'Konsultasi'];
-    $search[] = ['t' => 'Permintaan Penawaran', 'u' => $u('/penawaran'), 's' => 'Penawaran'];
+    foreach ($site['nav'] as $n) { $search[] = ['t' => $n['label'], 'u' => $u($n['path']), 'g' => 'Halaman', 'i' => $ico[$n['key']] ?? 'arrow', 's' => 'Buka halaman']; }
+    $search[] = ['t' => 'Permintaan Penawaran', 'u' => $u('/penawaran'), 'g' => 'Halaman', 'i' => 'doc', 's' => 'Buka halaman'];
+    foreach ($site['portfolio'] as $p) { $search[] = ['t' => $p['title'], 'u' => $u('/portofolio'), 'g' => 'Portofolio', 'i' => 'grid', 's' => $p['loc'] . ' · ' . $p['year']]; }
+    foreach ($site['projects'] as $group => $items) { foreach ($items as $p) { $search[] = ['t' => $p['title'], 'u' => $u('/proyek#' . $group), 'g' => 'Proyek', 'i' => $group === 'komersial' ? 'building' : 'home', 's' => ucfirst($group) . ' · ' . $p['loc']]; } }
+    foreach ($site['services'] as $s) { $search[] = ['t' => $s['title'], 'u' => $u('/layanan'), 'g' => 'Layanan', 'i' => $s['icon'], 's' => 'Layanan desain']; }
+    foreach ($site['plans'] as $p) { $search[] = ['t' => 'Denah ' . $p['title'], 'u' => $u('/denah-3d'), 'g' => 'Denah & 3D', 'i' => 'plan', 's' => $p['area'] . ' · ' . $p['rooms']]; }
+    foreach ($site['process'] as $p) { $search[] = ['t' => $p['title'], 'u' => $u('/proses'), 'g' => 'Proses', 'i' => $p['icon'], 's' => $p['time']]; }
+    foreach ($site['certs'] as $c) { $search[] = ['t' => $c['title'], 'u' => $u('/sertifikasi'), 'g' => 'Sertifikasi', 'i' => 'badge', 's' => $c['org']]; }
 
     $client = [
         'brand'    => $site['brand']['name'],
@@ -30,6 +28,7 @@
         'faq'      => $site['faq'],
         'quick'    => $site['quick'],
         'search'   => $search,
+        'popular'  => ['Booking Konsultasi', 'Rumah Modern Minimalis', 'Desain Interior', 'Denah Tipe 72 Modern', 'Permintaan Penawaran'],
     ];
 @endphp
 <!DOCTYPE html>

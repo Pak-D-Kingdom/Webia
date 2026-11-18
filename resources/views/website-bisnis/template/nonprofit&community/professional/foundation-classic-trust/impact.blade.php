@@ -24,11 +24,15 @@
 <section class="fd-section fd-section--tint">
     <div class="fd-wrap">
         <div class="fd-sectionhead fd-reveal"><h2>Dampak per Program</h2><p>Capaian kumulatif pada empat program utama.</p></div>
-        <div class="fd-grid fd-grid--4">
+        <div class="fd-grid fd-grid--2">
             @foreach ($fd['programs'] as $p)
-                <a class="fd-pcard fd-reveal" href="{{ $r('programs') }}#{{ $p['slug'] }}">
-                    <img src="{{ $i($p['art']) }}" alt="" loading="lazy" width="800" height="500">
-                    <div class="fd-pcard__body"><h3>{{ $p['title'] }}</h3><div class="fd-pcard__stat"><span>{{ $p['stat'][0] }}</span><small>{{ $p['stat'][1] }}</small></div></div>
+                <a class="fd-hcard fd-reveal" href="{{ $r('programs') }}#{{ $p['slug'] }}">
+                    <span class="fd-hcard__img"><img src="{{ $i($p['photo']) }}" alt="" loading="lazy" width="1200" height="900"></span>
+                    <span class="fd-hcard__body">
+                        <h3>{{ $p['title'] }}</h3>
+                        <span class="fd-pcard__stat"><span data-fd-auto>{{ $p['stat'][0] }}</span><small>{{ $p['stat'][1] }}</small></span>
+                        <span class="fd-hcard__more">Lihat program <svg class="fd-ico"><use href="#fd-i-arrow"/></svg></span>
+                    </span>
                 </a>
             @endforeach
         </div>

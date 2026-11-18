@@ -113,7 +113,7 @@
                 <p style="margin:0.25rem 0 0.5rem; font-size:0.875rem; color:#5f2120; line-height:1.4;">
                     Asisten AI di website Anda untuk sementara dialihkan langsung ke kontak WhatsApp agar calon pelanggan tetap terlayani. Untuk menambah kuota atau upgrade paket, silakan pilih paket top-up booster atau upgrade permanen di bawah ini.
                 </p>
-                <button type="button" onclick="openQuotaModal('booster')" style="display:inline-flex; align-items:center; gap:0.35rem; font-size:0.825rem; font-weight:700; color:#fff; background:#d93025; border:none; padding:0.45rem 0.95rem; border-radius:6px; cursor:pointer;">
+                <button type="button" data-ai-quota-alert style="display:inline-flex; align-items:center; gap:0.35rem; font-size:0.825rem; font-weight:700; color:#fff; background:#d93025; border:none; padding:0.45rem 0.95rem; border-radius:6px; cursor:pointer;">
                     <span class="material-symbols-outlined" style="font-size:1rem;">add_shopping_cart</span>
                     Pilih Paket &amp; Tambah Kuota &rarr;
                 </button>
@@ -127,7 +127,7 @@
                 <p style="margin:0.25rem 0 0.5rem; font-size:0.875rem; color:#6b3500; line-height:1.4;">
                     Penggunaan asisten AI Anda telah mencapai {{ round($percent) }}%. Agar percakapan chatbot tidak terputus, Anda dapat menambah kuota darurat (booster) atau upgrade paket website Anda.
                 </p>
-                <button type="button" onclick="openQuotaModal('booster')" style="display:inline-flex; align-items:center; gap:0.35rem; font-size:0.825rem; font-weight:700; color:#fff; background:#b06000; border:none; padding:0.45rem 0.95rem; border-radius:6px; cursor:pointer;">
+                <button type="button" data-ai-quota-alert style="display:inline-flex; align-items:center; gap:0.35rem; font-size:0.825rem; font-weight:700; color:#fff; background:#b06000; border:none; padding:0.45rem 0.95rem; border-radius:6px; cursor:pointer;">
                     <span class="material-symbols-outlined" style="font-size:1rem;">add_shopping_cart</span>
                     Tambah Kuota / Upgrade Paket &rarr;
                 </button>
@@ -310,6 +310,10 @@
                                     </div>
                                 </div>
                             </div>
+                            <button type="button" data-modal-open="#ai-preview-modal" style="margin-top:0.75rem; display:inline-flex; align-items:center; gap:0.35rem; font-size:0.775rem; font-weight:700; color:var(--account-action); background:#fff; border:1px solid var(--account-line); padding:0.45rem 0.85rem; border-radius:var(--account-radius); cursor:pointer;">
+                                <span class="material-symbols-outlined" style="font-size:0.95rem;">visibility</span>
+                                Preview chatbot bisnis
+                            </button>
                         </div>
                     </div>
 
@@ -963,6 +967,13 @@
         if (bizForm) {
             bizForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
+                if (bizForm.dataset.confirmed !== '1') {
+                    // Aksi simpan wajib lewat modal konfirmasi (frame "Simpan Pengaturan").
+                    const modal = document.getElementById('ai-save-modal');
+                    window.webiaModal?.open(modal, document.getElementById('btnSubmitBusinessInfo'));
+                    return;
+                }
+                delete bizForm.dataset.confirmed;
                 const submitBtn = document.getElementById('btnSubmitBusinessInfo');
                 const originalHtml = submitBtn ? submitBtn.innerHTML : '';
                 if (submitBtn) {
@@ -999,6 +1010,90 @@
                 }
             });
         }
+    });
+    </script>
+
+    <x-customer-modal id="ai-preview-modal" title="Preview chatbot bisnis" subtitle="Simulasi percakapan memakai sapaan yang tersimpan." icon="visibility">
+        <div class="customer-modal-rows">
+            <div class="customer-modal-row"><span>Sapaan</span><strong data-ai-preview-message>-</strong></div>
+            <div class="customer-modal-row"><span>Lokasi</span><strong data-ai-preview-location>-</strong></div>
+            <div class="customer-modal-row"><span>Handoff</span><strong data-ai-preview-handoff>-</strong></div>
+        </div>
+        <div class="customer-modal-actions" style="margin-top: 1.1rem;">
+            <button class="customer-btn" type="button" data-modal-close>Tutup</button>
+            <button class="customer-btn customer-btn--primary" type="button" data-ai-save-from-preview>Simpan pengaturan</button>
+        </div>
+    </x-customer-modal>
+
+    <x-customer-modal id="ai-save-modal" title="Simpan perubahan AI?" subtitle="Pesan sapaan dan informasi bisnis akan langsung disinkronkan." icon="help">
+        <div class="customer-modal-rows">
+            <div class="customer-modal-row"><span>Website</span><span>{{ $order->business_data['business_name'] ?? 'Website Bisnis Anda' }}</span></div>
+            <div class="customer-modal-row"><span>Kuota</span><span>{{ number_format($quotaData['used_messages'] ?? 0) }} / {{ number_format($quotaData['monthly_quota'] ?? 500) }} pesan</span></div>
+            <div class="customer-modal-row"><span>Sinkronisasi</span><span>Realtime</span></div>
+        </div>
+        <div class="customer-modal-actions" style="margin-top: 1.1rem;">
+            <button class="customer-btn" type="button" data-modal-close>Kembali</button>
+            <button class="customer-btn customer-btn--primary" type="button" data-ai-save-confirm>Simpan perubahan</button>
+        </div>
+    </x-customer-modal>
+
+    <x-customer-modal id="ai-quota-modal" tone="warning" title="Kuota pesan hampir habis" subtitle="Siapkan paket berikutnya agar chatbot tetap aktif." icon="warning" :open="($isWarning || $isExhausted)">
+        <div class="customer-modal-rows">
+            <div class="customer-modal-row"><span>Sisa</span><span>{{ number_format($quotaData['remaining_messages'] ?? 0) }} pesan</span></div>
+            <div class="customer-modal-row"><span>Terpakai</span><span>{{ number_format($quotaData['used_messages'] ?? 0) }} pesan</span></div>
+            <div class="customer-modal-row"><span>Reset</span><span>{{ $resetDateFormatted }}</span></div>
+        </div>
+        <div class="customer-modal-actions" style="margin-top: 1.1rem;">
+            <button class="customer-btn" type="button" data-modal-close>Nanti</button>
+            <button class="customer-btn customer-btn--primary" type="button" onclick="window.webiaModal && window.webiaModal.close(document.getElementById('ai-quota-modal')); openQuotaModal('booster');">Lihat pilihan paket</button>
+        </div>
+    </x-customer-modal>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Preview chatbot: baris diisi dari nilai form terkini.
+        document.querySelectorAll('[data-modal-open="#ai-preview-modal"]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                const msg = document.getElementById('welcome_message');
+                const loc = document.getElementById('alamat');
+                const online = document.getElementById('is_online_only');
+                const hand = document.getElementById('whatsapp_cs');
+                const set = (sel, val) => { const el = document.querySelector(sel); if (el) el.textContent = val; };
+                set('[data-ai-preview-message]', msg ? (msg.value.length > 60 ? msg.value.slice(0, 60) + '…' : msg.value) : '-');
+                set('[data-ai-preview-location]', online && online.checked ? 'Layanan online' : (loc && loc.value.trim() ? loc.value.trim() : '-'));
+                set('[data-ai-preview-handoff]', hand ? hand.value : '-');
+            });
+        });
+
+        // Dari preview langsung ke modal simpan.
+        document.querySelectorAll('[data-ai-save-from-preview]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                window.webiaModal && window.webiaModal.close(document.getElementById('ai-preview-modal'));
+                window.webiaModal && window.webiaModal.open(document.getElementById('ai-save-modal'), btn);
+            });
+        });
+
+        // Konfirmasi simpan: lanjut ke submit AJAX asli.
+        const saveBtn = document.getElementById('btnSubmitBusinessInfo');
+        const saveConfirm = document.querySelector('[data-ai-save-confirm]');
+        if (saveBtn && saveConfirm) {
+            saveConfirm.addEventListener('click', function () {
+                const bizForm = document.getElementById('businessInfoForm');
+                const modal = document.getElementById('ai-save-modal');
+                if (bizForm && modal) {
+                    bizForm.dataset.confirmed = '1';
+                    window.webiaModal && window.webiaModal.close(modal);
+                    if (bizForm.requestSubmit) bizForm.requestSubmit(saveBtn); else bizForm.submit();
+                }
+            });
+        }
+
+        // Banner kuota menipis/habis membuka modal ringkasan kuota.
+        document.querySelectorAll('[data-ai-quota-alert]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                window.webiaModal && window.webiaModal.open(document.getElementById('ai-quota-modal'), btn);
+            });
+        });
     });
     </script>
     <style>

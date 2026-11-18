@@ -42,5 +42,33 @@
                 </div>
             </div>
         @endif
+
+        @if (in_array(session('status'), ['Pembayaran berhasil dikonfirmasi.', 'Pembayaran simulasi berhasil dikonfirmasi.']))
+            <x-customer-modal id="hst-success-modal" tone="success" open title="Pembayaran berhasil" subtitle="Tagihan hosting telah dicatat lunas." icon="check_circle">
+                <div class="customer-modal-rows">
+                    <div class="customer-modal-row"><span>Invoice</span><span>{{ $invoice->invoice_number }}</span></div>
+                    <div class="customer-modal-row"><span>Status</span><span>Lunas</span></div>
+                    <div class="customer-modal-row"><span>Total</span><span>Rp{{ number_format($invoice->amount, 0, ',', '.') }}</span></div>
+                </div>
+                <div class="customer-modal-actions" style="margin-top: 1.1rem;">
+                    <button class="customer-btn" type="button" data-modal-close>Tutup</button>
+                </div>
+            </x-customer-modal>
+        @elseif (session('status') === 'Pembayaran Midtrans gagal dibuat. Coba lagi sebentar.' && in_array($invoice->status, ['unpaid', 'overdue'], true) && $invoice->amount > 0)
+            <x-customer-modal id="hst-fail-modal" tone="danger" open title="Pembayaran belum berhasil" subtitle="Tidak ada dana yang dicatat. Coba lagi atau ganti metode." icon="error">
+                <div class="customer-modal-rows">
+                    <div class="customer-modal-row"><span>Invoice</span><span>{{ $invoice->invoice_number }}</span></div>
+                    <div class="customer-modal-row"><span>Status</span><span>Gagal diproses</span></div>
+                    <div class="customer-modal-row"><span>Total</span><span>Rp{{ number_format($invoice->amount, 0, ',', '.') }}</span></div>
+                </div>
+                <form method="POST" action="{{ route('hosting-invoices.pay', $invoice) }}">
+                    @csrf
+                    <div class="customer-modal-actions" style="margin-top: 1.1rem;">
+                        <button class="customer-btn" type="button" data-modal-close>Tutup</button>
+                        <button class="customer-btn customer-btn--danger" type="submit">Coba lagi</button>
+                    </div>
+                </form>
+            </x-customer-modal>
+        @endif
     </section>
 @endsection

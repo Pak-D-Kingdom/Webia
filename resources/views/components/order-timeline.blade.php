@@ -12,6 +12,7 @@
     $activeStateLabel = match ($order?->status) {
         'awaiting_payment' => 'Menunggu pembayaran',
         'payment_uploaded' => 'Menunggu verifikasi',
+        'cancelled' => 'Dibatalkan',
         'paid' => 'Aktif',
         default => 'Aktif',
     };

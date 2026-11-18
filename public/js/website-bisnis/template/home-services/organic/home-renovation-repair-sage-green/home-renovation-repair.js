@@ -150,11 +150,33 @@
     $$('.hr-nav a').forEach(function (a) { on(a, 'click', function () { setNav(false); }); });
     on(window, 'resize', function () { if (window.innerWidth > 1240) { setNav(false); } });
 
-    /* ---------- 4. Pencarian cepat ---------- */
+    /* ---------- 4. Pencarian cepat (spotlight + pratinjau) ---------- */
     var sInput = $('[data-search-input]');
     var sBody = $('[data-search-results]');
+    var sPrev = $('[data-search-preview]');
     var sClear = $('[data-search-clear]');
-    var sSel = -1;
+    var sTabs = $$('[data-search-tab]');
+    var sSel = -1, sFilter = 'all', sFlat = [];
+    var RECENT_KEY = 'hrr-recent';
+    var SYN = {
+        harga: ['paket'], tarif: ['paket'], biaya: ['paket', 'estimasi'], murah: ['basic'], renovasi: ['layanan'], perbaikan: ['layanan'],
+        bocor: ['perbaikan'], dapur: ['renovasi'], taman: ['eksterior'], hasil: ['galeri', 'proyek'], foto: ['galeri'], wilayah: ['area'],
+        kota: ['area'], jadwal: ['survei'], survey: ['survei'], kontak: ['penawaran'], hubungi: ['penawaran'], cat: ['finishing']
+    };
+
+    function loadRecent() {
+        try { return JSON.parse(window.localStorage.getItem(RECENT_KEY) || '[]').slice(0, 5); } catch (e) { return []; }
+    }
+    function saveRecent(q) {
+        q = (q || '').trim();
+        if (!q) { return; }
+        try {
+            var r = loadRecent().filter(function (x) { return x.toLowerCase() !== q.toLowerCase(); });
+            r.unshift(q);
+            window.localStorage.setItem(RECENT_KEY, JSON.stringify(r.slice(0, 5)));
+        } catch (e) { /* abaikan */ }
+    }
+    function clearRecent() { try { window.localStorage.removeItem(RECENT_KEY); } catch (e) { /* abaikan */ } }
 
     function appendHighlight(node, text, words) {
         if (!words.length) { node.appendChild(doc.createTextNode(text)); return; }
@@ -162,6 +184,7 @@
         while (pos < text.length) {
             var best = -1, bestLen = 0;
             for (var i = 0; i < words.length; i++) {
+                if (!words[i]) { continue; }
                 var at = lower.indexOf(words[i], pos);
                 if (at !== -1 && (best === -1 || at < best)) { best = at; bestLen = words[i].length; }
             }
@@ -173,68 +196,173 @@
             pos = best + bestLen;
         }
     }
+    function searchAll(term) {
+        var items = Array.isArray(D.search) ? D.search : [];
+        var words = term.split(/\s+/).filter(Boolean);
+        return items.map(function (it) {
+            var t = it.t.toLowerCase(), d = it.d.toLowerCase(), score = 0;
+            words.forEach(function (w) {
+                if (t.indexOf(w) === 0) { score += 6; }
+                else if (t.indexOf(w) !== -1) { score += 4; }
+                else if (d.indexOf(w) !== -1) { score += 2; }
+                else if ((SYN[w] || []).some(function (s) { return t.indexOf(s) !== -1 || d.indexOf(s) !== -1; })) { score += 1; }
+                else { score -= 30; }
+            });
+            return { it: it, score: score };
+        }).filter(function (x) { return x.score > 0; })
+            .sort(function (a, b) { return b.score - a.score; })
+            .map(function (x) { return x.it; });
+    }
+    function setTabCounts(list) {
+        var counts = { all: list.length };
+        list.forEach(function (it) { counts[it.g] = (counts[it.g] || 0) + 1; });
+        sTabs.forEach(function (b) {
+            var key = b.getAttribute('data-search-tab');
+            var badge = $('i', b);
+            if (!badge) { badge = el('i'); b.appendChild(badge); }
+            badge.textContent = String(counts[key] || 0);
+        });
+    }
+    function showPreview(it) {
+        if (!sPrev) { return; }
+        sPrev.textContent = '';
+        var pv = el('div', 'hr-pv');
+        if (!it) {
+            pv.appendChild(el('h3', '', 'Cari apa saja di Renovaku'));
+            pv.appendChild(el('p', '', 'Ketik nama layanan, paket, proyek, atau wilayah. Gunakan panah ↑ ↓ untuk memilih hasil dan Enter untuk membukanya.'));
+            sPrev.appendChild(pv);
+            return;
+        }
+        if (it.m) {
+            var wrap = el('div', 'hr-pv__img');
+            var im = doc.createElement('img');
+            im.src = it.m; im.alt = ''; im.loading = 'lazy';
+            wrap.appendChild(im);
+            pv.appendChild(wrap);
+        }
+        var tags = el('div', 'hr-pv__tags');
+        tags.appendChild(el('span', '', it.g));
+        if (it.x) { tags.appendChild(el('span', '', it.x)); }
+        pv.appendChild(tags);
+        pv.appendChild(el('h3', '', it.t));
+        pv.appendChild(el('p', '', it.d));
+        var acts = el('div', 'hr-pv__actions');
+        var open = el('a', 'hr-btn hr-btn--primary hr-btn--sm');
+        open.href = it.u;
+        open.appendChild(el('span', '', 'Buka'));
+        open.appendChild(svgIcon('arrow'));
+        on(open, 'click', function () { saveRecent(sInput.value || it.t); });
+        var ask = el('button', 'hr-btn hr-btn--light hr-btn--sm');
+        ask.type = 'button';
+        ask.setAttribute('data-search-ask', it.t);
+        ask.appendChild(svgIcon('bot'));
+        ask.appendChild(el('span', '', 'Tanya AI'));
+        acts.appendChild(open); acts.appendChild(ask);
+        pv.appendChild(acts);
+        sPrev.appendChild(pv);
+    }
     function selectItem(n) {
-        var items = $$('.hr-sitem', sBody);
-        if (!items.length) { sSel = -1; return; }
-        sSel = (n + items.length) % items.length;
-        items.forEach(function (it, i) {
+        var nodes = $$('.hr-sitem', sBody);
+        if (!nodes.length) { sSel = -1; showPreview(null); if (sInput) { sInput.removeAttribute('aria-activedescendant'); } return; }
+        sSel = (n + nodes.length) % nodes.length;
+        nodes.forEach(function (it, i) {
             it.classList.toggle('is-sel', i === sSel);
             it.setAttribute('aria-selected', i === sSel ? 'true' : 'false');
         });
-        var cur = items[sSel];
-        if (cur && cur.scrollIntoView) { cur.scrollIntoView({ block: 'nearest' }); }
+        var cur = nodes[sSel];
+        if (sInput) { sInput.setAttribute('aria-activedescendant', cur.id); }
+        if (cur.scrollIntoView) { cur.scrollIntoView({ block: 'nearest' }); }
+        showPreview(sFlat[sSel]);
+    }
+    function quickAction(icon, title, sub, href, act) {
+        var n = el(href ? 'a' : 'button');
+        if (href) { n.href = href; if (/^https?:/.test(href)) { n.target = '_blank'; n.rel = 'noopener noreferrer'; } } else { n.type = 'button'; }
+        if (act) { n.setAttribute('data-search-act', act); }
+        n.appendChild(svgIcon(icon));
+        var box = el('span');
+        box.appendChild(el('b', '', title));
+        box.appendChild(el('small', '', sub));
+        n.appendChild(box);
+        n.appendChild(svgIcon('arrow'));
+        return n;
+    }
+    function renderQuick() {
+        sBody.textContent = '';
+        sFlat = [];
+        setTabCounts(Array.isArray(D.search) ? D.search : []);
+        var box = el('div', 'hr-sq');
+        var recent = loadRecent();
+        if (recent.length) {
+            box.appendChild(el('h4', '', 'Pencarian terakhir'));
+            var rc = el('div', 'hr-sq__recent');
+            recent.forEach(function (q) {
+                var b = el('button');
+                b.type = 'button';
+                b.appendChild(svgIcon('clock'));
+                b.appendChild(doc.createTextNode(q));
+                on(b, 'click', function () { sInput.value = q; renderSearch(q); sInput.focus(); });
+                rc.appendChild(b);
+            });
+            var clr = el('button', 'hr-sq__clear', 'Hapus riwayat');
+            clr.type = 'button';
+            on(clr, 'click', function () { clearRecent(); renderQuick(); });
+            rc.appendChild(clr);
+            box.appendChild(rc);
+        }
+        box.appendChild(el('h4', '', 'Aksi cepat'));
+        var cards = el('div', 'hr-sq__cards');
+        var links = D.links || {};
+        cards.appendChild(quickAction('sliders', 'Hitung estimasi biaya', 'Kalkulator di AI Chatbot', null, 'calc'));
+        cards.appendChild(quickAction('calendar', 'Booking survei lokasi', 'Jadwalkan kunjungan tim kami', links['booking-survei'] || '#'));
+        cards.appendChild(quickAction('crown', 'Lihat paket layanan', 'Basic, Premium, Exclusive', links['paket-layanan'] || '#'));
+        cards.appendChild(quickAction('whatsapp', 'Chat via WhatsApp', 'Hubungi tim secara langsung', waLink('Halo Renovaku, saya ingin konsultasi renovasi rumah.')));
+        box.appendChild(cards);
+        sBody.appendChild(box);
+        showPreview(null);
+        sSel = -1;
+        if (sInput) { sInput.removeAttribute('aria-activedescendant'); }
     }
     function renderSearch(q) {
         if (!sBody) { return; }
-        var items = Array.isArray(D.search) ? D.search : [];
         var term = (q || '').toLowerCase().trim();
-        var words = term ? term.split(/\s+/) : [];
-        var found;
-        if (!term) {
-            found = items.filter(function (it) { return it.g === 'Halaman' || it.g === 'Paket'; }).slice(0, 8);
-        } else {
-            found = items.map(function (it) {
-                var t = it.t.toLowerCase(), d = it.d.toLowerCase(), score = 0;
-                words.forEach(function (w) {
-                    if (t.indexOf(w) === 0) { score += 5; }
-                    else if (t.indexOf(w) !== -1) { score += 3; }
-                    else if (d.indexOf(w) !== -1) { score += 1; }
-                    else { score -= 20; }
-                });
-                return { it: it, score: score };
-            }).filter(function (x) { return x.score > 0; })
-                .sort(function (a, b) { return b.score - a.score; })
-                .slice(0, 10)
-                .map(function (x) { return x.it; });
-        }
-        sBody.textContent = '';
         if (sClear) { sClear.hidden = !term; }
+        if (!term) { renderQuick(); return; }
+        var words = term.split(/\s+/).filter(Boolean);
+        var all = searchAll(term);
+        setTabCounts(all);
+        var found = sFilter === 'all' ? all : all.filter(function (it) { return it.g === sFilter; });
+        sBody.textContent = '';
+        sFlat = [];
         if (!found.length) {
             var empty = el('div', 'hr-search__empty');
-            var s = el('strong', '', 'Tidak ada hasil untuk “' + q + '”');
-            var p = el('span', '', 'Coba kata lain seperti “paket”, “survei”, atau “garansi”, atau tanyakan ke asisten AI kami.');
+            empty.appendChild(svgIcon('search'));
+            empty.appendChild(el('strong', '', 'Tidak ada hasil untuk “' + q + '”'));
+            empty.appendChild(el('span', '', 'Coba kata lain seperti “paket”, “survei”, atau “garansi”, atau tanyakan ke asisten AI kami.'));
             var b = el('button', 'hr-btn hr-btn--primary hr-btn--sm');
             b.type = 'button';
             b.setAttribute('data-search-ask', q);
             b.appendChild(svgIcon('bot'));
             b.appendChild(el('span', '', 'Tanya AI Chatbot'));
-            empty.appendChild(s); empty.appendChild(p); empty.appendChild(b);
+            empty.appendChild(b);
             sBody.appendChild(empty);
+            showPreview(null);
             sSel = -1;
             return;
         }
         var groups = {}, order = [];
         found.forEach(function (it) {
-            var g = it.g || 'Halaman';
-            if (!groups[g]) { groups[g] = []; order.push(g); }
-            groups[g].push(it);
+            if (!groups[it.g]) { groups[it.g] = []; order.push(it.g); }
+            groups[it.g].push(it);
         });
+        var n = 0;
         order.forEach(function (g) {
             var sec = el('div', 'hr-sgroup');
             sec.appendChild(el('h4', '', g));
             groups[g].forEach(function (it) {
                 var a = el('a', 'hr-sitem');
                 a.href = it.u;
+                a.id = 'hrSi' + n;
+                a.style.setProperty('--i', n);
                 a.setAttribute('role', 'option');
                 var ico = el('span', 'hr-sitem__ico');
                 ico.appendChild(svgIcon(it.i || 'search'));
@@ -243,13 +371,13 @@
                 var sm = el('small'); appendHighlight(sm, it.d, words);
                 box.appendChild(st); box.appendChild(sm);
                 a.appendChild(ico); a.appendChild(box); a.appendChild(svgIcon('arrow'));
-                on(a, 'mousemove', function () {
-                    var all = $$('.hr-sitem', sBody);
-                    var n = all.indexOf(a);
-                    if (n !== sSel) { selectItem(n); }
-                });
-                on(a, 'click', function () { setSearch(false); });
+                (function (idx) {
+                    on(a, 'mousemove', function () { if (idx !== sSel) { selectItem(idx); } });
+                })(n);
+                on(a, 'click', function () { saveRecent(sInput.value || it.t); setSearch(false); });
+                sFlat.push(it);
                 sec.appendChild(a);
+                n++;
             });
             sBody.appendChild(sec);
         });
@@ -260,10 +388,13 @@
         searchBox.hidden = !open;
         root.classList.toggle('hr-lock', open || (nav && nav.classList.contains('is-open')));
         lock(open);
+        if (!open && sInput) { sInput.blur(); }
         if (open) {
+            sFilter = 'all';
+            sTabs.forEach(function (b) { var on_ = b.getAttribute('data-search-tab') === 'all'; b.classList.toggle('is-on', on_); b.setAttribute('aria-selected', on_ ? 'true' : 'false'); });
             if (sInput) { sInput.value = ''; }
             renderSearch('');
-            setTimeout(function () { if (sInput) { sInput.focus(); } }, 30);
+            setTimeout(function () { if (sInput) { sInput.focus(); } }, 40);
         }
     }
     $$('[data-search-open]').forEach(function (b) { on(b, 'click', function () { setNav(false); setSearch(true); }); });
@@ -271,23 +402,34 @@
     on(searchBox, 'mousedown', function (e) { if (e.target === searchBox) { setSearch(false); } });
     on(sInput, 'input', function () { renderSearch(sInput.value); });
     on(sClear, 'click', function () { sInput.value = ''; renderSearch(''); sInput.focus(); });
-    $$('[data-search-q]').forEach(function (b) {
-        on(b, 'click', function () { sInput.value = b.getAttribute('data-search-q'); renderSearch(sInput.value); sInput.focus(); });
+    sTabs.forEach(function (b) {
+        on(b, 'click', function () {
+            sFilter = b.getAttribute('data-search-tab');
+            sTabs.forEach(function (x) { var is = x === b; x.classList.toggle('is-on', is); x.setAttribute('aria-selected', is ? 'true' : 'false'); });
+            renderSearch(sInput.value);
+            sInput.focus();
+        });
     });
     on($('[data-search-form]'), 'submit', function (e) {
         e.preventDefault();
-        var items = $$('.hr-sitem', sBody);
-        if (items[sSel]) { window.location.href = items[sSel].href; }
-        else if (sInput.value.trim()) { askChat(sInput.value.trim()); setSearch(false); }
+        var nodes = $$('.hr-sitem', sBody);
+        if (nodes[sSel]) { saveRecent(sInput.value || sFlat[sSel].t); window.location.href = nodes[sSel].href; }
+        else if (sInput.value.trim()) { var q = sInput.value.trim(); setSearch(false); askChat(q); }
     });
     on(sInput, 'keydown', function (e) {
         if (e.key === 'ArrowDown') { e.preventDefault(); selectItem(sSel + 1); }
         else if (e.key === 'ArrowUp') { e.preventDefault(); selectItem(sSel - 1); }
     });
-    on(sBody, 'click', function (e) {
-        var b = e.target.closest ? e.target.closest('[data-search-ask]') : null;
-        if (b) { var q = b.getAttribute('data-search-ask'); setSearch(false); askChat(q); }
-    });
+    function onSearchClick(e) {
+        var t = e.target.closest ? e.target : null;
+        if (!t) { return; }
+        var ask = t.closest('[data-search-ask]');
+        if (ask) { var q = ask.getAttribute('data-search-ask'); setSearch(false); askChat(q); return; }
+        var act = t.closest('[data-search-act]');
+        if (act && act.getAttribute('data-search-act') === 'calc') { setSearch(false); openCalc(); }
+    }
+    on(sBody, 'click', onSearchClick);
+    on(sPrev, 'click', onSearchClick);
     on(doc, 'keydown', function (e) {
         var tag = ((doc.activeElement || {}).tagName || '').toLowerCase();
         var typing = tag === 'input' || tag === 'textarea' || tag === 'select' || (doc.activeElement && doc.activeElement.isContentEditable);
@@ -890,8 +1032,9 @@
         on(b, 'click', function () { window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' }); });
     });
 
-    /* ---------- 19. AI Chatbot (Service & Estimate FAQ) ---------- */
+    /* ---------- 19. AI Chatbot (Obrolan · Estimasi · FAQ) ---------- */
     var askChat = function () { /* diganti di bawah bila panel chat ada */ };
+    var openCalc = function () { /* diganti di bawah bila panel chat ada */ };
     if (chatPanel) {
         var log = $('[data-chat-log]', chatPanel);
         var quick = $('[data-chat-quick]', chatPanel);
@@ -905,15 +1048,45 @@
         var welcomeHTML = welcome ? welcome.outerHTML : '';
         var faq = Array.isArray(D.faq) ? D.faq : [];
         var rates = D.estimate || {};
+        var tiers = Array.isArray(D.estimate_tiers) ? D.estimate_tiers : [];
         var rateKeys = Object.keys(rates);
-        var state = { open: false, step: null, type: null, queue: Promise.resolve() };
+        var state = { open: false, step: null, type: null, tab: 'chat', queue: Promise.resolve() };
         var tipTimer = null;
+        var tabBtns = $$('[data-chat-tab]', chatPanel);
+        var views = $$('[data-view]', chatPanel);
+        var tabsNav = $('.hr-chat__tabs', chatPanel);
+        var tabOrder = ['chat', 'estimate', 'faq'];
 
         function faqById(id) { return faq.filter(function (f) { return f.id === id; })[0]; }
         function wait(ms) { return new Promise(function (r) { setTimeout(r, reduceMotion ? 0 : ms); }); }
         function scrollLog() { log.scrollTop = log.scrollHeight; }
         function nowStr() { var d = new Date(); return pad(d.getHours()) + '.' + pad(d.getMinutes()); }
 
+        /* --- Tab --- */
+        function setTab(name) {
+            if (tabOrder.indexOf(name) === -1) { name = 'chat'; }
+            state.tab = name;
+            chatPanel.setAttribute('data-tab', name);
+            if (tabsNav) { tabsNav.style.setProperty('--ti', tabOrder.indexOf(name)); }
+            tabBtns.forEach(function (b) {
+                var is = b.getAttribute('data-chat-tab') === name;
+                b.setAttribute('aria-selected', is ? 'true' : 'false');
+            });
+            views.forEach(function (v) {
+                var is = v.getAttribute('data-view') === name;
+                if (is) {
+                    v.hidden = false;
+                    raf(function () { v.classList.add('is-on'); });
+                } else if (v.classList.contains('is-on')) {
+                    v.classList.remove('is-on');
+                    setTimeout(function () { if (state.tab !== v.getAttribute('data-view')) { v.hidden = true; } }, 300);
+                }
+            });
+            if (name === 'chat' && canHover && state.open) { setTimeout(function () { if (input) { input.focus(); } }, 320); }
+        }
+        tabBtns.forEach(function (b) { on(b, 'click', function () { setTab(b.getAttribute('data-chat-tab')); }); });
+
+        /* --- Obrolan --- */
         function richText(node, text) {
             String(text).split(/(\*\*[^*]+\*\*)/g).forEach(function (part) {
                 if (/^\*\*[^*]+\*\*$/.test(part)) { node.appendChild(el('strong', '', part.slice(2, -2))); }
@@ -938,6 +1111,14 @@
             log.appendChild(r.row);
             scrollLog();
         }
+        function actionNode(a) {
+            var l = el('a', 'hr-msg__btn' + (a.wa ? ' hr-msg__btn--wa' : ''));
+            l.href = a.href;
+            if (a.wa) { l.target = '_blank'; l.rel = 'noopener noreferrer'; }
+            l.appendChild(svgIcon(a.wa ? 'whatsapp' : 'arrow'));
+            l.appendChild(doc.createTextNode(a.label));
+            return l;
+        }
         function addBot(text, actions, result) {
             var r = row('bot');
             var m = el('div', 'hr-msg hr-msg--bot');
@@ -952,12 +1133,14 @@
             if (actions && actions.length) {
                 var acts = el('div', 'hr-msg__actions');
                 actions.forEach(function (a) {
-                    var l = el('a', 'hr-msg__btn' + (a.wa ? ' hr-msg__btn--wa' : ''));
-                    l.href = a.href;
-                    if (a.wa) { l.target = '_blank'; l.rel = 'noopener noreferrer'; }
-                    l.appendChild(svgIcon(a.wa ? 'whatsapp' : 'arrow'));
-                    l.appendChild(doc.createTextNode(a.label));
-                    acts.appendChild(l);
+                    if (a.calc) {
+                        var b = el('button', 'hr-msg__btn');
+                        b.type = 'button';
+                        b.appendChild(svgIcon('sliders'));
+                        b.appendChild(doc.createTextNode(a.label));
+                        on(b, 'click', function () { setTab('estimate'); });
+                        acts.appendChild(b);
+                    } else { acts.appendChild(actionNode(a)); }
                 });
                 m.appendChild(acts);
             }
@@ -1021,7 +1204,8 @@
                 [
                     { label: 'Booking survei', href: (D.links || {})['booking-survei'] || '#' },
                     { label: 'Minta penawaran', href: (D.links || {})['permintaan-penawaran'] || '#' },
-                    { label: 'Kirim ke WhatsApp', href: waLink(summary), wa: true }
+                    { label: 'Kirim ke WhatsApp', href: waLink(summary), wa: true },
+                    { label: 'Atur lewat kalkulator', calc: true }
                 ],
                 { range: rupiah(min) + ' – ' + rupiah(max), sub: r.label + ' · ' + area + ' m²', note: 'Ini perkiraan kasar. Biaya final ditentukan setelah survei lokasi dan pemilihan material.' });
             state.step = null;
@@ -1039,13 +1223,14 @@
             return best;
         }
         function fallback() {
-            botSay('Maaf, saya belum menemukan jawaban yang pas. Coba pilih topik di bawah, atau tanyakan langsung ke tim kami lewat WhatsApp.',
+            botSay('Maaf, saya belum menemukan jawaban yang pas. Coba pilih topik di bawah, buka tab FAQ, atau tanyakan langsung ke tim kami lewat WhatsApp.',
                 [{ label: 'Tanya via WhatsApp', href: waLink('Halo Renovaku, saya ingin bertanya seputar layanan renovasi.'), wa: true }]);
             mainQuick();
         }
         function handle(raw) {
             var text = String(raw || '').replace(/\s+/g, ' ').trim().slice(0, 200);
             if (!text) { return; }
+            if (state.tab !== 'chat') { setTab('chat'); }
             addUser(text);
             var t = text.toLowerCase();
 
@@ -1075,7 +1260,7 @@
             }
             if (/estimasi|biaya|hitung|kalkulator|\brab\b/.test(t) && !/penawaran/.test(t)) { startEstimate(); return; }
             if (/^(faq lainnya|lainnya|faq|bantuan)$/.test(t)) {
-                botSay('Berikut pertanyaan yang sering diajukan. Pilih salah satu, atau ketik pertanyaan Anda.');
+                botSay('Berikut pertanyaan yang sering diajukan. Pilih salah satu, buka tab FAQ, atau ketik pertanyaan Anda.');
                 moreQuick();
                 return;
             }
@@ -1089,29 +1274,132 @@
             }
         }
 
+        /* --- Kalkulator estimasi --- */
+        var calc = $('[data-calc]', chatPanel);
+        if (calc && rateKeys.length) {
+            var cType = rateKeys[0], cTier = tiers[0] ? tiers[0].id : 'basic';
+            var area = $('[data-calc-area]', calc);
+            var areaOut = $('[data-calc-area-out]', calc);
+            var rangeOut = $('[data-calc-range]', calc);
+            var noteOut = $('[data-calc-note]', calc);
+            var barOut = $('[data-calc-bar]', calc);
+            var waBtn = $('[data-calc-wa]', calc);
+            var aMin = Number(calc.getAttribute('data-min')) || 10, aMax = Number(calc.getAttribute('data-max')) || 300;
+            var maxRate = 0, maxMult = 1;
+            rateKeys.forEach(function (k) { maxRate = Math.max(maxRate, rates[k].max); });
+            tiers.forEach(function (t) { maxMult = Math.max(maxMult, t.mult); });
+            var refMax = aMax * maxRate * maxMult;
+            function tierOf(id) { return tiers.filter(function (t) { return t.id === id; })[0] || { id: 'basic', label: 'Basic', mult: 1 }; }
+            function round10k(n) { return Math.round(n / 10000) * 10000; }
+            function calcUpdate() {
+                var r = rates[cType], tr = tierOf(cTier), a = Number(area.value);
+                var min = round10k(a * r.min * tr.mult), max = round10k(a * r.max * tr.mult);
+                areaOut.textContent = a + ' m²';
+                rangeOut.textContent = rupiah(min) + ' – ' + rupiah(max);
+                rangeOut.classList.remove('is-bump');
+                void rangeOut.offsetWidth;
+                rangeOut.classList.add('is-bump');
+                noteOut.textContent = r.label + ' · finishing ' + tr.label + ' · ± ' + rupiah(r.min * tr.mult) + ' – ' + rupiah(r.max * tr.mult) + ' per m²';
+                barOut.style.width = clamp(Math.sqrt(max / refMax) * 100, 6, 100).toFixed(1) + '%';
+                area.style.setProperty('--fill', ((a - aMin) / (aMax - aMin) * 100).toFixed(1) + '%');
+                waBtn.href = waLink('Halo Renovaku, saya ingin konsultasi ' + r.label + ' ± ' + a + ' m² finishing ' + tr.label + ' (estimasi kalkulator ' + rupiah(min) + ' – ' + rupiah(max) + ').');
+            }
+            $$('[data-calc-type]', calc).forEach(function (b) {
+                on(b, 'click', function () {
+                    cType = b.getAttribute('data-calc-type');
+                    $$('[data-calc-type]', calc).forEach(function (x) { var is = x === b; x.classList.toggle('is-on', is); x.setAttribute('aria-pressed', is ? 'true' : 'false'); });
+                    calcUpdate();
+                });
+            });
+            $$('[data-calc-tier]', calc).forEach(function (b) {
+                on(b, 'click', function () {
+                    cTier = b.getAttribute('data-calc-tier');
+                    $$('[data-calc-tier]', calc).forEach(function (x) { var is = x === b; x.classList.toggle('is-on', is); x.setAttribute('aria-pressed', is ? 'true' : 'false'); });
+                    calcUpdate();
+                });
+            });
+            $$('[data-calc-step]', calc).forEach(function (b) {
+                on(b, 'click', function () { area.value = clamp(Number(area.value) + Number(b.getAttribute('data-calc-step')), aMin, aMax); calcUpdate(); });
+            });
+            on(area, 'input', calcUpdate);
+            calcUpdate();
+        }
+
+        /* --- FAQ --- */
+        var faqList = $('[data-faqv-list]', chatPanel);
+        var faqSearch = $('[data-faqv-q]', chatPanel);
+        var faqEmpty = $('[data-faqv-empty]', chatPanel);
+        var faqItems = [];
+        if (faqList) {
+            faq.forEach(function (f, i) {
+                var li = el('li', 'hr-faqv__item');
+                li.style.setProperty('--i', i);
+                var q = el('button', 'hr-faqv__q');
+                q.type = 'button';
+                q.setAttribute('aria-expanded', 'false');
+                q.appendChild(el('span', '', f.q));
+                q.appendChild(svgIcon('chevron'));
+                var a = el('div', 'hr-faqv__a');
+                var inner = el('div');
+                inner.appendChild(el('p', '', f.a));
+                var acts = el('div', 'hr-msg__actions');
+                if (f.link && (D.links || {})[f.link]) { acts.appendChild(actionNode({ label: f.link_label || 'Selengkapnya', href: D.links[f.link] })); }
+                var ask = el('button', 'hr-msg__btn');
+                ask.type = 'button';
+                ask.appendChild(svgIcon('bot'));
+                ask.appendChild(doc.createTextNode('Tanya di chat'));
+                on(ask, 'click', function () { handle(f.q); });
+                acts.appendChild(ask);
+                inner.appendChild(acts);
+                a.appendChild(inner);
+                li.appendChild(q); li.appendChild(a);
+                on(q, 'click', function () {
+                    var open = !li.classList.contains('is-open');
+                    faqItems.forEach(function (it) { it.li.classList.remove('is-open'); it.q.setAttribute('aria-expanded', 'false'); });
+                    li.classList.toggle('is-open', open);
+                    q.setAttribute('aria-expanded', open ? 'true' : 'false');
+                });
+                faqList.appendChild(li);
+                faqItems.push({ li: li, q: q, hay: (f.q + ' ' + f.a + ' ' + f.keys.join(' ')).toLowerCase() });
+            });
+            on(faqSearch, 'input', function () {
+                var term = faqSearch.value.toLowerCase().trim();
+                var shown = 0;
+                faqItems.forEach(function (it) {
+                    var ok = !term || term.split(/\s+/).every(function (w) { return it.hay.indexOf(w) !== -1; });
+                    it.li.hidden = !ok;
+                    if (ok) { shown++; }
+                });
+                if (faqEmpty) { faqEmpty.hidden = shown !== 0; }
+            });
+            on($('[data-faqv-ask]', chatPanel), 'click', function () { var v = faqSearch.value.trim(); if (v) { handle(v); } else { setTab('chat'); } });
+        }
+
+        /* --- Buka / tutup panel --- */
         function hideTip() { if (tip) { tip.hidden = true; } clearTimeout(tipTimer); store('hrr-tip', '1'); }
-        function openChat() {
-            if (state.open) { return; }
-            state.open = true;
-            chatPanel.hidden = false;
-            chatPanel.setAttribute('aria-hidden', 'false');
-            if (fab) { fab.setAttribute('aria-expanded', 'true'); }
-            if (veil) { veil.hidden = false; }
-            root.classList.add('hr-chat-open');
-            if (badge) { badge.hidden = true; }
-            hideTip();
-            raf(function () { chatPanel.classList.add('is-open'); });
-            if (canHover) { setTimeout(function () { if (input) { input.focus(); } }, 340); }
+        function openChat(tab) {
+            if (!state.open) {
+                state.open = true;
+                chatPanel.hidden = false;
+                chatPanel.setAttribute('aria-hidden', 'false');
+                if (fab) { fab.setAttribute('aria-expanded', 'true'); fab.setAttribute('aria-label', 'Tutup AI Chatbot Renovaku'); }
+                if (veil) { veil.hidden = false; }
+                root.classList.add('hr-chat-open');
+                if (badge) { badge.hidden = true; }
+                hideTip();
+                raf(function () { chatPanel.classList.add('is-open'); });
+            }
+            setTab(tab || state.tab);
         }
         function closeChat() {
             if (!state.open) { return; }
             state.open = false;
             chatPanel.classList.remove('is-open');
             chatPanel.setAttribute('aria-hidden', 'true');
-            if (fab) { fab.setAttribute('aria-expanded', 'false'); }
+            if (fab) { fab.setAttribute('aria-expanded', 'false'); fab.setAttribute('aria-label', 'Buka AI Chatbot Renovaku'); }
             if (veil) { veil.hidden = true; }
             root.classList.remove('hr-chat-open');
-            setTimeout(function () { if (!state.open) { chatPanel.hidden = true; } }, 320);
+            setTimeout(function () { if (!state.open) { chatPanel.hidden = true; } }, 340);
         }
         function resetChat() {
             log.textContent = '';
@@ -1121,16 +1409,22 @@
             state.type = null;
             state.queue = Promise.resolve();
             if (input) { input.value = ''; }
+            setTab('chat');
         }
+        openCalc = function () {
+            if (nav && nav.classList.contains('is-open')) { setNav(false); }
+            openChat('estimate');
+        };
         askChat = function (text) {
             if (nav && nav.classList.contains('is-open')) { setNav(false); }
-            openChat();
+            if (/^estimasi biaya$/i.test(String(text).trim())) { openCalc(); return; }
+            openChat('chat');
             handle(text);
         };
 
         on(fab, 'click', function () { state.open ? closeChat() : openChat(); });
         on(veil, 'click', closeChat);
-        $$('[data-chat-open]').forEach(function (b) { on(b, 'click', function () { openChat(); }); });
+        $$('[data-chat-open]').forEach(function (b) { on(b, 'click', function () { openChat('chat'); }); });
         $$('[data-chat-close]').forEach(function (b) { on(b, 'click', closeChat); });
         $$('[data-chat-reset]').forEach(function (b) { on(b, 'click', resetChat); });
         on($('[data-chat-tip-close]'), 'click', hideTip);
@@ -1155,9 +1449,43 @@
                 }
             }, 7000);
         }
+        setTab('chat');
     }
 
-    /* ---------- 20. Escape menutup panel yang terbuka ---------- */
+    /* ---------- 20. Hitung naik harga paket + efek miring kartu ---------- */
+    (function () {
+        var prices = $$('[data-price]');
+        if (prices.length && 'IntersectionObserver' in window && !reduceMotion) {
+            var pio = new IntersectionObserver(function (entries) {
+                entries.forEach(function (en) {
+                    if (!en.isIntersecting) { return; }
+                    pio.unobserve(en.target);
+                    var node = en.target, finalText = node.textContent, target = Number(node.getAttribute('data-price')), t0 = null;
+                    if (!target) { return; }
+                    (function step(t) {
+                        if (t0 === null) { t0 = t; }
+                        var k = clamp((t - t0) / 1100, 0, 1), e = 1 - Math.pow(1 - k, 3);
+                        node.textContent = k < 1 ? rupiah(target * e) : finalText;
+                        if (k < 1) { requestAnimationFrame(step); }
+                    })(performance.now());
+                });
+            }, { threshold: 0.6 });
+            prices.forEach(function (n) { pio.observe(n); });
+        }
+        if (canHover && !reduceMotion) {
+            $$('[data-tilt]').forEach(function (card) {
+                var base = card.classList.contains('is-popular') ? -6 : 0;
+                on(card, 'pointermove', function (e) {
+                    var r = card.getBoundingClientRect();
+                    var x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
+                    card.style.transform = 'perspective(900px) translateY(' + (base - 6) + 'px) rotateX(' + (-y * 6).toFixed(2) + 'deg) rotateY(' + (x * 8).toFixed(2) + 'deg)';
+                });
+                on(card, 'pointerleave', function () { card.style.transform = ''; });
+            });
+        }
+    })();
+
+    /* ---------- 21. Escape menutup panel yang terbuka ---------- */
     on(doc, 'keydown', function (e) {
         if (e.key !== 'Escape') { return; }
         if (lightbox && !lightbox.hidden && lightbox._close) { lightbox._close(); return; }

@@ -10,21 +10,26 @@
     $jsData['links']    = [];
     $searchIndex        = [];
 
+    $pageImg = [
+        'home' => 'hero-house-mascot.jpg', 'layanan' => 'service-living-room.jpg', 'paket-layanan' => 'project-2.jpg',
+        'galeri' => 'gallery-after.jpg', 'proyek' => 'project-1.jpg', 'area-layanan' => 'coverage-map.png',
+        'proses-kerja' => 'survey-tape.jpg', 'permintaan-penawaran' => 'quotation-hand.jpg', 'booking-survei' => 'survey-tape.jpg',
+    ];
     foreach ($cfg['pages'] as $key => $p) {
         $jsData['links'][$key] = $go($key);
-        $searchIndex[] = ['g' => 'Halaman', 't' => $p['title'], 'd' => $p['desc'], 'u' => $go($key), 'i' => $p['icon']];
+        $searchIndex[] = ['g' => 'Halaman', 't' => $p['title'], 'd' => $p['desc'], 'u' => $go($key), 'i' => $p['icon'], 'm' => $img($pageImg[$key])];
     }
     foreach ($cfg['services'] as $s) {
-        $searchIndex[] = ['g' => 'Layanan', 't' => $s['title'], 'd' => $s['short'], 'u' => $go('layanan').'#'.$s['id'], 'i' => $s['icon']];
+        $searchIndex[] = ['g' => 'Layanan', 't' => $s['title'], 'd' => $s['short'], 'u' => $go('layanan').'#'.$s['id'], 'i' => $s['icon'], 'm' => $img('service-living-room.jpg'), 'x' => $s['duration']];
     }
     foreach ($cfg['packages'] as $p) {
-        $searchIndex[] = ['g' => 'Paket', 't' => $p['name'], 'd' => $p['tagline'].' — '.$p['price'], 'u' => $go('paket-layanan').'#'.$p['id'], 'i' => 'crown'];
+        $searchIndex[] = ['g' => 'Paket', 't' => $p['name'], 'd' => $p['tagline'].' — '.$p['price'], 'u' => $go('paket-layanan').'#'.$p['id'], 'i' => 'crown', 'm' => $img('project-2.jpg'), 'x' => $p['price']];
     }
     foreach ($cfg['projects'] as $p) {
-        $searchIndex[] = ['g' => 'Proyek', 't' => $p['title'], 'd' => $p['location'].' · '.$p['type'], 'u' => $go('proyek').'#'.$p['id'], 'i' => 'home'];
+        $searchIndex[] = ['g' => 'Proyek', 't' => $p['title'], 'd' => $p['location'].' · '.$p['type'], 'u' => $go('proyek').'#'.$p['id'], 'i' => 'home', 'm' => $img($p['image']), 'x' => $p['area']];
     }
     foreach ($cfg['regions'] as $n => $r) {
-        $searchIndex[] = ['g' => 'Area', 't' => $r['name'], 'd' => $r['cities'], 'u' => $go('area-layanan').'#wilayah-'.$n, 'i' => 'pin'];
+        $searchIndex[] = ['g' => 'Area', 't' => $r['name'], 'd' => $r['cities'], 'u' => $go('area-layanan').'#wilayah-'.$n, 'i' => 'pin', 'm' => $img('coverage-map.png'), 'x' => $r['lead']];
     }
     $jsData['search'] = $searchIndex;
 @endphp

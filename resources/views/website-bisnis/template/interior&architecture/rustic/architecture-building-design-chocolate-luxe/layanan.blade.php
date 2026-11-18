@@ -9,7 +9,7 @@
     $img = fn (string $f) => asset($site["img"] . "/" . $f);
     $v   = $site["view"];
 @endphp
-@include($v . '.partials.page-hero', ['title' => 'Layanan Desain Kami', 'sub' => 'Layanan profesional untuk berbagai kebutuhan Anda.', 'bg' => 'interior-service.svg', 'icon' => 'compass', 'crumb' => 'Layanan'])
+@include($v . '.partials.page-hero', ['title' => 'Layanan Desain Kami', 'sub' => 'Layanan profesional untuk berbagai kebutuhan Anda.', 'bg' => 'interior-service.jpg', 'icon' => 'compass', 'crumb' => 'Layanan'])
 
 <section class="abd-section">
     <div class="abd-container">
@@ -28,7 +28,7 @@
                 </article>
             @endforeach
             <article class="abd-svc abd-svc--img" data-reveal>
-                <img src="{{ $img('interior-service.svg') }}" alt="" loading="lazy" width="900" height="600">
+                <img src="{{ $img('interior-service.jpg') }}" alt="" loading="lazy" width="900" height="600">
                 <div><h3>Bingung memilih layanan?</h3><p>Ceritakan kebutuhan Anda, kami bantu menentukan lingkup yang paling tepat.</p>
                 <a class="abd-btn abd-btn--gold abd-btn--sm" href="{{ $u('/konsultasi') }}"><span>Booking Konsultasi</span><svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
             </article>

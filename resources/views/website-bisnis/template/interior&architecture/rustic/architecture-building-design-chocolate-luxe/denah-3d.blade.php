@@ -40,7 +40,7 @@
     <div class="abd-container">
         <div class="abd-sec-head" data-reveal><h2>Render Eksterior</h2><p>Lihat tampilan akhir bangunan sebelum konstruksi dimulai.</p></div>
         <div class="abd-grid-3">
-            @foreach ([['Rumah Modern Minimalis', 'res-01.svg'], ['Villa Tropis Modern', 'vil-01.svg'], ['Gedung Perkantoran', 'com-01.svg']] as [$t, $f])
+            @foreach ([['Rumah Modern Minimalis', 'res-01.jpg'], ['Villa Tropis Modern', 'vil-01.jpg'], ['Gedung Perkantoran', 'com-01.jpg']] as [$t, $f])
                 <figure class="abd-fig" data-reveal>
                     <button type="button" data-lightbox="{{ $img($f) }}" data-cap="Render eksterior — {{ $t }}" aria-label="Perbesar {{ $t }}"><img src="{{ $img($f) }}" alt="Render eksterior {{ $t }}" loading="lazy" width="800" height="560"></button>
                     <figcaption>{{ $t }}</figcaption>

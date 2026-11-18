@@ -27,12 +27,45 @@
                         <div class="list-item-meta">
                             <strong>Rp{{ number_format($invoice->amount, 0, ',', '.') }}</strong>
                             <x-status-pill :status="$invoice->status" />
-                            <a class="customer-detail-btn" href="{{ route('hosting-invoices.show', $invoice) }}">Detail</a>
+                            <button type="button" class="customer-detail-btn" data-modal-open="#hst-detail-{{ $invoice->id }}">Detail</button>
                         </div>
                     </article>
                 @endforeach
             </div>
             {{ $invoices->links() }}
         @endif
+
+        @foreach ($invoices as $invoice)
+            <x-customer-modal id="hst-detail-{{ $invoice->id }}" title="Detail invoice hosting" :subtitle="$invoice->invoice_number" icon="info">
+                <div class="customer-modal-rows">
+                    <div class="customer-modal-row"><span>Website</span><span>{{ $invoice->service->website_name }}</span></div>
+                    <div class="customer-modal-row"><span>Jatuh tempo</span><span>{{ $invoice->due_at->translatedFormat('d M Y') }}</span></div>
+                    <div class="customer-modal-row"><span>Total</span><span>Rp{{ number_format($invoice->amount, 0, ',', '.') }}</span></div>
+                </div>
+                <div class="customer-modal-actions" style="margin-top: 1.1rem;">
+                    <a class="customer-btn" href="{{ route('hosting-invoices.show', $invoice) }}">Detail invoice</a>
+                    @if (in_array($invoice->status, ['unpaid', 'overdue'], true) && $invoice->amount > 0)
+                        <button class="customer-btn customer-btn--primary" type="button" data-modal-open="#hst-pay-{{ $invoice->id }}">Bayar invoice</button>
+                    @endif
+                </div>
+            </x-customer-modal>
+
+            @if (in_array($invoice->status, ['unpaid', 'overdue'], true) && $invoice->amount > 0)
+                <x-customer-modal id="hst-pay-{{ $invoice->id }}" title="Konfirmasi pembayaran" subtitle="Pembayaran diproses melalui metode yang dipilih." icon="help">
+                    <form method="POST" action="{{ route('hosting-invoices.pay', $invoice) }}">
+                        @csrf
+                        <div class="customer-modal-rows">
+                            <div class="customer-modal-row"><span>Invoice</span><span>{{ $invoice->invoice_number }}</span></div>
+                            <div class="customer-modal-row"><span>Metode</span><span>Midtrans</span></div>
+                            <div class="customer-modal-row"><span>Total</span><span>Rp{{ number_format($invoice->amount, 0, ',', '.') }}</span></div>
+                        </div>
+                        <div class="customer-modal-actions" style="margin-top: 1.1rem;">
+                            <button class="customer-btn" type="button" data-modal-close>Kembali</button>
+                            <button class="customer-btn customer-btn--primary" type="submit">Bayar sekarang</button>
+                        </div>
+                    </form>
+                </x-customer-modal>
+            @endif
+        @endforeach
     </section>
 @endsection

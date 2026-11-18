@@ -46,4 +46,37 @@ class CustomerNotificationTest extends TestCase
             ->post(route('notifications.read', $owner->notifications()->sole()->id))
             ->assertNotFound();
     }
+
+    public function test_customer_can_delete_own_notification(): void
+    {
+        $customer = User::factory()->create();
+        $invoice = HostingInvoice::factory()->create();
+        $invoice->service->update(['user_id' => $customer->id]);
+        $customer->notifyNow(new HostingInvoiceReminder($invoice, 'issued'), ['database']);
+
+        $notification = $customer->notifications()->sole();
+
+        $this->actingAs($customer)->get(route('notifications.index'))
+            ->assertOk()
+            ->assertSee('notif-delete-'.$notification->id, false)
+            ->assertSee('Tidak dapat dipulihkan');
+
+        $this->actingAs($customer)->delete(route('notifications.destroy', $notification->id))
+            ->assertRedirect(route('notifications.index'))
+            ->assertSessionHas('status', 'Notifikasi dihapus.');
+        $this->assertDatabaseCount('notifications', 0);
+    }
+
+    public function test_customer_cannot_delete_another_users_notification(): void
+    {
+        $owner = User::factory()->create();
+        $invoice = HostingInvoice::factory()->create();
+        $invoice->service->update(['user_id' => $owner->id]);
+        $owner->notifyNow(new HostingInvoiceReminder($invoice, 'issued'), ['database']);
+
+        $this->actingAs(User::factory()->create())
+            ->delete(route('notifications.destroy', $owner->notifications()->sole()->id))
+            ->assertNotFound();
+        $this->assertDatabaseCount('notifications', 1);
+    }
 }

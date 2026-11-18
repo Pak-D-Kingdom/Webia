@@ -14,6 +14,10 @@
 {{-- ================= HERO ================= --}}
 <section class="hr-hero">
     @include($vp.'leaves')
+    <ul class="hr-hero__particles" aria-hidden="true">
+        @for ($n = 0; $n < 7; $n++)<li style="--n: {{ $n }}">{{ $i('leaf') }}</li>@endfor
+    </ul>
+
     <div class="hr-container hr-hero__grid">
         <div class="hr-hero__text">
             <p class="hr-eyebrow"><span>Wujudkan Rumah Impian Anda</span></p>
@@ -25,18 +29,26 @@
             </div>
         </div>
 
-        <div class="hr-hero__media">
-            <div class="hr-hero__glow" aria-hidden="true"></div>
-            <img class="hr-hero__img" src="{{ $img('hero-house-mascot.webp') }}" alt="Maskot tukang Renovaku memegang rumah mungil di depan rumah modern yang asri" width="1340" height="616" fetchpriority="high" decoding="async">
-        </div>
-
-        <aside class="hr-assistant" aria-label="Preview AI Assistant">
-            <div class="hr-assistant__head">
-                <span class="hr-assistant__bot">@include($vp.'robot')</span>
-                <strong>AI Assistant</strong>
-                <span class="hr-assistant__spark">{{ $i('sparkle') }}</span>
+        <figure class="hr-hero__frame">
+            <span class="hr-hero__blob" aria-hidden="true"></span>
+            <span class="hr-hero__ring" aria-hidden="true"></span>
+            <div class="hr-hero__photo">
+                <img class="hr-hero__img" src="{{ $img('hero-house-mascot.jpg') }}" alt="Maskot tukang Renovaku memegang rumah mungil di depan rumah modern yang asri" width="2004" height="798" fetchpriority="high" decoding="async">
             </div>
-            <p class="hr-assistant__hi">Halo! Ada yang bisa kami bantu tentang layanan renovasi dan perbaikan?</p>
+            <span class="hr-hero__chip hr-hero__chip--a">{{ $i('shield') }}<span><b>Garansi hingga 2 tahun</b><small>Paket Exclusive</small></span></span>
+            <span class="hr-hero__chip hr-hero__chip--b">{{ $i('calendar') }}<span><b>Survei lokasi</b><small>Jadwal fleksibel</small></span></span>
+        </figure>
+    </div>
+
+    <div class="hr-container">
+        <aside class="hr-assistant" aria-label="Preview AI Assistant">
+            <div class="hr-assistant__intro">
+                <span class="hr-assistant__bot">@include($vp.'robot')</span>
+                <div>
+                    <strong>AI Assistant <span class="hr-assistant__spark">{{ $i('sparkle') }}</span></strong>
+                    <p>Halo! Ada yang bisa kami bantu tentang layanan renovasi dan perbaikan?</p>
+                </div>
+            </div>
             <ul class="hr-assistant__list">
                 <li><button type="button" data-chat-ask="Layanan Renovasi">{{ $i('home') }}<span>Layanan Renovasi</span></button></li>
                 <li><button type="button" data-chat-ask="Paket Layanan">{{ $i('crown') }}<span>Paket Layanan</span></button></li>
@@ -44,7 +56,7 @@
                 <li><button type="button" data-chat-ask="Proyek Sebelumnya">{{ $i('folder') }}<span>Proyek Sebelumnya</span></button></li>
                 <li><button type="button" data-chat-ask="FAQ Lainnya">{{ $i('consult') }}<span>FAQ Lainnya</span></button></li>
             </ul>
-            <button type="button" class="hr-btn hr-btn--primary hr-btn--block" data-chat-open><span>Chat Sekarang</span>{{ $i('arrow') }}</button>
+            <button type="button" class="hr-btn hr-btn--primary" data-chat-open><span>Chat Sekarang</span>{{ $i('arrow') }}</button>
         </aside>
     </div>
 </section>
@@ -75,11 +87,11 @@
             </header>
             <div class="hr-pkgs">
                 @foreach ($cfg['packages'] as $p)
-                    <div class="hr-pkg {{ $p['popular'] ? 'is-popular' : '' }}">
+                    <div class="hr-pkg {{ $p['popular'] ? 'is-popular' : '' }}" data-tilt>
                         @if ($p['popular'])<span class="hr-pkg__badge">Paling Populer</span>@endif
                         <h3>{{ $p['name'] }}</h3>
                         <p class="hr-pkg__tag">{{ $p['tagline'] }}</p>
-                        <p class="hr-pkg__price">{{ $p['price'] }}</p>
+                        <p class="hr-pkg__price" data-price="{{ $p['amount'] }}">{{ $p['price'] }}</p>
                         <ul>
                             @foreach ($p['features'] as $f)<li>{{ $i('check') }}<span>{{ $f }}</span></li>@endforeach
                         </ul>

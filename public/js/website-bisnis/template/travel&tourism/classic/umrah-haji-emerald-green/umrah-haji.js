@@ -201,9 +201,18 @@
                 li.setAttribute('aria-selected', 'false');
                 var a = doc.createElement('a');
                 a.href = h.it.url;
-                var ico = doc.createElement('span');
-                ico.className = 'uh-search__ico';
-                ico.appendChild(icon(h.it.icon || 'file'));
+                var ico;
+                if (h.it.image) {
+                    ico = doc.createElement('img');
+                    ico.className = 'uh-search__thumb';
+                    ico.src = h.it.image;
+                    ico.alt = '';
+                    ico.loading = 'lazy';
+                } else {
+                    ico = doc.createElement('span');
+                    ico.className = 'uh-search__ico';
+                    ico.appendChild(icon(h.it.icon || 'file'));
+                }
                 var txt = doc.createElement('span');
                 txt.className = 'uh-search__txt';
                 var strong = doc.createElement('strong');
@@ -501,6 +510,12 @@
             btn.className = 'uh-dd__btn';
             btn.setAttribute('aria-haspopup', 'listbox');
             btn.setAttribute('aria-expanded', 'false');
+            if (variant === 'pill') {
+                var badge = doc.createElement('span');
+                badge.className = 'uh-seg__ico';
+                badge.appendChild(icon('calendar'));
+                btn.appendChild(badge);
+            }
             var val = doc.createElement('span');
             val.className = 'uh-dd__value';
             val.id = 'uh-dd-val-' + uid;
@@ -701,17 +716,35 @@
     // Satu mesin chat dipakai bersama oleh halaman Chatbot dan panel melayang.
     function createChat(win) {
         var log = $('[data-uh-chat-log]', win);
+        var scroller = $('[data-uh-chat-scroll]', win) || log;
+        var welcomeEl = $('[data-uh-chat-welcome]', win);
+        var chipsEl = $('[data-uh-chat-chips]', win);
         var form = $('[data-uh-chat-form]', win);
         var input = $('[data-uh-chat-input]', win);
         var faq = Array.isArray(DATA.faq) ? DATA.faq : [];
         var ai = DATA.ai || {};
         var busy = false;
 
-        function scrollDown() { log.scrollTop = log.scrollHeight; }
+        function scrollDown() { scroller.scrollTop = scroller.scrollHeight; }
+        function avatar() {
+            var av = doc.createElement('span');
+            av.className = 'uh-msg__av';
+            if (DATA.botImg) {
+                var im = doc.createElement('img');
+                im.src = DATA.botImg; im.alt = ''; im.width = 28; im.height = 26;
+                av.appendChild(im);
+            }
+            return av;
+        }
+        function timeLabel() {
+            try { return new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }).replace('.', ':'); } catch (e) { return ''; }
+        }
 
         function bubble(role, text, links) {
             var row = doc.createElement('div');
             row.className = 'uh-msg uh-msg--' + role;
+            var body = doc.createElement('div');
+            body.className = 'uh-msg__body';
             var b = doc.createElement('div');
             b.className = 'uh-msg__bubble';
             b.textContent = text;
@@ -730,7 +763,13 @@
                 });
                 b.appendChild(holder);
             }
-            row.appendChild(b);
+            body.appendChild(b);
+            var tm = doc.createElement('span');
+            tm.className = 'uh-msg__time';
+            tm.textContent = timeLabel();
+            body.appendChild(tm);
+            if (role === 'bot') { row.appendChild(avatar()); }
+            row.appendChild(body);
             log.appendChild(row);
             scrollDown();
             return row;
@@ -770,6 +809,8 @@
             q = String(q || '').trim();
             if (!q || busy) { return; }
             busy = true;
+            if (welcomeEl) { welcomeEl.hidden = true; }
+            if (chipsEl) { chipsEl.hidden = false; }
             bubble('user', q);
             var typing = doc.createElement('div');
             typing.className = 'uh-msg';
@@ -777,6 +818,7 @@
             t.className = 'uh-typing';
             t.innerHTML = '<i></i><i></i><i></i>';
             t.setAttribute('aria-label', 'Muthawwif AI sedang mengetik');
+            typing.appendChild(avatar());
             typing.appendChild(t);
             log.appendChild(typing);
             scrollDown();
@@ -788,7 +830,18 @@
             }, reduceMotion ? 0 : 650 + Math.min(q.length * 12, 600));
         }
 
-        bubble('bot', ai.welcome || 'Assalamu\u2019alaikum! Silakan ajukan pertanyaan Anda.');
+        function showWelcome() {
+            if (welcomeEl) { welcomeEl.hidden = false; if (chipsEl) { chipsEl.hidden = true; } }
+            else { bubble('bot', ai.welcome || 'Assalamu\u2019alaikum! Silakan ajukan pertanyaan Anda.'); }
+        }
+        showWelcome();
+        on($('[data-uh-chat-reset]', win), 'click', function () {
+            log.innerHTML = '';
+            busy = false;
+            showWelcome();
+            scroller.scrollTop = 0;
+            if (input) { input.focus(); }
+        });
 
         on(form, 'submit', function (e) {
             e.preventDefault();
