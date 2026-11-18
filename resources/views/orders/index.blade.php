@@ -15,32 +15,34 @@
             </a>
         </div>
 
-        <nav class="customer-filter" aria-label="Filter status pesanan">
-            @foreach ([
-                'semua' => 'Semua',
-                'menunggu_pembayaran' => 'Menunggu pembayaran',
-                'menunggu_verifikasi' => 'Menunggu verifikasi',
-                'dikerjakan' => 'Sedang dikerjakan',
-                'selesai' => 'Selesai',
-            ] as $value => $label)
-                <a href="{{ $value === 'semua' ? route('orders.index') : route('orders.index', ['filter' => $value]) }}" @if (($filter ?? 'semua') === $value || ($filter === null && $value === 'semua')) aria-current="page" @endif>{{ $label }}</a>
-            @endforeach
-        </nav>
+        @unless ($orders->isEmpty() && ! ($filter ?? null))
+            <nav class="customer-filter" aria-label="Filter status pesanan">
+                @foreach ([
+                    'semua' => 'Semua',
+                    'menunggu_pembayaran' => 'Menunggu pembayaran',
+                    'menunggu_verifikasi' => 'Menunggu verifikasi',
+                    'dikerjakan' => 'Sedang dikerjakan',
+                    'selesai' => 'Selesai',
+                ] as $value => $label)
+                    <a href="{{ $value === 'semua' ? route('orders.index') : route('orders.index', ['filter' => $value]) }}" @if (($filter ?? 'semua') === $value || ($filter === null && $value === 'semua')) aria-current="page" @endif>{{ $label }}</a>
+                @endforeach
+            </nav>
 
-        <section class="customer-order-stats" aria-label="Ringkasan pesanan">
-            @foreach ([
-                ['class' => 'total', 'icon' => 'inventory_2', 'label' => 'Total Pesanan', 'value' => $orderStats['total']],
-                ['class' => 'waiting', 'icon' => 'schedule', 'label' => 'Menunggu Pembayaran', 'value' => $orderStats['waiting']],
-                ['class' => 'progress', 'icon' => 'pending_actions', 'label' => 'Sedang Dikerjakan', 'value' => $orderStats['in_progress']],
-                ['class' => 'complete', 'icon' => 'check_circle', 'label' => 'Selesai', 'value' => $orderStats['completed']],
-            ] as $stat)
-                <article class="customer-order-stat customer-order-stat--{{ $stat['class'] }}">
-                    <span aria-hidden="true" class="material-symbols-outlined">{{ $stat['icon'] }}</span>
-                    <h2>{{ $stat['label'] }}</h2>
-                    <strong>{{ $stat['value'] }}</strong>
-                </article>
-            @endforeach
-        </section>
+            <section class="customer-order-stats" aria-label="Ringkasan pesanan">
+                @foreach ([
+                    ['class' => 'total', 'icon' => 'inventory_2', 'label' => 'Total Pesanan', 'value' => $orderStats['total']],
+                    ['class' => 'waiting', 'icon' => 'schedule', 'label' => 'Menunggu Pembayaran', 'value' => $orderStats['waiting']],
+                    ['class' => 'progress', 'icon' => 'pending_actions', 'label' => 'Sedang Dikerjakan', 'value' => $orderStats['in_progress']],
+                    ['class' => 'complete', 'icon' => 'check_circle', 'label' => 'Selesai', 'value' => $orderStats['completed']],
+                ] as $stat)
+                    <article class="customer-order-stat customer-order-stat--{{ $stat['class'] }}">
+                        <span aria-hidden="true" class="material-symbols-outlined">{{ $stat['icon'] }}</span>
+                        <h2>{{ $stat['label'] }}</h2>
+                        <strong>{{ $stat['value'] }}</strong>
+                    </article>
+                @endforeach
+            </section>
+        @endunless
 
         @if ($orders->isEmpty())
             @if ($filter)
@@ -50,9 +52,10 @@
                     <a href="{{ route('orders.index') }}">Lihat semua pesanan</a>
                 </div>
             @else
-                <div class="dashboard-empty" role="status">
+                <div class="dashboard-empty is-blank" role="status">
+                    <span class="customer-empty-icon" aria-hidden="true"><span class="material-symbols-outlined">archive</span></span>
                     <h2>Belum ada pesanan</h2>
-                    <p>Pilih template dari katalog WEBIA untuk memulai.</p>
+                    <p>Pilih template dari katalog WEBIA untuk memulai pesanan pertamamu.</p>
                     <a class="account-submit" href="{{ route('collections') }}">Pilih template</a>
                 </div>
             @endif
