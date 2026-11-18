@@ -430,5 +430,49 @@ class WebiaTemplateAlleSeeder extends Seeder
                 'sort_order' => 52,
             ]
         );
+
+        WebiaTemplate::updateOrCreate(
+            ['slug' => 'aethelgard-digital-museum'],
+            [
+                'name' => 'Aethelgard — Digital Museum & Heritage Archive',
+                'category_slug' => 'education-culture',
+                'category_label' => 'Education & Culture',
+                'business_types' => ['Digital Museum & Heritage Archive'],
+                'design_style' => 'Editorial Classic',
+                'color_theme' => 'Midnight Navy & Champagne Gold',
+                'description' => 'Digital museum website with curated artifact collections, high-resolution heritage archives, virtual 3D tours, photogrammetry highlights, institutional digitization services, visitor FAQs, and an AI curator demo.',
+                'preview_style' => 'preview-aethelgard-digital-museum',
+                'eyebrow' => 'DIGITAL MUSEUM · CULTURAL HERITAGE',
+                'headline' => 'Menjaga Jejak Peradaban dalam Keabadian Ruang Digital.',
+                'tag' => 'Education & Culture · Digital Museum · Editorial Classic',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/aethelgard-digital-museum',
+                'preview_view' => 'website-bisnis.templates.education-culture.aethelgard-digital-museum',
+                'is_active' => true,
+                'sort_order' => 53,
+            ]
+        );
+
+        WebiaTemplate::updateOrCreate(
+            ['slug' => 'aquaverse-interactive-heritage'],
+            [
+                'name' => 'Aquaverse — Interactive Heritage Exhibition',
+                'category_slug' => 'education-culture',
+                'category_label' => 'Education & Culture',
+                'business_types' => ['Interactive Digital Museum'],
+                'design_style' => 'Futuristic & Immersive',
+                'color_theme' => 'Deep Ocean Blue, Electric Cyan & Midnight',
+                'description' => 'Interactive digital heritage exhibition with holographic artifact zones, a 360-degree Ocean Dome, virtual heritage experiences, ticket and group-visit information, visitor FAQs, WhatsApp reservations, and an AI exhibition guide demo.',
+                'preview_style' => 'preview-aquaverse-interactive-heritage',
+                'eyebrow' => 'DIGITAL MUSEUM · IMMERSIVE HERITAGE',
+                'headline' => 'Selami Sejarah dalam Dimensi Imersif Futuristik.',
+                'tag' => 'Education & Culture · Interactive Museum · Futuristic & Immersive',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/aquaverse-interactive-heritage',
+                'preview_view' => 'website-bisnis.templates.education-culture.aquaverse-interactive-heritage',
+                'is_active' => true,
+                'sort_order' => 54,
+            ]
+        );
     }
 }
