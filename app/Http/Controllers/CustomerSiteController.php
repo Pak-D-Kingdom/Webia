@@ -52,6 +52,10 @@ class CustomerSiteController extends Controller
         if (str_starts_with($siteConfigPath, 'fnb/')) {
             return $this->handleFnb($order, $siteConfigPath, $pageKey);
         }
+
+        if (str_starts_with($siteConfigPath, 'transportation-logistics/')) {
+            return $this->handleTransportationLogistics($order, $siteConfigPath, $pageKey);
+        }
         $views = match (true) {
             $isBrandingAgency => array_fill_keys(['home', 'layanan', 'keahlian', 'portofolio', 'janji'], 'branding-creative-agency'),
             str_starts_with($siteConfigPath, 'company/') => ['home' => 'index', 'tentang-kami' => 'tentang-kami', 'portofolio' => 'portofolio'],
@@ -688,6 +692,282 @@ class CustomerSiteController extends Controller
                     'Surabaya, Indonesia',
                 ],
                 $address,
+                $html
+            );
+        }
+
+        return $html;
+    }
+
+    private const TRANSPORTATION_STANDALONE_VIEWS = [
+        'cocoexpress-delivery-service' => ['home' => 'website-bisnis.templates.transportation-logistics.delivery-service.cocoexpress.cocoexpress'],
+        'reloko-moving-company' => ['home' => 'website-bisnis.templates.transportation-logistics.moving-company.reloko.reloko'],
+    ];
+
+    private const TRANSPORTATION_CONFIG_TEMPLATES = [
+        'logistics-company-classic-trust' => [
+            'view_base' => 'website-bisnis.template.transportation&logistics.corporate.logistics-company-classic-trust.',
+            'config_key' => 'template.transportation&logistics.corporate.logistics-company-classic-trust.logistics-company',
+            'preview_prefix' => '/webia/template/logistics-company-classic-trust',
+            'pages' => [
+                'home' => 'index',
+                'layanan' => 'layanan',
+                'opsi-pengiriman' => 'opsi-pengiriman',
+                'jangkauan' => 'jangkauan',
+                'armada-gudang' => 'armada-gudang',
+                'proses-pengiriman' => 'proses-pengiriman',
+                'tracking' => 'tracking',
+                'klien' => 'klien',
+                'penawaran' => 'penawaran',
+            ],
+        ],
+        'transportation-logistics-company-midnight-navy' => [
+            'view_base' => 'website-bisnis.template.transportation&logistics.modern.logistics-company-midnight-navy.',
+            'config_key' => 'template.transportation&logistics.modern.logistics-company-midnight-navy.logistics-company',
+            'preview_prefix' => '/webia/template/transportation-logistics/modern/logistics-company-midnight-navy',
+            'pages' => [
+                'home' => 'index',
+                'layanan' => 'layanan',
+                'solusi-freight' => 'solusi-freight',
+                'jangkauan' => 'jangkauan',
+                'armada-gudang' => 'armada-gudang',
+                'proses-pengiriman' => 'proses-pengiriman',
+                'tracking' => 'tracking',
+                'klien-korporat' => 'klien-korporat',
+                'minta-penawaran' => 'minta-penawaran',
+                'ai-assistant' => 'ai-assistant',
+            ],
+        ],
+        'logistics-company-orange-energy' => [
+            'view_base' => 'website-bisnis.template.transportation&logistics.bold.logistics-company-orange-energy.',
+            'config_key' => 'template.transportation&logistics.bold.logistics-company-orange-energy.logistics-company',
+            'preview_prefix' => '/webia/template/transportation-logistics/bold/logistics-company-orange-energy',
+            'pages' => [
+                'home' => 'index',
+                'layanan' => 'layanan',
+                'opsi-pengiriman' => 'opsi-pengiriman',
+                'jangkauan' => 'jangkauan',
+                'armada-gudang' => 'armada-gudang',
+                'proses-pengiriman' => 'proses-pengiriman',
+                'tracking' => 'tracking',
+                'klien-korporat' => 'klien-korporat',
+                'penawaran' => 'penawaran',
+                'ai-assistant' => 'ai-assistant',
+            ],
+        ],
+        'delivery-service-emerald-express' => [
+            'view_base' => 'website-bisnis.template.transportation&logistics.delivery.logistics-company-emerald-express.',
+            'config_key' => 'template.transportation&logistics.delivery.logistics-company-emerald-express.logistics-company',
+            'preview_prefix' => '/webia/template/transportation-logistics/delivery/logistics-company-emerald-express',
+            'pages' => [
+                'home' => 'index',
+            ],
+        ],
+        'moving-company-navy-hearth' => [
+            'view_base' => 'website-bisnis.template.transportation&logistics.moving.logistics-company-navy-hearth.',
+            'config_key' => 'template.transportation&logistics.moving.logistics-company-navy-hearth.logistics-company',
+            'preview_prefix' => '/webia/template/transportation-logistics/moving/logistics-company-navy-hearth',
+            'pages' => [
+                'home' => 'index',
+            ],
+        ],
+        'moving-company-rose-atelier' => [
+            'view_base' => 'website-bisnis.template.transportation&logistics.luxury.logistics-company-rose-atelier.',
+            'config_key' => 'template.transportation&logistics.luxury.logistics-company-rose-atelier.logistics-company',
+            'preview_prefix' => '/webia/template/transportation-logistics/luxury/logistics-company-rose-atelier',
+            'pages' => [
+                'home' => 'index',
+            ],
+        ],
+    ];
+
+    private function handleTransportationLogistics(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $slug = Str::after($siteConfigPath, 'transportation-logistics/');
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $instagram = ltrim($business['instagram'] ?? '', '@');
+
+        if (isset(self::TRANSPORTATION_STANDALONE_VIEWS[$slug])) {
+            abort_unless(isset(self::TRANSPORTATION_STANDALONE_VIEWS[$slug][$pageKey]), 404);
+            $viewName = self::TRANSPORTATION_STANDALONE_VIEWS[$slug][$pageKey];
+
+            $renderedHtml = view($viewName, [
+                'order' => $order,
+                'page' => $pageKey,
+                'business' => $business,
+                'whatsapp' => $whatsapp,
+                'instagram' => $instagram,
+            ])->render();
+
+            $renderedHtml = $this->transformTransportationLogisticsHtml($renderedHtml, $business, $whatsapp, $slug, $order->site_slug);
+        } elseif (isset(self::TRANSPORTATION_CONFIG_TEMPLATES[$slug])) {
+            $def = self::TRANSPORTATION_CONFIG_TEMPLATES[$slug];
+            abort_unless(isset($def['pages'][$pageKey]), 404);
+
+            $viewFile = $def['pages'][$pageKey];
+            $viewName = $def['view_base'].$viewFile;
+            $configKey = $def['config_key'];
+
+            $site = config($configKey) ?? [];
+
+            $bizName = $business['business_name'] ?? '';
+            if ($bizName !== '') {
+                if (isset($site['brand']['name'])) {
+                    $site['brand']['name'] = $bizName;
+                }
+                if (isset($site['brand']['upper'])) {
+                    $site['brand']['upper'] = strtoupper($bizName);
+                }
+            }
+            if ($whatsapp !== '') {
+                if (isset($site['contact']['whatsapp'])) {
+                    $site['contact']['whatsapp'] = $whatsapp;
+                }
+                if (isset($site['whatsapp']['number'])) {
+                    $site['whatsapp']['number'] = $whatsapp;
+                }
+            }
+            if (! empty($business['address'])) {
+                $address = $this->businessAddress($business);
+                if (isset($site['contact']['address'])) {
+                    $site['contact']['address'] = $address;
+                }
+            }
+            if (! empty($business['email']) && isset($site['contact']['email'])) {
+                $site['contact']['email'] = $business['email'];
+            }
+
+            config([$configKey => $site]);
+
+            $viewData = [
+                'v' => $def['view_base'],
+                'site' => $site,
+                'order' => $order,
+                'page' => $pageKey,
+                'business' => $business,
+                'whatsapp' => $whatsapp,
+                'instagram' => $instagram,
+            ];
+
+            if ($slug === 'logistics-company-orange-energy') {
+                $viewData['rp'] = 'webia.template.logistics-company-orange-energy.';
+                $viewData['to'] = fn (?string $name = null): string => $name ? route('webia.template.logistics-company-orange-energy.'.$name) : '#';
+                $viewData['img'] = fn (string $file): string => asset('images/website-bisnis/template/transportation&logistics/bold/logistics-company-orange-energy/'.$file);
+            }
+
+            $renderedHtml = view($viewName, $viewData)->render();
+            $renderedHtml = $this->transformTransportationLogisticsHtml($renderedHtml, $business, $whatsapp, $slug, $order->site_slug, $def['preview_prefix'] ?? null);
+        } else {
+            abort(404);
+        }
+
+        $widgetHtml = view('components.site-ai-widget', [
+            'order' => $order,
+            'business' => $business,
+            'whatsapp' => $whatsapp,
+            'siteSlug' => $order->site_slug,
+        ])->render();
+
+        if (str_contains($renderedHtml, '</body>')) {
+            $renderedHtml = str_replace('</body>', $widgetHtml."\n</body>", $renderedHtml);
+        } else {
+            $renderedHtml .= $widgetHtml;
+        }
+
+        return response($renderedHtml);
+    }
+
+    private function transformTransportationLogisticsHtml(string $html, array $business, string $whatsapp, string $slug, string $siteSlug, ?string $previewPrefix = null): string
+    {
+        if ($previewPrefix) {
+            $siteBase = url('/s/'.$siteSlug);
+            $previewUrl = url($previewPrefix);
+            $html = str_replace([$previewUrl, $previewPrefix], [$siteBase, '/s/'.$siteSlug], $html);
+        }
+
+        $bizName = $business['business_name'] ?? '';
+        if ($bizName !== '') {
+            $brandMap = [
+                'COCOEXPRESS' => strtoupper($bizName),
+                'CocoExpress' => $bizName,
+                'Coco Express' => $bizName,
+                'RELOKO' => strtoupper($bizName),
+                'Reloko' => $bizName,
+                'Nusa Logistik' => $bizName,
+                'NUSA LOGISTIK' => strtoupper($bizName),
+                'GlobalCargo' => $bizName,
+                'GLOBALCARGO' => strtoupper($bizName),
+                'Energi Cargo' => $bizName,
+                'ENERGI CARGO' => strtoupper($bizName),
+                'Swiftly' => $bizName,
+                'SWIFTLY' => strtoupper($bizName),
+                'Hearth & Haul' => $bizName,
+                'HEARTH & HAUL' => strtoupper($bizName),
+                'Atelier Move' => $bizName,
+                'ATELIER MOVE' => strtoupper($bizName),
+            ];
+            $html = str_replace(array_keys($brandMap), array_values($brandMap), $html);
+        }
+
+        $custWa = $whatsapp ?: '6281234567890';
+        $rawWa = $business['whatsapp'] ?? $custWa;
+        $html = str_replace(
+            [
+                '6281234567890',
+                '628123456789',
+                '62895630300345',
+                '6285850180285',
+                '+62 812-3456-7890',
+                '+62 858-5018-0285',
+                'https://wa.me/?text=',
+                'https://wa.me/&',
+                'https://wa.me/"',
+                "https://wa.me/'",
+            ],
+            [
+                $custWa,
+                $custWa,
+                $custWa,
+                $custWa,
+                $rawWa,
+                $rawWa,
+                'https://wa.me/'.$custWa.'?text=',
+                'https://wa.me/'.$custWa.'&',
+                'https://wa.me/'.$custWa.'"',
+                'https://wa.me/'.$custWa."'",
+            ],
+            $html
+        );
+
+        $address = $this->businessAddress($business);
+        if ($address !== '') {
+            $html = str_replace(
+                [
+                    'Jl. Industri Raya No. 88, Kawasan Industri Pulogadung, Jakarta Timur 13920',
+                    'Jl. Logistik Raya No. 88, Marunda, Jakarta Utara',
+                    'Jl. Raya Pelabuhan No. 88, Tanjung Priok, Jakarta Utara 14310',
+                    'Jl. Kemang Raya 18<br>Jakarta Selatan 12730',
+                    'Jakarta · Indonesia',
+                    'Greater Jakarta',
+                    'Jakarta, Indonesia',
+                ],
+                $address,
+                $html
+            );
+        }
+
+        if (! empty($business['email'])) {
+            $email = $business['email'];
+            $html = str_replace(
+                [
+                    'info@nusalogistik.co.id',
+                    'halo@globalcargo.id',
+                    'halo@energicargo.co.id',
+                    'hello@swiftly.example',
+                    'hello@ateliermove.example',
+                ],
+                $email,
                 $html
             );
         }
