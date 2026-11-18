@@ -45,7 +45,7 @@ return [
         ['key' => 'pinterest', 'label' => 'Pinterest', 'url' => 'https://pinterest.com'],
     ],
 
-    // Navbar sesuai desain. "Kontak" mengarah ke blok kontak di footer.
+    // Navbar. Blok kontak ada di footer (id #kontak).
     'nav' => [
         ['key' => 'beranda',    'label' => 'Beranda',        'path' => ''],
         ['key' => 'portofolio', 'label' => 'Portofolio',     'path' => '/portofolio'],
@@ -55,7 +55,6 @@ return [
         ['key' => 'proses',     'label' => 'Proses Proyek',  'path' => '/proses'],
         ['key' => 'sertifikasi','label' => 'Sertifikasi',    'path' => '/sertifikasi'],
         ['key' => 'konsultasi', 'label' => 'Konsultasi',     'path' => '/konsultasi'],
-        ['key' => 'kontak',     'label' => 'Kontak',         'path' => '#kontak'],
     ],
 
     'footer' => [
@@ -67,29 +66,29 @@ return [
     ],
 
     'portfolio' => [
-        ['title' => 'Rumah Modern Minimalis', 'loc' => 'Jakarta Selatan', 'year' => '2025', 'cat' => 'residensial', 'img' => 'res-01.svg', 'area' => '220 m²', 'desc' => 'Hunian dua lantai dengan fasad kayu hangat, void tinggi, dan bukaan kaca besar yang menghadirkan cahaya alami.'],
-        ['title' => 'Gedung Perkantoran', 'loc' => 'Jakarta Pusat', 'year' => '2024', 'cat' => 'komersial', 'img' => 'com-01.svg', 'area' => '4.800 m²', 'desc' => 'Menara perkantoran fasad kaca efisien energi dengan lobi dua lantai dan ruang terbuka hijau.'],
-        ['title' => 'Villa Tropis Modern', 'loc' => 'Bali', 'year' => '2025', 'cat' => 'villa', 'img' => 'vil-01.svg', 'area' => '380 m²', 'desc' => 'Villa beratap kayu dengan teras lebar, kolam renang, dan taman tropis yang menyatu dengan bangunan.'],
-        ['title' => 'Residence Wood House', 'loc' => 'Bandung', 'year' => '2024', 'cat' => 'residensial', 'img' => 'res-02.svg', 'area' => '310 m²', 'desc' => 'Rumah keluarga bernuansa rustic dengan panel kayu, dinding batu alam, dan balkon berkaca.'],
-        ['title' => 'Kantor Sentra Niaga', 'loc' => 'Surabaya', 'year' => '2024', 'cat' => 'komersial', 'img' => 'com-02.svg', 'area' => '2.600 m²', 'desc' => 'Gedung niaga bertingkat dengan kanopi kayu, area ritel di lantai dasar, dan ruang kerja fleksibel.'],
-        ['title' => 'Rumah Tropis Terra', 'loc' => 'Yogyakarta', 'year' => '2023', 'cat' => 'residensial', 'img' => 'res-04.svg', 'area' => '240 m²', 'desc' => 'Rumah tropis dengan sirkulasi udara silang, overhang lebar, dan taman tengah.'],
-        ['title' => 'Villa Senja Ubud', 'loc' => 'Bali', 'year' => '2023', 'cat' => 'villa', 'img' => 'vil-02.svg', 'area' => '420 m²', 'desc' => 'Villa peristirahatan dengan pencahayaan hangat dan pemandangan lembah yang terbuka.'],
-        ['title' => 'Rumah Nordik Hangat', 'loc' => 'Tangerang Selatan', 'year' => '2025', 'cat' => 'residensial', 'img' => 'res-05.svg', 'area' => '195 m²', 'desc' => 'Hunian kompak dengan palet kayu dan krem, dirancang untuk keluarga muda.'],
-        ['title' => 'Plaza Bisnis Hijau', 'loc' => 'Jakarta Barat', 'year' => '2022', 'cat' => 'komersial', 'img' => 'com-03.svg', 'area' => '3.900 m²', 'desc' => 'Kompleks bisnis campuran dengan koridor hijau dan fasad kaca berlapis.'],
+        ['title' => 'Rumah Modern Minimalis', 'loc' => 'Jakarta Selatan', 'year' => '2025', 'cat' => 'residensial', 'img' => 'res-01.jpg', 'area' => '220 m²', 'desc' => 'Hunian dua lantai dengan fasad kayu hangat, void tinggi, dan bukaan kaca besar yang menghadirkan cahaya alami.'],
+        ['title' => 'Gedung Perkantoran', 'loc' => 'Jakarta Pusat', 'year' => '2024', 'cat' => 'komersial', 'img' => 'com-01.jpg', 'area' => '4.800 m²', 'desc' => 'Menara perkantoran fasad kaca efisien energi dengan lobi dua lantai dan ruang terbuka hijau.'],
+        ['title' => 'Villa Tropis Modern', 'loc' => 'Bali', 'year' => '2025', 'cat' => 'villa', 'img' => 'vil-01.jpg', 'area' => '380 m²', 'desc' => 'Villa beratap kayu dengan teras lebar, kolam renang, dan taman tropis yang menyatu dengan bangunan.'],
+        ['title' => 'Residence Wood House', 'loc' => 'Bandung', 'year' => '2024', 'cat' => 'residensial', 'img' => 'res-02.jpg', 'area' => '310 m²', 'desc' => 'Rumah keluarga bernuansa rustic dengan panel kayu, dinding batu alam, dan balkon berkaca.'],
+        ['title' => 'Kantor Sentra Niaga', 'loc' => 'Surabaya', 'year' => '2024', 'cat' => 'komersial', 'img' => 'com-02.jpg', 'area' => '2.600 m²', 'desc' => 'Gedung niaga bertingkat dengan kanopi kayu, area ritel di lantai dasar, dan ruang kerja fleksibel.'],
+        ['title' => 'Rumah Tropis Terra', 'loc' => 'Yogyakarta', 'year' => '2023', 'cat' => 'residensial', 'img' => 'res-04.jpg', 'area' => '240 m²', 'desc' => 'Rumah tropis dengan sirkulasi udara silang, overhang lebar, dan taman tengah.'],
+        ['title' => 'Villa Senja Ubud', 'loc' => 'Bali', 'year' => '2023', 'cat' => 'villa', 'img' => 'vil-02.jpg', 'area' => '420 m²', 'desc' => 'Villa peristirahatan dengan pencahayaan hangat dan pemandangan lembah yang terbuka.'],
+        ['title' => 'Rumah Nordik Hangat', 'loc' => 'Tangerang Selatan', 'year' => '2025', 'cat' => 'residensial', 'img' => 'res-05.jpg', 'area' => '195 m²', 'desc' => 'Hunian kompak dengan palet kayu dan krem, dirancang untuk keluarga muda.'],
+        ['title' => 'Plaza Bisnis Hijau', 'loc' => 'Jakarta Barat', 'year' => '2022', 'cat' => 'komersial', 'img' => 'com-03.jpg', 'area' => '3.900 m²', 'desc' => 'Kompleks bisnis campuran dengan koridor hijau dan fasad kaca berlapis.'],
     ],
 
     'projects' => [
         'residensial' => [
-            ['title' => 'Rumah Modern Minimalis', 'loc' => 'Jakarta Selatan', 'area' => '220 m²', 'floors' => '2 lantai', 'status' => 'Selesai 2025', 'img' => 'res-01.svg', 'desc' => 'Fasad kayu hangat dengan bukaan kaca besar dan void ruang keluarga.'],
-            ['title' => 'Cluster Kayu Hangat', 'loc' => 'BSD City, Tangerang', 'area' => '180 m²', 'floors' => '2 lantai', 'status' => 'Selesai 2024', 'img' => 'res-03.svg', 'desc' => 'Hunian cluster dengan carport lebar, taman depan, dan pencahayaan malam.'],
-            ['title' => 'Rumah Terra Courtyard', 'loc' => 'Malang', 'area' => '260 m²', 'floors' => '2 lantai', 'status' => 'Dalam pembangunan', 'img' => 'res-06.svg', 'desc' => 'Rumah bernuansa cokelat tua dengan courtyard dan ruang makan terbuka.'],
-            ['title' => 'Residence Wood House', 'loc' => 'Bandung', 'area' => '310 m²', 'floors' => '2 lantai', 'status' => 'Selesai 2024', 'img' => 'res-02.svg', 'desc' => 'Rumah keluarga dengan panel kayu, dinding batu alam, dan balkon berkaca.'],
+            ['title' => 'Rumah Modern Minimalis', 'loc' => 'Jakarta Selatan', 'area' => '220 m²', 'floors' => '2 lantai', 'status' => 'Selesai 2025', 'img' => 'res-01.jpg', 'desc' => 'Fasad kayu hangat dengan bukaan kaca besar dan void ruang keluarga.'],
+            ['title' => 'Cluster Kayu Hangat', 'loc' => 'BSD City, Tangerang', 'area' => '180 m²', 'floors' => '2 lantai', 'status' => 'Selesai 2024', 'img' => 'res-03.jpg', 'desc' => 'Hunian cluster dengan carport lebar, taman depan, dan pencahayaan malam.'],
+            ['title' => 'Rumah Terra Courtyard', 'loc' => 'Malang', 'area' => '260 m²', 'floors' => '2 lantai', 'status' => 'Dalam pembangunan', 'img' => 'res-06.jpg', 'desc' => 'Rumah bernuansa cokelat tua dengan courtyard dan ruang makan terbuka.'],
+            ['title' => 'Residence Wood House', 'loc' => 'Bandung', 'area' => '310 m²', 'floors' => '2 lantai', 'status' => 'Selesai 2024', 'img' => 'res-02.jpg', 'desc' => 'Rumah keluarga dengan panel kayu, dinding batu alam, dan balkon berkaca.'],
         ],
         'komersial' => [
-            ['title' => 'Gedung Perkantoran Pusat', 'loc' => 'Jakarta Pusat', 'area' => '4.800 m²', 'floors' => '16 lantai', 'status' => 'Selesai 2024', 'img' => 'com-01.svg', 'desc' => 'Menara perkantoran fasad kaca efisien energi dengan lobi dua lantai.'],
-            ['title' => 'Kantor Sentra Niaga', 'loc' => 'Surabaya', 'area' => '2.600 m²', 'floors' => '3 lantai', 'status' => 'Selesai 2024', 'img' => 'com-02.svg', 'desc' => 'Gedung niaga dengan kanopi kayu dan area ritel di lantai dasar.'],
-            ['title' => 'Plaza Bisnis Hijau', 'loc' => 'Jakarta Barat', 'area' => '3.900 m²', 'floors' => '12 lantai', 'status' => 'Dalam pembangunan', 'img' => 'com-03.svg', 'desc' => 'Kompleks bisnis campuran dengan koridor hijau dan fasad berlapis.'],
-            ['title' => 'Ruko Fasad Kaca', 'loc' => 'Medan', 'area' => '1.200 m²', 'floors' => '4 lantai', 'status' => 'Selesai 2023', 'img' => 'com-04.svg', 'desc' => 'Deretan ruko modern dengan fasad kaca dan aksen kayu.'],
+            ['title' => 'Gedung Perkantoran Pusat', 'loc' => 'Jakarta Pusat', 'area' => '4.800 m²', 'floors' => '16 lantai', 'status' => 'Selesai 2024', 'img' => 'com-01.jpg', 'desc' => 'Menara perkantoran fasad kaca efisien energi dengan lobi dua lantai.'],
+            ['title' => 'Kantor Sentra Niaga', 'loc' => 'Surabaya', 'area' => '2.600 m²', 'floors' => '3 lantai', 'status' => 'Selesai 2024', 'img' => 'com-02.jpg', 'desc' => 'Gedung niaga dengan kanopi kayu dan area ritel di lantai dasar.'],
+            ['title' => 'Plaza Bisnis Hijau', 'loc' => 'Jakarta Barat', 'area' => '3.900 m²', 'floors' => '12 lantai', 'status' => 'Dalam pembangunan', 'img' => 'com-03.jpg', 'desc' => 'Kompleks bisnis campuran dengan koridor hijau dan fasad berlapis.'],
+            ['title' => 'Ruko Fasad Kaca', 'loc' => 'Medan', 'area' => '1.200 m²', 'floors' => '4 lantai', 'status' => 'Selesai 2023', 'img' => 'com-04.jpg', 'desc' => 'Deretan ruko modern dengan fasad kaca dan aksen kayu.'],
         ],
     ],
 
@@ -121,16 +120,58 @@ return [
         ['img' => 'badge-lpjk.svg', 'title' => 'LPJK Indonesia',              'org' => 'Lisensi Jasa Konstruksi', 'desc' => 'Badan usaha kami memiliki sertifikat jasa konstruksi untuk layanan perencanaan dan pengawasan bangunan.'],
     ],
 
-    'consult' => [
-        'services' => ['Desain Arsitektur', 'Desain Interior', 'Jasa 3D Rendering', 'Konsultasi Desain', 'Perencanaan Bangunan'],
-        'times'    => ['09.00', '10.30', '13.00', '14.30', '16.00'],
-        'modes'    => ['Online (Zoom / Google Meet)', 'Tatap muka di kantor', 'Kunjungan ke lokasi'],
-    ],
-
-    'quote' => [
-        'types'   => ['Rumah Tinggal', 'Villa / Resort', 'Gedung Komersial', 'Desain Interior', 'Renovasi Bangunan', 'Lainnya'],
-        'budgets' => ['< Rp 500 juta', 'Rp 500 juta – 1 miliar', 'Rp 1 – 3 miliar', 'Rp 3 – 10 miliar', '> Rp 10 miliar', 'Belum ditentukan'],
-        'starts'  => ['Segera (≤ 1 bulan)', '1 – 3 bulan', '3 – 6 bulan', 'Masih perencanaan'],
+    // Definisi form (dirender oleh partials/form + partials/field). Dikirim ke WhatsApp (contact.whatsapp).
+    'forms' => [
+        'konsultasi' => [
+            'title' => 'Jadwalkan Konsultasi', 'icon' => 'calendar',
+            'hint' => 'Isi formulir singkat ini, lalu kirim ke WhatsApp kami untuk konfirmasi jadwal.',
+            'submit' => 'Kirim ke WhatsApp', 'intro' => 'booking konsultasi',
+            'sections' => [
+                ['title' => 'Data Anda', 'fields' => [
+                    ['type' => 'text',  'name' => 'nama',  'label' => 'Nama lengkap', 'req' => true, 'icon' => 'user',  'ph' => 'Nama Anda', 'ac' => 'name'],
+                    ['type' => 'email', 'name' => 'email', 'label' => 'Email',        'req' => true, 'icon' => 'mail',  'ph' => 'nama@email.com', 'ac' => 'email'],
+                    ['type' => 'tel',   'name' => 'wa',    'label' => 'No. WhatsApp', 'req' => true, 'icon' => 'phone', 'ph' => '0812 3456 7890', 'ac' => 'tel', 'full' => true, 'hint' => 'Jadwal dikonfirmasi lewat nomor ini.'],
+                ]],
+                ['title' => 'Layanan & Jadwal', 'fields' => [
+                    ['type' => 'choice', 'mode' => 'cards', 'name' => 'layanan', 'label' => 'Jenis layanan', 'req' => true, 'full' => true,
+                     'options' => [['Desain Arsitektur', 'compass'], ['Desain Interior', 'sofa'], ['Jasa 3D Rendering', 'cube'], ['Konsultasi Desain', 'chat'], ['Perencanaan Bangunan', 'building']]],
+                    ['type' => 'date', 'name' => 'tanggal', 'label' => 'Tanggal', 'req' => true, 'icon' => 'calendar', 'today' => true, 'full' => true, 'hint' => 'Pilih tanggal mulai hari ini.'],
+                    ['type' => 'choice', 'mode' => 'chips', 'name' => 'jam', 'label' => 'Jam (WIB)', 'req' => true, 'full' => true,
+                     'options' => [['09.00'], ['10.30'], ['13.00'], ['14.30'], ['16.00']]],
+                    ['type' => 'choice', 'mode' => 'cards', 'name' => 'metode', 'label' => 'Metode konsultasi', 'req' => true, 'full' => true,
+                     'options' => [['Online (Zoom / Google Meet)', 'chat'], ['Tatap muka di kantor', 'building'], ['Kunjungan ke lokasi', 'pin']]],
+                ]],
+                ['title' => 'Catatan', 'fields' => [
+                    ['type' => 'textarea', 'name' => 'catatan', 'label' => 'Catatan (opsional)', 'full' => true, 'max' => 400, 'ph' => 'Ceritakan singkat rencana bangunan Anda'],
+                ]],
+            ],
+        ],
+        'penawaran' => [
+            'title' => 'Detail Proyek Anda', 'icon' => 'doc',
+            'hint' => 'Semakin lengkap informasinya, semakin tepat penawaran yang kami susun.',
+            'submit' => 'Kirim Permintaan ke WhatsApp', 'intro' => 'meminta penawaran',
+            'sections' => [
+                ['title' => 'Data Anda', 'fields' => [
+                    ['type' => 'text',  'name' => 'nama',       'label' => 'Nama lengkap', 'req' => true, 'icon' => 'user',  'ph' => 'Nama Anda', 'ac' => 'name'],
+                    ['type' => 'text',  'name' => 'perusahaan', 'label' => 'Perusahaan (opsional)', 'icon' => 'building', 'ph' => 'Nama perusahaan', 'ac' => 'organization'],
+                    ['type' => 'email', 'name' => 'email',      'label' => 'Email',        'req' => true, 'icon' => 'mail',  'ph' => 'nama@email.com', 'ac' => 'email'],
+                    ['type' => 'tel',   'name' => 'wa',         'label' => 'No. WhatsApp', 'req' => true, 'icon' => 'phone', 'ph' => '0812 3456 7890', 'ac' => 'tel'],
+                ]],
+                ['title' => 'Tentang Proyek', 'fields' => [
+                    ['type' => 'select', 'name' => 'jenis', 'label' => 'Jenis proyek', 'req' => true, 'icon' => 'home', 'ph' => 'Pilih jenis proyek',
+                     'options' => [['Rumah Tinggal', 'home'], ['Villa / Resort', 'sofa'], ['Gedung Komersial', 'building'], ['Desain Interior', 'sofa'], ['Renovasi Bangunan', 'build'], ['Lainnya', 'grid']]],
+                    ['type' => 'text',   'name' => 'lokasi', 'label' => 'Lokasi proyek', 'req' => true, 'icon' => 'pin', 'ph' => 'Kota / kabupaten'],
+                    ['type' => 'number', 'name' => 'luas', 'label' => 'Perkiraan luas (m²)', 'icon' => 'ruler', 'ph' => 'contoh: 150', 'min' => 1],
+                    ['type' => 'select', 'name' => 'budget', 'label' => 'Perkiraan anggaran', 'icon' => 'doc', 'ph' => 'Pilih rentang anggaran',
+                     'options' => [['< Rp 500 juta'], ['Rp 500 juta – 1 miliar'], ['Rp 1 – 3 miliar'], ['Rp 3 – 10 miliar'], ['> Rp 10 miliar'], ['Belum ditentukan']]],
+                    ['type' => 'choice', 'mode' => 'chips', 'name' => 'mulai', 'label' => 'Target mulai', 'full' => true,
+                     'options' => [['Segera (≤ 1 bulan)'], ['1 – 3 bulan'], ['3 – 6 bulan'], ['Masih perencanaan']]],
+                ]],
+                ['title' => 'Kebutuhan Anda', 'fields' => [
+                    ['type' => 'textarea', 'name' => 'deskripsi', 'label' => 'Deskripsi kebutuhan', 'req' => true, 'full' => true, 'max' => 600, 'ph' => 'Gaya yang diinginkan, jumlah kamar, fasilitas, dan kebutuhan khusus lainnya'],
+                ]],
+            ],
+        ],
     ],
 
     // Pertanyaan cepat (tampil di preview beranda & panel chatbot)

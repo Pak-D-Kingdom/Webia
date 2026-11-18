@@ -38,7 +38,7 @@
         </header>
         <div class="hr-svcgrid">
             @foreach ($cfg['services'] as $s)
-                <article class="hr-svc" id="{{ $s['id'] }}" data-reveal>
+                <article class="hr-svc" id="{{ $s['id'] }}" data-reveal data-tilt>
                     <div class="hr-svc__top">
                         <span class="hr-svc__ico">{{ $i($s['icon']) }}</span>
                         <span class="hr-chip">{{ $i('clock') }}{{ $s['duration'] }}</span>

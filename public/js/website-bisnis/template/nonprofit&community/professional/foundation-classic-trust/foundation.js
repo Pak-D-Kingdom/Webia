@@ -196,6 +196,20 @@
     }
     requestAnimationFrame(step);
   }
+  $$('[data-fd-auto]').forEach(function (el) {
+    var t = el.textContent.trim(), n = parseInt(t.replace(/\D/g, ''), 10);
+    if (!isNaN(n)) { el.setAttribute('data-fd-count', n); el.setAttribute('data-suffix', t.replace(/[0-9.,\s]/g, '')); }
+  });
+  /* efek miring 3D pada foto program (hanya perangkat dengan kursor) */
+  if (!reduced && W.matchMedia && W.matchMedia('(hover: hover)').matches) {
+    $$('[data-fd-tilt]').forEach(function (el) {
+      el.addEventListener('pointermove', function (e) {
+        var r = el.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
+        el.style.transform = 'perspective(700px) rotateY(' + (x * 10) + 'deg) rotateX(' + (-y * 8) + 'deg) scale(1.02)';
+      });
+      el.addEventListener('pointerleave', function () { el.style.transform = ''; });
+    });
+  }
   var animEls = $$('[data-fd-count], .fd-bars i[data-h], .fd-meter i[data-w]');
   function runAnim(el) {
     if (el.hasAttribute('data-fd-count')) runCount(el);

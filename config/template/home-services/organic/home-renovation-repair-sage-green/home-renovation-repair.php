@@ -112,17 +112,17 @@ return [
 
     'packages' => [
         [
-            'id' => 'basic', 'icon' => 'check-circle', 'name' => 'Paket Basic', 'tagline' => 'Perbaikan ringan', 'price' => 'Rp 3.500.000', 'popular' => false,
+            'id' => 'basic', 'amount' => 3500000, 'icon' => 'check-circle', 'name' => 'Paket Basic', 'tagline' => 'Perbaikan ringan', 'price' => 'Rp 3.500.000', 'popular' => false,
             'features' => ['Konsultasi', 'Survey Lokasi', 'Estimasi Biaya'],
             'detail' => ['Konsultasi kebutuhan renovasi', 'Survey lokasi & pengukuran', 'Estimasi biaya tertulis', 'Cocok untuk perbaikan ringan dan area kecil'],
         ],
         [
-            'id' => 'premium', 'icon' => 'crown', 'name' => 'Paket Premium', 'tagline' => 'Renovasi standar', 'price' => 'Rp 7.500.000', 'popular' => true,
+            'id' => 'premium', 'amount' => 7500000, 'icon' => 'crown', 'name' => 'Paket Premium', 'tagline' => 'Renovasi standar', 'price' => 'Rp 7.500.000', 'popular' => true,
             'features' => ['Desain Minimalis', 'Material Berkualitas', 'Garansi 1 Tahun'],
             'detail' => ['Semua fasilitas Paket Basic', 'Desain minimalis & gambar kerja', 'Material berkualitas pilihan', 'Garansi pekerjaan 1 tahun'],
         ],
         [
-            'id' => 'exclusive', 'icon' => 'sparkle', 'name' => 'Paket Exclusive', 'tagline' => 'Renovasi lengkap', 'price' => 'Rp 12.500.000', 'popular' => false,
+            'id' => 'exclusive', 'amount' => 12500000, 'icon' => 'sparkle', 'name' => 'Paket Exclusive', 'tagline' => 'Renovasi lengkap', 'price' => 'Rp 12.500.000', 'popular' => false,
             'features' => ['Desain Premium', 'Material Terbaik', 'Garansi 2 Tahun'],
             'detail' => ['Semua fasilitas Paket Premium', 'Desain premium & visual 3D', 'Material terbaik pilihan', 'Garansi pekerjaan 2 tahun'],
         ],
@@ -263,6 +263,12 @@ return [
             ['Apakah ada garansi pekerjaan?', 'Ada. Paket Premium bergaransi 1 tahun dan Exclusive 2 tahun.'],
             ['Berapa lama survei lokasi?', 'Sekitar 1–2 jam, lalu penawaran dikirim dalam 2–5 hari.'],
         ],
+        'estimate_tiers' => [
+            ['id' => 'basic',     'label' => 'Basic',     'mult' => 1.0],
+            ['id' => 'premium',   'label' => 'Premium',   'mult' => 1.25],
+            ['id' => 'exclusive', 'label' => 'Exclusive', 'mult' => 1.5],
+        ],
+        'calc' => ['min_area' => 10, 'max_area' => 300, 'default_area' => 36],
         'open_hours' => ['days' => [1, 2, 3, 4, 5, 6], 'from' => 8, 'to' => 17, 'tz' => 'Asia/Jakarta'],
         'actions' => [
             ['icon' => 'home',     'label' => 'Layanan Renovasi', 'ask' => 'Layanan Renovasi'],

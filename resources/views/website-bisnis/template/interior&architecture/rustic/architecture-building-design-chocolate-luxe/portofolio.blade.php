@@ -10,7 +10,7 @@
     $v   = $site["view"];
 @endphp
 @php $cats = ['semua' => 'Semua', 'residensial' => 'Residensial', 'komersial' => 'Komersial', 'villa' => 'Villa']; @endphp
-@include($v . '.partials.page-hero', ['title' => 'Arsitektur Portfolio', 'sub' => 'Karya terbaik kami dalam menciptakan ruang yang inspiratif.', 'bg' => 'res-02.svg', 'icon' => 'grid', 'crumb' => 'Portofolio'])
+@include($v . '.partials.page-hero', ['title' => 'Arsitektur Portfolio', 'sub' => 'Karya terbaik kami dalam menciptakan ruang yang inspiratif.', 'bg' => 'res-02.jpg', 'icon' => 'grid', 'crumb' => 'Portofolio'])
 
 <section class="abd-section">
     <div class="abd-container">
