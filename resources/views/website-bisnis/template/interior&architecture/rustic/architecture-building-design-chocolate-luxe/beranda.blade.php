@@ -16,11 +16,21 @@
 @endphp
 
 {{-- ================= HERO ================= --}}
-<section class="abd-hero" id="beranda">
+<section class="abd-hero" id="beranda" data-hero>
     <div class="abd-hero__media" aria-hidden="true">
-        <img class="abd-hero__img" src="{{ $img('hero-villa.jpg') }}" alt="" fetchpriority="high">
+        <img class="abd-hero__img" src="{{ $img('hero-villa.jpg') }}" alt="" width="3840" height="680" fetchpriority="high" decoding="async">
+        <span class="abd-hero__sun"></span>
         <span class="abd-hero__glow"></span>
     </div>
+    <div class="abd-hero__sky" aria-hidden="true">
+        <img class="abd-cloud abd-cloud--1" src="{{ $img('hero-cloud.svg') }}" alt="" width="640" height="190">
+        <img class="abd-cloud abd-cloud--2" src="{{ $img('hero-cloud.svg') }}" alt="" width="640" height="190">
+        <img class="abd-cloud abd-cloud--3" src="{{ $img('hero-cloud.svg') }}" alt="" width="640" height="190">
+        <svg class="abd-bird abd-bird--1" viewBox="0 0 40 16" aria-hidden="true"><path class="abd-bird__w" d="M2 10 Q10 0 20 9 Q30 0 38 10"/></svg>
+        <svg class="abd-bird abd-bird--2" viewBox="0 0 40 16" aria-hidden="true"><path class="abd-bird__w" d="M2 10 Q10 0 20 9 Q30 0 38 10"/></svg>
+        <svg class="abd-bird abd-bird--3" viewBox="0 0 40 16" aria-hidden="true"><path class="abd-bird__w" d="M2 10 Q10 0 20 9 Q30 0 38 10"/></svg>
+    </div>
+    <img class="abd-hero__branch" src="{{ $img('hero-leaves.svg') }}" alt="" width="760" height="340" aria-hidden="true" decoding="async">
     <div class="abd-hero__leaves" data-leaves aria-hidden="true"></div>
 
     <div class="abd-container abd-hero__in">
@@ -37,7 +47,7 @@
             </div>
         </div>
         <p class="abd-hero__script">Desain Elegan,<br>Hidup Lebih Nyaman
-            <svg viewBox="0 0 220 14" aria-hidden="true"><path d="M2 10 C 60 2, 140 2, 218 8" fill="none" stroke="#f0c27b" stroke-width="2.4" stroke-linecap="round"/></svg>
+            <svg viewBox="0 0 220 14" aria-hidden="true"><path d="M2 10 C 60 2, 140 2, 218 8" fill="none" stroke="#f0c27b" stroke-width="2.4" stroke-linecap="round" pathLength="1"/></svg>
         </p>
     </div>
 </section>

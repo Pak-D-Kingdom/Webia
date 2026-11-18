@@ -177,6 +177,16 @@ return [
     // Pertanyaan cepat (tampil di preview beranda & panel chatbot)
     'quick' => ['Apa saja layanan desainnya?', 'Bagaimana proses proyeknya?', 'Berapa estimasi biayanya?', 'Saya ingin konsultasi desain!'],
 
+    // Topik cepat di panel chatbot: [label, ikon, pertanyaan]
+    'topics' => [
+        ['Layanan', 'compass', 'Apa saja layanan desainnya?'],
+        ['Proses Proyek', 'badge', 'Bagaimana proses proyeknya?'],
+        ['Estimasi Biaya', 'doc', 'Berapa estimasi biayanya?'],
+        ['Konsultasi', 'calendar', 'Saya ingin konsultasi desain!'],
+        ['Denah & 3D', 'cube', 'Apakah ada denah dan render 3D?'],
+        ['Sertifikasi', 'badge', 'Apakah ArchiDesign bersertifikat?'],
+    ],
+
     // FAQ chatbot (jawaban dicocokkan lewat kata kunci)
     'faq' => [
         ['q' => 'Apa saja layanan desainnya?', 'k' => ['layanan', 'jasa', 'desain apa', 'service', 'interior', 'arsitektur', 'rendering'],

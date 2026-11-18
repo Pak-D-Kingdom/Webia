@@ -652,7 +652,7 @@ body.rr::before { /* butiran kertas vintage */
 .rr-form { display: grid; gap: 1.2rem; margin-top: 1.2rem; }
 .rr-form[hidden], .rr-done[hidden] { display: none; }
 .rr-fs { display: grid; gap: 1rem; min-width: 0; margin: 0; padding: 1.2rem 1.2rem 1.3rem; border-radius: 18px; background: rgba(255, 250, 240, .55); border: 1px solid rgba(179, 106, 46, .25); }
-.rr-fs legend { display: flex; align-items: center; gap: .6rem; padding: 0 .55rem; font: 700 1rem var(--f-display); }
+.rr-fs legend { display: flex; align-items: center; gap: .6rem; float: left; width: 100%; margin: 0; padding: 0; font: 700 1rem var(--f-display); }
 .rr-fs legend b { display: grid; place-items: center; width: 1.8rem; height: 1.8rem; border-radius: 50%; font: 700 .85rem var(--f-body); color: var(--gold-2); background: linear-gradient(180deg, #6a3e25, #3a2113); transition: all .4s var(--ease); }
 .rr-fs.is-done legend b { color: var(--c-900); background: linear-gradient(180deg, #f8cd6c, #e0a037); transform: scale(1.1); }
 .rr-cols { display: grid; gap: 1rem; grid-template-columns: 1fr 1fr; }
@@ -928,3 +928,19 @@ body.rr::before { /* butiran kertas vintage */
 .rr-pk:hover .rr-pk__list li:hover, .rr-ticks li:hover { transform: translateX(4px); }
 .rr-tile:hover .rr-tile__in .rr-i { animation: rr-wiggle .6s ease; }
 @media (prefers-reduced-motion: reduce) { #rr-main { animation: none; } .rr-hero__bg { translate: none; } }
+
+/* ----- animasi bertema renovasi (halaman dalam) ----- */
+@keyframes rr-grid { to { background-position: 44px 44px, 44px 44px; } }
+@keyframes rr-drift { 0%, 100% { translate: 0 0; rotate: -8deg; } 50% { translate: 0 -16px; rotate: 8deg; } }
+@keyframes rr-hint { 0%, 100% { translate: 0 0; } 50% { translate: 6px 0; } }
+.rr-ph__bg::after { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(244, 194, 90, .07) 1px, transparent 1px), linear-gradient(90deg, rgba(244, 194, 90, .07) 1px, transparent 1px); background-size: 44px 44px; animation: rr-grid 26s linear infinite; }
+.rr-ph__tools { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+.rr-ph__tools .rr-i { position: absolute; width: 2.2rem; height: 2.2rem; color: rgba(244, 194, 90, .22); stroke-width: 1.4; animation: rr-drift 9s ease-in-out infinite; }
+.rr-ph__tools .rr-i:nth-child(1) { left: 46%; top: 12%; } .rr-ph__tools .rr-i:nth-child(2) { left: 58%; top: 70%; animation-delay: -2s; width: 2.6rem; height: 2.6rem; }
+.rr-ph__tools .rr-i:nth-child(3) { left: 33%; top: 78%; animation-delay: -4s; } .rr-ph__tools .rr-i:nth-child(4) { left: 62%; top: 18%; animation-delay: -6s; } .rr-ph__tools .rr-i:nth-child(5) { left: 8%; top: 82%; animation-delay: -3s; }
+.rr-compare__handle .rr-i { animation: rr-hint 1.8s ease-in-out infinite; }
+.rr-btn--gold .rr-i:last-child { transition: transform .3s var(--ease); }
+.rr-form__foot .rr-btn .rr-i--whatsapp { transition: transform .35s var(--ease); }
+.rr-form__foot .rr-btn:hover .rr-i--whatsapp { transform: rotate(-12deg) scale(1.15); }
+.rr-fc__head h2 { background: linear-gradient(90deg, var(--ink) 40%, var(--copper) 50%, var(--ink) 60%) 100% 0 / 250% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: rr-line 7s linear infinite; }
+@media (max-width: 899px) { .rr-ph__tools .rr-i:nth-child(n+3) { display: none; } .rr-ph__tools .rr-i:nth-child(1) { left: 70%; } .rr-ph__tools .rr-i:nth-child(2) { left: 84%; top: 60%; } }
