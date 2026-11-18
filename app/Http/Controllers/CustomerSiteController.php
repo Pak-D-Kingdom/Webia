@@ -44,6 +44,10 @@ class CustomerSiteController extends Controller
         if (str_starts_with($siteConfigPath, 'technology/')) {
             return $this->handleTechnology($order, $siteConfigPath, $pageKey);
         }
+
+        if (str_starts_with($siteConfigPath, 'beauty/')) {
+            return $this->handleBeauty($order, $siteConfigPath, $pageKey);
+        }
         $views = match (true) {
             $isBrandingAgency => array_fill_keys(['home', 'layanan', 'keahlian', 'portofolio', 'janji'], 'branding-creative-agency'),
             str_starts_with($siteConfigPath, 'company/') => ['home' => 'index', 'tentang-kami' => 'tentang-kami', 'portofolio' => 'portofolio'],
@@ -453,6 +457,108 @@ class CustomerSiteController extends Controller
                     'Level 28, Pacific Century Place, SCBD, Jakarta Selatan',
                     'One Pacific Place Suite 18-A, SCBD, Jakarta Selatan',
                     'Jakarta Selatan, Indonesia',
+                ],
+                $address,
+                $html
+            );
+        }
+
+        return $html;
+    }
+
+    private const BEAUTY_VIEWS = [
+        'nailart-professional-softpink' => ['home' => 'website-bisnis.templates.beauty.nailart.nailart-professional-softpink'],
+        'nailart-minimalist-sagegreen' => ['home' => 'website-bisnis.templates.beauty.nailart.nailart-minimalist-sagegreen'],
+        'nailart-luxury-yellowsunshine' => ['home' => 'website-bisnis.templates.beauty.nailart.nailart-luxury-yellowsunshine'],
+        'nuvia-skin-tech-clinic' => ['home' => 'website-bisnis.templates.beauty.nuvia-skin-tech-clinic'],
+        'glow-lab-creative-beauty-clinic' => ['home' => 'website-bisnis.templates.beauty.glow-lab-creative-beauty-clinic'],
+        'atelier-kulit-creative-beauty-clinic' => ['home' => 'website-bisnis.templates.beauty.atelier-kulit-creative-beauty-clinic'],
+        'tanah-warna-rustic-makeup-artist' => ['home' => 'website-bisnis.templates.beauty.tanah-warna-rustic-makeup-artist'],
+        'rosalind-vintage-makeup-artist' => ['home' => 'website-bisnis.templates.beauty.rosalind-vintage-makeup-artist'],
+        'visage-editorial-makeup-artist' => ['home' => 'website-bisnis.templates.beauty.visage-editorial-makeup-artist'],
+    ];
+
+    private function handleBeauty(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $slug = Str::after($siteConfigPath, 'beauty/');
+        abort_unless(isset(self::BEAUTY_VIEWS[$slug]), 404);
+        abort_unless(isset(self::BEAUTY_VIEWS[$slug][$pageKey]), 404);
+
+        $viewName = self::BEAUTY_VIEWS[$slug][$pageKey];
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $instagram = ltrim($business['instagram'] ?? '', '@');
+
+        $renderedHtml = view($viewName, [
+            'order' => $order,
+            'page' => $pageKey,
+            'business' => $business,
+            'whatsapp' => $whatsapp,
+            'instagram' => $instagram,
+        ])->render();
+
+        $renderedHtml = $this->transformBeautyHtml($renderedHtml, $business, $whatsapp);
+
+        $widgetHtml = view('components.site-ai-widget', [
+            'order' => $order,
+            'business' => $business,
+            'whatsapp' => $whatsapp,
+            'siteSlug' => $order->site_slug,
+        ])->render();
+
+        if (str_contains($renderedHtml, '</body>')) {
+            $renderedHtml = str_replace('</body>', $widgetHtml."\n</body>", $renderedHtml);
+        } else {
+            $renderedHtml .= $widgetHtml;
+        }
+
+        return response($renderedHtml);
+    }
+
+    private function transformBeautyHtml(string $html, array $business, string $whatsapp): string
+    {
+        $bizName = $business['business_name'] ?? '';
+        if ($bizName !== '') {
+            $brandMap = [
+                'Blush Nail Studio' => $bizName,
+                'BLUSH NAIL STUDIO' => strtoupper($bizName),
+                'Sage Nail Atelier' => $bizName,
+                'SAGE NAIL ATELIER' => strtoupper($bizName),
+                'Maison Soleil' => $bizName,
+                'MAISON SOLEIL' => strtoupper($bizName),
+                'NUVIA Skin Tech Clinic' => $bizName,
+                'NUVIA SKIN TECH CLINIC' => strtoupper($bizName),
+                'NUVIA' => $bizName,
+                'GLOW LAB' => strtoupper($bizName),
+                'Glow Lab' => $bizName,
+                'Atelier Kulit' => $bizName,
+                'ATELIER KULIT' => strtoupper($bizName),
+                'Tanah Warna' => $bizName,
+                'TANAH WARNA' => strtoupper($bizName),
+                'Rosalind & Co.' => $bizName,
+                'ROSALIND & CO.' => strtoupper($bizName),
+                'Rosalind' => $bizName,
+                'VISAGE' => strtoupper($bizName),
+                'Visage' => $bizName,
+            ];
+            $html = str_replace(array_keys($brandMap), array_values($brandMap), $html);
+        }
+
+        $custWa = $whatsapp ?: '6281234567890';
+        $rawWa = $business['whatsapp'] ?? $custWa;
+        $html = str_replace(
+            ['6285850180285', '6281234567890', '+62 858-5018-0285'],
+            [$custWa, $custWa, $rawWa],
+            $html
+        );
+
+        $address = $this->businessAddress($business);
+        if ($address !== '') {
+            $html = str_replace(
+                [
+                    'Jakarta, Indonesia',
+                    'Surabaya, Indonesia',
+                    'Jl. Contoh No. 1, Jakarta',
                 ],
                 $address,
                 $html
