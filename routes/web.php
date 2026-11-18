@@ -1882,6 +1882,10 @@ Route::prefix('webia/template')->group(function () {
         '/blushbowl-diet-meal',
         'website-bisnis.templates.food-subscription.diet-meal.blushbowl.blushbowl'
     )->name('webia.template.blushbowl.diet-meal');
+    Route::view(
+        '/sodatable-family-meal-plan',
+        'website-bisnis.templates.food-subscription.weekly-family-meal-plan.sodatable.sodatable'
+    )->name('webia.template.sodatable-family-meal-plan');
 });
 
 Route::get('webia/template/{path}', TemplatePreviewController::class)
