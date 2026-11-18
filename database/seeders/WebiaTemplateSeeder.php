@@ -78,6 +78,7 @@ class WebiaTemplateSeeder extends Seeder
                 'headline' => 'Some things<br>never go out of style.',
                 'tag' => 'Automotive · Dealer & Showroom · Vintage',
                 'preview_folder' => 'automotive/dealer',
+                'site_config_path' => 'automotive/automotive-dealer-vintage',
                 'template_url' => '/webia/template/automotive-dealer-vintage',
                 'is_active' => true,
                 'sort_order' => 4,

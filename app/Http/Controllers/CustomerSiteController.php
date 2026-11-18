@@ -36,6 +36,10 @@ class CustomerSiteController extends Controller
             $pageIdentifier !== null && $pageSection === 'properties' => 'property.show',
             default => $page,
         };
+
+        if (str_starts_with($siteConfigPath, 'automotive/')) {
+            return $this->handleAutomotive($order, $siteConfigPath, $pageKey);
+        }
         $views = match (true) {
             $isBrandingAgency => array_fill_keys(['home', 'layanan', 'keahlian', 'portofolio', 'janji'], 'branding-creative-agency'),
             str_starts_with($siteConfigPath, 'company/') => ['home' => 'index', 'tentang-kami' => 'tentang-kami', 'portofolio' => 'portofolio'],
@@ -192,6 +196,161 @@ class CustomerSiteController extends Controller
         }
 
         return response($renderedHtml);
+    }
+
+    private const AUTOMOTIVE_VIEWS = [
+        'automotive-dealer-vintage' => [
+            'home' => 'website-bisnis.templates.automotive.dealer.automotive-dealer-vintage',
+            'collection' => 'website-bisnis.templates.automotive.dealer.automotive-dealer-vintage-collection',
+        ],
+        'voltrix-futuristic-automotive' => ['home' => 'website-bisnis.templates.automotive.voltrix-futuristic-automotive'],
+        'nightshift-dark-mode-automotive' => ['home' => 'website-bisnis.templates.automotive.nightshift-dark-mode-automotive'],
+        'arvo-modern-automotive' => ['home' => 'website-bisnis.templates.automotive.arvo-modern-automotive'],
+        'apex-heritage-automotive-elegant' => ['home' => 'website-bisnis.templates.automotive.apex-heritage-automotive-elegant'],
+        'apex-scuderia-automotive-minimalist' => ['home' => 'website-bisnis.templates.automotive.apex-scuderia-automotive-minimalist'],
+        'tidal-detail-artistic-automotive' => ['home' => 'website-bisnis.templates.automotive.artistic'],
+        'noir-atelier-luxury-automotive' => ['home' => 'website-bisnis.templates.automotive.luxury'],
+        'form-auto-care-minimal-automotive' => ['home' => 'website-bisnis.templates.automotive.minimal'],
+        'samudra-auto-detailing-artistic' => ['home' => 'website-bisnis.templates.automotive.samudra-auto-detailing-artistic'],
+        'noir-auto-detailing-luxury' => ['home' => 'website-bisnis.templates.automotive.noir-auto-detailing-luxury'],
+        'aurum-premium-auto-detailing' => ['home' => 'website-bisnis.templates.automotive.aurum-premium-auto-detailing'],
+        'otto-artistic-workshop' => ['home' => 'website-bisnis.templates.automotive.otto-artistic-workshop'],
+        'maison-otto-elegant-workshop' => ['home' => 'website-bisnis.templates.automotive.maison-otto-elegant-workshop'],
+        'roseline-professional-workshop' => ['home' => 'website-bisnis.templates.automotive.roseline-professional-workshop'],
+    ];
+
+    private function handleAutomotive(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $slug = Str::after($siteConfigPath, 'automotive/');
+        abort_unless(isset(self::AUTOMOTIVE_VIEWS[$slug]), 404);
+        abort_unless(isset(self::AUTOMOTIVE_VIEWS[$slug][$pageKey]), 404);
+
+        $viewName = self::AUTOMOTIVE_VIEWS[$slug][$pageKey];
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $instagram = ltrim($business['instagram'] ?? '', '@');
+
+        $renderedHtml = view($viewName, [
+            'order' => $order,
+            'page' => $pageKey,
+            'business' => $business,
+            'whatsapp' => $whatsapp,
+            'instagram' => $instagram,
+        ])->render();
+
+        $renderedHtml = $this->transformAutomotiveHtml($renderedHtml, $order, $business, $whatsapp, $instagram, $slug);
+
+        $widgetHtml = view('components.site-ai-widget', [
+            'order' => $order,
+            'business' => $business,
+            'whatsapp' => $whatsapp,
+            'siteSlug' => $order->site_slug,
+        ])->render();
+
+        if (str_contains($renderedHtml, '</body>')) {
+            $renderedHtml = str_replace('</body>', $widgetHtml."\n</body>", $renderedHtml);
+        } else {
+            $renderedHtml .= $widgetHtml;
+        }
+
+        return response($renderedHtml);
+    }
+
+    private function transformAutomotiveHtml(string $html, WebiaOrder $order, array $business, string $whatsapp, string $instagram, string $slug): string
+    {
+        $bizName = $business['business_name'] ?? '';
+        if ($bizName !== '') {
+            $brandMap = [
+                'Heritage Motors' => $bizName,
+                'HERITAGE MOTORS' => strtoupper($bizName),
+                'VOLTRIX Garage' => $bizName,
+                'VOLTRIX GARAGE' => strtoupper($bizName),
+                'VOLTRIX' => $bizName,
+                'NIGHTSHIFT Auto' => $bizName,
+                'NIGHTSHIFT AUTO' => strtoupper($bizName),
+                'ARVO Motor Studio' => $bizName,
+                'ARVO MOTOR STUDIO' => strtoupper($bizName),
+                'APEX Heritage' => $bizName,
+                'APEX HERITAGE' => strtoupper($bizName),
+                'Apex Heritage' => $bizName,
+                'Apex Scuderia' => $bizName,
+                'APEX SCUDERIA' => strtoupper($bizName),
+                'Tidal Detail Co.' => $bizName,
+                'Tidal Detail' => $bizName,
+                'Noir Atelier' => $bizName,
+                'NOIR ATELIER' => strtoupper($bizName),
+                'FORM / Auto Care' => $bizName,
+                'FORM Auto Care' => $bizName,
+                'Samudra Detailing' => $bizName,
+                'SAMUDRA DETAILING' => strtoupper($bizName),
+                'Samudra Auto Detailing' => $bizName,
+                'Noir Auto Detailing' => $bizName,
+                'NOIR AUTO DETAILING' => strtoupper($bizName),
+                'AURUM — Premium Auto Detailing' => $bizName,
+                'AURUM Detailing' => $bizName,
+                'AURUM' => $bizName,
+                'Bengkel Otto' => $bizName,
+                'BENGKEL OTTO' => strtoupper($bizName),
+                'Maison Otto' => $bizName,
+                'MAISON OTTO' => strtoupper($bizName),
+                'Roseline Service Center' => $bizName,
+                'ROSELINE SERVICE CENTER' => strtoupper($bizName),
+                'Roseline Workshop' => $bizName,
+            ];
+            $html = str_replace(array_keys($brandMap), array_values($brandMap), $html);
+        }
+
+        $custWa = $whatsapp ?: '6281234567890';
+        $rawWa = $business['whatsapp'] ?? $custWa;
+        $html = str_replace(
+            ['6285850180285', '6281234567890', '+62 858-5018-0285', 'https://wa.me/?text=', 'https://wa.me/"', "https://wa.me/'"],
+            [$custWa, $custWa, $rawWa, 'https://wa.me/'.$custWa.'?text=', 'https://wa.me/'.$custWa.'"', 'https://wa.me/'.$custWa."'"],
+            $html
+        );
+
+        $address = $this->businessAddress($business);
+        if ($address !== '') {
+            $html = str_replace(
+                [
+                    'Showroom address · update before launch',
+                    'Surabaya, East Java, Indonesia',
+                    'By appointment · Jakarta Selatan',
+                    'Studio kami di Surabaya',
+                ],
+                $address,
+                $html
+            );
+        }
+        if (! empty($business['address_url'])) {
+            $html = str_replace('https://maps.google.com/?q=Jakarta', $business['address_url'], $html);
+        }
+
+        $homeUrl = route('sites.show', ['order' => $order->site_slug]);
+        $collectionUrl = route('sites.show', ['order' => $order->site_slug, 'page' => 'collection']);
+
+        $html = str_replace(
+            [
+                url('/webia/template/automotive-dealer-vintage/collection'),
+                '/webia/template/automotive-dealer-vintage/collection',
+            ],
+            $collectionUrl,
+            $html
+        );
+
+        $html = str_replace(
+            [
+                url('/webia/template/automotive-dealer-vintage'),
+                '/webia/template/automotive-dealer-vintage',
+            ],
+            $homeUrl,
+            $html
+        );
+
+        $html = preg_replace('/<div class="heritage-template-ribbon">.*?<\/div>/s', '', $html);
+        $html = str_replace('apex-heritage-preview', '', $html);
+        $html = preg_replace('/<p class="heritage-demo-note">.*?<\/p>/s', '', $html);
+
+        return $html;
     }
 
     private function brandingAgencyConfig(array $siteConfig, array $business, string $whatsapp): array
