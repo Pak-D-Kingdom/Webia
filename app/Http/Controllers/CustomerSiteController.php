@@ -40,6 +40,10 @@ class CustomerSiteController extends Controller
         if (str_starts_with($siteConfigPath, 'automotive/')) {
             return $this->handleAutomotive($order, $siteConfigPath, $pageKey);
         }
+
+        if (str_starts_with($siteConfigPath, 'technology/')) {
+            return $this->handleTechnology($order, $siteConfigPath, $pageKey);
+        }
         $views = match (true) {
             $isBrandingAgency => array_fill_keys(['home', 'layanan', 'keahlian', 'portofolio', 'janji'], 'branding-creative-agency'),
             str_starts_with($siteConfigPath, 'company/') => ['home' => 'index', 'tentang-kami' => 'tentang-kami', 'portofolio' => 'portofolio'],
@@ -349,6 +353,111 @@ class CustomerSiteController extends Controller
         $html = preg_replace('/<div class="heritage-template-ribbon">.*?<\/div>/s', '', $html);
         $html = str_replace('apex-heritage-preview', '', $html);
         $html = preg_replace('/<p class="heritage-demo-note">.*?<\/p>/s', '', $html);
+
+        return $html;
+    }
+
+    private const TECHNOLOGY_VIEWS = [
+        'technology-softwarehouse-professional' => ['home' => 'website-bisnis.templates.technology.softwarehouse.technology-softwarehouse-modern'],
+        'technology-softwarehouse-elegant-babyblue-putri' => ['home' => 'website-bisnis.templates.technology.softwarehouse.technology-softwarehouse-elegant-babyblue-putri'],
+        'technology-softwarehouse-minimalist-softpink-putri' => ['home' => 'website-bisnis.templates.technology.softwarehouse.technology-softwarehouse-minimalist-softpink-putri'],
+        'technology-dataanalytics-luxury-pastelmix-putri' => ['home' => 'website-bisnis.templates.technology.data-analytics.technology-dataanalytics-luxury-pastelmix-putri'],
+        'technology-dataanalytics-corporate-oceanteal-putri' => ['home' => 'website-bisnis.templates.technology.data-analytics.technology-dataanalytics-corporate-oceanteal-putri'],
+        'technology-dataanalytics-creative-arcticfrost-putri' => ['home' => 'website-bisnis.templates.technology.data-analytics.technology-dataanalytics-creative-arcticfrost-putri'],
+        'sakuratech-hardware-computer-networking' => ['home' => 'website-bisnis.templates.technology.hardware-computer-networking.sakuratech.sakuratech'],
+        'sakurabit-hardware-computer-networking' => ['home' => 'website-bisnis.templates.technology.hardware-computer-networking.sakurabit.sakurabit'],
+        'cyberwave-hardware-computer-networking' => ['home' => 'website-bisnis.templates.technology.hardware-computer-networking.cyberwave.cyberwave'],
+        'aetherion-digital-hardware-universe' => ['home' => 'website-bisnis.templates.technology.hardware-computer-networking.aetherion.aetherion'],
+    ];
+
+    private function handleTechnology(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $slug = Str::after($siteConfigPath, 'technology/');
+        abort_unless(isset(self::TECHNOLOGY_VIEWS[$slug]), 404);
+        abort_unless(isset(self::TECHNOLOGY_VIEWS[$slug][$pageKey]), 404);
+
+        $viewName = self::TECHNOLOGY_VIEWS[$slug][$pageKey];
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $instagram = ltrim($business['instagram'] ?? '', '@');
+
+        $renderedHtml = view($viewName, [
+            'order' => $order,
+            'page' => $pageKey,
+            'business' => $business,
+            'whatsapp' => $whatsapp,
+            'instagram' => $instagram,
+        ])->render();
+
+        $renderedHtml = $this->transformTechnologyHtml($renderedHtml, $order, $business, $whatsapp, $instagram, $slug);
+
+        $widgetHtml = view('components.site-ai-widget', [
+            'order' => $order,
+            'business' => $business,
+            'whatsapp' => $whatsapp,
+            'siteSlug' => $order->site_slug,
+        ])->render();
+
+        if (str_contains($renderedHtml, '</body>')) {
+            $renderedHtml = str_replace('</body>', $widgetHtml."\n</body>", $renderedHtml);
+        } else {
+            $renderedHtml .= $widgetHtml;
+        }
+
+        return response($renderedHtml);
+    }
+
+    private function transformTechnologyHtml(string $html, WebiaOrder $order, array $business, string $whatsapp, string $instagram, string $slug): string
+    {
+        $bizName = $business['business_name'] ?? '';
+        if ($bizName !== '') {
+            $brandMap = [
+                'Nexora Digital' => $bizName,
+                'NEXORA DIGITAL' => strtoupper($bizName),
+                'AzuraCraft Studio' => $bizName,
+                'AZURACRAFT STUDIO' => strtoupper($bizName),
+                'RoseCode Studio' => $bizName,
+                'ROSECODE STUDIO' => strtoupper($bizName),
+                'AuraMetrics Studio' => $bizName,
+                'AURAMETRICS STUDIO' => strtoupper($bizName),
+                'Quantix Data Corp' => $bizName,
+                'QUANTIX DATA CORP' => strtoupper($bizName),
+                'FrostByte Analytics' => $bizName,
+                'FROSTBYTE ANALYTICS' => strtoupper($bizName),
+                'FrostByte' => $bizName,
+                'SAKURATECH' => strtoupper($bizName),
+                'SakuraTech' => $bizName,
+                'SAKURABIT' => strtoupper($bizName),
+                'SakuraBit' => $bizName,
+                'CYBERWAVE' => strtoupper($bizName),
+                'CyberWave' => $bizName,
+                'AETHERION' => strtoupper($bizName),
+                'Aetherion' => $bizName,
+            ];
+            $html = str_replace(array_keys($brandMap), array_values($brandMap), $html);
+        }
+
+        $custWa = $whatsapp ?: '6281234567890';
+        $rawWa = $business['whatsapp'] ?? $custWa;
+        $html = str_replace(
+            ['6285850180285', '6281234567890', '+62 858-5018-0285', 'https://wa.me/?text=', 'https://wa.me/"', "https://wa.me/'"],
+            [$custWa, $custWa, $rawWa, 'https://wa.me/'.$custWa.'?text=', 'https://wa.me/'.$custWa.'"', 'https://wa.me/'.$custWa."'"],
+            $html
+        );
+
+        $address = $this->businessAddress($business);
+        if ($address !== '') {
+            $html = str_replace(
+                [
+                    'SCBD Lot 28, Senayan, Kebayoran Baru, Jakarta Selatan',
+                    'Level 28, Pacific Century Place, SCBD, Jakarta Selatan',
+                    'One Pacific Place Suite 18-A, SCBD, Jakarta Selatan',
+                    'Jakarta Selatan, Indonesia',
+                ],
+                $address,
+                $html
+            );
+        }
 
         return $html;
     }
