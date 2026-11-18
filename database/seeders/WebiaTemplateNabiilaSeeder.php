@@ -252,6 +252,7 @@ class WebiaTemplateNabiilaSeeder extends Seeder
                 'headline' => 'Setiap loyang,<br>selalu yang terbaik.',
                 'tag' => 'F&B · Bakery & Cake Shop · Playful',
                 'preview_folder' => null,
+                'site_config_path' => 'fnb/fnb-bakery-playful-colorful-pastel-mix',
                 'template_url' => '/webia/template/fnb-bakery-playful-colorful',
                 'is_active' => true,
                 'sort_order' => 32,

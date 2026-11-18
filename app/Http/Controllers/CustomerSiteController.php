@@ -48,6 +48,10 @@ class CustomerSiteController extends Controller
         if (str_starts_with($siteConfigPath, 'beauty/')) {
             return $this->handleBeauty($order, $siteConfigPath, $pageKey);
         }
+
+        if (str_starts_with($siteConfigPath, 'fnb/')) {
+            return $this->handleFnb($order, $siteConfigPath, $pageKey);
+        }
         $views = match (true) {
             $isBrandingAgency => array_fill_keys(['home', 'layanan', 'keahlian', 'portofolio', 'janji'], 'branding-creative-agency'),
             str_starts_with($siteConfigPath, 'company/') => ['home' => 'index', 'tentang-kami' => 'tentang-kami', 'portofolio' => 'portofolio'],
@@ -559,6 +563,129 @@ class CustomerSiteController extends Controller
                     'Jakarta, Indonesia',
                     'Surabaya, Indonesia',
                     'Jl. Contoh No. 1, Jakarta',
+                ],
+                $address,
+                $html
+            );
+        }
+
+        return $html;
+    }
+
+    private const FNB_VIEWS = [
+        'aurumco-catering' => ['home' => 'website-bisnis.templates.fnb.aurumco-catering'],
+        'vallaco-catering' => ['home' => 'website-bisnis.templates.fnb.vallaco-catering'],
+        'laut-biru-seafood' => ['home' => 'website-bisnis.templates.fnb.restaurant.laut-biru-seafood'],
+        'fresh-harvest-healthy-meal-prep' => ['home' => 'website-bisnis.templates.fnb.healthy-meal-prep.fresh-harvest'],
+        'bakery-bold-luxury' => ['home' => 'website-bisnis.templates.fnb.bakery.bakery-bold-luxury'],
+        'midnightbaker-futuristic' => ['home' => 'website-bisnis.templates.fnb.bakery.midnightbaker-futuristic'],
+        'fnb-bakery-playful-colorful-pastel-mix' => ['home' => 'website-bisnis.templates.fnb.bakery.bakery-playful-colorful'],
+        'restoran-azura' => ['home' => 'website-bisnis.templates.fnb.restaurant.restoran-azura'],
+        'noir-restaurant' => ['home' => 'website-bisnis.templates.fnb.restaurant.noir-restaurant'],
+        'rasa-rupa-artistik' => ['home' => 'website-bisnis.templates.fnb.rasa-rupa-artistik'],
+        'tetangga-kenyang-friendly' => ['home' => 'website-bisnis.templates.fnb.tetangga-kenyang-friendly'],
+        'hulu-pantry-asal-usul' => ['home' => 'website-bisnis.templates.fnb.hulu-pantry-asal-usul'],
+        'kusuma-ningrat-royal-heritage' => ['home' => 'website-bisnis.templates.fnb.kusuma-ningrat-royal-heritage'],
+    ];
+
+    private function handleFnb(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $slug = Str::after($siteConfigPath, 'fnb/');
+        abort_unless(isset(self::FNB_VIEWS[$slug]), 404);
+        abort_unless(isset(self::FNB_VIEWS[$slug][$pageKey]), 404);
+
+        $viewName = self::FNB_VIEWS[$slug][$pageKey];
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $instagram = ltrim($business['instagram'] ?? '', '@');
+
+        $renderedHtml = view($viewName, [
+            'order' => $order,
+            'page' => $pageKey,
+            'business' => $business,
+            'whatsapp' => $whatsapp,
+            'instagram' => $instagram,
+        ])->render();
+
+        $renderedHtml = $this->transformFnbHtml($renderedHtml, $business, $whatsapp);
+
+        $widgetHtml = view('components.site-ai-widget', [
+            'order' => $order,
+            'business' => $business,
+            'whatsapp' => $whatsapp,
+            'siteSlug' => $order->site_slug,
+        ])->render();
+
+        if (str_contains($renderedHtml, '</body>')) {
+            $renderedHtml = str_replace('</body>', $widgetHtml."\n</body>", $renderedHtml);
+        } else {
+            $renderedHtml .= $widgetHtml;
+        }
+
+        return response($renderedHtml);
+    }
+
+    private function transformFnbHtml(string $html, array $business, string $whatsapp): string
+    {
+        $bizName = $business['business_name'] ?? '';
+        if ($bizName !== '') {
+            $brandMap = [
+                'Aurum & Co.' => $bizName,
+                'AURUM & CO.' => strtoupper($bizName),
+                'Valla & Co.' => $bizName,
+                'VALLA & CO.' => strtoupper($bizName),
+                'Laut Biru Seafood' => $bizName,
+                'Laut Biru' => $bizName,
+                'LAUT BIRU' => strtoupper($bizName),
+                'Fresh Harvest' => $bizName,
+                'FRESH HARVEST' => strtoupper($bizName),
+                'Maison Breads & Pastry' => $bizName,
+                'Maison Breads' => $bizName,
+                'MAISON BREADS' => strtoupper($bizName),
+                'MIDNIGHTBAKER' => strtoupper($bizName),
+                'MidnightBaker' => $bizName,
+                'Midnight Baker' => $bizName,
+                'Sweet Crumb Bakery' => $bizName,
+                'Sweet Crumb' => $bizName,
+                'SWEET CRUMB' => strtoupper($bizName),
+                'Restoran Azura' => $bizName,
+                'RESTORAN AZURA' => strtoupper($bizName),
+                'NOIR' => strtoupper($bizName),
+                'Noir' => $bizName,
+                'Rasa Rupa' => $bizName,
+                'RASA RUPA' => strtoupper($bizName),
+                'Tetangga Kenyang' => $bizName,
+                'TETANGGA KENYANG' => strtoupper($bizName),
+                'Hulu Pantry' => $bizName,
+                'Hulu' => $bizName,
+                'HULU' => strtoupper($bizName),
+                'Kusuma Ningrat' => $bizName,
+                'KUSUMA NINGRAT' => strtoupper($bizName),
+            ];
+            $html = str_replace(array_keys($brandMap), array_values($brandMap), $html);
+        }
+
+        $custWa = $whatsapp ?: '6281234567890';
+        $rawWa = $business['whatsapp'] ?? $custWa;
+        $html = str_replace(
+            ['6285850180285', '6281234567890', '+62 858-5018-0285', '+62 812-3456-7890', 'https://wa.me/?text=', 'https://wa.me/"', "https://wa.me/'"],
+            [$custWa, $custWa, $rawWa, $rawWa, 'https://wa.me/'.$custWa.'?text=', 'https://wa.me/'.$custWa.'"', 'https://wa.me/'.$custWa."'"],
+            $html
+        );
+
+        $html = str_replace(
+            "notify('Nomor WhatsApp belum dipasang. Silakan kunjungi website resmi MidnightBaker untuk kontak terbaru.')",
+            "window.open('https://wa.me/{$custWa}', '_blank')",
+            $html
+        );
+
+        $address = $this->businessAddress($business);
+        if ($address !== '') {
+            $html = str_replace(
+                [
+                    'Jl. Bahari No. 21',
+                    'Jakarta, Indonesia',
+                    'Surabaya, Indonesia',
                 ],
                 $address,
                 $html
