@@ -88,9 +88,11 @@ class TemplatePreviewRouteTest extends TestCase
             ->assertViewIs('website-bisnis.templates.food-subscription.diet-meal.blushbowl.blushbowl');
     }
 
-    public function test_unavailable_sodatable_preview_returns_not_found(): void
+    public function test_sodatable_preview_renders_its_view(): void
     {
-        $this->get('/webia/template/sodatable-family-meal-plan')->assertNotFound();
+        $this->get('/webia/template/sodatable-family-meal-plan')
+            ->assertOk()
+            ->assertViewIs('website-bisnis.templates.food-subscription.weekly-family-meal-plan.sodatable.sodatable');
     }
 
     public function test_active_database_template_renders_its_preview_view(): void
