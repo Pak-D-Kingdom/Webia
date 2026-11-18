@@ -448,26 +448,437 @@
         </form>
     </div>
 
-    {{-- BANNER KOLABORASI HYBRID: Penambahan FAQ Mendalam & Katalog via Tim Webia --}}
-    <div style="background:linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); border:1px solid #a7f3d0; border-radius:var(--account-radius-lg); padding:1.25rem 1.5rem; margin-top:1.25rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
-        <div style="display:flex; align-items:flex-start; gap:0.85rem; max-width:650px;">
-            <div style="width:40px; height:40px; border-radius:10px; background:#d1fae5; display:flex; align-items:center; justify-content:center; color:#059669; flex-shrink:0;">
-                <span class="material-symbols-outlined" style="font-size:1.5rem;">support_agent</span>
-            </div>
-            <div>
-                <h3 style="font-size:0.975rem; font-weight:800; color:#065f46; margin:0 0 0.25rem;">
-                    Ingin Menambah FAQ Resmi atau Katalog Produk Baru?
-                </h3>
-                <p style="font-size:0.8rem; color:#047857; margin:0; line-height:1.45;">
-                    Pembaruan operasional rutin (jam buka, alamat, promo, WhatsApp) dapat Anda ubah mandiri di atas. Untuk penambahan daftar FAQ resmi khusus atau katalog produk baru, tim Webia siap membantu menginput dan memformat dokumen AI Anda agar mutu bot tetap terjamin.
+    {{-- FORM KNOWLEDGE BASE MANDIRI: 4 Dokumen Panduan AI --}}
+    @if ($tenantId)
+        <div class="customer-create-card" style="margin-top: 1.5rem; padding: 1.5rem;">
+            <div style="margin-bottom: 1.25rem;">
+                <h2 class="customer-create-legend" style="margin: 0;">
+                    <span aria-hidden="true" class="material-symbols-outlined">auto_stories</span>
+                    Editor Knowledge Base Asisten AI
+                </h2>
+                <p class="customer-create-option-desc" style="margin-top: 0.35rem;">
+                    Kelola data panduan resmi untuk melatih Asisten AI website Anda secara mandiri dan real-time.
                 </p>
             </div>
+
+            <form method="POST" action="{{ route('customer.ai.knowledge') }}" id="custKnowledgeForm" onsubmit="syncAllCustStructuredToRaw()">
+                @csrf
+                {{-- Selector 4 Berkas menggunakan .customer-filter Webia (1 baris penuh, tanpa teks .md) --}}
+                <div style="margin-bottom: 1.25rem; width: 100%;">
+                    <nav class="customer-filter kb-tabs-row" aria-label="Pilih kategori knowledge base" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; width: 100%;">
+                        <button type="button" id="custKbBtnLayanan" aria-current="page" onclick="switchCustomerKbTab('layanan')" style="justify-content: center; text-align: center; white-space: nowrap; padding: 10px 8px;">
+                            <span class="material-symbols-outlined" style="font-size: 1.15rem; margin-right: 4px;">restaurant_menu</span>
+                            Layanan
+                        </button>
+                        <button type="button" id="custKbBtnFaq" onclick="switchCustomerKbTab('faq')" style="justify-content: center; text-align: center; white-space: nowrap; padding: 10px 8px;">
+                            <span class="material-symbols-outlined" style="font-size: 1.15rem; margin-right: 4px;">help</span>
+                            FAQ
+                        </button>
+                        <button type="button" id="custKbBtnKebijakan" onclick="switchCustomerKbTab('kebijakan')" style="justify-content: center; text-align: center; white-space: nowrap; padding: 10px 8px;">
+                            <span class="material-symbols-outlined" style="font-size: 1.15rem; margin-right: 4px;">policy</span>
+                            Kebijakan
+                        </button>
+                        <button type="button" id="custKbBtnProfil" onclick="switchCustomerKbTab('profil')" style="justify-content: center; text-align: center; white-space: nowrap; padding: 10px 8px;">
+                            <span class="material-symbols-outlined" style="font-size: 1.15rem; margin-right: 4px;">badge</span>
+                            Profil AI
+                        </button>
+                    </nav>
+                </div>
+
+                @php
+                    $rawFaq = $knowledge['faq_raw'] ?? (is_string($knowledge['faq'] ?? null) ? $knowledge['faq'] : '');
+                    if (empty($rawFaq) && is_array($knowledge['faq'] ?? null)) {
+                        $rawFaq = "# Tanya Jawab (FAQ)\n\n";
+                        foreach ($knowledge['faq'] as $fItem) {
+                            $rawFaq .= "### Q: " . ($fItem['question'] ?? '') . "\nA: " . ($fItem['answer'] ?? '') . "\n\n";
+                        }
+                    }
+                @endphp
+
+                {{-- Hidden textareas to submit markdown to backend --}}
+                <textarea id="layanan" name="layanan" style="display: none;">{{ old('layanan', $knowledge['layanan'] ?? '') }}</textarea>
+                <textarea id="faq" name="faq" style="display: none;">{{ old('faq', $rawFaq) }}</textarea>
+                <textarea id="kebijakan" name="kebijakan" style="display: none;">{{ old('kebijakan', $knowledge['kebijakan'] ?? '') }}</textarea>
+                <textarea id="profil" name="profil" style="display: none;">{{ old('profil', $knowledge['profil'] ?? '') }}</textarea>
+
+                {{-- ======================================================== --}}
+                {{-- Tab 1: Layanan --}}
+                {{-- ======================================================== --}}
+                <div id="custKbDocLayanan" class="cust-kb-pane">
+                    <div style="background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 10px; padding: 0.85rem 1rem; margin-bottom: 1rem; font-size: 0.825rem; color: #475569; display: flex; align-items: center; gap: 0.5rem;">
+                        <span class="material-symbols-outlined" style="color: var(--account-action, #1a146b); font-size: 1.15rem;">info</span>
+                        <span>Tuliskan paket layanan, produk, atau menu bisnis Anda. AI akan menggunakannya untuk memberikan rekomendasi kepada pengunjung website.</span>
+                    </div>
+
+                    <div id="custLayananItemsContainer">
+                        {{-- Dynamic items --}}
+                    </div>
+
+                    <button type="button" onclick="addCustLayananItem()" style="display: inline-flex; align-items: center; gap: 0.4rem; background: #ffffff; border: 1px dashed var(--account-action, #1a146b); color: var(--account-action, #1a146b); padding: 0.65rem 1rem; border-radius: 8px; font-size: 0.825rem; font-weight: 700; cursor: pointer; width: 100%; justify-content: center; margin-top: 0.5rem; transition: background 0.2s;">
+                        <span class="material-symbols-outlined" style="font-size: 1.15rem;">add_circle</span>
+                        Tambah Layanan / Produk
+                    </button>
+                </div>
+
+                {{-- ======================================================== --}}
+                {{-- Tab 2: FAQ --}}
+                {{-- ======================================================== --}}
+                <div id="custKbDocFaq" class="cust-kb-pane" style="display: none;">
+                    <div style="background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 10px; padding: 0.85rem 1rem; margin-bottom: 1rem; font-size: 0.825rem; color: #475569; display: flex; align-items: center; gap: 0.5rem;">
+                        <span class="material-symbols-outlined" style="color: var(--account-action, #1a146b); font-size: 1.15rem;">help</span>
+                        <span>Daftar tanya jawab umum (FAQ). Saat pengunjung menanyakan hal serupa, Chatbot AI akan menjawab sesuai jawaban di sini.</span>
+                    </div>
+
+                    <div id="custFaqItemsContainer">
+                        {{-- Dynamic FAQ items --}}
+                    </div>
+
+                    <button type="button" onclick="addCustFaqItem()" style="display: inline-flex; align-items: center; gap: 0.4rem; background: #ffffff; border: 1px dashed var(--account-action, #1a146b); color: var(--account-action, #1a146b); padding: 0.65rem 1rem; border-radius: 8px; font-size: 0.825rem; font-weight: 700; cursor: pointer; width: 100%; justify-content: center; margin-top: 0.5rem; transition: background 0.2s;">
+                        <span class="material-symbols-outlined" style="font-size: 1.15rem;">add_circle</span>
+                        Tambah Tanya &amp; Jawab (FAQ)
+                    </button>
+                </div>
+
+                {{-- ======================================================== --}}
+                {{-- Tab 3: Kebijakan --}}
+                {{-- ======================================================== --}}
+                <div id="custKbDocKebijakan" class="cust-kb-pane" style="display: none;">
+                    <div style="background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 10px; padding: 0.85rem 1rem; margin-bottom: 1rem; font-size: 0.825rem; color: #475569; display: flex; align-items: center; gap: 0.5rem;">
+                        <span class="material-symbols-outlined" style="color: var(--account-action, #1a146b); font-size: 1.15rem;">policy</span>
+                        <span>Aturan SOP &amp; operasional bisnis agar chatbot tidak memberikan janji yang salah terkait pembayaran, pengiriman, dan garansi.</span>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 1rem; box-shadow: 0 1px 2px rgba(0,0,0,0.03);">
+                            <div style="display: flex; align-items: center; gap: 0.45rem; margin-bottom: 0.45rem;">
+                                <span class="material-symbols-outlined" style="font-size: 1.15rem; color: var(--account-action, #1a146b);">payments</span>
+                                <strong style="font-size: 0.85rem; color: #1e293b;">1. Kebijakan Pembayaran &amp; DP</strong>
+                            </div>
+                            <textarea id="custKbPayment" rows="3" placeholder="Contoh: Pembayaran dilakukan melalui rekening resmi dan verifikasi konfirmasi otomatis..." oninput="syncCustKebijakanToRaw()" style="width: 100%; border: 1px solid #cbd5e1; border-radius: 8px; padding: 0.6rem; font-size: 0.825rem;"></textarea>
+                        </div>
+
+                        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 1rem; box-shadow: 0 1px 2px rgba(0,0,0,0.03);">
+                            <div style="display: flex; align-items: center; gap: 0.45rem; margin-bottom: 0.45rem;">
+                                <span class="material-symbols-outlined" style="font-size: 1.15rem; color: var(--account-action, #1a146b);">event_busy</span>
+                                <strong style="font-size: 0.85rem; color: #1e293b;">2. Perubahan Jadwal &amp; Pembatalan</strong>
+                            </div>
+                            <textarea id="custKbCancel" rows="3" placeholder="Contoh: Permintaan perubahan jadwal wajib diajukan maksimal H-1 sebelum tanggal pengerjaan..." oninput="syncCustKebijakanToRaw()" style="width: 100%; border: 1px solid #cbd5e1; border-radius: 8px; padding: 0.6rem; font-size: 0.825rem;"></textarea>
+                        </div>
+
+                        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 1rem; box-shadow: 0 1px 2px rgba(0,0,0,0.03);">
+                            <div style="display: flex; align-items: center; gap: 0.45rem; margin-bottom: 0.45rem;">
+                                <span class="material-symbols-outlined" style="font-size: 1.15rem; color: var(--account-action, #1a146b);">verified_user</span>
+                                <strong style="font-size: 0.85rem; color: #1e293b;">3. Garansi &amp; Jaminan Kepuasan</strong>
+                            </div>
+                            <textarea id="custKbWarranty" rows="3" placeholder="Contoh: Kami menjamin kepuasan dengan revisi atau penggantian jika layanan tidak sesuai..." oninput="syncCustKebijakanToRaw()" style="width: 100%; border: 1px solid #cbd5e1; border-radius: 8px; padding: 0.6rem; font-size: 0.825rem;"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- ======================================================== --}}
+                {{-- Tab 4: Profil AI --}}
+                {{-- ======================================================== --}}
+                <div id="custKbDocProfil" class="cust-kb-pane" style="display: none;">
+                    <div style="background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 10px; padding: 0.85rem 1rem; margin-bottom: 1rem; font-size: 0.825rem; color: #475569; display: flex; align-items: center; gap: 0.5rem;">
+                        <span class="material-symbols-outlined" style="color: var(--account-action, #1a146b); font-size: 1.15rem;">badge</span>
+                        <span>Atur identitas brand, karakter sapaan, dan kepribadian Asisten AI saat menyapa calon pembeli pertama kali.</span>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                            <div class="form-field" style="margin: 0;">
+                                <label for="custProfBrandName" style="font-size: 0.78rem;">Nama Brand / Usaha</label>
+                                <input type="text" id="custProfBrandName" value="{{ $business['business_name'] ?? 'Bisnis Klien' }}" oninput="syncCustProfilToRaw()">
+                            </div>
+                            <div class="form-field" style="margin: 0;">
+                                <label for="custProfTagline" style="font-size: 0.78rem;">Tagline Bisnis</label>
+                                <input type="text" id="custProfTagline" value="{{ $business['tagline'] ?? 'Layanan Profesional dan Terpercaya' }}" oninput="syncCustProfilToRaw()">
+                            </div>
+                        </div>
+
+                        <div class="form-field" style="margin: 0;">
+                            <label for="custProfTone" style="font-size: 0.78rem;">Karakter &amp; Gaya Bahasa AI</label>
+                            <select id="custProfTone" onchange="syncCustProfilToRaw()" style="width: 100%; border: 1px solid #cbd5e1; border-radius: 8px; padding: 0.6rem; font-size: 0.825rem;">
+                                <option value="Ramah, sopan, informatif, dan solutif.">Ramah, Sopan &amp; Solutif (Disarankan untuk Bisnis Jasa / Toko)</option>
+                                <option value="Kasual, santai, akrab, dan bersahabat.">Kasual, Santai &amp; Akrab (Cocok untuk Kafe / Brand Komunitas)</option>
+                                <option value="Formal, profesional, ringkas, dan presisi.">Formal, Profesional &amp; Korporat (Cocok untuk B2B / Konsultan)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-field" style="margin: 0;">
+                            <label for="custProfGreeting" style="font-size: 0.78rem;">Kalimat Sapaan Pembuka Chatbot</label>
+                            <textarea id="custProfGreeting" rows="3" placeholder="Sapaan yang diucapkan bot saat balon chat dibuka pengunjung..." oninput="syncCustProfilToRaw()" style="width: 100%; border: 1px solid #cbd5e1; border-radius: 8px; padding: 0.6rem; font-size: 0.825rem;">Halo! Selamat datang di {{ $business['business_name'] ?? 'website kami' }}, ada yang bisa kami bantu hari ini? 😊</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="customer-create-submit" style="margin-top: 1.25rem;">
+                    <button class="account-submit customer-create-submit-btn" type="submit">
+                        Simpan Seluruh Dokumen Knowledge Base
+                    </button>
+                </div>
+            </form>
         </div>
-        <a href="https://wa.me/6281234567890?text={{ urlencode('Halo Tim Webia, saya ingin mengajukan penambahan FAQ/Knowledge Base untuk website ' . ($order->business_data['business_name'] ?? 'Bisnis') . ' (Tenant: ' . $tenantId . ')') }}" target="_blank" style="background:#059669; color:#fff; text-decoration:none; padding:0.65rem 1.15rem; border-radius:var(--account-radius); font-weight:700; font-size:0.825rem; display:inline-flex; align-items:center; gap:0.4rem; box-shadow:0 2px 4px rgba(5,150,105,0.25); white-space:nowrap;">
-            <span class="material-symbols-outlined" style="font-size:1.1rem;">chat</span>
-            Ajukan FAQ via WhatsApp Tim Webia &rarr;
-        </a>
-    </div>
+
+        <script>
+            // Sub-doc Tabs
+            function switchCustomerKbTab(doc) {
+                const tabs = ['layanan', 'faq', 'kebijakan', 'profil'];
+                tabs.forEach(function(t) {
+                    const pane = document.getElementById('custKbDoc' + t.charAt(0).toUpperCase() + t.slice(1));
+                    const btn = document.getElementById('custKbBtn' + t.charAt(0).toUpperCase() + t.slice(1));
+                    if (t === doc) {
+                        if (pane) pane.style.display = 'block';
+                        if (btn) btn.setAttribute('aria-current', 'page');
+                    } else {
+                        if (pane) pane.style.display = 'none';
+                        if (btn) btn.removeAttribute('aria-current');
+                    }
+                });
+            }
+
+            // Dynamic Layanan Items
+            function addCustLayananItem(name = '', price = '', desc = '') {
+                const container = document.getElementById('custLayananItemsContainer');
+                if (!container) return;
+                const idx = container.querySelectorAll('.cust-lay-card').length + 1;
+                const card = document.createElement('div');
+                card.className = 'cust-lay-card';
+                card.style.cssText = 'background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 1rem; margin-bottom: 0.85rem;';
+                card.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
+                        <span style="font-weight: 700; font-size: 0.825rem; color: var(--account-action, #1a146b);">Paket / Produk #<span class="cust-card-num">${idx}</span></span>
+                        <button type="button" onclick="removeCustLayananItem(this)" style="background: transparent; border: none; color: #dc2626; cursor: pointer; padding: 0; display: inline-flex; align-items: center;" title="Hapus Layanan">
+                            <span class="material-symbols-outlined" style="font-size: 1.15rem;">delete</span>
+                        </button>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; margin-bottom: 0.65rem;">
+                        <div>
+                            <label style="display: block; font-size: 0.75rem; color: #475569; margin-bottom: 0.25rem;">Nama Layanan / Paket</label>
+                            <input type="text" class="c-lay-name" value="${escapeCustHtml(name)}" placeholder="Contoh: Paket Reguler" oninput="syncCustLayananToRaw()" style="width: 100%; border: 1px solid #cbd5e1; border-radius: 6px; padding: 0.5rem; font-size: 0.825rem;">
+                        </div>
+                        <div>
+                            <label style="display: block; font-size: 0.75rem; color: #475569; margin-bottom: 0.25rem;">Kisaran Harga</label>
+                            <input type="text" class="c-lay-price" value="${escapeCustHtml(price)}" placeholder="Contoh: Mulai Rp150.000" oninput="syncCustLayananToRaw()" style="width: 100%; border: 1px solid #cbd5e1; border-radius: 6px; padding: 0.5rem; font-size: 0.825rem;">
+                        </div>
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 0.75rem; color: #475569; margin-bottom: 0.25rem;">Deskripsi &amp; Detail Layanan</label>
+                        <textarea class="c-lay-desc" rows="2" placeholder="Jelaskan apa saja yang didapat, pengerjaan, atau garansinya..." oninput="syncCustLayananToRaw()" style="width: 100%; border: 1px solid #cbd5e1; border-radius: 6px; padding: 0.5rem; font-size: 0.825rem;">${escapeCustHtml(desc)}</textarea>
+                    </div>
+                `;
+                container.appendChild(card);
+                syncCustLayananToRaw();
+            }
+
+            function removeCustLayananItem(btn) {
+                const card = btn.closest('.cust-lay-card');
+                if (card) {
+                    card.remove();
+                    renumberCustCards('custLayananItemsContainer', '.cust-card-num');
+                    syncCustLayananToRaw();
+                }
+            }
+
+            // Dynamic FAQ Items
+            function addCustFaqItem(question = '', answer = '') {
+                const container = document.getElementById('custFaqItemsContainer');
+                if (!container) return;
+                const idx = container.querySelectorAll('.cust-faq-card').length + 1;
+                const card = document.createElement('div');
+                card.className = 'cust-faq-card';
+                card.style.cssText = 'background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 1rem; margin-bottom: 0.85rem;';
+                card.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
+                        <span style="font-weight: 700; font-size: 0.825rem; color: var(--account-action, #1a146b);">Pertanyaan #<span class="cust-card-num">${idx}</span></span>
+                        <button type="button" onclick="removeCustFaqItem(this)" style="background: transparent; border: none; color: #dc2626; cursor: pointer; padding: 0; display: inline-flex; align-items: center;" title="Hapus Tanya Jawab">
+                            <span class="material-symbols-outlined" style="font-size: 1.15rem;">delete</span>
+                        </button>
+                    </div>
+                    <div style="margin-bottom: 0.65rem;">
+                        <label style="display: block; font-size: 0.75rem; color: #475569; margin-bottom: 0.25rem;">Pertanyaan Pelanggan (Q)</label>
+                        <input type="text" class="c-faq-q" value="${escapeCustHtml(question)}" placeholder="Contoh: Bagaimana cara memesan?" oninput="syncCustFaqToRaw()" style="width: 100%; border: 1px solid #cbd5e1; border-radius: 6px; padding: 0.5rem; font-size: 0.825rem;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 0.75rem; color: #475569; margin-bottom: 0.25rem;">Jawaban Akurat Chatbot (A)</label>
+                        <textarea class="c-faq-a" rows="2" placeholder="Jawaban resmi yang harus disampaikan oleh chatbot..." oninput="syncCustFaqToRaw()" style="width: 100%; border: 1px solid #cbd5e1; border-radius: 6px; padding: 0.5rem; font-size: 0.825rem;">${escapeCustHtml(answer)}</textarea>
+                    </div>
+                `;
+                container.appendChild(card);
+                syncCustFaqToRaw();
+            }
+
+            function removeCustFaqItem(btn) {
+                const card = btn.closest('.cust-faq-card');
+                if (card) {
+                    card.remove();
+                    renumberCustCards('custFaqItemsContainer', '.cust-card-num');
+                    syncCustFaqToRaw();
+                }
+            }
+
+            function renumberCustCards(containerId, selector) {
+                const container = document.getElementById(containerId);
+                if (!container) return;
+                container.querySelectorAll(selector).forEach((el, i) => {
+                    el.textContent = i + 1;
+                });
+            }
+
+            function escapeCustHtml(text) {
+                if (!text) return '';
+                return String(text)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;');
+            }
+
+            // Syncing Logic
+            function syncCustLayananToRaw() {
+                const container = document.getElementById('custLayananItemsContainer');
+                const rawTextarea = document.getElementById('layanan');
+                if (!container || !rawTextarea) return;
+
+                let md = "# Layanan & Produk Unggulan\n\n";
+                const cards = container.querySelectorAll('.cust-lay-card');
+                cards.forEach(card => {
+                    const name = card.querySelector('.c-lay-name')?.value?.trim();
+                    const price = card.querySelector('.c-lay-price')?.value?.trim();
+                    const desc = card.querySelector('.c-lay-desc')?.value?.trim();
+                    if (name) {
+                        md += `- **${name}**: ${desc || 'Layanan unggulan'}${price ? '. ' + price : ''}.\n`;
+                    }
+                });
+                rawTextarea.value = md;
+            }
+
+            function syncCustFaqToRaw() {
+                const container = document.getElementById('custFaqItemsContainer');
+                const rawTextarea = document.getElementById('faq');
+                if (!container || !rawTextarea) return;
+
+                let md = "# Tanya Jawab (FAQ)\n\n";
+                const cards = container.querySelectorAll('.cust-faq-card');
+                cards.forEach(card => {
+                    const q = card.querySelector('.c-faq-q')?.value?.trim();
+                    const a = card.querySelector('.c-faq-a')?.value?.trim();
+                    if (q && a) {
+                        md += `### Q: ${q}\nA: ${a}\n\n`;
+                    }
+                });
+                rawTextarea.value = md.trim() + "\n";
+            }
+
+            function syncCustKebijakanToRaw() {
+                const rawTextarea = document.getElementById('kebijakan');
+                if (!rawTextarea) return;
+
+                const pay = document.getElementById('custKbPayment')?.value?.trim() || 'Pembayaran resmi dilakukan via rekening terverifikasi.';
+                const cancel = document.getElementById('custKbCancel')?.value?.trim() || 'Perubahan jadwal wajib diajukan maksimal H-1.';
+                const warranty = document.getElementById('custKbWarranty')?.value?.trim() || 'Jaminan revisi apabila hasil tidak sesuai kesepakatan awal.';
+
+                let md = "# Kebijakan & Ketentuan Layanan\n\n";
+                md += `## 1. Pembayaran Resmi\n${pay}\n\n`;
+                md += `## 2. Perubahan & Pembatalan Jadwal\n${cancel}\n\n`;
+                md += `## 3. Garansi & Jaminan Kualitas\n${warranty}\n\n`;
+
+                rawTextarea.value = md.trim() + "\n";
+            }
+
+            function syncCustProfilToRaw() {
+                const rawTextarea = document.getElementById('profil');
+                if (!rawTextarea) return;
+
+                const brand = document.getElementById('custProfBrandName')?.value?.trim() || 'Bisnis Klien';
+                const tagline = document.getElementById('custProfTagline')?.value?.trim() || 'Layanan Profesional dan Terpercaya';
+                const tone = document.getElementById('custProfTone')?.value || 'Ramah, sopan, informatif, dan solutif.';
+                const greeting = document.getElementById('custProfGreeting')?.value?.trim() || `Halo! Selamat datang di ${brand}, ada yang bisa kami bantu? 😊`;
+
+                let md = "# Profil & Identitas Bisnis AI\n\n";
+                md += `- **Nama Brand**: ${brand}\n`;
+                md += `- **Tagline**: ${tagline}\n`;
+                md += `- **Sapaan AI**: ${greeting}\n`;
+                md += `- **Karakter Chatbot**: ${tone}\n`;
+
+                rawTextarea.value = md;
+            }
+
+            function syncAllCustStructuredToRaw() {
+                syncCustLayananToRaw();
+                syncCustFaqToRaw();
+                syncCustKebijakanToRaw();
+                syncCustProfilToRaw();
+            }
+
+            // Init from raw markdown
+            function initCustStructuredForms() {
+                // 1. Layanan
+                const rawLayanan = document.getElementById('layanan')?.value || '';
+                const layLines = rawLayanan.split('\n');
+                let foundLayanan = false;
+                for (const line of layLines) {
+                    const m = line.match(/^[-*]\s+\*\*(.*?)\*\*:\s*(.*)$/);
+                    if (m) {
+                        foundLayanan = true;
+                        const name = m[1].trim();
+                        const text = m[2].trim();
+                        let price = '';
+                        let desc = text;
+                        const pMatch = text.match(/(Mulai\s+Rp[\d\.\,]+|Rp[\d\.\,]+[^\.\n]*)/i);
+                        if (pMatch) {
+                            price = pMatch[0].trim();
+                            desc = text.replace(price, '').trim().replace(/^[\.\,\s\-]+|[\.\,\s\-]+$/g, '');
+                        }
+                        addCustLayananItem(name, price, desc);
+                    }
+                }
+                if (!foundLayanan) {
+                    addCustLayananItem('Paket Reguler', 'Mulai Rp150.000', 'Layanan standar profesional');
+                    addCustLayananItem('Paket Premium', 'Mulai Rp350.000', 'Layanan terlengkap dengan garansi penuh');
+                }
+
+                // 2. FAQ
+                const rawFaq = document.getElementById('faq')?.value || '';
+                const faqMatches = [...rawFaq.matchAll(/###\s*Q:\s*([^\n]+)\s*\n+\s*A:\s*([\s\S]*?)(?=(?:###\s*Q:|$))/g)];
+                if (faqMatches.length > 0) {
+                    faqMatches.forEach(m => {
+                        addCustFaqItem(m[1].trim(), m[2].trim());
+                    });
+                } else {
+                    addCustFaqItem('Bagaimana cara melakukan pemesanan?', 'Anda dapat memesan langsung melalui tombol di website kami.');
+                    addCustFaqItem('Jam berapa operasional bisnis buka?', 'Kami beroperasi setiap hari Senin – Sabtu pukul 08.00 – 17.00 WIB.');
+                }
+
+                // 3. Kebijakan
+                const rawKebijakan = document.getElementById('kebijakan')?.value || '';
+                const sec1 = rawKebijakan.match(/## 1\.[^\n]*\n([\s\S]*?)(?=(?:## 2\.|$))/);
+                const sec2 = rawKebijakan.match(/## 2\.[^\n]*\n([\s\S]*?)(?=(?:## 3\.|$))/);
+                const sec3 = rawKebijakan.match(/## 3\.[^\n]*\n([\s\S]*?)(?=(?:## \d+\.|$))/);
+                if (sec1 && document.getElementById('custKbPayment')) document.getElementById('custKbPayment').value = sec1[1].trim();
+                if (sec2 && document.getElementById('custKbCancel')) document.getElementById('custKbCancel').value = sec2[1].trim();
+                if (sec3 && document.getElementById('custKbWarranty')) document.getElementById('custKbWarranty').value = sec3[1].trim();
+
+                // 4. Profil
+                const rawProfil = document.getElementById('profil')?.value || '';
+                const getProfVal = (label) => {
+                    const m = rawProfil.match(new RegExp('- \\*\\*' + label + '\\*\\*:\\s*(.*)', 'i'));
+                    return m ? m[1].trim() : '';
+                };
+                const bName = getProfVal('Nama Brand');
+                const tag = getProfVal('Tagline');
+                const sap = getProfVal('Sapaan AI');
+                if (bName && document.getElementById('custProfBrandName')) document.getElementById('custProfBrandName').value = bName;
+                if (tag && document.getElementById('custProfTagline')) document.getElementById('custProfTagline').value = tag;
+                if (sap && document.getElementById('custProfGreeting')) document.getElementById('custProfGreeting').value = sap;
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                initCustStructuredForms();
+            });
+        </script>
+    @endif
+
     {{-- Detail Informasi & Perbandingan Paket --}}
     <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:1.25rem; margin-top:1.5rem;">
         {{-- Panduan Cara Kerja Kuota --}}

@@ -81,6 +81,7 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
     Route::post('/ai-assistant/faq', [CustomerAiController::class, 'storeFaq'])->name('customer.ai.store-faq');
     Route::post('/ai-assistant/settings', [CustomerAiController::class, 'updateSettings'])->name('customer.ai.settings');
     Route::post('/ai-assistant/business-info', [CustomerAiController::class, 'updateBusinessInfo'])->name('customer.ai.business-info');
+    Route::post('/ai-assistant/knowledge', [CustomerAiController::class, 'updateKnowledge'])->name('customer.ai.knowledge');
     Route::post('/ai-assistant/simulate', [CustomerAiController::class, 'simulateChat'])->name('customer.ai.simulate');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->middleware('throttle:6,1')->name('profile.update');
@@ -93,6 +94,8 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
     Route::post('/orders/{order}/pay/check', [WebiaOrderController::class, 'checkStatus'])->middleware('throttle:10,1')->name('orders.pay.check');
     Route::post('/orders/{order}/cancel', [WebiaOrderController::class, 'cancel'])->middleware('throttle:5,1')->name('orders.cancel');
     Route::post('/orders/{order}/business', [WebiaOrderController::class, 'saveBusinessData'])->middleware('throttle:10,1')->name('orders.business');
+    Route::post('/orders/{order}/knowledge-base', [WebiaOrderController::class, 'saveKnowledgeBase'])->middleware('throttle:10,1')->name('orders.knowledge-base');
+    Route::post('/orders/{order}/simulate', [WebiaOrderController::class, 'simulateChat'])->middleware('throttle:30,1')->name('orders.simulate');
     Route::get('/hosting-invoices', [HostingInvoiceController::class, 'index'])->name('hosting-invoices.index');
     Route::get('/hosting-invoices/{hostingInvoice}', [HostingInvoiceController::class, 'show'])->name('hosting-invoices.show');
     Route::post('/hosting-invoices/{hostingInvoice}/pay', [HostingInvoiceController::class, 'pay'])->middleware('throttle:6,1')->name('hosting-invoices.pay');

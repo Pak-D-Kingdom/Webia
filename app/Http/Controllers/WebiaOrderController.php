@@ -9,6 +9,7 @@ use App\Models\WebiaOrderLog;
 use App\Models\WebiaPackage;
 use App\Models\WebiaPayment;
 use App\Models\WebiaTemplate;
+use App\Services\AiQuotaService;
 use App\Services\Midtrans;
 use App\Services\OrderMail;
 use Illuminate\Database\Eloquent\Collection;
@@ -345,12 +346,74 @@ class WebiaOrderController extends Controller
             $lockedOrder = WebiaOrder::whereKey($order->id)->lockForUpdate()->firstOrFail();
             abort_unless($lockedOrder->status === 'paid' && $lockedOrder->delivery_status !== 'delivered', 422);
 
+            $current = $lockedOrder->business_data ?? [];
             $lockedOrder->update([
-                'business_data' => $validated,
+                'business_data' => array_merge($current, $validated),
             ]);
         });
 
-        return redirect()->route('orders.show', $order)->with('status', 'Data bisnis berhasil disimpan.');
+        // Sinkronkan ke profil AI jika site_slug sudah aktif
+        if (!empty($order->site_slug)) {
+            AiQuotaService::updateTenantBusinessInfo($order->site_slug, [
+                'welcome_message' => "Halo! Selamat datang di " . ($validated['business_name'] ?? 'website kami') . ", ada yang bisa kami bantu? 😊",
+                'whatsapp_cs' => $validated['whatsapp'] ?? '',
+                'alamat' => ($validated['address'] ?? '') . (!empty($validated['city']) ? ', ' . $validated['city'] : ''),
+            ]);
+        }
+
+        return redirect()->route('orders.show', ['order' => $order, 'tab' => 'profile'])->with('status', 'Data bisnis profil berhasil disimpan.');
+    }
+
+    public function saveKnowledgeBase(Request $request, WebiaOrder $order): RedirectResponse
+    {
+        abort_unless($order->user_id === $request->user()->id, 404);
+        abort_unless($order->status === 'paid' && $order->delivery_status !== 'delivered', 422);
+
+        $validated = $request->validate([
+            'kb_layanan' => ['nullable', 'string', 'max:20000'],
+            'kb_faq' => ['nullable', 'string', 'max:20000'],
+            'kb_kebijakan' => ['nullable', 'string', 'max:20000'],
+            'kb_profil' => ['nullable', 'string', 'max:20000'],
+        ]);
+
+        DB::transaction(function () use ($order, $validated): void {
+            $lockedOrder = WebiaOrder::whereKey($order->id)->lockForUpdate()->firstOrFail();
+            abort_unless($lockedOrder->status === 'paid' && $lockedOrder->delivery_status !== 'delivered', 422);
+
+            $current = $lockedOrder->business_data ?? [];
+            $lockedOrder->update([
+                'business_data' => array_merge($current, [
+                    'kb_layanan' => $validated['kb_layanan'] ?? null,
+                    'kb_faq' => $validated['kb_faq'] ?? null,
+                    'kb_kebijakan' => $validated['kb_kebijakan'] ?? null,
+                    'kb_profil' => $validated['kb_profil'] ?? null,
+                ]),
+            ]);
+        });
+
+        if (!empty($order->site_slug)) {
+            AiQuotaService::saveTenantKnowledge($order->site_slug, [
+                'layanan' => $validated['kb_layanan'] ?? '',
+                'faq' => $validated['kb_faq'] ?? '',
+                'kebijakan' => $validated['kb_kebijakan'] ?? '',
+                'profil' => $validated['kb_profil'] ?? '',
+            ]);
+        }
+
+        return redirect()->route('orders.show', ['order' => $order, 'tab' => 'ai-kb'])->with('status', 'Knowledge Base AI (layanan, FAQ, kebijakan, profil) berhasil disimpan!');
+    }
+
+    public function simulateChat(Request $request, WebiaOrder $order): JsonResponse
+    {
+        abort_unless($order->user_id === $request->user()->id, 404);
+        $message = $request->string('message')->trim()->toString();
+        if (empty($message)) {
+            return response()->json(['status' => 'error', 'reply' => 'Pesan tidak boleh kosong.'], 422);
+        }
+
+        $tenantId = $order->site_slug ?: ($order->category_slug ?: 'general');
+        $reply = AiQuotaService::simulateChat($tenantId, $message);
+        return response()->json($reply);
     }
 
     /** @param Collection<int, WebiaAddon> $addons */

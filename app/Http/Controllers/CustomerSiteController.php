@@ -1741,6 +1741,345 @@ class CustomerSiteController extends Controller
             }, true);
         }
     });
+
+    // 14. Hooking untuk Renovaku Sage Green (data-chat-form, data-chat-log, data-chat-ask)
+    document.addEventListener('DOMContentLoaded', function() {
+        const hrForm = document.querySelector('[data-chat-form]');
+        const hrLog = document.querySelector('[data-chat-log]');
+        const hrInput = document.getElementById('hrChatInput') || document.querySelector('[data-chat-input]');
+        if (hrForm && hrLog) {
+            function addHrMsg(role, text) {
+                const row = document.createElement('div');
+                row.className = 'hr-msg hr-msg--' + role;
+                row.innerHTML = '<div class="hr-bubble hr-bubble--' + role + '">' + text + '</div>';
+                hrLog.appendChild(row);
+                hrLog.scrollTop = hrLog.scrollHeight;
+                return row;
+            }
+
+            async function handleHrSend(text) {
+                if (!text || !text.trim()) return;
+                addHrMsg('user', text.trim());
+                const typing = addHrMsg('bot', 'Menghitung estimasi & jawaban...');
+                typing.style.opacity = '0.7';
+                try {
+                    const data = await sendToAi(text.trim());
+                    typing.remove();
+                    addHrMsg('bot', data.reply || 'Ada yang bisa kami bantu seputar renovasi rumah?');
+                } catch(e) {
+                    typing.remove();
+                    addHrMsg('bot', 'Mohon maaf, terjadi kendala jaringan.');
+                }
+            }
+
+            hrForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                if (hrInput && hrInput.value) {
+                    const q = hrInput.value;
+                    hrInput.value = '';
+                    handleHrSend(q);
+                }
+            }, true);
+
+            document.querySelectorAll('[data-chat-ask]').forEach(function(btn) {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    handleHrSend(this.getAttribute('data-chat-ask') || this.textContent.trim());
+                }, true);
+            });
+        }
+    });
+
+    // 15. Hooking untuk Renovaku Chocolate Luxe (#rr-chat-form, #rr-chat-log, #rr-chat-input)
+    document.addEventListener('DOMContentLoaded', function() {
+        const rrForm = document.getElementById('rr-chat-form');
+        const rrLog = document.getElementById('rr-chat-log');
+        const rrInput = document.getElementById('rr-chat-input');
+        if (rrForm && rrLog) {
+            function addRrMsg(role, text) {
+                const el = document.createElement('div');
+                el.className = 'rr-chat__msg rr-chat__msg--' + role;
+                el.textContent = text;
+                rrLog.appendChild(el);
+                rrLog.scrollTop = rrLog.scrollHeight;
+                return el;
+            }
+
+            async function handleRrSend(text) {
+                if (!text || !text.trim()) return;
+                addRrMsg('user', text.trim());
+                const typing = addRrMsg('bot', 'Mengetik jawaban...');
+                typing.style.opacity = '0.7';
+                try {
+                    const data = await sendToAi(text.trim());
+                    typing.remove();
+                    addRrMsg('bot', data.reply || 'Ada yang bisa kami bantu?');
+                } catch(e) {
+                    typing.remove();
+                    addRrMsg('bot', 'Mohon maaf, terjadi kendala jaringan.');
+                }
+            }
+
+            rrForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                if (rrInput && rrInput.value) {
+                    const q = rrInput.value;
+                    rrInput.value = '';
+                    handleRrSend(q);
+                }
+            }, true);
+
+            document.querySelectorAll('#rr-chat-quick button').forEach(function(btn) {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    handleRrSend(this.textContent.trim());
+                }, true);
+            });
+        }
+    });
+
+    // 16. Hooking untuk HarapanBot Foundation (.fd-chat__form, .fd-chat__body, .fd-chat__chips button)
+    document.addEventListener('DOMContentLoaded', function() {
+        const fdForm = document.querySelector('.fd-chat__form');
+        const fdBody = document.querySelector('.fd-chat__body');
+        const fdInput = fdForm ? fdForm.querySelector('input') : null;
+        if (fdForm && fdBody) {
+            function addFdMsg(role, text) {
+                const row = document.createElement('div');
+                row.className = 'fd-chat__row fd-chat__row--' + role;
+                row.innerHTML = '<div class="fd-chat__bubble">' + text + '</div>';
+                fdBody.appendChild(row);
+                fdBody.scrollTop = fdBody.scrollHeight;
+                return row;
+            }
+
+            async function handleFdSend(text) {
+                if (!text || !text.trim()) return;
+                addFdMsg('user', text.trim());
+                const typing = addFdMsg('bot', 'Menyiapkan info yayasan...');
+                typing.style.opacity = '0.7';
+                try {
+                    const data = await sendToAi(text.trim());
+                    typing.remove();
+                    addFdMsg('bot', data.reply || 'Ada yang bisa kami bantu seputar program donasi?');
+                } catch(e) {
+                    typing.remove();
+                    addFdMsg('bot', 'Mohon maaf, terjadi gangguan jaringan.');
+                }
+            }
+
+            fdForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                if (fdInput && fdInput.value) {
+                    const q = fdInput.value;
+                    fdInput.value = '';
+                    handleFdSend(q);
+                }
+            }, true);
+
+            document.querySelectorAll('.fd-chat__chips button').forEach(function(btn) {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    handleFdSend(this.textContent.trim());
+                }, true);
+            });
+        }
+    });
+
+    // 17. Hooking untuk Muthawwif AI Umrah Emerald Green ([data-uh-chatbot])
+    document.addEventListener('DOMContentLoaded', function() {
+        const uhForm = document.querySelector('[data-uh-chatbot] form') || document.querySelector('.uh-chatwin__form');
+        const uhBody = document.querySelector('.uh-chatwin__body') || document.querySelector('[data-uh-chatlog]');
+        const uhInput = uhForm ? uhForm.querySelector('input') : null;
+        if (uhForm && uhBody) {
+            function addUhMsg(role, text) {
+                const row = document.createElement('div');
+                row.className = 'uh-chatwin__row uh-chatwin__row--' + role;
+                row.innerHTML = '<div class="uh-chatwin__bubble">' + text + '</div>';
+                uhBody.appendChild(row);
+                uhBody.scrollTop = uhBody.scrollHeight;
+                return row;
+            }
+
+            async function handleUhSend(text) {
+                if (!text || !text.trim()) return;
+                addUhMsg('user', text.trim());
+                const typing = addUhMsg('bot', 'Muthawwif AI sedang mencari rincian paket...');
+                typing.style.opacity = '0.7';
+                try {
+                    const data = await sendToAi(text.trim());
+                    typing.remove();
+                    addUhMsg('bot', data.reply || 'Ada yang bisa kami bantu seputar keberangkatan umrah & haji?');
+                } catch(e) {
+                    typing.remove();
+                    addUhMsg('bot', 'Mohon maaf, terjadi gangguan jaringan.');
+                }
+            }
+
+            uhForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                if (uhInput && uhInput.value) {
+                    const q = uhInput.value;
+                    uhInput.value = '';
+                    handleUhSend(q);
+                }
+            }, true);
+
+            document.querySelectorAll('.uh-chatwin__chips button').forEach(function(btn) {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    handleUhSend(this.textContent.trim());
+                }, true);
+            });
+        }
+    });
+
+    // 18. Hooking untuk Branding Creative Agency Cobalt Pop ([data-bca-chat])
+    document.addEventListener('DOMContentLoaded', function() {
+        const bcaChat = document.querySelector('[data-bca-chat]');
+        if (bcaChat) {
+            const bcaForm = bcaChat.querySelector('form');
+            const bcaLog = bcaChat.querySelector('[data-bca-chat-log]');
+            const bcaInput = bcaForm ? bcaForm.querySelector('input') : null;
+
+            if (bcaForm && bcaLog) {
+                function addBcaMsg(text, role) {
+                    const el = document.createElement('div');
+                    el.className = 'bca-msg bca-msg--' + role;
+                    const p = document.createElement('p');
+                    p.textContent = text;
+                    el.appendChild(p);
+                    bcaLog.appendChild(el);
+                    bcaLog.scrollTop = bcaLog.scrollHeight;
+                    return el;
+                }
+
+                async function handleBcaSend(text) {
+                    if (!text || !text.trim()) return;
+                    addBcaMsg(text.trim(), 'me');
+                    const typing = document.createElement('div');
+                    typing.className = 'bca-msg bca-msg--bot';
+                    typing.innerHTML = '<span class="bca-typing" aria-label="Sedang mengetik"><i></i><i></i><i></i></span>';
+                    bcaLog.appendChild(typing);
+                    bcaLog.scrollTop = bcaLog.scrollHeight;
+
+                    try {
+                        const data = await sendToAi(text.trim());
+                        typing.remove();
+                        addBcaMsg(data.reply || 'Ada yang bisa kami bantu seputar project branding Anda?', 'bot');
+                    } catch(e) {
+                        typing.remove();
+                        addBcaMsg('Mohon maaf, terjadi kendala jaringan.', 'bot');
+                    }
+                }
+
+                bcaForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    if (bcaInput && bcaInput.value) {
+                        const q = bcaInput.value;
+                        bcaInput.value = '';
+                        handleBcaSend(q);
+                    }
+                }, true);
+
+                bcaChat.querySelectorAll('[data-bca-quick]').forEach(function(btn) {
+                    btn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+                        const q = this.getAttribute('data-bca-quick') || this.textContent.trim();
+                        handleBcaSend(q);
+                    }, true);
+                });
+            }
+        }
+
+        // 19. Hooking untuk SodaTable Weekly Family Meal Plan (#ai-chat-window, #ai-chat-messages, #ai-chat-input)
+        function bindSodaHook() {
+            const sodaWindow = document.getElementById('ai-chat-window');
+            const sodaMessages = document.getElementById('ai-chat-messages');
+            const sodaInput = document.getElementById('ai-chat-input');
+            if (!sodaWindow || !sodaMessages || !sodaInput) return;
+
+            function escapeHtml(str) {
+                const div = document.createElement('div');
+                div.textContent = str;
+                return div.innerHTML;
+            }
+
+            async function handleSodaAiSend(text) {
+                if (!text || !text.trim()) return;
+                const query = text.trim();
+                sodaMessages.innerHTML += '<div class="bg-coral text-white p-2.5 rounded-2xl rounded-tr-none ml-8 font-medium">' + escapeHtml(query) + '</div>';
+                sodaInput.value = '';
+                sodaMessages.scrollTop = sodaMessages.scrollHeight;
+
+                const typing = document.createElement('div');
+                typing.className = 'bg-white p-2.5 rounded-2xl rounded-tl-none border border-plum/15 text-cocoa italic opacity-75';
+                typing.textContent = 'SodaAI sedang menyusun rekomendasi menu keluarga...';
+                sodaMessages.appendChild(typing);
+                sodaMessages.scrollTop = sodaMessages.scrollHeight;
+
+                try {
+                    const data = await sendToAi(query);
+                    typing.remove();
+                    const replyDiv = document.createElement('div');
+                    replyDiv.className = 'bg-white p-2.5 rounded-2xl rounded-tl-none border border-plum/15 text-cocoa leading-relaxed';
+                    replyDiv.innerHTML = data.reply ? data.reply.replace(/\n/g, '<br>') : 'Ada yang bisa SodaAI bantu seputar meal plan keluarga Anda?';
+                    sodaMessages.appendChild(replyDiv);
+                } catch (e) {
+                    typing.remove();
+                    const errDiv = document.createElement('div');
+                    errDiv.className = 'bg-white p-2.5 rounded-2xl rounded-tl-none border border-red-200 text-red-600';
+                    errDiv.textContent = 'Mohon maaf, terjadi kendala jaringan. Silakan hubungi kami via WhatsApp.';
+                    sodaMessages.appendChild(errDiv);
+                }
+                sodaMessages.scrollTop = sodaMessages.scrollHeight;
+            }
+
+            window.handleAIChatSubmit = function(e) {
+                if (e) {
+                    e.preventDefault();
+                    if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
+                }
+                if (sodaInput && sodaInput.value) {
+                    handleSodaAiSend(sodaInput.value);
+                }
+            };
+
+            window.sendQuickAIPrompt = function(txt) {
+                handleSodaAiSend(txt);
+            };
+
+            const sodaForm = sodaInput.closest('form');
+            if (sodaForm && !sodaForm.dataset.webiaBound) {
+                sodaForm.dataset.webiaBound = '1';
+                sodaForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    if (sodaInput && sodaInput.value) {
+                        handleSodaAiSend(sodaInput.value);
+                    }
+                }, true);
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', bindSodaHook);
+        } else {
+            bindSodaHook();
+        }
+        setTimeout(bindSodaHook, 400);
+        setTimeout(bindSodaHook, 900);
+    });
 })();
 </script>
 HTML;

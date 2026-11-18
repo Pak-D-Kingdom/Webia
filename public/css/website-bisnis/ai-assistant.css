@@ -176,6 +176,9 @@
 
 /* Conversation area */
 .webia-ai__messages {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
     flex: 1;
     min-height: 0;
     overflow-y: auto;
@@ -185,7 +188,7 @@
 }
 
 .webia-ai__welcome {
-    margin-bottom: 18px;
+    margin-bottom: 6px;
 }
 
 .webia-ai__eyebrow {
@@ -210,14 +213,95 @@
 }
 
 .webia-ai__message {
-    max-width: 95%;
+    max-width: 92%;
     padding: 12px 14px;
     border-radius: 5px 16px 16px 16px;
     color: #eee8ff;
     background: rgba(255, 255, 255, 0.075);
     font-size: 13px;
-    line-height: 1.7;
+    line-height: 1.6;
     overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.webia-ai__message--assistant {
+    align-self: flex-start;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.webia-ai__message--user {
+    align-self: flex-end;
+    margin-left: auto;
+    background: linear-gradient(135deg, #7948ee, #b43fe1);
+    color: #ffffff;
+    border-radius: 16px 16px 4px 16px;
+    box-shadow: 0 4px 16px rgba(121, 72, 238, 0.35);
+}
+
+.webia-ai__message p {
+    margin: 0 0 8px 0;
+}
+
+.webia-ai__message p:last-child {
+    margin-bottom: 0;
+}
+
+.webia-ai__message ul,
+.webia-ai__message ol {
+    margin: 4px 0 8px 18px;
+    padding: 0;
+}
+
+.webia-ai__message li {
+    margin-bottom: 4px;
+}
+
+.webia-ai__message strong {
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.webia-ai__message a {
+    color: var(--ai-cyan);
+    text-decoration: underline;
+}
+
+.webia-ai__typing {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 11px 16px;
+    align-self: flex-start;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 5px 16px 16px 16px;
+}
+
+.webia-ai__dot {
+    width: 6px;
+    height: 6px;
+    background: #d4b8ff;
+    border-radius: 50%;
+    animation: webiaDotPulse 1.2s infinite ease-in-out;
+}
+
+.webia-ai__dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.webia-ai__dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes webiaDotPulse {
+    0%, 60%, 100% {
+        transform: translateY(0);
+        opacity: 0.4;
+    }
+    30% {
+        transform: translateY(-4px);
+        opacity: 1;
+    }
 }
 
 .webia-ai__suggestions {

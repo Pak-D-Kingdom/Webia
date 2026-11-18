@@ -4088,24 +4088,32 @@ a {
     border-radius: 0.6rem;
 }
 
-.customer-filter a {
+.customer-filter a,
+.customer-filter button {
     display: inline-flex;
     align-items: center;
+    gap: 0.35rem;
     min-height: 38px;
     padding: 0.35rem 1rem;
+    border: none;
     border-radius: 0.45rem;
     color: var(--account-muted);
+    background: transparent;
     font-size: 0.78rem;
     font-weight: 600;
+    cursor: pointer;
     text-decoration: none;
     white-space: nowrap;
+    transition: color 0.15s, background-color 0.15s, border-color 0.15s;
 }
 
-.customer-filter a:hover {
+.customer-filter a:hover,
+.customer-filter button:hover {
     color: var(--account-ink);
 }
 
-.customer-filter a[aria-current='page'] {
+.customer-filter a[aria-current='page'],
+.customer-filter button[aria-current='page'] {
     color: var(--account-action);
     background: var(--account-surface);
     border: 1px solid var(--account-line);

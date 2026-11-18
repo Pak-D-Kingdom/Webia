@@ -269,6 +269,60 @@ class CustomerAiController extends Controller
             : redirect()->back()->with('error', $msg);
     }
 
+    /**
+     * Memperbarui 4 berkas dokumen Knowledge Base AI (layanan.md, faq.md, kebijakan.md, profil.md)
+     * secara mandiri oleh klien untuk melatih asisten AI bisnis mereka.
+     */
+    public function updateKnowledge(Request $request): RedirectResponse|JsonResponse
+    {
+        $validated = $request->validate([
+            'layanan' => 'nullable|string|max:20000',
+            'faq' => 'nullable|string|max:20000',
+            'kebijakan' => 'nullable|string|max:20000',
+            'profil' => 'nullable|string|max:20000',
+        ]);
+
+        $user = $request->user();
+        $order = WebiaOrder::whereBelongsTo($user)
+            ->whereNotNull('site_slug')
+            ->latest()
+            ->first();
+
+        if (! $order || empty($order->site_slug)) {
+            $err = 'Website Anda belum memiliki ID asisten AI aktif.';
+            if ($request->wantsJson() || $request->ajax()) {
+                return response()->json(['status' => 'error', 'message' => $err], 400);
+            }
+            return redirect()->back()->with('error', $err);
+        }
+
+        $res = AiQuotaService::saveTenantKnowledge($order->site_slug, $validated);
+
+        // Simpan juga ke business_data di order
+        $current = $order->business_data ?? [];
+        $current['kb_layanan'] = $validated['layanan'] ?? null;
+        $current['kb_faq'] = $validated['faq'] ?? null;
+        $current['kb_kebijakan'] = $validated['kebijakan'] ?? null;
+        $current['kb_profil'] = $validated['profil'] ?? null;
+        $order->update(['business_data' => $current]);
+
+        $isSuccess = (($res['status'] ?? '') === 'success');
+        $msg = $isSuccess
+            ? 'Knowledge Base Asisten AI (layanan.md, faq.md, kebijakan.md, profil.md) berhasil disimpan dan aktif!'
+            : 'Gagal memperbarui Knowledge Base AI. Silakan coba lagi.';
+
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'status' => $isSuccess ? 'success' : 'error',
+                'message' => $msg,
+            ], $isSuccess ? 200 : 500);
+        }
+
+        return $isSuccess
+            ? redirect()->back()->with('success', $msg)
+            : redirect()->back()->with('error', $msg);
+    }
+
 public function simulateChat(Request $request): JsonResponse
     {
         $request->validate([
