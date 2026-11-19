@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Zamrud Karya – Kontraktor Hunian Eksklusif</title>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,500;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--em:#0B3B2E;--em2:#06241C;--em3:#145A45;--br:#B89B72;--br2:#D8C29A;--iv:#F4EFE6;--mu:#9DB5AB;--ln:rgba(184,155,114,.32);--d:'Bodoni Moda',Georgia,serif;--j:'Jost',system-ui,sans-serif;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--em2);color:var(--iv);font:300 17px/1.7 var(--j);overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+h1,h2,h3,p{margin:0}
+em{font-style:italic;color:var(--br2)}
+.w{max-width:1200px;margin:auto;padding:0 28px}
+.lb{font:400 11.5px var(--j);letter-spacing:.3em;text-transform:uppercase;color:var(--br)}
+.bt{display:inline-flex;align-items:center;gap:12px;padding:16px 36px;border:1px solid var(--br);background:none;color:var(--br2);font:400 12.5px var(--j);letter-spacing:.24em;text-transform:uppercase;cursor:pointer;transition:.4s}
+.bt:hover,.bt:focus-visible{background:var(--br);color:var(--em2);outline:none;gap:20px}
+.bt.f{background:var(--br);color:var(--em2)}.bt.f:hover{background:var(--iv)}
+.ul{background:none;border:0;border-bottom:1px solid var(--br);color:var(--br2);font:400 12.5px var(--j);letter-spacing:.2em;text-transform:uppercase;padding:0 0 4px;cursor:pointer;transition:.3s}.ul:hover{color:#fff;border-color:#fff}
+header.n{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:50;transition:.4s}
+header.n.s{background:rgba(6,36,28,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--ln)}
+header.n .w{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding-top:22px;padding-bottom:22px;max-width:1400px}
+.nl{display:flex;gap:30px;font:400 12px var(--j);letter-spacing:.22em;text-transform:uppercase}.nl.r{justify-content:flex-end}
+.nl button{background:none;border:0;color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit;cursor:pointer;padding:0}.nl button:hover{color:var(--br2)}
+.lg{font:400 28px var(--d);letter-spacing:.2em;text-align:center}.lg small{display:block;font:400 9px var(--j);letter-spacing:.5em;color:var(--br);margin-top:-2px}
+@media(max-width:700px){.nl:not(.r){display:none}header.n .w{grid-template-columns:1fr auto}.lg{text-align:left;font-size:22px}}
+.view{display:none}.view.on{display:block;animation:fd .8s}@keyframes fd{from{opacity:0;transform:translateY(14px)}}
+/* hero */
+.hero{position:relative;height:100vh;min-height:680px;overflow:hidden;background:radial-gradient(120% 90% at 50% 40%,var(--em3),var(--em2) 70%);--p:50%}
+.ht{position:absolute;left:5vw;top:19vh;z-index:3;max-width:780px;pointer-events:none}
+.ht h1{font:400 clamp(44px,7.4vw,116px)/.96 var(--d);letter-spacing:-.02em;margin:18px 0 20px}
+.ht p{max-width:420px;color:var(--mu)}
+.vw{position:absolute;left:0;right:0;bottom:9vh;height:54vh;touch-action:pan-y}
+.vw svg{position:absolute;inset:0;width:100%;height:100%}
+#sl,#rd{position:absolute;inset:0}
+.rd{clip-path:inset(0 0 0 var(--p))}
+.hd{position:absolute;top:0;bottom:0;left:var(--p);width:1px;background:var(--br2);pointer-events:none}
+.hd::after{content:"⟷";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:46px;height:46px;border-radius:50%;background:var(--em2);border:1px solid var(--br2);display:grid;place-items:center;color:var(--br2);font-size:17px}
+.vw input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
+.cp{position:absolute;bottom:3.4vh;left:0;right:0;display:flex;justify-content:space-between;padding:0 5vw;z-index:3;font:400 11px var(--j);letter-spacing:.3em;text-transform:uppercase;color:var(--br)}
+.in{opacity:0;transform:translateY(30px);animation:fd .9s .1s forwards}.in.d1{animation-delay:.3s}
+@media(max-width:800px){.vw{height:38vh;bottom:11vh}.ht{top:15vh}}
+section.s{padding:130px 0}
+.sh{max-width:700px;margin-bottom:56px}
+.sh h2{font:400 clamp(34px,5vw,72px)/1.02 var(--d);letter-spacing:-.015em;margin:16px 0}
+.sh p{color:var(--mu)}
+.fl{background:var(--iv);color:var(--em2)}.fl .lb{color:var(--em3)}.fl em{color:var(--em3)}.fl .sh p{color:#5B6F66}
+.fl .bt{border-color:var(--em);color:var(--em)}.fl .bt:hover{background:var(--em);color:var(--iv)}
+/* filosofi */
+.ph{display:grid;grid-template-columns:1.2fr .8fr;gap:70px;align-items:end}
+.ph blockquote{margin:0;font:400 clamp(28px,3.8vw,52px)/1.18 var(--d);letter-spacing:-.01em}
+.pr{display:grid;gap:26px}.pr div{border-top:1px solid var(--ln);padding-top:16px}.pr b{font:500 12px var(--j);letter-spacing:.24em;text-transform:uppercase;color:var(--br);display:block;margin-bottom:4px}.pr span{color:var(--mu);font-size:15.5px}
+@media(max-width:860px){.ph{grid-template-columns:1fr;gap:40px}}
+/* galeri horizontal */
+.hs{display:flex;gap:26px;overflow-x:auto;padding:6px 5vw 30px;scroll-snap-type:x mandatory;scrollbar-width:thin;scrollbar-color:var(--br) transparent;cursor:grab}
+.hs.dg{cursor:grabbing;scroll-snap-type:none}
+.cd{flex:0 0 min(560px,82vw);scroll-snap-align:start;display:block;transition:.5s}
+.cd .im{background:radial-gradient(100% 90% at 50% 40%,var(--em3),var(--em));border:1px solid var(--ln);aspect-ratio:16/11;overflow:hidden;position:relative}
+.cd .im svg{width:100%;height:100%;transition:transform 1.2s cubic-bezier(.2,.8,.2,1)}.cd:hover .im svg{transform:scale(1.07)}
+.cd .im::after{content:"Lihat karya →";position:absolute;left:20px;bottom:18px;font:400 11px var(--j);letter-spacing:.24em;text-transform:uppercase;color:var(--br2);opacity:0;transition:.4s;transform:translateY(8px)}.cd:hover .im::after{opacity:1;transform:none}
+.cd h3{font:400 30px/1.1 var(--d);margin-top:20px}.cd small{display:block;color:var(--mu);font-size:14px;letter-spacing:.06em;margin-top:4px}
+.ar{display:flex;gap:10px;margin-top:10px;justify-content:flex-end;padding-right:5vw}.ar button{width:52px;height:52px;border-radius:50%;border:1px solid var(--br);background:none;color:var(--br2);font-size:20px;cursor:pointer;transition:.3s}.ar button:hover{background:var(--br);color:var(--em2)}
+/* material teaser */
+.sw{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:50px}
+.sw button{background:none;border:0;cursor:pointer;color:inherit;font:inherit;text-align:center}
+.sc{width:100%;aspect-ratio:1;border-radius:50%;background:var(--c);position:relative;overflow:hidden;box-shadow:0 18px 40px -18px rgba(6,36,28,.6);transition:.5s}
+.sc::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 38%,rgba(255,255,255,.28) 40%,transparent 43%,transparent 62%,rgba(0,0,0,.14) 64%,transparent 67%)}
+.sw button:hover .sc{transform:scale(1.06) rotate(-6deg)}.sw b{display:block;margin-top:14px;font:400 22px var(--d)}.sw small{color:#5B6F66}
+@media(max-width:700px){.sw{grid-template-columns:1fr 1fr}}
+/* proses teaser */
+.pt{display:flex;justify-content:space-between;gap:6px;margin:50px 0 44px;position:relative}.pt::before{content:"";position:absolute;left:0;right:0;top:12px;height:1px;background:var(--ln)}
+.pt span{position:relative;font:400 11px var(--j);letter-spacing:.14em;text-transform:uppercase;color:var(--mu);text-align:center;flex:1}.pt span::before{content:"";display:block;width:11px;height:11px;border-radius:50%;background:var(--em2);border:1px solid var(--br);margin:7px auto 12px;position:relative}
+@media(max-width:700px){.pt span{font-size:0}}
+.q{text-align:center;max-width:860px;margin:auto}.q blockquote{margin:0;font:italic 400 clamp(26px,3.4vw,46px)/1.25 var(--d)}.q cite{display:block;margin-top:22px;font:400 12px var(--j);letter-spacing:.24em;text-transform:uppercase;color:var(--br);font-style:normal}
+.ct{text-align:center;padding:150px 0;background:radial-gradient(70% 120% at 50% 100%,var(--em3),var(--em2))}.ct h2{font:400 clamp(40px,6.6vw,104px)/1 var(--d);letter-spacing:-.02em;max-width:900px;margin:18px auto 40px}
+footer{padding:50px 0 40px;border-top:1px solid var(--ln);font-size:13.5px;color:var(--mu)}footer .w{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}footer p{max-width:620px;font-size:12.5px;line-height:1.7;margin-top:10px}footer .lg{text-align:left;color:var(--iv)}
+footer button{background:none;border:0;color:inherit;font:inherit;cursor:pointer;margin-right:20px;padding:0}footer button:hover{color:var(--br2)}
+/* subhalaman */
+.sp{padding:150px 0 40px}
+.bk{background:none;border:0;color:var(--br);font:400 12px var(--j);letter-spacing:.24em;text-transform:uppercase;cursor:pointer;margin-bottom:44px;padding:0}.bk:hover{color:#fff}
+.dh{display:grid;grid-template-columns:.9fr 1.1fr;gap:60px;align-items:center}.dh h1{font:400 clamp(38px,5.4vw,80px)/1 var(--d);letter-spacing:-.02em;margin:16px 0 22px}.dh p{color:var(--mu);max-width:460px}
+.im2{background:radial-gradient(100% 90% at 50% 40%,var(--em3),var(--em));border:1px solid var(--ln);aspect-ratio:16/11}.im2 svg{width:100%;height:100%;display:block}
+@media(max-width:860px){.dh{grid-template-columns:1fr;gap:34px}}
+.fx{display:grid;grid-template-columns:repeat(4,1fr);margin-top:80px;border-block:1px solid var(--ln)}.fx div{padding:28px 0 28px 26px;border-left:1px solid var(--ln)}.fx div:first-child{border:0;padding-left:0}.fx small{display:block;font:400 11px var(--j);letter-spacing:.26em;text-transform:uppercase;color:var(--br)}.fx b{font:400 28px var(--d)}
+@media(max-width:700px){.fx{grid-template-columns:1fr 1fr}.fx div:nth-child(3){border:0;padding-left:0}}
+.cl{display:grid;grid-template-columns:.8fr 1.2fr;gap:60px;margin-top:80px}.cl h2{font:400 clamp(26px,3vw,40px)/1.1 var(--d)}.cl ul{list-style:none;padding:0;margin:0}.cl li{padding:16px 0;border-top:1px solid var(--ln);display:flex;gap:18px;color:var(--mu)}.cl li::before{content:"◆";color:var(--br);font-size:9px;margin-top:9px}.cl p{color:var(--mu)}
+@media(max-width:860px){.cl{grid-template-columns:1fr;gap:20px}}
+.gl{display:grid;grid-template-columns:2fr 1fr 1fr;gap:14px;margin-top:80px}.gl div{aspect-ratio:4/3;border:1px solid var(--ln);background:var(--em)}.gl div:nth-child(2){background:var(--em3)}.gl div:nth-child(3){background:#0E4837}
+.pn{display:flex;justify-content:space-between;gap:20px;margin-top:90px;padding-top:28px;border-top:1px solid var(--ln);flex-wrap:wrap}
+/* studio */
+.mg{display:grid;grid-template-columns:1.25fr .75fr;gap:50px;margin-top:20px;align-items:start}
+.mg .im2{aspect-ratio:16/10}
+.cn2{border:1px solid var(--ln);padding:34px;background:rgba(11,59,46,.5)}
+.cn2 h3{font:400 13px var(--j);letter-spacing:.26em;text-transform:uppercase;color:var(--br);margin:0 0 14px}.cn2 h3:not(:first-child){margin-top:30px}
+.sr{display:flex;gap:14px;flex-wrap:wrap}.sr button{width:62px;height:62px;border-radius:50%;border:1px solid var(--ln);background:var(--c);cursor:pointer;padding:0;position:relative;transition:.3s}
+.sr button[aria-pressed=true]{outline:1px solid var(--br2);outline-offset:5px;transform:scale(1.04)}
+.pf{margin-top:30px;padding-top:24px;border-top:1px solid var(--ln)}.pf b{font:400 26px var(--d);display:block}.pf p{color:var(--mu);font-size:15px;margin:4px 0 14px}.pf .rg{font:400 30px var(--d);color:var(--br2)}.pf small{display:block;color:var(--mu);font-size:12.5px;line-height:1.5;margin:6px 0 20px}
+@media(max-width:900px){.mg{grid-template-columns:1fr}}
+/* proses */
+.tl{position:relative;max-width:900px;margin:30px auto 0}.tl::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--ln)}
+.st{display:grid;grid-template-columns:1fr 1fr;gap:70px;margin-bottom:46px;position:relative}
+.st::after{content:"";position:absolute;left:50%;top:12px;width:13px;height:13px;border-radius:50%;background:var(--em2);border:1px solid var(--br);transform:translateX(-50%)}
+.st>div{grid-column:1;text-align:right}.st:nth-child(even)>div{grid-column:2;text-align:left}
+.st .nm{font:italic 400 52px/1 var(--d);color:var(--br)}.st h3{font:400 28px var(--d);margin:4px 0 8px}.st p{color:var(--mu);font-size:15.5px}.st small{display:block;margin-top:10px;font:400 11px var(--j);letter-spacing:.2em;text-transform:uppercase;color:var(--br2)}
+@media(max-width:760px){.tl::before{left:8px}.st{grid-template-columns:1fr;gap:0;padding-left:34px}.st::after{left:8px}.st>div,.st:nth-child(even)>div{grid-column:1;text-align:left}}
+/* privat */
+.pv{display:grid;grid-template-columns:.9fr 1.1fr;gap:70px;align-items:start}.pv h1{font:400 clamp(38px,5.4vw,78px)/1 var(--d);letter-spacing:-.02em;margin:16px 0 22px}.pv .nt{color:var(--mu);max-width:420px}.pv ul{list-style:none;padding:0;margin:30px 0 0}.pv li{padding:14px 0;border-top:1px solid var(--ln);color:var(--mu)}
+.fm{border:1px solid var(--ln);padding:clamp(26px,4vw,48px);background:rgba(11,59,46,.45)}.fm label{display:block;font:400 11px var(--j);letter-spacing:.26em;text-transform:uppercase;color:var(--br);margin:22px 0 4px}.fm label:first-child{margin-top:0}
+.fm input,.fm select,.fm textarea{width:100%;padding:12px 0;background:none;border:0;border-bottom:1px solid var(--ln);color:var(--iv);font:300 17px var(--j);outline:none;border-radius:0}.fm select option{background:var(--em2)}
+.fm input:focus,.fm select:focus,.fm textarea:focus{border-color:var(--br2)}.fm .r2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.pl{display:flex;gap:8px;margin-top:6px}.pl button{flex:1;padding:12px;background:none;border:1px solid var(--ln);color:var(--iv);font:300 14px var(--j);cursor:pointer}.pl button[aria-pressed=true]{background:var(--br);color:var(--em2);border-color:var(--br)}
+.fm .bt{margin-top:34px;width:100%;justify-content:center}
+@media(max-width:860px){.pv{grid-template-columns:1fr;gap:40px}.fm .r2{grid-template-columns:1fr}}
+/* concierge */
+#cb{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:70;padding:12px 28px;background:rgba(6,36,28,.92);backdrop-filter:blur(8px);border:1px solid var(--br);color:var(--br2);font:400 11.5px var(--j);letter-spacing:.28em;text-transform:uppercase;cursor:pointer;transition:.3s}#cb:hover{background:var(--br);color:var(--em2)}
+#cn{position:fixed;inset:0;z-index:100;background:rgba(6,36,28,.985);display:none;flex-direction:column;padding:calc(30px + env(safe-area-inset-top,0px)) 5vw calc(26px + env(safe-area-inset-bottom,0px))}
+#cn.on{display:flex;animation:fd .5s}
+#cn header{display:flex;justify-content:space-between;align-items:center}#cn header b{font:400 26px var(--d);letter-spacing:.14em}#cn header button{background:none;border:0;color:var(--br2);font:400 12px var(--j);letter-spacing:.24em;text-transform:uppercase;cursor:pointer}
+#ms{flex:1;overflow-y:auto;max-width:820px;width:100%;margin:30px auto 0;display:flex;flex-direction:column;gap:26px;padding-right:6px}
+.m{animation:fd .6s}.m.b{font:italic 400 clamp(22px,2.8vw,32px)/1.3 var(--d);color:var(--iv)}.m.u{font:400 12.5px var(--j);letter-spacing:.2em;text-transform:uppercase;color:var(--br);text-align:right}
+.cs{display:flex;flex-wrap:wrap;gap:10px;max-width:820px;width:100%;margin:18px auto 0}.cs button{padding:9px 18px;border:1px solid var(--ln);background:none;color:var(--br2);font:300 14px var(--j);cursor:pointer}.cs button:hover{background:var(--br);color:var(--em2)}
+#cf{max-width:820px;width:100%;margin:20px auto 0;display:flex;border-bottom:1px solid var(--br)}#cf input{flex:1;padding:16px 0;background:none;border:0;color:var(--iv);font:300 22px var(--j);outline:none;min-width:0}#cf button{background:none;border:0;color:var(--br2);font-size:22px;cursor:pointer}
+#cw{display:block;max-width:820px;width:100%;margin:16px auto 0;text-align:right;font:400 12px var(--j);letter-spacing:.2em;text-transform:uppercase;color:var(--br2)}#cw:hover{color:#fff}
+:focus-visible{outline:2px solid var(--br2);outline-offset:3px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.in{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<header class="n" id="hn"><div class="w"><div class="nl"><button data-s="karya">Karya</button><button data-s="filosofi">Filosofi</button></div><a class="lg" href="#beranda">ZAMRUD<small>KARYA</small></a><div class="nl r"><button data-s="kontak">Kontak</button></div></div></header>
+
+<main>
+<div class="view" id="v-beranda">
+<section class="hero" id="hero"><div class="ht"><span class="lb in">Kontraktor hunian eksklusif</span><h1 class="in d1">Rumah yang layak <em>diwariskan.</em></h1><p class="in d1">Setiap karya bermula dari satu garis di atas kertas, dan selesai sebagai tempat yang dikenang.</p></div>
+<div class="vw" id="vw"><div id="sl"></div><div class="rd" id="rd"></div><div class="hd"></div><input type="range" id="rg" min="0" max="100" value="50" aria-label="Geser antara gambar kerja dan hasil jadi"></div>
+<div class="cp"><span>Gambar kerja</span><span>Hasil jadi</span></div></section>
+<section class="s" id="filosofi"><div class="w ph"><blockquote>Kemewahan sejati ada pada <em>ketelitian</em> yang tidak terlihat, dan ketenangan yang terasa.</blockquote><div class="pr"><div><b>Presisi</b><span>Toleransi kecil, detail besar. Setiap sambungan diperiksa dua kali.</span></div><div><b>Material</b><span>Dipilih langsung dari sumber, dengan karakter yang menua dengan indah.</span></div><div><b>Kerahasiaan</b><span>Proyek privat ditangani dengan diskresi penuh dan akses terbatas.</span></div></div></div></section>
+<section id="karya" style="padding:40px 0 100px"><div class="w sh"><span class="lb">Karya pilihan</span><h2>Lima hunian, lima <em>cerita.</em></h2></div><div class="hs" id="hs"></div><div class="ar"><button id="pa" aria-label="Sebelumnya">←</button><button id="na" aria-label="Berikutnya">→</button></div></section>
+<section class="s fl"><div class="w"><div class="sh"><span class="lb">Material studio</span><h2>Pilih bahan, lihat <em>rumahmu</em> berubah.</h2><p>Mulai dari karakter material. Buka studio untuk mencoba kombinasi fasad dan aksen pada rumah ilustrasi.</p></div><div class="sw" id="sw"></div><a class="bt" href="#material">Buka material studio →</a></div></section>
+<section class="s"><div class="w"><div class="sh"><span class="lb">Perjalanan klien</span><h2>Tujuh tahap, satu <em>pendamping.</em></h2></div><div class="pt"><span>Pertemuan</span><span>Lahan</span><span>Konsep</span><span>Rincian</span><span>Kontrak</span><span>Bangun</span><span>Serah</span></div><a class="bt" href="#proses">Lihat perjalanan lengkap →</a></div></section>
+<section class="s" style="padding-top:20px"><div class="w q"><blockquote>“Kami hampir tidak perlu bertanya. Semuanya sudah dijelaskan sebelum kami sempat memikirkannya.”</blockquote><cite>Pemilik villa · Proyek privat (contoh)</cite></div></section>
+<section class="ct" id="kontak"><div class="w"><span class="lb">Konsultasi privat</span><h2>Mari bicara tentang <em>rumah impian</em> Anda.</h2><a class="bt f" href="#privat">Jadwalkan konsultasi →</a></div></section>
+</div>
+<div class="view" id="v-detail"></div><div class="view" id="v-material"></div><div class="view" id="v-proses"></div><div class="view" id="v-privat"></div>
+</main>
+<footer><div class="w"><div><div class="lg">ZAMRUD<small>KARYA</small></div><p>Template contoh. Seluruh nama, angka, proyek, dan data perlu diganti. Estimasi bersifat indikatif, dan biaya serta jadwal final ditentukan melalui survei, gambar kerja, dan kontrak tertulis. Perizinan dan keselamatan kerja mengikuti ketentuan yang berlaku.</p></div><div><button onclick="location.hash='proses'">Perjalanan klien</button><button onclick="location.hash='material'">Material studio</button><button onclick="location.hash='privat'">Konsultasi privat</button></div></div></footer>
+
+<button id="cb">Concierge ✦</button>
+<div id="cn" role="dialog" aria-label="Concierge"><header><b>CONCIERGE</b><button id="x">Tutup ×</button></header><div id="ms"></div><div class="cs" id="cs"></div><form id="cf"><input id="ci" placeholder="Tanyakan apa saja…" autocomplete="off" aria-label="Pertanyaan"><button aria-label="Kirim">→</button></form><a id="cw" href="#" target="_blank" rel="noopener">Lanjutkan di WhatsApp →</a></div>
+
+<script>
+/* ===== KONFIGURASI: nomor WA format internasional tanpa + dan tanpa 0 di depan ===== */
+const WA_NUMBER="6281234567890",BRAND="Zamrud Karya";
+const $=i=>document.getElementById(i),wl=t=>"https://wa.me/"+WA_NUMBER+"?text="+encodeURIComponent(t);
+const MAT=[["Marmer putih","#EDE9E1","Terang, bersih, dan lapang. Cocok untuk hunian bergaya kontemporer.",1.35],["Travertine","#D9C9A8","Hangat dan bertekstur alami, menua dengan anggun.",1.2],["Kayu walnut","#6B4A32","Pekat, akrab, dan berkarakter kuat.",1.25],["Andesit gelap","#3A3F3E","Kokoh dan modern, kontras indah dengan kaca.",1.1]];
+const ACC=[["Kuningan","#B89B72",1.1],["Hitam doff","#1B1B1B",1],["Tembaga","#B56B45",1.12]];
+const VAR=[
+[["m",110,235,360,95],["g",130,250,200,70],["s",100,225,380,10],["m",230,150,400,70],["g",250,165,260,45],["s",220,140,420,10],["p",500,300,230,34]],
+[["m",90,250,500,80],["g",110,262,300,58],["s",80,240,520,10],["m",300,190,240,50],["g",315,200,150,32],["s",290,180,260,10],["p",610,305,150,26]],
+[["m",80,230,250,100],["g",95,245,150,75],["s",70,220,270,10],["m",400,200,300,130],["g",420,215,180,100],["s",390,190,320,10],["m",150,150,160,70],["s",140,140,180,10]],
+[["m",60,240,680,90],["g",80,255,420,65],["s",50,230,700,10],["m",200,170,300,60],["g",215,182,180,40],["s",190,160,320,10],["p",540,300,200,28]],
+[["m",300,80,200,250],["g",320,100,80,70],["g",320,200,80,90],["s",290,70,220,10],["m",160,250,140,80],["g",172,262,80,56],["s",150,240,160,10],["m",500,230,140,100]]];
+let gid=0;
+function villa(mode,f,a,v){const id="g"+gid++,B=mode==="line",st="#B89B72";let s=`<svg viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8FD3BF"/><stop offset="1" stop-color="#1F6F5C"/></linearGradient></defs>`;
+if(B)s+=`<g fill="none" stroke="${st}" stroke-width="1.2"><path d="M20 330H780"/>`;else s+=`<rect x="0" y="330" width="800" height="70" fill="#06241C"/><ellipse cx="400" cy="334" rx="360" ry="9" fill="#000" opacity=".35"/><g>`;
+[[58,300],[752,300]].forEach(t=>{s+=B?`<circle cx="${t[0]}" cy="${t[1]-26}" r="30"/><path d="M${t[0]} 330V${t[1]}"/>`:`<path d="M${t[0]} 330V${t[1]}" stroke="#3b2a1d" stroke-width="5"/><circle cx="${t[0]}" cy="${t[1]-26}" r="30" fill="#1E7A5E"/><circle cx="${t[0]-10}" cy="${t[1]-34}" r="16" fill="#2E946F" opacity=".7"/>`});
+VAR[v].forEach(r=>{const [t,x,y,w,h]=r;
+if(B){s+=`<rect x="${x}" y="${y}" width="${w}" height="${h}"/>`;if(t==="g")for(let k=1;k<Math.floor(w/40);k++)s+=`<path d="M${x+k*40} ${y}V${y+h}"/>`;if(t==="p")s+=`<path d="M${x+10} ${y+10}H${x+w-10}M${x+10} ${y+20}H${x+w-30}" stroke-opacity=".6"/>`}
+else{const fl=t==="m"?f:t==="s"?"#141414":t==="g"?`url(#${id})`:"#7BD5CF";s+=`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${fl}" stroke="${t==="p"?"#EDE9E1":"none"}"/>`;
+if(t==="m"&&w>180)for(let k=x+14;k<x+w-8;k+=26)s+=`<rect x="${k}" y="${y+5}" width="3" height="${h-10}" fill="${a}" opacity=".55"/>`;
+if(t==="g")s+=`<path d="M${x+w*.2} ${y}L${x+w*.45} ${y+h}" stroke="#fff" stroke-opacity=".22" stroke-width="9"/>`}});
+return s+"</g></svg>"}
+/* beranda */
+sl.innerHTML=villa("line",0,0,0);rd.innerHTML=villa("r","#EDE9E1","#B89B72",0);
+rg.oninput=()=>hero.style.setProperty("--p",rg.value+"%");
+addEventListener("scroll",()=>hn.classList.toggle("s",scrollY>40),{passive:true});
+const PJ=[
+{n:"Villa Tirta Lembah",k:"Hunian tepi lembah",l:"650 m²",d:"14 bulan",y:"2025",v:0,m:1,a:0,ds:"Villa dua massa dengan kolam yang mengalir mengikuti kontur lahan.",mt:["Fasad travertine","Aksen kuningan","Kaca rendah emisi","Lantai batu alam"],tc:["Kontur lahan curam membutuhkan pondasi bertingkat","Bentang kaca lebar dengan struktur tersembunyi"]},
+{n:"Rumah Pavilion Selatan",k:"Rumah satu lantai panjang",l:"420 m²",d:"11 bulan",y:"2025",v:1,m:0,a:2,ds:"Rumah pavilion rendah dengan taman dalam dan sirkulasi udara silang.",mt:["Fasad marmer putih","Aksen tembaga","Plafon kayu","Taman dalam"],tc:["Atap datar tipis dengan drainase tersembunyi","Ventilasi silang tanpa kehilangan privasi"]},
+{n:"Residensi Taman Kembar",k:"Dua unit berdampingan",l:"900 m²",d:"16 bulan",y:"2024",v:2,m:3,a:1,ds:"Dua hunian berdampingan dengan halaman bersama yang tetap menjaga privasi.",mt:["Fasad andesit gelap","Aksen hitam doff","Kaca laminasi","Lansekap terpadu"],tc:["Dinding pemisah akustik antar unit","Sistem utilitas terpisah untuk tiap unit"]},
+{n:"Clubhouse Riverside",k:"Fasilitas klub privat",l:"1.400 m²",d:"18 bulan",y:"2025",v:3,m:1,a:0,ds:"Clubhouse bentang lebar dengan kolam, ruang pertemuan, dan teras terbuka.",mt:["Fasad travertine","Aksen kuningan","Lantai marmer","Plafon akustik"],tc:["Bentang lebar tanpa kolom di ruang utama","Pengendalian kelembapan di area kolam"]},
+{n:"Penthouse Renovasi Total",k:"Renovasi hunian vertikal",l:"280 m²",d:"6 bulan",y:"2024",v:4,m:2,a:0,ds:"Perombakan total penthouse dengan tata ruang baru dan material pilihan.",mt:["Panel kayu walnut","Aksen kuningan","Lantai marmer","Pencahayaan tersembunyi"],tc:["Material diangkut dengan jadwal ketat gedung","Pekerjaan senyap agar penghuni lain tidak terganggu"]}];
+hs.innerHTML=PJ.map((p,i)=>`<a class="cd" href="#proyek-${i+1}"><div class="im">${villa("r",MAT[p.m][1],ACC[p.a][1],p.v)}</div><h3>${p.n}</h3><small>${p.k} · ${p.l}</small></a>`).join("");
+pa.onclick=()=>hs.scrollBy({left:-420,behavior:"smooth"});na.onclick=()=>hs.scrollBy({left:420,behavior:"smooth"});
+let dn=0,sx=0,sl0=0;hs.onpointerdown=e=>{if(e.pointerType==="mouse"){dn=1;sx=e.clientX;sl0=hs.scrollLeft}};hs.onpointermove=e=>{if(dn){hs.classList.add("dg");hs.scrollLeft=sl0-(e.clientX-sx)}};addEventListener("pointerup",()=>{dn=0;hs.classList.remove("dg")});
+hs.addEventListener("click",e=>{if(Math.abs(hs.scrollLeft-sl0)>6&&dn===0&&hs.dataset.m==="1")e.preventDefault()});
+sw.innerHTML=MAT.map((m,i)=>`<button data-i="${i}"><div class="sc" style="--c:${m[1]}"></div><b>${m[0]}</b><small>Coba di studio →</small></button>`).join("");
+let MS={f:0,a:0};sw.onclick=e=>{const b=e.target.closest("button");if(b){MS.f=+b.dataset.i;location.hash="material"}};
+/* subhalaman */
+const bk=(h,t)=>`<button class="bk" onclick="location.hash='${h}'">← ${t}</button>`;
+function dp(i){const p=PJ[i],pv=PJ[(i+4)%5],nx=PJ[(i+1)%5];
+$("v-detail").innerHTML=`<div class="sp"><div class="w">${bk("beranda","Semua karya")}<div class="dh"><div><span class="lb">${p.k} · ${p.y}</span><h1>${p.n}</h1><p>${p.ds}</p><div style="margin-top:34px"><a class="bt f" target="_blank" rel="noopener" href="${wl(`Halo ${BRAND}, saya tertarik dengan karya seperti "${p.n}". Mohon jadwal konsultasi privat.`)}">Diskusikan proyek serupa</a></div></div><div class="im2">${villa("r",MAT[p.m][1],ACC[p.a][1],p.v)}</div></div>
+<div class="fx"><div><small>Luas</small><b>${p.l}</b></div><div><small>Durasi</small><b>${p.d}</b></div><div><small>Tahun</small><b>${p.y}</b></div><div><small>Material utama</small><b>${MAT[p.m][0]}</b></div></div>
+<div class="cl"><h2>Material pilihan</h2><ul>${p.mt.map(x=>`<li>${x}</li>`).join("")}</ul></div><div class="cl"><h2>Tantangan dan solusi</h2><ul>${p.tc.map(x=>`<li>${x}</li>`).join("")}</ul></div>
+<div class="gl"><div></div><div></div><div></div></div><p class="lb" style="margin-top:14px">Ruang untuk foto proyek</p>
+<div class="pn"><a class="ul" href="#proyek-${(i+4)%5+1}">← ${pv.n}</a><a class="ul" href="#proyek-${(i+1)%5+1}">${nx.n} →</a></div></div></div>`}
+function mp(){const f=MAT[MS.f],a=ACC[MS.a],base=9e6,lo=base*f[3]*a[2]*.9/1e6,hi=base*f[3]*a[2]*1.2/1e6;
+$("v-material").innerHTML=`<div class="sp"><div class="w">${bk("beranda","Beranda")}<span class="lb">Material studio</span><h1 style="font:400 clamp(38px,5.4vw,78px)/1 var(--d);letter-spacing:-.02em;margin:16px 0 40px">Rancang <em>karakter</em> rumahmu.</h1>
+<div class="mg"><div class="im2">${villa("r",f[1],a[1],0)}</div><div class="cn2"><h3>Material fasad</h3><div class="sr" id="sf">${MAT.map((m,i)=>`<button style="--c:${m[1]}" data-i="${i}" aria-pressed="${i===MS.f}" aria-label="${m[0]}"></button>`).join("")}</div><h3>Aksen</h3><div class="sr" id="sa">${ACC.map((m,i)=>`<button style="--c:${m[1]}" data-i="${i}" aria-pressed="${i===MS.a}" aria-label="${m[0]}"></button>`).join("")}</div>
+<div class="pf"><b>${f[0]} + ${a[0]}</b><p>${f[2]}</p><span class="lb">Investasi indikatif (contoh)</span><div class="rg">Rp ${lo.toFixed(1).replace(".",",")} – ${hi.toFixed(1).replace(".",",")} jt / m²</div><small>Kisaran awal untuk pekerjaan keseluruhan pada kelas hunian eksklusif. Angka final mengikuti desain, lokasi, dan spesifikasi.</small>
+<a class="bt f" target="_blank" rel="noopener" href="${wl(`Halo ${BRAND}, saya tertarik dengan kombinasi material: fasad ${f[0]} dengan aksen ${a[0]}. Mohon konsultasi.`)}">Diskusikan kombinasi ini</a><div style="margin-top:20px"><a class="ul" href="#privat">Atau jadwalkan konsultasi privat</a></div></div></div></div></div></div>`;
+$("sf").onclick=e=>{const b=e.target.closest("button");if(b){MS.f=+b.dataset.i;mp()}};$("sa").onclick=e=>{const b=e.target.closest("button");if(b){MS.a=+b.dataset.i;mp()}}}
+const PR=[["Pertemuan pertama","Kami mendengarkan cara Anda hidup, bukan hanya ruang yang Anda butuhkan.","Catatan gaya hidup"],["Telaah lahan","Kondisi tanah, arah matahari, dan batasan peraturan dikaji menyeluruh.","Laporan lahan"],["Konsep desain","Arsitek menyajikan gagasan massa, denah, dan suasana ruang.","Konsep dan visual"],["Rincian dan RAB","Gambar kerja, spesifikasi material, dan anggaran dirinci tertulis.","Gambar kerja dan RAB"],["Kontrak","Lingkup, jadwal, dan termin pembayaran dikunci bersama.","Kontrak kerja"],["Pembangunan","Pelaksanaan dengan laporan berkala, kunjungan lokasi, dan kendali mutu.","Laporan dan foto progres"],["Serah terima","Pemeriksaan akhir bersama, lalu masa pemeliharaan dimulai.","Berita acara dan panduan hunian"]];
+function pp(){$("v-proses").innerHTML=`<div class="sp"><div class="w">${bk("beranda","Beranda")}<div style="text-align:center;max-width:760px;margin:auto"><span class="lb">Perjalanan klien</span><h1 style="font:400 clamp(38px,5.4vw,78px)/1 var(--d);letter-spacing:-.02em;margin:16px 0 20px">Tujuh tahap, tanpa <em>kejutan.</em></h1><p style="color:var(--mu)">Setiap tahap punya hasil yang bisa Anda pegang sebelum melangkah ke tahap berikutnya.</p></div>
+<div class="tl" style="margin-top:80px">${PR.map((s,i)=>`<div class="st"><div><span class="nm">0${i+1}</span><h3>${s[0]}</h3><p>${s[1]}</p><small>Anda menerima: ${s[2]}</small></div></div>`).join("")}</div>
+<div style="text-align:center;margin-top:50px"><a class="bt f" href="#privat">Mulai dari pertemuan pertama →</a></div></div></div>`}
+let PV={w:0};
+function vp(){$("v-privat").innerHTML=`<div class="sp"><div class="w">${bk("beranda","Beranda")}<div class="pv"><div><span class="lb">Konsultasi privat</span><h1>Satu percakapan, tanpa <em>kewajiban.</em></h1><p class="nt">Ceritakan rencana Anda. Kami mendengarkan, lalu menyampaikan pandangan jujur tentang kelayakan dan langkah berikutnya.</p><ul><li>Seluruh informasi dijaga kerahasiaannya</li><li>Respons dalam satu hari kerja (contoh)</li><li>Konsultasi awal dengan arsitek pendamping</li></ul></div>
+<div class="fm"><label for="fn">Nama</label><input id="fn" placeholder="Nama lengkap"><label for="fc">Kontak (WhatsApp atau email)</label><input id="fc" placeholder="Nomor atau alamat email"><label for="ft">Jenis proyek</label><select id="ft"><option>Hunian baru di lahan sendiri</option><option>Renovasi total</option><option>Villa atau rumah peristirahatan</option><option>Klub atau fasilitas privat</option></select>
+<div class="r2"><div><label for="fl">Luas lahan (m²)</label><input id="fl" placeholder="Perkiraan"></div><div><label for="fb">Rentang investasi</label><select id="fb"><option>Di atas Rp 3 miliar</option><option>Rp 3 sampai 6 miliar</option><option>Rp 6 sampai 12 miliar</option><option>Di atas Rp 12 miliar</option></select></div></div>
+<label>Waktu konsultasi</label><div class="pl" id="pl">${["Pagi","Siang","Sore"].map((x,i)=>`<button type="button" data-i="${i}" aria-pressed="${i===PV.w}">${x}</button>`).join("")}</div><label for="fd">Tanggal</label><input id="fd" type="date"><label for="fm">Catatan</label><textarea id="fm" rows="2" placeholder="Opsional"></textarea><a class="bt f" id="fw" href="#" target="_blank" rel="noopener">Kirim permintaan ke WhatsApp</a></div></div></div></div>`;
+const dd=new Date();dd.setDate(dd.getDate()+1);$("fd").min=dd.toISOString().slice(0,10);
+const up=()=>{const T=["pagi","siang","sore"],d=$("fd").value?new Date($("fd").value+"T00:00").toLocaleDateString("id-ID",{weekday:"long",day:"numeric",month:"long"}):"belum dipilih";
+$("fw").href=wl(`Halo ${BRAND}, saya ${$("fn").value||"calon klien"}. Saya ingin konsultasi privat untuk: ${$("ft").value}. Luas lahan: ${$("fl").value||"-"} m². Rentang investasi: ${$("fb").value}. Waktu: ${T[PV.w]}, ${d}. Kontak: ${$("fc").value||"-"}.${$("fm").value?" Catatan: "+$("fm").value:""}`)};
+["fn","fc","ft","fl","fb","fd","fm"].forEach(i=>$(i).oninput=up);$("pl").onclick=e=>{const b=e.target.closest("button");if(b){PV.w=+b.dataset.i;$("pl").querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));up()}};up()}
+/* router */
+let pend=null;
+function route(){let h=location.hash.slice(1)||"beranda",v="beranda",m,t="Zamrud Karya – Kontraktor Hunian Eksklusif";
+if(m=h.match(/^proyek-(\d+)$/)){if(PJ[+m[1]-1]){dp(+m[1]-1);v="detail";t=PJ[+m[1]-1].n}}else if(h==="material"){mp();v="material";t="Material studio"}else if(h==="proses"){pp();v="proses";t="Perjalanan klien"}else if(h==="privat"){vp();v="privat";t="Konsultasi privat"}
+document.querySelectorAll(".view").forEach(e=>e.classList.toggle("on",e.id==="v-"+v));document.title=v==="beranda"?t:t+" – Zamrud Karya";
+if(pend&&v==="beranda"){const el=$(pend);pend=null;setTimeout(()=>el&&el.scrollIntoView(),60)}else window.scrollTo(0,0)}
+addEventListener("hashchange",route);
+document.querySelectorAll(".nl button").forEach(b=>b.onclick=()=>{if($("v-beranda").classList.contains("on"))$(b.dataset.s).scrollIntoView();else{pend=b.dataset.s;location.hash="beranda"}});route();
+/* concierge */
+const KB=[
+[/harga|biaya|berapa|investasi|anggaran/,()=>"Investasi bergantung desain, lokasi, dan material. Di Material studio tersedia kisaran indikatif per meter persegi. Angka final kami sampaikan setelah survei dan gambar kerja.",["Konsultasi privat","Durasi"]],
+[/material|marmer|kayu|travertine|batu/,()=>"Silakan jelajahi Material studio untuk mencoba kombinasi fasad dan aksen pada rumah ilustrasi.",["Konsultasi privat"]],
+[/lama|durasi|waktu|selesai/,()=>"Hunian eksklusif umumnya memerlukan 11 sampai 18 bulan, bergantung luas dan kompleksitas. Jadwal pasti ditetapkan dalam kontrak.",["Perjalanan klien"]],
+[/proses|tahap|perjalanan|cara kerja/,()=>"Kami bekerja dalam tujuh tahap, dari pertemuan pertama sampai serah terima. Detailnya ada di halaman Perjalanan klien.",["Konsultasi privat"]],
+[/konsultasi|jadwal|survei|bertemu/,()=>"Konsultasi privat dapat dijadwalkan lewat halaman Konsultasi privat atau WhatsApp. Kami merespons dalam satu hari kerja.",["Lanjut ke WhatsApp"]],
+[/bayar|pembayaran|termin/,()=>"Pembayaran bertahap sesuai progres, dan disepakati tertulis dalam kontrak.",["Durasi"]],
+[/izin|pbg|legal/,()=>"Pendampingan perizinan sesuai ketentuan setempat dapat disediakan dan dibahas saat konsultasi.",["Konsultasi privat"]],
+[/rahasia|privasi|privat/,()=>"Proyek privat ditangani dengan diskresi penuh. Informasi Anda tidak dibagikan tanpa persetujuan.",["Konsultasi privat"]],
+[/halo|hai|hi\b|pagi|siang|malam/,()=>"Selamat datang di Zamrud Karya. Bagaimana kami dapat membantu Anda hari ini?",["Investasi","Material","Perjalanan klien","Konsultasi privat"]]];
+const lg=[];function say(t,c){const d=document.createElement("div");d.className="m "+c;d.textContent=t;ms.append(d);ms.scrollTop=1e9;if(c==="u")lg.push(t)}
+function chips(a){cs.innerHTML="";a.forEach(v=>{const b=document.createElement("button");b.textContent=v;b.onclick=()=>{if(v==="Konsultasi privat"&&false)return;ask(v)};cs.append(b)})}
+function waU(){cw.href=wl(`Halo ${BRAND}, saya menghubungi dari website.`+(lg.length?` Pertanyaan saya: ${lg.join("; ")}.`:" Saya ingin konsultasi proyek."))}
+function ask(t){say(t,"u");if(/whatsapp|\bwa\b|admin|manusia|arsitek/i.test(t)){setTimeout(()=>{say("Baik, tekan tautan WhatsApp di bawah. Pertanyaan Anda ikut terkirim.","b");waU()},300);return}
+const m=KB.find(([r])=>r.test(t.toLowerCase()));setTimeout(()=>{if(m){say(m[1](),"b");chips(m[2])}else{say("Pertanyaan ini lebih tepat dijawab tim kami langsung. Silakan lanjutkan ke WhatsApp, pertanyaan Anda ikut terkirim.","b");chips(["Investasi","Material","Konsultasi privat"])}waU()},400)}
+cf.onsubmit=e=>{e.preventDefault();const v=ci.value.trim();if(v){ci.value="";ask(v)}};
+let fi=true;cb.onclick=()=>{cn.classList.add("on");if(fi){fi=false;say("Selamat datang di Zamrud Karya. Saya concierge virtual, siap membantu soal karya, material, dan konsultasi. Angka di sini bersifat contoh.","b");chips(["Investasi","Material","Perjalanan klien","Konsultasi privat"]);waU()}setTimeout(()=>ci.focus(),100)};x.onclick=()=>cn.classList.remove("on");
+addEventListener("keydown",e=>{if(e.key==="Escape")cn.classList.remove("on")});
+</script>
+</body>
+</html>
