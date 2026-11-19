@@ -150,6 +150,16 @@ Route::view(
 )->name('webia.template.aquaverse-interactive-heritage');
 
 Route::view(
+    '/webia/template/arsip-kain-heritage-editorial',
+    'website-bisnis.templates.traditional-textiles-heritage-fashion.arsip-kain-heritage-editorial'
+)->name('webia.template.arsip-kain-heritage-editorial');
+
+Route::view(
+    '/webia/template/koharu-matcha-japanese-minimalist',
+    'website-bisnis.templates.specialty-beverage.koharu-matcha-japanese-minimalist'
+)->name('webia.template.koharu-matcha-japanese-minimalist');
+
+Route::view(
     '/webia/template/pawlora-animal-care',
     'website-bisnis.templates.pet-animal-service.pawlora-animal-care'
 )->name('webia.template.pet-animal-service.pawlora-animal-care');
