@@ -1,0 +1,48 @@
+@theme {
+    --color-aquaverse-ocean-950: #020b18;
+    --color-aquaverse-ocean-900: #04162d;
+    --color-aquaverse-ocean-800: #08274d;
+    --color-aquaverse-ocean-700: #0d3b73;
+    --color-aquaverse-ocean-500: #0088cc;
+    --color-aquaverse-ocean-400: #00b4d8;
+    --color-aquaverse-ocean-300: #48cae4;
+    --color-aquaverse-ocean-200: #90e0ef;
+    --color-aquaverse-ocean-100: #caf0f8;
+    --font-aquaverse-display: 'Space Grotesk', sans-serif;
+    --font-aquaverse-sans: 'Inter', sans-serif;
+}
+
+.aquaverse-page {
+    background-color: #020b18;
+    color: #caf0f8;
+}
+
+.aquaverse-ocean-glass {
+    background: rgb(4 22 45 / 72%);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgb(72 202 228 / 22%);
+}
+
+.aquaverse-ocean-card {
+    background: linear-gradient(145deg, rgb(8 39 77 / 55%), rgb(2 11 24 / 85%));
+    border: 1px solid rgb(0 180 216 / 25%);
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.aquaverse-ocean-card:hover {
+    border-color: #48cae4;
+    box-shadow: 0 0 28px rgb(0 180 216 / 22%);
+    transform: translateY(-4px);
+}
+
+.aquaverse-cyber-grid {
+    background-image:
+        linear-gradient(to right, rgb(0 180 216 / 7%) 1px, transparent 1px),
+        linear-gradient(to bottom, rgb(0 180 216 / 7%) 1px, transparent 1px);
+    background-size: 44px 44px;
+}
+
+.aquaverse-glow-text {
+    text-shadow: 0 0 24px rgb(72 202 228 / 45%);
+}
