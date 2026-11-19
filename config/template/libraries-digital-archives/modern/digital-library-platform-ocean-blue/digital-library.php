@@ -1,4 +1,5 @@
 <?php
+
 // Data statis Digital Library (frontend saja, tanpa backend).
 return [
     'name' => 'DigitalLibrary',

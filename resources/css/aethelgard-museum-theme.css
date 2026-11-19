@@ -1,0 +1,40 @@
+@theme {
+    --color-aethelgard-navy-950: #070d19;
+    --color-aethelgard-navy-900: #0b132b;
+    --color-aethelgard-navy-800: #132043;
+    --color-aethelgard-navy-700: #1c2e5e;
+    --color-aethelgard-champagne-100: #faf6ee;
+    --color-aethelgard-champagne-200: #f3ebd8;
+    --color-aethelgard-champagne-300: #e6d5b8;
+    --color-aethelgard-champagne-400: #d4af37;
+    --color-aethelgard-champagne-500: #c5a059;
+    --color-aethelgard-champagne-600: #9e7d3e;
+    --font-aethelgard-serif: 'Cormorant Garamond', Georgia, serif;
+    --font-aethelgard-sans: 'Plus Jakarta Sans', sans-serif;
+}
+
+.aethelgard-editorial-rule {
+    border-bottom: 1px solid rgb(212 175 55 / 28%);
+}
+
+.aethelgard-editorial-card {
+    border: 1px solid rgb(212 175 55 / 25%);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.aethelgard-editorial-card:hover {
+    border-color: rgb(212 175 55 / 70%);
+    transform: translateY(-4px);
+}
+
+.aethelgard-html::-webkit-scrollbar {
+    width: 8px;
+}
+
+.aethelgard-html::-webkit-scrollbar-track {
+    background: #0b132b;
+}
+
+.aethelgard-html::-webkit-scrollbar-thumb {
+    background: #c5a059;
+}

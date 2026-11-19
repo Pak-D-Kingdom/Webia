@@ -16,25 +16,25 @@ return [
     'route_prefix' => 'webia.template.home-services.organic.home-renovation-repair-sage-green.',
 
     'paths' => [
-        'css'    => 'css/website-bisnis/template/home-services/organic/home-renovation-repair-sage-green',
-        'js'     => 'js/website-bisnis/template/home-services/organic/home-renovation-repair-sage-green',
+        'css' => 'css/website-bisnis/template/home-services/organic/home-renovation-repair-sage-green',
+        'js' => 'js/website-bisnis/template/home-services/organic/home-renovation-repair-sage-green',
         'images' => 'images/website-bisnis/template/home-services/organic/home-renovation-repair-sage-green',
     ],
 
     'site' => [
-        'name'       => 'Renovaku',
-        'tagline'    => 'Renovate • Repair • Better Living',
-        'address'    => 'Jl. Melati Indah No. 45, Jakarta',
-        'phone'      => '+62 21 7890 1234',
+        'name' => 'Renovaku',
+        'tagline' => 'Renovate • Repair • Better Living',
+        'address' => 'Jl. Melati Indah No. 45, Jakarta',
+        'phone' => '+62 21 7890 1234',
         'phone_href' => 'tel:+622178901234',
-        'email'      => 'info@renovaku.id',
+        'email' => 'info@renovaku.id',
         // Nomor WhatsApp format internasional tanpa "+" / spasi / strip.
-        'whatsapp'   => '62895630300345',
+        'whatsapp' => '62895630300345',
         'whatsapp_display' => '+62 895-6303-00345',
-        'maps_url'   => 'https://www.google.com/maps/search/?api=1&query=Jl.+Melati+Indah+No.+45+Jakarta',
-        'hours'      => 'Senin – Sabtu, 08.00 – 17.00 WIB',
-        'credit'     => '© 2026 WEBIA by D-KREASI. Seluruh hak cipta dilindungi.',
-        'copyright'  => '© 2025 Renovaku. Semua hak dilindungi.',
+        'maps_url' => 'https://www.google.com/maps/search/?api=1&query=Jl.+Melati+Indah+No.+45+Jakarta',
+        'hours' => 'Senin – Sabtu, 08.00 – 17.00 WIB',
+        'credit' => '© 2026 WEBIA by D-KREASI. Seluruh hak cipta dilindungi.',
+        'copyright' => '© 2025 Renovaku. Semua hak dilindungi.',
     ],
 
     'social' => [
@@ -47,15 +47,15 @@ return [
 
     // Halaman (key = suffix nama route). Dipakai navbar, preview beranda, pencarian & chatbot.
     'pages' => [
-        'home'                 => ['title' => 'Beranda',                    'icon' => 'home',     'desc' => 'Renovasi & perbaikan rumah dengan kualitas terbaik.'],
-        'layanan'              => ['title' => 'Layanan Renovasi & Perbaikan', 'icon' => 'wrench',   'desc' => 'Renovasi rumah, perbaikan bangunan, desain interior, eksterior & taman, instalasi & finishing.'],
-        'paket-layanan'        => ['title' => 'Paket Layanan',              'icon' => 'crown',    'desc' => 'Paket Basic, Premium, dan Exclusive sesuai kebutuhan Anda.'],
-        'galeri'               => ['title' => 'Before - After Gallery',     'icon' => 'camera',   'desc' => 'Hasil nyata dari proyek renovasi kami.'],
-        'proyek'               => ['title' => 'Proyek Kami',                'icon' => 'folder',   'desc' => 'Proyek renovasi dan perbaikan yang telah kami selesaikan.'],
-        'area-layanan'         => ['title' => 'Area Layanan',               'icon' => 'pin',      'desc' => 'Wilayah di Indonesia yang kami layani.'],
-        'proses-kerja'         => ['title' => 'Proses Kerja Kami',          'icon' => 'gear',     'desc' => 'Proses mudah, transparan, dan profesional.'],
+        'home' => ['title' => 'Beranda',                    'icon' => 'home',     'desc' => 'Renovasi & perbaikan rumah dengan kualitas terbaik.'],
+        'layanan' => ['title' => 'Layanan Renovasi & Perbaikan', 'icon' => 'wrench',   'desc' => 'Renovasi rumah, perbaikan bangunan, desain interior, eksterior & taman, instalasi & finishing.'],
+        'paket-layanan' => ['title' => 'Paket Layanan',              'icon' => 'crown',    'desc' => 'Paket Basic, Premium, dan Exclusive sesuai kebutuhan Anda.'],
+        'galeri' => ['title' => 'Before - After Gallery',     'icon' => 'camera',   'desc' => 'Hasil nyata dari proyek renovasi kami.'],
+        'proyek' => ['title' => 'Proyek Kami',                'icon' => 'folder',   'desc' => 'Proyek renovasi dan perbaikan yang telah kami selesaikan.'],
+        'area-layanan' => ['title' => 'Area Layanan',               'icon' => 'pin',      'desc' => 'Wilayah di Indonesia yang kami layani.'],
+        'proses-kerja' => ['title' => 'Proses Kerja Kami',          'icon' => 'gear',     'desc' => 'Proses mudah, transparan, dan profesional.'],
         'permintaan-penawaran' => ['title' => 'Permintaan Penawaran',       'icon' => 'file',     'desc' => 'Dapatkan penawaran harga terbaik sekarang juga.'],
-        'booking-survei'       => ['title' => 'Booking Survei Lokasi',      'icon' => 'calendar', 'desc' => 'Jadwalkan survei langsung ke lokasi rumah Anda.'],
+        'booking-survei' => ['title' => 'Booking Survei Lokasi',      'icon' => 'calendar', 'desc' => 'Jadwalkan survei langsung ke lokasi rumah Anda.'],
     ],
 
     // Navigasi tanpa dropdown: setiap item adalah tautan langsung.
@@ -141,8 +141,8 @@ return [
 
     'gallery' => [
         'before' => 'gallery-before.jpg',
-        'after'  => 'gallery-after.jpg',
-        'notes'  => [
+        'after' => 'gallery-after.jpg',
+        'notes' => [
             ['Sebelum', 'Dinding lembap & mengelupas, plafon kusam, pencahayaan minim, dan tata ruang tidak efisien.'],
             ['Sesudah', 'Dinding dicat ulang, plafon dan pencahayaan hangat, jendela besar, serta furnitur yang menyatu dengan ruang.'],
         ],
@@ -187,14 +187,14 @@ return [
 
     // Chip di hero halaman dalam: [ikon, teks]
     'hero_chips' => [
-        'layanan'              => [['check-circle', '5 layanan lengkap'], ['shield', 'Material pilihan'], ['team', 'Diawasi mandor']],
-        'paket-layanan'        => [['crown', '3 pilihan paket'], ['shield', 'Garansi hingga 2 tahun'], ['invoice', 'Biaya transparan']],
-        'galeri'               => [['camera', 'Foto sebelum & sesudah'], ['layers', 'Geser untuk membandingkan']],
-        'proyek'               => [['folder', 'Proyek nyata'], ['ruler', 'Detail luas & durasi'], ['home', 'Rumah tinggal']],
-        'area-layanan'         => [['pin', '6 wilayah layanan'], ['clock', 'Jadwal survei jelas']],
-        'proses-kerja'         => [['gear', '5 tahap jelas'], ['invoice', 'Biaya transparan'], ['key', 'Serah terima rapi']],
+        'layanan' => [['check-circle', '5 layanan lengkap'], ['shield', 'Material pilihan'], ['team', 'Diawasi mandor']],
+        'paket-layanan' => [['crown', '3 pilihan paket'], ['shield', 'Garansi hingga 2 tahun'], ['invoice', 'Biaya transparan']],
+        'galeri' => [['camera', 'Foto sebelum & sesudah'], ['layers', 'Geser untuk membandingkan']],
+        'proyek' => [['folder', 'Proyek nyata'], ['ruler', 'Detail luas & durasi'], ['home', 'Rumah tinggal']],
+        'area-layanan' => [['pin', '6 wilayah layanan'], ['clock', 'Jadwal survei jelas']],
+        'proses-kerja' => [['gear', '5 tahap jelas'], ['invoice', 'Biaya transparan'], ['key', 'Serah terima rapi']],
         'permintaan-penawaran' => [['whatsapp', 'Dikirim via WhatsApp'], ['clock', 'Isi kurang dari 3 menit']],
-        'booking-survei'       => [['calendar', 'Pilih tanggal & jam'], ['whatsapp', 'Konfirmasi via WhatsApp']],
+        'booking-survei' => [['calendar', 'Pilih tanggal & jam'], ['whatsapp', 'Konfirmasi via WhatsApp']],
     ],
 
     'faq_paket' => [
@@ -207,18 +207,18 @@ return [
     'select' => [
         'services' => ['Renovasi Rumah', 'Perbaikan Bangunan', 'Desain Interior', 'Eksterior & Taman', 'Instalasi & Finishing'],
         'packages' => ['Paket Basic', 'Paket Premium', 'Paket Exclusive', 'Belum tahu — mohon rekomendasi'],
-        'budgets'  => ['Di bawah Rp 10 juta', 'Rp 10 – 50 juta', 'Rp 50 – 150 juta', 'Rp 150 – 500 juta', 'Di atas Rp 500 juta'],
-        'times'    => ['08.00 – 10.00', '10.00 – 12.00', '13.00 – 15.00', '15.00 – 17.00'],
-        'cities'   => ['Jabodetabek', 'Jawa Barat & Banten', 'Jawa Tengah & DIY', 'Jawa Timur & Bali', 'Sumatra', 'Kalimantan & Sulawesi', 'Lainnya'],
+        'budgets' => ['Di bawah Rp 10 juta', 'Rp 10 – 50 juta', 'Rp 50 – 150 juta', 'Rp 150 – 500 juta', 'Di atas Rp 500 juta'],
+        'times' => ['08.00 – 10.00', '10.00 – 12.00', '13.00 – 15.00', '15.00 – 17.00'],
+        'cities' => ['Jabodetabek', 'Jawa Barat & Banten', 'Jawa Tengah & DIY', 'Jawa Timur & Bali', 'Sumatra', 'Kalimantan & Sulawesi', 'Lainnya'],
     ],
 
     // Data untuk JavaScript (chatbot, estimasi, pencarian)
     'js' => [
         'estimate' => [
-            'renovasi-rumah'     => ['label' => 'Renovasi Rumah',       'min' => 2500000, 'max' => 4500000],
+            'renovasi-rumah' => ['label' => 'Renovasi Rumah',       'min' => 2500000, 'max' => 4500000],
             'perbaikan-bangunan' => ['label' => 'Perbaikan Bangunan',   'min' => 800000,  'max' => 2000000],
-            'desain-interior'    => ['label' => 'Desain Interior',      'min' => 1800000, 'max' => 3500000],
-            'eksterior-taman'    => ['label' => 'Eksterior & Taman',    'min' => 600000,  'max' => 1800000],
+            'desain-interior' => ['label' => 'Desain Interior',      'min' => 1800000, 'max' => 3500000],
+            'eksterior-taman' => ['label' => 'Eksterior & Taman',    'min' => 600000,  'max' => 1800000],
             'instalasi-finishing' => ['label' => 'Instalasi & Finishing', 'min' => 400000, 'max' => 1200000],
         ],
         'faq' => [
@@ -279,6 +279,6 @@ return [
             ['icon' => 'consult',  'label' => 'FAQ Lainnya',      'ask' => 'FAQ Lainnya'],
         ],
         'quick' => ['layanan', 'paket', 'estimasi', 'proyek', 'lainnya'],
-        'more'  => ['garansi', 'durasi', 'bayar', 'area', 'survei'],
+        'more' => ['garansi', 'durasi', 'bayar', 'area', 'survei'],
     ],
 ];

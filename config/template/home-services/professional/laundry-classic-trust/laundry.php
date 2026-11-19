@@ -13,22 +13,22 @@
 return [
 
     'brand' => [
-        'name'    => 'FreshWash',
+        'name' => 'FreshWash',
         'tagline' => 'Clean Clothes, Happy Life',
-        'logo'    => 'logo.svg',
+        'logo' => 'logo.svg',
     ],
 
     'contact' => [
-        'address'   => 'Jl. Melati No. 12, Surabaya',
-        'phone'     => '+62 812 3456 7890',
+        'address' => 'Jl. Melati No. 12, Surabaya',
+        'phone' => '+62 812 3456 7890',
         'phone_tel' => '+6281234567890',
-        'email'     => 'hello@freshwash.id',
-        'hours'     => 'Sen - Min 08.00 - 20.00',
+        'email' => 'hello@freshwash.id',
+        'hours' => 'Sen - Min 08.00 - 20.00',
     ],
 
     // Nomor tujuan semua form & chatbot (format internasional tanpa + / spasi)
     'whatsapp' => [
-        'number'  => '62895630300345',
+        'number' => '62895630300345',
         'default' => 'Halo FreshWash, saya ingin bertanya tentang layanan laundry.',
     ],
 
@@ -56,11 +56,11 @@ return [
 
     'hero' => [
         'eyebrow' => 'Professional Laundry Service',
-        'title'   => 'Pakaian Bersih, Hidup Lebih Mudah',
-        'text'    => 'Layanan laundry profesional dengan hasil bersih, rapi, dan wangi. Kami menjaga kualitas pakaian Anda dengan sepenuh hati.',
-        'script'  => 'Fresh Clothes Happy Days',
-        'quote'   => 'Laundry Bukan Sekadar Bersih, Tapi Juga Tentang Perawatan',
-        'badges'  => [
+        'title' => 'Pakaian Bersih, Hidup Lebih Mudah',
+        'text' => 'Layanan laundry profesional dengan hasil bersih, rapi, dan wangi. Kami menjaga kualitas pakaian Anda dengan sepenuh hati.',
+        'script' => 'Fresh Clothes Happy Days',
+        'quote' => 'Laundry Bukan Sekadar Bersih, Tapi Juga Tentang Perawatan',
+        'badges' => [
             ['icon' => 'shield', 'text' => 'Bersih Maksimal'],
             ['icon' => 'shirt',  'text' => 'Aman untuk Semua Jenis Kain'],
             ['icon' => 'spark',  'text' => 'Wangi Tahan Lama'],
@@ -70,20 +70,20 @@ return [
 
     'services' => [
         ['slug' => 'dry-clean', 'icon' => 'dryclean', 'name' => 'Cuci Kering', 'variant' => 'Dry Clean', 'from' => 'Rp 25.000/item', 'time' => '2 - 3 hari',
-         'desc' => 'Perawatan tanpa air untuk jas, gaun, blazer, dan kain halus yang mudah rusak.',
-         'features' => ['Pelarut khusus aman untuk kain sensitif', 'Pengecekan noda sebelum proses', 'Dikemas dengan hanger & plastik']],
+            'desc' => 'Perawatan tanpa air untuk jas, gaun, blazer, dan kain halus yang mudah rusak.',
+            'features' => ['Pelarut khusus aman untuk kain sensitif', 'Pengecekan noda sebelum proses', 'Dikemas dengan hanger & plastik']],
         ['slug' => 'regular', 'icon' => 'iron', 'name' => 'Cuci Setrika', 'variant' => 'Regular', 'from' => 'Rp 8.000/kg', 'time' => '1 - 2 hari',
-         'desc' => 'Layanan harian lengkap: cuci, kering, setrika, dan lipat rapi untuk pakaian sehari-hari.',
-         'features' => ['Cuci terpisah putih & berwarna', 'Setrika uap rapi', 'Dilipat dan dikemas bersih']],
+            'desc' => 'Layanan harian lengkap: cuci, kering, setrika, dan lipat rapi untuk pakaian sehari-hari.',
+            'features' => ['Cuci terpisah putih & berwarna', 'Setrika uap rapi', 'Dilipat dan dikemas bersih']],
         ['slug' => 'express', 'icon' => 'timer', 'name' => 'Cuci Express', 'variant' => '3 Jam', 'from' => 'Rp 12.000/kg', 'time' => '3 - 6 jam',
-         'desc' => 'Butuh cepat? Pakaian Anda selesai dalam hitungan jam tanpa mengurangi kualitas.',
-         'features' => ['Antrean prioritas', 'Cocok untuk kebutuhan mendadak', 'Tersedia antar-jemput cepat']],
+            'desc' => 'Butuh cepat? Pakaian Anda selesai dalam hitungan jam tanpa mengurangi kualitas.',
+            'features' => ['Antrean prioritas', 'Cocok untuk kebutuhan mendadak', 'Tersedia antar-jemput cepat']],
         ['slug' => 'premium', 'icon' => 'premium', 'name' => 'Cuci Premium', 'variant' => 'Deluxe', 'from' => 'Rp 15.000/kg', 'time' => '1 - 2 hari',
-         'desc' => 'Perawatan terbaik dengan deterjen khusus, pelembut premium, dan pengecekan satu per satu.',
-         'features' => ['Deterjen & pelembut premium', 'Pengecekan manual tiap pakaian', 'Parfum tahan lama']],
+            'desc' => 'Perawatan terbaik dengan deterjen khusus, pelembut premium, dan pengecekan satu per satu.',
+            'features' => ['Deterjen & pelembut premium', 'Pengecekan manual tiap pakaian', 'Parfum tahan lama']],
         ['slug' => 'bedding', 'icon' => 'bed', 'name' => 'Laundry Bed', 'variant' => '& Blanket', 'from' => 'Rp 25.000/pcs', 'time' => '2 - 3 hari',
-         'desc' => 'Cuci seprai, bed cover, selimut, dan bantal hingga bersih, lembut, dan higienis.',
-         'features' => ['Mesin kapasitas besar', 'Pengeringan menyeluruh', 'Bebas tungau & bau apek']],
+            'desc' => 'Cuci seprai, bed cover, selimut, dan bantal hingga bersih, lembut, dan higienis.',
+            'features' => ['Mesin kapasitas besar', 'Pengeringan menyeluruh', 'Bebas tungau & bau apek']],
     ],
 
     'prices' => [
@@ -103,7 +103,7 @@ return [
             ['icon' => 'basket', 'name' => 'Cuci Lipat',            'price' => 6000],
             ['icon' => 'iron',   'name' => 'Cuci Setrika (Regular)', 'price' => 8000],
             ['icon' => 'timer',  'name' => 'Cuci Express (3 Jam)',  'price' => 12000],
-            ['icon' => 'premium','name' => 'Cuci Premium (Deluxe)', 'price' => 15000],
+            ['icon' => 'premium', 'name' => 'Cuci Premium (Deluxe)', 'price' => 15000],
             ['icon' => 'iron',   'name' => 'Setrika Saja',          'price' => 5000],
         ],
         'note' => 'Harga dapat berbeda untuk bahan khusus (sutra, beludru, kulit). Tim kami akan mengonfirmasi sebelum pengerjaan.',
@@ -140,9 +140,9 @@ return [
     ],
 
     'hours' => [
-        'open'  => '08.00',
+        'open' => '08.00',
         'close' => '20.00',
-        'days'  => [
+        'days' => [
             ['day' => 'Senin',  'dow' => 1], ['day' => 'Selasa', 'dow' => 2], ['day' => 'Rabu', 'dow' => 3],
             ['day' => 'Kamis',  'dow' => 4], ['day' => 'Jumat',  'dow' => 5], ['day' => 'Sabtu', 'dow' => 6],
             ['day' => 'Minggu', 'dow' => 0],
@@ -151,10 +151,10 @@ return [
     ],
 
     'chatbot' => [
-        'name'     => 'FreshBot',
+        'name' => 'FreshBot',
         'greeting' => 'Halo! Aku FreshBot, si asisten laundry kamu! Mau tanya harga atau proses laundry?',
-        'topics'   => ['Harga layanan', 'Proses laundry', 'Estimasi waktu', 'Dan lainnya...'],
-        'chips'    => ['Berapa harga cuci per kg?', 'Berapa lama proses laundry?', 'Apakah bisa jemput antar?', 'Apa saja layanan yang tersedia?'],
+        'topics' => ['Harga layanan', 'Proses laundry', 'Estimasi waktu', 'Dan lainnya...'],
+        'chips' => ['Berapa harga cuci per kg?', 'Berapa lama proses laundry?', 'Apakah bisa jemput antar?', 'Apa saja layanan yang tersedia?'],
         'fallback' => 'Maaf, aku belum punya jawaban untuk itu. Tanyakan langsung ke tim kami lewat WhatsApp ya!',
         'faq' => [
             ['k' => ['harga', 'kg', 'kilo', 'tarif', 'biaya'], 'a' => 'Cuci setrika regular Rp 8.000/kg, express (3 jam) Rp 12.000/kg, premium Rp 15.000/kg, dan cuci lipat Rp 6.000/kg. Lihat daftar lengkap di halaman Price List.'],

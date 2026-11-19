@@ -8,22 +8,22 @@ return [
     'brand' => ['name' => 'Eventora', 'tag' => 'Event Organizer & Planner'],
 
     'contact' => [
-        'city'  => 'Jakarta, Indonesia',
+        'city' => 'Jakarta, Indonesia',
         'phone' => '+62 812 3456 7890',
         'email' => 'hello@eventora.id',
-        'wa'    => '62895630300345', // nomor tujuan WhatsApp (format internasional, tanpa + / 0 di depan)
+        'wa' => '62895630300345', // nomor tujuan WhatsApp (format internasional, tanpa + / 0 di depan)
         'wa_display' => '+62 895-6303-00345',
     ],
 
     // slug => [label menu, judul halaman, subjudul]
     'pages' => [
-        'layanan'    => ['Layanan', 'Layanan Event', 'Solusi lengkap untuk setiap acara spesial Anda.', 'port-gala.svg', 'frame'],
+        'layanan' => ['Layanan', 'Layanan Event', 'Solusi lengkap untuk setiap acara spesial Anda.', 'port-gala.svg', 'frame'],
         'portofolio' => ['Portofolio', 'Portofolio Kami', 'Berbagai acara sukses yang telah kami selenggarakan.', 'port-wedding.svg', 'frame'],
-        'paket'      => ['Paket Event', 'Paket Corporate & Private Event', 'Pilihan paket eksklusif untuk acara perusahaan maupun acara pribadi Anda.', 'packages-corporate.svg', 'frame'],
-        'proyek'     => ['Proyek Kami', 'Proyek Kami', 'Acara-acara yang sudah kami wujudkan bersama klien.', 'port-launch.svg', 'frame'],
-        'klien'      => ['Klien Kami', 'Klien Kami', 'Dipercaya oleh berbagai perusahaan dan institusi ternama.', 'port-gathering.svg', 'frame'],
-        'proses'     => ['Proses Event', 'Proses Perencanaan Event', 'Langkah mudah untuk mewujudkan acara impian Anda.', 'port-expo.svg', 'frame'],
-        'penawaran'  => ['Penawaran', 'Minta Penawaran Sekarang', 'Dapatkan penawaran terbaik untuk acara Anda.', 'gift.svg', 'free'],
+        'paket' => ['Paket Event', 'Paket Corporate & Private Event', 'Pilihan paket eksklusif untuk acara perusahaan maupun acara pribadi Anda.', 'packages-corporate.svg', 'frame'],
+        'proyek' => ['Proyek Kami', 'Proyek Kami', 'Acara-acara yang sudah kami wujudkan bersama klien.', 'port-launch.svg', 'frame'],
+        'klien' => ['Klien Kami', 'Klien Kami', 'Dipercaya oleh berbagai perusahaan dan institusi ternama.', 'port-gathering.svg', 'frame'],
+        'proses' => ['Proses Event', 'Proses Perencanaan Event', 'Langkah mudah untuk mewujudkan acara impian Anda.', 'port-expo.svg', 'frame'],
+        'penawaran' => ['Penawaran', 'Minta Penawaran Sekarang', 'Dapatkan penawaran terbaik untuk acara Anda.', 'gift.svg', 'free'],
         'ai-chatbot' => ['AI Assistant', 'AI Assistant Eventora', 'Ada yang bisa kami bantu tentang event Anda?', 'robot.svg', 'free'],
     ],
 
@@ -38,17 +38,17 @@ return [
 
     'services' => [
         ['title' => 'Wedding & Celebration', 'img' => 'svc-wedding.svg',
-         'desc' => 'Pernikahan, lamaran, dan perayaan keluarga dengan konsep personal dari dekorasi sampai rundown.',
-         'features' => ['Konsep & dekorasi', 'Koordinasi hari-H', 'Kurasi vendor', 'Rundown & tamu']],
+            'desc' => 'Pernikahan, lamaran, dan perayaan keluarga dengan konsep personal dari dekorasi sampai rundown.',
+            'features' => ['Konsep & dekorasi', 'Koordinasi hari-H', 'Kurasi vendor', 'Rundown & tamu']],
         ['title' => 'Corporate Event', 'img' => 'svc-corporate.svg',
-         'desc' => 'Gala dinner, gathering, seminar, dan product launch yang rapi dan berkesan untuk perusahaan.',
-         'features' => ['Gala dinner', 'Gathering & seminar', 'Product launch', 'Produksi panggung']],
+            'desc' => 'Gala dinner, gathering, seminar, dan product launch yang rapi dan berkesan untuk perusahaan.',
+            'features' => ['Gala dinner', 'Gathering & seminar', 'Product launch', 'Produksi panggung']],
         ['title' => 'Concert & Festival', 'img' => 'svc-concert.svg',
-         'desc' => 'Konser dan festival dengan panggung, tata cahaya, suara, dan pengaturan penonton yang matang.',
-         'features' => ['Panggung & lighting', 'Sound system', 'Manajemen crowd', 'Koordinasi talent']],
+            'desc' => 'Konser dan festival dengan panggung, tata cahaya, suara, dan pengaturan penonton yang matang.',
+            'features' => ['Panggung & lighting', 'Sound system', 'Manajemen crowd', 'Koordinasi talent']],
         ['title' => 'Exhibition & Launching', 'img' => 'svc-exhibition.svg',
-         'desc' => 'Pameran dan peluncuran brand dengan desain booth, alur pengunjung, dan pengisi acara.',
-         'features' => ['Desain booth', 'Alur pengunjung', 'Pengisi acara', 'Dokumentasi']],
+            'desc' => 'Pameran dan peluncuran brand dengan desain booth, alur pengunjung, dan pengisi acara.',
+            'features' => ['Desain booth', 'Alur pengunjung', 'Pengisi acara', 'Dokumentasi']],
     ],
 
     'portfolio' => [
@@ -62,11 +62,11 @@ return [
 
     'packages' => [
         ['name' => 'Corporate Essential', 'icon' => 'users', 'for' => 'Gathering, seminar, dan rapat besar',
-         'features' => ['Konsep & rundown acara', 'Koordinasi venue & vendor', 'Tim lapangan hari-H', 'Dokumentasi dasar']],
+            'features' => ['Konsep & rundown acara', 'Koordinasi venue & vendor', 'Tim lapangan hari-H', 'Dokumentasi dasar']],
         ['name' => 'Corporate Signature', 'icon' => 'star', 'for' => 'Gala dinner, product launch, dan anniversary', 'featured' => true,
-         'features' => ['Konsep kreatif eksklusif', 'Dekorasi & produksi panggung', 'MC, talent, dan hiburan', 'Dokumentasi foto & video']],
+            'features' => ['Konsep kreatif eksklusif', 'Dekorasi & produksi panggung', 'MC, talent, dan hiburan', 'Dokumentasi foto & video']],
         ['name' => 'Private Celebration', 'icon' => 'cal', 'for' => 'Pernikahan, ulang tahun, dan acara keluarga',
-         'features' => ['Konsultasi konsep personal', 'Dekorasi & tata ruang', 'Kurasi katering & vendor', 'Koordinator pribadi']],
+            'features' => ['Konsultasi konsep personal', 'Dekorasi & tata ruang', 'Kurasi katering & vendor', 'Koordinator pribadi']],
     ],
 
     // pemilih paket: [label, indeks paket, ikon, keterangan]
@@ -117,14 +117,14 @@ return [
     // k = kata kunci untuk pencocokan sederhana di chatbot
     'faq' => [
         ['Layanan Event', ['layanan', 'jasa', 'service', 'event apa'],
-         'Kami menangani Wedding & Celebration, Corporate Event, Concert & Festival, serta Exhibition & Launching. Lihat rinciannya di halaman Layanan.', 'layanan', 'Wedding, corporate, konser, pameran', 'star'],
+            'Kami menangani Wedding & Celebration, Corporate Event, Concert & Festival, serta Exhibition & Launching. Lihat rinciannya di halaman Layanan.', 'layanan', 'Wedding, corporate, konser, pameran', 'star'],
         ['Paket & Harga', ['paket', 'harga', 'biaya', 'tarif', 'budget'],
-         'Paket kami terbagi menjadi Corporate Essential, Corporate Signature, dan Private Celebration. Harga menyesuaikan kebutuhan, jadi silakan minta penawaran.', 'paket', 'Pilihan paket dan cara minta penawaran', 'box'],
+            'Paket kami terbagi menjadi Corporate Essential, Corporate Signature, dan Private Celebration. Harga menyesuaikan kebutuhan, jadi silakan minta penawaran.', 'paket', 'Pilihan paket dan cara minta penawaran', 'box'],
         ['Portofolio', ['portofolio', 'portfolio', 'contoh', 'hasil'],
-         'Anda bisa melihat acara yang sudah kami selenggarakan di halaman Portofolio dan Proyek Kami.', 'portofolio', 'Lihat acara yang sudah kami garap', 'users'],
+            'Anda bisa melihat acara yang sudah kami selenggarakan di halaman Portofolio dan Proyek Kami.', 'portofolio', 'Lihat acara yang sudah kami garap', 'users'],
         ['Proses Pemesanan', ['proses', 'pesan', 'booking', 'cara', 'order'],
-         'Prosesnya empat langkah: konsultasi awal, perencanaan konsep, persiapan & produksi, lalu pelaksanaan acara.', 'proses', 'Empat langkah dari konsultasi sampai hari-H', 'pen'],
+            'Prosesnya empat langkah: konsultasi awal, perencanaan konsep, persiapan & produksi, lalu pelaksanaan acara.', 'proses', 'Empat langkah dari konsultasi sampai hari-H', 'pen'],
         ['FAQ Event', ['faq', 'dp', 'pembayaran', 'lokasi', 'tanggal', 'jadwal'],
-         'Untuk jadwal, pembayaran, dan lokasi, tim kami akan membahasnya saat konsultasi. Kirim detail acara Anda lewat form penawaran atau WhatsApp.', 'penawaran', 'Jadwal, pembayaran, dan lokasi', 'chat'],
+            'Untuk jadwal, pembayaran, dan lokasi, tim kami akan membahasnya saat konsultasi. Kirim detail acara Anda lewat form penawaran atau WhatsApp.', 'penawaran', 'Jadwal, pembayaran, dan lokasi', 'chat'],
     ],
 ];

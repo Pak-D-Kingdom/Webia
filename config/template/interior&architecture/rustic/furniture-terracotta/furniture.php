@@ -16,8 +16,8 @@ $base = 'website-bisnis/template/interior&architecture/rustic/furniture-terracot
 return [
 
     'meta' => [
-        'name'        => 'RusticFurni',
-        'tagline'     => 'Natural Wood • Timeless Living',
+        'name' => 'RusticFurni',
+        'tagline' => 'Natural Wood • Timeless Living',
         'description' => 'RusticFurni — furniture dan custom furniture berbahan kayu pilihan dengan desain timeless untuk rumah, kantor, dan ruang komersial.',
     ],
 
@@ -25,16 +25,16 @@ return [
     'route_prefix' => 'webia.template.furniture-terracotta.',
 
     'assets' => [
-        'css' => 'css/' . $base . '/furniture.css',
-        'js'  => 'js/' . $base . '/furniture.js',
-        'img' => 'images/' . $base,
+        'css' => 'css/'.$base.'/furniture.css',
+        'js' => 'js/'.$base.'/furniture.js',
+        'img' => 'images/'.$base,
     ],
 
     'contact' => [
-        'address'  => 'Jl. Suka Maju No. 88, Bandung',
-        'phone'    => '+62 811 2222 3333',
+        'address' => 'Jl. Suka Maju No. 88, Bandung',
+        'phone' => '+62 811 2222 3333',
         'phone_raw' => '+6281122223333',
-        'email'    => 'hello@rusticfurni.id',
+        'email' => 'hello@rusticfurni.id',
         // Semua form & tombol WhatsApp diarahkan ke nomor ini (format internasional tanpa +)
         'whatsapp' => '62895630300345',
         'whatsapp_greeting' => 'Halo RusticFurni, saya ingin bertanya tentang furniture.',
@@ -52,12 +52,12 @@ return [
     ],
 
     'hero' => [
-        'eyebrow'   => 'Furniture & Custom Furniture',
-        'title'     => ['Rumah Lebih Hidup', 'dengan'],
-        'accent'    => 'Sentuhan Alam',
-        'text'      => 'Furniture berkualitas tinggi dengan desain timeless, dibuat dari material pilihan untuk kenyamanan dan keindahan rumah Anda.',
-        'image'     => 'hero-living.jpg',
-        'script'    => ['Better Home', 'Better Life'],
+        'eyebrow' => 'Furniture & Custom Furniture',
+        'title' => ['Rumah Lebih Hidup', 'dengan'],
+        'accent' => 'Sentuhan Alam',
+        'text' => 'Furniture berkualitas tinggi dengan desain timeless, dibuat dari material pilihan untuk kenyamanan dan keindahan rumah Anda.',
+        'image' => 'hero-living.jpg',
+        'script' => ['Better Home', 'Better Life'],
         // Isi dengan URL embed (contoh: https://www.youtube.com/embed/XXXX) bila video profil sudah ada
         'video_url' => '',
         'highlights' => [
@@ -84,7 +84,7 @@ return [
         ['id' => 'kursi-makan-lawu', 'name' => 'Kursi Makan Lawu',    'category' => 'dining',    'image' => 'product-chair.jpg',         'type' => 'kursi',   'material' => 'Jati solid',               'finishing' => 'Natural Clear',  'dims' => [48, 52, 85],   'summary' => 'Kursi bersandar lengkung dengan ukuran ergonomis untuk makan yang lama.'],
         ['id' => 'kursi-sandar-rimba', 'name' => 'Kursi Sandar Rimba', 'category' => 'dining',   'image' => 'product-dining-chair.jpg',  'type' => 'kursi',   'material' => 'Mahoni, dudukan busa',     'finishing' => 'Walnut',         'dims' => [50, 55, 88],   'summary' => 'Sandaran tinggi dan dudukan empuk, cocok untuk ruang makan keluarga.'],
         ['id' => 'ranjang-dahana', 'name' => 'Ranjang Dahana',        'category' => 'bedroom',   'image' => 'product-bed.jpg',           'type' => 'ranjang', 'material' => 'Jati solid',               'finishing' => 'Natural Matte',  'dims' => [210, 170, 95], 'summary' => 'Ranjang panel rendah dengan sandaran kepala lebar untuk kamar yang tenang.'],
-        ['id' => 'nakas-sari',     'name' => 'Nakas Sari',            'category' => 'bedroom',   'image' => 'product-nightstand.jpg',    'type' => 'kabinet', 'material' => 'Mahoni solid',             'finishing' => 'Terracotta Wash','dims' => [45, 40, 55],   'summary' => 'Nakas satu laci dengan tinggi sejajar kasur, pas untuk lampu dan buku.'],
+        ['id' => 'nakas-sari',     'name' => 'Nakas Sari',            'category' => 'bedroom',   'image' => 'product-nightstand.jpg',    'type' => 'kabinet', 'material' => 'Mahoni solid',             'finishing' => 'Terracotta Wash', 'dims' => [45, 40, 55],   'summary' => 'Nakas satu laci dengan tinggi sejajar kasur, pas untuk lampu dan buku.'],
         ['id' => 'meja-kerja-karya', 'name' => 'Meja Kerja Karya',    'category' => 'workspace', 'image' => 'product-desk.jpg',          'type' => 'meja',    'material' => 'Jati solid',               'finishing' => 'Teak Oil',       'dims' => [150, 65, 75],  'summary' => 'Meja kerja dengan tiga laci dan permukaan luas untuk bekerja seharian.'],
         ['id' => 'rak-pustaka',    'name' => 'Rak Display Pustaka',   'category' => 'workspace', 'image' => 'product-shelf.jpg',         'type' => 'kabinet', 'material' => 'Sungkai, jati',            'finishing' => 'Natural Clear',  'dims' => [100, 35, 180], 'summary' => 'Rak terbuka berlapis untuk buku, koleksi, dan tanaman kecil.'],
         ['id' => 'bangku-teduh',   'name' => 'Bangku Kerja Teduh',    'category' => 'workspace', 'image' => 'product-stool.jpg',         'type' => 'kursi',   'material' => 'Jati, dudukan berbantal',  'finishing' => 'Natural Matte',  'dims' => [45, 35, 48],   'summary' => 'Bangku ringkas berbantalan yang mudah diselipkan di bawah meja.'],
@@ -93,9 +93,9 @@ return [
     ],
 
     'custom' => [
-        'sketch'  => 'custom-sketch.png',
-        'script'  => ['Custom', 'Your Style'],
-        'models'  => [
+        'sketch' => 'custom-sketch.png',
+        'script' => ['Custom', 'Your Style'],
+        'models' => [
             ['key' => 'kursi',   'label' => 'Kursi & Bangku',  'icon' => 'chair'],
             ['key' => 'sofa',    'label' => 'Sofa',            'icon' => 'sofa'],
             ['key' => 'meja',    'label' => 'Meja',            'icon' => 'table'],
@@ -103,13 +103,13 @@ return [
             ['key' => 'ranjang', 'label' => 'Tempat Tidur',    'icon' => 'bed'],
             ['key' => 'set',     'label' => 'Set Ruangan',     'icon' => 'cube'],
         ],
-        'sizes'   => [
+        'sizes' => [
             ['key' => 'standar', 'label' => 'Standar',  'note' => 'Mengikuti ukuran katalog'],
             ['key' => 'ringkas', 'label' => 'Ringkas',  'note' => '10–20% lebih kecil'],
             ['key' => 'lebar',   'label' => 'Lebar',    'note' => '10–20% lebih besar'],
             ['key' => 'kustom',  'label' => 'Ukuran Sendiri', 'note' => 'Isi p × l × t sendiri'],
         ],
-        'extras'  => ['Laci tambahan', 'Bantalan / upholstery', 'Anyaman rotan', 'Ukiran sederhana', 'Kaki besi hitam', 'Roda penggerak'],
+        'extras' => ['Laci tambahan', 'Bantalan / upholstery', 'Anyaman rotan', 'Ukiran sederhana', 'Kaki besi hitam', 'Roda penggerak'],
     ],
 
     'materials' => [
@@ -132,7 +132,7 @@ return [
 
     'dimension' => [
         'image' => 'dimension-chair.png',
-        'tips'  => [
+        'tips' => [
             ['label' => 'Tinggi dudukan kursi makan', 'value' => '42–46 cm'],
             ['label' => 'Tinggi meja makan',          'value' => '73–76 cm'],
             ['label' => 'Jarak kursi ke tepi meja',   'value' => '25–30 cm'],
@@ -167,15 +167,15 @@ return [
             ['title' => 'Pengiriman & Instalasi', 'days' => '2–7 hari', 'text' => 'Dikirim ke alamat Anda dan dipasang oleh tim kami.'],
         ],
         'types' => [
-            'kursi'   => ['label' => 'Kursi & Bangku', 'min' => 14, 'max' => 21],
-            'meja'    => ['label' => 'Meja',           'min' => 18, 'max' => 25],
-            'sofa'    => ['label' => 'Sofa',           'min' => 25, 'max' => 35],
+            'kursi' => ['label' => 'Kursi & Bangku', 'min' => 14, 'max' => 21],
+            'meja' => ['label' => 'Meja',           'min' => 18, 'max' => 25],
+            'sofa' => ['label' => 'Sofa',           'min' => 25, 'max' => 35],
             'kabinet' => ['label' => 'Lemari & Rak',   'min' => 21, 'max' => 30],
             'ranjang' => ['label' => 'Tempat Tidur',   'min' => 25, 'max' => 35],
-            'set'     => ['label' => 'Set Ruangan',    'min' => 28, 'max' => 40],
+            'set' => ['label' => 'Set Ruangan',    'min' => 28, 'max' => 40],
         ],
         // Tambahan hari produksi per tingkat jumlah & finishing khusus
-        'qty_extra'   => ['1-4' => 0, '5-10' => 7, '11-30' => 14, '30+' => 28],
+        'qty_extra' => ['1-4' => 0, '5-10' => 7, '11-30' => 14, '30+' => 28],
         'custom_extra' => 5,
     ],
 
@@ -191,59 +191,59 @@ return [
 
     'faq' => [
         'bot' => [
-            'name'        => 'Rudi',
-            'avatar'      => 'rudi.png',
-            'role'        => 'Asisten AI RusticFurni',
-            'greeting'    => 'Halo! Saya Rudi, asisten AI RusticFurni. Saya siap membantu Anda seputar produk, material, desain custom, dan pertanyaan lainnya. Ada yang bisa saya bantu?',
+            'name' => 'Rudi',
+            'avatar' => 'rudi.png',
+            'role' => 'Asisten AI RusticFurni',
+            'greeting' => 'Halo! Saya Rudi, asisten AI RusticFurni. Saya siap membantu Anda seputar produk, material, desain custom, dan pertanyaan lainnya. Ada yang bisa saya bantu?',
             'placeholder' => 'Tulis pertanyaan Anda...',
-            'tip'         => 'Tanya yuk!',
-            'chips'       => ['Rekomendasi produk untuk ruang tamu', 'Bisa custom ukuran?', 'Pilihan material terbaik?', 'Berapa lama proses produksi?'],
-            'fallback'    => 'Pertanyaan yang bagus! Untuk jawaban yang paling tepat, tim kami siap membantu langsung lewat WhatsApp.',
+            'tip' => 'Tanya yuk!',
+            'chips' => ['Rekomendasi produk untuk ruang tamu', 'Bisa custom ukuran?', 'Pilihan material terbaik?', 'Berapa lama proses produksi?'],
+            'fallback' => 'Pertanyaan yang bagus! Untuk jawaban yang paling tepat, tim kami siap membantu langsung lewat WhatsApp.',
         ],
         'groups' => [
             ['title' => 'Produk', 'items' => [
                 ['q' => 'Rekomendasi produk untuk ruang tamu',
-                 'a' => 'Untuk ruang tamu, Sofa Nara 3 Dudukan dan Meja Kopi Arka adalah kombinasi yang paling sering dipilih. Untuk ruang yang lebih kecil, kami bisa meringkas ukuran sofa agar sirkulasi tetap lega.',
-                 'keys' => ['ruang tamu', 'sofa', 'meja kopi', 'living', 'rekomendasi']],
+                    'a' => 'Untuk ruang tamu, Sofa Nara 3 Dudukan dan Meja Kopi Arka adalah kombinasi yang paling sering dipilih. Untuk ruang yang lebih kecil, kami bisa meringkas ukuran sofa agar sirkulasi tetap lega.',
+                    'keys' => ['ruang tamu', 'sofa', 'meja kopi', 'living', 'rekomendasi']],
                 ['q' => 'Apakah produk di katalog bisa dilihat langsung?',
-                 'a' => 'Bisa. Hubungi kami lewat WhatsApp untuk menjadwalkan kunjungan ke workshop, atau minta foto dan video detail produk yang Anda minati.',
-                 'keys' => ['lihat langsung', 'workshop', 'showroom', 'kunjungi', 'foto']],
+                    'a' => 'Bisa. Hubungi kami lewat WhatsApp untuk menjadwalkan kunjungan ke workshop, atau minta foto dan video detail produk yang Anda minati.',
+                    'keys' => ['lihat langsung', 'workshop', 'showroom', 'kunjungi', 'foto']],
                 ['q' => 'Apakah furniture outdoor tahan hujan dan panas?',
-                 'a' => 'Furniture outdoor kami memakai kayu jati dengan finishing khusus luar ruang. Letakkan di area semi-terbuka (teras) agar umurnya lebih panjang, dan lakukan pelapisan ulang setahun sekali.',
-                 'keys' => ['outdoor', 'hujan', 'panas', 'teras', 'taman', 'cuaca']],
+                    'a' => 'Furniture outdoor kami memakai kayu jati dengan finishing khusus luar ruang. Letakkan di area semi-terbuka (teras) agar umurnya lebih panjang, dan lakukan pelapisan ulang setahun sekali.',
+                    'keys' => ['outdoor', 'hujan', 'panas', 'teras', 'taman', 'cuaca']],
             ]],
             ['title' => 'Custom Design', 'items' => [
                 ['q' => 'Bisa custom ukuran?',
-                 'a' => 'Bisa. Semua model dapat disesuaikan panjang, lebar, dan tingginya. Isi ukuran di halaman Custom Design atau kirim sketsa/foto referensi lewat Form Custom Order.',
-                 'keys' => ['custom', 'ukuran', 'sesuai', 'ubah', 'desain sendiri']],
+                    'a' => 'Bisa. Semua model dapat disesuaikan panjang, lebar, dan tingginya. Isi ukuran di halaman Custom Design atau kirim sketsa/foto referensi lewat Form Custom Order.',
+                    'keys' => ['custom', 'ukuran', 'sesuai', 'ubah', 'desain sendiri']],
                 ['q' => 'Apakah saya bisa membawa gambar referensi?',
-                 'a' => 'Tentu. Kirim foto atau sketsa referensi, lalu tim desain kami akan membuat gambar kerja untuk Anda setujui sebelum produksi dimulai.',
-                 'keys' => ['referensi', 'gambar', 'sketsa', 'foto', 'contoh']],
+                    'a' => 'Tentu. Kirim foto atau sketsa referensi, lalu tim desain kami akan membuat gambar kerja untuk Anda setujui sebelum produksi dimulai.',
+                    'keys' => ['referensi', 'gambar', 'sketsa', 'foto', 'contoh']],
                 ['q' => 'Bagaimana cara meminta penawaran?',
-                 'a' => 'Tambahkan produk ke Daftar Penawaran dari katalog, lalu isi Quotation Request. Anda juga bisa langsung mengirim kebutuhan lewat Form Custom Order.',
-                 'keys' => ['penawaran', 'quotation', 'harga', 'biaya', 'berapa']],
+                    'a' => 'Tambahkan produk ke Daftar Penawaran dari katalog, lalu isi Quotation Request. Anda juga bisa langsung mengirim kebutuhan lewat Form Custom Order.',
+                    'keys' => ['penawaran', 'quotation', 'harga', 'biaya', 'berapa']],
             ]],
             ['title' => 'Material & Finishing', 'items' => [
                 ['q' => 'Pilihan material terbaik?',
-                 'a' => 'Kayu jati adalah pilihan terbaik untuk ketahanan dan umur pakai, terutama meja makan dan outdoor. Mahoni cocok untuk kursi dan ranjang, sedangkan sungkai untuk rak dan kabinet dengan anggaran lebih ringan.',
-                 'keys' => ['material', 'kayu', 'jati', 'mahoni', 'sungkai', 'bahan', 'terbaik']],
+                    'a' => 'Kayu jati adalah pilihan terbaik untuk ketahanan dan umur pakai, terutama meja makan dan outdoor. Mahoni cocok untuk kursi dan ranjang, sedangkan sungkai untuk rak dan kabinet dengan anggaran lebih ringan.',
+                    'keys' => ['material', 'kayu', 'jati', 'mahoni', 'sungkai', 'bahan', 'terbaik']],
                 ['q' => 'Finishing apa yang paling mudah dirawat?',
-                 'a' => 'Natural Clear dan Teak Oil paling mudah diperbarui sendiri: cukup diamplas ringan lalu dilapis ulang. Finishing gelap tampak mewah tetapi lebih sering terlihat goresan.',
-                 'keys' => ['finishing', 'warna', 'rawat', 'perawatan', 'cat']],
+                    'a' => 'Natural Clear dan Teak Oil paling mudah diperbarui sendiri: cukup diamplas ringan lalu dilapis ulang. Finishing gelap tampak mewah tetapi lebih sering terlihat goresan.',
+                    'keys' => ['finishing', 'warna', 'rawat', 'perawatan', 'cat']],
             ]],
             ['title' => 'Produksi & Pengiriman', 'items' => [
                 ['q' => 'Berapa lama proses produksi?',
-                 'a' => 'Rata-rata 14–40 hari kerja tergantung jenis produk, jumlah, dan tingkat kustomisasi. Gunakan halaman Lead Time untuk menghitung estimasi tanggal selesai.',
-                 'keys' => ['produksi', 'lama', 'berapa lama', 'waktu', 'lead time', 'estimasi', 'selesai']],
+                    'a' => 'Rata-rata 14–40 hari kerja tergantung jenis produk, jumlah, dan tingkat kustomisasi. Gunakan halaman Lead Time untuk menghitung estimasi tanggal selesai.',
+                    'keys' => ['produksi', 'lama', 'berapa lama', 'waktu', 'lead time', 'estimasi', 'selesai']],
                 ['q' => 'Apakah ada layanan pengiriman dan pemasangan?',
-                 'a' => 'Ada. Produk dikemas aman, dikirim ke alamat Anda, dan dipasang oleh tim kami. Biaya kirim dan instalasi dihitung sesuai lokasi.',
-                 'keys' => ['kirim', 'pengiriman', 'pasang', 'instalasi', 'ongkir']],
+                    'a' => 'Ada. Produk dikemas aman, dikirim ke alamat Anda, dan dipasang oleh tim kami. Biaya kirim dan instalasi dihitung sesuai lokasi.',
+                    'keys' => ['kirim', 'pengiriman', 'pasang', 'instalasi', 'ongkir']],
             ]],
         ],
     ],
 
     'footer' => [
-        'about'   => 'Furniture berkualitas tinggi untuk rumah, kantor, dan ruang komersial Anda.',
+        'about' => 'Furniture berkualitas tinggi untuk rumah, kantor, dan ruang komersial Anda.',
         'columns' => [
             ['title' => 'Navigasi', 'links' => [
                 ['label' => 'Beranda', 'route' => 'index'], ['label' => 'Katalog', 'route' => 'catalog'],

@@ -63,7 +63,7 @@
     $$('[data-menu-toggle]').forEach(function (el) { el.addEventListener('click', function () { set(drawer.hidden); }); });
     $$('[data-menu-link]', drawer).forEach(function (a) { a.addEventListener('click', function () { set(false); }); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !drawer.hidden) set(false); });
-    window.addEventListener('resize', function () { if (window.innerWidth >= 1300 && !drawer.hidden) set(false); });
+    window.addEventListener('resize', function () { if (window.innerWidth >= 1180 && !drawer.hidden) set(false); });
   })();
 
   /* ---------- palet pencarian ---------- */
@@ -408,26 +408,73 @@
     });
   })();
 
+  /* ---------- motion: ripple, spotlight, tilt, parallax hero, ke atas ---------- */
+  (function () {
+    $$('[data-top]').forEach(function (b) { b.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' }); }); });
+    if (reduce) return;
+    document.addEventListener('pointerdown', function (e) {
+      var b = e.target.closest && e.target.closest('.abd-btn'); if (!b) return;
+      var r = b.getBoundingClientRect(), d = Math.max(r.width, r.height) * 2, s = document.createElement('span');
+      s.className = 'abd-ripple'; s.style.cssText = 'width:' + d + 'px;height:' + d + 'px;left:' + (e.clientX - r.left - d / 2) + 'px;top:' + (e.clientY - r.top - d / 2) + 'px';
+      b.appendChild(s); setTimeout(function () { s.remove(); }, 750);
+    });
+    document.addEventListener('pointermove', function (e) {
+      var c = e.target.closest && e.target.closest('.abd-card,.abd-svc,.abd-pcard,.abd-cert,.abd-plan'); if (!c) return;
+      var r = c.getBoundingClientRect(); c.style.setProperty('--mx', (e.clientX - r.left) + 'px'); c.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    }, { passive: true });
+    if (!window.matchMedia('(hover: hover)').matches) return;
+    $$('.abd-thumb,.abd-tile,.abd-pcard__img,.abd-fig button,.abd-plan__view').forEach(function (el) {
+      el.addEventListener('pointermove', function (e) {
+        var r = el.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
+        el.style.transform = 'perspective(800px) rotateX(' + (-y * 5).toFixed(2) + 'deg) rotateY(' + (x * 6).toFixed(2) + 'deg)';
+      });
+      el.addEventListener('pointerleave', function () { el.style.transform = ''; });
+    });
+    var hero = $('[data-hero]');
+    if (hero) {
+      var tick = raf(function () { hero.style.setProperty('--hx', hero._x.toFixed(3)); hero.style.setProperty('--hy', hero._y.toFixed(3)); });
+      hero.addEventListener('pointermove', function (e) { var r = hero.getBoundingClientRect(); hero._x = (e.clientX - r.left) / r.width * 2 - 1; hero._y = (e.clientY - r.top) / r.height * 2 - 1; tick(); });
+      hero.addEventListener('pointerleave', function () { hero._x = 0; hero._y = 0; tick(); });
+    }
+  })();
+
   /* ---------- chatbot FAQ ---------- */
   (function () {
-    var panel = $('#abd-chat'), body = $('#abd-chat-body'), quick = $('#abd-chat-quick'), form = $('#abd-chat-form'), input = $('#abd-chat-input');
-    if (!panel || !body) return;
-    var openers = $$('[data-chat-open]'), started = false, lastOpener = null, busy = false, av = (DATA.img || '') + '/archibot-avatar.svg';
+    var panel = $('#abd-chat'), body = $('#abd-chat-body'), thread = $('#abd-chat-thread'), welcome = $('#abd-chat-welcome'),
+        quick = $('#abd-chat-quick'), form = $('#abd-chat-form'), input = $('#abd-chat-input');
+    if (!panel || !thread) return;
+    var openers = $$('[data-chat-open]'), lastOpener = null, busy = false, asked = {}, av = (DATA.img || '') + '/archibot-avatar.svg';
 
     function scroll() { body.scrollTop = body.scrollHeight; }
+    function hhmm() { var d = new Date(); return ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2); }
     function row(kind) {
       var r = document.createElement('div'); r.className = 'abd-row abd-row--' + kind;
-      if (kind === 'bot') { r.innerHTML = '<img class="abd-row__av" src="' + esc(av) + '" alt="" width="30" height="30">'; }
-      body.appendChild(r); return r;
+      if (kind === 'bot') r.innerHTML = '<img class="abd-row__av" src="' + esc(av) + '" alt="" width="30" height="30">';
+      var w = document.createElement('div'); w.className = 'abd-row__wrap'; r.appendChild(w); thread.appendChild(r); return w;
     }
-    function bubble(kind, text) { var r = row(kind), m = document.createElement('div'); m.className = 'abd-msg abd-msg--' + kind; m.textContent = text; r.appendChild(m); scroll(); return m; }
+    function bubble(kind, text) {
+      var w = row(kind), m = document.createElement('div'); m.className = 'abd-msg abd-msg--' + kind; m.textContent = text; w.appendChild(m);
+      var t = document.createElement('span'); t.className = 'abd-time'; t.textContent = hhmm(); w.appendChild(t); scroll(); return m;
+    }
     function cta(m, href, label, wa) {
       var a = document.createElement('a'); a.className = 'abd-msg__cta' + (wa ? ' abd-msg__cta--wa' : ''); a.href = href; a.innerHTML = icon(wa ? 'whatsapp' : 'arrow') + '<span>' + esc(label) + '</span>';
       if (wa) { a.target = '_blank'; a.rel = 'noopener noreferrer'; }
       m.appendChild(document.createElement('br')); m.appendChild(a);
     }
-    function typing() { var r = row('bot'), t = document.createElement('div'); t.className = 'abd-msg abd-msg--bot abd-typing'; t.innerHTML = '<i></i><i></i><i></i>'; r.appendChild(t); scroll(); return r; }
-    function reply(fn, delay) { var t = typing(); busy = true; setTimeout(function () { t.remove(); fn(); busy = false; scroll(); }, reduce ? 0 : (delay || 650)); }
+    function feedback(m) {
+      var box = document.createElement('div'); box.className = 'abd-fb';
+      box.innerHTML = '<span>Membantu?</span><button type="button" data-fb="up" aria-label="Membantu">' + icon('thumb') + '</button><button type="button" data-fb="down" aria-label="Kurang membantu">' + icon('thumb', 'abd-fb__down') + '</button>';
+      box.addEventListener('click', function (e) {
+        var b = e.target.closest('[data-fb]'); if (!b) return;
+        var down = b.getAttribute('data-fb') === 'down'; box.className = 'abd-fb is-done'; box.textContent = down ? 'Terima kasih, kami catat masukan Anda.' : 'Terima kasih atas masukannya! 🙏';
+        if (down) { var mm = bubble('bot', 'Maaf jika jawabannya kurang membantu. Tim kami siap menjawab langsung lewat WhatsApp.'); cta(mm, waUrl('Halo ' + (DATA.brand || '') + ', saya butuh bantuan lebih lanjut.'), 'Chat via WhatsApp', true); }
+      });
+      m.parentNode.appendChild(box);
+    }
+    function typing() {
+      var w = row('bot'), t = document.createElement('div'); t.className = 'abd-msg abd-msg--bot abd-typing'; t.innerHTML = '<i></i><i></i><i></i>'; w.appendChild(t); scroll(); return w.parentNode;
+    }
+    function reply(fn, delay) { var t = typing(); busy = true; setTimeout(function () { t.remove(); fn(); busy = false; scroll(); }, reduce ? 0 : (delay || 700)); }
     function find(q) {
       var n = norm(q), best = null, score = 0;
       DATA.faq.forEach(function (f) {
@@ -437,28 +484,30 @@
       });
       return score > 0 ? best : null;
     }
+    function followUps(f) {
+      quick.innerHTML = ''; var i0 = f ? DATA.faq.indexOf(f) : -1, list = [];
+      for (var k = 1; k <= DATA.faq.length && list.length < 3; k++) { var c = DATA.faq[(i0 + k + DATA.faq.length) % DATA.faq.length]; if (c && c !== f && !asked[c.q]) list.push(c.q); }
+      if (!list.length) list = DATA.quick.slice(0, 3);
+      list.forEach(function (q) { var b = document.createElement('button'); b.type = 'button'; b.innerHTML = icon('spark') + '<span>' + esc(q) + '</span>'; b.addEventListener('click', function () { ask(q); }); quick.appendChild(b); });
+    }
     function answer(q) {
       var n = norm(q);
       reply(function () {
-        if (/^(halo|hai|hi|hello|selamat|pagi|siang|sore|malam)\b/.test(n) && n.split(' ').length <= 3) { bubble('bot', 'Halo! Senang bertemu Anda. Ada yang ingin ditanyakan tentang layanan arsitektur kami?'); return; }
-        if (/terima kasih|makasih|thanks|thank you/.test(n)) { bubble('bot', 'Sama-sama! Jika ada pertanyaan lain, saya siap membantu.'); return; }
+        if (/^(halo|hai|hi|hello|selamat|pagi|siang|sore|malam)\b/.test(n) && n.split(' ').length <= 3) { bubble('bot', 'Halo! Senang bertemu Anda. Ada yang ingin ditanyakan tentang layanan arsitektur kami?'); followUps(null); return; }
+        if (/terima kasih|makasih|thanks|thank you/.test(n)) { bubble('bot', 'Sama-sama! Jika ada pertanyaan lain, saya siap membantu.'); followUps(null); return; }
         var f = find(q), m;
-        if (f) { m = bubble('bot', f.a); if (f.link) cta(m, DATA.base + f.link[0], f.link[1], false); }
-        else { m = bubble('bot', 'Maaf, saya belum menemukan jawaban yang pas. Coba pilih pertanyaan di bawah, atau tanyakan langsung ke tim kami lewat WhatsApp.'); cta(m, waUrl('Halo ' + (DATA.brand || '') + ', saya ingin bertanya: ' + q), 'Tanya via WhatsApp', true); }
+        if (f) { asked[f.q] = true; m = bubble('bot', f.a); if (f.link) cta(m, DATA.base + f.link[0], f.link[1], false); feedback(m); followUps(f); }
+        else { m = bubble('bot', 'Maaf, saya belum menemukan jawaban yang pas. Coba salah satu topik di bawah, atau tanyakan langsung ke tim kami lewat WhatsApp.'); cta(m, waUrl('Halo ' + (DATA.brand || '') + ', saya ingin bertanya: ' + q), 'Tanya via WhatsApp', true); followUps(null); }
       });
     }
-    function ask(q) { q = String(q || '').trim(); if (!q || busy) return; bubble('user', q); answer(q); }
-    function chips() {
-      quick.innerHTML = '';
-      DATA.quick.concat(DATA.faq.map(function (f) { return f.q; }).filter(function (q) { return DATA.quick.indexOf(q) < 0; })).slice(0, 10).forEach(function (q) {
-        var b = document.createElement('button'); b.type = 'button'; b.textContent = q; b.addEventListener('click', function () { ask(q); }); quick.appendChild(b);
-      });
+    function ask(q) {
+      q = String(q || '').trim(); if (!q || busy) return;
+      welcome.classList.add('is-collapsed'); bubble('user', q); answer(q);
     }
     function open(from) {
       lastOpener = from || lastOpener; panel.hidden = false; document.body.classList.add('abd-chat-open');
       openers.forEach(function (o) { o.setAttribute('aria-expanded', 'true'); });
-      if (!started) { started = true; chips(); bubble('bot', 'Halo! Saya ArchiBot 👋'); reply(function () { bubble('bot', 'Tanyakan apa saja tentang layanan arsitektur kami, atau pilih pertanyaan cepat di bawah.'); }, 700); }
-      setTimeout(function () { if (window.innerWidth > 640 && input) input.focus(); }, 350);
+      setTimeout(function () { if (window.innerWidth > 640 && input) input.focus(); }, 380);
     }
     function close() {
       panel.hidden = true; document.body.classList.remove('abd-chat-open');
@@ -467,13 +516,15 @@
     }
     openers.forEach(function (o) { o.addEventListener('click', function () { open(o); }); });
     $$('[data-chat-close]').forEach(function (c) { c.addEventListener('click', close); });
+    $$('[data-chat-topic]').forEach(function (b) { b.addEventListener('click', function () { ask(b.getAttribute('data-chat-topic')); }); });
+    var menu = $('[data-chat-menu]'); if (menu) menu.addEventListener('click', function () { welcome.classList.remove('is-collapsed'); body.scrollTop = 0; });
     document.addEventListener('keydown', function (e) { var sr = $('#abd-search'); if (e.key === 'Escape' && !panel.hidden && (!sr || sr.hidden)) close(); });
     if (form) form.addEventListener('submit', function (e) { e.preventDefault(); var v = input.value; input.value = ''; ask(v); });
-    $$('[data-chat-ask]').forEach(function (b) { b.addEventListener('click', function () { open(b); setTimeout(function () { ask(b.getAttribute('data-chat-ask')); }, started ? 50 : 1600); }); });
+    $$('[data-chat-ask]').forEach(function (b) { b.addEventListener('click', function () { open(b); setTimeout(function () { ask(b.getAttribute('data-chat-ask')); }, 700); }); });
     $$('[data-chatprev-form]').forEach(function (f) {
-      f.addEventListener('submit', function (e) { e.preventDefault(); var i = $('input', f), v = i.value.trim(); i.value = ''; open(i); if (v) setTimeout(function () { ask(v); }, 1600); });
+      f.addEventListener('submit', function (e) { e.preventDefault(); var i = $('input', f), v = i.value.trim(); i.value = ''; open(i); if (v) setTimeout(function () { ask(v); }, 700); });
     });
-    document.addEventListener('abd:ask', function (e) { var q = e.detail; open(null); if (q) setTimeout(function () { ask(q); }, started ? 1700 : 1700); });
+    document.addEventListener('abd:ask', function (e) { var q = e.detail; open(null); if (q) setTimeout(function () { ask(q); }, 700); });
     try {
       if (!sessionStorage.getItem('abd-hint')) {
         var tip = $('.abd-fab__tip--bot');
