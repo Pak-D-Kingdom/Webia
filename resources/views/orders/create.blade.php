@@ -17,7 +17,7 @@
 
         @if (session('status')) <p role="status">{{ session('status') }}</p> @endif
 
-        <form class="customer-create-grid" method="POST" action="{{ route('orders.store') }}">
+        <form class="customer-create-grid" method="POST" action="{{ route('orders.store') }}" data-confirm-checkout="create-confirm-modal" data-leave-guard="create-leave-modal">
             @csrf
             @if ($selectedTemplate)
                 <input type="hidden" name="template_id" value="{{ $selectedTemplate->id }}">
@@ -52,6 +52,10 @@
                                 Template Dipilih
                             </h2>
                             <a class="customer-create-swap" href="{{ route('collections') }}">Ganti template</a>
+                            <button type="button" class="customer-create-detail-btn" data-modal-open="#create-preview-modal" data-create-detail>
+                                <span aria-hidden="true" class="material-symbols-outlined">visibility</span>
+                                Preview
+                            </button>
                         </div>
                         <div class="customer-create-template">
                             @if ($templatePreview)
@@ -121,6 +125,10 @@
                                             @endforeach
                                         </span>
                                     @endif
+                                    <button type="button" class="customer-create-detail-btn" data-modal-open="#create-package-detail-{{ $package->id }}" data-create-detail>
+                                        <span aria-hidden="true" class="material-symbols-outlined">info</span>
+                                        Detail paket
+                                    </button>
                                 </span>
                             </label>
                         @empty
@@ -153,6 +161,10 @@
                                         @if ($addon->description)
                                             <span class="customer-create-option-desc">{{ $addon->description }}</span>
                                         @endif
+                                        <button type="button" class="customer-create-detail-btn" data-modal-open="#create-addon-detail-{{ $addon->id }}" data-create-detail>
+                                            <span aria-hidden="true" class="material-symbols-outlined">info</span>
+                                            Detail add-on
+                                        </button>
                                     </span>
                                 </label>
                             @endforeach
@@ -220,5 +232,67 @@
                 </div>
             </aside>
         </form>
+
+        <x-customer-modal id="create-preview-modal" title="Preview template {{ $selectedTemplate?->name }}" :subtitle="$selectedTemplate?->description" icon="visibility">
+            <div class="customer-modal-rows">
+                <div class="customer-modal-row"><span>Kategori</span><span>{{ $selectedTemplate?->category_label ?? '-' }}</span></div>
+                <div class="customer-modal-row"><span>Gaya desain</span><span>{{ $selectedTemplate?->design_style ?? '-' }}</span></div>
+                <div class="customer-modal-row"><span>Mobile</span><span>Responsif</span></div>
+            </div>
+            <div class="customer-modal-actions" style="margin-top: 1.1rem;">
+                <button class="customer-btn" type="button" data-modal-close>Tutup</button>
+                <button class="customer-btn customer-btn--primary" type="button" data-modal-close>Gunakan template</button>
+            </div>
+        </x-customer-modal>
+
+        @foreach ($packages as $package)
+            <x-customer-modal id="create-package-detail-{{ $package->id }}" title="Detail paket {{ $package->name }}" :subtitle="$package->description" icon="info">
+                <div class="customer-modal-rows">
+                    <div class="customer-modal-row"><span>Harga</span><span>Rp{{ number_format($package->price, 0, ',', '.') }}</span></div>
+                    <div class="customer-modal-row"><span>CMS</span><span>{{ $package->cms_enabled ? 'Termasuk' : 'Tidak termasuk' }}</span></div>
+                    <div class="customer-modal-row"><span>Kuota chatbot</span><span>{{ $package->chatbot_monthly_quota ? number_format($package->chatbot_monthly_quota, 0, ',', '.') . '/bulan' : '-' }}</span></div>
+                </div>
+                <div class="customer-modal-actions" style="margin-top: 1.1rem;">
+                    <button class="customer-btn" type="button" data-modal-close>Tutup</button>
+                    <button class="customer-btn customer-btn--primary" type="button" data-select-package="{{ $package->id }}">Pilih paket</button>
+                </div>
+            </x-customer-modal>
+        @endforeach
+
+        @foreach ($addons as $addon)
+            <x-customer-modal id="create-addon-detail-{{ $addon->id }}" title="Detail add-on {{ $addon->name }}" :subtitle="$addon->description" icon="info">
+                <div class="customer-modal-rows">
+                    <div class="customer-modal-row"><span>Harga</span><span>{{ $addon->price === null ? 'Konsultasi' : 'Rp' . number_format($addon->price, 0, ',', '.') }}</span></div>
+                </div>
+                <div class="customer-modal-actions" style="margin-top: 1.1rem;">
+                    <button class="customer-btn" type="button" data-modal-close>Tutup</button>
+                    <button class="customer-btn customer-btn--primary" type="button" data-select-addon="{{ $addon->id }}">Tambahkan</button>
+                </div>
+            </x-customer-modal>
+        @endforeach
+
+        <x-customer-modal id="create-confirm-modal" title="Konfirmasi pesanan" subtitle="Periksa pilihan sebelum menuju pembayaran." icon="help">
+            <div class="customer-modal-rows">
+                <div class="customer-modal-row"><span>Template</span><span>{{ $selectedTemplate?->name ?? 'Belum dipilih' }}</span></div>
+                <div class="customer-modal-row"><span>Paket</span><strong data-confirm-package>-</strong></div>
+                <div class="customer-modal-row"><span>Total</span><strong data-confirm-total>-</strong></div>
+            </div>
+            <div class="customer-modal-actions" style="margin-top: 1.1rem;">
+                <button class="customer-btn" type="button" data-modal-close>Kembali</button>
+                <button class="customer-btn customer-btn--primary" type="button" data-confirm-submit>Lanjut ke pembayaran</button>
+            </div>
+        </x-customer-modal>
+
+        <x-customer-modal id="create-leave-modal" tone="danger" title="Keluar tanpa menyimpan?" subtitle="Pilihan paket dan add-on akan dihapus." icon="warning">
+            <div class="customer-modal-rows">
+                <div class="customer-modal-row"><span>Template</span><span data-leave-template>Belum dipilih</span></div>
+                <div class="customer-modal-row"><span>Paket</span><span data-leave-package>Belum dipilih</span></div>
+                <div class="customer-modal-row"><span>Add-on</span><span data-leave-addons>Tidak ada</span></div>
+            </div>
+            <div class="customer-modal-actions" style="margin-top: 1.1rem;">
+                <button class="customer-btn" type="button" data-modal-close>Tetap di sini</button>
+                <button class="customer-btn customer-btn--danger" type="button" data-leave-confirm>Keluar dari halaman</button>
+            </div>
+        </x-customer-modal>
     </section>
 @endsection

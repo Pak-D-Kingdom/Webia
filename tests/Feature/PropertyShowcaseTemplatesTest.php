@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\WebiaTemplate;
 use Database\Seeders\WebiaTemplateAlleSeeder;
+use Database\Seeders\WebiaTemplatePreviewSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
@@ -12,9 +13,17 @@ class PropertyShowcaseTemplatesTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(WebiaTemplateAlleSeeder::class);
+        $this->seed(WebiaTemplatePreviewSeeder::class);
+    }
+
     public function test_denim_horizon_demo_renders_the_minimalist_property_showcase(): void
     {
-        $this->get(route('webia.template.property.denim-horizon-property-minimalist'))
+        $this->get('/webia/template/denim-horizon-property-minimalist')
             ->assertOk()
             ->assertSee('<title>Denim Horizon &mdash; Minimalist Property Collection</title>', false)
             ->assertSee('Pure Form,')
@@ -27,7 +36,7 @@ class PropertyShowcaseTemplatesTest extends TestCase
 
     public function test_pusaka_asri_demo_renders_the_traditional_residence_showcase(): void
     {
-        $this->get(route('webia.template.property.pusaka-asri-property-traditional'))
+        $this->get('/webia/template/pusaka-asri-property-traditional')
             ->assertOk()
             ->assertSee('<title>Pusaka Asri Residence | Nusantara Heritage Living</title>', false)
             ->assertSee('Harmoni Arsitektur Pusaka Nusantara')
@@ -91,11 +100,11 @@ class PropertyShowcaseTemplatesTest extends TestCase
 
     public function test_both_catalog_previews_show_only_their_hero_sections(): void
     {
-        $this->get(route('webia.template.property.denim-horizon-property-minimalist').'?preview=1')
+        $this->get('/webia/template/denim-horizon-property-minimalist'.'?preview=1')
             ->assertOk()
             ->assertSee('property-minimalist-preview');
 
-        $this->get(route('webia.template.property.pusaka-asri-property-traditional').'?preview=1')
+        $this->get('/webia/template/pusaka-asri-property-traditional'.'?preview=1')
             ->assertOk()
             ->assertSee('property-traditional-preview');
     }

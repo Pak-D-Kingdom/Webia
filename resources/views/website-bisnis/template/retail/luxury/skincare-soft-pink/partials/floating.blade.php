@@ -1,6 +1,6 @@
 {{-- Floating WhatsApp + AI chatbot (maskot robot Belleza) --}}
 <div class="fab-stack">
-    <a class="fab fab--wa" href="https://wa.me/{{ $cfg['contact']['whatsapp'] }}?text={{ rawurlencode('Halo Belleza, saya ingin bertanya tentang produk.') }}"
+    <a class="fab fab--wa" href="https://wa.me/{{ $cfg['contact']['whatsapp'] }}?text={{ rawurlencode('Halo '.$cfg['brand']['name'].', saya ingin bertanya tentang produk.') }}"
        target="_blank" rel="noopener" aria-label="Chat WhatsApp {{ $cfg['brand']['name'] }}" data-wa-float>
         <span class="fab__ring" aria-hidden="true"></span>
         <i class="bi bi-whatsapp" aria-hidden="true"></i>
@@ -9,8 +9,8 @@
     </a>
 
     <div class="fab-ai">
-        <p class="fab-tip" data-chat-tip hidden>Ada yang bisa Belleza bantu? <button type="button" aria-label="Tutup sapaan" data-chat-tip-close><i class="bi bi-x" aria-hidden="true"></i></button></p>
-        <button class="fab fab--ai" type="button" aria-label="Buka asisten AI Belleza" aria-expanded="false" aria-controls="ai-panel" data-chat-toggle>
+        <p class="fab-tip" data-chat-tip hidden>Ada yang bisa {{ $cfg['brand']['name'] }} bantu? <button type="button" aria-label="Tutup sapaan" data-chat-tip-close><i class="bi bi-x" aria-hidden="true"></i></button></p>
+        <button class="fab fab--ai" type="button" aria-label="Buka asisten AI {{ $cfg['brand']['name'] }}" aria-expanded="false" aria-controls="ai-panel" data-chat-toggle>
             <span class="fab__ring" aria-hidden="true"></span>
             <span class="fab__ring fab__ring--2" aria-hidden="true"></span>
             <i class="fab__petal fab__petal--1" aria-hidden="true"></i>
@@ -40,11 +40,11 @@
     </div>
 </div>
 
-<section class="chatpanel" id="ai-panel" role="dialog" aria-label="Asisten AI Belleza" data-chat-panel hidden>
+<section class="chatpanel" id="ai-panel" role="dialog" aria-label="Asisten AI {{ $cfg['brand']['name'] }}" data-chat-panel hidden>
     <header class="chatpanel__head">
         <img src="{{ $img }}/mascot-face.jpg" alt="" width="46" height="46">
         <div>
-            <h2>Belleza AI</h2>
+            <h2>{{ $cfg['brand']['name'] }} AI</h2>
             <p><span class="dot" aria-hidden="true"></span> Asisten FAQ produk</p>
         </div>
         <button class="icon-btn icon-btn--light" type="button" data-chat-close aria-label="Tutup asisten"><i class="bi bi-x-lg" aria-hidden="true"></i></button>

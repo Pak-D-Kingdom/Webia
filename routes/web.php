@@ -2,17 +2,27 @@
 
 use App\Http\Controllers\Admin\AdminAiQuotaController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\HostingInvoiceController as AdminHostingInvoiceController;
+use App\Http\Controllers\Admin\HostingServiceController as AdminHostingServiceController;
+use App\Http\Controllers\Admin\HostingTaskController as AdminHostingTaskController;
 use App\Http\Controllers\Admin\WebiaAddonController;
 use App\Http\Controllers\Admin\WebiaOrderController as AdminWebiaOrderController;
 use App\Http\Controllers\Admin\WebiaPackageController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\EmailVerificationController;
+use App\Http\Controllers\Auth\NewPasswordController;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\CustomerAiController;
 use App\Http\Controllers\CustomerSiteController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HostingInvoiceController;
 use App\Http\Controllers\MidtransController;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RubyRegisterController;
 use App\Http\Controllers\WebiaOrderController;
 use App\Http\Controllers\WebsiteBisnis\TemplateCollectionController;
+use App\Http\Controllers\WebsiteBisnis\TemplatePreviewController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\HtmlString;
@@ -28,13 +38,22 @@ Route::get('/payments/midtrans/callback', [MidtransController::class, 'callback'
 // Dev-only simulasi pembayaran; guest dari checkout publik juga boleh (dijaga di controller).
 Route::get('/payments/midtrans/simulate/{payment}', [MidtransController::class, 'simulateShow'])->middleware('throttle:10,1')->name('payments.midtrans.simulate');
 Route::post('/payments/midtrans/simulate/{payment}', [MidtransController::class, 'simulatePay'])->middleware('throttle:10,1')->name('payments.midtrans.simulate.pay');
+Route::get('/payments/midtrans/hosting/simulate/{payment}', [MidtransController::class, 'simulateHostingShow'])->middleware(['auth', 'throttle:10,1'])->name('payments.midtrans.hosting.simulate');
+Route::post('/payments/midtrans/hosting/simulate/{payment}', [MidtransController::class, 'simulateHostingPay'])->middleware(['auth', 'throttle:10,1'])->name('payments.midtrans.hosting.simulate.pay');
 Route::get('/s/{order:site_slug}/{page?}', CustomerSiteController::class)
-    ->whereIn('page', ['menu', 'reservasi'])
+    ->where('page', '[A-Za-z0-9-]+(?:/[A-Za-z0-9-]+)?')
     ->name('sites.show');
+Route::post('/s/{order:site_slug}/chat', [CustomerSiteController::class, 'chat'])
+    ->middleware('throttle:60,1')
+    ->name('sites.chat');
 
 Route::middleware('guest')->group(function (): void {
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
     Route::post('/login', [AuthenticatedSessionController::class, 'store'])->middleware('throttle:6,1');
+    Route::get('/forgot-password', [PasswordResetLinkController::class, 'create'])->name('password.request');
+    Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])->middleware('throttle:6,1')->name('password.email');
+    Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
+    Route::post('/reset-password', [NewPasswordController::class, 'store'])->middleware('throttle:6,1')->name('password.store');
 });
 
 // Buat pesanan bisa diakses guest: akun dibuat otomatis saat pesanan dikirim.
@@ -50,16 +69,40 @@ Route::get('/orders/success', function () {
 })->name('orders.success');
 
 Route::middleware('auth')->group(function (): void {
+    Route::get('/email/verify', [EmailVerificationController::class, 'notice'])->name('verification.notice');
+    Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])->middleware('signed')->name('verification.verify');
+    Route::post('/email/verification-notification', [EmailVerificationController::class, 'send'])->middleware('throttle:6,1')->name('verification.send');
+    Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+});
+
+Route::middleware(['auth', 'verified'])->group(function (): void {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
     Route::get('/ai-assistant', [CustomerAiController::class, 'index'])->name('customer.ai');
-    Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+    Route::post('/ai-assistant/faq', [CustomerAiController::class, 'storeFaq'])->name('customer.ai.store-faq');
+    Route::post('/ai-assistant/settings', [CustomerAiController::class, 'updateSettings'])->name('customer.ai.settings');
+    Route::post('/ai-assistant/business-info', [CustomerAiController::class, 'updateBusinessInfo'])->name('customer.ai.business-info');
+    Route::post('/ai-assistant/knowledge', [CustomerAiController::class, 'updateKnowledge'])->name('customer.ai.knowledge');
+    Route::post('/ai-assistant/simulate', [CustomerAiController::class, 'simulateChat'])->name('customer.ai.simulate');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->middleware('throttle:6,1')->name('profile.update');
+    Route::patch('/profile/password', [ProfileController::class, 'updatePassword'])->middleware('throttle:6,1')->name('profile.password');
     Route::get('/orders', [WebiaOrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{order}', [WebiaOrderController::class, 'show'])->name('orders.show');
     Route::get('/orders/{order}/payment-status/live', [WebiaOrderController::class, 'authenticatedPaymentStatus'])->middleware('throttle:12,1')->name('orders.payment-status.authenticated');
     Route::post('/orders/{order}/receipt', [WebiaOrderController::class, 'uploadReceipt'])->middleware('throttle:5,1')->name('orders.receipt');
     Route::post('/orders/{order}/pay', [WebiaOrderController::class, 'pay'])->middleware('throttle:6,1')->name('orders.pay');
     Route::post('/orders/{order}/pay/check', [WebiaOrderController::class, 'checkStatus'])->middleware('throttle:10,1')->name('orders.pay.check');
+    Route::post('/orders/{order}/cancel', [WebiaOrderController::class, 'cancel'])->middleware('throttle:5,1')->name('orders.cancel');
     Route::post('/orders/{order}/business', [WebiaOrderController::class, 'saveBusinessData'])->middleware('throttle:10,1')->name('orders.business');
+    Route::post('/orders/{order}/knowledge-base', [WebiaOrderController::class, 'saveKnowledgeBase'])->middleware('throttle:10,1')->name('orders.knowledge-base');
+    Route::post('/orders/{order}/simulate', [WebiaOrderController::class, 'simulateChat'])->middleware('throttle:30,1')->name('orders.simulate');
+    Route::get('/hosting-invoices', [HostingInvoiceController::class, 'index'])->name('hosting-invoices.index');
+    Route::get('/hosting-invoices/{hostingInvoice}', [HostingInvoiceController::class, 'show'])->name('hosting-invoices.show');
+    Route::post('/hosting-invoices/{hostingInvoice}/pay', [HostingInvoiceController::class, 'pay'])->middleware('throttle:6,1')->name('hosting-invoices.pay');
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::post('/notifications/read-all', [NotificationController::class, 'readAll'])->name('notifications.read-all');
+    Route::post('/notifications/{notification}/read', [NotificationController::class, 'read'])->name('notifications.read');
+    Route::delete('/notifications/{notification}', [NotificationController::class, 'destroy'])->name('notifications.destroy');
 
     Route::middleware('admin')->prefix('admin')->name('admin.')->group(function (): void {
         Route::get('/', AdminDashboardController::class)->name('dashboard');
@@ -72,9 +115,19 @@ Route::middleware('auth')->group(function (): void {
         Route::get('orders/{order}/receipt', [AdminWebiaOrderController::class, 'receipt'])->name('orders.receipt');
         Route::post('orders/{order}/verify', [AdminWebiaOrderController::class, 'verify'])->name('orders.verify');
         Route::post('orders/{order}/progress', [AdminWebiaOrderController::class, 'progress'])->name('orders.progress');
+        Route::resource('hosting-services', AdminHostingServiceController::class)->only(['index', 'create', 'store', 'show']);
+        Route::patch('hosting-services/{hostingService}/price', [AdminHostingServiceController::class, 'updatePrice'])->name('hosting-services.price');
+        Route::patch('hosting-services/{hostingService}/stop', [AdminHostingServiceController::class, 'stop'])->name('hosting-services.stop');
+        Route::post('hosting-invoices/{hostingInvoice}/cancel', [AdminHostingInvoiceController::class, 'cancel'])->name('hosting-invoices.cancel');
+        Route::post('hosting-invoices/{hostingInvoice}/replace', [AdminHostingInvoiceController::class, 'replace'])->name('hosting-invoices.replace');
+        Route::get('hosting-tasks', [AdminHostingTaskController::class, 'index'])->name('hosting-tasks.index');
+        Route::post('hosting-tasks/{hostingTask}/complete', [AdminHostingTaskController::class, 'complete'])->name('hosting-tasks.complete');
         Route::get('ai-quotas', [AdminAiQuotaController::class, 'index'])->name('ai.index');
         Route::get('ai-quotas/export', [AdminAiQuotaController::class, 'export'])->name('ai.export');
         Route::post('ai-quotas/{tenant_id}/tier', [AdminAiQuotaController::class, 'updateTier'])->name('ai.update-tier');
+        Route::get('ai-quotas/{tenant_id}/knowledge', [AdminAiQuotaController::class, 'getKnowledge'])->name('ai.knowledge.get');
+        Route::post('ai-quotas/{tenant_id}/knowledge', [AdminAiQuotaController::class, 'saveKnowledge'])->name('ai.knowledge.save');
+        Route::get('ai-quotas/{tenant_id}/unanswered', [AdminAiQuotaController::class, 'getUnanswered'])->name('ai.unanswered');
     });
 });
 
@@ -87,19 +140,19 @@ Route::get(
 )->name('collections');
 
 Route::view(
-    '/webia/template/nantara-architecture-traditional-cultural',
-    'website-bisnis.templates.interior-architecture.architecture-building-design.nantara-architecture.nantara-architecture'
-)->name('webia.template.nantara-architecture-traditional-cultural');
+    '/webia/template/aethelgard-digital-museum',
+    'website-bisnis.templates.education-culture.aethelgard-digital-museum'
+)->name('webia.template.aethelgard-digital-museum');
 
 Route::view(
-    '/webia/template/aurelia-home-renovation',
-    'website-bisnis.templates.home-services.home-renovation-repair.aurelia.aurelia'
-)->name('webia.template.aurelia-home-renovation');
+    '/webia/template/aquaverse-interactive-heritage',
+    'website-bisnis.templates.education-culture.aquaverse-interactive-heritage'
+)->name('webia.template.aquaverse-interactive-heritage');
 
 Route::view(
-    '/webia/template/matcha-clean-organic-deep-cleaning',
-    'website-bisnis.templates.home-services.home-cleaning-deep-cleaning.matcha-clean.matcha-clean'
-)->name('webia.template.matcha-clean-organic-deep-cleaning');
+    '/webia/template/pawlora-animal-care',
+    'website-bisnis.templates.pet-animal-service.pawlora-animal-care'
+)->name('webia.template.pet-animal-service.pawlora-animal-care');
 
 Route::view(
     '/webia/template/aurumco-catering',
@@ -276,77 +329,30 @@ Route::view(
     'website-bisnis.templates.pet-animal-service.paws-canine-terra-earth-tone'
 )->name('webia.template.pet-animal-service.paws-canine-terra-earth-tone');
 
+Route::view(
+    '/webia/template/pawstead',
+    'website-bisnis.templates.pet-animal-service.pawstead'
+)->name('webia.template.pet-animal-service.pawstead');
+
 // WEBIA — Template Nail Art Professional Soft Pink
 // URL lama dipertahankan agar konsisten; view mengikuti struktur folder baru.
-Route::view(
-    '/webia/template/nail-art-professional-soft-pink',
-    'website-bisnis.templates.beauty.nailart.nailart-professional-softpink'
-)->name('webia.template.beauty.nailart.professional-softpink');
 Route::view('/webia/template/nail-art-professional-soft-pink/gallery', 'website-bisnis.templates.beauty.nailart.nailart-professional-softpink-gallery')->name('webia.template.beauty.nailart.professional-softpink.gallery');
 
 // WEBIA Template 02 — Nail Art Minimalist Sage Green
-Route::view(
-    '/webia/template/nail-art-minimalist-sage-green',
-    'website-bisnis.templates.beauty.nailart.nailart-minimalist-sagegreen'
-)->name('webia.template.beauty.nailart.minimalist-sagegreen');
 Route::view('/webia/template/nail-art-minimalist-sage-green/gallery', 'website-bisnis.templates.beauty.nailart.nailart-minimalist-sagegreen-gallery')->name('webia.template.beauty.nailart.minimalist-sagegreen.gallery');
 
 // WEBIA Template 03 — Luxury Yellow Sunshine
-Route::view(
-    '/webia/template/nail-art-luxury-yellow-sunshine',
-    'website-bisnis.templates.beauty.nailart.nailart-luxury-yellowsunshine'
-)->name('webia.template.beauty.nailart.luxury-yellowsunshine');
 Route::view('/webia/template/nail-art-luxury-yellow-sunshine/gallery', 'website-bisnis.templates.beauty.nailart.nailart-luxury-yellowsunshine-gallery')->name('webia.template.beauty.nailart.luxury-yellowsunshine.gallery');
 
 // WEBIA — Laut Biru Seafood Restaurant
-Route::view(
-    '/webia/template/laut-biru-seafood',
-    'website-bisnis.templates.fnb.restaurant.laut-biru-seafood'
-)->name('webia.template.fnb.restaurant.laut-biru-seafood');
 
 // WEBIA — Restoran Azura
-Route::view(
-    '/webia/template/restoran-azura',
-    'website-bisnis.templates.fnb.restaurant.restoran-azura'
-)->name('webia.template.fnb.restaurant.restoran-azura');
 
 // WEBIA — NOIR Restaurant & Dining
-Route::view(
-    '/webia/template/noir-restaurant',
-    'website-bisnis.templates.fnb.restaurant.noir-restaurant'
-)->name('webia.template.fnb.restaurant.noir-restaurant');
 
 // WEBIA — Tunas Cendekia Preschool & Daycare
-Route::view(
-    '/webia/template/tunas-cendekia-preschool-daycare',
-    'website-bisnis.templates.education.preschool.tunas-cendekia-preschool-daycare'
-)->name('webia.template.education.tunas-cendekia-preschool-daycare');
-
-Route::view(
-    '/webia/template/rumah-latte-preschool-daycare',
-    'website-bisnis.templates.education.preschool.rumah-latte-preschool-daycare'
-)->name('webia.template.education.rumah-latte-preschool-daycare');
-
-Route::view(
-    '/webia/template/lumiere-photography-studio',
-    'website-bisnis.templates.photography.lumiere-photography-studio'
-)->name('webia.template.photography.lumiere-studio');
-
-Route::view(
-    '/webia/template/noir-studio-photography',
-    'website-bisnis.templates.photography.noir-studio-photography'
-)->name('webia.template.photography.noir-studio');
-
-Route::view(
-    '/webia/template/peachy-studio',
-    'website-bisnis.templates.photography.peachy-studio'
-)->name('webia.template.photography.peachy-studio');
 
 // WEBIA template 4 — Automotive Dealer Vintage (Heritage Motors)
-Route::view(
-    '/webia/template/automotive-dealer-vintage',
-    'website-bisnis.templates.automotive.dealer.automotive-dealer-vintage'
-)->name('webia.template.automotive.dealer.vintage');
 
 // WEBIA Template 04 — Heritage Motors collection page
 Route::view(
@@ -354,30 +360,11 @@ Route::view(
     'website-bisnis.templates.automotive.dealer.automotive-dealer-vintage-collection'
 )->name('webia.template.automotive.dealer.vintage.collection');
 
-Route::view(
-    '/webia/template/healthcare-dental-mint',
-    'website-bisnis.templates.healthcare.dental.mint-dental-house'
-)->name('webia.template.healthcare-dental-mint');
-
-Route::view(
-    '/webia/template/healthcare-dental-azure',
-    'website-bisnis.templates.healthcare.dental.azure-smile-clinic'
-)->name('webia.template.healthcare-dental-azure');
-
 // Sunset Dental Care Template
-Route::view(
-    '/webia/template/healthcare-dental-sunset',
-    'website-bisnis.templates.healthcare.dental.sunset-dental-care'
-)->name('webia.template.healthcare-dental-sunset');
 
 // =====================================================
 // WEBIA - PET SHOP MINIMALIST GLACIER BLUE
 // =====================================================
-
-Route::view(
-    '/webia/template/petshop-minimalist-glacierblue',
-    'website-bisnis.templates.pet-animal-service.petshop.glacierblue.petshop-minimalist-glacierblue'
-)->name('webia.template.petshop-minimalist-glacierblue');
 
 Route::view(
     '/webia/template/petshop-minimalist-glacierblue/katalog',
@@ -394,11 +381,6 @@ Route::view(
 // =====================================================
 
 Route::view(
-    '/webia/template/petshop-luxury-rosegold',
-    'website-bisnis.templates.pet-animal-service.petshop.rosegold.petshop-luxury-rosegold'
-)->name('webia.template.petshop-luxury-rosegold');
-
-Route::view(
     '/webia/template/petshop-luxury-rosegold/katalog',
     'website-bisnis.templates.pet-animal-service.petshop.rosegold.petshop-katalog-luxury-rosegold'
 )->name('webia.template.petshop-luxury-rosegold.katalog');
@@ -412,10 +394,6 @@ Route::view(
 // WEBIA - TECHNOLOGY & IT (SOFTWARE HOUSE)
 // =====================================================
 Route::view(
-    '/webia/template/technology-softwarehouse-professional',
-    'website-bisnis.templates.technology.softwarehouse.technology-softwarehouse-modern'
-)->name('webia.template.technology-softwarehouse-professional');
-Route::view(
     '/webia/template/technology-softwarehouse-modern',
     'website-bisnis.templates.technology.softwarehouse.technology-softwarehouse-modern'
 )->name('webia.template.technology-softwarehouse-modern');
@@ -423,96 +401,75 @@ Route::view(
 // =====================================================
 // WEBIA - TECHNOLOGY & IT — PUTRI (Software House Elegant Baby Blue)
 // =====================================================
-Route::view(
-    '/webia/template/technology-softwarehouse-elegant-babyblue-putri',
-    'website-bisnis.templates.technology.softwarehouse.technology-softwarehouse-elegant-babyblue-putri'
-)->name('webia.template.technology-softwarehouse-elegant-babyblue-putri');
 
 // =====================================================
 // WEBIA - TECHNOLOGY & IT — PUTRI (Software House Minimalist Soft Pink)
 // =====================================================
-Route::view(
-    '/webia/template/technology-softwarehouse-minimalist-softpink-putri',
-    'website-bisnis.templates.technology.softwarehouse.technology-softwarehouse-minimalist-softpink-putri'
-)->name('webia.template.technology-softwarehouse-minimalist-softpink-putri');
 
 // =====================================================
 // WEBIA - TECHNOLOGY & IT — PUTRI (Data Analytics Luxury Pastel Mix)
 // =====================================================
-Route::view(
-    '/webia/template/technology-dataanalytics-luxury-pastelmix-putri',
-    'website-bisnis.templates.technology.data-analytics.technology-dataanalytics-luxury-pastelmix-putri'
-)->name('webia.template.technology-dataanalytics-luxury-pastelmix-putri');
 
 // =====================================================
 // WEBIA - TECHNOLOGY & IT — PUTRI (Data Analytics Corporate Ocean Teal)
 // =====================================================
-Route::view(
-    '/webia/template/technology-dataanalytics-corporate-oceanteal-putri',
-    'website-bisnis.templates.technology.data-analytics.technology-dataanalytics-corporate-oceanteal-putri'
-)->name('webia.template.technology-dataanalytics-corporate-oceanteal-putri');
 
 // =====================================================
 // WEBIA - TECHNOLOGY & IT — PUTRI (Data Analytics Creative Arctic Frost)
 // =====================================================
+
+// =====================================================
+// WEBIA - AGRICULTURE & FARMING — PUTRI (Perlengkapan & Peralatan Pertanian Corporate Sage Green)
+// =====================================================
+
+// =====================================================
+// WEBIA - AGRICULTURE & FARMING — PUTRI (Perlengkapan & Peralatan Pertanian Creative Matcha Latte)
+// =====================================================
 Route::view(
-    '/webia/template/technology-dataanalytics-creative-arcticfrost-putri',
-    'website-bisnis.templates.technology.data-analytics.technology-dataanalytics-creative-arcticfrost-putri'
-)->name('webia.template.technology-dataanalytics-creative-arcticfrost-putri');
+    '/webia/template/agriculture-peralatanpertanian-creative-matchalatte-putri',
+    'website-bisnis.templates.agriculture.peralatan-pertanian.agriculture-peralatanpertanian-creative-matchalatte-putri'
+)->name('webia.template.agriculture-peralatanpertanian-creative-matchalatte-putri');
+
+// =====================================================
+// WEBIA - AGRICULTURE & FARMING — PUTRI (Perlengkapan & Peralatan Pertanian Playful & Colorful Arctic Frost)
+// =====================================================
+Route::view(
+    '/webia/template/agriculture-peralatanpertanian-playfulcolorful-arcticfrost-putri',
+    'website-bisnis.templates.agriculture.peralatan-pertanian.agriculture-peralatanpertanian-playfulcolorful-arcticfrost-putri'
+)->name('webia.template.agriculture-peralatanpertanian-playfulcolorful-arcticfrost-putri');
+
+// =====================================================
+// WEBIA - PHOTOGRAPHY & CREATIVE STUDIO — PUTRI (Motion Graphics & 3D Studio Premium Minimal Champagne Glow)
+// =====================================================
+Route::view(
+    '/webia/template/photography-motiongraphics-premiumminimal-champagneglow-putri',
+    'website-bisnis.templates.photography-creative.motion-graphics.photography-motiongraphics-premiumminimal-champagneglow-putri'
+)->name('webia.template.photography-motiongraphics-premiumminimal-champagneglow-putri');
+
+// =====================================================
+// WEBIA - PHOTOGRAPHY & CREATIVE STUDIO — PUTRI (Motion Graphics & 3D Studio Traditional Cultural Coral & Peach)
+// =====================================================
+Route::view(
+    '/webia/template/photography-motiongraphics-traditionalcultural-coralpeach-putri',
+    'website-bisnis.templates.photography-creative.motion-graphics.photography-motiongraphics-traditionalcultural-coralpeach-putri'
+)->name('webia.template.photography-motiongraphics-traditionalcultural-coralpeach-putri');
 
 // =====================================================
 // WEBIA - SPORTS & FITNESS (GYM & FITNESS)
 // =====================================================
-Route::view(
-    '/webia/template/sports-gym-bold',
-    'website-bisnis.templates.sports-fitness.gym.sports-gym-bold'
-)->name('webia.template.sports-gym-bold');
 
 // =====================================================
 // WEBIA - EDUCATION (ONLINE COURSE)
 // =====================================================
-Route::view(
-    '/webia/template/education-onlinecourse-modern',
-    'website-bisnis.templates.education.online-course.education-onlinecourse-modern'
-)->name('webia.template.education-onlinecourse-modern');
 
 Route::view(
-    '/webia/template/spark-academy-maximum-impact',
-    'website-bisnis.templates.education.spark-academy-maximum-impact'
-)->name('webia.template.education.spark-academy');
-
-Route::view(
-    '/webia/template/ruby-academy-classic-school',
-    'website-bisnis.templates.education.ruby-academy-classic-school'
-)->name('webia.template.education.ruby-academy-classic-school');
-
-Route::view(
-    '/webia/template/arctic-academy-school',
-    'website-bisnis.templates.education.arctic-academy-school'
-)->name('webia.template.education.arctic-academy-school');
-
-Route::view(
-    '/webia/template/education/preschool-daycare-jeli-kecil',
-    'website-bisnis.template.education.preschool-daycare-jeli-kecil.index'
-)->name('webia.template.education.jeli-kecil');
-
-Route::view(
-    '/webia/template/healthcare/psychology/ruang-tenang',
-    'website-bisnis.template.healthcare.psychology.ruang-tenang.index'
-)->name('webia.template.healthcare.psychology.ruang-tenang');
-
-Route::view(
-    '/webia/template/healthcare/psychology/mitra-jiwa',
-    'website-bisnis.templates.healthcare.psychology.mitra-jiwa'
-)->name('webia.template.healthcare.psychology.mitra-jiwa');
+    '/webia/template/healthcare/psychology/aurelia-mind',
+    'website-bisnis.templates.healthcare.psychology.aurelia-mind'
+)->name('webia.template.healthcare.psychology.aurelia-mind');
 
 // =====================================================
 // WEBIA - WEDDING & EVENT (WEDDING ORGANIZER)
 // =====================================================
-Route::view(
-    '/webia/template/wedding-organizer-elegant',
-    'website-bisnis.templates.wedding-event.wedding-organizer.wedding-organizer-elegant'
-)->name('webia.template.wedding-organizer-elegant');
 
 // =====================================================
 // WEBIA - PET SHOP CORPORATE PLUM VELVET
@@ -604,10 +561,14 @@ Route::prefix('webia/template/fnb/elegan')->name('webia.fnb.elegan.')->group(fun
     Route::get('/reservasi', $elegan('reservasi'))->name('reservasi');
 });
 
-$vintage = fn (string $page) => fn () => view(
-    "website-bisnis.template.f&b.vintage.cafe-earthtone.{$page}",
-    ['cafe' => config('template.f&b.vintage.cafe-earthtone.cafe')]
-);
+$vintage = fn (string $page) => function () use ($page) {
+    $cafe = config('template.f&b.vintage.cafe-earthtone.cafe');
+
+    return view(
+        "website-bisnis.template.f&b.vintage.cafe-earthtone.{$page}",
+        ['cafe' => $cafe, 'routeUrl' => fn (string $key, string $anchor = '') => route($cafe['routes'][$key]).$anchor]
+    );
+};
 
 Route::prefix('webia/template/fnb/vintage')->name('webia.fnb.vintage.')->group(function () use ($vintage) {
     Route::get('/', $vintage('index'))->name('home');
@@ -661,6 +622,11 @@ Route::prefix('webia/template/property/luxury/real-estate-agency-emerald-green')
         Route::view('/contact', $view.'.contact')->name('contact');
     });
 
+Route::view(
+    '/webia/template/property/hearthstone-property',
+    'website-bisnis.templates.property.hearthstone-property'
+)->name('webia.template.property.hearthstone-property');
+
 Route::prefix('webia/template/property/premium-minimal/real-estate-agency-nature-green')
     ->name('property.premium-minimal.nature-green.')
     ->group(function () {
@@ -669,16 +635,6 @@ Route::prefix('webia/template/property/premium-minimal/real-estate-agency-nature
         $cfg = 'template.property.premium-minimal.real-estate-agency-nature-green.real-estate-agency';
 
         // Satu pintu render: semua halaman mendapat data & helper yang sama.
-        $page = fn (string $view, string $active) => view($ns.$view, [
-            'ns' => $ns,
-            'active' => $active,
-            't' => config($cfg),
-            'r' => fn (string $route, array $params = []) => route($name.$route, $params),
-            'img' => fn (string $file) => asset(config($cfg.'.assets.images').'/'.$file),
-        ]);
-
-        Route::get('/', fn () => $page('index', 'home'))->name('home');
-        Route::get('/properties', fn () => $page('properties', 'properties'))->name('properties');
         $page = fn (string $view, string $active) => view($ns.$view, [
             'ns' => $ns,
             'active' => $active,
@@ -699,10 +655,6 @@ Route::prefix('webia/template/property/premium-minimal/real-estate-agency-nature
         Route::get('/gallery', fn () => $page('gallery', 'gallery'))->name('gallery');
         Route::get('/booking', fn () => $page('booking', 'booking'))->name('booking');
         Route::get('/blog', fn () => $page('blog', 'blog'))->name('blog');
-        Route::get('/about-us', fn () => $page('about', 'about'))->name('about');
-        Route::get('/gallery', fn () => $page('gallery', 'gallery'))->name('gallery');
-        Route::get('/booking', fn () => $page('booking', 'booking'))->name('booking');
-        Route::get('/blog', fn () => $page('blog', 'blog'))->name('blog');
         Route::get('/blog/{slug}', function (string $slug) use ($page, $cfg) {
             $post = collect(config($cfg.'.blog'))->firstWhere('slug', $slug);
             abort_if($post === null, 404);
@@ -710,40 +662,34 @@ Route::prefix('webia/template/property/premium-minimal/real-estate-agency-nature
             return $page('article', 'blog')->with('post', $post);
         })->name('blog.show');
         Route::get('/contact', fn () => $page('contact', 'contact'))->name('contact');
-        Route::get('/contact', fn () => $page('contact', 'contact'))->name('contact');
     });
 
 Route::prefix('webia/template/property/professional/real-estate-agency-coral-peach')
     ->name('coral-peach.')
     ->group(function () {
         $view = 'website-bisnis.template.property.professional.real-estate-agency-coral-peach';
-        $site = fn () => config('template.property.professional.real-estate-agency-coral-peach.real-estate-agency');
+        $data = fn () => [
+            'site' => config('template.property.professional.real-estate-agency-coral-peach.real-estate-agency'),
+            'r' => fn (string $name, array|string $parameters = []): string => route($name, $parameters),
+            'isActive' => fn (string $pattern): bool => request()->routeIs($pattern),
+        ];
 
-        Route::get('/', fn () => view("$view.index", ['site' => $site()]))->name('home');
-        Route::get('/property', fn () => view("$view.property", ['site' => $site()]))->name('property');
-        Route::get('/specification', fn () => view("$view.specification", ['site' => $site()]))->name('specification');
-        Route::get('/price', fn () => view("$view.price", ['site' => $site()]))->name('price');
-        Route::get('/about-us', fn () => view("$view.about", ['site' => $site()]))->name('about');
-        Route::get('/gallery', fn () => view("$view.gallery", ['site' => $site()]))->name('gallery');
-        Route::get('/booking', fn () => view("$view.booking", ['site' => $site()]))->name('booking');
-        Route::get('/blog', fn () => view("$view.blog", ['site' => $site()]))->name('blog');
-        Route::get('/', fn () => view("$view.index", ['site' => $site()]))->name('home');
-        Route::get('/property', fn () => view("$view.property", ['site' => $site()]))->name('property');
-        Route::get('/specification', fn () => view("$view.specification", ['site' => $site()]))->name('specification');
-        Route::get('/price', fn () => view("$view.price", ['site' => $site()]))->name('price');
-        Route::get('/about-us', fn () => view("$view.about", ['site' => $site()]))->name('about');
-        Route::get('/gallery', fn () => view("$view.gallery", ['site' => $site()]))->name('gallery');
-        Route::get('/booking', fn () => view("$view.booking", ['site' => $site()]))->name('booking');
-        Route::get('/blog', fn () => view("$view.blog", ['site' => $site()]))->name('blog');
-        Route::get('/blog/{slug}', function (string $slug) use ($view, $site) {
-            $data = $site();
-            $post = collect($data['blog']['posts'])->firstWhere('slug', $slug);
+        Route::get('/', fn () => view("$view.index", $data()))->name('home');
+        Route::get('/property', fn () => view("$view.property", $data()))->name('property');
+        Route::get('/specification', fn () => view("$view.specification", $data()))->name('specification');
+        Route::get('/price', fn () => view("$view.price", $data()))->name('price');
+        Route::get('/about-us', fn () => view("$view.about", $data()))->name('about');
+        Route::get('/gallery', fn () => view("$view.gallery", $data()))->name('gallery');
+        Route::get('/booking', fn () => view("$view.booking", $data()))->name('booking');
+        Route::get('/blog', fn () => view("$view.blog", $data()))->name('blog');
+        Route::get('/blog/{slug}', function (string $slug) use ($view, $data) {
+            $viewData = $data();
+            $post = collect($viewData['site']['blog']['posts'])->firstWhere('slug', $slug);
             abort_if(! $post, 404);
 
-            return view("$view.blog-show", ['site' => $data, 'post' => $post]);
+            return view("$view.blog-show", [...$viewData, 'post' => $post]);
         })->name('blog.show');
-        Route::get('/contact', fn () => view("$view.contact", ['site' => $site()]))->name('contact');
-        Route::get('/contact', fn () => view("$view.contact", ['site' => $site()]))->name('contact');
+        Route::get('/contact', fn () => view("$view.contact", $data()))->name('contact');
     });
 
 $elNs = 'website-bisnis.template.e-learning.modern.e-learning-ocean-blue';
@@ -860,6 +806,8 @@ Route::prefix('webia/template/retail/luxury/skincare-soft-pink')
         $data = fn () => [
             'ns' => $ns,
             'rp' => $rp,
+            'r' => fn (string $name): string => route($rp.$name),
+            'active' => str(request()->route()?->getName() ?? '')->afterLast('.')->toString(),
             'cfg' => config($cfg),
             'img' => asset('images/website-bisnis/template/retail/luxury/skincare-soft-pink'),
             'css' => asset('css/website-bisnis/template/retail/luxury/skincare-soft-pink/skincare.css'),
@@ -877,6 +825,8 @@ Route::prefix('webia/template/retail/luxury/skincare-soft-pink')
 $ns = 'website-bisnis.template.retail.premium-minimal.skincare-warm-neutral';
 $data = [
     'ns' => $ns,
+    'r' => fn (string $name): string => route('skincare-warm-neutral.'.$name),
+    'active' => null,
     'skin' => config('template.retail.premium-minimal.skincare-warm-neutral.skincare'),
 ];
 
@@ -895,13 +845,14 @@ Route::prefix('webia/template/retail/organic/skincare-sage-green')
     ->name('skincare-sage-green.')
     ->group(function () {
         $view = 'website-bisnis.template.retail.organic.skincare-sage-green.';
+        $data = ['r' => fn (string $name): string => route('skincare-sage-green.'.$name)];
 
-        Route::view('/', $view.'index')->name('home');      // Beranda + preview semua fitur
-        Route::view('/katalog', $view.'catalog')->name('catalog'); // Product catalog
-        Route::view('/harga', $view.'price')->name('price');     // Price
-        Route::view('/stok', $view.'stock')->name('stock');     // Stock / availability
-        Route::view('/inquiry', $view.'inquiry')->name('inquiry'); // Inquiry (kirim ke WhatsApp)
-        Route::view('/belanja', $view.'shop')->name('shop');       // Optional e-commerce
+        Route::view('/', $view.'index', $data)->name('home');      // Beranda + preview semua fitur
+        Route::view('/katalog', $view.'catalog', $data)->name('catalog'); // Product catalog
+        Route::view('/harga', $view.'price', $data)->name('price');     // Price
+        Route::view('/stok', $view.'stock', $data)->name('stock');     // Stock / availability
+        Route::view('/inquiry', $view.'inquiry', $data)->name('inquiry'); // Inquiry (kirim ke WhatsApp)
+        Route::view('/belanja', $view.'shop', $data)->name('shop');       // Optional e-commerce
     });
 
 $taNs = 'website-bisnis.template.travel&tourism.modern.travel-agent-ocean-teal';
@@ -1313,7 +1264,7 @@ Route::prefix('webia/template/agriculture-farming/organic/agribisnis-earth-tone'
                 'u' => $urls,
                 'page' => $key,
                 'v' => $viewBase,
-                'css' => asset('css/'.$assetBase.'/logistics-agribisnis.css'),
+                'css' => asset('css/'.$assetBase.'/agribisnis.css'),
                 'js' => asset('js/'.$assetBase.'/agribisnis.js'),
                 'img' => asset('images/'.$assetBase),
             ]);
@@ -1381,6 +1332,64 @@ Route::prefix('webia/template/nonprofit-community/professional/foundation-classi
         Route::view('/chatbot', $base.'.chatbot', $data)->name('chatbot');
     });
 
+Route::prefix('webia/template/nonprofit-community/creative/foundation-nature-green')
+    ->name('webia.template.nonprofit-community.creative.foundation-nature-green.')
+    ->group(function () {
+        $view = 'website-bisnis.template.nonprofit&community.creative.foundation-nature-green.';
+
+        Route::get('/', fn () => view($view.'index'))->name('home');
+        Route::get('/tentang-kami', fn () => view($view.'tentang-kami'))->name('tentang-kami');
+        Route::get('/program', fn () => view($view.'program'))->name('program');
+        Route::get('/dampak', fn () => view($view.'dampak'))->name('dampak');
+        Route::get('/donasi', fn () => view($view.'donasi'))->name('donasi');
+        Route::get('/transparansi', fn () => view($view.'transparansi'))->name('transparansi');
+        Route::get('/mitra', fn () => view($view.'mitra'))->name('mitra');
+        Route::get('/relawan', fn () => view($view.'relawan'))->name('relawan');
+        Route::get('/berita', fn () => view($view.'berita'))->name('berita');
+        Route::get('/ai-chatbot', fn () => view($view.'ai-chatbot'))->name('ai-chatbot');
+    });
+
+Route::prefix('webia/template/nonprofit-community/minimalis/foundation-warm-neutral')
+    ->name('foundation-warm-neutral.')
+    ->group(function () {
+
+        $viewBase = 'website-bisnis.template.nonprofit&community.minimalis.foundation-warm-neutral';
+        $assetDir = 'template/nonprofit&community/minimalis/foundation-warm-neutral';
+
+        // Konten dibaca dari config; jika belum ter-load (mis. config cache lama), baca file langsung.
+        $config = config('template.nonprofit&community.minimalis.foundation-warm-neutral.foundation');
+        if (empty($config) || ! is_array($config)) {
+            $file = base_path('config/'.$assetDir.'/foundation.php');
+            $config = is_file($file) ? require $file : [];
+        }
+
+        $data = [
+            'f' => $config,
+            'v' => $viewBase,
+            'rp' => 'foundation-warm-neutral.',
+            'img' => 'images/website-bisnis/'.$assetDir,
+            'css' => 'css/website-bisnis/'.$assetDir.'/foundation.css',
+            'js' => 'js/website-bisnis/'.$assetDir.'/foundation.js',
+        ];
+
+        $pages = [
+            'home' => ['/',                'index'],
+            'mission-vision' => ['/misi-visi',       'mission-vision'],
+            'programs' => ['/program',         'programs'],
+            'impact' => ['/dampak',          'impact'],
+            'donation' => ['/donasi',          'donation'],
+            'transparency' => ['/transparansi',    'transparency'],
+            'partners' => ['/mitra-sponsor',   'partners'],
+            'volunteer' => ['/relawan',         'volunteer'],
+            'news' => ['/berita-acara',    'news'],
+            'chatbot' => ['/hopebot',         'chatbot'],
+        ];
+
+        foreach ($pages as $name => $page) {
+            Route::view($page[0], $viewBase.'.'.$page[1], $data)->name($name);
+        }
+    });
+
 Route::prefix('webia/template/nonprofit-community/creative/social-organization-tropical-rush')
     ->name('webia.so.')
     ->group(function () {
@@ -1431,6 +1440,347 @@ Route::prefix('webia/template/nonprofit-community/bold/social-organization-citru
         Route::get('/'.$page, fn () => view($view.'halaman', $ctx($page)))->name('citrus.'.$page);
     }
 });
+
+Route::get('/webia/template/photography-creative-studio/bold/ugc-content-creator-studio-pink-voltage/{page?}', function (?string $page = null) {
+    return view('website-bisnis.template.photography-creative-studio.bold.ugc-content-creator-studio-pink-voltage.ugc-content-creator-studio', ['page' => $page ?: 'home']);
+})->where('page', 'home|portofolio|video-ugc|paket|hak-guna|platform|kolaborasi|kampanye|testimoni|tanya-ai')->name('webia.template.ugc-content-creator-studio');
+
+Route::prefix('webia/template/photography-creative-studio/futuristic/ugc-content-creator-studio-dark-mode')
+    ->name('ugc.')
+    ->group(function () {
+        $pages = [
+            'home' => '',
+            'portfolio' => 'creator-portfolio',
+            'samples' => 'ugc-video-samples',
+            'packages' => 'content-packages',
+            'rights' => 'deliverables-usage-rights',
+            'platforms' => 'supported-platforms',
+            'brands' => 'brand-collaborations',
+            'inquiry' => 'campaign-inquiry',
+            'testimonials' => 'client-testimonials',
+            'faq' => 'ai-chatbot-faq',
+        ];
+
+        $view = 'website-bisnis.template.photography-creative-studio.futuristic.ugc-content-creator-studio-dark-mode.ugc-content-creator-studio';
+        $data = require config_path('template/photography-creative-studio/futuristic/ugc-content-creator-studio-dark-mode/ugc-content-creator-studio.php');
+
+        foreach ($pages as $key => $slug) {
+            Route::view($slug, $view, ['page' => $key, 'd' => $data])->name($key);
+        }
+    });
+
+Route::get('/webia/template/wedding-event/bold/event-organizer-sunset-gradient/{page?}', function (?string $page = null) {
+    $path = config_path('template/wedding-event/bold/event-organizer-sunset-gradient/event-organizer.php');
+    $cfg = config('template.wedding-event.bold.event-organizer-sunset-gradient.event-organizer');
+
+    if (! is_array($cfg)) {
+        $cfg = require $path;
+    }
+
+    abort_if($page !== null && ! isset($cfg['pages'][$page]), 404);
+
+    return view('website-bisnis.template.wedding-event.bold.event-organizer-sunset-gradient.event-organizer', [
+        'c' => $cfg,
+        'page' => $page,
+    ]);
+})->where('page', '[a-z\-]+')->name('webia.event-organizer');
+
+Route::prefix('webia/template/wedding-event/creative/event-organizer-purple-dream')
+    ->name('webia.template.event-organizer-purple-dream.')
+    ->group(function () {
+        $view = 'website-bisnis.template.wedding-event.creative.event-organizer-purple-dream.';
+
+        Route::view('/', $view.'beranda', ['page' => 'home'])->name('home');
+        Route::view('/layanan', $view.'layanan', ['page' => 'layanan'])->name('layanan');
+        Route::view('/portofolio', $view.'portofolio', ['page' => 'portofolio'])->name('portofolio');
+        Route::view('/paket-event', $view.'paket-event', ['page' => 'paket'])->name('paket');
+        Route::view('/proyek-kami', $view.'proyek-kami', ['page' => 'proyek'])->name('proyek');
+        Route::view('/klien', $view.'klien', ['page' => 'klien'])->name('klien');
+        Route::view('/proses', $view.'proses', ['page' => 'proses'])->name('proses');
+        Route::view('/penawaran', $view.'penawaran', ['page' => 'penawaran'])->name('penawaran');
+        Route::view('/faq-ai', $view.'faq-ai', ['page' => 'faq'])->name('faq');
+    });
+
+Route::prefix('webia/template/travel-tourism/elegan/umrah-haji-navy-champagne-gold')
+    ->name('umrah-haji-navy.')
+    ->group(function () {
+        $viewBase = 'website-bisnis.template.travel&tourism.elegan.umrah-haji-navy-champagne-gold';
+        $imgBase = 'images/website-bisnis/template/travel&tourism/elegan/umrah-haji-navy-champagne-gold/';
+        $cssFile = 'css/website-bisnis/template/travel&tourism/elegan/umrah-haji-navy-champagne-gold/umrah-haji.css';
+        $jsFile = 'js/website-bisnis/template/travel&tourism/elegan/umrah-haji-navy-champagne-gold/umrah-haji.js';
+        $configKey = 'template.travel&tourism.elegan.umrah-haji-navy-champagne-gold.umrah-haji';
+        $configFile = 'template/travel&tourism/elegan/umrah-haji-navy-champagne-gold/umrah-haji.php';
+
+        // Memuat data statis; jika config belum terbaca, file dimuat langsung
+        $loadData = function () use ($configKey, $configFile) {
+            $data = config($configKey);
+
+            if (! is_array($data)) {
+                $data = require config_path($configFile);
+            }
+
+            return $data;
+        };
+
+        // Membuat response satu halaman
+        $page = function (string $name, string $view) use ($viewBase, $imgBase, $cssFile, $jsFile, $loadData) {
+            $d = $loadData();
+
+            // Awalan nama route diambil dari route yang sedang aktif (aman di dalam group lain)
+            $currentRoute = (string) Route::currentRouteName();
+            $routePrefix = substr($currentRoute, 0, (int) strrpos($currentRoute, '.'));
+
+            return view($viewBase.'.'.$view, [
+                'd' => $d,
+                'page' => $name,
+                'v' => $viewBase,
+                'css' => asset($cssFile),
+                'js' => asset($jsFile),
+                'img' => fn ($file) => asset($imgBase.$file),
+                'r' => fn ($route) => route($routePrefix.'.'.$route),
+                'rp' => fn ($n) => 'Rp '.number_format($n, 0, ',', '.'),
+                'wa' => fn ($text = null) => 'https://wa.me/'.$d['contact']['wa'].($text ? '?text='.rawurlencode($text) : ''),
+            ]);
+        };
+
+        Route::get('/', fn () => $page('home', 'umrah-haji'))->name('home');
+        Route::get('paket-umrah-haji', fn () => $page('paket', 'paket'))->name('paket');
+        Route::get('jadwal-keberangkatan', fn () => $page('jadwal', 'jadwal'))->name('jadwal');
+        Route::get('harga-paket', fn () => $page('harga', 'harga'))->name('harga');
+        Route::get('hotel-pesawat', fn () => $page('hotel', 'hotel'))->name('hotel');
+        Route::get('itinerary', fn () => $page('itinerary', 'itinerary'))->name('itinerary');
+        Route::get('tim-kami', fn () => $page('tim', 'tim'))->name('tim');
+        Route::get('persyaratan', fn () => $page('persyaratan', 'persyaratan'))->name('persyaratan');
+        Route::get('testimoni', fn () => $page('testimoni', 'testimoni'))->name('testimoni');
+        Route::get('ai-chat', fn () => $page('chat', 'chat'))->name('chat');
+    });
+
+view()->composer(
+    'website-bisnis.template.travel&tourism.classic.umrah-haji-emerald-green.*',
+    function ($view) {
+        $request = request();
+        $shared = $request->attributes->get('umrah-haji-emerald-green.shared');
+
+        if ($shared === null) {
+            $uh = config('template.travel&tourism.classic.umrah-haji-emerald-green.umrah-haji');
+            $imgBase = 'images/website-bisnis/template/travel&tourism/classic/umrah-haji-emerald-green/';
+            $prefix = 'umrah-haji-emerald-green.';
+            $name = optional($request->route())->getName();
+            $active = is_string($name) && str_starts_with($name, $prefix)
+                ? substr($name, strlen($prefix))
+                : 'home';
+
+            $url = fn (string $key) => route($prefix.$key);
+            $img = fn (string $file) => asset($imgBase.$file);
+            $wa = fn (string $text) => 'https://wa.me/'.$uh['brand']['whatsapp'].'?text='.rawurlencode($text);
+
+            $icons = [
+                'packages' => 'kaaba',
+                'schedules' => 'calendar',
+                'prices' => 'tag',
+                'hotel-flight' => 'hotel',
+                'itinerary' => 'route',
+                'team' => 'guide',
+                'requirements' => 'file',
+                'testimonials' => 'star',
+            ];
+
+            // indeks pencarian
+            $search = [];
+            foreach ($uh['nav'] as $item) {
+                if ($item['key'] === 'home') {
+                    continue;
+                }
+                $search[] = [
+                    'label' => $item['label'],
+                    'text' => $uh['pages'][$item['key']]['text'] ?? '',
+                    'url' => $url($item['key']),
+                    'icon' => $icons[$item['key']] ?? 'file',
+                    'group' => 'Halaman',
+                    'keys' => '',
+                ];
+            }
+            foreach ($uh['packages'] as $pkg) {
+                $search[] = [
+                    'label' => $pkg['name'],
+                    'text' => $pkg['duration'].' · mulai '.$pkg['price'],
+                    'url' => $url('packages').'#'.$pkg['slug'],
+                    'icon' => 'kaaba',
+                    'keys' => $pkg['type'].' '.$pkg['route'],
+                ];
+            }
+            $search[] = [
+                'label' => $uh['pages']['chatbot']['title'],
+                'text' => $uh['pages']['chatbot']['text'],
+                'url' => $url('chatbot'),
+                'icon' => 'message',
+                'group' => 'Halaman',
+                'keys' => 'faq tanya chat bantuan',
+            ];
+
+            // FAQ chatbot (tautan sudah berupa URL penuh)
+            $faq = [];
+            foreach ($uh['faq'] as $f) {
+                $faq[] = [
+                    'keys' => $f['keys'],
+                    'a' => $f['a'],
+                    'url' => isset($f['link']) ? $url($f['link']) : null,
+                    'link_label' => $f['link_label'] ?? null,
+                ];
+            }
+
+            $shared = [
+                'uh' => $uh,
+                'active' => $active,
+                'url' => $url,
+                'img' => $img,
+                'wa' => $wa,
+                'css' => asset('css/website-bisnis/template/travel&tourism/classic/umrah-haji-emerald-green/umrah-haji.css'),
+                'js' => asset('js/website-bisnis/template/travel&tourism/classic/umrah-haji-emerald-green/umrah-haji.js'),
+                'jsData' => [
+                    'wa' => $wa($uh['hero']['wa_consult']),
+                    'waNumber' => $uh['brand']['whatsapp'],
+                    'waIntro' => $uh['requirements']['form']['intro'],
+                    'popular' => $uh['search_popular'],
+                    'ai' => ['welcome' => $uh['ai']['welcome'], 'fallback' => $uh['ai']['fallback']],
+                    'faq' => $faq,
+                    'search' => $search,
+                ],
+            ];
+
+            $request->attributes->set('umrah-haji-emerald-green.shared', $shared);
+        }
+
+        $view->with($shared);
+    }
+);
+
+// ---- Halaman ----
+Route::prefix('webia/template/travel-tourism/classic/umrah-haji-emerald-green')
+    ->name('umrah-haji-emerald-green.')
+    ->group(function () {
+        $v = 'website-bisnis.template.travel&tourism.classic.umrah-haji-emerald-green';
+
+        Route::view('/', $v.'.index')->name('home');
+        Route::view('/paket', $v.'.packages')->name('packages');
+        Route::view('/jadwal', $v.'.schedules')->name('schedules');
+        Route::view('/harga', $v.'.prices')->name('prices');
+        Route::view('/hotel-pesawat', $v.'.hotel-flight')->name('hotel-flight');
+        Route::view('/itinerary', $v.'.itinerary')->name('itinerary');
+        Route::view('/tim', $v.'.team')->name('team');
+        Route::view('/persyaratan', $v.'.requirements')->name('requirements');
+        Route::view('/testimoni', $v.'.testimonials')->name('testimonials');
+        Route::view('/chatbot', $v.'.chatbot')->name('chatbot');
+    });
+
+Route::prefix('webia/template/professional-service/artistic/branding-creative-agency-terracotta')
+    ->name('bca-terracotta.')
+    ->group(function () {
+        $view = 'website-bisnis.template.professional-service.artistic.branding-creative-agency-terracotta.branding-creative-agency';
+        $conf = 'template.professional-service.artistic.branding-creative-agency-terracotta.branding-creative-agency';
+        $path = 'website-bisnis/template/professional-service/artistic/branding-creative-agency-terracotta';
+
+        $pages = [
+            'home' => '/',
+            'layanan' => 'layanan',
+            'keahlian' => 'keahlian',
+            'harga' => 'harga-konsultasi',
+            'portofolio' => 'portofolio',
+            'janji' => 'janji-temu',
+            'brief' => 'brief-proyek',
+        ];
+
+        foreach ($pages as $name => $uri) {
+            Route::get($uri, function () use ($name, $view, $conf, $path) {
+                return view($view, [
+                    'page' => $name,
+                    'c' => config($conf),
+                    'r' => fn (string $n) => route('bca-terracotta.'.$n),
+                    'img' => fn (string $f) => asset('images/'.$path.'/'.$f),
+                    'css' => asset('css/'.$path.'/branding-creative-agency.css'),
+                    'js' => asset('js/'.$path.'/branding-creative-agency.js'),
+                ]);
+            })->name($name);
+        }
+    });
+
+Route::prefix('webia/template/professional-service/creative/branding-creative-agency-cobalt-pop')
+    ->name('webia.template.professional-service.creative.branding-creative-agency-cobalt-pop.')
+    ->group(function () {
+        $v = 'website-bisnis.template.professional-service.creative.branding-creative-agency-cobalt-pop.';
+
+        Route::view('/', $v.'index')->name('home');
+        Route::view('/about-us', $v.'about')->name('about');
+        Route::view('/services', $v.'services')->name('services');
+        Route::view('/portfolio', $v.'portfolio')->name('portfolio');
+        Route::view('/branding-showcase', $v.'branding-showcase')->name('branding-showcase');
+        Route::view('/our-process', $v.'process')->name('process');
+        Route::view('/our-team', $v.'team')->name('team');
+        Route::view('/our-clients', $v.'clients')->name('clients');
+        Route::view('/testimonials', $v.'testimonials')->name('testimonials');
+        Route::view('/creative-journal', $v.'journal')->name('journal');
+        Route::view('/contact-us', $v.'contact')->name('contact');
+    });
+
+Route::prefix('webia/template/home-services/organic/home-renovation-repair-sage-green')
+    ->name('webia.template.home-services.organic.home-renovation-repair-sage-green.')
+    ->group(function () {
+        $view = 'website-bisnis.template.home-services.organic.home-renovation-repair-sage-green';
+
+        Route::view('/', "{$view}.home", ['page' => 'home'])->name('home');
+        Route::view('/layanan', "{$view}.pages.layanan", ['page' => 'layanan'])->name('layanan');
+        Route::view('/paket-layanan', "{$view}.pages.paket-layanan", ['page' => 'paket-layanan'])->name('paket-layanan');
+        Route::view('/galeri', "{$view}.pages.galeri", ['page' => 'galeri'])->name('galeri');
+        Route::view('/proyek', "{$view}.pages.proyek", ['page' => 'proyek'])->name('proyek');
+        Route::view('/area-layanan', "{$view}.pages.area-layanan", ['page' => 'area-layanan'])->name('area-layanan');
+        Route::view('/proses-kerja', "{$view}.pages.proses-kerja", ['page' => 'proses-kerja'])->name('proses-kerja');
+        Route::view('/permintaan-penawaran', "{$view}.pages.permintaan-penawaran", ['page' => 'permintaan-penawaran'])->name('permintaan-penawaran');
+        Route::view('/booking-survei', "{$view}.pages.booking-survei", ['page' => 'booking-survei'])->name('booking-survei');
+    });
+
+Route::prefix('webia/template/home-services/vintage/home-renovation-repair-chocolate-luxe')
+    ->name('webia.template.home-services.vintage.home-renovation-repair-chocolate-luxe.')
+    ->group(function () {
+        $view = 'website-bisnis.template.home-services.vintage.home-renovation-repair-chocolate-luxe.home-renovation-repair';
+
+        // Beranda (preview semua section + AI chatbot)
+        Route::view('/', $view, ['page' => 'home'])->name('home');
+
+        // Halaman tersendiri tiap section
+        Route::view('/layanan', $view, ['page' => 'layanan'])->name('layanan');                              // Renovation & repair services
+        Route::view('/paket-layanan', $view, ['page' => 'paket'])->name('paket');                            // Service packages
+        Route::view('/galeri', $view, ['page' => 'galeri'])->name('galeri');                                 // Before-after gallery
+        Route::view('/proyek-kami', $view, ['page' => 'proyek'])->name('proyek');                            // Past projects
+        Route::view('/area-layanan', $view, ['page' => 'area'])->name('area');                               // Service coverage
+        Route::view('/proses-kerja', $view, ['page' => 'proses'])->name('proses');                           // Work process
+        Route::view('/permintaan-penawaran', $view, ['page' => 'penawaran'])->name('penawaran');             // Quotation request
+        Route::view('/booking-survei', $view, ['page' => 'survei'])->name('survei');                         // Site survey booking
+    });
+
+Route::prefix('webia/template/interior-architecture/rustic/architecture-building-design-chocolate-luxe')
+    ->name('webia.template.architecture-building-design.')
+    ->group(function () {
+        $v = 'website-bisnis.template.interior&architecture.rustic.architecture-building-design-chocolate-luxe';
+
+        Route::view('/', $v.'.beranda')->name('beranda');
+        Route::view('/portofolio', $v.'.portofolio')->name('portofolio');
+        Route::view('/proyek', $v.'.proyek')->name('proyek');
+        Route::view('/layanan', $v.'.layanan')->name('layanan');
+        Route::view('/denah-3d', $v.'.denah-3d')->name('denah-3d');
+        Route::view('/proses', $v.'.proses')->name('proses');
+        Route::view('/sertifikasi', $v.'.sertifikasi')->name('sertifikasi');
+        Route::view('/konsultasi', $v.'.konsultasi')->name('konsultasi');
+        Route::view('/penawaran', $v.'.penawaran')->name('penawaran');
+    });
+
+$prefix = '/webia/template/libraries-digital-archives/modern/digital-library-platform-ocean-blue';
+$view = 'website-bisnis.template.libraries-digital-archives.modern.digital-library-platform-ocean-blue';
+
+Route::get($prefix, fn () => view($view.'.index'))->name('webia.dl.home');
+
+foreach (['katalog', 'kategori', 'detail-buku', 'baca', 'koleksi-pilihan', 'terbaru', 'terpopuler', 'akademik', 'keanggotaan', 'tentang-kami', 'knowledge-hub', 'artikel', 'faq', 'kontak', 'masuk', 'daftar', 'dashboard', 'pinjaman', 'riwayat', 'wishlist', 'profil'] as $slug) {
+    Route::get($prefix.'/'.$slug, fn () => view($view.'.page', ['page' => $slug]))->name('webia.dl.'.$slug);
+}
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -1534,6 +1884,18 @@ Route::prefix('webia/template')->group(function () {
     )->name('webia.template.aria-thorne-author-writer');
 });
 
+Route::prefix('webia/template')->group(function () {
+    Route::view(
+        '/arya-sanjaya-ruby-editorial',
+        'website-bisnis.templates.personal-brand.author-writer.arya-sanjaya-ruby-editorial'
+    )->name('webia.template.personal-brand.arya-sanjaya-ruby-editorial');
+
+    Route::view(
+        '/arya-sanjaya-plum-velvet',
+        'website-bisnis.templates.personal-brand.author-writer.arya-sanjaya-plum-velvet'
+    )->name('webia.template.personal-brand.arya-sanjaya-plum-velvet');
+});
+
 Route::view(
     'webia/template/fnb/restaurant/little-corner',
     'website-bisnis.templates.fnb.little-corner'
@@ -1628,17 +1990,6 @@ Route::prefix('templates/ruby-luxe')->name('ruby-luxe.')->group(function () use 
 //     'webia/template/property/coral-haven',
 //     'website-bisnis.template.property.perumahan.coral-haven'
 // )->name('webia.templates.coral-haven');
-// Route::view('/template/salon-modern-sage', 'website-bisnis.templates.salon-modern-sage')
-//     ->name('template.salon-modern-sage');
-// Route::view(
-//     '/template/salon-classic-warm-neutral',
-//     'website-bisnis.templates.salon-classic-warm-neutral'
-// )->name('template.salon-classic-warm-neutral');
-
-// Route::view(
-//     '/template/salon-elegant-soft-pink',
-//     'website-bisnis.templates.salon-elegant-soft-pink'
-// )->name('template.salon-elegant-soft-pink');
 
 Route::view(
     'webia/template/property/coral-haven',
@@ -1646,20 +1997,22 @@ Route::view(
 )->name('webia.templates.coral-haven');
 
 // WEBIA — Indra Automotive templates.
+
+// WEBIA — Indra Wedding & Fitness templates.
 Route::view(
-    '/webia/template/tidal-detail-artistic-automotive',
-    'website-bisnis.templates.automotive.artistic'
-)->name('webia.template.automotive.tidal-detail-artistic');
+    '/webia/template/wedding-event/catering-wedding-cake/solenne-sunshine',
+    'website-bisnis.templates.wedding-event.Catering-Wedding-Cake.solenne-sunshine.solenne-sunshine'
+)->name('webia.template.wedding-event.solenne-sunshine');
 
 Route::view(
-    '/webia/template/noir-atelier-luxury-automotive',
-    'website-bisnis.templates.automotive.luxury'
-)->name('webia.template.automotive.noir-atelier-luxury');
+    '/webia/template/sports-fitness/personal-trainer/northline-blue',
+    'website-bisnis.templates.sports-fitness.personal-trainer.northline-blue.northline-blue'
+)->name('webia.template.sports-fitness.northline-blue');
 
 Route::view(
-    '/webia/template/form-auto-care-minimal-automotive',
-    'website-bisnis.templates.automotive.minimal'
-)->name('webia.template.automotive.form-auto-care-minimal');
+    '/webia/template/sports-fitness/personal-trainer/cyber-neon',
+    'website-bisnis.templates.sports-fitness.personal-trainer.cyber-neon.cyber-neon'
+)->name('webia.template.sports-fitness.cyber-neon');
 
 Route::prefix('webia/template')->group(function () {
     Route::view(
@@ -1670,6 +2023,14 @@ Route::prefix('webia/template')->group(function () {
         '/lentera-nusantara-volunteer-group',
         'website-bisnis.templates.nonprofit-community.volunteer-group.lentera-nusantara.lentera-nusantara'
     )->name('webia.template.lentera-nusantara-volunteer-group');
+    Route::view(
+        '/relakita-volunteer-warm-sunrise',
+        'website-bisnis.templates.nonprofit-community.relakita-volunteer-warm-sunrise'
+    )->name('webia.template.nonprofit-community.relakita-volunteer-warm-sunrise');
+    Route::view(
+        '/kolektif-aksi-kita-volunteer-midnight-navy',
+        'website-bisnis.templates.nonprofit-community.kolektif-aksi-kita-volunteer-midnight-navy'
+    )->name('webia.template.nonprofit-community.kolektif-aksi-kita-volunteer-midnight-navy');
     Route::view(
         '/ironpulse-gym-fitness-center',
         'website-bisnis.templates.sports-fitness.gym-fitness-center.ironpulse.ironpulse'
@@ -1694,4 +2055,53 @@ Route::prefix('webia/template')->group(function () {
         '/sakurabit-hardware-computer-networking',
         'website-bisnis.templates.technology.hardware-computer-networking.sakurabit.sakurabit'
     )->name('webia.template.sakurabit-hardware-computer-networking');
+    Route::view(
+        '/cyberwave-hardware-computer-networking',
+        'website-bisnis.templates.technology.hardware-computer-networking.cyberwave.cyberwave'
+    )->name('webia.template.cyberwave-hardware-computer-networking');
+    Route::view(
+        '/aetherion-digital-hardware-universe',
+        'website-bisnis.templates.technology.hardware-computer-networking.aetherion.aetherion'
+    )->name('webia.template.aetherion-digital-hardware-universe');
+    Route::view(
+        '/baitul-safar-umrah-haji',
+        'website-bisnis.templates.travel-tourism.umrah-haji.baitul-safar.baitul-safar'
+    )->name('webia.template.baitul-safar-umrah-haji');
+    Route::view(
+        '/wildtrail-adventure-outdoor',
+        'website-bisnis.templates.travel-tourism.adventure-outdoor-tour.wildtrail.wildtrail'
+    )->name('webia.template.wildtrail-adventure-outdoor');
+    Route::view(
+        '/verba-translation-interpreter',
+        'website-bisnis.templates.professional-service.translation-interpreter.verba.verba'
+    )->name('webia.template.verba-translation-interpreter');
+    Route::view(
+        '/vanguard-lawyer',
+        'website-bisnis.templates.professional-service.lawyer.vanguard.vanguard'
+    )->name('webia.template.vanguard-lawyer');
+
+    Route::view(
+        '/strike-branding-creative',
+        'website-bisnis.templates.professional-service.branding-creative.strike.strike'
+    )->name('webia.template.strike-branding-creative');
+    Route::view(
+        '/blushbowl-diet-meal',
+        'website-bisnis.templates.food-subscription.diet-meal.blushbowl.blushbowl'
+    )->name('webia.template.blushbowl.diet-meal');
+    Route::view(
+        '/sodatable-family-meal-plan',
+        'website-bisnis.templates.food-subscription.weekly-family-meal-plan.sodatable.sodatable'
+    )->name('webia.template.sodatable-family-meal-plan');
+    Route::view(
+        '/tirtaceria-swim-academy',
+        'website-bisnis.templates.sports.swimming-school.tirtaceria.tirtaceria'
+    )->name('webia.template.tirtaceria-swim-academy');
+    Route::view(
+        '/splashkids-swim-school',
+        'website-bisnis.templates.sports.swimming-school.splashkids.splashkids'
+    )->name('webia.template.splashkids-swim-school');
 });
+
+Route::get('webia/template/{path}', TemplatePreviewController::class)
+    ->where('path', '.*')
+    ->name('webia.template.preview');

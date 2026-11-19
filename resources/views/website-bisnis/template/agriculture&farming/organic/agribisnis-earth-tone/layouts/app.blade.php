@@ -1,3 +1,9 @@
+{{-- Path aset ditulis langsung di layout (tidak bergantung pada variabel dari route), agar agribisnis.css / agribisnis.js selalu terbaca. --}}
+@php
+    $assetPath = 'website-bisnis/template/agriculture&farming/organic/agribisnis-earth-tone';
+    $cssUrl = asset('css/' . $assetPath . '/agribisnis.css');
+    $jsUrl  = asset('js/' . $assetPath . '/agribisnis.js');
+@endphp
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -12,7 +18,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
     <script>document.documentElement.className += " js";</script>
-    <link rel="stylesheet" href="{{ $css }}">
+    <link rel="stylesheet" href="{{ $cssUrl }}">
     @stack('head')
 </head>
 <body class="ag-body" data-page="{{ $page }}">
@@ -43,7 +49,7 @@
         'pages'    => $data['pages'],
         'commodities' => $data['commodities'],
     ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) !!}</script>
-    <script src="{{ $js }}" defer></script>
+    <script src="{{ $jsUrl }}" defer></script>
     @stack('scripts')
 </body>
 </html>

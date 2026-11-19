@@ -6,7 +6,7 @@
             <h2 class="el-title" id="schedulesTitle">{{ $e['pages']['schedules']['title'] }}</h2>
             <p class="el-sub">{{ $full ? 'Pilih kelas live yang cocok dengan waktumu.' : 'Jadwal kelas terbaru untuk kamu.' }}</p>
         </div>
-        @unless ($full)<a class="el-link" href="{{ route('elearning.schedules') }}">Lihat Semua <svg class="el-ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>@endunless
+        @unless ($full)<a class="el-link" href="{{ $r('elearning.schedules') }}">Lihat Semua <svg class="el-ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>@endunless
     </header>
 
     @if ($full)
@@ -29,7 +29,7 @@
                 </div>
                 <span class="el-badge {{ $s['mode'] === 'Online' ? 'el-badge--online' : 'el-badge--hybrid' }}">{{ $s['mode'] }}</span>
                 @if ($full)
-                    <a class="el-btn el-btn--soft el-btn--sm" href="{{ route('elearning.registration', ['schedule' => $s['title']]) }}">Daftar kelas</a>
+                    <a class="el-btn el-btn--soft el-btn--sm" href="{{ $r('elearning.registration', ['schedule' => $s['title']]) }}">Daftar kelas</a>
                 @endif
             </li>
         @endforeach

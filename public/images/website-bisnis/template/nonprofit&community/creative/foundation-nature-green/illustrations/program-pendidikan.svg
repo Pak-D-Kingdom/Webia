@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 220" role="img" aria-label="Ilustrasi buku terbuka dengan tunas">
+  <defs>
+    <linearGradient id="bk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3d8a34"/><stop offset="1" stop-color="#1d4723"/></linearGradient>
+  </defs>
+  <circle cx="240" cy="120" r="96" fill="#8cc63f" opacity=".12"/>
+  <circle cx="240" cy="120" r="66" fill="#8cc63f" opacity=".12"/>
+  <g transform="translate(240 134)">
+    <path d="M-132 -60C-88 -80 -34 -78 0 -58C34 -78 88 -80 132 -60V68C88 52 34 54 0 74C-34 54 -88 52 -132 68Z" fill="url(#bk)"/>
+    <path d="M-120 -54C-82 -72 -34 -70 -5 -50V60C-34 44 -82 44 -120 58Z" fill="#f4f7e4"/>
+    <path d="M120 -54C82 -72 34 -70 5 -50V60C34 44 82 44 120 58Z" fill="#e3efc9"/>
+    <g stroke="#a9c27a" stroke-width="4" stroke-linecap="round" fill="none">
+      <path d="M-98 -30C-76 -38 -50 -38 -26 -30"/><path d="M-98 -10C-76 -18 -50 -18 -26 -10"/><path d="M-98 10C-76 2 -50 2 -26 10"/><path d="M-98 30C-76 22 -50 22 -26 30"/>
+      <path d="M98 -30C76 -38 50 -38 26 -30"/><path d="M98 -10C76 -18 50 -18 26 -10"/><path d="M98 10C76 2 50 2 26 10"/><path d="M98 30C76 22 50 22 26 30"/>
+    </g>
+    <path d="M0 -50V62" stroke="#b9cf8e" stroke-width="3"/>
+  </g>
+  <path d="M240 84V40" stroke="#8cc63f" stroke-width="5" stroke-linecap="round" fill="none"/>
+  <path d="M240 58C222 58 210 48 208 34C226 34 240 42 240 58Z" fill="#b4dc6e"/>
+  <path d="M240 50C258 50 270 40 272 26C254 26 240 34 240 50Z" fill="#8cc63f"/>
+  <g fill="#f6d365">
+    <path transform="translate(120 52)" d="M0-11L3-3L11 0L3 3L0 11L-3 3L-11 0L-3-3Z"/>
+    <path transform="translate(366 62)" d="M0-9L2.5-2.5L9 0L2.5 2.5L0 9L-2.5 2.5L-9 0L-2.5-2.5Z"/>
+    <path transform="translate(410 128) scale(.8)" d="M0-11L3-3L11 0L3 3L0 11L-3 3L-11 0L-3-3Z"/>
+    <path transform="translate(70 130) scale(.7)" d="M0-11L3-3L11 0L3 3L0 11L-3 3L-11 0L-3-3Z"/>
+  </g>
+</svg>

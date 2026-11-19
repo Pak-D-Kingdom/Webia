@@ -1,21 +1,20 @@
 @php
     $mode = $mode ?? 'preview';
     $faqById = collect($laundry['faq'])->keyBy('id');
-    $quick = collect($laundry['chatbot']['quick'])->map(fn ($id) => $faqById[$id] ?? null)->filter();
 @endphp
 @if ($mode === 'preview')
 <article class="lb-card lb-ai" aria-labelledby="lb-ai-title">
-    <div class="lb-ai__bubble">
-        <svg class="lb-ai__heart lb-i" aria-hidden="true"><use href="#i-heart"/></svg>
-        <h2 id="lb-ai-title"><a href="{{ route('webia.laundry-baby-blue.ai-chatbot') }}">{{ $laundry['chatbot']['name'] }}</a></h2>
-        <p>{{ $laundry['chatbot']['sub'] }}</p>
-    </div>
-    <div class="lb-ai__scene">
-        <img src="{{ asset($laundry['assets']['img'] . '/ai-mascot-scene.webp') }}" alt="Maskot robot AI BlueLaundry dengan laptop, deterjen, dan setrika" width="262" height="168" loading="lazy">
-    </div>
+    <header class="lb-ai__head">
+        <span class="lb-ai__avatar"><img src="{{ asset($laundry['assets']['img'] . '/ai-robot-head.png') }}" alt="" width="44" height="27" loading="lazy"><i class="lb-ai__dot" aria-hidden="true"></i></span>
+        <div>
+            <h2 id="lb-ai-title"><a href="{{ route('webia.laundry-baby-blue.ai-chatbot') }}">{{ $laundry['chatbot']['name'] }}</a></h2>
+            <p>Tanya seputar harga, layanan, atau proses laundry.</p>
+        </div>
+    </header>
     <ul class="lb-ai__chips">
-        @foreach ($quick as $f)
-            <li><button type="button" class="lb-qchip" data-lb-ask="{{ $f['q'] }}"><span class="lb-qchip__dot" aria-hidden="true"><svg class="lb-i"><use href="#i-sparkle"/></svg></span>{{ $f['q'] }}</button></li>
+        @foreach ($laundry['chatbot']['quick'] as $id)
+            @continue(! isset($faqById[$id]))
+            <li><button type="button" class="lb-qchip" data-lb-ask="{{ $faqById[$id]['q'] }}">{{ $faqById[$id]['q'] }}</button></li>
         @endforeach
     </ul>
     <form class="lb-ai__form" data-lb-ask-form autocomplete="off">

@@ -34,14 +34,16 @@
         </p>
 
         <p class="pcard__meta">
-            <span class="rating"><svg class="ico"><use href="#i-star"/></svg>{{ number_format($p['rating'], 1, '.', '') }} <small>({{ $p['reviews'] }})</small></span>
+            @unless ($cfg['customer_site'] ?? false)
+                <span class="rating"><svg class="ico"><use href="#i-star"/></svg>{{ number_format($p['rating'], 1, '.', '') }} <small>({{ $p['reviews'] }})</small></span>
+            @endunless
             <span class="stock stock--{{ $p['status'] }}"><i></i>
                 @if($p['status'] === 'tersedia') Stok Tersedia @elseif($p['status'] === 'terbatas') Sisa {{ $p['stock'] }} @else Stok Habis @endif
             </span>
         </p>
 
         @if($p['status'] === 'habis')
-            <a class="btn btn--block btn--soft" href="https://wa.me/{{ $cfg['whatsapp']['number'] }}?text={{ rawurlencode('Halo PureGlow, tolong kabari saya jika ' . $p['name'] . ' sudah tersedia kembali.') }}" target="_blank" rel="noopener noreferrer">
+            <a class="btn btn--block btn--soft" href="https://wa.me/{{ $cfg['whatsapp']['number'] }}?text={{ rawurlencode('Halo ' . $cfg['brand']['name'] . ', tolong kabari saya jika ' . $p['name'] . ' sudah tersedia kembali.') }}" target="_blank" rel="noopener noreferrer">
                 <svg class="ico"><use href="#i-bell"/></svg> Kabari Saya
             </a>
         @else
@@ -53,7 +55,7 @@
         @if($mode === 'catalog')
             <div class="pcard__links">
                 <button type="button" data-quickview="{{ $p['slug'] }}"><svg class="ico"><use href="#i-eye"/></svg> Detail</button>
-                <a href="https://wa.me/{{ $cfg['whatsapp']['number'] }}?text={{ rawurlencode('Halo PureGlow, saya ingin bertanya tentang ' . $p['name'] . '.') }}" target="_blank" rel="noopener noreferrer"><svg class="ico"><use href="#i-whatsapp"/></svg> Tanya</a>
+                <a href="https://wa.me/{{ $cfg['whatsapp']['number'] }}?text={{ rawurlencode('Halo ' . $cfg['brand']['name'] . ', saya ingin bertanya tentang ' . $p['name'] . '.') }}" target="_blank" rel="noopener noreferrer"><svg class="ico"><use href="#i-whatsapp"/></svg> Tanya</a>
             </div>
         @endif
     </div>

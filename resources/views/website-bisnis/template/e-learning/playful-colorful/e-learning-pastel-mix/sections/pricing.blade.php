@@ -7,7 +7,7 @@
                 <h2 id="pricing-title">Harga Paket</h2>
                 <p>Pilih paket sesuai dengan kebutuhanmu.</p>
             </div>
-            <a class="link-more" href="{{ route($rp.'pricing') }}">Lihat Semua <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+            <a class="link-more" href="{{ $r($rp.'pricing') }}">Lihat Semua <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
         </header>
     @else
         <h2 id="pricing-title" class="sr-only">Paket harga</h2>
@@ -25,7 +25,7 @@
                         @foreach ($pl['features'] as $f)<li><i class="bi bi-check-circle-fill" aria-hidden="true"></i>{{ $f }}</li>@endforeach
                     </ul>
                 @endif
-                <a class="btn btn--block btn--{{ $pl['tone'] }}" href="{{ route($rp.'registration', ['plan' => $pl['key']]) }}">Pilih Paket</a>
+                <a class="btn btn--block btn--{{ $pl['tone'] }}" href="{{ $r($rp.'registration', ['plan' => $pl['key']]) }}">Pilih Paket</a>
             </article>
         @endforeach
     </div>

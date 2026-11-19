@@ -1,6 +1,6 @@
 @php
-    $links = collect($cafe['footer']['links'])->map(function ($l) use ($cafe) {
-        $l['href'] = route($cafe['routes'][$l['route']]) . (isset($l['anchor']) ? '#' . $l['anchor'] : '');
+    $links = collect($cafe['footer']['links'])->map(function ($l) use ($routeUrl) {
+        $l['href'] = $routeUrl($l['route'], isset($l['anchor']) ? '#'.$l['anchor'] : '');
         return $l;
     });
     $half = (int) ceil($links->count() / 2);
@@ -11,7 +11,7 @@
 
     <div class="kl-footer__inner">
         <div class="kl-footer__brand">
-            <a class="kl-footer__logo" href="{{ route($cafe['routes']['home']) }}" aria-label="{{ $cafe['brand']['name'] }}">
+            <a class="kl-footer__logo" href="{{ $routeUrl('home') }}" aria-label="{{ $cafe['brand']['name'] }}">
                 <img src="{{ $img('footer-logo-icon.png') }}" alt="" width="38" height="26" loading="lazy">
                 <span class="kl-footer__logo-name">{{ $cafe['brand']['name'] }}</span>
                 <span class="kl-footer__logo-tag">{{ $cafe['brand']['tagline'] }}</span>

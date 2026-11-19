@@ -17,7 +17,7 @@
             <ul class="gl-grid gl-grid--4">
                 @foreach ($clinic['policies'] as $p)
                     <li>
-                        <a class="gl-card gl-policycard" href="{{ route('klinik-kecantikan.policy') }}#{{ $p['slug'] }}">
+                        <a class="gl-card gl-policycard" href="{{ $r('klinik-kecantikan.policy') }}#{{ $p['slug'] }}">
                             <span class="gl-panel__icon"><svg class="gl-ic" aria-hidden="true"><use href="#gl-i-{{ $p['icon'] }}"/></svg></span>
                             <h3 class="gl-card__title">{{ $p['title'] }}</h3>
                             <p class="gl-card__text">{{ $p['short'] }}</p>

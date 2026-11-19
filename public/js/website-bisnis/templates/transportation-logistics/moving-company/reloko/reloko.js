@@ -119,20 +119,54 @@
     $('#printChecklist')?.addEventListener('click', () => window.print());
     updateChecklistProgress();
 
-    // UI placeholder until the AI team connects the chatbot service.
-    window.handleRelokoMessage = event => {
+    // Connected to AI Assistant service with offline demo fallback
+    window.handleRelokoMessage = async event => {
         event.preventDefault();
         const input = $('#relokoInput'), messages = $('#relokoMessages'), value = input?.value?.trim();
         if (!value || !messages) return;
         const userBubble = document.createElement('div');
         userBubble.className = 'bg-tealBrand-600 text-white p-3 rounded-2xl rounded-tr-none font-mono text-xs ml-auto max-w-[80%] shadow-sm';
         userBubble.textContent = value; messages.appendChild(userBubble); input.value = ''; messages.scrollTop = messages.scrollHeight;
-        window.setTimeout(() => {
+
+        // Indikator respon
+        const typingIndicator = document.createElement('div');
+        typingIndicator.className = 'bg-white p-3 rounded-2xl rounded-tl-none border border-warmSand-300 text-tealBrand-dark font-mono text-xs max-w-[85%] shadow-sm italic text-gray-400';
+        typingIndicator.textContent = 'Menghubungkan ke Asisten Reloko...';
+        messages.appendChild(typingIndicator);
+        messages.scrollTop = messages.scrollHeight;
+
+        const tenantId = window.PAKDE_TENANT_ID || 'tenant_logistics_01';
+        const apiUrl = window.PAKDE_API_URL || 'http://localhost:8001/api/v1/chat';
+
+        try {
+            const res = await fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Site-Key': 'site_webia_public'
+                },
+                body: JSON.stringify({
+                    layer: 'l4',
+                    tenant_id: tenantId,
+                    messages: [{ role: 'user', content: value }]
+                })
+            });
+            if (!res.ok) throw new Error('API offline');
+            const data = await res.json();
+            typingIndicator.remove();
             const reply = document.createElement('div');
             reply.className = 'bg-white p-3 rounded-2xl rounded-tl-none border border-warmSand-300 text-tealBrand-dark font-mono text-xs max-w-[85%] shadow-sm';
-            reply.textContent = 'Terima kasih! Asisten Reloko akan membantu kebutuhan pindahan Anda. Untuk konsultasi langsung, silakan kirim permintaan melalui tombol WhatsApp.';
-            messages.appendChild(reply); messages.scrollTop = messages.scrollHeight;
-        }, 500);
+            reply.textContent = data.reply || data.response || 'Terima kasih! Kebutuhan pindahan Anda siap kami bantu.';
+            messages.appendChild(reply);
+            messages.scrollTop = messages.scrollHeight;
+        } catch (err) {
+            typingIndicator.remove();
+            const reply = document.createElement('div');
+            reply.className = 'bg-white p-3 rounded-2xl rounded-tl-none border border-warmSand-300 text-tealBrand-dark font-mono text-xs max-w-[85%] shadow-sm';
+            reply.textContent = 'Terima kasih! Asisten Reloko siap membantu kebutuhan pindahan Anda. Untuk konsultasi langsung atau booking jadwal, silakan hubungi tim kami via WhatsApp.';
+            messages.appendChild(reply);
+            messages.scrollTop = messages.scrollHeight;
+        }
     };
 
     const canvas = $('#moving-canvas'), context = canvas?.getContext('2d');

@@ -27,7 +27,7 @@
           <h2>{{ $unit['name'] }}</h2>
           <p>{{ $unit['location'] }}</p>
           <p class="unit-banner__price">Rp {{ number_format($unit['price'], 0, ',', '.') }}</p>
-          <a class="btn btn--ghost btn--sm" href="{{ route('coral-peach.price') }}">Lihat detail harga</a>
+          <a class="btn btn--ghost btn--sm" href="{{ $r('coral-peach.price') }}">Lihat detail harga</a>
         </div>
       </div>
     @endif

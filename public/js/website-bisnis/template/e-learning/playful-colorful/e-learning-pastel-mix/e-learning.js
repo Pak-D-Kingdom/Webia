@@ -130,12 +130,12 @@
     const val = (n) => (form.elements[n] ? String(form.elements[n].value).trim() : '');
     const sel = (n) => { const el = form.elements[n]; return el && el.selectedOptions && el.selectedOptions[0] ? el.selectedOptions[0].textContent.trim() : ''; };
     if (kind === 'newsletter') {
-      return `Halo EduPlus, saya ingin berlangganan update terbaru.\n\n*Email:* ${val('email')}`;
+      return `Halo ${cfg.brand || 'EduPlus'}, saya ingin berlangganan update terbaru.\n\n*Email:* ${val('email')}`;
     }
     const plan = $('input[name="plan"]:checked', form);
     const planName = plan && plan.closest('label') ? $('strong', plan.closest('label')).textContent.trim() : '-';
     const lines = [
-      'Halo EduPlus, saya ingin mendaftar kursus.', '',
+      `Halo ${cfg.brand || 'EduPlus'}, saya ingin mendaftar kursus.`, '',
       `*Nama:* ${val('name')}`, `*Email:* ${val('email')}`, `*No. WhatsApp:* ${val('phone')}`,
       `*Program:* ${sel('program') || '-'}`, `*Paket:* ${planName}`, `*Jadwal:* ${val('slot') || '-'}`,
     ];

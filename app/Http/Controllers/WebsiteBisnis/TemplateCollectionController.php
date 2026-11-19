@@ -32,22 +32,32 @@ class TemplateCollectionController extends Controller
                 'headline' => $template->headline ?? '',
                 'tag' => $template->tag ?? $template->category_label.' website',
                 'preview_folder' => $template->preview_folder,
-                'template_url' => $this->availableTemplateUrl($template->template_url, $router),
+                'template_url' => $this->availableTemplateUrl($template, $router),
             ])
             ->all();
 
         return view('website-bisnis.collections.index', compact('templates'));
     }
 
-    private function availableTemplateUrl(?string $templateUrl, Router $router): ?string
+    private function availableTemplateUrl(WebiaTemplate $template, Router $router): ?string
     {
-        if ($templateUrl === null || $templateUrl === '') {
+        if ($template->template_url === null || $template->template_url === '') {
             return null;
         }
+
+        if ($template->preview_view !== null) {
+            return view()->exists($template->preview_view) ? $template->template_url : null;
+        }
+
+        $templateUrl = $template->template_url;
 
         try {
             $route = $router->getRoutes()->match(Request::create($templateUrl, 'GET'));
         } catch (NotFoundHttpException) {
+            return null;
+        }
+
+        if ($route->getName() === 'webia.template.preview') {
             return null;
         }
 

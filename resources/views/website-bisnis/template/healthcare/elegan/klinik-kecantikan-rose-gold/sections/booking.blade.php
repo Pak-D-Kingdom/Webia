@@ -6,7 +6,7 @@
     <div class="rg-book__copy">
         <h2 id="rgBookTitle" class="rg-book__title">{{ $b['title'] }}</h2>
         <p>{{ $b['text'] }}</p>
-        <a class="rg-btn rg-btn--light rg-btn--lg" href="{{ route($rp . 'appointment') }}">
+        <a class="rg-btn rg-btn--light rg-btn--lg" href="{{ $r('appointment') }}">
             <i class="bi bi-calendar2-check" aria-hidden="true"></i>{{ $b['button'] }} <i class="bi bi-arrow-right" aria-hidden="true"></i>
         </a>
     </div>
@@ -73,7 +73,7 @@
 
             <label class="rg-check">
                 <input type="checkbox" name="setuju" required>
-                <span>Saya menyetujui <a href="{{ route($rp . 'policy') }}#privasi">Kebijakan Privasi</a> dan <a href="{{ route($rp . 'policy') }}#syarat">Syarat &amp; Ketentuan</a>.</span>
+                <span>Saya menyetujui <a href="{{ $r('policy') }}#privasi">Kebijakan Privasi</a> dan <a href="{{ $r('policy') }}#syarat">Syarat &amp; Ketentuan</a>.</span>
             </label>
             <small class="rg-err" data-err-for="setuju"></small>
 

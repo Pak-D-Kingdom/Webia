@@ -121,9 +121,28 @@
                 });
                 if (f.layanan._lbRefresh) { f.layanan._lbRefresh(); }
             }
+            var picks = $$('[data-lb-pick]', form);
+            function syncPicks() {
+                picks.forEach(function (b) {
+                    var on = !!f.layanan && f.layanan.value === b.getAttribute('data-lb-pick');
+                    b.classList.toggle('is-active', on);
+                    b.setAttribute('aria-pressed', String(on));
+                });
+            }
+            picks.forEach(function (b) {
+                b.addEventListener('click', function () {
+                    if (!f.layanan) { return; }
+                    f.layanan.value = b.getAttribute('data-lb-pick');
+                    if (f.layanan._lbRefresh) { f.layanan._lbRefresh(); }
+                    f.layanan.dispatchEvent(new Event('change', { bubbles: true }));
+                });
+            });
+            if (f.layanan) { f.layanan.addEventListener('change', syncPicks); }
+            syncPicks();
             form.addEventListener('reset', function () {
                 setTimeout(function () {
                     Array.prototype.forEach.call(form.elements, function (el) { if (el._lbRefresh) { el._lbRefresh(); } });
+                    syncPicks();
                 }, 0);
             });
 
@@ -420,7 +439,14 @@
     function initHours() {
         var badges = $$('[data-lb-open-badge]');
         var rows = $$('[data-lb-hours-list] [data-day]');
-        if (!badges.length && !rows.length) { return; }
+        var sub = $('[data-lb-hours-sub]');
+        var box = $('[data-lb-hours-status]');
+        if (!badges.length && !rows.length && !sub) { return; }
+
+        function dur(m) {
+            var h = Math.floor(m / 60), mm = m % 60;
+            return (h ? h + ' jam' : '') + (h && mm ? ' ' : '') + (mm || !h ? mm + ' menit' : '');
+        }
         var hrs = CFG.hours || { open: '08:00', close: '20:00' };
 
         function update() {
@@ -436,6 +462,13 @@
                     : 'Sedang tutup · buka kembali pukul ' + hrs.open + ' WIB';
             });
             rows.forEach(function (r) { r.classList.toggle('is-today', parseInt(r.getAttribute('data-day'), 10) === n.wd); });
+            if (box) { box.classList.toggle('is-open', open); box.classList.toggle('is-closed', !open); }
+            if (sub) {
+                var oM = toMin(hrs.open), cM = toMin(hrs.close);
+                if (open) { sub.textContent = 'Tutup pukul ' + hrs.close + ' WIB · ' + dur(cM - mins) + ' lagi'; }
+                else if (mins < oM) { sub.textContent = 'Buka hari ini pukul ' + hrs.open + ' WIB · ' + dur(oM - mins) + ' lagi'; }
+                else { sub.textContent = 'Buka kembali besok pukul ' + hrs.open + ' WIB'; }
+            }
         }
         update();
         setInterval(update, 60000);

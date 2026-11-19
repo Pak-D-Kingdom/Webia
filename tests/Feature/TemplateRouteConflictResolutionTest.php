@@ -2,10 +2,23 @@
 
 namespace Tests\Feature;
 
+use Database\Seeders\WebiaTemplatePreviewSeeder;
+use Database\Seeders\WebiaTemplateSeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class TemplateRouteConflictResolutionTest extends TestCase
 {
+    use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(WebiaTemplateSeeder::class);
+        $this->seed(WebiaTemplatePreviewSeeder::class);
+    }
+
     public function test_matcha_clean_route_renders_the_template(): void
     {
         $this->get('/webia/template/matcha-clean-organic-deep-cleaning')
@@ -15,14 +28,14 @@ class TemplateRouteConflictResolutionTest extends TestCase
 
     public function test_nantara_route_renders_the_replacement_template(): void
     {
-        $this->get(route('webia.template.nantara-architecture-traditional-cultural'))
+        $this->get('/webia/template/nantara-architecture-traditional-cultural')
             ->assertOk()
             ->assertViewIs('website-bisnis.templates.interior-architecture.architecture-building-design.nantara-architecture.nantara-architecture');
     }
 
     public function test_aurelia_route_renders_the_template(): void
     {
-        $this->get(route('webia.template.aurelia-home-renovation'))
+        $this->get('/webia/template/aurelia-home-renovation')
             ->assertOk()
             ->assertViewIs('website-bisnis.templates.home-services.home-renovation-repair.aurelia.aurelia');
     }

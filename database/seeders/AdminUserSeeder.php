@@ -21,6 +21,7 @@ class AdminUserSeeder extends Seeder
         $account->name = $admin['name'];
         $account->password = $admin['password'];
         $account->role = 'admin';
+        $account->email_verified_at = now();
         $account->save();
     }
 }

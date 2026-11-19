@@ -18,6 +18,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+    <script>document.documentElement.className += " lw-js";</script>
     <link rel="stylesheet" href="{{ asset('css/' . $c['asset_path'] . '/laundry.css') }}">
 </head>
 <body class="lw @yield('body_class')">

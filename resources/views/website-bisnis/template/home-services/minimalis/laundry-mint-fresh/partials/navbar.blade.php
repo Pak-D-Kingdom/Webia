@@ -54,4 +54,5 @@
             </a>
         </nav>
     </div>
+    <span class="lw-nav__progress" data-lw-progress aria-hidden="true"></span>
 </header>

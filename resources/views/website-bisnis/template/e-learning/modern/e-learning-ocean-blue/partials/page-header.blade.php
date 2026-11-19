@@ -8,7 +8,7 @@
     @endisset
     <div class="el-container el-pagehead__inner">
         <nav class="el-crumb" aria-label="Breadcrumb">
-            <a href="{{ route('elearning.home') }}">Home</a><span aria-hidden="true">/</span><span aria-current="page">{{ $pg['title'] }}</span>
+            <a href="{{ $r('elearning.home') }}">Home</a><span aria-hidden="true">/</span><span aria-current="page">{{ $pg['title'] }}</span>
         </nav>
         <h1>{{ $pg['title'] }}</h1>
         <p>{{ $pg['sub'] }}</p>

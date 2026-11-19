@@ -1,4 +1,4 @@
-﻿{{-- Variabel: $cta_title, $cta_text --}}
+{{-- Variabel: $cta_title, $cta_text --}}
 <section class="container ctaband">
     <div class="ctaband__in">
         <div>

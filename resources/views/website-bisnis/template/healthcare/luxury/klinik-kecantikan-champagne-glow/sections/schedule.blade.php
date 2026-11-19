@@ -12,7 +12,7 @@
     @unless ($full)
         <header class="cg-card__head">
             <h2 id="cg-schedule-title" class="cg-card__title">Jadwal Praktik</h2>
-            <a class="cg-link cg-link--xs" href="{{ route('glow.schedule') }}">Lihat Semua</a>
+            <a class="cg-link cg-link--xs" href="{{ $r('glow.schedule') }}">Lihat Semua</a>
         </header>
         <p class="cg-card__sub">Atur jadwal kunjungan Anda dengan mudah.</p>
     @else
@@ -35,7 +35,7 @@
     </ul>
 
     @unless ($full)
-        <a class="cg-btn cg-btn--primary cg-btn--block cg-btn--sm" href="{{ route('glow.schedule') }}">
+        <a class="cg-btn cg-btn--primary cg-btn--block cg-btn--sm" href="{{ $r('glow.schedule') }}">
             Lihat Jadwal Lengkap <i class="bi bi-arrow-right" aria-hidden="true"></i>
         </a>
     @else
@@ -54,7 +54,7 @@
                     @foreach ($c['doctors'] as $d)
                         <tr>
                             <th scope="row">
-                                <a href="{{ route('glow.doctors') }}#{{ $d['slug'] }}">{{ $d['name'] }}</a>
+                                <a href="{{ $r('glow.doctors') }}#{{ $d['slug'] }}">{{ $d['name'] }}</a>
                                 <small>{{ $d['role'] }}</small>
                             </th>
                             @foreach ($c['schedule']['weekdays'] as $wd)
@@ -73,7 +73,7 @@
             </table>
         </div>
         <p class="cg-note"><i class="bi bi-info-circle" aria-hidden="true"></i> {{ $c['schedule']['note'] }}</p>
-        <a class="cg-btn cg-btn--primary" href="{{ route('glow.appointment') }}">
+        <a class="cg-btn cg-btn--primary" href="{{ $r('glow.appointment') }}">
             Book Appointment <i class="bi bi-arrow-right" aria-hidden="true"></i>
         </a>
     @endunless

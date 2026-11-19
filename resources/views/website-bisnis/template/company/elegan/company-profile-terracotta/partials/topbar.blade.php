@@ -2,7 +2,9 @@
     <div class="cp-wrap cp-top__in">
         <div class="cp-top__l">
             <span>{{ $ic('pin') }}{{ $c['topbar']['address'] }}</span>
-            <a class="cp-hide-m" href="mailto:{{ $c['topbar']['email'] }}">{{ $ic('mail') }}{{ $c['topbar']['email'] }}</a>
+            @if ($c['topbar']['email'])
+                <a class="cp-hide-m" href="mailto:{{ $c['topbar']['email'] }}">{{ $ic('mail') }}{{ $c['topbar']['email'] }}</a>
+            @endif
             <span class="cp-hide-m">{{ $ic('clock') }}{{ $c['topbar']['hours'] }}</span>
         </div>
         <div class="cp-top__r">

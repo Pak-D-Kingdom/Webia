@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\WebiaTemplate;
+use Database\Seeders\WebiaTemplatePreviewSeeder;
 use Database\Seeders\WebiaTemplateSeederAthiya;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
@@ -12,9 +13,17 @@ class BangunKarsaContractorProfessionalTemplateTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(WebiaTemplateSeederAthiya::class);
+        $this->seed(WebiaTemplatePreviewSeeder::class);
+    }
+
     public function test_demo_route_renders_bangun_karsa_and_safe_mobile_interactions(): void
     {
-        $this->get(route('webia.template.company.bangun-karsa-contractor-professional'))
+        $this->get('/webia/template/bangun-karsa-contractor-professional')
             ->assertOk()
             ->assertSee('<title>Bangun Karsa – Kontraktor Profesional</title>', false)
             ->assertSee('id="mb"', false)

@@ -5,7 +5,7 @@
 
     <div class="cg-container cg-footer__grid">
         <div class="cg-footer__brand">
-            <a class="cg-logo cg-logo--light" href="{{ route('glow.home') }}" aria-label="{{ $c['brand']['name'] }} — beranda">
+            <a class="cg-logo cg-logo--light" href="{{ $r('glow.home') }}" aria-label="{{ $c['brand']['name'] }} — beranda">
                 <svg class="cg-logo__mark" aria-hidden="true"><use href="#ic-logo"/></svg>
                 <span class="cg-logo__text">
                     <strong>{{ $c['brand']['name'] }}</strong>
@@ -20,7 +20,7 @@
             <ul class="cg-footer__links cg-footer__links--2col">
                 @foreach ($c['nav'] as $item)
                     <li>
-                        <a href="{{ route($item['route']) }}{{ isset($item['anchor']) ? '#' . $item['anchor'] : '' }}">{{ $item['label'] }}</a>
+                        <a href="{{ $r($item['route']) }}{{ isset($item['anchor']) ? '#' . $item['anchor'] : '' }}">{{ $item['label'] }}</a>
                     </li>
                 @endforeach
             </ul>
@@ -31,7 +31,9 @@
             <ul class="cg-footer__contact">
                 <li><i class="bi bi-geo-alt-fill" aria-hidden="true"></i><span>{{ $c['contact']['address'] }}</span></li>
                 <li><i class="bi bi-telephone-fill" aria-hidden="true"></i><a href="tel:{{ $c['contact']['phone_raw'] }}">{{ $c['contact']['phone'] }}</a></li>
-                <li><i class="bi bi-envelope-fill" aria-hidden="true"></i><a href="mailto:{{ $c['contact']['email'] }}">{{ $c['contact']['email'] }}</a></li>
+                @if ($c['contact']['email'])
+                    <li><i class="bi bi-envelope-fill" aria-hidden="true"></i><a href="mailto:{{ $c['contact']['email'] }}">{{ $c['contact']['email'] }}</a></li>
+                @endif
             </ul>
         </div>
 
@@ -62,8 +64,8 @@
         <div class="cg-container cg-footer__bar-inner">
             <p class="cg-footer__credit">{{ $c['footer']['credit'] }}</p>
             <ul class="cg-footer__legal">
-                <li><a href="{{ route('glow.policy') }}#privasi">Privacy Policy</a></li>
-                <li><a href="{{ route('glow.policy') }}#syarat">Terms &amp; Conditions</a></li>
+                <li><a href="{{ $r('glow.policy') }}#privasi">Privacy Policy</a></li>
+                <li><a href="{{ $r('glow.policy') }}#syarat">Terms &amp; Conditions</a></li>
             </ul>
         </div>
     </div>

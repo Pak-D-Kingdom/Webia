@@ -7,7 +7,7 @@
 </div>
 <div class="g3">
 @foreach(array_slice($d['programs'], 0, $limit ?? 99) as $p)
-<article class="cd"><img src="{{ $img }}{{ $p['i'] }}" alt="Program {{ $p['t'] }}" width="600" height="450" loading="lazy"><div class="pad"><span class="tag">{{ $p['w'] }}</span><h3>{{ $p['t'] }}</h3><p>{{ $p['d'] }}</p></div></article>
+<article class="cd"><img src="{{ $img }}{{ $p['i'] }}" alt="Program {{ $p['t'] }}" width="600" height="450"><div class="pad"><span class="tag">{{ $p['w'] }}</span><h3>{{ $p['t'] }}</h3><p>{{ $p['d'] }}</p></div></article>
 @endforeach
 </div>
 </div>

@@ -7,7 +7,7 @@
 </div>
 <div class="gal">
 @foreach(array_slice($d['gallery'], 0, $limit ?? 99) as $g)
-<button class="gi" type="button" data-lb="{{ $img }}{{ $g['i'] }}" data-cap="{{ $g['c'] }}"><img src="{{ $img }}{{ $g['i'] }}" alt="{{ $g['c'] }}" width="600" height="450" loading="lazy"><span>{{ $g['c'] }}</span></button>
+<button class="gi" type="button" data-lb="{{ $img }}{{ $g['i'] }}" data-cap="{{ $g['c'] }}"><img src="{{ $img }}{{ $g['i'] }}" alt="{{ $g['c'] }}" width="600" height="450"><span>{{ $g['c'] }}</span></button>
 @endforeach
 </div>
 </div>

@@ -1,6 +1,6 @@
-﻿@extends($v . '.layout')
+@extends($v . '.layout')
 
-@section('title', 'Spesifikasi Produk â€” AgroTrade')
+@section('title', 'Spesifikasi Produk — AgroTrade')
 @section('description', 'Detail kualitas dan standar produk komoditas AgroTrade: kadar air, ukuran, kemurnian, jenis, dan kemasan.')
 
 @section('content')

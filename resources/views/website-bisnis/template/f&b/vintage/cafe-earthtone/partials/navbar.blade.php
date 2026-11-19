@@ -1,6 +1,6 @@
 @php
     $isHome  = request()->routeIs($cafe['routes']['home']);
-    $homeUrl = route($cafe['routes']['home']);
+    $homeUrl = $routeUrl('home');
     $cta     = $cafe['nav_cta'];
 @endphp
 <header class="kl-navbar" data-kl-navbar>
@@ -32,7 +32,7 @@
                 <svg class="kl-icon" aria-hidden="true"><use href="#kl-i-search"/></svg>
             </button>
 
-            <a class="kl-btn kl-btn--green kl-navbar__cta" href="{{ route($cafe['routes'][$cta['route']]) }}" aria-label="{{ $cta['label'] }}">
+            <a class="kl-btn kl-btn--green kl-navbar__cta" href="{{ $routeUrl($cta['route']) }}" aria-label="{{ $cta['label'] }}">
                 <svg class="kl-icon" aria-hidden="true"><use href="#kl-i-calendar"/></svg>
                 <span>{{ $cta['label'] }}</span>
             </a>
@@ -45,7 +45,7 @@
     </div>
 
     <div class="kl-navbar__search" id="kl-search" data-kl-search-panel hidden>
-        <form class="kl-searchform" action="{{ route($cafe['routes']['menu']) }}" method="GET" role="search">
+        <form class="kl-searchform" action="{{ $routeUrl('menu') }}" method="GET" role="search">
             <label class="kl-sr" for="kl-search-input">Cari menu</label>
             <input id="kl-search-input" class="kl-input" type="search" name="q" placeholder="Cari kopi, makanan, atau dessert…" autocomplete="off">
             <button class="kl-btn kl-btn--red kl-btn--sm" type="submit">Cari</button>

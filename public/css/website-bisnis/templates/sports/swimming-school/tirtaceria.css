@@ -1,0 +1,92 @@
+/* Kursor formal & bersih sesuai tema */
+    body {
+      background-color: #F5FBF8;
+      color: #0B3948;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+      cursor: default;
+    }
+    a, button, select, input[type="radio"], input[type="checkbox"], [role="button"] {
+      cursor: pointer;
+    }
+
+    /* Animasi Aquatic Bergerak */
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-16px) rotate(4deg); }
+    }
+    @keyframes floatReverse {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(14px) rotate(-5deg); }
+    }
+    @keyframes bobbing {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-10px) scale(1.03); }
+    }
+    @keyframes swimAcross {
+      0% { transform: translateX(-12%) translateY(0px); }
+      25% { transform: translateX(25%) translateY(-8px); }
+      50% { transform: translateX(55%) translateY(4px); }
+      75% { transform: translateX(85%) translateY(-6px); }
+      100% { transform: translateX(112%) translateY(0px); }
+    }
+    @keyframes waveFlow {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    @keyframes bubbleRise {
+      0% { transform: translateY(100%) scale(0.6); opacity: 0; }
+      20% { opacity: 0.7; }
+      80% { opacity: 0.5; }
+      100% { transform: translateY(-420px) scale(1.2); opacity: 0; }
+    }
+    @keyframes pulseRing {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      70% { transform: scale(1.25); opacity: 0; }
+      100% { transform: scale(1.25); opacity: 0; }
+    }
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(-3deg); }
+      50% { transform: rotate(3deg); }
+    }
+
+    .animate-float-slow { animation: floatSlow 5.5s ease-in-out infinite; }
+    .animate-float-reverse { animation: floatReverse 6.5s ease-in-out infinite; }
+    .animate-bob { animation: bobbing 3.8s ease-in-out infinite; }
+    .animate-wiggle { animation: wiggle 3s ease-in-out infinite; }
+    .animate-swim { animation: swimAcross 22s linear infinite; }
+    .wave-track {
+      display: flex;
+      width: 200%;
+      animation: waveFlow 16s linear infinite;
+    }
+    .wave-track-slow {
+      display: flex;
+      width: 200%;
+      animation: waveFlow 24s linear infinite reverse;
+    }
+
+    /* Organic Blob Frames */
+    .blob-frame-1 {
+      border-radius: 58% 42% 48% 52% / 45% 56% 44% 55%;
+    }
+    .blob-frame-2 {
+      border-radius: 42% 58% 62% 38% / 53% 42% 58% 47%;
+    }
+
+    /* Scroll Reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: all 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #F5FBF8; }
+    ::-webkit-scrollbar-thumb { background: #8CE0D5; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #18B6B0; }

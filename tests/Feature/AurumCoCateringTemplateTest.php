@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use Database\Seeders\WebiaTemplatePreviewSeeder;
 use Database\Seeders\WebiaTemplateSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
@@ -11,9 +12,17 @@ class AurumCoCateringTemplateTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(WebiaTemplateSeeder::class);
+        $this->seed(WebiaTemplatePreviewSeeder::class);
+    }
+
     public function test_demo_route_renders_the_catering_template(): void
     {
-        $this->get(route('webia.template.aurumco-catering'))
+        $this->get('/webia/template/aurumco-catering')
             ->assertOk()
             ->assertSee('<title>AURUM & CO. | Haute Gastronomie & Bespoke Atelier</title>', false)
             ->assertSee('Gastronomy as', false)

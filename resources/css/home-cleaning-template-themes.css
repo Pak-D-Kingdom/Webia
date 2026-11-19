@@ -1,0 +1,61 @@
+@theme {
+    --color-warmbee-50: #fefdf8;
+    --color-warmbee-100: #fef9e8;
+    --color-warmbee-200: #fbf0c8;
+    --color-warmbee-300: #f7e197;
+    --color-warmbee-400: #f1cb5b;
+    --color-warmbee-500: #e5b22b;
+    --color-warmbee-600: #c88f19;
+    --color-warmbee-700: #9d6814;
+    --color-warmbee-800: #754a16;
+    --color-warmbee-900: #45280c;
+    --color-warmbee-wood: #2c1906;
+    --color-warmbee-cream: #faf6ee;
+    --color-warmbee-paper: #f5eee0;
+    --font-madubersih-serif: 'Fraunces', serif;
+    --font-madubersih-display: 'Cinzel', serif;
+    --font-madubersih-sans: 'Plus Jakarta Sans', sans-serif;
+
+    --color-galaxy-950: #070a14;
+    --color-galaxy-900: #0b1020;
+    --color-galaxy-850: #101730;
+    --color-galaxy-800: #162044;
+    --color-galaxy-700: #1f2d60;
+    --color-galaxy-purple: #8b5cf6;
+    --color-galaxy-purple-dark: #6d28d9;
+    --color-galaxy-silver: #e2e8f0;
+    --color-galaxy-accent: #38bdf8;
+    --font-astroclean-sans: 'Plus Jakarta Sans', sans-serif;
+    --font-astroclean-display: 'Space Grotesk', sans-serif;
+}
+
+.madubersih-vintage-border {
+    border: 2px solid #c88f19;
+    outline: 2px solid rgb(117 74 22 / 25%);
+    outline-offset: 4px;
+}
+
+.madubersih-vintage-card {
+    background-color: #fefdf8;
+    border: 1px solid #ebd9b5;
+    box-shadow: 0 4px 0 0 #c88f19, 0 10px 25px -5px rgb(69 40 12 / 8%);
+}
+
+.madubersih-vintage-seal {
+    background: radial-gradient(circle, #f7e197 0%, #e5b22b 65%, #c88f19 100%);
+    box-shadow: 0 4px 14px rgb(117 74 22 / 25%);
+}
+
+.astroclean-rustic-border {
+    border: 1px solid rgb(139 92 246 / 25%);
+    box-shadow: 0 4px 20px -2px rgb(11 16 32 / 80%), inset 0 1px 0 0 rgb(255 255 255 / 5%);
+}
+
+.astroclean-rustic-card {
+    background: linear-gradient(180deg, rgb(16 23 48 / 85%) 0%, rgb(11 16 32 / 95%) 100%);
+    backdrop-filter: blur(12px);
+}
+
+.astroclean-cosmic-glow {
+    box-shadow: 0 0 35px -5px rgb(139 92 246 / 35%);
+}

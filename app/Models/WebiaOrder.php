@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 #[Fillable([
     'user_id', 'guest_name', 'guest_email', 'order_number', 'webia_package_id', 'package_snapshot', 'webia_template_id', 'template_snapshot', 'category_slug',
-    'addon_ids', 'addon_snapshot', 'status', 'credential_status', 'credential_password', 'total_price', 'payment_receipt_path', 'payment_note', 'paid_at',
+    'addon_ids', 'addon_snapshot', 'status', 'credential_status', 'credential_requires_password_setup', 'total_price', 'payment_receipt_path', 'payment_note', 'paid_at',
     'business_data', 'delivery_status', 'site_slug',
 ])]
 class WebiaOrder extends Model
@@ -44,9 +45,21 @@ class WebiaOrder extends Model
         return $this->hasMany(WebiaPayment::class);
     }
 
+    public function hostingService(): HasOne
+    {
+        return $this->hasOne(HostingService::class);
+    }
+
+    public function siteConfigPath(): ?string
+    {
+        return $this->template_snapshot['site_config_path']
+            ?? $this->template?->site_config_path
+            ?? ($this->delivery_status === 'delivered' ? 'f&b/minimalis/cafe-earthtone/cafe' : null);
+    }
+
     public function supportsCustomerSite(): bool
     {
-        return ($this->template_snapshot['slug'] ?? $this->template?->slug) === 'fnb-cafe-minimalis';
+        return filled($this->site_slug) || filled($this->siteConfigPath());
     }
 
     public function getProgressIndexAttribute(): int
@@ -69,7 +82,7 @@ class WebiaOrder extends Model
             'addon_snapshot' => 'array',
             'business_data' => 'array',
             'paid_at' => 'datetime',
-            'credential_password' => 'encrypted',
+            'credential_requires_password_setup' => 'boolean',
         ];
     }
 }

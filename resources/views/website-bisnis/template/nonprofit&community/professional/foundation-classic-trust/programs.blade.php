@@ -12,7 +12,11 @@
     <div class="fd-wrap" style="display:grid;gap:56px">
         @foreach ($fd['programs'] as $idx => $p)
             <article id="{{ $p['slug'] }}" class="fd-split fd-reveal {{ $idx % 2 ? 'fd-split--rev' : '' }}">
-                <div class="fd-media"><img src="{{ $i($p['image']) }}" alt="{{ $p['title'] }}" loading="lazy" style="aspect-ratio:16/10"></div>
+                <div class="fd-pframe">
+                    <span class="fd-pframe__bg" aria-hidden="true"></span>
+                    <div class="fd-pframe__photo" data-fd-tilt><img src="{{ $i($p['photo']) }}" alt="Kegiatan program {{ $p['title'] }}" loading="lazy" width="1200" height="900"></div>
+                    <div class="fd-pframe__badge"><strong data-fd-auto>{{ $p['stat'][0] }}</strong><small>{{ $p['stat'][1] }}</small></div>
+                </div>
                 <div>
                     <span class="fd-tag fd-tag--gold">Program {{ $idx + 1 }} dari {{ count($fd['programs']) }}</span>
                     <h2 style="font-size:28px;font-weight:800;color:var(--fd-navy);margin:10px 0">{{ $p['title'] }}</h2>

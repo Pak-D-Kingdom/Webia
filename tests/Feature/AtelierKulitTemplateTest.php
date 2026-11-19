@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\WebiaTemplate;
+use Database\Seeders\WebiaTemplatePreviewSeeder;
 use Database\Seeders\WebiaTemplateSeederAthiya;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
@@ -12,9 +13,17 @@ class AtelierKulitTemplateTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(WebiaTemplateSeederAthiya::class);
+        $this->seed(WebiaTemplatePreviewSeeder::class);
+    }
+
     public function test_demo_route_renders_the_atelier_kulit_template_and_interactions(): void
     {
-        $this->get(route('webia.template.beauty.atelier-kulit-creative-beauty-clinic'))
+        $this->get('/webia/template/atelier-kulit-creative-beauty-clinic')
             ->assertOk()
             ->assertSee('<title>ATELIER KULIT – Klinik Estetika sebagai Karya</title>', false)
             ->assertSee('Enam <em>karya</em>', false)

@@ -54,6 +54,7 @@
         var v = f.value.trim(), bad = f.required && !v;
         if (f.pattern && v && !new RegExp('^(?:' + f.pattern + ')$').test(v)) bad = true;
         f.setAttribute('aria-invalid', bad ? 'true' : 'false');
+        if (f.tagName === 'SELECT') f.parentNode.classList.toggle('bad', bad);
         if (bad) ok = false; else if (v) lines.push(f.name + ': ' + v);
       });
       if (!ok) { msg.textContent = 'Lengkapi kolom yang bertanda merah dulu ya.'; return; }
@@ -85,9 +86,10 @@
   var toggle = function (show) {
     if (!panel) return;
     panel.hidden = !show;
+    document.body.classList.toggle('chat-open', show);
     if (show && !started) {
       started = true; say('Halo, aku Bibi Lebah! Mau tanya apa soal program atau cara ikut bergabung?');
-      faqs.slice(0, 4).forEach(function (f) {
+      faqs.slice(0, 3).forEach(function (f) {
         var b = document.createElement('button'); b.type = 'button'; b.textContent = f.q;
         b.addEventListener('click', function () { ask(f.q); }); chips.appendChild(b);
       });
@@ -99,4 +101,61 @@
   if (cf) cf.addEventListener('submit', function (e) {
     e.preventDefault(); var i = $('input', cf), v = i.value.trim(); if (!v) return; i.value = ''; ask(v);
   });
+
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && panel && !panel.hidden) toggle(false); });
+
+  /* Dropdown kustom (select asli tetap dipakai untuk nilai formulir) */
+  var openDd = null;
+  $$('.frm select').forEach(function (sel, n) {
+    var wrap = document.createElement('div'); wrap.className = 'dd';
+    var btn = document.createElement('button'); btn.type = 'button'; btn.className = 'dd-b';
+    btn.setAttribute('aria-haspopup', 'listbox'); btn.setAttribute('aria-expanded', 'false');
+    var list = document.createElement('ul'); list.className = 'dd-l'; list.setAttribute('role', 'listbox'); list.hidden = true;
+    sel.parentNode.insertBefore(wrap, sel); wrap.appendChild(btn); wrap.appendChild(sel); wrap.appendChild(list);
+    sel.tabIndex = -1; sel.setAttribute('aria-hidden', 'true');
+    var ph = sel.options[0] && sel.options[0].value === '' ? sel.options[0].text : 'Pilih';
+    var opts = Array.prototype.filter.call(sel.options, function (o) { return o.value !== ''; });
+    var act = 0, lis = opts.map(function (o, i) {
+      var li = document.createElement('li'); li.setAttribute('role', 'option'); li.id = 'dd' + n + '-' + i; li.textContent = o.text;
+      li.addEventListener('click', function (e) { e.preventDefault(); choose(i); btn.focus(); });
+      list.appendChild(li); return li;
+    });
+    function render() {
+      var sIdx = opts.findIndex(function (o) { return o.value === sel.value; });
+      btn.textContent = sIdx > -1 ? opts[sIdx].text : ph;
+      if (sIdx > -1) btn.removeAttribute('data-empty'); else btn.setAttribute('data-empty', '');
+      lis.forEach(function (li, i) { li.setAttribute('aria-selected', i === sIdx ? 'true' : 'false'); });
+      return sIdx;
+    }
+    function mark(i) {
+      act = Math.max(0, Math.min(lis.length - 1, i));
+      lis.forEach(function (li, k) { li.classList.toggle('act', k === act); });
+      btn.setAttribute('aria-activedescendant', lis[act].id); lis[act].scrollIntoView({ block: 'nearest' });
+    }
+    function open() {
+      if (openDd && openDd !== close) openDd();
+      list.hidden = false; wrap.classList.add('open'); btn.setAttribute('aria-expanded', 'true'); openDd = close; mark(Math.max(0, render()));
+    }
+    function close() {
+      list.hidden = true; wrap.classList.remove('open'); btn.setAttribute('aria-expanded', 'false');
+      btn.removeAttribute('aria-activedescendant'); if (openDd === close) openDd = null;
+    }
+    function choose(i) {
+      sel.value = opts[i].value; sel.setAttribute('aria-invalid', 'false'); wrap.classList.remove('bad');
+      sel.dispatchEvent(new Event('change', { bubbles: true })); render(); close();
+    }
+    btn.addEventListener('click', function () { if (list.hidden) open(); else close(); });
+    btn.addEventListener('keydown', function (e) {
+      var k = e.key;
+      if (k === 'ArrowDown' || k === 'ArrowUp') { e.preventDefault(); if (list.hidden) open(); else mark(act + (k === 'ArrowDown' ? 1 : -1)); }
+      else if (k === 'Home' && !list.hidden) { e.preventDefault(); mark(0); }
+      else if (k === 'End' && !list.hidden) { e.preventDefault(); mark(lis.length - 1); }
+      else if ((k === 'Enter' || k === ' ') && !list.hidden) { e.preventDefault(); choose(act); }
+      else if (k === 'Escape' && !list.hidden) { e.stopPropagation(); close(); }
+      else if (k === 'Tab') close();
+    });
+    sel.form.addEventListener('reset', function () { setTimeout(render, 0); });
+    render();
+  });
+  document.addEventListener('click', function (e) { if (openDd && !e.target.closest('.dd')) openDd(); });
 })();

@@ -1,7 +1,7 @@
 {{-- Form pencarian cepat → mengarahkan ke halaman Property dengan query string (filter dijalankan di sisi klien). --}}
 @php $s = $site['search']; @endphp
 <div class="container search-wrap">
-  <form class="search-bar" action="{{ route('coral-peach.property') }}" method="get" data-search-form role="search" aria-label="Cari properti">
+  <form class="search-bar" action="{{ $r('coral-peach.property') }}" method="get" data-search-form role="search" aria-label="Cari properti">
     <div class="search-field">
       <span class="search-field__icon"><svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg></span>
       <div class="search-field__body">

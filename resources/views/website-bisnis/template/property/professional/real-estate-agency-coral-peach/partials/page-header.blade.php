@@ -4,7 +4,7 @@
   <img class="page-hero__leaf" src="{{ asset($img.'/leaf-branch.svg') }}" alt="" aria-hidden="true">
   <div class="container page-hero__inner">
     <nav class="breadcrumb" aria-label="Breadcrumb">
-      <a href="{{ route('coral-peach.home') }}">Home</a><span aria-hidden="true">/</span>@if (!empty($parent))<a href="{{ $parent['url'] }}">{{ $parent['label'] }}</a><span aria-hidden="true">/</span>@endif<span aria-current="page">{{ $crumb }}</span>
+      <a href="{{ $r('coral-peach.home') }}">Home</a><span aria-hidden="true">/</span>@if (!empty($parent))<a href="{{ $parent['url'] }}">{{ $parent['label'] }}</a><span aria-hidden="true">/</span>@endif<span aria-current="page">{{ $crumb }}</span>
     </nav>
     <h1 class="page-hero__title">{{ $title }}</h1>
     <p class="page-hero__sub">{{ $subtitle }}</p>

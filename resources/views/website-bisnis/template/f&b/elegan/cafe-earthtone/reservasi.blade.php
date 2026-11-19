@@ -1,12 +1,12 @@
 {{-- Halaman RESERVASI — form reservasi meja --}}
 @php
     $v    = 'website-bisnis.template.f&b.elegan.cafe-earthtone';
-    $cafe = config('template.f&b.elegan.cafe-earthtone.cafe');
+    // $cafe / $routeUrl diinjeksi CustomerSiteController untuk situs pelanggan
+    $cafe = $cafe ?? config('template.f&b.elegan.cafe-earthtone.cafe');
     $img  = fn (string $file) => asset($cafe['assets']['images'].$file);
     $rp   = fn (int $n) => 'Rp '.number_format($n, 0, ',', '.');
     $wa   = fn (string $text = '') => 'https://wa.me/'.$cafe['contact']['whatsapp'].($text !== '' ? '?text='.rawurlencode($text) : '');
-    // URL halaman: pakai route bila sudah terdaftar, kalau belum jatuh ke anchor biasa
-    $url  = fn (string $page, string $anchor = '') => \Illuminate\Support\Facades\Route::has($cafe['route_prefix'].$page)
+    $url  = $routeUrl ?? fn (string $page, string $anchor = '') => \Illuminate\Support\Facades\Route::has($cafe['route_prefix'].$page)
         ? route($cafe['route_prefix'].$page).$anchor
         : ($anchor !== '' ? $anchor : '#');
 @endphp

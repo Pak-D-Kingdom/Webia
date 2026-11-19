@@ -8,6 +8,7 @@ use App\Models\WebiaPackage;
 use App\Services\AiQuotaService;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -21,15 +22,19 @@ class AdminAiQuotaController extends Controller
     {
         $orders = WebiaOrder::with(['user', 'package', 'template'])
             ->whereNotNull('site_slug')
-            ->orWhere('status', 'paid')
+            ->where('site_slug', '!=', '')
             ->get()
             ->keyBy('site_slug');
 
-        $tenants = AiQuotaService::getAllTenants();
+        $tenantsList = AiQuotaService::getAllTenants();
+        $tenants = collect($tenantsList)->keyBy('id');
+
+        // Gabungkan seluruh tenant ID dari database SQLite dan WebiaOrder
+        $allTenantIds = $orders->keys()->merge($tenants->keys())->unique()->filter();
         $clients = [];
 
-        foreach ($tenants as $tenant) {
-            $tenantId = $tenant['id'];
+        foreach ($allTenantIds as $tenantId) {
+            $tenant = $tenants->get($tenantId);
             $matchedOrder = $orders->get($tenantId);
 
             $tierSlug = $matchedOrder?->package?->slug ?? ($tenant['package_tier'] ?? 'pixel');
@@ -42,11 +47,11 @@ class AdminAiQuotaController extends Controller
             $isWarning = $percentage >= 80 && ! $isExhausted;
             $statusCategory = $isExhausted ? 'habis' : ($isWarning ? 'waspada' : 'aman');
 
-            $bizName = $matchedOrder?->business_data['business_name'] ?? $tenant['name'];
-            $clientName = $matchedOrder?->user?->name ?? ('Klien ' . ucfirst($tenant['category'] ?? 'Bisnis'));
-            $clientEmail = $matchedOrder?->user?->email ?? (strtolower(str_replace(' ', '', $tenant['name'])) . '@example.com');
+            $bizName = $matchedOrder?->business_data['business_name'] ?? ($tenant['name'] ?? ucwords(str_replace(['tenant_', '_', '-'], ' ', $tenantId)));
+            $clientName = $matchedOrder?->user?->name ?? ('Klien '.ucfirst($tenant['category'] ?? 'Bisnis'));
+            $clientEmail = $matchedOrder?->user?->email ?? (strtolower(str_replace(' ', '', $bizName)).'@example.com');
             $phone = $matchedOrder?->business_data['whatsapp'] ?? '081234567890';
-            $templateName = $matchedOrder?->template?->name ?? $matchedOrder?->template_snapshot['name'] ?? (ucwords($tenant['category'] ?? 'General') . ' Template');
+            $templateName = $matchedOrder?->template?->name ?? $matchedOrder?->template_snapshot['name'] ?? (ucwords($tenant['category'] ?? 'General').' Template');
 
             $clients[] = [
                 'order' => $matchedOrder,
@@ -54,6 +59,7 @@ class AdminAiQuotaController extends Controller
                 'client_name' => $clientName,
                 'client_email' => $clientEmail,
                 'business_name' => $bizName,
+                'category' => $matchedOrder?->category_slug ?? ($tenant['category'] ?? 'Bisnis'),
                 'whatsapp' => $phone,
                 'package_name' => ucfirst($tierSlug),
                 'package_tier' => $tierSlug,
@@ -77,10 +83,14 @@ class AdminAiQuotaController extends Controller
     public function index(Request $request): View
     {
         $statusFilter = $request->query('status', 'semua');
+        $categoryFilter = $request->query('kategori', 'semua');
         $search = strtolower(trim((string) $request->query('q', '')));
 
         $clients = $this->getClientsData();
         $aiOnline = AiQuotaService::isOnline();
+
+        // Ambil daftar unik seluruh kategori bisnis tenant
+        $categories = collect($clients)->pluck('category')->filter()->unique()->values()->all();
 
         // Hitung ringkasan KPI untuk Superadmin
         $totalClients = count($clients);
@@ -93,7 +103,7 @@ class AdminAiQuotaController extends Controller
         $totalQuotaMessages = collect($clients)->sum('monthly_quota');
 
         // Terapkan filter & pencarian jika ada
-        $filteredClients = collect($clients)->filter(function ($c) use ($statusFilter, $search) {
+        $filteredClients = collect($clients)->filter(function ($c) use ($statusFilter, $categoryFilter, $search) {
             $matchStatus = true;
             if ($statusFilter === 'habis') {
                 $matchStatus = $c['status_category'] === 'habis';
@@ -105,6 +115,11 @@ class AdminAiQuotaController extends Controller
                 $matchStatus = $c['status_category'] === 'aman';
             }
 
+            $matchCategory = true;
+            if ($categoryFilter !== 'semua') {
+                $matchCategory = strtolower((string) ($c['category'] ?? '')) === strtolower((string) $categoryFilter);
+            }
+
             $matchSearch = true;
             if (! empty($search)) {
                 $matchSearch = str_contains(strtolower($c['business_name']), $search)
@@ -113,13 +128,14 @@ class AdminAiQuotaController extends Controller
                     || str_contains(strtolower($c['package_name']), $search);
             }
 
-            return $matchStatus && $matchSearch;
+            return $matchStatus && $matchCategory && $matchSearch;
         })->values();
 
         $endOfMonth = Carbon::now()->endOfMonth();
         $resetDateFormatted = $endOfMonth->locale('id')->isoFormat('D MMMM Y');
         $daysUntilReset = max(1, (int) Carbon::now()->diffInDays($endOfMonth, false));
-        $lastSyncedTime = Carbon::now()->locale('id')->format('H:i:s') . ' WIB';
+        $lastSyncedTime = Carbon::now()->locale('id')->format('H:i:s').' WIB';
+        $cacheStats = AiQuotaService::getCacheStats();
 
         return view('admin.ai.index', compact(
             'filteredClients',
@@ -131,11 +147,14 @@ class AdminAiQuotaController extends Controller
             'totalUsedMessages',
             'totalQuotaMessages',
             'statusFilter',
+            'categoryFilter',
+            'categories',
             'search',
             'aiOnline',
             'resetDateFormatted',
             'daysUntilReset',
-            'lastSyncedTime'
+            'lastSyncedTime',
+            'cacheStats'
         ));
     }
 
@@ -177,7 +196,7 @@ class AdminAiQuotaController extends Controller
     public function export(Request $request): StreamedResponse
     {
         $clients = $this->getClientsData();
-        $filename = 'laporan-kuota-ai-webia-' . Carbon::now()->format('Y-m-d') . '.csv';
+        $filename = 'laporan-kuota-ai-webia-'.Carbon::now()->format('Y-m-d').'.csv';
 
         $headers = [
             'Content-Type' => 'text/csv; charset=UTF-8',
@@ -190,7 +209,7 @@ class AdminAiQuotaController extends Controller
         $callback = function () use ($clients) {
             $handle = fopen('php://output', 'w');
             // UTF-8 BOM untuk Microsoft Excel compatibility
-            fputs($handle, "\xEF\xBB\xBF");
+            fwrite($handle, "\xEF\xBB\xBF");
 
             // Header baris CSV
             fputcsv($handle, [
@@ -220,7 +239,7 @@ class AdminAiQuotaController extends Controller
                     $c['monthly_quota'],
                     $c['used_messages'],
                     $c['remaining_messages'],
-                    $c['percentage'] . '%',
+                    $c['percentage'].'%',
                     strtoupper($c['status_category']),
                     $nowStr,
                 ]);
@@ -230,5 +249,46 @@ class AdminAiQuotaController extends Controller
         };
 
         return response()->stream($callback, 200, $headers);
+    }
+
+    /**
+     * Mengambil seluruh berkas knowledge base dan analitik tenant untuk modal admin.
+     */
+    public function getKnowledge(string $tenantId): JsonResponse
+    {
+        $knowledge = AiQuotaService::getTenantKnowledge($tenantId);
+        $insights = AiQuotaService::getTenantInsights($tenantId);
+
+        return response()->json([
+            'status' => 'success',
+            'tenant_id' => $tenantId,
+            'knowledge' => $knowledge,
+            'insights' => $insights,
+        ]);
+    }
+
+    /**
+     * Menyimpan pembaruan dokumen knowledge base tenant dari Superadmin.
+     */
+    public function saveKnowledge(Request $request, string $tenantId): JsonResponse
+    {
+        $payload = $request->only(['profil', 'layanan', 'kebijakan', 'faq']);
+        $result = AiQuotaService::saveTenantKnowledge($tenantId, $payload);
+
+        return response()->json($result);
+    }
+
+    /**
+     * Mengambil daftar pertanyaan yang belum terjawab / low-confidence untuk tenant tertentu.
+     */
+    public function getUnanswered(string $tenantId): JsonResponse
+    {
+        $unanswered = AiQuotaService::getTenantUnanswered($tenantId);
+
+        return response()->json([
+            'status' => 'success',
+            'tenant_id' => $tenantId,
+            'unanswered_queries' => $unanswered,
+        ]);
     }
 }

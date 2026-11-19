@@ -1,11 +1,12 @@
-﻿@php
+@php
     $img = $img ?? fn ($f) => asset($agro['img_path'] . '/' . $f);
     $assetDir = 'website-bisnis/template/agriculture&farming/professional/agribisnis-classic-trust';
+    $rn = 'agribisnis-classic-trust.';
 
     $pageKeys = ['home', 'komoditas', 'panen', 'spesifikasi', 'minimum', 'kapasitas', 'distribusi', 'sertifikasi', 'b2b', 'penawaran', 'ai'];
     $pageUrls = [];
     foreach ($pageKeys as $k) {
-        $pageUrls[$k] = route('agribisnis-classic-trust.' . $k);
+        $pageUrls[$k] = route($rn . $k);
     }
 
     $faqPayload = [];
@@ -19,6 +20,35 @@
         ];
     }
 
+    $topicPayload = [];
+    foreach ($agro['ai']['topics'] as $t) {
+        $topicPayload[] = ['label' => $t[0], 'icon' => $t[1], 'q' => $t[2]];
+    }
+
+    $searchCommodities = [];
+    foreach ($agro['commodities'] as $c) {
+        $searchCommodities[] = [
+            'name'  => $c['name'],
+            'slug'  => $c['slug'],
+            'group' => $c['group'],
+            'tag'   => $c['tagline'],
+            'meta'  => $c['origin'],
+            'thumb' => $img($c['img']),
+            'url'   => $pageUrls['komoditas'] . '#' . $c['slug'],
+        ];
+    }
+
+    $searchPages = [];
+    foreach ($agro['search_pages'] as $p) {
+        $searchPages[] = [
+            'title' => $p['title'],
+            'desc'  => $p['desc'],
+            'icon'  => $p['icon'],
+            'kw'    => $p['kw'],
+            'url'   => $pageUrls[$p['route']],
+        ];
+    }
+
     $payload = [
         'whatsapp' => $agro['whatsapp'],
         'urls'     => $pageUrls,
@@ -26,7 +56,13 @@
             'welcome'  => $agro['ai']['welcome'],
             'fallback' => $agro['ai']['fallback'],
             'chips'    => $agro['ai']['chips'],
+            'topics'   => $topicPayload,
             'faq'      => $faqPayload,
+        ],
+        'search'   => [
+            'commodities' => $searchCommodities,
+            'pages'       => $searchPages,
+            'action'      => $pageUrls['komoditas'],
         ],
     ];
 @endphp
@@ -36,14 +72,21 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>@yield('title', $agro['meta']['title'])</title>
-    <meta name="description" content="@yield('description', 'AgroTrade â€” agribisnis dan perdagangan komoditas pertanian berkualitas ekspor: padi, jagung, kopi, kakao, kelapa sawit, karet, lada, teh, sayuran, dan buah-buahan.')">
+    <meta name="description" content="@yield('description', 'AgroTrade — agribisnis dan perdagangan komoditas pertanian berkualitas ekspor: padi, jagung, kopi, kakao, kelapa sawit, karet, lada, teh, sayuran, dan buah-buahan.')">
     <meta name="theme-color" content="#0f2622">
     <link rel="icon" type="image/svg+xml" href="{{ $img('favicon.svg') }}">
+    <link rel="apple-touch-icon" href="{{ $img('apple-touch-icon.png') }}">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="AgroTrade">
+    <meta property="og:title" content="@yield('title', $agro['meta']['title'])">
+    <meta property="og:description" content="@yield('description', 'AgroTrade — agribisnis dan perdagangan komoditas pertanian berkualitas ekspor.')">
+    <meta property="og:image" content="{{ $img('og-image.jpg') }}">
+    <meta name="twitter:card" content="summary_large_image">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/' . $assetDir . '/logistics-agribisnis.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/' . $assetDir . '/agribisnis.css') }}">
 
     <style>
         :root {

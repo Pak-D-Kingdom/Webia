@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\HostingInvoice;
+use App\Models\HostingService;
+use App\Models\HostingTask;
 use App\Models\WebiaOrder;
 use Illuminate\Contracts\View\View;
 
@@ -57,6 +60,14 @@ class DashboardController extends Controller
         $revenue30 = (int) $current->sum('total_price');
         $createdCount30 = WebiaOrder::where('created_at', '>=', now()->subDays(29)->startOfDay())->count();
 
+        $hostingSummary = [
+            'unpaid' => HostingInvoice::where('status', 'unpaid')->count(),
+            'overdue' => HostingInvoice::where('status', 'overdue')->count(),
+            'overdueTotal' => (int) HostingInvoice::where('status', 'overdue')->sum('amount'),
+            'suspended' => HostingService::where('billing_status', 'suspended')->count(),
+            'pendingTasks' => HostingTask::where('status', 'pending')->count(),
+        ];
+
         return view('admin.dashboard', [
             'attention' => WebiaOrder::where('status', 'payment_uploaded')
                 ->with(['package', 'user'])
@@ -74,6 +85,7 @@ class DashboardController extends Controller
             'createdCount30' => $createdCount30,
             'newYesterday' => WebiaOrder::whereDate('created_at', now()->subDay())->count(),
             'totalOrders' => WebiaOrder::count(),
+            'hostingSummary' => $hostingSummary,
         ]);
     }
 }

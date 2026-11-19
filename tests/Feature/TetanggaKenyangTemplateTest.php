@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\WebiaTemplate;
+use Database\Seeders\WebiaTemplatePreviewSeeder;
 use Database\Seeders\WebiaTemplateSeederAthiya;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
@@ -12,9 +13,17 @@ class TetanggaKenyangTemplateTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(WebiaTemplateSeederAthiya::class);
+        $this->seed(WebiaTemplatePreviewSeeder::class);
+    }
+
     public function test_demo_route_renders_the_catalog_cart_and_safe_contact_interactions(): void
     {
-        $this->get(route('webia.template.fnb.tetangga-kenyang-friendly'))
+        $this->get('/webia/template/tetangga-kenyang-friendly')
             ->assertOk()
             ->assertSee('<title>Tetangga Kenyang – Makanan Rumahan yang Ramah</title>', false)
             ->assertSee('Halo, <span>tetangga!</span>', false)

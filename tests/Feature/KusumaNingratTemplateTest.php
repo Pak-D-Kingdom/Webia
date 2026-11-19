@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\WebiaTemplate;
+use Database\Seeders\WebiaTemplatePreviewSeeder;
 use Database\Seeders\WebiaTemplateSeederAthiya;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
@@ -12,9 +13,17 @@ class KusumaNingratTemplateTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(WebiaTemplateSeederAthiya::class);
+        $this->seed(WebiaTemplatePreviewSeeder::class);
+    }
+
     public function test_demo_route_renders_the_kusuma_ningrat_template(): void
     {
-        $this->get(route('webia.template.kusuma-ningrat-royal-heritage'))
+        $this->get('/webia/template/kusuma-ningrat-royal-heritage')
             ->assertOk()
             ->assertSee('<title>KUSUMA NINGRAT | Royal Heritage Keraton Catering & Haute Gastronomie</title>', false)
             ->assertSee('Pustaka Hidangan Ageng', false)

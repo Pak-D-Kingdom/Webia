@@ -5,11 +5,11 @@
         'whatsapp'     => $c['whatsapp'],
         'freeShipping' => $cfg['free_shipping_min'],
         'routes'       => [
-            'catalog' => route($rp . 'catalog'),
-            'price'   => route($rp . 'price'),
-            'stock'   => route($rp . 'stock'),
-            'shop'    => route($rp . 'shop'),
-            'inquiry' => route($rp . 'inquiry'),
+            'catalog' => $r('catalog'),
+            'price'   => $r('price'),
+            'stock'   => $r('stock'),
+            'shop'    => $r('shop'),
+            'inquiry' => $r('inquiry'),
         ],
         'topics'   => $cfg['inquiry_topics'],
         'products' => collect($cfg['products'])->map(fn ($p) => [
@@ -32,8 +32,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <title>@yield('title', 'Belleza - Glow Your Best Self')</title>
-    <meta name="description" content="@yield('description', 'Belleza menghadirkan skincare & beauty premium dengan bahan pilihan untuk kulit sehat dan bercahaya.')">
+    <title>@yield('title', $cfg['brand']['name'].' - Glow Your Best Self')</title>
+    <meta name="description" content="@yield('description', $cfg['brand']['name'].' menghadirkan skincare & beauty premium dengan bahan pilihan untuk kulit sehat dan bercahaya.')">
     <meta name="theme-color" content="#a95c6b">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -63,6 +63,9 @@
     @include($ns . '.partials.navbar')
 
     <main id="main">
+        @if ($cfg['customer_site'] ?? false)
+            <p class="container"><strong>Contoh katalog:</strong> produk, harga, dan stok berikut merupakan konten demo.</p>
+        @endif
         @yield('content')
     </main>
 

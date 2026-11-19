@@ -25,25 +25,3 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-
-/* WEBIA — Floating Portal Visibility */
-(() => {
-    const portal = document.querySelector(".webia-portal");
-
-    if (!portal) return;
-
-    const updatePortalVisibility = () => {
-        portal.classList.toggle(
-            "is-visible",
-            window.scrollY > 180
-        );
-    };
-
-    window.addEventListener(
-        "scroll",
-        updatePortalVisibility,
-        { passive: true }
-    );
-
-    updatePortalVisibility();
-})();

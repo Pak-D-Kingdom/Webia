@@ -2,6 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Models\HostingInvoice;
+use App\Models\HostingService;
+use App\Models\HostingTask;
 use App\Models\User;
 use App\Models\WebiaOrder;
 use App\Models\WebiaPackage;
@@ -11,6 +14,39 @@ use Tests\TestCase;
 class DashboardTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function test_user_orders_relation_returns_only_owned_orders(): void
+    {
+        $customer = User::factory()->create();
+        $ownedOrder = WebiaOrder::factory()->for($customer)->create();
+        WebiaOrder::factory()->create();
+
+        $this->assertTrue($customer->orders()->sole()->is($ownedOrder));
+    }
+
+    public function test_period_filter_changes_analytics_window(): void
+    {
+        $customer = User::factory()->create();
+        WebiaOrder::factory()->for($customer)->create(['created_at' => now()->subMonths(7)]);
+
+        $this->actingAs($customer)->get(route('dashboard'))
+            ->assertOk()
+            ->assertDontSee('7 bulan');
+
+        $this->actingAs($customer)->get(route('dashboard', ['period' => 12]))
+            ->assertOk()
+            ->assertSee('data-customer-modal', false)
+            ->assertSee('<input type="radio" name="period" value="12" checked', false);
+    }
+
+    public function test_period_filter_rejects_unknown_values(): void
+    {
+        $customer = User::factory()->create();
+
+        $this->actingAs($customer)->get(route('dashboard', ['period' => '99']))
+            ->assertOk()
+            ->assertSee('<input type="radio" name="period" value="3" checked', false);
+    }
 
     public function test_customer_dashboard_shows_latest_active_order_and_only_own_history(): void
     {
@@ -55,6 +91,56 @@ class DashboardTest extends TestCase
             ->assertSee('kopi-kawan');
     }
 
+    public function test_customer_dashboard_analytics_use_only_owned_real_data(): void
+    {
+        $this->travelTo('2026-11-13 12:00:00');
+        $customer = User::factory()->create();
+        $service = HostingService::factory()->for($customer)->create();
+        $otherService = HostingService::factory()->create();
+
+        WebiaOrder::factory()->for($customer)->create([
+            'status' => 'awaiting_payment',
+            'created_at' => '2026-09-10 12:00:00',
+        ]);
+        WebiaOrder::factory()->for($customer)->create([
+            'status' => 'paid',
+            'delivery_status' => 'in_progress',
+            'created_at' => '2026-10-10 12:00:00',
+        ]);
+        WebiaOrder::factory()->for($customer)->create([
+            'status' => 'paid',
+            'delivery_status' => 'delivered',
+            'created_at' => '2026-10-20 12:00:00',
+        ]);
+        WebiaOrder::factory()->create(['created_at' => '2026-11-01 12:00:00']);
+
+        HostingInvoice::factory()->for($service, 'service')->create([
+            'period_start' => '2026-09-01',
+            'amount' => 45000,
+        ]);
+        HostingInvoice::factory()->for($service, 'service')->create([
+            'period_start' => '2026-10-01',
+            'amount' => 90000,
+        ]);
+        HostingInvoice::factory()->for($otherService, 'service')->create([
+            'period_start' => '2026-11-01',
+            'amount' => 500000,
+        ]);
+
+        $this->actingAs($customer)
+            ->get(route('dashboard'))
+            ->assertOk()
+            ->assertViewHas('analytics', function (array $analytics): bool {
+                return $analytics['order_series'] === [1, 2, 0]
+                    && $analytics['invoice_series'] === [45000, 90000, 0]
+                    && $analytics['status_counts'] === [
+                        'waiting' => 1,
+                        'in_progress' => 1,
+                        'completed' => 1,
+                    ];
+            });
+    }
+
     public function test_customer_portal_shell_shows_sidebar_navigation_after_login(): void
     {
         $customer = User::factory()->create();
@@ -65,6 +151,50 @@ class DashboardTest extends TestCase
             ->assertSee('Pesanan Saya', false)
             ->assertSee('Keluar', false)
             ->assertDontSee('Pilih Template</a>', false);
+    }
+
+    public function test_customer_dashboard_shows_only_own_outstanding_hosting_invoices(): void
+    {
+        $customer = User::factory()->create();
+        $service = HostingService::factory()->for($customer)->create(['website_name' => 'Toko Ayu']);
+        HostingInvoice::factory()->for($service, 'service')->create([
+            'invoice_number' => 'HST-AYU-001',
+            'amount' => 275000,
+            'status' => 'overdue',
+            'due_at' => now()->addDay(),
+        ]);
+        HostingInvoice::factory()->for($service, 'service')->create([
+            'invoice_number' => 'HST-PAID-001',
+            'status' => 'paid',
+        ]);
+        $stoppedService = HostingService::factory()->for($customer)->create(['billing_status' => 'stopped']);
+        HostingInvoice::factory()->for($stoppedService, 'service')->create(['invoice_number' => 'HST-STOPPED-001']);
+        HostingInvoice::factory()->create(['invoice_number' => 'HST-OTHER-001']);
+        HostingInvoice::factory()->count(5)->for($service, 'service')->create();
+
+        $this->actingAs($customer)
+            ->get(route('dashboard'))
+            ->assertOk()
+            ->assertSee('Tagihan hosting')
+            ->assertSee('HST-AYU-001')
+            ->assertSee('Rp 275.000')
+            ->assertSee(route('hosting-invoices.index'), false)
+            ->assertDontSee('HST-PAID-001')
+            ->assertDontSee('HST-STOPPED-001')
+            ->assertDontSee('HST-OTHER-001')
+            ->assertViewHas('hostingInvoices', fn ($invoices): bool => $invoices->count() === 5);
+    }
+
+    public function test_customer_dashboard_hides_hosting_summary_without_outstanding_invoices(): void
+    {
+        $customer = User::factory()->create();
+        $service = HostingService::factory()->for($customer)->create();
+        HostingInvoice::factory()->for($service, 'service')->create(['status' => 'paid']);
+
+        $this->actingAs($customer)
+            ->get(route('dashboard'))
+            ->assertOk()
+            ->assertDontSee('Perlu dibayar');
     }
 
     public function test_admin_dashboard_shows_real_operational_counts_and_attention_queue(): void
@@ -89,6 +219,31 @@ class DashboardTest extends TestCase
             ->assertSee('WEB-VERIFY')
             ->assertViewHas('attention', fn ($orders): bool => $orders->contains($verification))
             ->assertViewHas('counts', fn ($c): bool => $c['verification'] === 1 && $c['in_progress'] === 1 && $c['new_today'] === 3);
+    }
+
+    public function test_admin_dashboard_shows_hosting_items_needing_action(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $service = HostingService::factory()->create(['billing_status' => 'suspended']);
+        HostingInvoice::factory()->create([
+            'hosting_service_id' => $service->id,
+            'status' => 'overdue',
+            'amount' => 200000,
+        ]);
+        HostingTask::factory()->create([
+            'hosting_service_id' => $service->id,
+            'status' => 'pending',
+        ]);
+        HostingInvoice::factory()->create(['status' => 'paid', 'amount' => 900000]);
+
+        $this->actingAs($admin)->get(route('admin.dashboard'))
+            ->assertOk()
+            ->assertSee('Hosting perlu tindakan')
+            ->assertSee('Rp200.000')
+            ->assertViewHas('hostingSummary', fn (array $summary): bool => $summary['overdue'] === 1
+                && $summary['overdueTotal'] === 200000
+                && $summary['suspended'] === 1
+                && $summary['pendingTasks'] === 1);
     }
 
     public function test_admin_dashboard_sums_verified_revenue_within_last_30_days(): void

@@ -57,12 +57,12 @@ $specs = fn (array $f): array => [
 ];
 
 $facilities = fn (array $f): array => [
-    ['icon' => 'bed',    'group' => 'Indoor',           'label' => $f['bedrooms'] . ' Bedrooms'],
-    ['icon' => 'bath',   'group' => 'Indoor',           'label' => $f['bathrooms'] . ' Bathrooms'],
+    ['icon' => 'bed',    'group' => 'Indoor',           'label' => $f['bedrooms'].' Bedrooms'],
+    ['icon' => 'bath',   'group' => 'Indoor',           'label' => $f['bathrooms'].' Bathrooms'],
     ['icon' => 'sofa',   'group' => 'Indoor',           'label' => 'Open-Plan Living Area'],
     ['icon' => 'waves',  'group' => 'Outdoor',          'label' => 'Swimming Pool'],
     ['icon' => 'leaf',   'group' => 'Outdoor',          'label' => 'Tropical Garden'],
-    ['icon' => 'car',    'group' => 'Outdoor',          'label' => $f['carport'] . '-Car Carport'],
+    ['icon' => 'car',    'group' => 'Outdoor',          'label' => $f['carport'].'-Car Carport'],
     ['icon' => 'sun',    'group' => 'Outdoor',          'label' => $f['view']],
     ['icon' => 'shield', 'group' => 'Legal & Security', 'label' => 'SHM Certificate'],
 ];
@@ -72,8 +72,8 @@ $tiles = fn (array $f): array => [
     ['icon' => 'bed',      'value' => $f['bedrooms'],            'label' => 'Bedrooms'],
     ['icon' => 'bath',     'value' => $f['bathrooms'],           'label' => 'Bathrooms'],
     ['icon' => 'car',      'value' => $f['carport'],             'label' => 'Carport'],
-    ['icon' => 'land',     'value' => $f['land'] . ' m²',        'label' => 'Land Area'],
-    ['icon' => 'building', 'value' => $f['building'] . ' m²',    'label' => 'Building Area'],
+    ['icon' => 'land',     'value' => $f['land'].' m²',        'label' => 'Land Area'],
+    ['icon' => 'building', 'value' => $f['building'].' m²',    'label' => 'Building Area'],
     ['icon' => 'calendar', 'value' => $f['year'],                'label' => 'Year Built'],
 ];
 
@@ -97,12 +97,12 @@ $build = fn (array $p): array => $p + [
     'specs' => $specs($p['facts']),
     'facilities' => $facilities($p['facts']),
     'price_rows' => $priceRows($p['facts']),
-    'map_image'  => 'map-bali.jpg',
-    'maps_url'   => 'https://www.google.com/maps/search/?api=1&query=' . urlencode($p['place_name'] . ' ' . $p['address']),
-    'directions_url' => 'https://www.google.com/maps/dir/?api=1&destination=' . urlencode($p['place_name'] . ' ' . $p['address']),
-    'embed_url'  => 'https://www.google.com/maps?q=' . urlencode($p['place_name'] . ' ' . $p['address']) . '&output=embed',
-    'tiles'      => $tiles($p['facts']),
-    'video_url'  => '',   // opsional: URL embed video (mis. https://www.youtube.com/embed/xxxx). Kosong = blok video tidak tampil
+    'map_image' => 'map-bali.jpg',
+    'maps_url' => 'https://www.google.com/maps/search/?api=1&query='.urlencode($p['place_name'].' '.$p['address']),
+    'directions_url' => 'https://www.google.com/maps/dir/?api=1&destination='.urlencode($p['place_name'].' '.$p['address']),
+    'embed_url' => 'https://www.google.com/maps?q='.urlencode($p['place_name'].' '.$p['address']).'&output=embed',
+    'tiles' => $tiles($p['facts']),
+    'video_url' => '',   // opsional: URL embed video (mis. https://www.youtube.com/embed/xxxx). Kosong = blok video tidak tampil
 ];
 
 $properties = [
@@ -275,12 +275,12 @@ return [
             ['id' => 'location',      'label' => 'Location'],
         ],
         'titles' => [
-            'gallery'       => ['title' => 'Gallery & Visual Media',        'text' => 'Browse every angle of the property.'],
-            'overview'      => ['title' => 'Key Information & Price',       'text' => 'The essentials and the investment at a glance.'],
+            'gallery' => ['title' => 'Gallery & Visual Media',        'text' => 'Browse every angle of the property.'],
+            'overview' => ['title' => 'Key Information & Price',       'text' => 'The essentials and the investment at a glance.'],
             'specification' => ['title' => 'Technical Specifications',      'text' => 'Land, building and legal details.'],
-            'facilities'    => ['title' => 'Facilities & Amenities',        'text' => 'Everything that comes with the property.'],
-            'description'   => ['title' => 'Description & Story',           'text' => 'About this property.'],
-            'location'      => ['title' => 'Location & Interactive Map',    'text' => 'Explore the surroundings and get directions.'],
+            'facilities' => ['title' => 'Facilities & Amenities',        'text' => 'Everything that comes with the property.'],
+            'description' => ['title' => 'Description & Story',           'text' => 'About this property.'],
+            'location' => ['title' => 'Location & Interactive Map',    'text' => 'Explore the surroundings and get directions.'],
         ],
         'facility_groups' => [
             ['key' => 'Indoor',           'title' => 'Indoor Living',     'icon' => 'home'],
@@ -458,8 +458,8 @@ return [
                 'keys' => ['fasilitas', 'facilities', 'kolam', 'pool', 'taman', 'garden', 'furnish'],
                 'a' => 'Properti ini memiliki {bedrooms} kamar tidur, {bathrooms} kamar mandi, carport untuk {carport} mobil, kolam renang, taman tropis, serta area living terbuka dengan pemandangan.'],
             ['q' => 'Bagaimana cara booking/viewing?', 'chip' => true,
-             'keys' => ['booking', 'viewing', 'kunjungan', 'survei', 'survey', 'jadwal', 'lihat', 'datang', 'cara'],
-             'a' => 'Klik tombol "Book a Viewing", pilih tanggal dan jam kunjungan di halaman Booking, lalu kirim permintaan. Jam kunjungan: Senin - Minggu, 09:00 - 18:00.'],
+                'keys' => ['booking', 'viewing', 'kunjungan', 'survei', 'survey', 'jadwal', 'lihat', 'datang', 'cara'],
+                'a' => 'Klik tombol "Book a Viewing", pilih tanggal dan jam kunjungan di halaman Booking, lalu kirim permintaan. Jam kunjungan: Senin - Minggu, 09:00 - 18:00.'],
             ['q' => 'Berapa harga terendah di area ini?', 'chip' => true,
                 'keys' => ['harga', 'price', 'nego', 'negotiable', 'berapa', 'murah', 'terendah', 'cicilan', 'kpr'],
                 'a' => 'Harga {title} adalah {price}. Untuk perbandingan properti lain di area ini, silakan hubungi tim kami di '.$site['phone'].'.'],

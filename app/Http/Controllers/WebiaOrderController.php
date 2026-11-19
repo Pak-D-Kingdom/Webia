@@ -9,6 +9,7 @@ use App\Models\WebiaOrderLog;
 use App\Models\WebiaPackage;
 use App\Models\WebiaPayment;
 use App\Models\WebiaTemplate;
+use App\Services\AiQuotaService;
 use App\Services\Midtrans;
 use App\Services\OrderMail;
 use Illuminate\Database\Eloquent\Collection;
@@ -21,6 +22,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 use RuntimeException;
 use Throwable;
@@ -32,7 +34,14 @@ class WebiaOrderController extends Controller
     public function index(Request $request): View
     {
         $filter = $request->string('filter')->toString();
-        $query = WebiaOrder::whereBelongsTo($request->user())->with('package')->latest();
+        $ownedOrders = WebiaOrder::whereBelongsTo($request->user());
+        $orderStats = [
+            'total' => (clone $ownedOrders)->count(),
+            'waiting' => (clone $ownedOrders)->whereIn('status', ['awaiting_payment', 'rejected'])->count(),
+            'in_progress' => (clone $ownedOrders)->where('status', 'paid')->where('delivery_status', '!=', 'delivered')->count(),
+            'completed' => (clone $ownedOrders)->where('delivery_status', 'delivered')->count(),
+        ];
+        $query = (clone $ownedOrders)->with(['package', 'template'])->latest();
 
         if ($filter === 'menunggu_pembayaran') {
             $query->whereIn('status', ['awaiting_payment', 'rejected']);
@@ -48,7 +57,7 @@ class WebiaOrderController extends Controller
 
         $orders = $query->get();
 
-        return view('orders.index', compact('orders', 'filter'));
+        return view('orders.index', compact('orders', 'filter', 'orderStats'));
     }
 
     public function create(Request $request): View
@@ -78,6 +87,9 @@ class WebiaOrderController extends Controller
 
         $package = WebiaPackage::findOrFail($validated['package_id']);
         $template = isset($validated['template_id']) ? WebiaTemplate::findOrFail($validated['template_id']) : null;
+        if ($template !== null && $package->templates()->exists() && ! $package->templates()->whereKey($template)->exists()) {
+            throw ValidationException::withMessages(['template_id' => 'Template tidak tersedia dalam paket yang dipilih.']);
+        }
         $addons = WebiaAddon::whereKey($validated['addon_ids'] ?? [])->get();
 
         // Guest belum punya akun: nama/email disimpan di order; akun dibuat setelah pembayaran lunas.
@@ -189,6 +201,28 @@ class WebiaOrderController extends Controller
         return redirect()->route('orders.show', $order)->with('status', 'Bukti pembayaran berhasil dikirim.');
     }
 
+    public function cancel(Request $request, WebiaOrder $order): RedirectResponse
+    {
+        abort_unless($order->user_id === $request->user()->id, 404);
+        abort_unless(in_array($order->status, ['awaiting_payment', 'rejected'], true), 422);
+
+        DB::transaction(function () use ($order, $request): void {
+            $lockedOrder = WebiaOrder::whereKey($order->id)->lockForUpdate()->firstOrFail();
+            abort_unless(in_array($lockedOrder->status, ['awaiting_payment', 'rejected'], true), 422);
+
+            $fromStatus = $lockedOrder->status;
+            $lockedOrder->update(['status' => 'cancelled']);
+            WebiaOrderLog::create([
+                'webia_order_id' => $lockedOrder->id,
+                'actor_id' => $request->user()->id,
+                'from_status' => $fromStatus,
+                'to_status' => 'cancelled',
+            ]);
+        });
+
+        return redirect()->route('orders.index')->with('status', 'Pesanan '.$order->order_number.' dibatalkan.');
+    }
+
     public function pay(Request $request, WebiaOrder $order): RedirectResponse
     {
         abort_unless($order->user_id === $request->user()->id, 404);
@@ -294,6 +328,7 @@ class WebiaOrderController extends Controller
     public function saveBusinessData(Request $request, WebiaOrder $order): RedirectResponse
     {
         abort_unless($order->user_id === $request->user()->id, 404);
+        abort_unless($order->status === 'paid' && $order->delivery_status !== 'delivered', 422);
 
         $requiredForSite = $order->supportsCustomerSite() ? 'required' : 'nullable';
         $validated = $request->validate([
@@ -311,12 +346,74 @@ class WebiaOrderController extends Controller
             $lockedOrder = WebiaOrder::whereKey($order->id)->lockForUpdate()->firstOrFail();
             abort_unless($lockedOrder->status === 'paid' && $lockedOrder->delivery_status !== 'delivered', 422);
 
+            $current = $lockedOrder->business_data ?? [];
             $lockedOrder->update([
-                'business_data' => $validated,
+                'business_data' => array_merge($current, $validated),
             ]);
         });
 
-        return redirect()->route('orders.show', $order)->with('status', 'Data bisnis berhasil disimpan.');
+        // Sinkronkan ke profil AI jika site_slug sudah aktif
+        if (!empty($order->site_slug)) {
+            AiQuotaService::updateTenantBusinessInfo($order->site_slug, [
+                'welcome_message' => "Halo! Selamat datang di " . ($validated['business_name'] ?? 'website kami') . ", ada yang bisa kami bantu? 😊",
+                'whatsapp_cs' => $validated['whatsapp'] ?? '',
+                'alamat' => ($validated['address'] ?? '') . (!empty($validated['city']) ? ', ' . $validated['city'] : ''),
+            ]);
+        }
+
+        return redirect()->route('orders.show', ['order' => $order, 'tab' => 'profile'])->with('status', 'Data bisnis profil berhasil disimpan.');
+    }
+
+    public function saveKnowledgeBase(Request $request, WebiaOrder $order): RedirectResponse
+    {
+        abort_unless($order->user_id === $request->user()->id, 404);
+        abort_unless($order->status === 'paid' && $order->delivery_status !== 'delivered', 422);
+
+        $validated = $request->validate([
+            'kb_layanan' => ['nullable', 'string', 'max:20000'],
+            'kb_faq' => ['nullable', 'string', 'max:20000'],
+            'kb_kebijakan' => ['nullable', 'string', 'max:20000'],
+            'kb_profil' => ['nullable', 'string', 'max:20000'],
+        ]);
+
+        DB::transaction(function () use ($order, $validated): void {
+            $lockedOrder = WebiaOrder::whereKey($order->id)->lockForUpdate()->firstOrFail();
+            abort_unless($lockedOrder->status === 'paid' && $lockedOrder->delivery_status !== 'delivered', 422);
+
+            $current = $lockedOrder->business_data ?? [];
+            $lockedOrder->update([
+                'business_data' => array_merge($current, [
+                    'kb_layanan' => $validated['kb_layanan'] ?? null,
+                    'kb_faq' => $validated['kb_faq'] ?? null,
+                    'kb_kebijakan' => $validated['kb_kebijakan'] ?? null,
+                    'kb_profil' => $validated['kb_profil'] ?? null,
+                ]),
+            ]);
+        });
+
+        if (!empty($order->site_slug)) {
+            AiQuotaService::saveTenantKnowledge($order->site_slug, [
+                'layanan' => $validated['kb_layanan'] ?? '',
+                'faq' => $validated['kb_faq'] ?? '',
+                'kebijakan' => $validated['kb_kebijakan'] ?? '',
+                'profil' => $validated['kb_profil'] ?? '',
+            ]);
+        }
+
+        return redirect()->route('orders.show', ['order' => $order, 'tab' => 'ai-kb'])->with('status', 'Knowledge Base AI (layanan, FAQ, kebijakan, profil) berhasil disimpan!');
+    }
+
+    public function simulateChat(Request $request, WebiaOrder $order): JsonResponse
+    {
+        abort_unless($order->user_id === $request->user()->id, 404);
+        $message = $request->string('message')->trim()->toString();
+        if (empty($message)) {
+            return response()->json(['status' => 'error', 'reply' => 'Pesan tidak boleh kosong.'], 422);
+        }
+
+        $tenantId = $order->site_slug ?: ($order->category_slug ?: 'general');
+        $reply = AiQuotaService::simulateChat($tenantId, $message);
+        return response()->json($reply);
     }
 
     /** @param Collection<int, WebiaAddon> $addons */
@@ -331,9 +428,18 @@ class WebiaOrderController extends Controller
                         'guest_email' => $guestEmail ?? $user?->email,
                         'order_number' => $this->orderNumber(),
                         'webia_package_id' => $package->id,
-                        'package_snapshot' => ['name' => $package->name, 'price' => $package->price],
+                        'package_snapshot' => [
+                            'name' => $package->name,
+                            'price' => $package->price,
+                            'hosting_monthly_price' => $package->hosting_monthly_price,
+                        ],
                         'webia_template_id' => $template?->id,
-                        'template_snapshot' => $template ? ['name' => $template->name, 'slug' => $template->slug, 'category_slug' => $template->category_slug] : null,
+                        'template_snapshot' => $template ? [
+                            'name' => $template->name,
+                            'slug' => $template->slug,
+                            'category_slug' => $template->category_slug,
+                            'site_config_path' => $template->site_config_path,
+                        ] : null,
                         'category_slug' => $template?->category_slug ?? $categorySlug,
                         'addon_ids' => $addons->modelKeys(),
                         'addon_snapshot' => $addons->map(fn (WebiaAddon $addon): array => [

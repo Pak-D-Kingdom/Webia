@@ -10,11 +10,11 @@
             <p class="gl-hero__text">{{ $h['text'] }}</p>
 
             <div class="gl-hero__actions">
-                <a class="gl-btn gl-btn--primary gl-btn--lg" href="{{ route('klinik-kecantikan.appointment') }}">
+                <a class="gl-btn gl-btn--primary gl-btn--lg" href="{{ $r('klinik-kecantikan.appointment') }}">
                     <svg class="gl-ic" aria-hidden="true"><use href="#gl-i-calendar"/></svg>
                     Booking Appointment
                 </a>
-                <a class="gl-btn gl-btn--ghost gl-btn--lg" href="{{ route('klinik-kecantikan.services') }}">
+                <a class="gl-btn gl-btn--ghost gl-btn--lg" href="{{ $r('klinik-kecantikan.services') }}">
                     Pelajari Layanan
                     <svg class="gl-ic gl-ic--sm" aria-hidden="true"><use href="#gl-i-play"/></svg>
                 </a>

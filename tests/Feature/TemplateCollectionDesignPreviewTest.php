@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use Database\Seeders\WebiaTemplatePreviewSeeder;
 use Database\Seeders\WebiaTemplateSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
@@ -18,6 +19,7 @@ class TemplateCollectionDesignPreviewTest extends TestCase
             '--force' => true,
             '--no-interaction' => true,
         ]);
+        $this->seed(WebiaTemplatePreviewSeeder::class);
 
         $this->get(route('collections'))
             ->assertOk()

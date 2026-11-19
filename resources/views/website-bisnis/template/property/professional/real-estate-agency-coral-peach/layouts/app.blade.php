@@ -1,3 +1,7 @@
+@php
+  $r = $r ?? fn (string $name, array|string $parameters = []): string => route($name, $parameters);
+  $isActive = $isActive ?? fn (string $pattern): bool => request()->routeIs($pattern);
+@endphp
 <!DOCTYPE html>
 <html lang="id" class="no-js">
 <head>
@@ -21,6 +25,10 @@
   @include('website-bisnis.template.property.professional.real-estate-agency-coral-peach.partials.icons')
   @include('website-bisnis.template.property.professional.real-estate-agency-coral-peach.partials.topbar')
   @include('website-bisnis.template.property.professional.real-estate-agency-coral-peach.partials.navbar')
+
+  @if ($site['customer_site'] ?? false)
+    <p class="container"><strong>Contoh properti:</strong> properti dan harga berikut merupakan konten demo.</p>
+  @endif
 
   <main id="main" tabindex="-1">
     @yield('content')

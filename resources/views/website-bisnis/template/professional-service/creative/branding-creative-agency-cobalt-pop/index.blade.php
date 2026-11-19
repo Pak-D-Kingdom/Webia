@@ -1,0 +1,20 @@
+@php($site = config('template.professional-service.creative.branding-creative-agency-cobalt-pop.branding-creative-agency'))
+@php($current = 'home')
+@extends('website-bisnis.template.professional-service.creative.branding-creative-agency-cobalt-pop.layouts.app')
+
+@section('title', 'Brand & Creative Studio')
+
+@section('content')
+    @include('website-bisnis.template.professional-service.creative.branding-creative-agency-cobalt-pop.sections.home-hero')
+    @include('website-bisnis.template.professional-service.creative.branding-creative-agency-cobalt-pop.sections.home-about')
+    @include('website-bisnis.template.professional-service.creative.branding-creative-agency-cobalt-pop.sections.home-services')
+    @include('website-bisnis.template.professional-service.creative.branding-creative-agency-cobalt-pop.sections.home-portfolio')
+    @include('website-bisnis.template.professional-service.creative.branding-creative-agency-cobalt-pop.sections.home-branding')
+    @include('website-bisnis.template.professional-service.creative.branding-creative-agency-cobalt-pop.sections.home-process')
+    @include('website-bisnis.template.professional-service.creative.branding-creative-agency-cobalt-pop.sections.home-stats')
+    @include('website-bisnis.template.professional-service.creative.branding-creative-agency-cobalt-pop.sections.home-team')
+    @include('website-bisnis.template.professional-service.creative.branding-creative-agency-cobalt-pop.sections.home-clients')
+    @include('website-bisnis.template.professional-service.creative.branding-creative-agency-cobalt-pop.sections.home-testimonials')
+    @include('website-bisnis.template.professional-service.creative.branding-creative-agency-cobalt-pop.sections.home-journal')
+    @include('website-bisnis.template.professional-service.creative.branding-creative-agency-cobalt-pop.sections.home-contact')
+@endsection

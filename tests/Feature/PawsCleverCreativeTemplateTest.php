@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\WebiaTemplate;
 use Database\Seeders\WebiaTemplateAlleSeeder;
+use Database\Seeders\WebiaTemplatePreviewSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
@@ -12,9 +13,17 @@ class PawsCleverCreativeTemplateTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(WebiaTemplateAlleSeeder::class);
+        $this->seed(WebiaTemplatePreviewSeeder::class);
+    }
+
     public function test_demo_route_renders_the_paws_academy_template(): void
     {
-        $this->get(route('webia.template.pet-animal-service.paws-clever-creative'))
+        $this->get('/webia/template/paws-clever-creative')
             ->assertOk()
             ->assertSee('<title>Paws & Clever - Akademi & Pelatihan Hewan Peliharaan</title>', false)
             ->assertSee('Positive Reinforcement 100% Bebas Paksaan')
@@ -54,7 +63,7 @@ class PawsCleverCreativeTemplateTest extends TestCase
 
     public function test_catalog_preview_uses_the_template_hero_mode(): void
     {
-        $this->get(route('webia.template.pet-animal-service.paws-clever-creative').'?preview=1')
+        $this->get('/webia/template/paws-clever-creative'.'?preview=1')
             ->assertOk()
             ->assertSee('paws-template-preview');
     }

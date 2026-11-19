@@ -7,7 +7,7 @@
         <div class="gl-pagehero__content">
             <nav class="gl-crumb" aria-label="Breadcrumb">
                 <ol>
-                    <li><a href="{{ route('klinik-kecantikan.home') }}">Beranda</a></li>
+                    <li><a href="{{ $r('klinik-kecantikan.home') }}">Beranda</a></li>
                     <li aria-current="page">{{ $crumb }}</li>
                 </ol>
             </nav>

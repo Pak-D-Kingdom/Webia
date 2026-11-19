@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\WebiaTemplate;
+use Database\Seeders\WebiaTemplatePreviewSeeder;
 use Database\Seeders\WebiaTemplateSeederAthiya;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
@@ -12,9 +13,17 @@ class RoselineProfessionalWorkshopTemplateTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(WebiaTemplateSeederAthiya::class);
+        $this->seed(WebiaTemplatePreviewSeeder::class);
+    }
+
     public function test_demo_route_renders_roseline_and_safe_mobile_interactions(): void
     {
-        $this->get(route('webia.template.automotive.roseline-professional-workshop'))
+        $this->get('/webia/template/roseline-professional-workshop')
             ->assertOk()
             ->assertSee('<title>Roseline Service Center – Servis Kendaraan Transparan</title>', false)
             ->assertSee('id="roseline-menu-button"', false)

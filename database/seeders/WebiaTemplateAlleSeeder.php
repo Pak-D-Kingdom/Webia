@@ -24,6 +24,7 @@ class WebiaTemplateAlleSeeder extends Seeder
                 'headline' => 'Artisanal Breads.<br>Unmatched Excellence.',
                 'tag' => 'Food & Beverage · Bakery · Bold Luxury',
                 'preview_folder' => null,
+                'site_config_path' => 'fnb/bakery-bold-luxury',
                 'template_url' => '/webia/template/bakery-bold-luxury',
                 'is_active' => true,
                 'sort_order' => 33,
@@ -45,6 +46,7 @@ class WebiaTemplateAlleSeeder extends Seeder
                 'headline' => 'Tradition Meets The Future.',
                 'tag' => 'Food & Beverage · Bakery & Pastry · Futuristic Luxury',
                 'preview_folder' => null,
+                'site_config_path' => 'fnb/midnightbaker-futuristic',
                 'template_url' => '/webia/template/midnightbaker-futuristic',
                 'is_active' => true,
                 'sort_order' => 34,
@@ -129,6 +131,7 @@ class WebiaTemplateAlleSeeder extends Seeder
                 'headline' => 'Curated Mastery on Wheels.',
                 'tag' => 'Automotive · Luxury Dealer · Elegant Heritage',
                 'preview_folder' => null,
+                'site_config_path' => 'automotive/apex-heritage-automotive-elegant',
                 'template_url' => '/webia/template/apex-heritage-automotive-elegant',
                 'is_active' => true,
                 'sort_order' => 38,
@@ -150,6 +153,7 @@ class WebiaTemplateAlleSeeder extends Seeder
                 'headline' => 'Sculpted Velocity in Ruby & Carbon',
                 'tag' => 'Automotive · Luxury Sports Cars · Minimalist Performance',
                 'preview_folder' => null,
+                'site_config_path' => 'automotive/apex-scuderia-automotive-minimalist',
                 'template_url' => '/webia/template/apex-scuderia-automotive-minimalist',
                 'is_active' => true,
                 'sort_order' => 39,
@@ -300,6 +304,178 @@ class WebiaTemplateAlleSeeder extends Seeder
                 'template_url' => '/webia/template/aurora-petit-yellow-sunshine',
                 'is_active' => true,
                 'sort_order' => 46,
+            ]
+        );
+
+        WebiaTemplate::updateOrCreate(
+            ['slug' => 'arya-sanjaya-ruby-editorial'],
+            [
+                'name' => 'Arya Sanjaya — Ruby Editorial Author Portfolio',
+                'category_slug' => 'personal-brand',
+                'category_label' => 'Personal Brand',
+                'business_types' => ['Author & Writer'],
+                'design_style' => 'Literary Editorial',
+                'color_theme' => 'Ruby Red, Charcoal & Ivory',
+                'description' => 'Literary author portfolio featuring Arya Sanjaya’s biography, selected books, writing excerpts, literary events, reader FAQs, direct WhatsApp book orders, newsletter signup, and an AI literary assistant demo.',
+                'preview_style' => 'preview-arya-sanjaya-ruby-editorial',
+                'eyebrow' => 'AUTHOR · NOVELIST · ESSAYIST',
+                'headline' => 'Keheningan yang Menuliskan Rahasia Jiwa.',
+                'tag' => 'Personal Brand · Author & Writer · Literary Editorial',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/arya-sanjaya-ruby-editorial',
+                'is_active' => true,
+                'sort_order' => 47,
+            ]
+        );
+
+        WebiaTemplate::updateOrCreate(
+            ['slug' => 'arya-sanjaya-plum-velvet'],
+            [
+                'name' => 'Arya Sanjaya — Plum Velvet Literary Portfolio',
+                'category_slug' => 'personal-brand',
+                'category_label' => 'Personal Brand',
+                'business_types' => ['Author & Writer'],
+                'design_style' => 'Professional Luxury',
+                'color_theme' => 'Deep Plum & Champagne Gold',
+                'description' => 'Professional author portfolio featuring Arya Sanjaya’s literary profile, books and writing, awards, reader FAQs, direct WhatsApp book orders, newsletter signup, and an AI literary assistant demo.',
+                'preview_style' => 'preview-arya-sanjaya-plum-velvet',
+                'eyebrow' => 'PENULIS · PEMIKIRAN · LITERASI',
+                'headline' => 'Selamat datang di ruang karya & pemikiran Arya Sanjaya.',
+                'tag' => 'Personal Brand · Author & Writer · Plum Velvet',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/arya-sanjaya-plum-velvet',
+                'is_active' => true,
+                'sort_order' => 48,
+            ]
+        );
+
+        WebiaTemplate::updateOrCreate(
+            ['slug' => 'relakita-volunteer-warm-sunrise'],
+            [
+                'name' => 'Relakita — Warm Sunrise Volunteer Community',
+                'category_slug' => 'nonprofit-community',
+                'category_label' => 'Nonprofit & Community',
+                'business_types' => ['Volunteer Group'],
+                'design_style' => 'Warm Editorial',
+                'color_theme' => 'Warm Ivory, Terracotta & Rose',
+                'description' => 'Community volunteer landing page with an organization profile, three social-impact programs, volunteer registration form, impact stories, FAQs, AI volunteer assistant, and coordinator contact.',
+                'preview_style' => 'preview-relakita-volunteer-warm-sunrise',
+                'eyebrow' => 'RELAKITA · SAHABAT RELAWAN INDONESIA',
+                'headline' => 'Langkah Kecil Kita, Senyum Hangat untuk Saudara Sebangsa.',
+                'tag' => 'Nonprofit & Community · Volunteer Group · Warm Editorial',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/relakita-volunteer-warm-sunrise',
+                'is_active' => true,
+                'sort_order' => 49,
+            ]
+        );
+
+        WebiaTemplate::updateOrCreate(
+            ['slug' => 'kolektif-aksi-kita-volunteer-midnight-navy'],
+            [
+                'name' => 'Kolektif Aksi Kita — Midnight Navy Volunteer Network',
+                'category_slug' => 'nonprofit-community',
+                'category_label' => 'Nonprofit & Community',
+                'business_types' => ['Volunteer Group'],
+                'design_style' => 'Modern & Technology',
+                'color_theme' => 'Midnight Navy & Electric Cyan',
+                'description' => 'Modern volunteer-network landing page with organization benefits, open service programs, impact metrics, volunteer eligibility and FAQs, mobile navigation, a volunteer interest form, WhatsApp coordination, and an AI assistant demo.',
+                'preview_style' => 'preview-kolektif-aksi-kita-volunteer-midnight-navy',
+                'eyebrow' => 'RELAKITA · AKSI NYATA PEMUDA BERGERAK',
+                'headline' => 'Satu Jam Tenagamu, Sejuta Harapan untuk Nusantara.',
+                'tag' => 'Nonprofit & Community · Volunteer Group · Midnight Navy',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/kolektif-aksi-kita-volunteer-midnight-navy',
+                'is_active' => true,
+                'sort_order' => 50,
+            ]
+        );
+
+        WebiaTemplate::updateOrCreate(
+            ['slug' => 'madubersih-home-cleaning-vintage'],
+            [
+                'name' => 'MaduBersih — Vintage Warm Bee Home Cleaning',
+                'category_slug' => 'home-services',
+                'category_label' => 'Home Services',
+                'business_types' => ['Home Cleaning & Deep Cleaning'],
+                'design_style' => 'Vintage & Traditional',
+                'color_theme' => 'Honey Gold, Warm Cream & Dark Wood',
+                'description' => 'Traditional home-cleaning landing page with cleaning and sanitizing packages, room-based cost estimator, eco-friendly service details, customer FAQs, service-area information, and WhatsApp booking.',
+                'preview_style' => 'preview-madubersih-vintage',
+                'eyebrow' => 'HOME CLEANING · VINTAGE HERITAGE',
+                'headline' => 'Kenyamanan Hakiki, Rumah Bersih Hangat Madu.',
+                'tag' => 'Home Services · Home Cleaning · Vintage Warm Bee',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/madubersih-home-cleaning-vintage',
+                'preview_view' => 'website-bisnis.templates.home-services.home-cleaning-deep-cleaning.madubersih-vintage',
+                'is_active' => true,
+                'sort_order' => 51,
+            ]
+        );
+
+        WebiaTemplate::updateOrCreate(
+            ['slug' => 'astroclean-home-cleaning-cosmic'],
+            [
+                'name' => 'AstroClean — Cosmic Deep Cleaning',
+                'category_slug' => 'home-services',
+                'category_label' => 'Home Services',
+                'business_types' => ['Home Cleaning & Deep Cleaning'],
+                'design_style' => 'Cosmic Modern',
+                'color_theme' => 'Midnight Navy, Cosmic Purple & Silver',
+                'description' => 'Modern deep-cleaning and home-sanitization landing page with service packages, room-based AI estimate calculator, cleaning-team credentials, service coverage, FAQs, and WhatsApp booking.',
+                'preview_style' => 'preview-astroclean-cosmic',
+                'eyebrow' => 'HOME CLEANING · COSMIC MODERN',
+                'headline' => 'Rumah Sehat Tanpa Kompromi, Bersih Bersinar Sekelas Kosmik.',
+                'tag' => 'Home Services · Home Cleaning · Cosmic Modern',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/astroclean-home-cleaning-cosmic',
+                'preview_view' => 'website-bisnis.templates.home-services.home-cleaning-deep-cleaning.astroclean-cosmic',
+                'is_active' => true,
+                'sort_order' => 52,
+            ]
+        );
+
+        WebiaTemplate::updateOrCreate(
+            ['slug' => 'aethelgard-digital-museum'],
+            [
+                'name' => 'Aethelgard — Digital Museum & Heritage Archive',
+                'category_slug' => 'education-culture',
+                'category_label' => 'Education & Culture',
+                'business_types' => ['Digital Museum & Heritage Archive'],
+                'design_style' => 'Editorial Classic',
+                'color_theme' => 'Midnight Navy & Champagne Gold',
+                'description' => 'Digital museum website with curated artifact collections, high-resolution heritage archives, virtual 3D tours, photogrammetry highlights, institutional digitization services, visitor FAQs, and an AI curator demo.',
+                'preview_style' => 'preview-aethelgard-digital-museum',
+                'eyebrow' => 'DIGITAL MUSEUM · CULTURAL HERITAGE',
+                'headline' => 'Menjaga Jejak Peradaban dalam Keabadian Ruang Digital.',
+                'tag' => 'Education & Culture · Digital Museum · Editorial Classic',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/aethelgard-digital-museum',
+                'preview_view' => 'website-bisnis.templates.education-culture.aethelgard-digital-museum',
+                'is_active' => true,
+                'sort_order' => 53,
+            ]
+        );
+
+        WebiaTemplate::updateOrCreate(
+            ['slug' => 'aquaverse-interactive-heritage'],
+            [
+                'name' => 'Aquaverse — Interactive Heritage Exhibition',
+                'category_slug' => 'education-culture',
+                'category_label' => 'Education & Culture',
+                'business_types' => ['Interactive Digital Museum'],
+                'design_style' => 'Futuristic & Immersive',
+                'color_theme' => 'Deep Ocean Blue, Electric Cyan & Midnight',
+                'description' => 'Interactive digital heritage exhibition with holographic artifact zones, a 360-degree Ocean Dome, virtual heritage experiences, ticket and group-visit information, visitor FAQs, WhatsApp reservations, and an AI exhibition guide demo.',
+                'preview_style' => 'preview-aquaverse-interactive-heritage',
+                'eyebrow' => 'DIGITAL MUSEUM · IMMERSIVE HERITAGE',
+                'headline' => 'Selami Sejarah dalam Dimensi Imersif Futuristik.',
+                'tag' => 'Education & Culture · Interactive Museum · Futuristic & Immersive',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/aquaverse-interactive-heritage',
+                'preview_view' => 'website-bisnis.templates.education-culture.aquaverse-interactive-heritage',
+                'is_active' => true,
+                'sort_order' => 54,
             ]
         );
     }

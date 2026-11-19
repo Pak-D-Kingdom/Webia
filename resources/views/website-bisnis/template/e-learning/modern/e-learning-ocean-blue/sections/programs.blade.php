@@ -7,7 +7,7 @@
                 <p class="el-sub">{{ $e['pages']['programs']['sub'] }}</p>
             </div>
             @unless ($full)
-                <a class="el-link" href="{{ route('elearning.programs') }}">Lihat Semua <svg class="el-ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                <a class="el-link" href="{{ $r('elearning.programs') }}">Lihat Semua <svg class="el-ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>
             @endunless
         </header>
 
@@ -40,11 +40,11 @@
                             <p>{{ $p['desc'] }}</p>
                             <ul class="el-tags">@foreach ($p['topics'] as $t)<li>{{ $t }}</li>@endforeach</ul>
                             <p class="el-program__meta"><span>{{ $p['courses'] }} kursus</span><span>{{ $p['level'] }}</span></p>
-                            <a class="el-btn el-btn--soft el-btn--sm" href="{{ route('elearning.registration', ['program' => $p['slug']]) }}">Daftar program<svg class="el-ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                            <a class="el-btn el-btn--soft el-btn--sm" href="{{ $r('elearning.registration', ['program' => $p['slug']]) }}">Daftar program<svg class="el-ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>
                         </div>
                     </article>
                 @else
-                    <a class="el-program" href="{{ route('elearning.programs') }}#programs" {!! $attrs !!}>
+                    <a class="el-program" href="{{ $r('elearning.programs') }}#programs" {!! $attrs !!}>
                         <span class="el-program__icon"><img src="{{ $img($p['icon']) }}" alt="" width="56" height="56" loading="lazy"></span>
                         <span class="el-program__body"><h3>{{ $p['title'] }}</h3></span>
                     </a>

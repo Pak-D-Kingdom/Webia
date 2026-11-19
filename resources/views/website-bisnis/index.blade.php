@@ -5,88 +5,60 @@
     'Temukan paket pembuatan website bisnis dari D-KREASI. Website responsif, AI Chatbot, SEO,
     dan solusi digital sesuai kebutuhan bisnis Anda.')
 
+@push('styles')
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+@endpush
+
 @section('content')
 
-    {{-- HERO WEBSITE BISNIS --}}
-    <section class="website-hero" id="website-beranda">
-        <div class="website-hero-decoration website-decoration-one"></div>
-        <div class="website-hero-decoration website-decoration-two"></div>
+    {{-- HERO WEBSITE BISNIS — REDESAIN GALAXY --}}
+    <section class="website-hero webia-galaxy-hero" id="website-beranda">
+        <div class="webia-galaxy-hero__stars" aria-hidden="true"></div>
 
-        <div class="website-hero-inner">
-            <div class="website-hero-copy">
-                <span class="website-eyebrow">
-                    ✦ DIGITAL SOLUTIONS FOR YOUR BUSINESS
-                </span>
+        <div class="webia-galaxy-hero__inner">
+            <div class="webia-galaxy-hero__copy">
+                <span class="webia-galaxy-hero__pill">Website bisnis siap meluncur</span>
 
                 <h1>
-                    Bisnismu Punya Cerita.
-                    <span>Website Kami Bantu Wujudkan!</span>
+                    Bisnismu layak tampil
+                    <span>memukau</span> di dunia digital.
                 </h1>
 
-                <p>
-                    Bangun identitas digital yang profesional dengan website
-                    sesuai kebutuhan bisnis, dilengkapi AI Chatbot dan pilihan
-                    fitur yang fleksibel.
+                <p class="webia-galaxy-hero__lead">
+                    Pilih template, isi data bisnis, dan tim WEBIA menyiapkan website
+                    lengkap dengan AI Chatbot. Cocok untuk toko, studio, kafe,
+                    sampai jasa profesional.
                 </p>
 
-                <div class="website-hero-actions">
-                    <a href="#paket-website" class="website-button website-button-primary">
-                        Lihat Paket <span>↗</span>
+                <div class="webia-galaxy-hero__actions">
+                    <a href="#paket-website" class="webia-galaxy-hero__button webia-galaxy-hero__button--primary">
+                        Lihat paket
                     </a>
-
-                    <a href="#keunggulan-website" class="website-button website-button-secondary">
-                        Kenali Layanannya
+                    <a href="#koleksi-template" class="webia-galaxy-hero__button webia-galaxy-hero__button--secondary">
+                        Jelajahi template
                     </a>
                 </div>
 
-                <div class="website-hero-note">
-                    <span>✦</span> Satu platform untuk berbagai kebutuhan bisnis.
+                <div class="webia-galaxy-hero__stats" aria-label="Statistik template WEBIA">
+                    <div><strong>120+</strong><span>template siap pakai</span></div>
+                    <div><strong>48+</strong><span>kategori bisnis</span></div>
+                    <div><strong>7+</strong><span>hari rata-rata jadi</span></div>
                 </div>
             </div>
 
-            <div class="website-hero-visual">
-                <div class="website-floating-chip chip-top">✦ Responsive Design</div>
-
-                <div class="website-browser">
-                    <div class="website-browser-bar">
-                        <span></span><span></span><span></span>
-                        <div>website-bisnis.id</div>
-                    </div>
-
-                    <div class="website-browser-content">
-                        <div class="website-demo-nav">
-                            <div class="website-demo-logo">BRAND<span>.</span></div>
-                            <div class="website-demo-links">
-                                <i></i><i></i><i></i>
-                            </div>
-                        </div>
-
-                        <div class="website-demo-hero">
-                            <span>YOUR BUSINESS, YOUR STORY</span>
-                            <div class="website-demo-title"></div>
-                            <div class="website-demo-title short"></div>
-                            <div class="website-demo-description"></div>
-                            <div class="website-demo-description short"></div>
-                            <div class="website-demo-button"></div>
-                        </div>
-
-                        <div class="website-demo-cards">
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="website-floating-chip chip-bottom">
-                    <span>✧</span> AI Chatbot Ready
-                </div>
-
-                <div class="website-orbit-star">✳</div>
+            <div class="webia-galaxy-hero__visual" aria-label="Ilustrasi planet dan fitur website WEBIA">
+                <div class="webia-galaxy-hero__orbit webia-galaxy-hero__orbit--one"><i></i></div>
+                <div class="webia-galaxy-hero__orbit webia-galaxy-hero__orbit--two"><i></i></div>
+                <div class="webia-galaxy-hero__planet"></div>
+                <div class="webia-galaxy-hero__mock" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+                <div class="webia-galaxy-hero__chip webia-galaxy-hero__chip--top">Responsif di semua layar🖥️</div>
+                <div class="webia-galaxy-hero__chip webia-galaxy-hero__chip--bottom">AI Chatbot aktif🤖</div>
+                <div class="webia-galaxy-hero__chip webia-galaxy-hero__chip--side">Terintegrasi SEO🔧</div>
             </div>
         </div>
     </section>
-
 
 
     {{-- KATEGORI WEBSITE --}}
@@ -324,25 +296,25 @@
 
         <div class="website-benefit-grid">
             <article class="website-benefit-card benefit-purple">
-                <div class="website-benefit-icon">✧</div>
+                <div class="website-benefit-icon">⚡</div>
                 <h3>Desain Responsif</h3>
                 <p>Tampilan menyesuaikan perangkat desktop, tablet, dan smartphone.</p>
             </article>
 
             <article class="website-benefit-card benefit-pink">
-                <div class="website-benefit-icon">♡</div>
+                <div class="website-benefit-icon">🤖</div>
                 <h3>AI Chatbot</h3>
                 <p>Asisten virtual yang dirancang menjawab pertanyaan berdasarkan data bisnis.</p>
             </article>
 
             <article class="website-benefit-card benefit-blue">
-                <div class="website-benefit-icon">↗</div>
+                <div class="website-benefit-icon">📲</div>
                 <h3>SEO</h3>
                 <p>Pondasi optimasi mesin pencari sesuai cakupan paket yang dipilih.</p>
             </article>
 
             <article class="website-benefit-card benefit-green">
-                <div class="website-benefit-icon">✳</div>
+                <div class="website-benefit-icon">🔧</div>
                 <h3>Fleksibel</h3>
                 <p>Pilih fitur dan modul sesuai kebutuhan serta perkembangan bisnis.</p>
             </article>

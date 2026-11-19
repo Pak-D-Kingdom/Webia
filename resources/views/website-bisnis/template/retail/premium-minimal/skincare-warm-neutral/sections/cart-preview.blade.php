@@ -5,7 +5,7 @@
             <ul class="mini-list" data-cart-mini-list></ul>
             <div class="empty empty--sm" data-cart-mini-empty><i class="bi bi-bag-heart"></i><p>Keranjang masih kosong. Pilih produk favoritmu dulu ya.</p></div>
             <div class="mini-total"><span>Subtotal</span><strong data-cart-mini-total>Rp 0</strong></div>
-            <a class="btn btn--block" href="{{ route('skincare-warm-neutral.cart') }}">Buka Keranjang <i class="bi bi-arrow-right"></i></a>
+            <a class="btn btn--block" href="{{ $r('cart') }}">Buka Keranjang <i class="bi bi-arrow-right"></i></a>
         </div>
         <div class="cart-prev__info" data-reveal>
             <p class="kicker"><span></span>BELANJA ONLINE</p>

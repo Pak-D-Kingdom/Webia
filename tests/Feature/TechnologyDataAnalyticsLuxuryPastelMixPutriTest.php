@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\WebiaTemplate;
+use Database\Seeders\WebiaTemplatePreviewSeeder;
 use Database\Seeders\WebiaTemplatePutriSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
@@ -12,9 +13,17 @@ class TechnologyDataAnalyticsLuxuryPastelMixPutriTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(WebiaTemplatePutriSeeder::class);
+        $this->seed(WebiaTemplatePreviewSeeder::class);
+    }
+
     public function test_route_renders_the_technology_data_analytics_luxury_pastel_mix_template(): void
     {
-        $this->get(route('webia.template.technology-dataanalytics-luxury-pastelmix-putri'))
+        $this->get('/webia/template/technology-dataanalytics-luxury-pastelmix-putri')
             ->assertOk()
             ->assertSee('<title>AuraMetrics Studio — Data Analytics Luxury Pastel Mix</title>', false)
             ->assertSee('Presisi Data Mewah')

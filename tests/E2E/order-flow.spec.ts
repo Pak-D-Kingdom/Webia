@@ -88,7 +88,7 @@ test('template checkout opens order form directly and embeds Midtrans without pa
     await expect(dialog.getByText(/akun WEBIA otomatis dibuat/i)).toHaveCount(0);
     await expect(dialog.getByText('Website Bisnis Pro')).toBeVisible();
     await expect(dialog.getByText('SEO Dasar')).toBeVisible();
-    await expect(dialog.getByText('Rp2.499.000')).toBeVisible();
+    await expect(dialog.locator('[data-payment-panel]').getByText('Rp2.499.000')).toBeVisible();
     await expect(dialog.getByText('Batas waktu bayar')).toBeVisible();
     await expect(page.getByRole('button', { name: 'Bayar sekarang' })).toBeVisible();
     const copyButton = dialog.locator('[data-copy-order]');
@@ -103,6 +103,9 @@ test('template checkout opens order form directly and embeds Midtrans without pa
     });
     await copyButton.click();
     await expect(copyButton).toHaveAttribute('aria-label', 'Nomor pesanan tersalin');
+    await expect(copyButton).toContainText('Tersalin');
+    const copyBox = await copyButton.boundingBox();
+    expect(copyBox?.height).toBeGreaterThanOrEqual(44);
     expect(await page.evaluate(() => (window as typeof window & { __copiedOrder?: string }).__copiedOrder)).toBe('WEB-E2E-001');
 
     let statusChecks = 0;
@@ -125,6 +128,9 @@ test('template checkout opens order form directly and embeds Midtrans without pa
     await expect(dialog.locator('[data-payment-panel]')).toBeHidden();
     const snapPanel = dialog.locator('[data-snap-panel]');
     await expect(snapPanel).toBeVisible();
+    await expect(snapPanel.getByText('Rp2.499.000')).toBeVisible();
+    await expect(snapPanel.getByText('WEB-E2E-001')).toBeVisible();
+    await expect(snapPanel.getByRole('button', { name: /Kembali/ })).toBeVisible();
     await expect(dialog.getByText('PEMBAYARAN AMAN')).toHaveCount(0);
     await expect(dialog.getByRole('heading', { name: 'Pilih metode pembayaran' })).toHaveCount(0);
     await expect(dialog.getByText('Diproses oleh Midtrans')).toHaveCount(0);
@@ -150,20 +156,17 @@ test('template checkout opens order form directly and embeds Midtrans without pa
         snapOptions?.onSuccess?.();
     });
     await expect(page.getByRole('heading', { name: 'Pembayaran kamu sudah diterima' })).toBeVisible();
-    const provisioningStatus = dialog.getByText('Pembayaran berhasil. Akun WEBIA sedang disiapkan');
+    const provisioningStatus = dialog.getByText('Akun WEBIA sedang disiapkan');
     await expect(provisioningStatus).toBeVisible();
+    await expect(dialog.getByText(/Proses tetap berjalan jika modal ditutup/)).toBeVisible();
     await expect(dialog.locator('.customer-verify-icon .material-symbols-outlined')).toHaveText('manage_accounts');
     expect(await provisioningStatus.evaluate((element) => Number.parseFloat(getComputedStyle(element).fontSize))).toBeGreaterThanOrEqual(20);
     await expect(snapPanel).toBeHidden();
-    const closeButton = dialog.getByRole('button', { name: 'Tutup' });
-    await expect(closeButton).toBeDisabled();
+    const closeButton = dialog.getByRole('button', { name: 'Tutup' }).first();
+    await expect(closeButton).toBeEnabled();
     await expect(page.getByRole('button', { name: 'Periksa status pembayaran' })).toBeHidden();
-    await dialog.press('Escape');
-    await expect(dialog).toBeVisible();
-    await dialog.click({ position: { x: 1, y: 1 } });
-    await expect(dialog).toBeVisible();
-    await page.setViewportSize({ width: 375, height: 812 });
-    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(375);
+    await page.setViewportSize({ width: 320, height: 700 });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(320);
 
     await page.route('**/orders/999/payment-status?signature=e2e', async (route) => {
         await route.fulfill({ json: { status: 'paid', terminal: true, credential_status: 'sent', email: 'checkout-guest@webia.test', sync_failed: false } });
@@ -179,7 +182,7 @@ test('template checkout opens order form directly and embeds Midtrans without pa
 
     await closeButton.click();
     await expect(dialog).toBeHidden();
-    await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(scrollBeforePayment);
+    await expect.poll(() => page.evaluate((expectedScrollY) => Math.abs(window.scrollY - expectedScrollY), scrollBeforePayment)).toBeLessThanOrEqual(1);
 });
 
 test('customer order can be rejected, reuploaded, and approved by admin', async ({ page }) => {

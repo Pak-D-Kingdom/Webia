@@ -1,7 +1,7 @@
 @extends($ns . '.layouts.app')
 
 @section('title', 'Keranjang — ' . $skin['name'])
-@section('description', 'Keranjang belanja dan checkout GlowEra via WhatsApp.')
+@section('description', 'Keranjang belanja dan checkout '.$skin['name'].' via WhatsApp.')
 
 @section('content')
     @include($ns . '.partials.page-header', ['title' => 'Keranjang', 'text' => 'Periksa pesananmu lalu checkout lewat WhatsApp.'])
@@ -19,7 +19,7 @@
                         <i class="bi bi-bag-heart"></i>
                         <h3>Keranjang masih kosong</h3>
                         <p>Yuk, pilih produk skincare favoritmu.</p>
-                        <a class="btn btn--sm" href="{{ route('skincare-warm-neutral.catalog') }}">Lihat Katalog</a>
+                        <a class="btn btn--sm" href="{{ $r('catalog') }}">Lihat Katalog</a>
                     </div>
                 </div>
 

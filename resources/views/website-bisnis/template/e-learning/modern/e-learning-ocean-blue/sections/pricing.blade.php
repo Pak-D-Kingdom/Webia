@@ -26,7 +26,7 @@
                         @foreach ($p['features'] as $f)<li><svg class="el-ico" aria-hidden="true"><use href="#i-check"/></svg>{{ $f }}</li>@endforeach
                     </ul>
                 @endif
-                <a class="el-btn {{ $p['featured'] ? 'el-btn--primary' : 'el-btn--soft' }} el-btn--block" href="{{ route('elearning.registration', ['plan' => $p['slug']]) }}">Pilih Paket</a>
+                <a class="el-btn {{ $p['featured'] ? 'el-btn--primary' : 'el-btn--soft' }} el-btn--block" href="{{ $r('elearning.registration', ['plan' => $p['slug']]) }}">Pilih Paket</a>
             </article>
         @endforeach
     </div>

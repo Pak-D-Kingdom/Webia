@@ -1,6 +1,6 @@
 {{-- Halaman Jadwal --}}
 @extends($tpl . '.layouts.app')
-@php $c = config($cfg); @endphp
+@php $c = $c ?? config($cfg); @endphp
 
 @section('title', 'Jadwal — ' . $c['brand']['name'])
 

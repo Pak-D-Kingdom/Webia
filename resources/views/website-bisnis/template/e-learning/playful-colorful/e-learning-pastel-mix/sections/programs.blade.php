@@ -11,7 +11,7 @@
                 <h2 id="programs-title">Program Unggulan <i class="bi bi-patch-check-fill c-green" aria-hidden="true"></i></h2>
                 <p>Pilih program terbaik untuk mengembangkan skill kamu.</p>
             </div>
-            <a class="link-more" href="{{ route($rp.'programs') }}">Lihat Semua <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+            <a class="link-more" href="{{ $r($rp.'programs') }}">Lihat Semua <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
         </header>
     @else
         <h2 id="programs-title" class="sr-only">Daftar program</h2>

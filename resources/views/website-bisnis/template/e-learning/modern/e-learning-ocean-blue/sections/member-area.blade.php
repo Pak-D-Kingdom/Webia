@@ -9,7 +9,7 @@
                 <h2 class="el-title" id="memberTitle">{{ $e['pages']['member-area']['title'] }}</h2>
                 <p class="el-sub">{{ $e['pages']['member-area']['sub'] }}</p>
             </div>
-            <a class="el-link" href="{{ route('elearning.member-area') }}">Lihat Semua <svg class="el-ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="el-link" href="{{ $r('elearning.member-area') }}">Lihat Semua <svg class="el-ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </header>
 
         <div class="el-member__grid">
@@ -17,8 +17,8 @@
                 <h3>Satu tempat untuk semua progres belajarmu</h3>
                 <ul class="el-checks">@foreach ($m['benefits'] as $b)<li><svg class="el-ico" aria-hidden="true"><use href="#i-check"/></svg>{{ $b }}</li>@endforeach</ul>
                 <div class="el-member__cta">
-                    <a class="el-btn el-btn--primary" href="{{ route('elearning.member-area') }}">Login</a>
-                    <a class="el-btn el-btn--outline" href="{{ route('elearning.registration') }}">Get Started<svg class="el-ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                    <a class="el-btn el-btn--primary" href="{{ $r('elearning.member-area') }}">Login</a>
+                    <a class="el-btn el-btn--outline" href="{{ $r('elearning.registration') }}">Get Started<svg class="el-ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>
                 </div>
             </div>
 
@@ -28,17 +28,19 @@
                     <div><p class="el-dash__hello">Halo, {{ $d['name'] }}!</p><p class="el-dash__plan">Paket {{ $d['plan'] }}</p></div>
                     <span class="el-badge el-badge--online">Pratinjau</span>
                 </div>
-                <ul class="el-dash__stats">@foreach ($d['stats'] as $s)<li><strong>{{ $s['value'] }}</strong><span>{{ $s['label'] }}</span></li>@endforeach</ul>
-                <h3 class="el-dash__h">Progres kursus</h3>
-                <ul class="el-progress-list">
-                    @foreach ($d['progress'] as $p)
-                        <li>
-                            <div><span>{{ $p['title'] }}</span><b>{{ $p['value'] }}%</b></div>
-                            <div class="el-progress" role="progressbar" aria-label="{{ $p['title'] }}" aria-valuenow="{{ $p['value'] }}" aria-valuemin="0" aria-valuemax="100"><i style="width: {{ $p['value'] }}%"></i></div>
-                        </li>
-                    @endforeach
-                </ul>
-                <div class="el-dash__next"><svg class="el-ico" aria-hidden="true"><use href="#i-calendar"/></svg><div><small>Kelas berikutnya</small><strong>{{ $d['next']['title'] }}</strong><span>{{ $d['next']['time'] }}</span></div></div>
+                @unless ($customerSite)
+                    <ul class="el-dash__stats">@foreach ($d['stats'] as $s)<li><strong>{{ $s['value'] }}</strong><span>{{ $s['label'] }}</span></li>@endforeach</ul>
+                    <h3 class="el-dash__h">Progres kursus</h3>
+                    <ul class="el-progress-list">
+                        @foreach ($d['progress'] as $p)
+                            <li>
+                                <div><span>{{ $p['title'] }}</span><b>{{ $p['value'] }}%</b></div>
+                                <div class="el-progress" role="progressbar" aria-label="{{ $p['title'] }}" aria-valuenow="{{ $p['value'] }}" aria-valuemin="0" aria-valuemax="100"><i style="width: {{ $p['value'] }}%"></i></div>
+                            </li>
+                        @endforeach
+                    </ul>
+                    <div class="el-dash__next"><svg class="el-ico" aria-hidden="true"><use href="#i-calendar"/></svg><div><small>Kelas berikutnya</small><strong>{{ $d['next']['title'] }}</strong><span>{{ $d['next']['time'] }}</span></div></div>
+                @endunless
             </div>
         </div>
     </div>
@@ -71,7 +73,7 @@
                 <p class="el-form__status" role="status" data-form-status hidden></p>
             </form>
 
-            <p class="el-login__foot">Belum punya akun? <a href="{{ route('elearning.registration') }}">Daftar sekarang</a></p>
+            <p class="el-login__foot">Belum punya akun? <a href="{{ $r('elearning.registration') }}">Daftar sekarang</a></p>
         </div>
 
         <div class="el-perks-wrap">

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\HostingPayment;
 use App\Models\WebiaPayment;
+use App\Services\HostingMidtrans;
 use App\Services\Midtrans;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -12,7 +14,7 @@ use Illuminate\View\View;
 
 class MidtransController extends Controller
 {
-    public function __construct(private Midtrans $midtrans) {}
+    public function __construct(private Midtrans $midtrans, private HostingMidtrans $hostingMidtrans) {}
 
     public function notify(Request $request): Response
     {
@@ -21,7 +23,8 @@ class MidtransController extends Controller
         abort_if($midtransOrderId === '', 400);
 
         $payment = WebiaPayment::where('midtrans_order_id', $midtransOrderId)->first();
-        abort_unless($payment, 404);
+        $hostingPayment = $payment === null ? HostingPayment::where('midtrans_order_id', $midtransOrderId)->first() : null;
+        abort_unless($payment || $hostingPayment, 404);
 
         if (! $this->midtrans->signatureValid(
             $midtransOrderId,
@@ -40,9 +43,14 @@ class MidtransController extends Controller
 
         // Nominal notifikasi harus sama dengan total order, kalau beda jangan pernah tandai paid.
         $grossAmount = (float) data_get($payload, 'gross_amount', 0);
-        abort_unless(abs($grossAmount - (float) $payment->order->total_price) < 0.01, 400);
+        $expectedAmount = $payment?->order->total_price ?? $hostingPayment->invoice->amount;
+        abort_unless(abs($grossAmount - (float) $expectedAmount) < 0.01, 400);
 
-        $this->midtrans->applyNotification($payment, $payload);
+        if ($payment !== null) {
+            $this->midtrans->applyNotification($payment, $payload);
+        } else {
+            $this->hostingMidtrans->applyNotification($hostingPayment, $payload);
+        }
 
         return response('OK');
     }
@@ -52,7 +60,21 @@ class MidtransController extends Controller
         $payment = WebiaPayment::where('midtrans_order_id', (string) $request->string('order_id'))->first();
 
         if ($payment === null) {
-            return redirect()->route('orders.index');
+            $hostingPayment = HostingPayment::where('midtrans_order_id', (string) $request->string('order_id'))->first();
+
+            if ($hostingPayment === null) {
+                return redirect()->route('orders.index');
+            }
+
+            $result = $this->hostingMidtrans->status($hostingPayment->midtrans_order_id);
+
+            if ($result !== null) {
+                $this->hostingMidtrans->applyNotification($hostingPayment, $result);
+            }
+
+            return redirect()
+                ->route('hosting-invoices.show', $hostingPayment->hosting_invoice_id)
+                ->with('status', $hostingPayment->fresh()->status === 'paid' ? 'Pembayaran berhasil dikonfirmasi.' : 'Pembayaran masih diproses. Cek status pembayaran beberapa saat lagi.');
         }
 
         // Best-effort: kalau notification URL tertahan (mis. localhost), status API boleh mengangkat pembayaran.
@@ -94,6 +116,30 @@ class MidtransController extends Controller
         return $request->user() !== null
             ? redirect()->route('orders.show', $payment->webia_order_id)->with('status', 'Pembayaran simulasi berhasil dikonfirmasi.')
             : redirect()->route('orders.success');
+    }
+
+    public function simulateHostingShow(Request $request, HostingPayment $payment): View
+    {
+        $this->ensureSimulatable();
+        abort_unless($request->user()?->id === $payment->invoice->service->user_id, 404);
+
+        return view('payments.hosting-simulate', ['payment' => $payment]);
+    }
+
+    public function simulateHostingPay(Request $request, HostingPayment $payment): RedirectResponse
+    {
+        $this->ensureSimulatable();
+        abort_unless($request->user()?->id === $payment->invoice->service->user_id, 404);
+
+        $this->hostingMidtrans->applyNotification($payment, [
+            'order_id' => $payment->midtrans_order_id,
+            'status_code' => '200',
+            'gross_amount' => (string) $payment->invoice->amount,
+            'transaction_status' => 'settlement',
+            'simulated' => true,
+        ]);
+
+        return redirect()->route('hosting-invoices.show', $payment->hosting_invoice_id)->with('status', 'Pembayaran simulasi berhasil dikonfirmasi.');
     }
 
     private function ensureSimulatable(): void

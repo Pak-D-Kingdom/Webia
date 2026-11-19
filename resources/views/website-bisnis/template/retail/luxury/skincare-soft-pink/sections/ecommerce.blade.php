@@ -9,7 +9,7 @@
             <p>{{ $full ? 'Pilih produk, masukkan ke keranjang, lalu checkout langsung lewat WhatsApp.' : 'Belanja praktis, pesanan dikonfirmasi lewat WhatsApp.' }}</p>
         </div>
         @unless ($full)
-            <a class="more" href="{{ route($rp . 'shop') }}">Buka Toko <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+            <a class="more" href="{{ $r('shop') }}">Buka Toko <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
         @endunless
     </div>
 

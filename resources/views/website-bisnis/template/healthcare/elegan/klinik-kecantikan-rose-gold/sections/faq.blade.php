@@ -14,7 +14,7 @@
             <p>Temukan jawaban untuk pertanyaan seputar perawatan, layanan, dan lainnya.</p>
         </div>
     </div>
-    <a class="rg-btn rg-btn--outline rg-btn--sm" href="{{ route($rp . 'faq') }}">Lihat Semua FAQ <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+    <a class="rg-btn rg-btn--outline rg-btn--sm" href="{{ $r('faq') }}">Lihat Semua FAQ <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
     <div class="rg-acc">
         @foreach ($items as $i => $f)
             @include($tpl . '.partials.faq-item', ['f' => $f, 'n' => 'p' . $i])

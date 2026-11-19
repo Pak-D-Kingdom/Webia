@@ -13,7 +13,9 @@
         <ul class="rg-loc__list">
             <li><i class="bi bi-geo-alt" aria-hidden="true"></i>{{ $ct['address'] }}</li>
             <li><i class="bi bi-telephone" aria-hidden="true"></i><a href="tel:{{ preg_replace('/\s+/', '', $ct['phone']) }}">{{ $ct['phone'] }}</a></li>
-            <li><i class="bi bi-envelope" aria-hidden="true"></i><a href="mailto:{{ $ct['email'] }}">{{ $ct['email'] }}</a></li>
+            @if ($ct['email'])
+                <li><i class="bi bi-envelope" aria-hidden="true"></i><a href="mailto:{{ $ct['email'] }}">{{ $ct['email'] }}</a></li>
+            @endif
         </ul>
     </div>
     <div class="rg-loc__media">

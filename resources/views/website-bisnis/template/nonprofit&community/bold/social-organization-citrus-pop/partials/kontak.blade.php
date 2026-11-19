@@ -10,12 +10,12 @@
 <form class="cd pad frm" data-wa-form data-intro="Halo SegarKita, saya ingin bertanya." novalidate>
 <label>Nama<input name="Nama" required autocomplete="name"></label>
 <label>Email atau WhatsApp<input name="Kontak" required></label>
-<label>Topik<select name="Topik"><option>Pertanyaan umum</option><option>Kemitraan</option><option>Donasi</option><option>Media</option></select></label>
-<label>Pesan<textarea name="Pesan" rows="4" required></textarea></label>
+<label class="full">Topik<select name="Topik"><option>Pertanyaan umum</option><option>Kemitraan</option><option>Donasi</option><option>Media</option></select></label>
+<label class="full">Pesan<textarea name="Pesan" rows="4" required></textarea></label>
 <button class="btn btn-k" type="submit">Kirim lewat WhatsApp</button><p class="msg" data-msg role="status"></p>
 </form>
 @else
-<div class="cd pad map"><img src="{{ $img }}s8.svg" alt="Suasana Rumah Segar" width="600" height="450" loading="lazy"><a class="btn" href="{{ $base }}/kontak">Halaman kontak</a></div>
+<div class="cd pad map"><img src="{{ $img }}s8.svg" alt="Suasana Rumah Segar" width="600" height="450"><a class="btn" href="{{ $base }}/kontak">Halaman kontak</a></div>
 @endif
 </div>
 </section>

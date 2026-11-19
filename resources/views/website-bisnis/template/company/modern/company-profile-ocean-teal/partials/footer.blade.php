@@ -17,7 +17,9 @@
                 @foreach ($z['socials'] as $s)
                     <li><a href="{{ $s['url'] }}" aria-label="{{ $s['label'] }}" target="_blank" rel="noopener"><svg class="ot-ic" aria-hidden="true"><use href="#i-{{ $s['icon'] }}"/></svg></a></li>
                 @endforeach
-                <li><a href="mailto:{{ $z['topbar']['email'] }}" aria-label="Email"><svg class="ot-ic" aria-hidden="true"><use href="#i-mail"/></svg></a></li>
+                @if ($z['topbar']['email'])
+                    <li><a href="mailto:{{ $z['topbar']['email'] }}" aria-label="Email"><svg class="ot-ic" aria-hidden="true"><use href="#i-mail"/></svg></a></li>
+                @endif
             </ul>
             <p>{{ $f['copyright'] }}</p>
         </div>

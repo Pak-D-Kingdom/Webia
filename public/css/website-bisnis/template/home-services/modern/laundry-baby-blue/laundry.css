@@ -158,8 +158,7 @@ body.lb-body {
 .lb-form__cell--submit .lb-btn { min-height: 44px; }
 .lb-form__note { margin-top: 12px; padding: 10px 14px; border-radius: 14px; background: #e3f7ec; color: var(--lb-ok); font-size: 13px; font-weight: 700; }
 .lb-form__hint { margin-top: 12px; font-size: 12.5px; color: var(--lb-muted); }
-.lb-inquiry, .lb-steps-card, .lb-cov-card { container-type: inline-size; }
-@container (max-width: 250px) { .lb-form--preview .lb-form__grid { grid-template-columns: minmax(0, 1fr); } }
+.lb-contact-card, .lb-steps-card, .lb-cov-card { container-type: inline-size; }
 @media (max-width: 560px) { .lb-form__grid { grid-template-columns: minmax(0, 1fr); } }
 
 .lb-toast {
@@ -206,7 +205,7 @@ body.lb-body {
    yang berada DI SEBELAH tombol Order Sekarang pada satu baris. */
 @media (max-width: 1299.98px) {
     .lb-header .lb-header__inner { flex-wrap: nowrap; padding-block: 0; gap: 12px; padding-inline: 16px; }
-    .lb-brand { order: 1; flex: none; }
+    .lb-header .lb-brand { order: 1; flex: none; }
     .lb-nav { order: 2; flex: 1 1 0; min-width: 0; width: auto; margin: 0; border: 0; }
     .lb-nav__list {
         display: flex; flex-wrap: nowrap; align-items: center; gap: 2px; padding: 6px 4px;
@@ -222,7 +221,7 @@ body.lb-body {
 /* Layar < 900px: baris 1 = logo, baris 2 = bar navigasi + tombol Order Sekarang */
 @media (max-width: 899.98px) {
     .lb-header .lb-header__inner { flex-wrap: wrap; row-gap: 4px; padding-block: 8px 6px; gap: 8px; }
-    .lb-brand { flex: 0 0 100%; }
+    .lb-header .lb-brand { flex: 0 0 100%; }
     .lb-nav { flex: 1 1 0; }
     .lb-nav__list { padding-left: 0; }
 }
@@ -262,29 +261,14 @@ body.lb-body {
 .lb-hero__wave { position: absolute; left: 0; right: 0; bottom: -1px; width: 100%; height: 34px; fill: var(--lb-bg); z-index: 3; }
 
 /* ============================== 7. DASHBOARD BERANDA ============================== */
-.lb-dash {
-    display: grid; gap: 18px; padding-block: 6px 60px;
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-areas: "svc" "r4" "ai" "r3";
-}
-.lb-dash__svc { grid-area: svc; min-width: 0; }
-.lb-dash__row--4 { grid-area: r4; }
-.lb-dash__row--3 { grid-area: r3; }
-.lb-dash__ai { grid-area: ai; min-width: 0; align-self: start; }
+.lb-dash { display: grid; gap: 18px; padding-block: 6px 64px; grid-template-columns: minmax(0, 1fr); }
+.lb-dash__svc { min-width: 0; }
 .lb-dash__row { display: grid; gap: 16px; min-width: 0; }
-.lb-dash__row--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.lb-dash__row--3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.lb-dash__row--3 > .lb-steps-card { grid-column: 1 / -1; }
+.lb-dash__row--4, .lb-dash__row--3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .lb-dash__row > .lb-card { display: flex; flex-direction: column; }
 @media (max-width: 699.98px) { .lb-dash__row--4, .lb-dash__row--3 { grid-template-columns: minmax(0, 1fr); } }
-@media (min-width: 1400px) {
-    .lb-dash { grid-template-columns: minmax(0, 1fr) 288px; grid-template-areas: "svc ai" "r4 ai" "r3 ai"; }
-}
-@media (min-width: 1100px) {
-    .lb-dash__row--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-    .lb-dash__row--3 { grid-template-columns: 1.6fr 1fr 1.2fr; }
-    .lb-dash__row--3 > .lb-steps-card { grid-column: auto; }
-}
+@media (min-width: 1100px) { .lb-dash__row--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (min-width: 1280px) { .lb-dash__row--3 { grid-template-columns: 1.5fr 1fr 1.05fr 1.05fr; } }
 
 /* ============================== 8. LAYANAN ============================== */
 .lb-svcstrip { display: grid; gap: 14px; grid-template-columns: minmax(0, 1fr); align-items: center; }
@@ -412,7 +396,6 @@ body.lb-body {
     .lb-steps { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 8px; }
     .lb-step::after { display: none; }
 }
-.lb-steps-card > .lb-card__link, .lb-hours-card > .lb-open { margin-top: 12px; }
 
 .lb-hours-box { display: flex; align-items: center; gap: 14px; padding: 14px 16px; background: #fff; border: 1px solid var(--lb-line); border-radius: 18px; box-shadow: 0 2px 8px rgba(54, 112, 168, .06); }
 .lb-hours-box__ico { font-size: 38px; color: var(--lb-primary); }
@@ -425,11 +408,6 @@ body.lb-body {
 .lb-open.is-closed { background: #fdecec; color: #a73a3a; }
 .lb-open.is-closed::before { box-shadow: 0 0 0 4px rgba(167, 58, 58, .15); animation: none; }
 .lb-open--lg { font-size: 14px; padding: 9px 18px; margin-bottom: 14px; }
-.lb-hours-list { display: grid; margin-top: 4px; }
-.lb-hours-list__row { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--lb-line); font: 500 15px var(--lb-head); border-radius: 14px; }
-.lb-hours-list__row:last-child { border-bottom: 0; }
-.lb-hours-list__row.is-today { background: var(--lb-sky-2); color: var(--lb-primary-d); font-weight: 700; }
-.lb-hours-list__row.is-today span:first-child::after { content: "Hari ini"; margin-left: 10px; padding: 3px 9px; border-radius: 999px; background: var(--lb-primary); color: #fff; font-size: 11px; vertical-align: middle; }
 
 .lb-inquiry .lb-card__head { margin-bottom: 14px; }
 .lb-inquiry .lb-field { min-height: 42px; font-size: 12.8px; }
@@ -437,22 +415,6 @@ body.lb-body {
 .lb-form--full .lb-field { min-height: 48px; font-size: 14.5px; }
 
 /* ============================== 12. AI CARD & CHAT ============================== */
-.lb-ai {
-    display: flex; flex-direction: column; gap: 12px; padding: 16px 14px 16px; overflow: hidden; text-align: center;
-    background: linear-gradient(180deg, #e6f1fb 0%, #eef6fb 46%, #dce9f6 100%);
-    border-radius: 30px;
-}
-.lb-ai::before, .lb-ai::after { content: ""; position: absolute; border-radius: 50%; pointer-events: none; background: radial-gradient(circle at 30% 28%, rgba(255, 255, 255, .95), rgba(255, 255, 255, .25) 45%, rgba(160, 210, 245, .25) 72%); border: 1px solid rgba(255, 255, 255, .8); animation: lb-drift 8s ease-in-out infinite; }
-.lb-ai::before { width: 38px; height: 38px; left: 10px; top: 12px; }
-.lb-ai::after { width: 26px; height: 26px; right: 14px; top: 96px; animation-delay: -4s; }
-.lb-ai__bubble { position: relative; padding: 14px 16px 14px 18px; margin-left: 30px; background: #fff; border-radius: 26px; box-shadow: var(--lb-shadow-s); text-align: center; }
-.lb-ai__bubble::after { content: ""; position: absolute; left: 40px; bottom: -8px; width: 18px; height: 18px; background: #fff; transform: rotate(45deg); border-radius: 0 0 6px 0; }
-.lb-ai__heart { position: absolute; left: 8px; top: 8px; font-size: 14px; color: var(--lb-primary); }
-.lb-ai__bubble h2 { font: 600 15px/1.25 var(--lb-head); color: #123a5e; }
-.lb-ai__bubble p { margin-top: 4px; font-size: 12.8px; line-height: 1.45; color: var(--lb-ink-2); }
-.lb-ai__scene { position: relative; margin: 0 -6px; flex: 1; display: grid; align-items: center; }
-.lb-ai__scene img { width: 100%; height: auto; animation: lb-bob 5s ease-in-out infinite; }
-.lb-ai__chips { display: grid; gap: 8px; }
 .lb-qchip { display: flex; align-items: center; gap: 9px; width: 100%; padding: 7px 12px; text-align: left; background: #fff; border: 1px solid var(--lb-line); border-radius: 999px; font: 600 12.5px/1.3 var(--lb-head); color: var(--lb-ink); box-shadow: 0 3px 8px rgba(54, 112, 168, .08); transition: transform .16s, box-shadow .16s, background .16s; }
 .lb-qchip:hover { transform: translateY(-2px); background: var(--lb-sky-3); box-shadow: var(--lb-shadow-s); }
 .lb-qchip__dot { display: grid; place-items: center; flex: none; width: 24px; height: 24px; border-radius: 50%; background: linear-gradient(180deg, #8ac3ec, #4d98cf); color: #fff; font-size: 13px; }
@@ -463,9 +425,6 @@ body.lb-body {
 .lb-ai__form input, .lb-chat__form input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; font-size: 13px; padding: 8px 0; }
 .lb-ai__form button, .lb-chat__form button { flex: none; display: grid; place-items: center; width: 38px; height: 38px; border: 0; border-radius: 50%; color: #fff; font-size: 17px; background: linear-gradient(180deg, #3b95cc, #1f6a9e); box-shadow: 0 6px 12px rgba(31, 106, 158, .35); transition: transform .16s; }
 .lb-ai__form button:hover, .lb-chat__form button:hover { transform: scale(1.08); }
-.lb-ai__more { display: inline-flex; align-items: center; justify-content: center; gap: 6px; font: 600 12px var(--lb-head); color: var(--lb-primary-d); padding: 2px 0; }
-.lb-ai__more:hover { text-decoration: underline; }
-@media (min-width: 700px) and (max-width: 1399.98px) { .lb-dash__ai .lb-ai { max-width: 560px; margin-inline: auto; } }
 
 /* jendela chat */
 .lb-chat {
@@ -535,7 +494,7 @@ body.lb-body {
 .lb-footer__col .lb-social--footer { display: flex; gap: 8px; }
 .lb-footer__credit { position: relative; background: rgba(255, 255, 255, .5); border-top: 1px solid rgba(70, 130, 190, .2); padding: 14px 0 calc(14px + env(safe-area-inset-bottom)); text-align: center; font-size: 13px; color: var(--lb-ink-2); font-weight: 600; }
 @media (min-width: 640px) { .lb-footer__cols { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-@media (min-width: 1100px) {
+@media (min-width: 1300px) {
     .lb-footer__inner { grid-template-columns: minmax(220px, 300px) minmax(0, 1fr); align-items: start; gap: 40px; }
     .lb-footer__brand { padding-right: 36px; border-right: 1px solid rgba(70, 130, 190, .28); min-height: 110px; }
     .lb-footer__cols { grid-template-columns: repeat(5, minmax(0, 1fr)); }
@@ -597,14 +556,6 @@ html.lb-chat-open .lb-fab__hint { display: none; }
 .lb-cta .lb-btn--outline { color: #fff; background: transparent; border-color: rgba(255, 255, 255, .8); }
 .lb-cta .lb-btn--outline:hover { background: rgba(255, 255, 255, .16); }
 
-.lb-timeline { position: relative; display: grid; gap: 18px; }
-.lb-timeline__item { position: relative; display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 16px; align-items: start; }
-.lb-timeline__item:not(:last-child)::before { content: ""; position: absolute; left: 23px; top: 50px; bottom: -22px; width: 2px; background: repeating-linear-gradient(180deg, var(--lb-primary-l) 0 6px, transparent 6px 12px); }
-.lb-timeline__num { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; color: #fff; font: 700 19px var(--lb-head); background: linear-gradient(180deg, #4aa0d6, #1f6a9e); box-shadow: 0 8px 16px rgba(31, 106, 158, .35); }
-.lb-timeline__card { display: flex; align-items: center; gap: 16px; padding: 18px 22px; }
-.lb-timeline__card h2 { font: 600 17px var(--lb-head); }
-.lb-timeline__card p { margin-top: 4px; font-size: 14.5px; color: var(--lb-ink-2); }
-.lb-timeline__cta { margin-top: 28px; display: flex; justify-content: center; }
 
 /* ----- keyframes ----- */
 @keyframes lb-drop { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: none; } }
@@ -655,12 +606,7 @@ html.lb-chat-open .lb-fab__hint { display: none; }
     .lb-svcstrip__intro { align-items: flex-start; }
     .lb-topbar__item--phone { display: none; }
     .lb-topbar__list { gap: 10px; }
-    .lb-timeline__item { grid-template-columns: 38px minmax(0, 1fr); gap: 10px; }
-    .lb-timeline__num { width: 38px; height: 38px; font-size: 16px; }
-    .lb-timeline__item:not(:last-child)::before { left: 18px; top: 40px; }
-    .lb-timeline__card { flex-direction: column; align-items: flex-start; padding: 16px; }
     .lb-cta__actions, .lb-cta__actions .lb-btn { width: 100%; }
-    .lb-hours-list__row { padding: 12px; font-size: 14px; }
     .lb-eta, .lb-eta-list--lg .lb-eta { grid-template-columns: 24px minmax(0, 1fr); }
     .lb-eta span { grid-column: 2; }
     .lb-toast { bottom: 88px; }
@@ -677,15 +623,9 @@ html.lb-chat-open .lb-fab__hint { display: none; }
 /* ----- tambahan penyesuaian desain ----- */
 .lb-card__title a { color: inherit; }
 .lb-card__title a:hover { color: var(--lb-primary-d); text-decoration: underline; text-underline-offset: 3px; }
-.lb-ai__bubble h2 a:hover { text-decoration: underline; }
-.lb-hours-card { overflow: hidden; }
-.lb-hours-card__plant { position: absolute; right: 6px; bottom: 6px; width: 70px; height: auto; pointer-events: none; }
-.lb-hours-card .lb-open { max-width: calc(100% - 82px); margin-top: 12px; }
 .lb-footer__basket { position: absolute; right: clamp(100px, 11vw, 190px); top: -58px; width: 136px; height: auto; pointer-events: none; z-index: 2; }
 @media (max-width: 1099.98px) { .lb-footer__basket { display: none; } }
 @media (max-width: 1299.98px) { .lb-header { padding-top: 6px; } }
-.lb-hours-card .lb-open { border-radius: 16px; line-height: 1.35; }
-.lb-form--preview .lb-field { padding: 0 10px; gap: 6px; }
 
 /* ======================================================================
  * 16. PENYESUAIAN PERSIS DESAIN UI (beranda, topbar, navbar, footer)
@@ -786,28 +726,16 @@ body.lb-body {
 .lb-dash .lb-hours-box { padding: 12px 14px; border-radius: 22px; background: rgba(255, 255, 255, .8); }
 .lb-dash .lb-hours-box__ico { color: var(--lb-icon); font-size: 34px; }
 .lb-dash .lb-hours-box strong, .lb-dash .lb-hours-box span { font-size: 12.5px; color: var(--lb-ink); }
-.lb-hours-card__plant-l { position: absolute; left: -26px; bottom: 4px; width: 60px; height: auto; pointer-events: none; z-index: 2; }
-.lb-dash .lb-inquiry .lb-field { min-height: 34px; font-size: 12px; padding: 0 12px; }
-.lb-dash .lb-inquiry .lb-form__cell--submit .lb-btn { min-height: 34px; font-size: 12.5px; }
 .lb-dash .lb-field__ico { font-size: 16px; color: var(--lb-icon); }
 .lb-dash .lb-field input::placeholder { color: #36557f; }
 
 /* ----- AI Laundry Assistant ----- */
-.lb-dash .lb-ai { padding: 12px 12px 14px; border-radius: 30px; gap: 8px; }
-.lb-dash .lb-ai__bubble h2 { font-size: 14.5px; color: #0f2a52; }
-.lb-dash .lb-ai__bubble p { font-size: 12.5px; color: #1d3a63; }
-.lb-dash .lb-qchip { padding: 6px 10px; font-size: 12px; color: #0f2a52; }
-.lb-dash .lb-qchip__dot { width: 22px; height: 22px; font-size: 12px; }
-.lb-dash .lb-ai__chips { gap: 7px; }
-.lb-dash .lb-ai__form button { width: 32px; height: 32px; font-size: 15px; }
-.lb-dash .lb-ai__form { padding: 4px 4px 4px 14px; }
 
 /* ----- Layout beranda mengikuti proporsi desain (>=1400px) ----- */
 @media (min-width: 1400px) {
-    .lb-dash { max-width: none; padding-inline: calc(35 * var(--u)); gap: calc(15 * var(--u)) calc(15 * var(--u)); grid-template-columns: minmax(0, 1fr) calc(262 * var(--u)); padding-top: calc(10 * var(--u)); }
+    .lb-dash { max-width: none; padding-inline: calc(35 * var(--u)); gap: calc(15 * var(--u)) calc(15 * var(--u)); padding-top: calc(10 * var(--u)); }
     .lb-dash__row--4 { grid-template-columns: 1.2fr 1fr .96fr 1.05fr; gap: calc(13 * var(--u)); }
-    .lb-dash__row--3 { grid-template-columns: 1.85fr 1fr 1.08fr; gap: calc(13 * var(--u)); }
-    .lb-dash__row--3 > .lb-steps-card { grid-column: auto; }
+    .lb-dash__row--3 { grid-template-columns: 1.5fr 1fr 1.05fr 1.05fr; gap: calc(13 * var(--u)); }
     .lb-svcstrip { grid-template-columns: calc(333 * var(--u)) minmax(0, 1fr); gap: 0; }
     .lb-svcstrip__intro { margin-left: calc(-35 * var(--u)); gap: calc(8 * var(--u)); }
     .lb-svcstrip__basket { width: calc(100 * var(--u)); margin-left: 0; }
@@ -833,7 +761,7 @@ body.lb-body {
 .lb-brand--footer .lb-brand__text strong { font-size: 24px; }
 .lb-social--footer a { background: none; box-shadow: none; color: #10294f; }
 .lb-footer__credit { background: rgba(255, 255, 255, .55); color: #1d3a63; }
-@media (min-width: 1100px) {
+@media (min-width: 1300px) {
     .lb-footer__inner { display: flex; align-items: center; justify-content: flex-start; gap: 0; padding-left: calc(115 * var(--u)); padding-right: calc(60 * var(--u)); max-width: none; padding-block: calc(36 * var(--u)) calc(22 * var(--u)); }
     .lb-footer__brand { display: flex; align-items: center; gap: 0; padding: 0; border: 0; min-height: 0; flex: none; }
     .lb-footer__slogan { border-left: 1px solid rgba(16, 41, 79, .3); margin-left: calc(32 * var(--u)); padding-left: calc(20 * var(--u)); }
@@ -868,25 +796,11 @@ body.lb-body {
  * ====================================================================== */
 @media (max-width: 1299.98px) { .lb-nav__list { position: relative; } }
 
-/* ----- Kolom kanan beranda: kartu AI tetap ukuran aslinya; sisa ruang diisi dekorasi ----- */
-.lb-dash { padding-bottom: 64px; }
-.lb-dash__deco { display: none; }
-@media (min-width: 1400px) {
-    .lb-dash__ai { display: flex; flex-direction: column; gap: 10px; align-self: stretch; }
-    .lb-dash__ai > .lb-ai { flex: none; }
-    .lb-dash__deco { display: block; position: relative; flex: 1 1 0; min-height: 0; overflow: hidden; pointer-events: none; }
-    .lb-dash__deco img { position: absolute; left: 50%; bottom: 0; height: 100%; max-height: 132px; width: auto; transform: translateX(-50%); object-fit: contain; object-position: center bottom; }
-    .lb-dash__deco .lb-bubble { animation-duration: 9s; }
-    .lb-dash__deco .lb-bubble--d1 { width: 34px; height: 34px; left: 10%; bottom: 36%; left: 12%; top: auto; }
-    .lb-dash__deco .lb-bubble--d2 { width: 22px; height: 22px; right: 14%; bottom: 14%; left: auto; top: auto; animation-delay: -3s; }
-    .lb-dash__deco .lb-bubble--d3 { width: 48px; height: 48px; right: 6%; bottom: 40%; left: auto; top: auto; animation-delay: -6s; }
-}
-
 /* ----- Footer rapi: satu baris, sejajar, pemisah sama tinggi ----- */
 .lb-footer { margin-top: 0; }
 .lb-footer__col ul { gap: 6px; }
 .lb-footer__col h2 { margin-bottom: 9px; }
-@media (min-width: 1100px) {
+@media (min-width: 1300px) {
     .lb-footer__inner { display: flex; align-items: stretch; justify-content: center; gap: 0; max-width: 1400px; margin-inline: auto; padding: 30px 28px 22px; }
     .lb-footer__brand { display: flex; align-items: stretch; gap: 0; padding: 0; border: 0; min-height: 0; flex: none; }
     .lb-footer__brand .lb-brand { align-self: center; }
@@ -896,7 +810,7 @@ body.lb-body {
     .lb-footer__col--social { border-left: 1px solid rgba(16, 41, 79, .28); padding-left: 34px; margin-left: 0; }
     .lb-footer__col--social h2 { text-align: left; }
 }
-@media (max-width: 1099.98px) {
+@media (max-width: 1299.98px) {
     .lb-footer__inner { padding-top: 34px; text-align: left; }
     .lb-footer__brand { padding-bottom: 6px; border-bottom: 1px solid rgba(16, 41, 79, .18); }
 }
@@ -1024,3 +938,131 @@ html.lb-pop-open { overflow: hidden; }
     .lb-dt__slot { padding: 8px 0; }
     .lb-dt__foot { bottom: -12px; margin-bottom: -12px; padding-bottom: 12px; }
 }
+
+/* ======================================================================
+ * 19. KARTU AI RINGKAS · KARTU KONTAK · HALAMAN ORDER INQUIRY / JAM / CARA ORDER
+ * ====================================================================== */
+
+/* ----- AI Laundry Assistant: ringkas, minimalis, modern ----- */
+.lb-ai { display: flex; flex-direction: column; gap: 12px; padding: 14px 16px; }
+.lb-ai__head { display: flex; align-items: center; gap: 11px; }
+.lb-ai__avatar { position: relative; flex: none; display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(180deg, #fff, #e3effb); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .9), 0 6px 14px rgba(95, 150, 205, .2); }
+.lb-ai__avatar img { width: 30px; height: auto; }
+.lb-ai__dot { position: absolute; right: 0; bottom: 1px; width: 11px; height: 11px; border-radius: 50%; background: #46d68a; border: 2px solid #fff; animation: lb-blink 2.4s ease-in-out infinite; }
+.lb-ai__head h2 { font: 700 15.5px/1.25 var(--lb-head); color: var(--lb-ink); }
+.lb-ai__head h2 a:hover { color: var(--lb-primary-d); text-decoration: underline; text-underline-offset: 3px; }
+.lb-ai__head p { margin-top: 1px; font-size: 11.5px; line-height: 1.4; color: var(--lb-muted); }
+.lb-ai__chips { display: grid; gap: 6px; }
+.lb-ai .lb-qchip { display: block; width: 100%; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: left; padding: 7px 12px; font-size: 11.5px; line-height: 1.3; color: var(--lb-ink); background: rgba(255, 255, 255, .9); border-radius: 999px; box-shadow: none; }
+.lb-ai .lb-qchip:hover { background: var(--lb-sky-2); box-shadow: none; transform: translateY(-1px); }
+.lb-ai__form { margin-top: 2px; padding: 4px 4px 4px 14px; }
+.lb-ai__form button { width: 32px; height: 32px; font-size: 15px; }
+
+/* ----- Kartu kontak (preview Order Inquiry + sisi halaman Order Inquiry) ----- */
+.lb-card .lb-card__icon.lb-card__icon--solid { color: #fff; background: linear-gradient(145deg, #2f78ae, #1b5587); box-shadow: 0 8px 16px rgba(27, 85, 135, .28); }
+.lb-contact-card { display: flex; flex-direction: column; }
+.lb-contact { display: grid; gap: 13px; margin: 8px 0 16px; }
+.lb-contact li { display: grid; grid-template-columns: 22px 64px minmax(0, 1fr); gap: 8px; align-items: center; font-size: 12px; }
+.lb-contact .lb-i { font-size: 21px; color: var(--lb-icon); }
+.lb-contact__k { color: var(--lb-muted); font-weight: 600; white-space: nowrap; }
+.lb-contact__v { color: var(--lb-ink); font-weight: 700; overflow-wrap: anywhere; }
+a.lb-contact__v:hover { color: var(--lb-primary-d); text-decoration: underline; text-underline-offset: 3px; }
+.lb-contact__btn { align-self: flex-start; margin-top: 0; }
+@container (max-width: 245px) { .lb-contact li { grid-template-columns: 22px minmax(0, 1fr); } .lb-contact__k { display: none; } }
+
+/* ----- Halaman Order Inquiry ----- */
+.lb-oi { display: grid; gap: 22px; grid-template-columns: minmax(0, 1fr); align-items: start; }
+.lb-oi__side { display: grid; gap: 18px; }
+@media (min-width: 1000px) {
+    .lb-oi { grid-template-columns: minmax(0, 1.6fr) minmax(300px, 1fr); }
+    .lb-oi__side { position: sticky; top: 96px; }
+}
+.lb-oi__form .lb-card__head { margin-bottom: 18px; }
+.lb-oi__group { min-width: 0; margin: 0 0 24px; padding: 0 0 22px; border: 0; border-bottom: 1px dashed var(--lb-line); }
+.lb-oi__group legend { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; padding: 0; font: 600 15px var(--lb-head); color: var(--lb-ink); }
+.lb-oi__group legend small { font: 500 12.5px var(--lb-font); color: var(--lb-muted); }
+.lb-oi__num { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; color: #fff; font: 700 13px var(--lb-head); background: linear-gradient(180deg, #3b95cc, #1f6a9e); box-shadow: 0 4px 8px rgba(31, 106, 158, .3); }
+.lb-oi .lb-form__cell { display: grid; gap: 6px; align-content: start; min-width: 0; }
+.lb-oi .lb-label__t { display: block; }
+.lb-req { color: #d45656; text-decoration: none; }
+.lb-oi__quick { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.lb-chip { padding: 8px 14px; border-radius: 999px; border: 1.5px solid var(--lb-line); background: #fff; font: 600 12.5px/1.2 var(--lb-head); color: var(--lb-ink); cursor: pointer; transition: background .15s, color .15s, border-color .15s, transform .15s; }
+.lb-chip:hover { background: var(--lb-sky-2); transform: translateY(-1px); }
+.lb-chip.is-active { color: #fff; border-color: transparent; background: linear-gradient(180deg, #3b95cc, #1f6a9e); box-shadow: 0 6px 12px rgba(31, 106, 158, .28); }
+.lb-oi .lb-form--full .lb-btn--block { margin-top: 4px; }
+.lb-oi__next .lb-card__title { margin-bottom: 14px; }
+.lb-oi__next ol { display: grid; gap: 16px; }
+.lb-oi__next li { display: grid; grid-template-columns: 42px minmax(0, 1fr); gap: 12px; align-items: start; }
+.lb-oi__next .lb-step__ico { width: 42px; height: 42px; font-size: 20px; }
+.lb-oi__next h3 { font: 600 14px var(--lb-head); }
+.lb-oi__next p { margin-top: 2px; font-size: 13px; color: var(--lb-ink-2); }
+
+/* ----- Halaman Jam Operasional ----- */
+.lb-hrs { display: grid; gap: 20px; grid-template-columns: minmax(0, 1fr); align-items: stretch; }
+@media (min-width: 900px) { .lb-hrs { grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); } .lb-hrs__notes { grid-column: 1 / -1; } }
+.lb-hrs__status { position: relative; overflow: hidden; display: grid; justify-items: center; align-content: center; gap: 6px; text-align: center; color: #fff; background: linear-gradient(140deg, #3a93ca, #1b5f93); border-color: transparent; box-shadow: 0 22px 44px rgba(27, 95, 147, .28); }
+.lb-hrs__status::before, .lb-hrs__status::after { content: ""; position: absolute; border-radius: 50%; background: radial-gradient(circle at 30% 28%, rgba(255, 255, 255, .5), rgba(255, 255, 255, .06) 62%); pointer-events: none; }
+.lb-hrs__status::before { width: 190px; height: 190px; right: -60px; top: -70px; }
+.lb-hrs__status::after { width: 110px; height: 110px; left: -34px; bottom: -40px; }
+.lb-hrs__status > * { position: relative; z-index: 1; }
+.lb-hrs__status .lb-open { margin: 0 0 8px; }
+.lb-hrs__clock { display: grid; place-items: center; width: 82px; height: 82px; margin-bottom: 6px; border-radius: 50%; background: rgba(255, 255, 255, .18); font-size: 44px; box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .35); }
+.lb-hrs__range { font: 700 clamp(22px, 2.6vw, 30px)/1.2 var(--lb-head); }
+.lb-hrs__time { font: 600 clamp(18px, 2vw, 22px) var(--lb-head); opacity: .95; }
+.lb-hrs__sub { min-height: 1.5em; margin-top: 4px; font-size: 14px; opacity: .92; }
+.lb-hrs__cta { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 14px; }
+.lb-hrs__status .lb-btn--primary { color: var(--lb-primary-d); background: #fff; box-shadow: 0 10px 20px rgba(10, 50, 90, .25); }
+.lb-hrs__status .lb-btn--outline { color: #fff; background: transparent; border-color: rgba(255, 255, 255, .8); }
+.lb-hrs__status .lb-btn--outline:hover { background: rgba(255, 255, 255, .16); }
+.lb-hrs__days { display: grid; gap: 6px; margin-top: 6px; }
+.lb-hrs__day { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 12px; padding: 13px 16px; border-radius: 16px; background: #fff; border: 1px solid var(--lb-line); font-size: 15px; transition: background .2s, transform .2s; }
+.lb-hrs__dname { font: 600 15px var(--lb-head); }
+.lb-hrs__dtime { font: 500 14px var(--lb-head); color: var(--lb-ink-2); font-variant-numeric: tabular-nums; }
+.lb-hrs__tag { display: none; padding: 3px 10px; border-radius: 999px; background: var(--lb-primary); color: #fff; font: 600 11px var(--lb-head); }
+.lb-hrs__day.is-today { background: linear-gradient(180deg, #e9f4fd, #dcecf9); border-color: rgba(43, 127, 184, .45); color: var(--lb-primary-d); transform: scale(1.015); box-shadow: 0 8px 18px rgba(54, 112, 168, .14); }
+.lb-hrs__day.is-today .lb-hrs__tag { display: inline-block; }
+.lb-hrs__day.is-today .lb-hrs__dtime { color: var(--lb-primary-d); font-weight: 700; }
+.lb-hrs__notes { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.lb-hrs__note { display: flex; align-items: center; gap: 14px; padding: 16px 18px; }
+.lb-hrs__note p { font-size: 14px; color: var(--lb-ink-2); }
+
+/* ----- Halaman Cara Order ----- */
+.lb-flow { display: grid; gap: 30px 18px; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 640px) { .lb-flow { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1100px) { .lb-flow { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.lb-flow__item { position: relative; display: grid; justify-items: center; }
+.lb-flow__num { position: relative; z-index: 2; display: grid; place-items: center; width: 46px; height: 46px; margin-bottom: -23px; border: 3px solid #fff; border-radius: 50%; color: #fff; font: 700 18px var(--lb-head); background: linear-gradient(180deg, #4aa0d6, #1f6a9e); box-shadow: 0 8px 16px rgba(31, 106, 158, .35); }
+.lb-flow__card { width: 100%; display: grid; justify-items: center; gap: 10px; padding: 36px 18px 24px; text-align: center; transition: transform .2s, box-shadow .2s; }
+.lb-flow__card:hover { transform: translateY(-4px); box-shadow: 0 18px 38px rgba(54, 112, 168, .18); }
+.lb-flow__card h2 { font: 600 16px/1.3 var(--lb-head); }
+.lb-flow__card p { font-size: 14px; color: var(--lb-ink-2); }
+.lb-flow__card .lb-step__ico { width: 62px; height: 62px; font-size: 28px; }
+@media (min-width: 1100px) {
+    .lb-flow__item:not(:last-child)::after { content: ""; position: absolute; top: 21px; left: calc(50% + 30px); width: calc(100% - 42px); border-top: 2px dashed var(--lb-primary-l); z-index: 1; }
+}
+.lb-tips { margin-top: 48px; }
+.lb-tips__title { margin-bottom: 18px; text-align: center; font: 700 clamp(20px, 2.2vw, 26px)/1.25 var(--lb-head); }
+.lb-tips__grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+.lb-tip { display: flex; gap: 14px; align-items: flex-start; padding: 16px 18px; border-radius: 20px; background: var(--lb-card); border: 1px solid rgba(255, 255, 255, .95); box-shadow: var(--lb-shadow-s); }
+.lb-tip__ico { flex: none; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--lb-sky-2); color: var(--lb-icon); font-size: 22px; }
+.lb-tip h3 { font: 600 14.5px var(--lb-head); }
+.lb-tip p { margin-top: 3px; font-size: 13.5px; color: var(--lb-ink-2); }
+.lb-flow__cta { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 34px; }
+@media (max-width: 559.98px) { .lb-flow__cta .lb-btn { width: 100%; } }
+
+/* ----- footer: kolom tautan 5 lajur mulai 900px (bertumpuk di bawah 1300px) ----- */
+@media (min-width: 900px) { .lb-footer__cols { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+/* ----- baris 3 beranda: isi kartu di tengah vertikal agar tidak terlihat kosong ----- */
+.lb-dash__row--3 .lb-steps-card .lb-steps { margin-block: auto; }
+
+/* ----- Perapian isi kartu baris 3 beranda (ukuran & tata letak kartu tidak berubah) ----- */
+.lb-dash__row--3 .lb-card__head, .lb-dash__row--3 .lb-ai__head { min-height: 52px; align-items: center; }
+.lb-dash__row--3 .lb-card__head { margin-bottom: 10px; }
+.lb-dash__row--3 .lb-hours-box { margin: 4px 0 0; }
+.lb-hours-card__decor { display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; margin-top: auto; padding-top: 10px; min-height: 80px; pointer-events: none; }
+.lb-hours-card__plant-l { width: auto; height: 58px; max-width: 40%; object-fit: contain; }
+.lb-hours-card__plant { width: auto; height: 78px; max-width: 40%; object-fit: contain; }
+.lb-contact-card .lb-contact__body { display: flex; flex-direction: column; justify-content: center; gap: 16px; flex: 1; }
+.lb-contact-card .lb-contact__body .lb-contact { margin: 0; gap: 14px; }
+.lb-ai__avatar img { width: 32px; }
+.lb-dash__row--3 .lb-ai { gap: 10px; }

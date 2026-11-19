@@ -18,7 +18,7 @@ return [
     // Identitas & aset
     // ------------------------------------------------------------------
     'brand' => [
-        'name'    => 'WoodenLane',
+        'name' => 'WoodenLane',
         'tagline' => 'Custom Furniture for Better Living',
     ],
 
@@ -28,7 +28,7 @@ return [
 
     'assets' => [
         'css' => 'css/website-bisnis/template/interior&architecture/premium-minimal/furniture-mocha-cream/furniture.css',
-        'js'  => 'js/website-bisnis/template/interior&architecture/premium-minimal/furniture-mocha-cream/furniture.js',
+        'js' => 'js/website-bisnis/template/interior&architecture/premium-minimal/furniture-mocha-cream/furniture.js',
         'img' => 'images/website-bisnis/template/interior&architecture/premium-minimal/furniture-mocha-cream',
     ],
 
@@ -36,12 +36,12 @@ return [
     // Kontak (topbar, footer, tombol WhatsApp, tujuan semua form)
     // ------------------------------------------------------------------
     'contact' => [
-        'address'          => 'Jl. Melati No. 12, Jakarta Selatan',
-        'hours'            => 'Senin - Sabtu 08.00 - 17.00',
-        'email'            => 'info@woodenlane.id',
-        'whatsapp'         => '62895630300345',          // format internasional tanpa + / 0 di depan
+        'address' => 'Jl. Melati No. 12, Jakarta Selatan',
+        'hours' => 'Senin - Sabtu 08.00 - 17.00',
+        'email' => 'info@woodenlane.id',
+        'whatsapp' => '62895630300345',          // format internasional tanpa + / 0 di depan
         'whatsapp_display' => '0895 6303 00345',
-        'whatsapp_greeting'=> 'Halo WoodenLane, saya ingin berkonsultasi tentang furniture.',
+        'whatsapp_greeting' => 'Halo WoodenLane, saya ingin berkonsultasi tentang furniture.',
     ],
 
     'social' => [
@@ -91,27 +91,27 @@ return [
         'slides' => [
             [
                 'eyebrow' => 'PREMIUM CUSTOM FURNITURE',
-                'title'   => 'Furniture yang<br>Mewujudkan Ruang Impian Anda',
-                'text'    => 'Desain elegan, kualitas premium, dan bisa custom sesuai kebutuhan. Dari rumah hingga ruang kerja, kami hadir untuk menciptakan furniture yang sempurna untuk gaya hidup Anda.',
-                'cta'     => ['Jelajahi Katalog', 'catalog'],
-                'video'   => true,
-                'image'   => 'hero-living.jpg', 'pos' => '42% 55%', 'zoom' => '1',
+                'title' => 'Furniture yang<br>Mewujudkan Ruang Impian Anda',
+                'text' => 'Desain elegan, kualitas premium, dan bisa custom sesuai kebutuhan. Dari rumah hingga ruang kerja, kami hadir untuk menciptakan furniture yang sempurna untuk gaya hidup Anda.',
+                'cta' => ['Jelajahi Katalog', 'catalog'],
+                'video' => true,
+                'image' => 'hero-living.jpg', 'pos' => '42% 55%', 'zoom' => '1',
             ],
             [
                 'eyebrow' => 'CUSTOM DESIGN OPTIONS',
-                'title'   => 'Desain Sesuai<br>Keinginan Anda',
-                'text'    => 'Pilih gaya, ukuran, warna, dan detail lainnya untuk menciptakan furniture impian Anda.',
-                'cta'     => ['Mulai Custom Design', 'custom-design'],
-                'video'   => false,
-                'image'   => 'hero-living.jpg', 'pos' => '100% 45%', 'zoom' => '1.22',
+                'title' => 'Desain Sesuai<br>Keinginan Anda',
+                'text' => 'Pilih gaya, ukuran, warna, dan detail lainnya untuk menciptakan furniture impian Anda.',
+                'cta' => ['Mulai Custom Design', 'custom-design'],
+                'video' => false,
+                'image' => 'hero-living.jpg', 'pos' => '100% 45%', 'zoom' => '1.22',
             ],
             [
                 'eyebrow' => 'PILIHAN MATERIAL TERBAIK',
-                'title'   => 'Material & Finishing<br>Berkualitas Tinggi',
-                'text'    => 'Kami menggunakan material berkualitas tinggi dengan finishing premium yang tahan lama.',
-                'cta'     => ['Lihat Material', 'materials'],
-                'video'   => false,
-                'image'   => 'hero-living.jpg', 'pos' => '38% 62%', 'zoom' => '1.16',
+                'title' => 'Material & Finishing<br>Berkualitas Tinggi',
+                'text' => 'Kami menggunakan material berkualitas tinggi dengan finishing premium yang tahan lama.',
+                'cta' => ['Lihat Material', 'materials'],
+                'video' => false,
+                'image' => 'hero-living.jpg', 'pos' => '38% 62%', 'zoom' => '1.16',
             ],
         ],
         'tagline' => 'Custom<br>Your Space,<br>Your Style',
@@ -120,7 +120,7 @@ return [
             ['icon' => 'ruler',    'title' => 'Custom Design',      'text' => 'Sesuai kebutuhan & gaya Anda',      'detail' => 'Ukuran, warna, material, dan detail dapat disesuaikan dengan ruang dan selera Anda.'],
             ['icon' => 'users',    'title' => 'Professional Team',  'text' => 'Tim berpengalaman',                 'detail' => 'Desainer dan pengrajin berpengalaman yang mendampingi dari konsep hingga pemasangan.'],
             ['icon' => 'chat',     'title' => 'Free Consultation',  'text' => 'Konsultasi desain gratis',          'detail' => 'Diskusikan kebutuhan Anda bersama tim kami tanpa biaya konsultasi.'],
-            ['icon' => 'shield',   'title' => 'After Sales Service','text' => 'Garansi & layanan purna jual',      'detail' => 'Garansi produk serta layanan purna jual untuk ketenangan Anda.'],
+            ['icon' => 'shield',   'title' => 'After Sales Service', 'text' => 'Garansi & layanan purna jual',      'detail' => 'Garansi produk serta layanan purna jual untuk ketenangan Anda.'],
         ],
     ],
 
@@ -129,10 +129,10 @@ return [
     // ------------------------------------------------------------------
     'catalog' => [
         'eyebrow' => 'KOLEKSI TERLENGKAP',
-        'title'   => 'Katalog Furniture',
-        'text'    => 'Temukan berbagai pilihan furniture untuk setiap ruangan di rumah Anda.',
-        'cta'     => 'Lihat Semua Produk',
-        'styles'  => ['Modern', 'Minimalis', 'Classic', 'Rustic'],
+        'title' => 'Katalog Furniture',
+        'text' => 'Temukan berbagai pilihan furniture untuk setiap ruangan di rumah Anda.',
+        'cta' => 'Lihat Semua Produk',
+        'styles' => ['Modern', 'Minimalis', 'Classic', 'Rustic'],
         'style_image' => 'style-dining.jpg',
         'items' => [
             [
@@ -185,11 +185,11 @@ return [
     // ------------------------------------------------------------------
     'custom_design' => [
         'eyebrow' => 'CUSTOM DESIGN OPTIONS',
-        'title'   => 'Desain Sesuai Keinginan Anda',
-        'text'    => 'Pilih gaya, ukuran, warna, dan detail lainnya untuk menciptakan furniture impian Anda.',
-        'cta'     => 'Mulai Custom Design',
-        'image'   => 'art-custom.png',
-        'sizes'   => [
+        'title' => 'Desain Sesuai Keinginan Anda',
+        'text' => 'Pilih gaya, ukuran, warna, dan detail lainnya untuk menciptakan furniture impian Anda.',
+        'cta' => 'Mulai Custom Design',
+        'image' => 'art-custom.png',
+        'sizes' => [
             ['key' => 'kecil',    'label' => 'Kompak',   'hint' => 'Untuk ruang terbatas'],
             ['key' => 'standar',  'label' => 'Standar',  'hint' => 'Ukuran paling umum'],
             ['key' => 'besar',    'label' => 'Lega',     'hint' => 'Untuk ruang luas'],
@@ -216,10 +216,10 @@ return [
     // ------------------------------------------------------------------
     'materials' => [
         'eyebrow' => 'PILIHAN MATERIAL TERBAIK',
-        'title'   => 'Material & Finishing',
-        'text'    => 'Kami menggunakan material berkualitas tinggi dengan finishing premium yang tahan lama.',
-        'cta'     => 'Lihat Material',
-        'image'   => 'art-material.png',
+        'title' => 'Material & Finishing',
+        'text' => 'Kami menggunakan material berkualitas tinggi dengan finishing premium yang tahan lama.',
+        'cta' => 'Lihat Material',
+        'image' => 'art-material.png',
         'items' => [
             ['key' => 'jati',    'name' => 'Kayu Jati',        'tone' => ['#b07a45', '#8c5c2f'], 'durability' => 5, 'grain' => 'Serat lurus, pori halus', 'best' => 'Meja, lemari, ranjang', 'text' => 'Kayu klasik yang kuat, stabil, dan tahan cuaca. Warna hangat yang makin cantik seiring waktu.'],
             ['key' => 'oak',     'name' => 'Oak',              'tone' => ['#d3ae78', '#b98f58'], 'durability' => 4, 'grain' => 'Serat tegas, tone terang', 'best' => 'Kursi, meja makan, rak', 'text' => 'Tone cerah dengan serat tegas, cocok untuk gaya minimalis dan modern.'],
@@ -242,11 +242,11 @@ return [
     // ------------------------------------------------------------------
     'dimensions' => [
         'eyebrow' => 'UKURAN & DETAIL',
-        'title'   => 'Product Dimensions',
-        'text'    => 'Informasi ukuran lengkap untuk membantu Anda memilih yang paling sesuai.',
-        'cta'     => 'Lihat Detail Ukuran',
-        'note'    => 'Ukuran standar dapat disesuaikan. Semua furniture WoodenLane bisa dibuat sesuai ukuran ruang Anda.',
-        'sample'  => ['w' => 120, 'd' => 45, 'h' => 85, 'name' => 'Kabinet laci'],
+        'title' => 'Product Dimensions',
+        'text' => 'Informasi ukuran lengkap untuk membantu Anda memilih yang paling sesuai.',
+        'cta' => 'Lihat Detail Ukuran',
+        'note' => 'Ukuran standar dapat disesuaikan. Semua furniture WoodenLane bisa dibuat sesuai ukuran ruang Anda.',
+        'sample' => ['w' => 120, 'd' => 45, 'h' => 85, 'name' => 'Kabinet laci'],
         'groups' => [
             'sofa' => ['name' => 'Sofa', 'rows' => [
                 ['Sofa 2 dudukan', 160, 85, 80], ['Sofa 3 dudukan', 210, 90, 80], ['Sofa sudut (L)', 270, 160, 80], ['Sofa bed', 200, 90, 85],
@@ -279,9 +279,9 @@ return [
     // ------------------------------------------------------------------
     'gallery' => [
         'eyebrow' => 'INSPIRASI PROYEK KAMI',
-        'title'   => 'Project Gallery',
-        'text'    => 'Lihat hasil karya kami di berbagai ruangan dan gaya desain.',
-        'cta'     => 'Lihat Gallery',
+        'title' => 'Project Gallery',
+        'text' => 'Lihat hasil karya kami di berbagai ruangan dan gaya desain.',
+        'cta' => 'Lihat Gallery',
         'items' => [
             ['image' => 'gallery-1.jpg',       'title' => 'Ruang Tamu Hangat',        'room' => 'Ruang Tamu',     'style' => 'Modern',    'shape' => 'wide'],
             ['image' => 'gallery-2.jpg',       'title' => 'Lemari Ruang Keluarga',    'room' => 'Ruang Keluarga', 'style' => 'Classic',   'shape' => 'tall'],
@@ -299,19 +299,19 @@ return [
     // ------------------------------------------------------------------
     'custom_order' => [
         'title' => 'Custom Order Form',
-        'text'  => 'Isi form untuk memulai pesanan custom furniture Anda.',
-        'cta'   => 'Isi Form',
+        'text' => 'Isi form untuk memulai pesanan custom furniture Anda.',
+        'cta' => 'Isi Form',
         'image' => 'art-order.png',
         'budgets' => ['< Rp 5 juta', 'Rp 5 – 15 juta', 'Rp 15 – 50 juta', '> Rp 50 juta'],
     ],
 
     'lead_time' => [
         'title' => 'Production Lead Time',
-        'text'  => 'Estimasi waktu produksi untuk setiap jenis furniture Anda.',
-        'cta'   => 'Lihat Estimasi',
+        'text' => 'Estimasi waktu produksi untuk setiap jenis furniture Anda.',
+        'cta' => 'Lihat Estimasi',
         'image' => 'art-clock.png',
-        'note'  => 'Estimasi dalam hari kerja, dihitung sejak desain dan DP disetujui. Waktu pasti dikonfirmasi tim kami.',
-        'days'  => [   // [min, max] hari kerja untuk ukuran standar
+        'note' => 'Estimasi dalam hari kerja, dihitung sejak desain dan DP disetujui. Waktu pasti dikonfirmasi tim kami.',
+        'days' => [   // [min, max] hari kerja untuk ukuran standar
             'sofa' => [14, 21], 'meja' => [10, 14], 'kursi' => [10, 14],
             'lemari' => [21, 30], 'ranjang' => [14, 21], 'rak' => [10, 14],
         ],
@@ -331,8 +331,8 @@ return [
 
     'quotation' => [
         'title' => 'Quotation Request',
-        'text'  => 'Dapatkan penawaran harga sesuai kebutuhan.',
-        'cta'   => 'Minta Penawaran',
+        'text' => 'Dapatkan penawaran harga sesuai kebutuhan.',
+        'cta' => 'Minta Penawaran',
         'image' => 'art-quote.png',
         'timelines' => ['Secepatnya', '1 bulan', '2–3 bulan', 'Fleksibel'],
     ],
@@ -341,13 +341,13 @@ return [
     // AI CHATBOT (FAQ produk & custom) — jawaban berbasis kata kunci
     // ------------------------------------------------------------------
     'ai' => [
-        'name'        => 'AI Furniture Assistant',
-        'text'        => 'Tanya tentang produk, desain, material, atau custom furniture. Saya siap membantu!',
-        'bubble'      => 'Tanya Apa Saja Ya!',
+        'name' => 'AI Furniture Assistant',
+        'text' => 'Tanya tentang produk, desain, material, atau custom furniture. Saya siap membantu!',
+        'bubble' => 'Tanya Apa Saja Ya!',
         'placeholder' => 'Tulis pertanyaan Anda...',
-        'image'       => 'ai-scene.jpg',
-        'greeting'    => 'Halo! Saya asisten WoodenLane. Saya bisa membantu seputar produk, material, ukuran, custom design, dan cara order. Mau tanya apa?',
-        'fallback'    => 'Maaf, saya belum menemukan jawaban yang pas. Coba pilih salah satu pertanyaan di bawah, atau hubungi tim kami lewat WhatsApp untuk jawaban lebih lengkap.',
+        'image' => 'ai-scene.jpg',
+        'greeting' => 'Halo! Saya asisten WoodenLane. Saya bisa membantu seputar produk, material, ukuran, custom design, dan cara order. Mau tanya apa?',
+        'fallback' => 'Maaf, saya belum menemukan jawaban yang pas. Coba pilih salah satu pertanyaan di bawah, atau hubungi tim kami lewat WhatsApp untuk jawaban lebih lengkap.',
         'quick' => [
             'Rekomendasi produk untuk ruang tamu',
             'Bisa custom ukuran tidak?',

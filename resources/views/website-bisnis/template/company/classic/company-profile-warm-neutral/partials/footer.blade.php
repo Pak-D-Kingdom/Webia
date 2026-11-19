@@ -6,7 +6,7 @@
         <a class="cp-brand cp-brand--light" href="{{ $page('beranda') }}" aria-label="{{ $company['name'] }} — ke beranda">
             <img class="cp-brand__mark" src="{{ $img('logo-leaf-light.png') }}" alt="" width="200" height="168" loading="lazy">
             <span class="cp-brand__text">
-                <span class="cp-brand__name">NUSANTARA KREASI</span>
+                <span class="cp-brand__name">{{ strtoupper($company['name']) }}</span>
                 <span class="cp-brand__tag">{{ $company['tagline'] }}</span>
             </span>
         </a>

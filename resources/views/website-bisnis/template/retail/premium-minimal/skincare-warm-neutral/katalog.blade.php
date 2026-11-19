@@ -1,7 +1,7 @@
 @extends($ns . '.layouts.app')
 
 @section('title', 'Katalog Produk — ' . $skin['name'])
-@section('description', 'Jelajahi katalog skincare, makeup, hair care, body care, dan fragrance GlowEra.')
+@section('description', 'Jelajahi katalog skincare, makeup, hair care, body care, dan fragrance '.$skin['name'].'.')
 
 @section('content')
     @include($ns . '.partials.page-header', ['title' => 'Katalog Produk', 'text' => 'Temukan skincare dan beauty products berkualitas untuk kulit sehat dan glowing.'])
@@ -46,7 +46,7 @@
                     <i class="bi bi-search-heart"></i>
                     <h3>Produk tidak ditemukan</h3>
                     <p>Coba kata kunci atau kategori lain, atau tanyakan langsung ke admin kami.</p>
-                    <a class="btn btn--sm" href="{{ route('skincare-warm-neutral.inquiry') }}">Tanya Admin</a>
+                    <a class="btn btn--sm" href="{{ $r('inquiry') }}">Tanya Admin</a>
                 </div>
             </div>
         </div>

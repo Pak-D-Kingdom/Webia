@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\WebiaTemplate;
 use Database\Seeders\WebiaTemplateAlleSeeder;
+use Database\Seeders\WebiaTemplatePreviewSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
@@ -12,9 +13,17 @@ class PawsJellypopAndCanineTerraTemplateTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(WebiaTemplateAlleSeeder::class);
+        $this->seed(WebiaTemplatePreviewSeeder::class);
+    }
+
     public function test_paws_joy_jellypop_demo_route_renders_the_template(): void
     {
-        $this->get(route('webia.template.pet-animal-service.paws-joy-jellypop'))
+        $this->get('/webia/template/paws-joy-jellypop')
             ->assertOk()
             ->assertSee('<title>Paws &amp; Joy - Playful &amp; Colorful Pet Academy</title>', false)
             ->assertSee('Jelly Pop Spring Fest')
@@ -27,7 +36,7 @@ class PawsJellypopAndCanineTerraTemplateTest extends TestCase
 
     public function test_canine_terra_demo_route_renders_the_template(): void
     {
-        $this->get(route('webia.template.pet-animal-service.paws-canine-terra-earth-tone'))
+        $this->get('/webia/template/paws-canine-terra-earth-tone')
             ->assertOk()
             ->assertSee('<title>Canine Terra — Sanctuary Pelatihan Anjing Holistik Berbasis Alam</title>', false)
             ->assertSee('Positive Reinforcement &amp; Nature Therapy', false)
@@ -88,11 +97,11 @@ class PawsJellypopAndCanineTerraTemplateTest extends TestCase
 
     public function test_both_catalog_previews_use_their_hero_mode(): void
     {
-        $this->get(route('webia.template.pet-animal-service.paws-joy-jellypop').'?preview=1')
+        $this->get('/webia/template/paws-joy-jellypop'.'?preview=1')
             ->assertOk()
             ->assertSee('joy-template-preview');
 
-        $this->get(route('webia.template.pet-animal-service.paws-canine-terra-earth-tone').'?preview=1')
+        $this->get('/webia/template/paws-canine-terra-earth-tone'.'?preview=1')
             ->assertOk()
             ->assertSee('canine-template-preview');
     }

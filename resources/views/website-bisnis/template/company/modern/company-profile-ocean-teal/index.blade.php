@@ -1,8 +1,10 @@
 @php
     $ns  = 'website-bisnis.template.company.modern.company-profile-ocean-teal';
-    $z   = config('template.company.modern.company-profile-ocean-teal.company-profile');
+    $z   = $siteConfig ?? config('template.company.modern.company-profile-ocean-teal.company-profile');
     $img = fn ($f) => asset($z['paths']['images'].'/'.$f);
-    $url = fn ($k, $a = null) => route($z['routes'][$k]).($a ? '#'.$a : '');
+    $url = isset($pageUrl)
+        ? fn ($k, $a = null) => $pageUrl(match ($k) { 'about' => 'tentang-kami', 'portfolio' => 'portofolio', default => 'home' }, $a ? '#'.$a : '')
+        : fn ($k, $a = null) => route($z['routes'][$k]).($a ? '#'.$a : '');
     $active = 'home';
 @endphp
 @extends($ns.'.layouts.app')
@@ -15,8 +17,10 @@
         <div class="ot-container ot-showcase__grid">
             @include($ns.'.sections.portfolio-preview')
             @include($ns.'.sections.projects')
-            @include($ns.'.sections.certifications')
-            @include($ns.'.sections.clients')
+            @unless (isset($pageUrl))
+                @include($ns.'.sections.certifications')
+                @include($ns.'.sections.clients')
+            @endunless
         </div>
     </section>
 

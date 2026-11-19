@@ -15,7 +15,7 @@
                 <h2 id="cg-faq-title" class="cg-sechead__title cg-sechead__title--sm">Frequently Asked Questions</h2>
                 <p class="cg-sechead__sub cg-sechead__sub--xs">Temukan jawaban untuk pertanyaan yang sering diajukan.</p>
             </div>
-            <a class="cg-link cg-link--sm" href="{{ route('glow.faq') }}">Lihat Semua <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+            <a class="cg-link cg-link--sm" href="{{ $r('glow.faq') }}">Lihat Semua <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
         </header>
     @else
         <h2 id="cg-faq-title" class="cg-sr">Pertanyaan yang sering diajukan</h2>

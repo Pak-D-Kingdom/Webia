@@ -2,14 +2,97 @@
 
 namespace Tests\Feature;
 
+use App\Models\WebiaTemplate;
 use Database\Seeders\DatabaseSeeder;
+use Database\Seeders\WebiaTemplatePreviewSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class DatabaseSeederTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(DatabaseSeeder::class);
+        $this->seed(WebiaTemplatePreviewSeeder::class);
+    }
+
+    public function test_company_profile_backfill_updates_only_targeted_templates(): void
+    {
+        $target = WebiaTemplate::where('slug', 'company-terracotta')->firstOrFail();
+        $other = WebiaTemplate::where('slug', 'property-emerald-green')->firstOrFail();
+        $target->update(['site_config_path' => null]);
+        $other->update(['site_config_path' => 'property/example']);
+        $migration = require database_path('migrations/2026_11_10_131233_backfill_site_config_path_for_company_profiles.php');
+
+        $migration->up();
+
+        $this->assertSame('company/elegan/company-profile-terracotta/company-profile', $target->fresh()->site_config_path);
+        $this->assertSame('property/example', $other->fresh()->site_config_path);
+
+        $migration->down();
+
+        $this->assertNull($target->fresh()->site_config_path);
+        $this->assertSame('property/example', $other->fresh()->site_config_path);
+    }
+
+    public function test_property_backfill_updates_only_targeted_templates(): void
+    {
+        $targets = WebiaTemplate::whereIn('slug', [
+            'property-emerald-green',
+            'property-nature-green',
+            'property-coral-peach',
+        ])->get()->keyBy('slug');
+        $other = WebiaTemplate::where('slug', 'company-terracotta')->firstOrFail();
+        $targets->each->update(['site_config_path' => null]);
+        $other->update(['site_config_path' => 'company/example']);
+        $migration = require database_path('migrations/2026_11_12_064341_backfill_site_config_path_for_property_templates.php');
+
+        $migration->up();
+
+        $this->assertSame('property/luxury/real-estate-agency-emerald-green/real-estate-agency', $targets['property-emerald-green']->fresh()->site_config_path);
+        $this->assertSame('property/premium-minimal/real-estate-agency-nature-green/real-estate-agency', $targets['property-nature-green']->fresh()->site_config_path);
+        $this->assertSame('property/professional/real-estate-agency-coral-peach/real-estate-agency', $targets['property-coral-peach']->fresh()->site_config_path);
+        $this->assertSame('company/example', $other->fresh()->site_config_path);
+
+        $migration->down();
+
+        $targets->each(fn (WebiaTemplate $template): mixed => $this->assertNull($template->fresh()->site_config_path));
+        $this->assertSame('company/example', $other->fresh()->site_config_path);
+    }
+
+    public function test_elearning_backfill_updates_only_targeted_templates(): void
+    {
+        $targets = WebiaTemplate::whereIn('slug', [
+            'elearning-ocean-blue',
+            'elearning-pastel-mix',
+            'elearning-dark-mode',
+        ])->get()->keyBy('slug');
+        $other = WebiaTemplate::where('slug', 'property-emerald-green')->firstOrFail();
+        $targets->each->update(['site_config_path' => null]);
+        $targets['elearning-dark-mode']->update(['site_config_path' => 'e-learning/custom']);
+        $other->update(['site_config_path' => 'property/example']);
+        $migration = require database_path('migrations/2026_11_12_085440_backfill_site_config_path_for_elearning_templates.php');
+
+        $migration->up();
+
+        $this->assertSame('e-learning/modern/e-learning-ocean-blue/e-learning', $targets['elearning-ocean-blue']->fresh()->site_config_path);
+        $this->assertSame('e-learning/playful-colorful/e-learning-pastel-mix/e-learning', $targets['elearning-pastel-mix']->fresh()->site_config_path);
+        $this->assertSame('e-learning/custom', $targets['elearning-dark-mode']->fresh()->site_config_path);
+        $this->assertSame('property/example', $other->fresh()->site_config_path);
+
+        $migration->down();
+
+        $this->assertSame('e-learning/modern/e-learning-ocean-blue/e-learning', $targets['elearning-ocean-blue']->fresh()->site_config_path);
+        $this->assertSame('e-learning/playful-colorful/e-learning-pastel-mix/e-learning', $targets['elearning-pastel-mix']->fresh()->site_config_path);
+        $this->assertSame('e-learning/custom', $targets['elearning-dark-mode']->fresh()->site_config_path);
+        $this->assertSame('property/example', $other->fresh()->site_config_path);
+    }
 
     public function test_database_seeder_creates_the_webia_catalog(): void
     {
@@ -17,8 +100,69 @@ class DatabaseSeederTest extends TestCase
 
         $this->assertDatabaseHas('webia_packages', ['slug' => 'pixel']);
         $this->assertDatabaseHas('webia_addons', ['name' => 'SEO Optimization']);
-        $this->assertDatabaseHas('webia_templates', ['slug' => 'company-terracotta']);
-        $this->assertDatabaseHas('webia_templates', ['slug' => 'kusuma-ningrat-royal-heritage']);
+        $this->assertDatabaseHas('webia_templates', [
+            'slug' => 'company-terracotta',
+            'site_config_path' => 'company/elegan/company-profile-terracotta/company-profile',
+        ]);
+        $this->assertDatabaseHas('webia_templates', [
+            'slug' => 'company-ocean-teal',
+            'site_config_path' => 'company/modern/company-profile-ocean-teal/company-profile',
+        ]);
+        $this->assertDatabaseHas('webia_templates', [
+            'slug' => 'company-warm-neutral',
+            'site_config_path' => 'company/classic/company-profile-warm-neutral/company-profile',
+        ]);
+        $this->assertDatabaseHas('webia_templates', [
+            'slug' => 'property-emerald-green',
+            'site_config_path' => 'property/luxury/real-estate-agency-emerald-green/real-estate-agency',
+        ]);
+        $this->assertDatabaseHas('webia_templates', [
+            'slug' => 'property-nature-green',
+            'site_config_path' => 'property/premium-minimal/real-estate-agency-nature-green/real-estate-agency',
+        ]);
+        $this->assertDatabaseHas('webia_templates', [
+            'slug' => 'property-coral-peach',
+            'site_config_path' => 'property/professional/real-estate-agency-coral-peach/real-estate-agency',
+        ]);
+        $this->assertDatabaseHas('webia_templates', [
+            'slug' => 'elearning-ocean-blue',
+            'site_config_path' => 'e-learning/modern/e-learning-ocean-blue/e-learning',
+        ]);
+        $this->assertDatabaseHas('webia_templates', [
+            'slug' => 'elearning-pastel-mix',
+            'site_config_path' => 'e-learning/playful-colorful/e-learning-pastel-mix/e-learning',
+        ]);
+        $this->assertDatabaseHas('webia_templates', [
+            'slug' => 'elearning-dark-mode',
+            'site_config_path' => 'e-learning/futuristic/e-learning-dark-mode/e-learning',
+        ]);
+        $this->assertDatabaseHas('webia_templates', [
+            'slug' => 'kusuma-ningrat-royal-heritage',
+            'preview_view' => 'website-bisnis.templates.fnb.kusuma-ningrat-royal-heritage',
+        ]);
+        $this->assertDatabaseHas('webia_templates', [
+            'slug' => 'bca-terracotta',
+            'site_config_path' => 'professional-service/artistic/branding-creative-agency-terracotta/branding-creative-agency',
+        ]);
+    }
+
+    public function test_branding_agency_backfill_updates_only_targeted_template(): void
+    {
+        $target = WebiaTemplate::where('slug', 'bca-terracotta')->firstOrFail();
+        $other = WebiaTemplate::where('slug', 'property-emerald-green')->firstOrFail();
+        $target->update(['site_config_path' => null]);
+        $other->update(['site_config_path' => 'property/example']);
+        $migration = require database_path('migrations/2026_11_11_030637_backfill_site_config_path_for_branding_agency.php');
+
+        $migration->up();
+
+        $this->assertSame('professional-service/artistic/branding-creative-agency-terracotta/branding-creative-agency', $target->fresh()->site_config_path);
+        $this->assertSame('property/example', $other->fresh()->site_config_path);
+
+        $migration->down();
+
+        $this->assertNull($target->fresh()->site_config_path);
+        $this->assertSame('property/example', $other->fresh()->site_config_path);
     }
 
     public function test_default_database_seeder_displays_templates_in_collection(): void
@@ -33,6 +177,7 @@ class DatabaseSeederTest extends TestCase
             ->assertSee('Blush Nail Studio')
             ->assertSee('Sage Nail Atelier')
             ->assertSee('Maison Soleil')
+            ->assertSee('Pawtopia — Animal Care Masa Depan')
             ->assertSee('Sweet Crumb Bakery')
             ->assertSee('Kusuma Ningrat — Royal Heritage Catering')
             ->assertSee('NUVIA Skin Tech Clinic — Graphite & Lilac')
@@ -50,7 +195,7 @@ class DatabaseSeederTest extends TestCase
 
     public function test_sweet_crumb_demo_renders_bakery_sections_and_contact_buttons(): void
     {
-        $this->get(route('webia.template.fnb.bakery.playful.colorful'))
+        $this->get('/webia/template/fnb-bakery-playful-colorful')
             ->assertOk()
             ->assertSee('Katalog Roti & Pastry', false)
             ->assertSee('Paket Promo & Event', false)
@@ -58,5 +203,71 @@ class DatabaseSeederTest extends TestCase
             ->assertSee('Apakah tersedia layanan pengiriman?')
             ->assertSee('wa.me/6281234567890')
             ->assertSee('webia-ai-launcher');
+    }
+
+    #[DataProvider('renderableTemplates')]
+    public function test_templates_are_seeded_renderable_and_listed(
+        string $slug,
+        string $templateUrl,
+        string $previewView,
+        string $name,
+        string $categorySlug,
+    ): void {
+        $this->assertDatabaseHas('webia_templates', [
+            'slug' => $slug,
+            'template_url' => $templateUrl,
+            'preview_view' => $previewView,
+            'category_slug' => $categorySlug,
+        ]);
+
+        $this->get($templateUrl)
+            ->assertOk()
+            ->assertViewIs($previewView);
+
+        $this->get(route('collections'))
+            ->assertOk()
+            ->assertSee($name)
+            ->assertSee($templateUrl, false);
+    }
+
+    public static function renderableTemplates(): array
+    {
+        return [
+            'modern sage' => [
+                'salon-modern-sage',
+                '/webia/template/salon-modern-sage',
+                'website-bisnis.templates.salon-modern-sage',
+                'Sage Bloom Salon',
+                'beauty',
+            ],
+            'classic warm neutral' => [
+                'salon-classic-warm-neutral',
+                '/webia/template/salon-classic-warm-neutral',
+                'website-bisnis.templates.salon-classic-warm-neutral',
+                'Maison Élise Salon',
+                'beauty',
+            ],
+            'elegant soft pink' => [
+                'salon-elegant-soft-pink',
+                '/webia/template/salon-elegant-soft-pink',
+                'website-bisnis.templates.salon-elegant-soft-pink',
+                'Rosé Atelier',
+                'beauty',
+            ],
+            'verba' => [
+                'verba-translation-interpreter',
+                '/webia/template/verba-translation-interpreter',
+                'website-bisnis.templates.professional-service.translation-interpreter.verba.verba',
+                'VERBA — Editorial Translation House',
+                'professional-service',
+            ],
+            'vanguard' => [
+                'vanguard-lawyer',
+                '/webia/template/vanguard-lawyer',
+                'website-bisnis.templates.professional-service.lawyer.vanguard.vanguard',
+                'VANGUARD — Heritage Counsel',
+                'professional-service',
+            ],
+        ];
     }
 }

@@ -125,6 +125,20 @@ class Midtrans
                 return false;
             }
 
+            if ($newStatus === 'paid' && $order->status === 'cancelled') {
+                // Dana masuk setelah pesanan dibatalkan — bukan penjualan valid, admin perlu refund.
+                $locked->update(['status' => 'duplicate', 'payload' => $payload, 'paid_at' => now()]);
+                WebiaOrderLog::create([
+                    'webia_order_id' => $locked->webia_order_id,
+                    'actor_id' => null,
+                    'from_status' => $order->status,
+                    'to_status' => 'cancelled',
+                    'note' => 'Pembayaran masuk setelah pesanan dibatalkan ('.$locked->midtrans_order_id.') — perlu refund manual admin.',
+                ]);
+
+                return false;
+            }
+
             if ($newStatus === 'paid' && $locked->status !== 'paid' && $this->orderAlreadyPaid($locked, $order)) {
                 // Customer terlanjur bayar dua kali (dua sesi / Midtrans + transfer manual) — dana ganda harus di-refund admin.
                 $locked->update(['status' => 'duplicate', 'payload' => $payload, 'paid_at' => now()]);
@@ -154,7 +168,8 @@ class Midtrans
 
         // Akun hanya dibuat setelah pembayaran terkonfirmasi, dan itu pun setelah commit.
         if ($paid) {
-            app(AccountProvisioner::class)->provision($order);
+            $order = app(AccountProvisioner::class)->provision($order);
+            app(HostingProvisioner::class)->provision($order);
         }
     }
 

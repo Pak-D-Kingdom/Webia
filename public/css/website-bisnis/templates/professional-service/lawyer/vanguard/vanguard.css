@@ -1,0 +1,75 @@
+
+        /* Rustic Legal Theme Custom Styling */
+        body {
+            background-color: #F4EBDD;
+            color: #49392F;
+            cursor: crosshair;
+        }
+
+        /* Custom Brass Shimmer Animation */
+        .brass-shimmer {
+            background: linear-gradient(135deg, #B99A72 0%, #FFF3D1 50%, #80654A 100%);
+            background-size: 200% 200%;
+            animation: shimmerMove 3.5s infinite ease-in-out;
+        }
+
+        @keyframes shimmerMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Antique Seal Rotating Rings for AI Chatbot */
+        @keyframes rotateSealRing {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes rotateSealRingReverse {
+            from { transform: rotate(360deg); }
+            to { transform: rotate(0deg); }
+        }
+
+        .seal-ring-outer {
+            animation: rotateSealRing 18s linear infinite;
+        }
+        .seal-ring-inner {
+            animation: rotateSealRingReverse 12s linear infinite;
+        }
+
+        /* Floating Law Symbol Animations */
+        @keyframes floatArticle {
+            0% { transform: translateY(0px) rotate(0deg); opacity: 0.8; }
+            50% { transform: translateY(-10px) rotate(4deg); opacity: 1; }
+            100% { transform: translateY(0px) rotate(0deg); opacity: 0.8; }
+        }
+
+        .float-article-1 { animation: floatArticle 4s infinite ease-in-out; }
+        .float-article-2 { animation: floatArticle 5s infinite ease-in-out 1s; }
+
+        /* Practice Area Hover Lift */
+        .practice-card {
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 1px solid rgba(73, 57, 47, 0.15);
+        }
+        .practice-card:hover {
+            transform: translateY(-8px);
+            border-color: #B99A72;
+            box-shadow: 0 18px 30px -10px rgba(73, 57, 47, 0.25);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F4EBDD;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #80654A;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #49392F;
+        }
+    

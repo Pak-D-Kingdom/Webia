@@ -12,12 +12,14 @@
                     <span>{{ $c['contact']['phone'] }}</span>
                 </a>
             </li>
-            <li class="cg-topbar__item cg-topbar__item--email">
-                <a href="mailto:{{ $c['contact']['email'] }}">
-                    <i class="bi bi-envelope-fill" aria-hidden="true"></i>
-                    <span>{{ $c['contact']['email'] }}</span>
-                </a>
-            </li>
+            @if ($c['contact']['email'])
+                <li class="cg-topbar__item cg-topbar__item--email">
+                    <a href="mailto:{{ $c['contact']['email'] }}">
+                        <i class="bi bi-envelope-fill" aria-hidden="true"></i>
+                        <span>{{ $c['contact']['email'] }}</span>
+                    </a>
+                </li>
+            @endif
         </ul>
 
         <p class="cg-topbar__tagline">{{ $c['topbar']['tagline'] }}</p>

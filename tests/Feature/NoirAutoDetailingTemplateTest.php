@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\WebiaTemplate;
+use Database\Seeders\WebiaTemplatePreviewSeeder;
 use Database\Seeders\WebiaTemplateSeederAthiya;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
@@ -12,9 +13,17 @@ class NoirAutoDetailingTemplateTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(WebiaTemplateSeederAthiya::class);
+        $this->seed(WebiaTemplatePreviewSeeder::class);
+    }
+
     public function test_demo_route_renders_noir_and_secure_booking_interactions(): void
     {
-        $this->get(route('webia.template.automotive.noir-auto-detailing-luxury'))
+        $this->get('/webia/template/noir-auto-detailing-luxury')
             ->assertOk()
             ->assertSee('<title>NOIR Atelier – Luxury Auto Detailing</title>', false)
             ->assertSee('id="konfigurator"', false)

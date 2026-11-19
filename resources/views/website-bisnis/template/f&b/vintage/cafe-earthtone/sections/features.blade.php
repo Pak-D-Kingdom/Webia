@@ -1,4 +1,4 @@
-<section class="kl-features" aria-label="Keunggulan Kopi Lembang">
+<section class="kl-features" aria-label="Keunggulan {{ $cafe['brand']['name'] }}">
     <ul class="kl-features__list">
         @foreach ($cafe['features'] as $f)
             <li class="kl-feature">

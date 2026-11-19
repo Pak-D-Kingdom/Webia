@@ -11,7 +11,7 @@
                 @endforeach
             </ul>
             <span class="topbar__cur">IDR <i class="bi bi-chevron-down" aria-hidden="true"></i></span>
-            <a class="topbar__search" href="{{ route($rp . 'catalog') }}?focus=search" aria-label="Cari produk"><i class="bi bi-search" aria-hidden="true"></i></a>
+            <a class="topbar__search" href="{{ $r('catalog') }}?focus=search" aria-label="Cari produk"><i class="bi bi-search" aria-hidden="true"></i></a>
         </div>
     </div>
 </div>

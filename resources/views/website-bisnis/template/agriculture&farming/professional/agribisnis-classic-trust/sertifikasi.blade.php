@@ -1,6 +1,6 @@
-﻿@extends($v . '.layout')
+@extends($v . '.layout')
 
-@section('title', 'Sertifikasi â€” AgroTrade')
+@section('title', 'Sertifikasi — AgroTrade')
 @section('description', 'Sertifikasi AgroTrade: USDA Organic, HACCP, ISO 22000, dan Halal Indonesia untuk menjamin kualitas dan keamanan komoditas.')
 
 @section('content')

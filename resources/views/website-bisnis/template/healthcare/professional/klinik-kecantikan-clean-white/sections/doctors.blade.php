@@ -12,7 +12,7 @@
                 <p class="gl-eyebrow">Dokter & Staff</p>
                 <h2 class="gl-title" id="gl-doctors-title">Tim Profesional Kami</h2>
                 <p class="gl-lead">Didukung oleh dokter spesialis dan tim terlatih yang siap memberikan pelayanan terbaik untuk Anda.</p>
-                <a class="gl-btn gl-btn--outline" href="{{ route('klinik-kecantikan.doctors') }}">
+                <a class="gl-btn gl-btn--outline" href="{{ $r('klinik-kecantikan.doctors') }}">
                     Lihat Semua Dokter
                     <svg class="gl-ic gl-ic--sm" aria-hidden="true"><use href="#gl-i-arrow-right"/></svg>
                 </a>
@@ -21,7 +21,7 @@
             <ul class="gl-cards gl-cards--doctors">
                 @foreach ($clinic['doctors'] as $d)
                     <li>
-                        <a class="gl-card gl-doctor" href="{{ route('klinik-kecantikan.doctors') }}#{{ $d['id'] }}">
+                        <a class="gl-card gl-doctor" href="{{ $r('klinik-kecantikan.doctors') }}#{{ $d['id'] }}">
                             <span class="gl-doctor__photo"><img src="{{ $img($d['photo']) }}" alt="Foto {{ $d['name'] }}" width="177" height="120" loading="lazy" decoding="async"></span>
                             <h3 class="gl-doctor__name">{{ $d['name'] }}</h3>
                             <p class="gl-doctor__role">{{ $d['role'] }}</p>
@@ -59,8 +59,8 @@
                                     <div><dt>Praktik</dt><dd>{{ $d['days'] }}</dd></div>
                                 </dl>
                                 <div class="gl-actions">
-                                    <a class="gl-btn gl-btn--primary gl-btn--sm" href="{{ route('klinik-kecantikan.appointment', ['dokter' => $d['id']]) }}">Booking</a>
-                                    <a class="gl-btn gl-btn--outline gl-btn--sm" href="{{ route('klinik-kecantikan.schedule') }}">Lihat Jadwal</a>
+                                    <a class="gl-btn gl-btn--primary gl-btn--sm" href="{{ $r('klinik-kecantikan.appointment', ['dokter' => $d['id']]) }}">Booking</a>
+                                    <a class="gl-btn gl-btn--outline gl-btn--sm" href="{{ $r('klinik-kecantikan.schedule') }}">Lihat Jadwal</a>
                                 </div>
                             </div>
                         </article>

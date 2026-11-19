@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Models\HostingService;
+use App\Models\HostingTask;
 use App\Models\User;
 use App\Models\WebiaAddon;
 use App\Models\WebiaOrder;
@@ -64,7 +66,10 @@ class AdminOrderTest extends TestCase
     public function test_admin_can_verify_payment(): void
     {
         $admin = User::factory()->admin()->create();
-        $order = WebiaOrder::factory()->create(['status' => 'payment_uploaded']);
+        $order = WebiaOrder::factory()->create([
+            'status' => 'payment_uploaded',
+            'package_snapshot' => ['name' => 'Pixel', 'price' => 499000, 'hosting_monthly_price' => 150000],
+        ]);
 
         $response = $this->actingAs($admin)->post(route('admin.orders.verify', $order), [
             'action' => 'approve',
@@ -73,6 +78,13 @@ class AdminOrderTest extends TestCase
 
         $response->assertRedirect(route('admin.orders.show', $order));
         $this->assertSame('paid', $order->fresh()->status);
+        $service = HostingService::where('webia_order_id', $order->id)->sole();
+        $this->assertDatabaseHas('hosting_tasks', [
+            'hosting_service_id' => $service->id,
+            'type' => 'deploy_website',
+            'status' => 'pending',
+        ]);
+        $this->assertSame(1, HostingTask::where('type', 'deploy_website')->count());
         $this->assertDatabaseHas('webia_order_logs', [
             'webia_order_id' => $order->id,
             'from_status' => 'payment_uploaded',

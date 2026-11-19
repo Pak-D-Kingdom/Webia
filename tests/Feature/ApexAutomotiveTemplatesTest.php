@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\WebiaTemplate;
 use Database\Seeders\WebiaTemplateAlleSeeder;
+use Database\Seeders\WebiaTemplatePreviewSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
@@ -12,9 +13,17 @@ class ApexAutomotiveTemplatesTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(WebiaTemplateAlleSeeder::class);
+        $this->seed(WebiaTemplatePreviewSeeder::class);
+    }
+
     public function test_heritage_demo_route_renders_the_elegant_showroom(): void
     {
-        $this->get(route('webia.template.automotive.apex-heritage-automotive-elegant'))
+        $this->get('/webia/template/apex-heritage-automotive-elegant')
             ->assertOk()
             ->assertSee('<title>APEX Heritage &mdash; Elegant Automotive Collection</title>', false)
             ->assertSee('Curated Mastery')
@@ -29,7 +38,7 @@ class ApexAutomotiveTemplatesTest extends TestCase
 
     public function test_scuderia_demo_route_renders_the_minimalist_sports_car_showroom(): void
     {
-        $this->get(route('webia.template.automotive.apex-scuderia-automotive-minimalist'))
+        $this->get('/webia/template/apex-scuderia-automotive-minimalist')
             ->assertOk()
             ->assertSee('<title>APEX Scuderia &mdash; Minimalist Automotive Collection</title>', false)
             ->assertSee('Sculpted Velocity')
@@ -102,11 +111,11 @@ class ApexAutomotiveTemplatesTest extends TestCase
 
     public function test_both_catalog_previews_show_their_hero_sections(): void
     {
-        $this->get(route('webia.template.automotive.apex-heritage-automotive-elegant').'?preview=1')
+        $this->get('/webia/template/apex-heritage-automotive-elegant'.'?preview=1')
             ->assertOk()
             ->assertSee('apex-heritage-preview');
 
-        $this->get(route('webia.template.automotive.apex-scuderia-automotive-minimalist').'?preview=1')
+        $this->get('/webia/template/apex-scuderia-automotive-minimalist'.'?preview=1')
             ->assertOk()
             ->assertSee('apex-scuderia-preview');
     }

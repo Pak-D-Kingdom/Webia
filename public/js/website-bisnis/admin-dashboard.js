@@ -394,6 +394,74 @@ function initializeAdminPage() {
   orderModal?.querySelector('[data-order-modal-close]')?.addEventListener('click', () => setOrderModal(false), listenerOptions);
   orderModal?.querySelector('[data-order-modal-scrim]')?.addEventListener('click', () => setOrderModal(false), listenerOptions);
 
+  // Modal Ubah Paket & Top-Up Kuota AI (Superadmin)
+  const tierModal = document.getElementById('tierModal');
+  const tierForm = document.getElementById('tierForm');
+  const modalTenantName = document.getElementById('modalTenantName');
+  const modalTenantId = document.getElementById('modalTenantId');
+  const packageTierSelect = document.getElementById('packageTierSelect');
+  const customQuotaInput = document.getElementById('customQuotaInput');
+
+  function setTierModal(open) {
+    if (!tierModal) return;
+    if (open) {
+      tierModal.classList.remove('hidden');
+      tierModal.classList.add('flex');
+      document.body.classList.toggle('overflow-hidden', true);
+      packageTierSelect?.focus();
+    } else {
+      tierModal.classList.add('hidden');
+      tierModal.classList.remove('flex');
+      document.body.classList.remove('overflow-hidden');
+    }
+  }
+
+  window.openTierModal = function(tenantId, tenantName, currentTier, currentQuota) {
+    const targetModal = document.getElementById('tierModal');
+    const targetForm = document.getElementById('tierForm');
+    if (!targetModal || !targetForm) return;
+
+    targetForm.action = `/admin/ai-quotas/${encodeURIComponent(tenantId)}/tier`;
+    const nameEl = document.getElementById('modalTenantName');
+    const idEl = document.getElementById('modalTenantId');
+    const selectEl = document.getElementById('packageTierSelect');
+    const quotaEl = document.getElementById('customQuotaInput');
+
+    if (nameEl) nameEl.innerText = tenantName || tenantId;
+    if (idEl) idEl.innerText = tenantId;
+    if (selectEl) selectEl.value = (currentTier || 'pixel').toLowerCase();
+    if (quotaEl) quotaEl.value = '';
+
+    setTierModal(true);
+  };
+
+  window.closeTierModal = function() {
+    setTierModal(false);
+  };
+
+  document.addEventListener('click', (e) => {
+    const btn = e.target instanceof Element && e.target.closest('[data-open-tier-modal]');
+    if (!btn) return;
+    e.preventDefault();
+    const tenantId = btn.getAttribute('data-tenant-id');
+    const tenantName = btn.getAttribute('data-tenant-name');
+    const currentTier = btn.getAttribute('data-current-tier');
+    const currentQuota = btn.getAttribute('data-current-quota');
+    window.openTierModal(tenantId, tenantName, currentTier, currentQuota);
+  }, listenerOptions);
+
+  document.addEventListener('click', (e) => {
+    const closeBtn = e.target instanceof Element && e.target.closest('[data-close-tier-modal]');
+    if (closeBtn) {
+      e.preventDefault();
+      setTierModal(false);
+    }
+  }, listenerOptions);
+
+  tierModal?.addEventListener('click', (e) => {
+    if (e.target === tierModal) setTierModal(false);
+  }, listenerOptions);
+
   // Tombol salin (di halaman & di dalam modal).
   document.addEventListener('click', (e) => {
     const btn = e.target instanceof Element && e.target.closest('[data-copy-text]');
@@ -693,13 +761,17 @@ function initializeAdminPage() {
         document.getElementById('packageDescription').value = row.dataset.description;
         document.getElementById('packagePrice').value = row.dataset.price;
         document.getElementById('packageOldPrice').value = row.dataset.oldPrice;
+        document.getElementById('packageHostingPrice').value = row.dataset.hostingPrice;
         document.getElementById('packageQuota').value = row.dataset.quota;
         document.getElementById('packageSort').value = row.dataset.sortOrder;
         document.getElementById('packageCmsEnabled').checked = row.dataset.cms === '1';
+        const templateIds = new Set(row.dataset.templateIds.split(',').filter(Boolean));
+        pkgForm.querySelectorAll('[data-package-template]').forEach((input) => { input.checked = templateIds.has(input.value); });
         document.getElementById('packagePublishActive').checked = row.dataset.active === '1';
         document.getElementById('packagePublishDraft').checked = row.dataset.active !== '1';
       } else {
         pkgForm.reset();
+        pkgForm.querySelectorAll('[data-package-template]').forEach((input) => { input.checked = false; });
         document.getElementById('packagePublishActive').checked = true;
         document.getElementById('packageSort').value = String(pkgRows.reduce((max, r) => Math.max(max, Number(r.dataset.sortOrder)), 0) + 1);
       }

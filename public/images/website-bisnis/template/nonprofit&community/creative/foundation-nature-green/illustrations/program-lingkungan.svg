@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 220" role="img" aria-label="Ilustrasi pohon dan bukit hijau">
+  <defs>
+    <linearGradient id="hl1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6dae35"/><stop offset="1" stop-color="#3d8a34"/></linearGradient>
+    <linearGradient id="hl2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9ad04a"/><stop offset="1" stop-color="#5fa52d"/></linearGradient>
+    <radialGradient id="sun" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff3b0"/><stop offset="1" stop-color="#f6d365" stop-opacity="0"/></radialGradient>
+    <clipPath id="rc"><rect width="480" height="220" rx="26"/></clipPath>
+  </defs>
+  <g clip-path="url(#rc)">
+  <circle cx="392" cy="58" r="58" fill="url(#sun)"/>
+  <circle cx="392" cy="58" r="26" fill="#f6d365"/>
+  <g fill="#ffffff" opacity=".5"><ellipse cx="96" cy="52" rx="34" ry="11"/><ellipse cx="120" cy="44" rx="24" ry="10"/><ellipse cx="72" cy="46" rx="18" ry="8"/></g>
+  <path d="M0 150C70 112 150 118 230 146S390 150 480 128V220H0Z" fill="url(#hl1)"/>
+  <path d="M0 188C90 160 200 172 290 184S430 182 480 168V220H0Z" fill="url(#hl2)"/>
+  <rect x="229" y="112" width="14" height="72" rx="6" fill="#a8743a"/>
+  <path d="M236 152L216 134M236 142L254 126" stroke="#a8743a" stroke-width="6" stroke-linecap="round" fill="none"/>
+  <g fill="#b4dc6e"><circle cx="236" cy="86" r="36"/><circle cx="204" cy="106" r="26"/><circle cx="268" cy="106" r="26"/></g>
+  <g fill="#d3ec9a" opacity=".75"><circle cx="224" cy="76" r="14"/><circle cx="198" cy="98" r="9"/><circle cx="258" cy="96" r="10"/></g>
+  <g stroke="#2f6b2f" stroke-width="3" stroke-linecap="round" fill="none"><path d="M110 190V162"/><path d="M372 192V166"/></g>
+  <g fill="#d3ec9a">
+    <path d="M110 166C98 166 92 158 92 150C102 150 110 156 110 166Z"/><path d="M110 162C122 162 128 154 128 146C118 146 110 152 110 162Z"/>
+    <path d="M372 170C360 170 354 162 354 154C364 154 372 160 372 170Z"/><path d="M372 166C384 166 390 158 390 150C380 150 372 156 372 166Z"/>
+  </g>
+  <g fill="#8cc63f" opacity=".9">
+    <ellipse cx="160" cy="84" rx="9" ry="4.5" transform="rotate(30 160 84)"/>
+    <ellipse cx="318" cy="70" rx="8" ry="4" transform="rotate(-25 318 70)"/>
+    <ellipse cx="300" cy="120" rx="7" ry="3.5" transform="rotate(40 300 120)"/>
+    <ellipse cx="170" cy="128" rx="7" ry="3.5" transform="rotate(-35 170 128)"/>
+  </g>
+  </g>
+</svg>

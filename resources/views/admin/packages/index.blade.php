@@ -165,6 +165,7 @@
                             data-delete-url="{{ route('admin.packages.destroy', $package) }}"
                             data-description="{{ $package->description }}"
                             data-features="{{ collect($package->features)->implode("\n") }}"
+                            data-hosting-price="{{ $package->hosting_monthly_price }}"
                             data-id="{{ $package->id }}"
                             data-name="{{ $package->name }}"
                             data-old-price="{{ $package->old_price }}"
@@ -172,6 +173,7 @@
                             data-package-id="{{ $package->id }}"
                             data-price="{{ $package->price }}"
                             data-quota="{{ $package->chatbot_monthly_quota }}"
+                            data-template-ids="{{ $package->templates->pluck('id')->implode(',') }}"
                             data-slug="{{ $package->slug }}"
                             data-sort-order="{{ $package->sort_order }}"
                             data-update-url="{{ route('admin.packages.update', $package) }}">
@@ -319,6 +321,10 @@
                         </div>
                     </div>
                     <div class="flex flex-col gap-space-sm">
+                        <label class="font-label-md font-bold text-label-md text-on-surface" for="packageHostingPrice">Harga Hosting / Bulan <span class="text-error">*</span></label>
+                        <input class="h-10 rounded-lg bg-surface-container-low px-3 font-mono text-body-sm text-on-surface shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-primary/20" id="packageHostingPrice" min="1" name="hosting_monthly_price" required type="number">
+                    </div>
+                    <div class="flex flex-col gap-space-sm">
                         <label class="font-label-md font-bold text-label-md text-on-surface" for="packageQuota">Kuota Chatbot / Bulan <span class="text-error">*</span></label>
                         <input class="h-10 rounded-lg bg-surface-container-low px-3 font-mono text-body-sm text-on-surface shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-primary/20" id="packageQuota" min="0" name="chatbot_monthly_quota" required type="number">
                     </div>
@@ -334,6 +340,18 @@
                         <span class="font-caption text-caption text-on-surface-variant">Klien dapat mengelola konten &amp; artikel mandiri.</span>
                     </span>
                 </label>
+                <fieldset class="flex flex-col gap-space-sm">
+                    <legend class="font-label-md font-bold text-label-md text-on-surface">Template dalam paket</legend>
+                    <p class="font-caption text-caption text-on-surface-variant">Kosongkan jika paket berlaku untuk semua template aktif.</p>
+                    <div class="grid max-h-52 grid-cols-1 gap-2 overflow-y-auto rounded-xl bg-surface-container-low p-3 sm:grid-cols-2">
+                        @foreach ($templates as $template)
+                            <label class="flex min-h-11 cursor-pointer items-center gap-2 rounded-lg bg-surface-container-lowest px-3 py-2 font-body-sm text-body-sm text-on-surface">
+                                <input class="h-4 w-4 accent-primary" data-package-template name="template_ids[]" type="checkbox" value="{{ $template->id }}">
+                                <span>{{ $template->name }} <small class="text-on-surface-variant">({{ $template->category_label }})</small></span>
+                            </label>
+                        @endforeach
+                    </div>
+                </fieldset>
                 <div class="flex flex-col gap-space-sm">
                     <div class="flex items-center justify-between">
                         <span class="font-label-md font-bold text-label-md text-on-surface">Daftar Fitur yang Diperoleh <span class="text-error">*</span></span>

@@ -17,30 +17,30 @@ return [
 
     'assets' => [
         'version' => '1.0.0',
-        'css'     => 'css/website-bisnis/template/transportation&logistics/bold/logistics-company-orange-energy/logistics-company.css',
-        'js'      => 'js/website-bisnis/template/transportation&logistics/bold/logistics-company-orange-energy/logistics-company.js',
+        'css' => 'css/website-bisnis/template/transportation&logistics/bold/logistics-company-orange-energy/logistics-company.css',
+        'js' => 'js/website-bisnis/template/transportation&logistics/bold/logistics-company-orange-energy/logistics-company.js',
     ],
 
     'brand' => [
-        'name'        => 'Energi Cargo',
-        'tagline'     => 'Fast. Safe. Everywhere.',
+        'name' => 'Energi Cargo',
+        'tagline' => 'Fast. Safe. Everywhere.',
         'description' => 'Energi Cargo — solusi logistik terintegrasi untuk pengiriman barang domestik dan internasional lewat udara, laut, dan darat.',
-        'credit'      => '© 2026 WEBIA by D-KREASI. Seluruh hak cipta dilindungi.',
+        'credit' => '© 2026 WEBIA by D-KREASI. Seluruh hak cipta dilindungi.',
     ],
 
     'contact' => [
         'location' => 'Jakarta, Indonesia',
-        'hours'    => 'Sen - Sab 08:00 - 17:00',
-        'phone'    => '+62 21 5555 8888',
+        'hours' => 'Sen - Sab 08:00 - 17:00',
+        'phone' => '+62 21 5555 8888',
         'phone_raw' => '+622155558888',
-        'email'    => 'hello@energicargo.co.id',
+        'email' => 'hello@energicargo.co.id',
         'info_email' => 'info@energicargo.co.id',
-        'address'  => 'Jl. Industri No.88, Jakarta, Indonesia',
+        'address' => 'Jl. Industri No.88, Jakarta, Indonesia',
     ],
 
     'whatsapp' => [
-        'number'  => '62895630300345',
-        'label'   => 'WhatsApp',
+        'number' => '62895630300345',
+        'label' => 'WhatsApp',
         'message' => 'Halo Energi Cargo, saya ingin bertanya tentang layanan pengiriman.',
     ],
 
@@ -65,13 +65,13 @@ return [
     'nav_cta' => ['label' => 'Hubungi Kami', 'route' => 'penawaran'],
 
     'hero' => [
-        'eyebrow'  => 'Solusi Logistik Terpercaya',
-        'title'    => 'Menghubungkan Bisnis Anda ke',
-        'accent'   => 'Seluruh Dunia',
-        'text'     => 'Layanan logistik terintegrasi untuk pengiriman barang yang aman, cepat dan efisien, dengan jangkauan global dan dukungan profesional.',
-        'cta'      => ['label' => 'Mulai Pengiriman', 'route' => 'penawaran'],
-        'cta_alt'  => ['label' => 'Lihat Layanan', 'route' => 'layanan'],
-        'image'    => 'hero-scene.jpg',
+        'eyebrow' => 'Solusi Logistik Terpercaya',
+        'title' => 'Menghubungkan Bisnis Anda ke',
+        'accent' => 'Seluruh Dunia',
+        'text' => 'Layanan logistik terintegrasi untuk pengiriman barang yang aman, cepat dan efisien, dengan jangkauan global dan dukungan profesional.',
+        'cta' => ['label' => 'Mulai Pengiriman', 'route' => 'penawaran'],
+        'cta_alt' => ['label' => 'Lihat Layanan', 'route' => 'layanan'],
+        'image' => 'hero-scene.jpg',
         'features' => [
             ['icon' => 'globe',  'title' => 'Pengiriman', 'text' => 'Lokal & Internasional', 'route' => 'layanan'],
             ['icon' => 'shield', 'title' => 'Jaminan', 'text' => 'Keamanan Barang', 'route' => 'armada-gudang'],
@@ -83,8 +83,8 @@ return [
     /* ------------------------------ Layanan ------------------------------ */
     'services' => [
         'title' => 'Layanan Logistik Kami',
-        'text'  => 'Solusi lengkap untuk kebutuhan pengiriman Anda.',
-        'link'  => 'Lihat Semua Layanan',
+        'text' => 'Solusi lengkap untuk kebutuhan pengiriman Anda.',
+        'link' => 'Lihat Semua Layanan',
         'items' => [
             [
                 'icon' => 'box', 'title' => 'Pengiriman Domestik & Internasional', 'image' => 'hero-scene.jpg',
@@ -126,16 +126,16 @@ return [
 
     /* --------------------------- Opsi Pengiriman -------------------------- */
     'freight' => [
-        'title'   => 'Opsi Pengiriman',
-        'text'    => 'Pilih layanan terbaik sesuai kebutuhan bisnis Anda.',
-        'link'    => 'Lihat Detail Tarif',
-        'image'   => 'freight-plane.jpg',
+        'title' => 'Opsi Pengiriman',
+        'text' => 'Pilih layanan terbaik sesuai kebutuhan bisnis Anda.',
+        'link' => 'Lihat Detail Tarif',
+        'image' => 'freight-plane.jpg',
         'default' => 'udara',
-        'note'    => 'Estimasi waktu dan tarif bersifat indikatif dan dapat berbeda sesuai rute, berat, volume, serta jenis barang. Hubungi kami untuk penawaran resmi.',
-        'tabs'    => [
+        'note' => 'Estimasi waktu dan tarif bersifat indikatif dan dapat berbeda sesuai rute, berat, volume, serta jenis barang. Hubungi kami untuk penawaran resmi.',
+        'tabs' => [
             'udara' => [
                 'label' => 'Udara',
-                'text'  => 'Kecepatan maksimal untuk pengiriman prioritas ke ratusan kota di dunia.',
+                'text' => 'Kecepatan maksimal untuk pengiriman prioritas ke ratusan kota di dunia.',
                 'options' => [
                     ['name' => 'Reguler', 'eta' => '3 - 5 hari', 'desc' => 'Pengiriman udara standar dengan harga bersahabat untuk kebutuhan rutin.', 'price' => 'Mulai Rp 28.000 / kg', 'best' => 'Barang dagangan & sampel'],
                     ['name' => 'Express', 'eta' => '1 - 2 hari', 'desc' => 'Prioritas penerbangan berikutnya dengan penanganan dipercepat.', 'price' => 'Mulai Rp 45.000 / kg', 'best' => 'Pesanan mendesak'],
@@ -145,7 +145,7 @@ return [
             ],
             'laut' => [
                 'label' => 'Laut',
-                'text'  => 'Efisien untuk volume besar dengan jadwal keberangkatan yang terencana.',
+                'text' => 'Efisien untuk volume besar dengan jadwal keberangkatan yang terencana.',
                 'options' => [
                     ['name' => 'LCL Reguler', 'eta' => '7 - 14 hari', 'desc' => 'Kargo konsolidasi untuk volume kecil hingga menengah.', 'price' => 'Mulai Rp 1.200.000 / cbm', 'best' => 'UMKM & distributor'],
                     ['name' => 'FCL 20ft / 40ft', 'eta' => '10 - 21 hari', 'desc' => 'Sewa satu kontainer penuh untuk keamanan dan biaya per unit lebih rendah.', 'price' => 'Sesuai rute', 'best' => 'Volume besar & ekspor'],
@@ -155,7 +155,7 @@ return [
             ],
             'darat' => [
                 'label' => 'Darat',
-                'text'  => 'Jaringan truk dan gudang yang menjangkau kota hingga kabupaten.',
+                'text' => 'Jaringan truk dan gudang yang menjangkau kota hingga kabupaten.',
                 'options' => [
                     ['name' => 'Reguler', 'eta' => '2 - 4 hari', 'desc' => 'Pengiriman antarkota dengan jadwal rutin dan tarif ekonomis.', 'price' => 'Mulai Rp 2.500 / kg', 'best' => 'Distribusi toko & agen'],
                     ['name' => 'Express', 'eta' => '1 - 2 hari', 'desc' => 'Armada prioritas tanpa transit berlebih antarkota besar.', 'price' => 'Mulai Rp 4.500 / kg', 'best' => 'Restock cepat'],
@@ -165,7 +165,7 @@ return [
             ],
             'express' => [
                 'label' => 'Express',
-                'text'  => 'Layanan kilat untuk paket dan dokumen yang tidak bisa menunggu.',
+                'text' => 'Layanan kilat untuk paket dan dokumen yang tidak bisa menunggu.',
                 'options' => [
                     ['name' => 'Same Day', 'eta' => 'Hari yang sama', 'desc' => 'Dijemput dan diantar di hari yang sama untuk area layanan tertentu.', 'price' => 'Mulai Rp 35.000', 'best' => 'Dokumen & paket kecil'],
                     ['name' => 'Next Day', 'eta' => '1 hari', 'desc' => 'Tiba esok hari ke kota-kota utama di Indonesia.', 'price' => 'Mulai Rp 22.000', 'best' => 'E-commerce & retail'],
@@ -179,7 +179,7 @@ return [
     /* ----------------------------- Jangkauan ------------------------------ */
     'coverage' => [
         'title' => 'Jangkauan Layanan',
-        'text'  => 'Kami hadir di berbagai wilayah, untuk konektivitas tanpa batas.',
+        'text' => 'Kami hadir di berbagai wilayah, untuk konektivitas tanpa batas.',
         'image' => 'map-world.png',
         'stats' => [
             ['value' => 50,  'suffix' => '+', 'label' => 'Negara Tujuan'],
@@ -199,7 +199,7 @@ return [
     /* --------------------------- Armada & Gudang -------------------------- */
     'fleet' => [
         'title' => 'Armada & Gudang',
-        'text'  => 'Armada modern dan fasilitas gudang berstandar internasional.',
+        'text' => 'Armada modern dan fasilitas gudang berstandar internasional.',
         'image' => 'fleet-strip.jpg',
         'gallery' => [
             ['image' => 'fleet-trucks.jpg', 'caption' => 'Armada truk box dan wingbox siap berangkat'],
@@ -225,7 +225,7 @@ return [
     /* ----------------------------- Proses -------------------------------- */
     'process' => [
         'title' => 'Proses Pengiriman',
-        'text'  => 'Dari pengambilan hingga sampai di tujuan, kami pastikan setiap langkah berjalan lancar.',
+        'text' => 'Dari pengambilan hingga sampai di tujuan, kami pastikan setiap langkah berjalan lancar.',
         'steps' => [
             ['icon' => null, 'title' => 'Pengambilan Barang', 'note' => '(di lokasi Anda)',
                 'text' => 'Kurir kami menjemput barang di lokasi Anda sesuai jadwal yang disepakati dan mencatat serah terima awal.'],
@@ -242,8 +242,8 @@ return [
 
     /* ----------------------------- Tracking ------------------------------ */
     'tracking' => [
-        'title'       => 'Lacak Pengiriman Anda',
-        'text'        => 'Pantau posisi barang secara real-time dengan sistem tracking kami.',
+        'title' => 'Lacak Pengiriman Anda',
+        'text' => 'Pantau posisi barang secara real-time dengan sistem tracking kami.',
         'placeholder' => 'Masukkan nomor resi / tracking',
         /*
          * Integrasi tracking: isi dengan URL endpoint backend (GET ?resi=XXXX)
@@ -252,8 +252,8 @@ return [
          *   "service": "...", "events": [ {"time": "...", "title": "...", "location": "..."} ] }
          * Selama masih null, template berjalan dalam mode demo.
          */
-        'endpoint'    => null,
-        'stages'      => ['Diterima', 'Dalam Proses', 'Dalam Pengiriman', 'Tiba'],
+        'endpoint' => null,
+        'stages' => ['Diterima', 'Dalam Proses', 'Dalam Pengiriman', 'Tiba'],
         'demo' => [
             'EC2026001234' => [
                 'status' => 'Dalam Pengiriman', 'stage' => 2, 'service' => 'Pengiriman Udara - Express',
@@ -288,7 +288,7 @@ return [
     /* ------------------------------ Klien -------------------------------- */
     'clients' => [
         'title' => 'Klien Korporat Kami',
-        'text'  => 'Dipercaya oleh berbagai perusahaan terkemuka.',
+        'text' => 'Dipercaya oleh berbagai perusahaan terkemuka.',
         'items' => [
             ['name' => 'Pertamina', 'logo' => 'logo-pertamina.png', 'sector' => 'Energi'],
             ['name' => 'Indomobil', 'logo' => 'logo-indomobil.png', 'sector' => 'Otomotif'],
@@ -309,24 +309,24 @@ return [
 
     /* ----------------------------- Penawaran ----------------------------- */
     'quotation' => [
-        'title'   => 'Minta Penawaran Harga',
-        'text'    => 'Dapatkan penawaran terbaik untuk kebutuhan logistik Anda.',
-        'cta'     => 'Ajukan Permintaan',
-        'image'   => 'quote-ship.jpg',
+        'title' => 'Minta Penawaran Harga',
+        'text' => 'Dapatkan penawaran terbaik untuk kebutuhan logistik Anda.',
+        'cta' => 'Ajukan Permintaan',
+        'image' => 'quote-ship.jpg',
         'benefits' => ['Respons penawaran dalam 1 hari kerja', 'Tarif kompetitif dan transparan', 'Konsultasi rute & moda gratis', 'Tim berpengalaman mendampingi Anda'],
         'cargo_types' => ['Barang umum', 'Elektronik', 'Makanan & minuman', 'Pakaian & tekstil', 'Mesin & suku cadang', 'Dokumen', 'Barang berbahaya (DG)', 'Lainnya'],
     ],
 
     /* -------------------------------- AI --------------------------------- */
     'ai' => [
-        'title'    => 'Tanya AI Assistant',
-        'text'     => 'Dapatkan jawaban cepat seputar harga, proses pengiriman, jenis layanan, dan informasi lainnya.',
+        'title' => 'Tanya AI Assistant',
+        'text' => 'Dapatkan jawaban cepat seputar harga, proses pengiriman, jenis layanan, dan informasi lainnya.',
         'bot_name' => 'Asisten Energi Cargo',
         'greeting' => 'Halo! Saya asisten AI Energi Cargo. Ada yang bisa saya bantu seputar tarif, pelacakan, atau layanan pengiriman?',
         'fallback' => 'Maaf, saya belum menemukan jawaban yang tepat. Coba pilih salah satu pertanyaan di bawah, atau hubungi tim kami lewat WhatsApp.',
-        'helper'   => [
-            'text'  => 'Ada pertanyaan tentang pengiriman, tarif, atau proses logistik? Saya siap membantu!',
-            'cta'   => 'Chat Sekarang',
+        'helper' => [
+            'text' => 'Ada pertanyaan tentang pengiriman, tarif, atau proses logistik? Saya siap membantu!',
+            'cta' => 'Chat Sekarang',
         ],
         'questions' => [
             'Berapa tarif pengiriman?',

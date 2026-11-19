@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\WebiaTemplate;
 use Database\Seeders\WebiaTemplateAlleSeeder;
+use Database\Seeders\WebiaTemplatePreviewSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
@@ -12,9 +13,17 @@ class BakeryBoldLuxuryTemplateTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed(WebiaTemplateAlleSeeder::class);
+        $this->seed(WebiaTemplatePreviewSeeder::class);
+    }
+
     public function test_template_route_renders_the_bakery_landing_page(): void
     {
-        $this->get(route('webia.template.fnb.bakery.bold-luxury'))
+        $this->get('/webia/template/bakery-bold-luxury')
             ->assertOk()
             ->assertSee('Maison Breads &amp; Pastry - Bold Luxury Bakery', false)
             ->assertSee('Artisanal Breads.')

@@ -1,6 +1,6 @@
-﻿@extends($v . '.layout')
+@extends($v . '.layout')
 
-@section('title', 'Jumlah Pesanan Minimum â€” AgroTrade')
+@section('title', 'Jumlah Pesanan Minimum — AgroTrade')
 @section('description', 'Ketentuan jumlah pesanan minimum (MOQ), pembayaran, Incoterms, dan waktu produksi komoditas AgroTrade.')
 
 @section('content')

@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const summary = document.getElementById('webia-filter-summary');
 
     const categories = [
-        {id:'fnb',name:'F&B',types:['Restaurant','Cafe','Catering','Bakery','Food Product']},
+        {id:'fnb',name:'F&B',types:['Healthy Meal Prep Subscription','Restaurant','Cafe','Catering','Bakery','Food Product']},
         {id:'beauty',name:'Beauty',types:['Salon','Nail Art & Nail Care','Beauty Clinic','Skincare & Beauty Treatment','Makeup Artist']},
         {id:'automotive',name:'Automotive',types:['Auto Detailing & Car Care','Modifikasi & Aksesori Kendaraan','Bengkel & Servis Kendaraan','Dealer & Showroom Kendaraan']},
         {id:'company',name:'Company',types:['Company Profile','Contractor','Logistics & Supply Chain']},
@@ -31,13 +31,46 @@ document.addEventListener('DOMContentLoaded', () => {
         {id:'interior-architecture',name:'Interior & Architecture',types:['Interior Design Studio','Architecture & Building Design','Furniture & Custom Furniture']},
         {id:'home-services',name:'Home Services',types:['Home Renovation & Repair','Laundry','Home Cleaning & Deep Cleaning']},
         {id:'photography-creative-studio',name:'Photography & Creative Studio',types:['Product Photography & Videography','Motion Graphics & 3D Studio','UGC & Content Creator Studio']},
-        {id:'pet-animal-services',name:'Pet & Animal Services',types:['Pet Shop','Pet Training','Animal Care']},
+        {id:'pet-animal-service',name:'Pet & Animal Services',types:['Pet Shop','Pet Training','Animal Care']},
         {id:'transportation-logistics',name:'Transportation & Logistics',types:['Logistics Company','Delivery Service','Moving Company']},
         {id:'agriculture-farming',name:'Agriculture & Farming',types:['Agribisnis & Perdagangan Komoditas Pertanian','Perlengkapan & Peralatan Pertanian','Peternakan & Budidaya Hewan']},
         {id:'nonprofit-community',name:'Nonprofit & Community',types:['Foundation','Social Organization','Volunteer Group']},
-        {id:'technology-it',name:'Technology & IT',types:['Software House','Data Analytics','Hardware & Computer Networking']}
+        {id:'technology-it',name:'Technology & IT',types:['Software House','Data Analytics','Hardware & Computer Networking']},
+        {id:'remote-workforce',name:'Remote Workforce & Virtual Assistance',types:['Virtual Assistant Agency','Remote Customer Support Outsourcing','Virtual Executive Assistant Service','Remote Operations Management Service']},
+        {id:'museum-digital-heritage',name:'Museum & Digital Heritage',types:['Digital Museum Platform','Virtual Museum & 3D Exhibition','Interactive Heritage Exhibition','Museum Collection & Artifact Database']},
+        {id:'libraries-digital-archives',name:'Libraries & Digital Archives',types:['Digital Library Platform','Historical Document Archive','Genealogy & Family History Research','Manuscript Digitization Service']},
+        {id:'traditional-textiles-heritage-fashion',name:'Traditional Textiles & Heritage Fashion',types:['Batik Artisan Brand','Traditional Weaving Producer','Traditional Costume Rental','Heritage Textile Conservation Service']},
+        {id:'specialty-beverage',name:'Specialty Beverage & Drink Concepts',types:['Specialty Matcha / Others Brand','Specialty Tea Subscription','Beverage Brand','Non-Alcoholic Craft Beverage Brand']},
+        {id:'food-subscription',name:'Food Subscription & Meal Solutions',types:['Healthy Meal Prep Subscription','Diet & Calorie-Controlled Meal Service','Weekly Family Meal Plan Provider']},
+        {id:'home-appliance-electronics-care',name:'Home Appliance & Electronics Care',types:['Home Appliance Installation Service','Air Conditioner Repair & Maintenance']},
+        {id:'live-commerce',name:'Live Commerce & Social Selling',types:['Live Shopping Production Studio']},
+        {id:'digital-products-knowledge-commerce',name:'Digital Products & Knowledge Commerce',types:['Digital Asset Marketplace']},
+        {id:'electric-mobility-ev',name:'Electric Mobility & EV Ecosystem',types:['EV Charging Station Operator','Electric Vehicle Fleet Management','Electric Vehicle Conversion Specialist']},
+        {id:'smart-home-building-tech',name:'Smart Home & Building Technology',types:['Smart Home Installation Service','IoT Home Automation Consultant','Smart Building Integration Company']},
+        {id:'mobility-vehicle-rental',name:'Mobility & Vehicle Rental',types:['Self-Drive Car Rental','Motorcycle Rental Service']},
+        {id:'home-organization-storage',name:'Home Organization & Storage',types:['Professional Home Organizer']},
+        {id:'music-education-instrument',name:'Music Education & Instrument Services',types:['Private Music Academy']},
+        {id:'aquatic-water-recreation',name:'Aquatic & Water Recreation',types:['Diving School & Certification']},
+
+        {id:'sports others',name:'Sports others',types:['Swimming School & Lessons (Baby–Adult)','Private Swimming Instructor','Padel Academy & Training','Badminton Academy & Coaching','Tennis Academy & Lessons','Table Tennis Training Center','Volleyball Academy','Basketball Training Academy','Futsal Academy','Football & Soccer School']},
+        {id:'creative-arts-hobby-classes',name:'Creative Arts & Hobby Classes',types:['Kids Coloring & Drawing Class','Painting & Watercolor Course','Acrylic & Canvas Painting Workshop','Sketching & Illustration Class']},
+        {id:'music-lessons-performing-arts',name:'Music Lessons & Performing Arts',types:['Piano & Keyboard Lesson','Guitar & Bass Lessons','Vocal & Singing Course','Violin & Classical Instrument Lessons','Drum Lessons']},
+        
+        {id:'martial-arts-self-defense',name:'Martial Arts & Self Defense Academy',types:['Karate & Taekwondo School','Boxing & Kickboxing Academy','Brazilian Jiu-Jitsu Academy','Pencak Silat Training School']},
+        {id:'performing-arts-stage-training',name:'Performing Arts & Stage Training',types:['Modeling & Catwalk Class','Acting & Drama School']}
     ];
-    const styles = ['Modern','Classic','Elegant','Minimalist','Vintage','Professional','Luxury','Playful & Colorful','Bold','Futuristic','Artistic','Friendly','Premium Minimal'];
+    const styles = [
+        'Modern','Classic','Elegant','Minimalist','Vintage','Professional','Luxury','Playful & Colorful','Bold','Futuristic','Futuristic & Neon','Artistic','Friendly','Premium Minimal',
+        'Modern Corporate','Professional Minimalist','Elegant Corporate','Swiss Minimalist','Editorial Classic','Immersive Futuristic','Artistic Experimental','Archival Minimalist',
+        'Academic Minimalist','Vintage Editorial','Heritage Classic','Scholarly Editorial','Ethnic Contemporary','Organic Artisan','Regal Traditional','Heritage Editorial',
+        'Japanese Minimalist','Botanical Elegant','Bold Contemporary','Playful Modern','Organic Modern','Sporty Minimalist','Warm Contemporary','Modern Industrial',
+        'Technical Corporate','Bold Digital','Creative Tech','Sustainable Futuristic','High-Tech Corporate','Industrial Futuristic','Modern Smart Living',
+        'Futuristic Minimalist','Architectural Modern','Dynamic Automotive','Urban Adventure','Scandinavian Minimalist','Classic Contemporary','Ocean Adventure',
+        'Fresh Aquatic Playful','Clean Sporty','Playful Illustrative','Artistic Watercolor','Bold Artistic','Handcrafted Editorial','Elegant Classical',
+        'Urban Creative','Expressive Contemporary','Refined Classical','Bold Rhythmic','Energetic Sporty','Dynamic Athletic','Premium Sport Club',
+        'Modern Competitive','Energetic Team Sport','Urban Athletic','Bold Sporty','Professional Athletic','Traditional Discipline','Industrial Grit',
+        'Tactical Modern','Cultural Heritage','High-Fashion Editorial','Dramatic Cinematic', 'Warm Family Modern'
+    ];
     const selectedCategories = new Set();
     const selectedTypes = new Set();
     let selectedStyle = '';
@@ -505,14 +538,19 @@ const themes = {
         const payButton = panel?.querySelector('[data-pay-button]');
         const checkButton = panel?.querySelector('[data-check-status]');
         const loginLink = panel?.querySelector('[data-login-link]');
+        const closeAction = panel?.querySelector('[data-close-payment]');
+        const retryButton = panel?.querySelector('[data-retry-status]');
         const expiryWrap = panel?.querySelector('[data-payment-expiry-wrap]');
-        const icon = panel?.querySelector('.material-symbols-outlined');
+        const icon = panel?.querySelector('.customer-verify-icon .material-symbols-outlined');
+        const progress = panel?.querySelector('[data-payment-progress]');
         if (!panel || !statusText || !note) return;
 
-        panel.classList.remove('is-provisioning', 'is-paid', 'is-failed');
+        panel.classList.remove('is-pending', 'is-provisioning', 'is-paid', 'is-payment-failed', 'is-credential-failed', 'is-status-error');
         panel.setAttribute('aria-busy', String(
             payload.status === 'paid' && !['sent', 'failed'].includes(payload.credential_status),
         ));
+        if (retryButton) retryButton.hidden = true;
+        if (closeAction) closeAction.hidden = true;
 
         if (payload.status === 'paid') {
             showPaymentPanel();
@@ -525,54 +563,59 @@ const themes = {
 
             if (payload.credential_status === 'sent') {
                 panel.classList.add('is-paid');
-                setOrderDialogLocked(false);
+                progress?.setAttribute('data-step', 'complete');
                 stopPaymentPolling();
                 statusText.textContent = 'Akun siap & kredensial terkirim';
-                note.textContent = `Akun WEBIA dibuat dan kredensial telah dikirim ke ${payload.email || 'email kamu'}.`;
+                note.textContent = `Kredensial akun WEBIA telah dikirim ke ${payload.email || 'email kamu'}.`;
                 if (icon) icon.textContent = 'verified';
                 if (loginLink) loginLink.hidden = false;
+                if (closeAction) closeAction.hidden = false;
                 return;
             }
 
             if (payload.credential_status === 'failed') {
-                panel.classList.add('is-failed');
-                setOrderDialogLocked(false);
+                panel.classList.add('is-credential-failed');
+                progress?.setAttribute('data-step', 'account');
                 stopPaymentPolling();
-                statusText.textContent = 'Email kredensial gagal dikirim';
-                note.textContent = 'Pembayaran berhasil dan akunnya sudah dibuat, tetapi email kredensial gagal terkirim. Hubungi tim WEBIA agar dikirim ulang.';
-                if (icon) icon.textContent = 'error';
+                statusText.textContent = 'Akun siap, email belum terkirim';
+                note.textContent = 'Pembayaran berhasil dan akun sudah dibuat. Hubungi tim WEBIA untuk pengiriman ulang kredensial.';
+                if (icon) icon.textContent = 'mark_email_unread';
                 if (loginLink) loginLink.hidden = false;
+                if (closeAction) closeAction.hidden = false;
                 return;
             }
 
             panel.classList.add('is-provisioning');
-            setOrderDialogLocked(true);
-            statusText.textContent = 'Pembayaran berhasil. Akun WEBIA sedang disiapkan';
-            note.textContent = 'Jangan tutup modal ini. Kredensial akan dikirim ke email kamu setelah akun siap.';
+            progress?.setAttribute('data-step', 'account');
+            statusText.textContent = 'Akun WEBIA sedang disiapkan';
+            note.textContent = 'Proses tetap berjalan jika modal ditutup. Kredensial akan dikirim melalui email setelah akun siap.';
             if (icon) icon.textContent = 'manage_accounts';
             return;
         }
 
         if (payload.status === 'failed' || payload.status === 'expired') {
-            setOrderDialogLocked(false);
             stopPaymentPolling();
             showPaymentPanel();
             window.snap?.hide?.();
-            panel.classList.add('is-failed');
-            statusText.textContent = payload.status === 'expired' ? 'Pembayaran kedaluwarsa' : 'Pembayaran gagal';
-            note.textContent = 'Tutup modal ini lalu buat pesanan baru untuk mencoba pembayaran lagi.';
+            panel.classList.add('is-payment-failed');
+            progress?.setAttribute('data-step', 'payment');
+            statusText.textContent = payload.status === 'expired' ? 'Waktu pembayaran berakhir' : 'Pembayaran belum berhasil';
+            note.textContent = 'Tutup modal ini, lalu buat pesanan baru untuk mencoba pembayaran kembali.';
             if (icon) icon.textContent = 'error';
             if (payButton) payButton.hidden = true;
             if (checkButton) checkButton.hidden = true;
+            if (closeAction) closeAction.hidden = false;
             if (expiryWrap) expiryWrap.hidden = true;
             return;
         }
 
-        setOrderDialogLocked(false);
+        panel.classList.add('is-pending');
+        progress?.setAttribute('data-step', 'payment');
         statusText.textContent = payload.status === 'pending' ? 'Pembayaran sedang diproses' : 'Menunggu pembayaran';
         note.textContent = payload.status === 'pending'
-            ? 'Midtrans sedang memproses pembayaran. Status akan diperbarui otomatis.'
-            : 'Status diperiksa otomatis. Modal ini boleh ditutup sebelum pembayaran selesai.';
+            ? 'Midtrans sedang memproses transaksi. Status diperbarui otomatis.'
+            : 'Status diperiksa otomatis. Modal boleh ditutup sebelum pembayaran selesai.';
+        if (icon) icon.textContent = 'account_balance_wallet';
     };
 
     const checkPaymentStatus = async (url, generation) => {
@@ -590,13 +633,27 @@ const themes = {
             if (generation !== paymentGeneration) return;
             updatePaymentStatus(result);
             if (result.sync_failed && result.status !== 'paid') {
-                const note = orderDialogBody.querySelector('[data-payment-note]');
-                if (note) note.textContent = 'Konfirmasi Midtrans tertunda. Sistem akan mencoba lagi otomatis.';
+                const panel = orderDialogBody.querySelector('[data-payment-panel]');
+                const note = panel?.querySelector('[data-payment-note]');
+                const retryButton = panel?.querySelector('[data-retry-status]');
+                panel?.classList.add('is-status-error');
+                if (note) {
+                    note.setAttribute('role', 'alert');
+                    note.textContent = 'Konfirmasi Midtrans tertunda. Coba periksa kembali dalam beberapa saat.';
+                }
+                if (retryButton) retryButton.hidden = false;
             }
         } catch (error) {
             if (error.name === 'AbortError' || generation !== paymentGeneration) return;
-            const note = orderDialogBody.querySelector('[data-payment-note]');
-            if (note) note.textContent = 'Status belum bisa diperiksa. Sistem akan mencoba lagi otomatis.';
+            const panel = orderDialogBody.querySelector('[data-payment-panel]');
+            const note = panel?.querySelector('[data-payment-note]');
+            const retryButton = panel?.querySelector('[data-retry-status]');
+            panel?.classList.add('is-status-error');
+            if (note) {
+                note.setAttribute('role', 'alert');
+                note.textContent = 'Status belum dapat diperiksa. Periksa koneksi lalu coba lagi.';
+            }
+            if (retryButton) retryButton.hidden = false;
         } finally {
             if (paymentStatusController === controller) paymentStatusController = null;
         }
@@ -613,36 +670,62 @@ const themes = {
         orderDialogTitle.textContent = 'Pembayaran';
         orderDialogTemplate.textContent = '';
         orderDialogBody.innerHTML = `
-            <section class="webia-payment-panel" data-payment-panel aria-labelledby="webia-payment-title">
-                <div class="webia-payment-heading">
-                    <span class="customer-verify-icon" aria-hidden="true"><span class="material-symbols-outlined">account_balance_wallet</span></span>
-                    <h2 id="webia-payment-title" data-payment-title>Pesanan siap dibayar</h2>
-                    <div class="webia-order-number"><span>Nomor pesanan</span><strong>${escapeHtml(payment.order_number)}</strong><button type="button" data-copy-order aria-label="Salin nomor pesanan"><span class="material-symbols-outlined" aria-hidden="true">content_copy</span></button></div>
+            <section class="webia-payment-panel is-pending" data-payment-panel aria-labelledby="webia-payment-title">
+                <div class="webia-payment-status-column">
+                    <div class="webia-payment-heading">
+                        <span class="customer-verify-icon" aria-hidden="true"><span class="material-symbols-outlined">account_balance_wallet</span></span>
+                        <div>
+                            <p class="webia-payment-kicker">Status pesanan</p>
+                            <h2 id="webia-payment-title" data-payment-title>Pesanan siap dibayar</h2>
+                        </div>
+                    </div>
+                    <div class="webia-payment-progress" data-payment-progress data-step="payment" aria-label="Tahapan pesanan">
+                        <span data-progress-payment>Pembayaran</span>
+                        <span data-progress-account>Pembuatan akun</span>
+                        <span data-progress-complete>Selesai</span>
+                    </div>
+                    <div class="customer-verify-meta" role="status" aria-live="polite">
+                        <div><span>Status pembayaran</span><strong data-payment-status>Menunggu pembayaran</strong></div>
+                        <div class="webia-payment-expiry" data-payment-expiry-wrap><span>Batas waktu bayar</span><strong data-payment-expiry>Menghitung…</strong></div>
+                    </div>
+                    <p class="customer-verify-note" data-payment-note>Status diperiksa otomatis. Modal boleh ditutup sebelum pembayaran selesai.</p>
                 </div>
-                <div class="customer-verify-meta" role="status" aria-live="polite">
-                    <div><span>Status pembayaran</span><strong data-payment-status>Menunggu pembayaran</strong></div>
-                    <div class="webia-payment-expiry" data-payment-expiry-wrap><span>Batas waktu bayar</span><strong data-payment-expiry>Menghitung…</strong></div>
+                <div class="webia-payment-detail-column">
+                    <div class="webia-order-number">
+                        <div><span>Nomor pesanan</span><strong>${escapeHtml(payment.order_number)}</strong></div>
+                        <button type="button" data-copy-order aria-label="Salin nomor pesanan"><span class="material-symbols-outlined" aria-hidden="true">content_copy</span><span data-copy-label>Salin</span></button>
+                    </div>
+                    <div class="webia-payment-summary">
+                        <div><span>Paket</span><strong>${escapeHtml(payment.package_name || '-')}</strong></div>
+                        <div class="webia-payment-addons">${addonRows}</div>
+                        <div class="webia-payment-total"><span>Total tagihan</span><strong>${formatRupiah(payment.total_price)}</strong></div>
+                    </div>
+                    <div class="webia-payment-actions">
+                        <button class="account-submit customer-create-submit-btn" type="button" data-pay-button>Bayar sekarang</button>
+                        <button class="customer-detail-secondary" type="button" data-check-status><span class="material-symbols-outlined" aria-hidden="true">refresh</span>Periksa status pembayaran</button>
+                        <button class="customer-detail-secondary" type="button" data-retry-status hidden><span class="material-symbols-outlined" aria-hidden="true">sync</span>Coba periksa lagi</button>
+                        <a class="account-submit customer-create-submit-btn" href="${escapeHtml(payment.login_url)}" data-login-link hidden>Masuk ke portal</a>
+                        <button class="customer-detail-secondary" type="button" data-close-payment hidden>Tutup</button>
+                    </div>
                 </div>
-                <div class="webia-payment-summary">
-                    <div><span>Paket</span><strong>${escapeHtml(payment.package_name || '-')}</strong></div>
-                    ${addonRows}
-                    <div class="webia-payment-total"><span>Total tagihan</span><strong>${formatRupiah(payment.total_price)}</strong></div>
-                </div>
-                <div class="webia-payment-actions">
-                    <button class="account-submit customer-create-submit-btn" type="button" data-pay-button>Bayar sekarang</button>
-                    <button class="customer-detail-secondary" type="button" data-check-status><span class="material-symbols-outlined" aria-hidden="true">refresh</span>Periksa status pembayaran</button>
-                    <a class="customer-detail-secondary" href="${escapeHtml(payment.login_url)}" data-login-link hidden>Masuk ke portal</a>
-                </div>
-                <p class="customer-verify-note" data-payment-note>Status diperiksa otomatis. Modal ini boleh ditutup sebelum pembayaran selesai.</p>
             </section>
             <section class="webia-snap-panel" data-snap-panel hidden aria-label="Metode pembayaran Midtrans">
+                <header class="webia-snap-context">
+                    <button type="button" data-back-payment><span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>Kembali</button>
+                    <div><span>Total pembayaran</span><strong>${formatRupiah(payment.total_price)}</strong></div>
+                    <div><span>Nomor pesanan</span><strong>${escapeHtml(payment.order_number)}</strong></div>
+                </header>
                 <div class="webia-snap-container" id="webia-snap-container"></div>
             </section>`;
 
         const payButton = orderDialogBody.querySelector('[data-pay-button]');
         const checkButton = orderDialogBody.querySelector('[data-check-status]');
         const copyButton = orderDialogBody.querySelector('[data-copy-order]');
+        const copyLabel = orderDialogBody.querySelector('[data-copy-label]');
         const loginLink = orderDialogBody.querySelector('[data-login-link]');
+        const retryButton = orderDialogBody.querySelector('[data-retry-status]');
+        const closeAction = orderDialogBody.querySelector('[data-close-payment]');
+        const backButton = orderDialogBody.querySelector('[data-back-payment]');
         const expiry = payment.expires_at ? new Date(payment.expires_at) : null;
         const expiryText = orderDialogBody.querySelector('[data-payment-expiry]');
         const expiryWrap = orderDialogBody.querySelector('[data-payment-expiry-wrap]');
@@ -664,26 +747,32 @@ const themes = {
                 await navigator.clipboard.writeText(payment.order_number);
                 const icon = copyButton.querySelector('.material-symbols-outlined');
                 if (icon) icon.textContent = 'check';
+                if (copyLabel) copyLabel.textContent = 'Tersalin';
                 copyButton.setAttribute('aria-label', 'Nomor pesanan tersalin');
                 window.setTimeout(() => {
                     if (!copyButton.isConnected) return;
                     if (icon) icon.textContent = 'content_copy';
+                    if (copyLabel) copyLabel.textContent = 'Salin';
                     copyButton.setAttribute('aria-label', 'Salin nomor pesanan');
                 }, 2000);
             } catch {
                 copyButton.setAttribute('aria-label', 'Gagal menyalin nomor pesanan');
             }
         });
-        checkButton?.addEventListener('click', async () => {
-            checkButton.disabled = true;
-            const label = checkButton.lastChild;
+        const requestStatusCheck = async (button) => {
+            button.disabled = true;
+            const label = button.lastChild;
+            const originalLabel = label?.textContent;
             if (label) label.textContent = 'Memeriksa transaksi…';
             await checkPaymentStatus(payment.payment_status_url, generation);
-            if (checkButton.isConnected && !checkButton.hidden) {
-                checkButton.disabled = false;
-                if (label) label.textContent = 'Periksa status pembayaran';
+            if (button.isConnected && !button.hidden) {
+                button.disabled = false;
+                if (label && originalLabel) label.textContent = originalLabel;
             }
-        });
+        };
+        checkButton?.addEventListener('click', () => requestStatusCheck(checkButton));
+        retryButton?.addEventListener('click', () => requestStatusCheck(retryButton));
+        closeAction?.addEventListener('click', () => closeDialog(orderDialog));
 
         if (!payment.payment_ready) {
             if (payButton) payButton.hidden = true;
@@ -735,6 +824,14 @@ const themes = {
             if (fallbackUrl) window.location.href = fallbackUrl;
         };
         payButton?.addEventListener('click', openPayment);
+        backButton?.addEventListener('click', () => {
+            window.snap?.hide?.();
+            showPaymentPanel();
+            if (payButton) {
+                payButton.disabled = false;
+                payButton.textContent = snapOpened ? 'Lanjutkan pembayaran' : 'Bayar sekarang';
+            }
+        });
 
         checkPaymentStatus(payment.payment_status_url, generation);
         paymentPollTimer = window.setInterval(() => checkPaymentStatus(payment.payment_status_url, generation), 10000);
@@ -746,6 +843,7 @@ const themes = {
             orderDialogBody.innerHTML = '<p class="webia-cart-note">Formulir tidak tersedia. Coba lagi nanti.</p>';
             return null;
         }
+        form.querySelectorAll('[data-create-detail]').forEach((el) => el.remove());
         orderDialogBody.replaceChildren(form);
         form.addEventListener('submit', handleOrderSubmit);
         window.webiaInitOrderForm?.(form);

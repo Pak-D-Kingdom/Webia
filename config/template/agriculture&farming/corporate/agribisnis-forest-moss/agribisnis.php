@@ -14,6 +14,7 @@ return [
         'title' => 'Green Harvest — Agri Business & Commodity Trade',
         'description' => 'Green Harvest menghadirkan komoditas pertanian berkualitas tinggi dari petani pilihan, dengan proses yang transparan dan berkelanjutan.',
         'whatsapp' => '62895630300345',
+        'whatsapp_display' => '0895630300345',
         'phone_raw' => '628112345678',
         'whatsapp_text' => 'Halo Green Harvest, saya ingin bertanya tentang komoditas pertanian.',
         'phone' => '+62 811 2345 6789',
@@ -22,7 +23,7 @@ return [
         'hours' => 'Senin - Jumat 08.00 - 17:00',
     ],
     'assets' => [
-        'css' => 'css/website-bisnis/template/agriculture&farming/corporate/agribisnis-forest-moss/logistics-agribisnis.css',
+        'css' => 'css/website-bisnis/template/agriculture&farming/corporate/agribisnis-forest-moss/agribisnis.css',
         'js' => 'js/website-bisnis/template/agriculture&farming/corporate/agribisnis-forest-moss/agribisnis.js',
         'img' => 'images/website-bisnis/template/agriculture&farming/corporate/agribisnis-forest-moss',
     ],
@@ -426,6 +427,30 @@ return [
         'btn' => 'Kirim Inquiry',
     ],
     'quote' => [
+        'flow_title' => 'Alur Penawaran',
+        'flow_sub' => 'Tiga langkah mudah menuju penawaran harga terbaik.',
+        'flow' => [
+            [
+                'icon' => 'file',
+                'n' => 'Langkah 1',
+                'title' => 'Isi Formulir',
+                'text' => 'Sebutkan komoditas, volume, dan tujuan pengiriman.',
+            ],
+            [
+                'icon' => 'send',
+                'n' => 'Langkah 2',
+                'title' => 'Kirim via WhatsApp',
+                'text' => 'Pesan Anda terisi otomatis. Tinggal tekan kirim di WhatsApp.',
+            ],
+            [
+                'icon' => 'check',
+                'n' => 'Langkah 3',
+                'title' => 'Terima Penawaran',
+                'text' => 'Tim kami memeriksa kebutuhan dan ketersediaan, lalu mengirim penawaran harga.',
+            ],
+        ],
+        'help_title' => 'Butuh bantuan?',
+        'help_sub' => 'Chat langsung dengan tim kami',
         'steps' => ['Pilih komoditas', 'Tentukan volume', 'Terima penawaran'],
         'title' => 'Minta Penawaran Harga',
         'sub' => 'Dapatkan penawaran terbaik sesuai kebutuhan Anda.',
