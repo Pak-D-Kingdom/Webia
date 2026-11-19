@@ -122,6 +122,34 @@ class CustomerSiteAutomotiveTest extends TestCase
         $this->assertStringContainsStringIgnoringCase('Auto Prima Custom', $response->getContent());
     }
 
+    public function test_noir_auto_detailing_replaces_split_logo_brand(): void
+    {
+        $template = $this->template('noir-auto-detailing-luxury');
+
+        $order = WebiaOrder::factory()->create([
+            'webia_template_id' => $template->id,
+            'template_snapshot' => [
+                'name' => $template->name,
+                'slug' => $template->slug,
+                'category_slug' => $template->category_slug,
+                'site_config_path' => $template->site_config_path,
+            ],
+            'status' => 'paid',
+            'delivery_status' => 'delivered',
+            'site_slug' => 'noir-detailing-site',
+            'business_data' => [
+                'business_name' => 'Auto Prima Custom',
+                'whatsapp' => '0877-1234-5678',
+            ],
+        ]);
+
+        $this->get(route('sites.show', ['order' => $order->site_slug]))
+            ->assertOk()
+            ->assertSee('Auto Prima Custom')
+            ->assertDontSee('ATELIER', false)
+            ->assertDontSee('Concierge NOIR', false);
+    }
+
     public static function automotiveTemplatesProvider(): array
     {
         return [
