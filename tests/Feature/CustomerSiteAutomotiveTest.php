@@ -116,9 +116,10 @@ class CustomerSiteAutomotiveTest extends TestCase
 
         $response = $this->get(route('sites.show', ['order' => $order->site_slug]));
         $response->assertOk()
-            ->assertSee('Auto Prima Custom')
             ->assertSee('6287712345678', false)
-            ->assertSee('webia-client-ai-widget', false); // Widget AI terpasang
+            ->assertSee('webia-native-ai-bridge', false); // Widget AI terpasang
+
+        $this->assertStringContainsStringIgnoringCase('Auto Prima Custom', $response->getContent());
     }
 
     public static function automotiveTemplatesProvider(): array

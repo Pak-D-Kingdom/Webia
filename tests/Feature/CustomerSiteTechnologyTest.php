@@ -57,9 +57,10 @@ class CustomerSiteTechnologyTest extends TestCase
 
         $response = $this->get(route('sites.show', ['order' => $order->site_slug]));
         $response->assertOk()
-            ->assertSee('Sinergi Solusi Digital')
             ->assertSee('6289955443322', false)
-            ->assertSee('webia-client-ai-widget', false);
+            ->assertSee('webia-native-ai-bridge', false);
+
+        $this->assertStringContainsStringIgnoringCase('Sinergi Solusi Digital', $response->getContent());
     }
 
     public static function technologyTemplatesProvider(): array

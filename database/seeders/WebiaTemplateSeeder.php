@@ -250,6 +250,7 @@ class WebiaTemplateSeeder extends Seeder
                 'headline' => 'Kuasai Skill Digital.<br>Raih Karir Impianmu.',
                 'tag' => 'Education · Online Course & E-learning · Modern',
                 'preview_folder' => null,
+                'site_config_path' => 'education/education-onlinecourse-modern',
                 'template_url' => '/webia/template/education-onlinecourse-modern',
                 'is_active' => true,
                 'sort_order' => 13,

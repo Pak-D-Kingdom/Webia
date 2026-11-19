@@ -76,6 +76,10 @@ class CustomerSiteController extends Controller
         if (str_starts_with($siteConfigPath, 'transportation-logistics/')) {
             return $this->handleTransportationLogistics($order, $siteConfigPath, $pageKey);
         }
+
+        if (str_starts_with($siteConfigPath, 'education/')) {
+            return $this->handleEducation($order, $siteConfigPath, $pageKey);
+        }
         $views = match (true) {
             $isBrandingAgency => array_fill_keys(['home', 'layanan', 'keahlian', 'portofolio', 'janji'], 'branding-creative-agency'),
             str_starts_with($siteConfigPath, 'company/') => ['home' => 'index', 'tentang-kami' => 'tentang-kami', 'portofolio' => 'portofolio'],
@@ -340,7 +344,7 @@ class CustomerSiteController extends Controller
             ],
         ];
 
-        if (!empty($order->site_slug) && isset($tenantTemplateMap[$order->site_slug])) {
+        if (! empty($order->site_slug) && isset($tenantTemplateMap[$order->site_slug])) {
             return $tenantTemplateMap[$order->site_slug];
         }
 
@@ -378,27 +382,27 @@ class CustomerSiteController extends Controller
         $replacements = [];
 
         // Prioritas penggantian nama demo
-        if (!empty($tenantTemplate['demo_name'])) {
+        if (! empty($tenantTemplate['demo_name'])) {
             $replacements[$tenantTemplate['demo_name']] = $bizName;
         }
-        if (!empty($tenantTemplate['demo_short']) && $tenantTemplate['demo_short'] !== ($tenantTemplate['demo_name'] ?? '')) {
+        if (! empty($tenantTemplate['demo_short']) && $tenantTemplate['demo_short'] !== ($tenantTemplate['demo_name'] ?? '')) {
             $replacements[$tenantTemplate['demo_short']] = $bizName;
         }
 
-        if (!empty($tenantTemplate['demo_phone'])) {
+        if (! empty($tenantTemplate['demo_phone'])) {
             $replacements[$tenantTemplate['demo_phone']] = $phone;
         }
 
-        if (!empty($tenantTemplate['demo_address'])) {
-            $replacements[$tenantTemplate['demo_address']] = $address ?: ($bizName . ', ' . $city);
+        if (! empty($tenantTemplate['demo_address'])) {
+            $replacements[$tenantTemplate['demo_address']] = $address ?: ($bizName.', '.$city);
         }
 
         // Ganti nomor WhatsApp link (href="https://wa.me/...")
         $cleanWa = $this->whatsappNumber($phone);
-        $html = preg_replace('/href="https?:\/\/wa\.me\/[0-9]+[^"]*"/i', 'href="https://wa.me/' . $cleanWa . '?text=' . rawurlencode("Halo {$bizName}, saya ingin bertanya mengenai produk dan layanan Anda.") . '"', $html);
+        $html = preg_replace('/href="https?:\/\/wa\.me\/[0-9]+[^"]*"/i', 'href="https://wa.me/'.$cleanWa.'?text='.rawurlencode("Halo {$bizName}, saya ingin bertanya mengenai produk dan layanan Anda.").'"', $html);
 
         // Ganti <title> agar sesuai identitas klien
-        $html = preg_replace('/<title>(.*?)<\/title>/i', '<title>' . e($bizName) . ' – Layanan Terbaik di ' . e($city) . '</title>', $html, 1);
+        $html = preg_replace('/<title>(.*?)<\/title>/i', '<title>'.e($bizName).' – Layanan Terbaik di '.e($city).'</title>', $html, 1);
 
         foreach ($replacements as $search => $replace) {
             if ($search !== '' && $search !== null) {
@@ -451,18 +455,7 @@ class CustomerSiteController extends Controller
 
         $renderedHtml = $this->transformAutomotiveHtml($renderedHtml, $order, $business, $whatsapp, $instagram, $slug);
 
-        $widgetHtml = view('components.site-ai-widget', [
-            'order' => $order,
-            'business' => $business,
-            'whatsapp' => $whatsapp,
-            'siteSlug' => $order->site_slug,
-        ])->render();
-
-        if (str_contains($renderedHtml, '</body>')) {
-            $renderedHtml = str_replace('</body>', $widgetHtml."\n</body>", $renderedHtml);
-        } else {
-            $renderedHtml .= $widgetHtml;
-        }
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
 
         return response($renderedHtml);
     }
@@ -598,18 +591,7 @@ class CustomerSiteController extends Controller
 
         $renderedHtml = $this->transformTechnologyHtml($renderedHtml, $order, $business, $whatsapp, $instagram, $slug);
 
-        $widgetHtml = view('components.site-ai-widget', [
-            'order' => $order,
-            'business' => $business,
-            'whatsapp' => $whatsapp,
-            'siteSlug' => $order->site_slug,
-        ])->render();
-
-        if (str_contains($renderedHtml, '</body>')) {
-            $renderedHtml = str_replace('</body>', $widgetHtml."\n</body>", $renderedHtml);
-        } else {
-            $renderedHtml .= $widgetHtml;
-        }
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
 
         return response($renderedHtml);
     }
@@ -702,18 +684,7 @@ class CustomerSiteController extends Controller
 
         $renderedHtml = $this->transformBeautyHtml($renderedHtml, $business, $whatsapp);
 
-        $widgetHtml = view('components.site-ai-widget', [
-            'order' => $order,
-            'business' => $business,
-            'whatsapp' => $whatsapp,
-            'siteSlug' => $order->site_slug,
-        ])->render();
-
-        if (str_contains($renderedHtml, '</body>')) {
-            $renderedHtml = str_replace('</body>', $widgetHtml."\n</body>", $renderedHtml);
-        } else {
-            $renderedHtml .= $widgetHtml;
-        }
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
 
         return response($renderedHtml);
     }
@@ -808,18 +779,7 @@ class CustomerSiteController extends Controller
 
         $renderedHtml = $this->transformFnbHtml($renderedHtml, $business, $whatsapp);
 
-        $widgetHtml = view('components.site-ai-widget', [
-            'order' => $order,
-            'business' => $business,
-            'whatsapp' => $whatsapp,
-            'siteSlug' => $order->site_slug,
-        ])->render();
-
-        if (str_contains($renderedHtml, '</body>')) {
-            $renderedHtml = str_replace('</body>', $widgetHtml."\n</body>", $renderedHtml);
-        } else {
-            $renderedHtml .= $widgetHtml;
-        }
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
 
         return response($renderedHtml);
     }
@@ -1057,18 +1017,7 @@ class CustomerSiteController extends Controller
             abort(404);
         }
 
-        $widgetHtml = view('components.site-ai-widget', [
-            'order' => $order,
-            'business' => $business,
-            'whatsapp' => $whatsapp,
-            'siteSlug' => $order->site_slug,
-        ])->render();
-
-        if (str_contains($renderedHtml, '</body>')) {
-            $renderedHtml = str_replace('</body>', $widgetHtml."\n</body>", $renderedHtml);
-        } else {
-            $renderedHtml .= $widgetHtml;
-        }
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
 
         return response($renderedHtml);
     }
@@ -1165,6 +1114,127 @@ class CustomerSiteController extends Controller
                 $email,
                 $html
             );
+        }
+
+        return $html;
+    }
+
+    private const EDUCATION_VIEWS = [
+        'education-onlinecourse-modern' => ['home' => 'website-bisnis.templates.education.online-course.education-onlinecourse-modern'],
+        'rumah-latte-preschool-daycare' => ['home' => 'website-bisnis.templates.education.preschool.rumah-latte-preschool-daycare'],
+        'tunas-cendekia-preschool-daycare' => ['home' => 'website-bisnis.templates.education.preschool.tunas-cendekia-preschool-daycare'],
+        'jeli-kecil-preschool-daycare' => ['home' => 'website-bisnis.template.education.preschool-daycare-jeli-kecil.index'],
+        'spark-academy-maximum-impact' => ['home' => 'website-bisnis.templates.education.spark-academy-maximum-impact'],
+        'ruby-academy-classic-school' => ['home' => 'website-bisnis.templates.education.ruby-academy-classic-school'],
+        'arctic-academy-school' => ['home' => 'website-bisnis.templates.education.arctic-academy-school'],
+    ];
+
+    private function handleEducation(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $slug = Str::after($siteConfigPath, 'education/');
+        abort_unless(isset(self::EDUCATION_VIEWS[$slug]), 404);
+        abort_unless(isset(self::EDUCATION_VIEWS[$slug][$pageKey]), 404);
+
+        $viewName = self::EDUCATION_VIEWS[$slug][$pageKey];
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $instagram = ltrim($business['instagram'] ?? '', '@');
+
+        $renderedHtml = view($viewName, [
+            'order' => $order,
+            'page' => $pageKey,
+            'business' => $business,
+            'whatsapp' => $whatsapp,
+            'instagram' => $instagram,
+        ])->render();
+
+        $renderedHtml = $this->transformEducationHtml($renderedHtml, $business, $whatsapp, $slug);
+
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+        return response($renderedHtml);
+    }
+
+    private function transformEducationHtml(string $html, array $business, string $whatsapp, string $slug): string
+    {
+        $bizName = $business['business_name'] ?? '';
+        if ($bizName !== '') {
+            $brandMap = [
+                'EDUPRIME<span class="text-blue-600 font-medium">ACADEMY</span>' => strtoupper($bizName),
+                'SPARK<span>!</span>' => strtoupper($bizName),
+                'EduPrime Academy' => $bizName,
+                'EDUPRIME ACADEMY' => strtoupper($bizName),
+                'EduPrime' => $bizName,
+                'EDUPRIME' => strtoupper($bizName),
+                'Rumah Latte' => $bizName,
+                'RUMAH LATTE' => strtoupper($bizName),
+                'Tunas Cendekia' => $bizName,
+                'TUNAS CENDEKIA' => strtoupper($bizName),
+                'Jeli Kecil' => $bizName,
+                'JELI KECIL' => strtoupper($bizName),
+                'SPARK Academy' => $bizName,
+                'SPARK ACADEMY' => strtoupper($bizName),
+                'SPARK' => strtoupper($bizName),
+                'Ruby Academy' => $bizName,
+                'RUBY ACADEMY' => strtoupper($bizName),
+                'Ruby AI Assistant' => $bizName.' AI Assistant',
+                'EduBot Assistant' => $bizName.' Assistant',
+                'EduBot Academic AI' => $bizName.' Academic AI',
+                '<strong>EduBot</strong>' => '<strong>'.e($bizName).'</strong>',
+                'Arctic Academy' => $bizName,
+                'ARCTIC ACADEMY' => strtoupper($bizName),
+                'Arctic AI Assistant' => $bizName.' AI Assistant',
+            ];
+            $html = str_replace(array_keys($brandMap), array_values($brandMap), $html);
+        }
+
+        $custWa = $whatsapp ?: '6281234567890';
+        $rawWa = $business['whatsapp'] ?? $custWa;
+        $html = str_replace(
+            ['6285850180285', '6281234567890', '+62 812-3456-7890', '0812-3456-7890'],
+            [$custWa, $custWa, $rawWa, $rawWa],
+            $html
+        );
+
+        $address = $this->businessAddress($business);
+        if ($address !== '') {
+            $html = str_replace(
+                [
+                    'Gedung EduPrime Center',
+                    'Jl. Contoh No. 12, Surabaya',
+                    'Jl. Contoh Raya No. 12, Surabaya',
+                    'Jl. Pelangi No. 12',
+                    'Jl. Raya Darmo No. 00, Surabaya',
+                    'Jl. Raya Darmo, Surabaya, Jawa Timur',
+                    'Surabaya, Indonesia',
+                ],
+                $address,
+                $html
+            );
+        }
+
+        if (! empty($business['email'])) {
+            $email = $business['email'];
+            $html = str_replace(
+                [
+                    'halo@rumahlatte.id',
+                    'halo@tunascendekia.id',
+                    'hai@jelikecil.id',
+                    'hello@sparkacademy.sch.id',
+                    'hello@rubyacademy.sch.id',
+                    'hello@arcticacademy.sch.id',
+                ],
+                $email,
+                $html
+            );
+        }
+
+        if ($slug === 'rumah-latte-preschool-daycare') {
+            $shim = '<script>document.getElementById("f").onsubmit=function(e){e.preventDefault();var d=new FormData(e.target);'
+                .'var t="Halo ".concat('.json_encode($bizName ?: 'Rumah Latte').', ", saya ", d.get("n"), " (WA ", d.get("w"), "). Anak usia ", d.get("u"), ", tertarik paket ", d.get("p"), ". ", (d.get("c")||""));'
+                .'document.getElementById("ok").style.display="block";'
+                .'window.open("https://wa.me/'.$custWa.'?text="+encodeURIComponent(t),"_blank")};</script>';
+            $html = str_replace('rumah-latte-preschool-daycare.js"></script>', 'rumah-latte-preschool-daycare.js"></script>'.$shim, $html);
         }
 
         return $html;
@@ -1934,10 +2004,10 @@ class CustomerSiteController extends Controller
     ): string {
         $cleanWa = preg_replace('/[^0-9]/', '', $whatsapp);
         if (str_starts_with($cleanWa, '0')) {
-            $cleanWa = '62' . substr($cleanWa, 1);
+            $cleanWa = '62'.substr($cleanWa, 1);
         }
         $bizName = $business['business_name'] ?? 'Toko';
-        $waChatUrl = "https://wa.me/{$cleanWa}?text=" . rawurlencode("Halo {$bizName}, saya ingin bertanya mengenai layanan dan produk Anda.");
+        $waChatUrl = "https://wa.me/{$cleanWa}?text=".rawurlencode("Halo {$bizName}, saya ingin bertanya mengenai layanan dan produk Anda.");
         $chatUrl = route('sites.chat', ['order' => $order->site_slug]);
         $csrfToken = csrf_token();
 
@@ -2030,7 +2100,7 @@ class CustomerSiteController extends Controller
     }
     setTimeout(bindAskHook, 400);
 
-    // 2. Hooking untuk Ruby Academy (input #msg, button #send, reply #reply)
+    // 2. Hooking untuk UI chat dengan input #msg, button #send, dan elemen #reply
     document.addEventListener('DOMContentLoaded', function() {
         const sendBtn = document.getElementById('send');
         const msgInput = document.getElementById('msg');
@@ -2866,8 +2936,9 @@ class CustomerSiteController extends Controller
 HTML;
 
         if (str_contains($html, '</body>')) {
-            return str_replace('</body>', $bridgeScript . "\n</body>", $html);
+            return str_replace('</body>', $bridgeScript."\n</body>", $html);
         }
-        return $html . $bridgeScript;
+
+        return $html.$bridgeScript;
     }
 }

@@ -76,7 +76,7 @@ class CustomerSiteFnbTest extends TestCase
         $response->assertOk()
             ->assertSee('Dapur Rasa Selera')
             ->assertSee('6281298765432', false)
-            ->assertSee('webia-client-ai-widget', false);
+            ->assertSee('webia-native-ai-bridge', false);
     }
 
     public static function fnbTemplatesProvider(): array

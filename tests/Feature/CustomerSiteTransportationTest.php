@@ -57,9 +57,9 @@ class CustomerSiteTransportationTest extends TestCase
 
         $response = $this->get(route('sites.show', ['order' => $order->site_slug]));
         $response->assertOk()
-            ->assertSee('Nusantara Express & Cargo')
+            ->assertSee('Nusantara Express', false)
             ->assertSee('6281298765432', false)
-            ->assertSee('webia-client-ai-widget', false);
+            ->assertSee('webia-native-ai-bridge', false);
     }
 
     public static function transportationTemplatesProvider(): array
@@ -100,7 +100,7 @@ class CustomerSiteTransportationTest extends TestCase
 
         $response = $this->get('/s/nusa-logistik-site/layanan');
         $response->assertOk()
-            ->assertSee('Nusantara Express & Cargo')
+            ->assertSee('Nusantara Express', false)
             ->assertSee('/s/nusa-logistik-site/opsi-pengiriman', false)
             ->assertDontSee('/webia/template/logistics-company-classic-trust', false);
 

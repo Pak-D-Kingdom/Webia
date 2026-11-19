@@ -72,7 +72,7 @@ class CustomerSiteBeautyTest extends TestCase
         $response->assertOk()
             ->assertSee('Cantika Beauty Studio')
             ->assertSee('6287766554433', false)
-            ->assertSee('webia-client-ai-widget', false);
+            ->assertSee('webia-native-ai-bridge', false);
     }
 
     public static function beautyTemplatesProvider(): array
