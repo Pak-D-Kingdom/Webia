@@ -72,9 +72,9 @@
             </div>
         </div>
 
-        <div class="webia-ai__notice" id="webia-ai-notice">
+        <div class="webia-ai__notice" id="webia-ai-notice" style="display: none;">
             <span aria-hidden="true">✦</span>
-            <span>Tampilan asisten sedang disiapkan. Chat AI akan tersedia setelah integrasi backend.</span>
+            <span></span>
         </div>
 
         <form class="webia-ai__form" id="webia-ai-form">
@@ -97,7 +97,7 @@
         </form>
 
         <p class="webia-ai__disclaimer">
-            WEBIA Assistant · AI integration coming soon
+            WEBIA Assistant · Terhubung dengan AI WEBIA
         </p>
     </section>
 </div>

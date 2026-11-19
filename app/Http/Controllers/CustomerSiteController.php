@@ -20,6 +20,26 @@ class CustomerSiteController extends Controller
             404,
         );
 
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $instagram = ltrim($business['instagram'] ?? '', '@');
+
+        // 1. Cek apakah ada Template Khusus Klien (Dedicated Category Template)
+        $tenantTemplate = $this->resolveTenantTemplateView($order);
+
+        if ($tenantTemplate && view()->exists($tenantTemplate['view'])) {
+            $renderedHtml = view($tenantTemplate['view'])->render();
+
+            // Personalisasi konten teks, judul, nomor kontak, dan branding klien
+            $renderedHtml = $this->personalizeTemplateHtml($renderedHtml, $tenantTemplate, $business, $order, $whatsapp, $instagram);
+
+            // Integrasi Widget Chatbot: Kembali ke desain asli template website klien masing-masing
+            $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+            return response($renderedHtml);
+        }
+
+        // 2. Fallback ke sistem config template lama jika view khusus belum terdaftar
         $page = $page ?? 'home';
         [$pageSection, $pageIdentifier] = array_pad(explode('/', $page, 2), 2, null);
         $siteConfigPath = $order->siteConfigPath();
@@ -73,9 +93,6 @@ class CustomerSiteController extends Controller
         };
         abort_unless(isset($views[$pageKey]), 404);
 
-        $business = $order->business_data ?? [];
-        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
-        $instagram = ltrim($business['instagram'] ?? '', '@');
         $siteConfig = config('template.'.str_replace('/', '.', $siteConfigPath));
         abort_unless(is_array($siteConfig), 404);
 
@@ -197,21 +214,199 @@ class CustomerSiteController extends Controller
             );
         }
 
-        // Injeksi otomatis widget AI Assistant & Zero Lost Lead Fallback
-        $widgetHtml = view('components.site-ai-widget', [
-            'order' => $order,
-            'business' => $business,
-            'whatsapp' => $whatsapp,
-            'siteSlug' => $order->site_slug,
-        ])->render();
-
-        if (str_contains($renderedHtml, '</body>')) {
-            $renderedHtml = str_replace('</body>', $widgetHtml."\n</body>", $renderedHtml);
-        } else {
-            $renderedHtml .= $widgetHtml;
-        }
+        // Integrasi Widget Chatbot: Kembali ke desain asli template website klien masing-masing
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
 
         return response($renderedHtml);
+    }
+
+    /**
+     * Resolusi template blade terbaik di Webia sesuai kategori dan profil tiap klien
+     */
+    public function resolveTenantTemplateView(WebiaOrder $order): ?array
+    {
+        $tenantTemplateMap = [
+            'tenant_automotive_01' => [
+                'view' => 'website-bisnis.templates.automotive.otto-artistic-workshop',
+                'demo_name' => 'Bengkel Otto',
+                'demo_short' => 'Otto',
+                'demo_phone' => '0812-3456-7890',
+                'demo_address' => 'Jalan Mesin Kencang No. 8, Bandung',
+            ],
+            'tenant_beauty_01' => [
+                'view' => 'website-bisnis.templates.beauty.glow-lab-creative-beauty-clinic',
+                'demo_name' => 'GLOW LAB',
+                'demo_short' => 'glow lab',
+                'demo_phone' => '0812-3456-7890',
+                'demo_address' => 'Jl. Senopati No. 45, Jakarta Selatan',
+            ],
+            'tenant_laundry_01' => [
+                'view' => 'website-bisnis.template.home-services.minimalis.laundry-mint-fresh.pages.index',
+                'demo_name' => 'FreshWash Laundry',
+                'demo_short' => 'FreshWash',
+                'demo_phone' => '0812-3456-7890',
+                'demo_address' => 'Jl. Pandanaran No. 102, Semarang',
+            ],
+            'tenant_agriculture_01' => [
+                'view' => 'website-bisnis.templates.agriculture.agriternak-organic-ethical-precision',
+                'demo_name' => 'AgriTernak Organic',
+                'demo_short' => 'AgriTernak',
+                'demo_phone' => '0812-3456-7890',
+                'demo_address' => 'Kawasan Agro Mandiri, Malang',
+            ],
+            'tenant_healthcare_01' => [
+                'view' => 'website-bisnis.templates.healthcare.dental.azure-smile-clinic',
+                'demo_name' => 'Azure Smile Clinic',
+                'demo_short' => 'Azure Smile',
+                'demo_phone' => '0812-3456-7890',
+                'demo_address' => 'Jl. Raya Darmo No. 45, Surabaya',
+            ],
+            'tenant_fnb_01' => [
+                'view' => 'website-bisnis.templates.fnb.restaurant.laut-biru-seafood',
+                'demo_name' => 'Laut Biru Seafood',
+                'demo_short' => 'Laut Biru',
+                'demo_phone' => '0812-3456-7890',
+                'demo_address' => 'Jl. Malioboro No. 24, Yogyakarta',
+            ],
+            'tenant_personal_brand_01' => [
+                'view' => 'website-bisnis.templates.personal-brand.author-writer.arya-sanjaya-ruby-editorial',
+                'demo_name' => 'Arya Sanjaya',
+                'demo_short' => 'AryaSanjaya',
+                'demo_phone' => '0812-3456-7890',
+                'demo_address' => 'Jakarta Barat',
+            ],
+            'tenant_pet_01' => [
+                'view' => 'website-bisnis.templates.pet-animal-service.pawtopia-animal-care',
+                'demo_name' => 'Pawtopia Animal Care',
+                'demo_short' => 'Pawtopia',
+                'demo_phone' => '0812-3456-7890',
+                'demo_address' => 'Jl. Pajajaran No. 88, Bogor',
+            ],
+            'tenant_travel_01' => [
+                'view' => 'website-bisnis.templates.travel-tourism.adventure-outdoor-tour.wildtrail.wildtrail',
+                'demo_name' => 'WILDTRAIL',
+                'demo_short' => 'Wildtrail',
+                'demo_phone' => '0812-3456-7890',
+                'demo_address' => 'Jl. Sunset Road No. 88, Denpasar Bali',
+            ],
+            'tenant_logistics_01' => [
+                'view' => 'website-bisnis.templates.transportation-logistics.delivery-service.cocoexpress.cocoexpress',
+                'demo_name' => 'COCOEXPRESS',
+                'demo_short' => 'CocoExpress',
+                'demo_phone' => '0812-3456-7890',
+                'demo_address' => 'Kawasan Pergudangan Tanjung Priok, Jakarta Utara',
+            ],
+            'tenant_furniture_01' => [
+                'view' => 'website-bisnis.templates.interior-architecture.interior-design-studio.artistic-terracotta.artistic-terracotta',
+                'demo_name' => 'Terracotta Studio',
+                'demo_short' => 'Terracotta',
+                'demo_phone' => '0812-3456-7890',
+                'demo_address' => 'Sentra Ukir Tahunan, Jepara',
+            ],
+            'tenant_umrah_01' => [
+                'view' => 'website-bisnis.templates.travel-tourism.umrah-haji.baitul-safar.baitul-safar',
+                'demo_name' => 'Baitul Safar Umrah & Haji',
+                'demo_short' => 'Baitul Safar',
+                'demo_phone' => '0812-3456-7890',
+                'demo_address' => 'Jl. Ahmad Yani No. 120, Surabaya',
+            ],
+            'tenant_education_01' => [
+                'view' => 'website-bisnis.templates.education.ruby-academy-classic-school',
+                'demo_name' => 'Ruby Academy',
+                'demo_short' => 'Ruby Academy',
+                'demo_phone' => '0812-3456-7890',
+                'demo_address' => 'Jl. Dago Asri No. 15, Bandung',
+            ],
+            'tenant_professional_service_01' => [
+                'view' => 'website-bisnis.templates.company.bangun-karsa-contractor-professional',
+                'demo_name' => 'Bangun Karsa Contractor',
+                'demo_short' => 'Bangun Karsa',
+                'demo_phone' => '0812-3456-7890',
+                'demo_address' => 'Gedung Wisma Antara Lt. 8, Jakarta Pusat',
+            ],
+            'tenant_fitness_01' => [
+                'view' => 'website-bisnis.templates.sports-fitness.gym-fitness-center.ironpulse.ironpulse',
+                'demo_name' => 'IRONPULSE Mega Athletic Gym',
+                'demo_short' => 'IRONPULSE',
+                'demo_phone' => '0812-3456-7890',
+                'demo_address' => 'Jl. Senopati Raya No. 88, Surabaya',
+            ],
+            'tenant_property_01' => [
+                'view' => 'website-bisnis.templates.property.hearthstone-property',
+                'demo_name' => 'Hearthstone Property',
+                'demo_short' => 'Hearthstone',
+                'demo_phone' => '0812-3456-7890',
+                'demo_address' => 'Kawasan Residensial Asri, Surabaya',
+            ],
+        ];
+
+        if (!empty($order->site_slug) && isset($tenantTemplateMap[$order->site_slug])) {
+            return $tenantTemplateMap[$order->site_slug];
+        }
+
+        // Cek apakah order memiliki template DB dengan preview_view
+        if ($order->template && filled($order->template->preview_view) && view()->exists($order->template->preview_view)) {
+            return [
+                'view' => $order->template->preview_view,
+                'demo_name' => $order->template->name,
+                'demo_short' => $order->template->name,
+                'demo_phone' => '0812-3456-7890',
+                'demo_address' => 'Indonesia',
+            ];
+        }
+
+        return null;
+    }
+
+    /**
+     * Personalisasi HTML template dengan data autentik bisnis klien
+     */
+    private function personalizeTemplateHtml(
+        string $html,
+        array $tenantTemplate,
+        array $business,
+        WebiaOrder $order,
+        string $whatsapp,
+        string $instagram
+    ): string {
+        $bizName = $business['business_name'] ?? 'Bisnis';
+        $ownerName = $business['owner_name'] ?? $order->user?->name ?? 'Pemilik';
+        $phone = $business['whatsapp'] ?? '081234567890';
+        $city = $business['city'] ?? 'Indonesia';
+        $address = $this->businessAddress($business);
+
+        $replacements = [];
+
+        // Prioritas penggantian nama demo
+        if (!empty($tenantTemplate['demo_name'])) {
+            $replacements[$tenantTemplate['demo_name']] = $bizName;
+        }
+        if (!empty($tenantTemplate['demo_short']) && $tenantTemplate['demo_short'] !== ($tenantTemplate['demo_name'] ?? '')) {
+            $replacements[$tenantTemplate['demo_short']] = $bizName;
+        }
+
+        if (!empty($tenantTemplate['demo_phone'])) {
+            $replacements[$tenantTemplate['demo_phone']] = $phone;
+        }
+
+        if (!empty($tenantTemplate['demo_address'])) {
+            $replacements[$tenantTemplate['demo_address']] = $address ?: ($bizName . ', ' . $city);
+        }
+
+        // Ganti nomor WhatsApp link (href="https://wa.me/...")
+        $cleanWa = $this->whatsappNumber($phone);
+        $html = preg_replace('/href="https?:\/\/wa\.me\/[0-9]+[^"]*"/i', 'href="https://wa.me/' . $cleanWa . '?text=' . rawurlencode("Halo {$bizName}, saya ingin bertanya mengenai produk dan layanan Anda.") . '"', $html);
+
+        // Ganti <title> agar sesuai identitas klien
+        $html = preg_replace('/<title>(.*?)<\/title>/i', '<title>' . e($bizName) . ' – Layanan Terbaik di ' . e($city) . '</title>', $html, 1);
+
+        foreach ($replacements as $search => $replace) {
+            if ($search !== '' && $search !== null) {
+                $html = str_replace($search, $replace, $html);
+            }
+        }
+
+        return $html;
     }
 
     private const AUTOMOTIVE_VIEWS = [
@@ -1713,14 +1908,966 @@ class CustomerSiteController extends Controller
             ]);
         }
 
-        // Jalankan percakapan AI & catat konsumsi kuota
+        // Jalankan percakapan AI & catat konsumsi kuota hanya jika belum dicatat oleh AI Engine
         $replyData = AiQuotaService::simulateChat($order->site_slug, $message);
-        AiQuotaService::recordUsage($order->site_slug);
+        if (empty($replyData['engine_recorded'])) {
+            AiQuotaService::recordUsage($order->site_slug);
+        }
 
         return response()->json([
             'status' => 'success',
             'reply' => $replyData['reply'] ?? 'Terima kasih atas pertanyaannya. Ada yang bisa kami bantu lagi?',
             'whatsapp_url' => $waUrl,
         ]);
+    }
+
+    /**
+     * Integrasi cerdas AI Chatbot:
+     * - Jika template website memiliki widget/panel chat bawaan, gunakan UI asli template dan hubungkan ke AI backend via bridge script.
+     * - Jika template belum memiliki UI chat bawaan, sematkan widget floating yang temanya otomatis selaras dengan kategori template.
+     */
+    private function attachAiChatWidget(
+        string $html,
+        WebiaOrder $order,
+        array $business,
+        string $whatsapp
+    ): string {
+        $cleanWa = preg_replace('/[^0-9]/', '', $whatsapp);
+        if (str_starts_with($cleanWa, '0')) {
+            $cleanWa = '62' . substr($cleanWa, 1);
+        }
+        $bizName = $business['business_name'] ?? 'Toko';
+        $waChatUrl = "https://wa.me/{$cleanWa}?text=" . rawurlencode("Halo {$bizName}, saya ingin bertanya mengenai layanan dan produk Anda.");
+        $chatUrl = route('sites.chat', ['order' => $order->site_slug]);
+        $csrfToken = csrf_token();
+
+        // Gunakan widget UI bawaan asli template klien dan sambungkan langsung ke AI backend Webia
+        $bridgeScript = <<<HTML
+<script id="webia-native-ai-bridge">
+(function() {
+    const chatUrl = "{$chatUrl}";
+    const csrfToken = "{$csrfToken}";
+    const defaultWaUrl = "{$waChatUrl}";
+
+    async function sendToAi(message) {
+        const res = await fetch(chatUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': csrfToken
+            },
+            body: JSON.stringify({ message: message })
+        });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return await res.json();
+    }
+
+    // 1. Hooking untuk template dengan ask(q) & say(t, role) (Bengkel Otto, Glow Lab, Bangun Karsa, dll.)
+    function bindAskHook() {
+        if (typeof window.ask === 'function') {
+            window.ask = async function(query) {
+                if (!query || !query.trim()) return;
+                const text = query.trim();
+
+                if (typeof window.say === 'function') {
+                    window.say(text, 'u');
+                }
+
+                let typingEl = null;
+                const ms = document.getElementById('ms') || document.getElementById('msgs');
+                if (ms) {
+                    typingEl = document.createElement('div');
+                    typingEl.className = 'm b webia-typing-note';
+                    typingEl.style.cssText = 'opacity:0.75; font-style:italic;';
+                    typingEl.textContent = 'Mengetik jawaban...';
+                    ms.appendChild(typingEl);
+                    ms.scrollTop = ms.scrollHeight;
+                }
+
+                try {
+                    const data = await sendToAi(text);
+                    if (typingEl) typingEl.remove();
+                    const reply = data.reply || 'Ada yang bisa kami bantu seputar layanan kami?';
+
+                    if (typeof window.say === 'function') {
+                        window.say(reply, 'b');
+                    }
+
+                    const waLinkEl = document.getElementById('wa') || document.getElementById('cw') || document.getElementById('rw');
+                    if (waLinkEl) {
+                        waLinkEl.href = data.whatsapp_url || defaultWaUrl;
+                    }
+                } catch (err) {
+                    if (typingEl) typingEl.remove();
+                    if (typeof window.say === 'function') {
+                        window.say('Mohon maaf, terjadi kendala jaringan. Silakan hubungi kami via WhatsApp.', 'b');
+                    }
+                }
+            };
+        }
+
+        const cf = document.getElementById('cf');
+        const ci = document.getElementById('ci');
+        if (cf && ci) {
+            cf.onsubmit = function(e) {
+                e.preventDefault();
+                const v = ci.value.trim();
+                if (v) {
+                    ci.value = '';
+                    if (typeof window.ask === 'function') {
+                        window.ask(v);
+                    }
+                }
+            };
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bindAskHook);
+    } else {
+        bindAskHook();
+    }
+    setTimeout(bindAskHook, 400);
+
+    // 2. Hooking untuk Ruby Academy (input #msg, button #send, reply #reply)
+    document.addEventListener('DOMContentLoaded', function() {
+        const sendBtn = document.getElementById('send');
+        const msgInput = document.getElementById('msg');
+        const replySmall = document.getElementById('reply');
+        if (sendBtn && msgInput) {
+            sendBtn.onclick = async function(e) {
+                e.preventDefault();
+                const text = msgInput.value.trim();
+                if (!text) return;
+                if (replySmall) replySmall.textContent = 'Menghubungi asisten...';
+                try {
+                    const data = await sendToAi(text);
+                    if (replySmall) replySmall.textContent = data.reply || 'Silakan hubungi WhatsApp kami.';
+                    msgInput.value = '';
+                } catch(err) {
+                    if (replySmall) replySmall.textContent = 'Terjadi kesalahan jaringan.';
+                }
+            };
+        }
+    });
+
+    // 3. Hooking untuk Laundry Mint Fresh (FreshBot AI masot robot)
+    document.addEventListener('DOMContentLoaded', function() {
+        const lwForm = document.querySelector('[data-lw-chat-form]');
+        const lwLog = document.querySelector('[data-lw-chat-log]');
+        const lwInput = document.getElementById('lw-chat-input');
+        if (lwForm && lwLog) {
+            function addLwMsg(role, text) {
+                const el = document.createElement('div');
+                el.className = 'lw-msg lw-msg--' + role;
+                el.textContent = text;
+                lwLog.appendChild(el);
+                lwLog.scrollTop = lwLog.scrollHeight;
+                return el;
+            }
+
+            async function handleLwSend(text) {
+                if (!text || !text.trim()) return;
+                addLwMsg('user', text.trim());
+                const typing = addLwMsg('bot', 'Mengetik jawaban...');
+                typing.style.opacity = '0.7';
+                try {
+                    const data = await sendToAi(text.trim());
+                    typing.remove();
+                    addLwMsg('bot', data.reply || 'Ada yang bisa kami bantu?');
+                } catch (e) {
+                    typing.remove();
+                    addLwMsg('bot', 'Mohon maaf, terjadi kendala jaringan.');
+                }
+            }
+
+            lwForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                if (lwInput && lwInput.value) {
+                    const val = lwInput.value;
+                    lwInput.value = '';
+                    handleLwSend(val);
+                }
+            }, true);
+
+            document.querySelectorAll('[data-lw-chat-topic]').forEach(function(btn) {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    const q = this.textContent.trim();
+                    handleLwSend(q);
+                }, true);
+            });
+        }
+    });
+
+    // 4. Hooking untuk AgriTernak Organic (window.handleAiSubmit & window.appendAiMessage)
+    function bindAgriHook() {
+        if (typeof window.handleAiSubmit === 'function' || document.getElementById('ai-chat-box')) {
+            window.handleAiSubmit = async function(event) {
+                if (event) event.preventDefault();
+                const input = document.getElementById('ai-input');
+                if (!input) return;
+                const query = input.value.trim();
+                if (!query) return;
+
+                if (typeof window.appendAiMessage === 'function') {
+                    window.appendAiMessage(query, 'user');
+                }
+                input.value = '';
+
+                const chatBox = document.getElementById('ai-chat-box');
+                let typingDiv = null;
+                if (chatBox) {
+                    typingDiv = document.createElement('div');
+                    typingDiv.className = 'flex items-start gap-3';
+                    typingDiv.innerHTML = '<div class="p-3 rounded-2xl rounded-tl-none bg-organic-surface-container-high text-xs italic opacity-75">Mengetik balasan...</div>';
+                    chatBox.appendChild(typingDiv);
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                }
+
+                try {
+                    const data = await sendToAi(query);
+                    if (typingDiv) typingDiv.remove();
+                    if (typeof window.appendAiMessage === 'function') {
+                        window.appendAiMessage(data.reply || 'Ada yang bisa kami bantu seputar agrikultur organik?', 'bot');
+                    }
+                } catch(e) {
+                    if (typingDiv) typingDiv.remove();
+                    if (typeof window.appendAiMessage === 'function') {
+                        window.appendAiMessage('Mohon maaf, terjadi kendala jaringan.', 'bot');
+                    }
+                }
+            };
+        }
+    }
+    setTimeout(bindAgriHook, 400);
+
+    // 5. Hooking untuk Azure Smile Clinic (#ascChatForm, #ascChatInput, #ascChatMessages)
+    document.addEventListener('DOMContentLoaded', function() {
+        const ascForm = document.getElementById('ascChatForm');
+        const ascInput = document.getElementById('ascChatInput');
+        const ascMsgs = document.getElementById('ascChatMessages');
+        if (ascForm && ascMsgs) {
+            function addAscBubble(text, isUser) {
+                const p = document.createElement('p');
+                p.className = 'asc-chat-bubble';
+                if (isUser) {
+                    p.style.cssText = 'background:var(--asc-primary,#0070f3); color:#fff; align-self:flex-end; border-radius:12px 12px 0 12px; margin-left:auto;';
+                }
+                p.textContent = text;
+                ascMsgs.appendChild(p);
+                ascMsgs.scrollTop = ascMsgs.scrollHeight;
+                return p;
+            }
+
+            async function handleAscChat(text) {
+                if (!text || !text.trim()) return;
+                addAscBubble(text.trim(), true);
+                const typing = addAscBubble('Mengetik jawaban...', false);
+                typing.style.opacity = '0.7';
+                try {
+                    const data = await sendToAi(text.trim());
+                    typing.remove();
+                    addAscBubble(data.reply || 'Ada yang bisa kami bantu mengenai perawatan gigi Anda?', false);
+                } catch(e) {
+                    typing.remove();
+                    addAscBubble('Mohon maaf, terjadi gangguan jaringan.', false);
+                }
+            }
+
+            ascForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                if (ascInput && ascInput.value) {
+                    const q = ascInput.value;
+                    ascInput.value = '';
+                    handleAscChat(q);
+                }
+            }, true);
+
+            document.querySelectorAll('.asc-chat-quick button').forEach(function(b) {
+                b.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    handleAscChat(this.textContent.trim());
+                }, true);
+            });
+        }
+    });
+
+    // 6. Hooking untuk Laut Biru Seafood (#lb-chat-form, #lb-chat-input, #lb-messages)
+    document.addEventListener('DOMContentLoaded', function() {
+        const lbForm = document.getElementById('lb-chat-form');
+        const lbInput = document.getElementById('lb-chat-input');
+        const lbMsgs = document.getElementById('lb-messages');
+        if (lbForm && lbMsgs) {
+            function addLbMsg(text, isUser) {
+                const div = document.createElement('div');
+                div.className = isUser ? 'lb-msg lb-msg-user' : 'lb-msg lb-msg-bot';
+                div.style.cssText = isUser ? 'background:var(--lb-blue,#0284c7); color:#fff; align-self:flex-end; border-radius:12px 12px 2px 12px; padding:8px 12px; max-width:85%; margin-bottom:8px;' : 'background:#f1f5f9; color:#0f172a; align-self:flex-start; border-radius:12px 12px 12px 2px; padding:8px 12px; max-width:85%; margin-bottom:8px;';
+                div.textContent = text;
+                lbMsgs.appendChild(div);
+                lbMsgs.scrollTop = lbMsgs.scrollHeight;
+                return div;
+            }
+
+            async function handleLbChat(text) {
+                if (!text || !text.trim()) return;
+                addLbMsg(text.trim(), true);
+                const typing = addLbMsg('Mengetik jawaban...', false);
+                typing.style.opacity = '0.7';
+                try {
+                    const data = await sendToAi(text.trim());
+                    typing.remove();
+                    addLbMsg(data.reply || 'Ada yang bisa kami bantu seputar menu seafood?', false);
+                } catch(e) {
+                    typing.remove();
+                    addLbMsg('Mohon maaf, terjadi kendala jaringan.', false);
+                }
+            }
+
+            lbForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                if (lbInput && lbInput.value) {
+                    const q = lbInput.value;
+                    lbInput.value = '';
+                    handleLbChat(q);
+                }
+            }, true);
+        }
+    });
+
+    // 7. Hooking untuk Arya Sanjaya (window.handleAiChat, #ai-input, #ai-chat-body)
+    function bindAryaHook() {
+        if (typeof window.handleAiChat === 'function' || document.getElementById('ai-modal-box')) {
+            window.handleAiChat = async function(e) {
+                if (e) e.preventDefault();
+                const input = document.getElementById('ai-input');
+                if (!input) return;
+                const query = input.value.trim();
+                if (!query) return;
+
+                const chatBody = document.getElementById('ai-chat-body');
+                if (chatBody) {
+                    const userDiv = document.createElement('div');
+                    userDiv.className = 'flex gap-3 justify-end';
+                    userDiv.innerHTML = '<div class="p-3 bg-arya-ruby-800 text-white rounded text-xs max-w-[80%] leading-relaxed">' + query + '</div>';
+                    chatBody.appendChild(userDiv);
+
+                    const typingDiv = document.createElement('div');
+                    typingDiv.className = 'flex gap-3';
+                    typingDiv.innerHTML = '<div class="p-3 bg-white border border-stone-200 rounded text-xs text-stone-500 italic">Mengetik balasan...</div>';
+                    chatBody.appendChild(typingDiv);
+                    chatBody.scrollTop = chatBody.scrollHeight;
+
+                    input.value = '';
+
+                    try {
+                        const data = await sendToAi(query);
+                        typingDiv.remove();
+                        const botDiv = document.createElement('div');
+                        botDiv.className = 'flex gap-3';
+                        botDiv.innerHTML = '<div class="p-3 bg-white border border-stone-200 rounded text-xs text-arya-charcoal-900 leading-relaxed shadow-sm">' + (data.reply || 'Ada yang bisa saya bantu seputar karya tulis saya?') + '</div>';
+                        chatBody.appendChild(botDiv);
+                        chatBody.scrollTop = chatBody.scrollHeight;
+                    } catch(err) {
+                        typingDiv.remove();
+                    }
+                }
+            };
+        }
+    }
+    setTimeout(bindAryaHook, 400);
+
+    // 8. Hooking untuk CocoExpress (window.handleAiMessage, #aiChatBox, #aiInput, #chatMessages)
+    function bindCocoHook() {
+        if (typeof window.handleAiMessage === 'function' || document.getElementById('aiChatBox')) {
+            window.handleAiMessage = async function(event) {
+                if (event) event.preventDefault();
+                const input = document.getElementById('aiInput');
+                if (!input) return;
+                const q = input.value.trim();
+                if (!q) return;
+
+                const chatMessages = document.getElementById('chatMessages');
+                if (chatMessages) {
+                    const uMsg = document.createElement('div');
+                    uMsg.className = 'bg-coco-caramel text-white p-3 rounded-2xl rounded-tr-none text-right shadow-sm';
+                    uMsg.textContent = q;
+                    chatMessages.appendChild(uMsg);
+
+                    const tMsg = document.createElement('div');
+                    tMsg.className = 'bg-white p-3 rounded-2xl rounded-tl-none border border-coco-caramel/20 text-coco-dark italic opacity-75';
+                    tMsg.textContent = 'ChocoBot sedang mencari info...';
+                    chatMessages.appendChild(tMsg);
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                    input.value = '';
+
+                    try {
+                        const data = await sendToAi(q);
+                        tMsg.remove();
+                        const bMsg = document.createElement('div');
+                        bMsg.className = 'bg-white p-3 rounded-2xl rounded-tl-none border border-coco-caramel/20 text-coco-dark shadow-sm';
+                        bMsg.textContent = data.reply || 'Ada yang bisa saya bantu seputar pengiriman paket Anda?';
+                        chatMessages.appendChild(bMsg);
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    } catch(e) {
+                        tMsg.remove();
+                    }
+                }
+            };
+        }
+    }
+    setTimeout(bindCocoHook, 400);
+
+    // 9. Hooking untuk Artistic Terracotta Studio (window.sendChatMessage, #chat-input, #chat-messages)
+    function bindTerraHook() {
+        if (typeof window.sendChatMessage === 'function' || document.getElementById('ai-chat-modal')) {
+            window.sendChatMessage = async function() {
+                const input = document.getElementById('chat-input');
+                if (!input) return;
+                const q = input.value.trim();
+                if (!q) return;
+
+                const messagesContainer = document.getElementById('chat-messages');
+                if (messagesContainer) {
+                    const uDiv = document.createElement('div');
+                    uDiv.className = 'flex justify-end';
+                    uDiv.innerHTML = '<div class="bg-terra-700 text-terra-100 rounded-2xl rounded-tr-none p-3 text-xs max-w-[80%]">' + q + '</div>';
+                    messagesContainer.appendChild(uDiv);
+
+                    const tDiv = document.createElement('div');
+                    tDiv.className = 'flex justify-start';
+                    tDiv.innerHTML = '<div class="bg-terra-800 text-terra-200 border border-terra-700 rounded-2xl rounded-tl-none p-3 text-xs italic">Menyiapkan jawaban desain...</div>';
+                    messagesContainer.appendChild(tDiv);
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+                    input.value = '';
+
+                    try {
+                        const data = await sendToAi(q);
+                        tDiv.remove();
+                        const bDiv = document.createElement('div');
+                        bDiv.className = 'flex justify-start';
+                        bDiv.innerHTML = '<div class="bg-terra-800 text-terra-100 border border-terra-700 rounded-2xl rounded-tl-none p-3 text-xs max-w-[80%]">' + (data.reply || 'Ada yang bisa saya bantu seputar interior dan furnitur?') + '</div>';
+                        messagesContainer.appendChild(bDiv);
+                        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                    } catch(e) {
+                        tDiv.remove();
+                    }
+                }
+            };
+        }
+    }
+    setTimeout(bindTerraHook, 400);
+
+    // 10. Hooking untuk Wildtrail & Baitul Safar (#qb button, #ms)
+    document.addEventListener('DOMContentLoaded', function() {
+        const qb = document.getElementById('qb');
+        const ms = document.getElementById('ms');
+        if (qb && ms) {
+            qb.addEventListener('click', async function(e) {
+                const btn = e.target.closest('button');
+                if (!btn) return;
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                const q = btn.textContent.trim();
+
+                const uDiv = document.createElement('div');
+                uDiv.className = 'm u';
+                uDiv.textContent = q;
+                ms.appendChild(uDiv);
+
+                const tDiv = document.createElement('div');
+                tDiv.className = 'm';
+                tDiv.style.opacity = '0.75';
+                tDiv.textContent = 'Mengetik balasan...';
+                ms.appendChild(tDiv);
+                ms.scrollTop = ms.scrollHeight;
+
+                try {
+                    const data = await sendToAi(q);
+                    tDiv.remove();
+                    const bDiv = document.createElement('div');
+                    bDiv.className = 'm';
+                    bDiv.textContent = data.reply || 'Ada yang bisa kami bantu?';
+                    ms.appendChild(bDiv);
+                    ms.scrollTop = ms.scrollHeight;
+                } catch(err) {
+                    tDiv.remove();
+                }
+            }, true);
+        }
+    });
+
+    // 11. Hooking untuk Pawtopia Animal Care (.chips button, #msgs)
+    document.addEventListener('DOMContentLoaded', function() {
+        const pawChips = document.querySelector('#chat .chips');
+        const pawMsgs = document.getElementById('msgs');
+        if (pawChips && pawMsgs) {
+            pawChips.addEventListener('click', async function(e) {
+                const btn = e.target.closest('button');
+                if (!btn) return;
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                const q = btn.textContent.trim();
+
+                const uDiv = document.createElement('div');
+                uDiv.className = 'm me';
+                uDiv.textContent = q;
+                pawMsgs.appendChild(uDiv);
+
+                const tDiv = document.createElement('div');
+                tDiv.className = 'm bot';
+                tDiv.style.opacity = '0.75';
+                tDiv.textContent = 'Sedang mencari info hewan...';
+                pawMsgs.appendChild(tDiv);
+                pawMsgs.scrollTop = pawMsgs.scrollHeight;
+
+                try {
+                    const data = await sendToAi(q);
+                    tDiv.remove();
+                    const bDiv = document.createElement('div');
+                    bDiv.className = 'm bot';
+                    bDiv.textContent = data.reply || 'Ada yang bisa kami bantu seputar anabul Anda?';
+                    pawMsgs.appendChild(bDiv);
+                    pawMsgs.scrollTop = pawMsgs.scrollHeight;
+                } catch(err) {
+                    tDiv.remove();
+                }
+            }, true);
+        }
+    });
+
+    // 12. Hooking untuk Hearthstone Property (.cq button, #msgs)
+    document.addEventListener('DOMContentLoaded', function() {
+        const hearthCq = document.querySelector('#chat .cq');
+        const msgs = document.getElementById('msgs');
+        if (hearthCq && msgs) {
+            hearthCq.addEventListener('click', async function(e) {
+                const btn = e.target.closest('button');
+                if (!btn) return;
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                const q = btn.textContent.trim();
+
+                const uDiv = document.createElement('div');
+                uDiv.className = 'm me';
+                uDiv.textContent = q;
+                msgs.appendChild(uDiv);
+
+                const tDiv = document.createElement('div');
+                tDiv.className = 'm bot';
+                tDiv.style.opacity = '0.75';
+                tDiv.textContent = 'Mengecek ketersediaan properti...';
+                msgs.appendChild(tDiv);
+                msgs.scrollTop = ms.scrollHeight;
+
+                try {
+                    const data = await sendToAi(q);
+                    tDiv.remove();
+                    const bDiv = document.createElement('div');
+                    bDiv.className = 'm bot';
+                    bDiv.textContent = data.reply || 'Ada yang bisa kami bantu mengenai unit hunian ini?';
+                    msgs.appendChild(bDiv);
+                    msgs.scrollTop = msgs.scrollHeight;
+                } catch(err) {
+                    tDiv.remove();
+                }
+            }, true);
+        }
+    });
+
+    // 13. Hooking untuk IRONPULSE (#ch, [data-q], #ms)
+    document.addEventListener('DOMContentLoaded', function() {
+        const ch = document.getElementById('ch');
+        if (ch) {
+            ch.addEventListener('click', async function(e) {
+                const btn = e.target.closest('[data-q]');
+                if (!btn) return;
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                const q = btn.textContent.trim();
+
+                const msPulse = document.getElementById('ms');
+                if (msPulse) {
+                    const uP = document.createElement('p');
+                    uP.className = 'u';
+                    uP.textContent = q;
+                    msPulse.appendChild(uP);
+
+                    const tP = document.createElement('p');
+                    tP.style.opacity = '0.75';
+                    tP.style.fontStyle = 'italic';
+                    tP.textContent = 'Pulse AI sedang mengecek program...';
+                    msPulse.appendChild(tP);
+                    msPulse.scrollTop = msPulse.scrollHeight;
+
+                    try {
+                        const data = await sendToAi(q);
+                        tP.remove();
+                        const bP = document.createElement('p');
+                        bP.textContent = data.reply || 'Ada yang ingin ditanyakan seputar latihan dan membership?';
+                        msPulse.appendChild(bP);
+                        msPulse.scrollTop = msPulse.scrollHeight;
+                    } catch(err) {
+                        tP.remove();
+                    }
+                }
+            }, true);
+        }
+    });
+
+    // 14. Hooking untuk Renovaku Sage Green (data-chat-form, data-chat-log, data-chat-ask)
+    document.addEventListener('DOMContentLoaded', function() {
+        const hrForm = document.querySelector('[data-chat-form]');
+        const hrLog = document.querySelector('[data-chat-log]');
+        const hrInput = document.getElementById('hrChatInput') || document.querySelector('[data-chat-input]');
+        if (hrForm && hrLog) {
+            function addHrMsg(role, text) {
+                const row = document.createElement('div');
+                row.className = 'hr-msg hr-msg--' + role;
+                row.innerHTML = '<div class="hr-bubble hr-bubble--' + role + '">' + text + '</div>';
+                hrLog.appendChild(row);
+                hrLog.scrollTop = hrLog.scrollHeight;
+                return row;
+            }
+
+            async function handleHrSend(text) {
+                if (!text || !text.trim()) return;
+                addHrMsg('user', text.trim());
+                const typing = addHrMsg('bot', 'Menghitung estimasi & jawaban...');
+                typing.style.opacity = '0.7';
+                try {
+                    const data = await sendToAi(text.trim());
+                    typing.remove();
+                    addHrMsg('bot', data.reply || 'Ada yang bisa kami bantu seputar renovasi rumah?');
+                } catch(e) {
+                    typing.remove();
+                    addHrMsg('bot', 'Mohon maaf, terjadi kendala jaringan.');
+                }
+            }
+
+            hrForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                if (hrInput && hrInput.value) {
+                    const q = hrInput.value;
+                    hrInput.value = '';
+                    handleHrSend(q);
+                }
+            }, true);
+
+            document.querySelectorAll('[data-chat-ask]').forEach(function(btn) {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    handleHrSend(this.getAttribute('data-chat-ask') || this.textContent.trim());
+                }, true);
+            });
+        }
+    });
+
+    // 15. Hooking untuk Renovaku Chocolate Luxe (#rr-chat-form, #rr-chat-log, #rr-chat-input)
+    document.addEventListener('DOMContentLoaded', function() {
+        const rrForm = document.getElementById('rr-chat-form');
+        const rrLog = document.getElementById('rr-chat-log');
+        const rrInput = document.getElementById('rr-chat-input');
+        if (rrForm && rrLog) {
+            function addRrMsg(role, text) {
+                const el = document.createElement('div');
+                el.className = 'rr-chat__msg rr-chat__msg--' + role;
+                el.textContent = text;
+                rrLog.appendChild(el);
+                rrLog.scrollTop = rrLog.scrollHeight;
+                return el;
+            }
+
+            async function handleRrSend(text) {
+                if (!text || !text.trim()) return;
+                addRrMsg('user', text.trim());
+                const typing = addRrMsg('bot', 'Mengetik jawaban...');
+                typing.style.opacity = '0.7';
+                try {
+                    const data = await sendToAi(text.trim());
+                    typing.remove();
+                    addRrMsg('bot', data.reply || 'Ada yang bisa kami bantu?');
+                } catch(e) {
+                    typing.remove();
+                    addRrMsg('bot', 'Mohon maaf, terjadi kendala jaringan.');
+                }
+            }
+
+            rrForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                if (rrInput && rrInput.value) {
+                    const q = rrInput.value;
+                    rrInput.value = '';
+                    handleRrSend(q);
+                }
+            }, true);
+
+            document.querySelectorAll('#rr-chat-quick button').forEach(function(btn) {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    handleRrSend(this.textContent.trim());
+                }, true);
+            });
+        }
+    });
+
+    // 16. Hooking untuk HarapanBot Foundation (.fd-chat__form, .fd-chat__body, .fd-chat__chips button)
+    document.addEventListener('DOMContentLoaded', function() {
+        const fdForm = document.querySelector('.fd-chat__form');
+        const fdBody = document.querySelector('.fd-chat__body');
+        const fdInput = fdForm ? fdForm.querySelector('input') : null;
+        if (fdForm && fdBody) {
+            function addFdMsg(role, text) {
+                const row = document.createElement('div');
+                row.className = 'fd-chat__row fd-chat__row--' + role;
+                row.innerHTML = '<div class="fd-chat__bubble">' + text + '</div>';
+                fdBody.appendChild(row);
+                fdBody.scrollTop = fdBody.scrollHeight;
+                return row;
+            }
+
+            async function handleFdSend(text) {
+                if (!text || !text.trim()) return;
+                addFdMsg('user', text.trim());
+                const typing = addFdMsg('bot', 'Menyiapkan info yayasan...');
+                typing.style.opacity = '0.7';
+                try {
+                    const data = await sendToAi(text.trim());
+                    typing.remove();
+                    addFdMsg('bot', data.reply || 'Ada yang bisa kami bantu seputar program donasi?');
+                } catch(e) {
+                    typing.remove();
+                    addFdMsg('bot', 'Mohon maaf, terjadi gangguan jaringan.');
+                }
+            }
+
+            fdForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                if (fdInput && fdInput.value) {
+                    const q = fdInput.value;
+                    fdInput.value = '';
+                    handleFdSend(q);
+                }
+            }, true);
+
+            document.querySelectorAll('.fd-chat__chips button').forEach(function(btn) {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    handleFdSend(this.textContent.trim());
+                }, true);
+            });
+        }
+    });
+
+    // 17. Hooking untuk Muthawwif AI Umrah Emerald Green ([data-uh-chatbot])
+    document.addEventListener('DOMContentLoaded', function() {
+        const uhForm = document.querySelector('[data-uh-chatbot] form') || document.querySelector('.uh-chatwin__form');
+        const uhBody = document.querySelector('.uh-chatwin__body') || document.querySelector('[data-uh-chatlog]');
+        const uhInput = uhForm ? uhForm.querySelector('input') : null;
+        if (uhForm && uhBody) {
+            function addUhMsg(role, text) {
+                const row = document.createElement('div');
+                row.className = 'uh-chatwin__row uh-chatwin__row--' + role;
+                row.innerHTML = '<div class="uh-chatwin__bubble">' + text + '</div>';
+                uhBody.appendChild(row);
+                uhBody.scrollTop = uhBody.scrollHeight;
+                return row;
+            }
+
+            async function handleUhSend(text) {
+                if (!text || !text.trim()) return;
+                addUhMsg('user', text.trim());
+                const typing = addUhMsg('bot', 'Muthawwif AI sedang mencari rincian paket...');
+                typing.style.opacity = '0.7';
+                try {
+                    const data = await sendToAi(text.trim());
+                    typing.remove();
+                    addUhMsg('bot', data.reply || 'Ada yang bisa kami bantu seputar keberangkatan umrah & haji?');
+                } catch(e) {
+                    typing.remove();
+                    addUhMsg('bot', 'Mohon maaf, terjadi gangguan jaringan.');
+                }
+            }
+
+            uhForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                if (uhInput && uhInput.value) {
+                    const q = uhInput.value;
+                    uhInput.value = '';
+                    handleUhSend(q);
+                }
+            }, true);
+
+            document.querySelectorAll('.uh-chatwin__chips button').forEach(function(btn) {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    handleUhSend(this.textContent.trim());
+                }, true);
+            });
+        }
+    });
+
+    // 18. Hooking untuk Branding Creative Agency Cobalt Pop ([data-bca-chat])
+    document.addEventListener('DOMContentLoaded', function() {
+        const bcaChat = document.querySelector('[data-bca-chat]');
+        if (bcaChat) {
+            const bcaForm = bcaChat.querySelector('form');
+            const bcaLog = bcaChat.querySelector('[data-bca-chat-log]');
+            const bcaInput = bcaForm ? bcaForm.querySelector('input') : null;
+
+            if (bcaForm && bcaLog) {
+                function addBcaMsg(text, role) {
+                    const el = document.createElement('div');
+                    el.className = 'bca-msg bca-msg--' + role;
+                    const p = document.createElement('p');
+                    p.textContent = text;
+                    el.appendChild(p);
+                    bcaLog.appendChild(el);
+                    bcaLog.scrollTop = bcaLog.scrollHeight;
+                    return el;
+                }
+
+                async function handleBcaSend(text) {
+                    if (!text || !text.trim()) return;
+                    addBcaMsg(text.trim(), 'me');
+                    const typing = document.createElement('div');
+                    typing.className = 'bca-msg bca-msg--bot';
+                    typing.innerHTML = '<span class="bca-typing" aria-label="Sedang mengetik"><i></i><i></i><i></i></span>';
+                    bcaLog.appendChild(typing);
+                    bcaLog.scrollTop = bcaLog.scrollHeight;
+
+                    try {
+                        const data = await sendToAi(text.trim());
+                        typing.remove();
+                        addBcaMsg(data.reply || 'Ada yang bisa kami bantu seputar project branding Anda?', 'bot');
+                    } catch(e) {
+                        typing.remove();
+                        addBcaMsg('Mohon maaf, terjadi kendala jaringan.', 'bot');
+                    }
+                }
+
+                bcaForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    if (bcaInput && bcaInput.value) {
+                        const q = bcaInput.value;
+                        bcaInput.value = '';
+                        handleBcaSend(q);
+                    }
+                }, true);
+
+                bcaChat.querySelectorAll('[data-bca-quick]').forEach(function(btn) {
+                    btn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+                        const q = this.getAttribute('data-bca-quick') || this.textContent.trim();
+                        handleBcaSend(q);
+                    }, true);
+                });
+            }
+        }
+
+        // 19. Hooking untuk SodaTable Weekly Family Meal Plan (#ai-chat-window, #ai-chat-messages, #ai-chat-input)
+        function bindSodaHook() {
+            const sodaWindow = document.getElementById('ai-chat-window');
+            const sodaMessages = document.getElementById('ai-chat-messages');
+            const sodaInput = document.getElementById('ai-chat-input');
+            if (!sodaWindow || !sodaMessages || !sodaInput) return;
+
+            function escapeHtml(str) {
+                const div = document.createElement('div');
+                div.textContent = str;
+                return div.innerHTML;
+            }
+
+            async function handleSodaAiSend(text) {
+                if (!text || !text.trim()) return;
+                const query = text.trim();
+                sodaMessages.innerHTML += '<div class="bg-coral text-white p-2.5 rounded-2xl rounded-tr-none ml-8 font-medium">' + escapeHtml(query) + '</div>';
+                sodaInput.value = '';
+                sodaMessages.scrollTop = sodaMessages.scrollHeight;
+
+                const typing = document.createElement('div');
+                typing.className = 'bg-white p-2.5 rounded-2xl rounded-tl-none border border-plum/15 text-cocoa italic opacity-75';
+                typing.textContent = 'SodaAI sedang menyusun rekomendasi menu keluarga...';
+                sodaMessages.appendChild(typing);
+                sodaMessages.scrollTop = sodaMessages.scrollHeight;
+
+                try {
+                    const data = await sendToAi(query);
+                    typing.remove();
+                    const replyDiv = document.createElement('div');
+                    replyDiv.className = 'bg-white p-2.5 rounded-2xl rounded-tl-none border border-plum/15 text-cocoa leading-relaxed';
+                    replyDiv.innerHTML = data.reply ? data.reply.replace(/\n/g, '<br>') : 'Ada yang bisa SodaAI bantu seputar meal plan keluarga Anda?';
+                    sodaMessages.appendChild(replyDiv);
+                } catch (e) {
+                    typing.remove();
+                    const errDiv = document.createElement('div');
+                    errDiv.className = 'bg-white p-2.5 rounded-2xl rounded-tl-none border border-red-200 text-red-600';
+                    errDiv.textContent = 'Mohon maaf, terjadi kendala jaringan. Silakan hubungi kami via WhatsApp.';
+                    sodaMessages.appendChild(errDiv);
+                }
+                sodaMessages.scrollTop = sodaMessages.scrollHeight;
+            }
+
+            window.handleAIChatSubmit = function(e) {
+                if (e) {
+                    e.preventDefault();
+                    if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
+                }
+                if (sodaInput && sodaInput.value) {
+                    handleSodaAiSend(sodaInput.value);
+                }
+            };
+
+            window.sendQuickAIPrompt = function(txt) {
+                handleSodaAiSend(txt);
+            };
+
+            const sodaForm = sodaInput.closest('form');
+            if (sodaForm && !sodaForm.dataset.webiaBound) {
+                sodaForm.dataset.webiaBound = '1';
+                sodaForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    if (sodaInput && sodaInput.value) {
+                        handleSodaAiSend(sodaInput.value);
+                    }
+                }, true);
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', bindSodaHook);
+        } else {
+            bindSodaHook();
+        }
+        setTimeout(bindSodaHook, 400);
+        setTimeout(bindSodaHook, 900);
+    });
+})();
+</script>
+HTML;
+
+        if (str_contains($html, '</body>')) {
+            return str_replace('</body>', $bridgeScript . "\n</body>", $html);
+        }
+        return $html . $bridgeScript;
     }
 }

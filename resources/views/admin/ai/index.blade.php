@@ -532,6 +532,7 @@ Apakah ingin tambah kuota atau upgrade paket website agar chatbot tetap aktif me
                                         data-wa-url="{{ $waUrl }}"
                                         data-order-url="{{ $client['order'] ? route('admin.orders.show', $client['order']) : '' }}"
                                         data-order-number="{{ $client['order'] ? $client['order']->order_number : '' }}"
+                                        data-live-url="{{ route('sites.show', ['order' => $client['tenant_id']]) }}"
                                         onclick="openClientActionPopup(this, event)"
                                         title="Buka Pilihan Aksi Klien"
                                         class="inline-flex h-8 items-center gap-1 rounded-lg border border-outline-variant bg-surface-container-lowest px-2.5 font-label-sm text-xs font-bold text-on-surface hover:border-primary hover:text-primary hover:bg-surface-container-low transition-all cursor-pointer">
@@ -959,7 +960,8 @@ Apakah ingin tambah kuota atau upgrade paket website agar chatbot tetap aktif me
             monthlyQuota: parseInt(d.monthlyQuota) || 500,
             waUrl: d.waUrl || '#',
             orderUrl: d.orderUrl || '',
-            orderNumber: d.orderNumber || ''
+            orderNumber: d.orderNumber || '',
+            liveUrl: d.liveUrl || ''
         };
 
         // Isi data mini header dropdown

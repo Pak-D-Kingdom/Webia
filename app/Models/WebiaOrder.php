@@ -59,7 +59,7 @@ class WebiaOrder extends Model
 
     public function supportsCustomerSite(): bool
     {
-        return filled($this->siteConfigPath());
+        return filled($this->site_slug) || filled($this->siteConfigPath());
     }
 
     public function getProgressIndexAttribute(): int
