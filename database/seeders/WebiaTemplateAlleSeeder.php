@@ -478,5 +478,27 @@ class WebiaTemplateAlleSeeder extends Seeder
                 'sort_order' => 54,
             ]
         );
+
+        WebiaTemplate::updateOrCreate(
+            ['slug' => 'rubra-memoria-artistic-heritage'],
+            [
+                'name' => 'Rubra Memoria — Artistic Experimental Heritage Exhibition',
+                'category_slug' => 'education-culture',
+                'category_label' => 'Education & Culture',
+                'business_types' => ['Interactive Art & Heritage Exhibition'],
+                'design_style' => 'Artistic Experimental',
+                'color_theme' => 'Burgundy Wine & Warm Parchment',
+                'description' => 'Experimental cultural exhibition with interactive sensory installations, virtual gallery and full exhibition passes, timed-session and group-visit information, gallery location and hours, visitor FAQs, WhatsApp reservations, and an AI curator demo.',
+                'preview_style' => 'preview-rubra-memoria-artistic-heritage',
+                'eyebrow' => 'ARTISTIC & TACTILE HERITAGE LAB',
+                'headline' => 'Merajut Ulang Warisan Lewat Cahaya & Sentuhan.',
+                'tag' => 'Education & Culture · Heritage Exhibition · Artistic Experimental',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/rubra-memoria-artistic-heritage',
+                'preview_view' => 'website-bisnis.templates.education-culture.rubra-memoria-artistic-heritage',
+                'is_active' => true,
+                'sort_order' => 55,
+            ]
+        );
     }
 }

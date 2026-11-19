@@ -150,6 +150,11 @@ Route::view(
 )->name('webia.template.aquaverse-interactive-heritage');
 
 Route::view(
+    '/webia/template/rubra-memoria-artistic-heritage',
+    'website-bisnis.templates.education-culture.rubra-memoria-artistic-heritage'
+)->name('webia.template.rubra-memoria-artistic-heritage');
+
+Route::view(
     '/webia/template/pawlora-animal-care',
     'website-bisnis.templates.pet-animal-service.pawlora-animal-care'
 )->name('webia.template.pet-animal-service.pawlora-animal-care');
