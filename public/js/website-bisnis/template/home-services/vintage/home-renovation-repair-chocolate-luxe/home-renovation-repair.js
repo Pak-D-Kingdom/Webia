@@ -63,6 +63,7 @@
   var onScroll = raf(function () {
     var h = document.documentElement.scrollHeight - window.innerHeight;
     if (bar) { bar.style.setProperty('--p', (h > 0 ? Math.min(window.scrollY / h, 1) * 100 : 0) + '%'); }
+    if (!reduced) { root.style.setProperty('--sy', Math.min(window.scrollY, 900)); }
     flowUpdate();
   });
   window.addEventListener('scroll', onScroll, { passive: true });
