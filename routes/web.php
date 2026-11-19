@@ -1904,6 +1904,14 @@ Route::prefix('webia/template')->group(function () {
         '/sodatable-family-meal-plan',
         'website-bisnis.templates.food-subscription.weekly-family-meal-plan.sodatable.sodatable'
     )->name('webia.template.sodatable-family-meal-plan');
+    Route::view(
+        '/tirtaceria-swim-academy',
+        'website-bisnis.templates.sports.swimming-school.tirtaceria.tirtaceria'
+    )->name('webia.template.tirtaceria-swim-academy');
+    Route::view(
+        '/splashkids-swim-school',
+        'website-bisnis.templates.sports.swimming-school.splashkids.splashkids'
+    )->name('webia.template.splashkids-swim-school');
 });
 
 Route::get('webia/template/{path}', TemplatePreviewController::class)
