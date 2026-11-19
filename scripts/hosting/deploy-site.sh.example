@@ -1,0 +1,131 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# WEBIA Hosting Auto-Provisioning Script (VPS Target)
+# ==============================================================================
+# Skrip ini dipanggil melalui SSH oleh HostingDeployer dari aplikasi WEBIA.
+# Payload dikirimkan melalui STDIN dalam format JSON:
+#   {
+#     "domain": "klinik-sehat.sites.webia.id",
+#     "order_number": "WEB-261105-PRUP",
+#     "site_config_path": "config/template/.../klinik-sehat.php"
+#   }
+#
+# Prasyarat di server VPS target:
+# 1. jq terinstall (`sudo apt install jq -y`)
+# 2. Nginx terinstall dan running
+# 3. Certbot terinstall jika mengaktifkan SSL per-domain
+# 4. User non-root (misal: 'deployer') dengan hak sudo tanpa password untuk reload nginx:
+#    deployer ALL=(ALL) NOPASSWD: /usr/sbin/nginx -t, /bin/systemctl reload nginx
+# ==============================================================================
+
+set -euo pipefail
+
+# 1. Baca payload JSON dari STDIN
+INPUT_PAYLOAD=$(cat)
+
+if [ -z "${INPUT_PAYLOAD}" ]; then
+    echo "ERROR: Payload JSON dari STDIN kosong." >&2
+    exit 1
+fi
+
+# 2. Parse field yang dibutuhkan
+DOMAIN=$(echo "${INPUT_PAYLOAD}" | jq -r '.domain // empty')
+ORDER_NUMBER=$(echo "${INPUT_PAYLOAD}" | jq -r '.order_number // empty')
+SITE_CONFIG=$(echo "${INPUT_PAYLOAD}" | jq -r '.site_config_path // empty')
+
+if [ -z "${DOMAIN}" ]; then
+    echo "ERROR: Field 'domain' tidak ditemukan dalam payload." >&2
+    exit 1
+fi
+
+# Validasi keamanan format domain (hanya alfanumerik, titik, dan strip)
+if ! [[ "${DOMAIN}" =~ ^[a-zA-Z0-9.-]+$ ]]; then
+    echo "ERROR: Format nama domain tidak valid: ${DOMAIN}" >&2
+    exit 1
+fi
+
+echo "==> Memulai provisioning untuk domain: ${DOMAIN} (Order: ${ORDER_NUMBER:-N/A})"
+
+# 3. Direktori Web & Log
+WEB_ROOT="/var/www/customers/${DOMAIN}"
+LOG_DIR="/var/log/nginx"
+NGINX_CONF="/etc/nginx/sites-available/${DOMAIN}.conf"
+NGINX_ENABLED="/etc/nginx/sites-enabled/${DOMAIN}.conf"
+
+mkdir -p "${WEB_ROOT}"
+chown -R www-data:www-data "${WEB_ROOT}"
+chmod 755 "${WEB_ROOT}"
+
+# Halaman placeholder awal jika belum ada file
+if [ ! -f "${WEB_ROOT}/index.html" ] && [ ! -f "${WEB_ROOT}/index.php" ]; then
+    cat <<EOF > "${WEB_ROOT}/index.html"
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${DOMAIN} — Powered by WEBIA</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; background: #f8fafc; color: #1e293b; }
+        .card { background: white; padding: 2.5rem; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); text-align: center; max-width: 28rem; }
+        h1 { margin-top: 0; color: #4338ca; font-size: 1.5rem; }
+        p { color: #64748b; line-height: 1.6; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Website Sedang Disiapkan</h1>
+        <p>Layanan hosting untuk <strong>${DOMAIN}</strong> telah aktif. Konten website akan segera ditayangkan.</p>
+    </div>
+</body>
+</html>
+EOF
+    chown www-data:www-data "${WEB_ROOT}/index.html"
+fi
+
+# 4. Buat Konfigurasi VirtualHost Nginx
+# Catatan: Bila menggunakan wildcard SSL (*.sites.webia.id), sesuaikan path cert di template ini.
+cat <<EOF > /tmp/${DOMAIN}.conf
+server {
+    listen 80;
+    listen [::]:80;
+    server_name ${DOMAIN};
+
+    root ${WEB_ROOT};
+    index index.html index.htm index.php;
+
+    access_log ${LOG_DIR}/${DOMAIN}.access.log;
+    error_log ${LOG_DIR}/${DOMAIN}.error.log;
+
+    location / {
+        try_files \$uri \$uri/ /index.php?\$query_string;
+    }
+
+    # Blok akses file sensitif
+    location ~ /\. {
+        deny all;
+    }
+
+    # Cache file statis
+    location ~* \.(jpg|jpeg|png|gif|ico|css|js|svg|woff|woff2|ttf)$ {
+        expires 30d;
+        add_header Cache-Control "public, no-transform";
+    }
+}
+EOF
+
+sudo mv "/tmp/${DOMAIN}.conf" "${NGINX_CONF}"
+sudo ln -sf "${NGINX_CONF}" "${NGINX_ENABLED}"
+
+# 5. Uji Konfigurasi Nginx
+if ! sudo /usr/sbin/nginx -t; then
+    echo "ERROR: Uji konfigurasi Nginx gagal." >&2
+    sudo rm -f "${NGINX_ENABLED}"
+    exit 1
+fi
+
+# 6. Reload Nginx
+sudo /bin/systemctl reload nginx
+
+echo "SUCCESS: Domain ${DOMAIN} berhasil di-provision dan aktif."
+exit 0

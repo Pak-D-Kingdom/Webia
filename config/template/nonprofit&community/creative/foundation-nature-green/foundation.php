@@ -22,27 +22,27 @@ return [
 
     'assets' => [
         'css' => 'css/website-bisnis/template/nonprofit&community/creative/foundation-nature-green/foundation.css',
-        'js'  => 'js/website-bisnis/template/nonprofit&community/creative/foundation-nature-green/foundation.js',
+        'js' => 'js/website-bisnis/template/nonprofit&community/creative/foundation-nature-green/foundation.js',
         'img' => 'images/website-bisnis/template/nonprofit&community/creative/foundation-nature-green/',
     ],
 
     'brand' => [
-        'name'    => 'GreenHope',
-        'suffix'  => 'Foundation',
+        'name' => 'GreenHope',
+        'suffix' => 'Foundation',
         'tagline' => 'Bersama untuk masa depan yang lebih hijau',
-        'bot'     => 'GreenBot',
+        'bot' => 'GreenBot',
     ],
 
     'contact' => [
-        'address'       => 'Jl. Merdeka No. 123, Bandung, Jawa Barat',
+        'address' => 'Jl. Merdeka No. 123, Bandung, Jawa Barat',
         'address_short' => 'Jl. Merdeka No. 123, Bandung',
-        'phone_top'     => '+62 1234 5678',
-        'phone'         => '+62 22 1234 5678',
-        'phone_link'    => '+62221234567',
-        'email'         => 'info@greenhope.or.id',
+        'phone_top' => '+62 1234 5678',
+        'phone' => '+62 22 1234 5678',
+        'phone_link' => '+62221234567',
+        'email' => 'info@greenhope.or.id',
         // Nomor WhatsApp (format internasional tanpa +) untuk tombol WA, form, dan FAQ.
-        'whatsapp'      => '62895630300345',
-        'map_url'       => 'https://www.google.com/maps/search/?api=1&query=Jl.+Merdeka+No.+123+Bandung',
+        'whatsapp' => '62895630300345',
+        'map_url' => 'https://www.google.com/maps/search/?api=1&query=Jl.+Merdeka+No.+123+Bandung',
     ],
 
     'social' => [
@@ -67,24 +67,24 @@ return [
     // Judul tab browser + isi header halaman dalam.
     // actions: tombol di header ([label, slug, style]); focus: object-position gambar header.
     'pages' => [
-        'beranda'      => ['title' => 'GreenHope Foundation — Masa Depan yang Lebih Hijau'],
+        'beranda' => ['title' => 'GreenHope Foundation — Masa Depan yang Lebih Hijau'],
         'tentang-kami' => ['title' => 'Misi & Visi', 'heading' => 'Misi & Visi Kami', 'lead' => 'Menebar kebaikan, menjaga kehidupan. Kenali arah, nilai, dan perjalanan GreenHope.', 'crumb' => 'Tentang Kami', 'image' => 'hero-kids.jpg', 'focus' => '50% 40%', 'frame' => 480,
             'actions' => [['Lihat Program', 'program', 'primary'], ['Donasi Sekarang', 'donasi', 'ghost']]],
-        'program'      => ['title' => 'Program Kami', 'heading' => 'Program Kami', 'lead' => 'Empat program utama untuk lingkungan, pendidikan, kesehatan, dan komunitas.', 'crumb' => 'Program Kami', 'image' => 'news-kids.jpg', 'focus' => '50% 40%', 'frame' => 440,
+        'program' => ['title' => 'Program Kami', 'heading' => 'Program Kami', 'lead' => 'Empat program utama untuk lingkungan, pendidikan, kesehatan, dan komunitas.', 'crumb' => 'Program Kami', 'image' => 'news-kids.jpg', 'focus' => '50% 40%', 'frame' => 440,
             'actions' => [['Dukung Program', 'donasi', 'primary'], ['Jadi Relawan', 'relawan', 'ghost']]],
-        'dampak'       => ['title' => 'Laporan Dampak', 'heading' => 'Dampak Kami', 'lead' => 'Bersama, kita telah memberikan manfaat nyata untuk banyak orang.', 'crumb' => 'Dampak', 'image' => 'mission-globe.jpg', 'focus' => '50% 50%', 'frame' => 340,
+        'dampak' => ['title' => 'Laporan Dampak', 'heading' => 'Dampak Kami', 'lead' => 'Bersama, kita telah memberikan manfaat nyata untuk banyak orang.', 'crumb' => 'Dampak', 'image' => 'mission-globe.jpg', 'focus' => '50% 50%', 'frame' => 340,
             'actions' => [['Unduh Laporan', 'dampak#laporan', 'primary'], ['Lihat Transparansi', 'transparansi', 'ghost']]],
-        'donasi'       => ['title' => 'Opsi Donasi', 'heading' => 'Opsi Donasi', 'lead' => 'Pilih cara terbaik untuk berbagi kebaikan. Setiap donasi dilaporkan secara terbuka.', 'crumb' => 'Donasi', 'image' => 'quote-globe.jpg', 'focus' => '50% 50%', 'frame' => 320,
+        'donasi' => ['title' => 'Opsi Donasi', 'heading' => 'Opsi Donasi', 'lead' => 'Pilih cara terbaik untuk berbagi kebaikan. Setiap donasi dilaporkan secara terbuka.', 'crumb' => 'Donasi', 'image' => 'quote-globe.jpg', 'focus' => '50% 50%', 'frame' => 320,
             'actions' => [['Pilih Cara Donasi', 'donasi#online', 'primary'], ['Lihat Transparansi', 'transparansi', 'ghost']]],
         'transparansi' => ['title' => 'Transparansi Keuangan', 'heading' => 'Transparansi Keuangan', 'lead' => 'Kami percaya pada keterbukaan dan akuntabilitas dalam setiap rupiah donasi.', 'crumb' => 'Transparansi', 'image' => 'finance.jpg', 'focus' => '50% 50%', 'frame' => 320,
             'actions' => [['Unduh Laporan', 'transparansi#laporan', 'primary'], ['Donasi Sekarang', 'donasi', 'ghost']]],
-        'mitra'        => ['title' => 'Mitra & Sponsor', 'heading' => 'Mitra & Sponsor', 'lead' => 'Bersama mitra terpercaya, kami melangkah lebih jauh.', 'crumb' => 'Mitra', 'image' => 'volunteer-hands.jpg', 'focus' => '50% 50%', 'frame' => 340,
+        'mitra' => ['title' => 'Mitra & Sponsor', 'heading' => 'Mitra & Sponsor', 'lead' => 'Bersama mitra terpercaya, kami melangkah lebih jauh.', 'crumb' => 'Mitra', 'image' => 'volunteer-hands.jpg', 'focus' => '50% 50%', 'frame' => 340,
             'actions' => [['Ajukan Kemitraan', 'mitra#ajukan', 'primary'], ['Lihat Dampak', 'dampak', 'ghost']]],
-        'relawan'      => ['title' => 'Daftar Relawan', 'heading' => 'Daftar Relawan', 'lead' => 'Bergabunglah menjadi bagian dari perubahan positif bersama ribuan relawan lainnya.', 'crumb' => 'Relawan', 'image' => 'news-volunteer.jpg', 'focus' => '50% 50%', 'frame' => 320,
+        'relawan' => ['title' => 'Daftar Relawan', 'heading' => 'Daftar Relawan', 'lead' => 'Bergabunglah menjadi bagian dari perubahan positif bersama ribuan relawan lainnya.', 'crumb' => 'Relawan', 'image' => 'news-volunteer.jpg', 'focus' => '50% 50%', 'frame' => 320,
             'actions' => [['Isi Formulir', 'relawan#formulir', 'primary'], ['Lihat Program', 'program', 'ghost']]],
-        'berita'       => ['title' => 'Berita & Acara', 'heading' => 'Berita & Acara', 'lead' => 'Ikuti kabar terbaru dan kegiatan kami.', 'crumb' => 'Berita & Acara', 'image' => 'hero-kids.jpg', 'focus' => '88% 40%', 'frame' => 480,
+        'berita' => ['title' => 'Berita & Acara', 'heading' => 'Berita & Acara', 'lead' => 'Ikuti kabar terbaru dan kegiatan kami.', 'crumb' => 'Berita & Acara', 'image' => 'hero-kids.jpg', 'focus' => '88% 40%', 'frame' => 480,
             'actions' => [['Jadi Relawan', 'relawan', 'primary'], ['Donasi Sekarang', 'donasi', 'ghost']]],
-        'ai-chatbot'   => ['title' => 'GreenBot — FAQ Program & Donasi', 'heading' => 'Tanya GreenBot', 'lead' => 'Asisten FAQ untuk program dan donasi GreenHope. Jawaban cepat, kapan saja.', 'crumb' => 'GreenBot', 'image' => 'mascot.jpg', 'focus' => '50% 18%', 'frame' => 300,
+        'ai-chatbot' => ['title' => 'GreenBot — FAQ Program & Donasi', 'heading' => 'Tanya GreenBot', 'lead' => 'Asisten FAQ untuk program dan donasi GreenHope. Jawaban cepat, kapan saja.', 'crumb' => 'GreenBot', 'image' => 'mascot.jpg', 'focus' => '50% 18%', 'frame' => 300,
             'actions' => [['Lihat Program', 'program', 'primary'], ['Opsi Donasi', 'donasi', 'ghost']]],
     ],
 
@@ -104,14 +104,14 @@ return [
     'search_popular' => [['Donasi', 'donasi'], ['Program', 'program'], ['Relawan', 'relawan'], ['Laporan', 'transparansi']],
 
     'hero' => [
-        'script'   => 'Bersama, Kita Wujudkan',
-        'title'    => 'Masa Depan',
-        'title_2'  => 'yang Lebih Hijau',
-        'text'     => 'Untuk bumi yang lebih sehat, masyarakat yang lebih sejahtera, dan generasi yang lebih baik.',
-        'cta'      => 'Dukung Sekarang',
-        'cta_2'    => 'Pelajari Lebih Lanjut',
-        'overlay'  => 'Untuk Dunia yang Lebih Baik',
-        'chips'    => [
+        'script' => 'Bersama, Kita Wujudkan',
+        'title' => 'Masa Depan',
+        'title_2' => 'yang Lebih Hijau',
+        'text' => 'Untuk bumi yang lebih sehat, masyarakat yang lebih sejahtera, dan generasi yang lebih baik.',
+        'cta' => 'Dukung Sekarang',
+        'cta_2' => 'Pelajari Lebih Lanjut',
+        'overlay' => 'Untuk Dunia yang Lebih Baik',
+        'chips' => [
             ['icon' => 'users', 'value' => '150K+', 'label' => 'Penerima manfaat'],
             ['icon' => 'heart', 'value' => '500+', 'label' => 'Program sosial'],
         ],
@@ -119,8 +119,8 @@ return [
 
     'mission' => [
         'heading' => 'Menebar Kebaikan, Menjaga Kehidupan',
-        'text'    => 'Kami berkomitmen untuk menciptakan perubahan positif bagi lingkungan dan masyarakat melalui aksi nyata yang berkelanjutan.',
-        'vision'  => 'Mewujudkan dunia yang lebih hijau, sehat, dan sejahtera bagi generasi sekarang dan generasi mendatang.',
+        'text' => 'Kami berkomitmen untuk menciptakan perubahan positif bagi lingkungan dan masyarakat melalui aksi nyata yang berkelanjutan.',
+        'vision' => 'Mewujudkan dunia yang lebih hijau, sehat, dan sejahtera bagi generasi sekarang dan generasi mendatang.',
         'missions' => [
             ['title' => 'Menjaga lingkungan', 'text' => 'Menanam, merawat, dan memulihkan ekosistem bersama masyarakat setempat.'],
             ['title' => 'Membuka akses pendidikan', 'text' => 'Memastikan anak-anak mendapat kesempatan belajar yang layak dan menyenangkan.'],
@@ -169,7 +169,7 @@ return [
     ],
 
     'impact' => [
-        'text'  => 'Bersama, kita telah memberikan manfaat nyata untuk banyak orang.',
+        'text' => 'Bersama, kita telah memberikan manfaat nyata untuk banyak orang.',
         'stats' => [
             ['value' => 150000, 'suffix' => 'K+', 'display' => '150K+', 'label' => 'Penerima Manfaat', 'icon' => 'icons/impact-people.png'],
             ['value' => 500, 'suffix' => '+', 'display' => '500+', 'label' => 'Program Sosial', 'icon' => 'icons/impact-heart.png'],
@@ -196,7 +196,7 @@ return [
     ],
 
     'donation' => [
-        'text'    => 'Pilih cara terbaik untuk berbagi kebaikan.',
+        'text' => 'Pilih cara terbaik untuk berbagi kebaikan.',
         'options' => [
             ['key' => 'online', 'label' => 'Donasi Sekarang', 'note' => '(Online)', 'icon' => 'icons/don-online.png', 'hint' => 'Lewat WhatsApp', 'text' => 'Donasi cepat lewat WhatsApp dengan nominal pilihan Anda.'],
             ['key' => 'bank',   'label' => 'Transfer Bank',   'note' => '', 'icon' => 'icons/don-bank.png',   'hint' => 'Rekening resmi', 'text' => 'Transfer langsung ke rekening resmi yayasan.'],
@@ -229,7 +229,7 @@ return [
     ],
 
     'finance' => [
-        'text'  => 'Kami percaya pada keterbukaan dan akuntabilitas.',
+        'text' => 'Kami percaya pada keterbukaan dan akuntabilitas.',
         'cards' => [
             ['label' => 'Total donasi diterima 2025', 'value' => 'Rp 4,82 M'],
             ['label' => 'Disalurkan ke program', 'value' => 'Rp 3,95 M'],
@@ -276,7 +276,7 @@ return [
     ],
 
     'volunteer' => [
-        'text'  => 'Bergabunglah menjadi bagian dari perubahan positif.',
+        'text' => 'Bergabunglah menjadi bagian dari perubahan positif.',
         'interests' => ['Pelestarian Lingkungan', 'Pendidikan Berkualitas', 'Kesehatan Masyarakat', 'Pemberdayaan Komunitas', 'Dokumentasi & Media', 'Belum tahu, ingin berdiskusi'],
         'availability' => ['Akhir pekan', 'Hari kerja (sore)', 'Fleksibel', 'Hanya saat acara besar'],
         'benefits' => [
@@ -309,7 +309,7 @@ return [
 
     'chatbot' => [
         'greeting' => 'Halo! Saya GreenBot!',
-        'intro'    => 'Tanya apa saja tentang program dan donasi kami, ya!',
+        'intro' => 'Tanya apa saja tentang program dan donasi kami, ya!',
         'placeholder' => 'Tulis pertanyaan Anda..',
         'fallback' => 'Maaf, saya belum menemukan jawaban yang pas. Anda bisa mengirim pertanyaan ini langsung ke tim kami lewat WhatsApp.',
         // Pertanyaan cepat (sesuai desain).
@@ -337,41 +337,41 @@ return [
     ],
 
     'footer' => [
-        'nav'     => [['Beranda', ''], ['Tentang Kami', 'tentang-kami'], ['Program Kami', 'program'], ['Dampak', 'dampak']],
+        'nav' => [['Beranda', ''], ['Tentang Kami', 'tentang-kami'], ['Program Kami', 'program'], ['Dampak', 'dampak']],
         'service' => [['Donasi', 'donasi'], ['Relawan', 'relawan'], ['Berita & Acara', 'berita']],
-        'copy'    => '© 2026 GreenHope Foundation. All rights reserved.',
-        'credit'  => '© 2026 WEBIA by D-KREASI. Seluruh hak cipta dilindungi.',
+        'copy' => '© 2026 GreenHope Foundation. All rights reserved.',
+        'credit' => '© 2026 WEBIA by D-KREASI. Seluruh hak cipta dilindungi.',
     ],
 
     // Ikon SVG inline (viewBox 24x24). Key yang ada di 'filled' diberi fill, bukan stroke.
     'icons' => [
-        'pin'        => '<path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',
-        'phone'      => '<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/>',
-        'mail'       => '<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/>',
-        'search'     => '<circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>',
-        'arrow'      => '<path d="M5 12h14M13 6l6 6-6 6"/>',
-        'heart'      => '<path d="M12 21s-7.5-4.6-9.5-9.2C1.2 8.6 3 5 6.5 5c2 0 3.5 1 5.5 3 2-2 3.5-3 5.5-3C21 5 22.8 8.6 21.5 11.8 19.5 16.4 12 21 12 21Z"/>',
-        'menu'       => '<path d="M4 6h16M4 12h16M4 18h16"/>',
-        'close'      => '<path d="M6 6l12 12M18 6 6 18"/>',
-        'facebook'   => '<path d="M14 8h3V4h-3a4 4 0 0 0-4 4v2H7v4h3v8h4v-8h3l1-4h-4V8.5c0-.3.2-.5.5-.5Z"/>',
-        'instagram'  => '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>',
-        'youtube'    => '<rect x="2" y="5" width="20" height="14" rx="4"/><path d="m10 9 5 3-5 3Z" fill="currentColor"/>',
-        'tiktok'     => '<path d="M14 3v11.5a3.5 3.5 0 1 1-3.5-3.5"/><path d="M14 3c.4 2.6 2 4 5 4.2"/>',
-        'whatsapp'   => '<path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>',
-        'send'       => '<path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/>',
-        'download'   => '<path d="M12 3v12m0 0-4-4m4 4 4-4M4 21h16"/>',
-        'play'       => '<circle cx="12" cy="12" r="9"/><path d="m10 8 6 4-6 4Z" fill="currentColor"/>',
-        'check'      => '<path d="m5 12 5 5L20 7"/>',
-        'chevron'    => '<path d="m6 9 6 6 6-6"/>',
-        'calendar'   => '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
-        'chat'       => '<path d="M21 12a8 8 0 0 1-11.6 7.1L3 21l1.9-5.4A8 8 0 1 1 21 12Z"/>',
-        'leaf'       => '<path d="M5 21c0-9 5-15 15-16 0 10-5 15-14 15"/><path d="M5 21c2-5 5-8 9-10"/>',
-        'file'       => '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/><path d="M14 3v5h5M9 13h6M9 17h6"/>',
-        'shield'     => '<path d="M12 3 4 6v6c0 5 3.4 8.3 8 9 4.6-.7 8-4 8-9V6Z"/><path d="m9 12 2 2 4-4"/>',
-        'users'      => '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14a6.5 6.5 0 0 1 3.5 6"/>',
-        'sparkle'    => '<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18"/>',
-        'gift'       => '<rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13M5 12v9h14v-9M7.5 8a2.5 2.5 0 1 1 0-5C10 3 12 8 12 8s2-5 4.5-5a2.5 2.5 0 1 1 0 5"/>',
-        'external'   => '<path d="M14 4h6v6M20 4 10 14M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>',
+        'pin' => '<path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',
+        'phone' => '<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/>',
+        'mail' => '<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/>',
+        'search' => '<circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>',
+        'arrow' => '<path d="M5 12h14M13 6l6 6-6 6"/>',
+        'heart' => '<path d="M12 21s-7.5-4.6-9.5-9.2C1.2 8.6 3 5 6.5 5c2 0 3.5 1 5.5 3 2-2 3.5-3 5.5-3C21 5 22.8 8.6 21.5 11.8 19.5 16.4 12 21 12 21Z"/>',
+        'menu' => '<path d="M4 6h16M4 12h16M4 18h16"/>',
+        'close' => '<path d="M6 6l12 12M18 6 6 18"/>',
+        'facebook' => '<path d="M14 8h3V4h-3a4 4 0 0 0-4 4v2H7v4h3v8h4v-8h3l1-4h-4V8.5c0-.3.2-.5.5-.5Z"/>',
+        'instagram' => '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>',
+        'youtube' => '<rect x="2" y="5" width="20" height="14" rx="4"/><path d="m10 9 5 3-5 3Z" fill="currentColor"/>',
+        'tiktok' => '<path d="M14 3v11.5a3.5 3.5 0 1 1-3.5-3.5"/><path d="M14 3c.4 2.6 2 4 5 4.2"/>',
+        'whatsapp' => '<path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>',
+        'send' => '<path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/>',
+        'download' => '<path d="M12 3v12m0 0-4-4m4 4 4-4M4 21h16"/>',
+        'play' => '<circle cx="12" cy="12" r="9"/><path d="m10 8 6 4-6 4Z" fill="currentColor"/>',
+        'check' => '<path d="m5 12 5 5L20 7"/>',
+        'chevron' => '<path d="m6 9 6 6 6-6"/>',
+        'calendar' => '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+        'chat' => '<path d="M21 12a8 8 0 0 1-11.6 7.1L3 21l1.9-5.4A8 8 0 1 1 21 12Z"/>',
+        'leaf' => '<path d="M5 21c0-9 5-15 15-16 0 10-5 15-14 15"/><path d="M5 21c2-5 5-8 9-10"/>',
+        'file' => '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/><path d="M14 3v5h5M9 13h6M9 17h6"/>',
+        'shield' => '<path d="M12 3 4 6v6c0 5 3.4 8.3 8 9 4.6-.7 8-4 8-9V6Z"/><path d="m9 12 2 2 4-4"/>',
+        'users' => '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14a6.5 6.5 0 0 1 3.5 6"/>',
+        'sparkle' => '<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18"/>',
+        'gift' => '<rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13M5 12v9h14v-9M7.5 8a2.5 2.5 0 1 1 0-5C10 3 12 8 12 8s2-5 4.5-5a2.5 2.5 0 1 1 0 5"/>',
+        'external' => '<path d="M14 4h6v6M20 4 10 14M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>',
     ],
 
     'filled_icons' => ['whatsapp', 'facebook'],

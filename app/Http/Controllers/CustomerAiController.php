@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\WebiaOrder;
-use App\Models\WebiaPackage;
-use App\Models\WebiaTemplate;
 use App\Services\AiQuotaService;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
@@ -38,7 +36,7 @@ class CustomerAiController extends Controller
 
         // Tentukan status kelayakan AI murni dari akun pengguna sendiri (TIDAK ADA mode demo/dummy)
         $hasOrder = ($order !== null);
-        $isDelivered = $hasOrder && $order->delivery_status === 'delivered' && $order->status === 'paid' && !empty($order->site_slug);
+        $isDelivered = $hasOrder && $order->delivery_status === 'delivered' && $order->status === 'paid' && ! empty($order->site_slug);
 
         $tenantId = $isDelivered ? $order->site_slug : null;
         $tierSlug = $order?->package?->slug ?? 'pixel';
@@ -135,6 +133,7 @@ class CustomerAiController extends Controller
             if ($request->wantsJson() || $request->ajax()) {
                 return response()->json(['status' => 'error', 'message' => $err], 400);
             }
+
             return redirect()->back()->with('error', $err);
         }
 
@@ -193,7 +192,7 @@ class CustomerAiController extends Controller
     /**
      * Simulasi coba AI langsung (Interactive Playground) dari portal konsumen.
      */
-        /**
+    /**
      * Memperbarui informasi operasional & profil terstruktur bisnis klien
      * secara aman tanpa merusak dokumen markdown knowledge base.
      */
@@ -222,6 +221,7 @@ class CustomerAiController extends Controller
             if ($request->wantsJson() || $request->ajax()) {
                 return response()->json(['status' => 'error', 'message' => $err], 400);
             }
+
             return redirect()->back()->with('error', $err);
         }
 
@@ -239,34 +239,32 @@ class CustomerAiController extends Controller
         ]);
 
         $isSuccess = (($res['status'] ?? '') === 'success');
-        if ($isSuccess) {
-            $bizData = $order->business_data ?? [];
-            if ($request->filled('welcome_message')) {
-                $bizData['welcome_message'] = $request->input('welcome_message');
-            }
-            if ($request->filled('whatsapp_cs')) {
-                $bizData['whatsapp'] = $request->input('whatsapp_cs');
-            }
-            if (!empty($alamat)) {
-                $bizData['address'] = $alamat;
-            }
-            $order->update(['business_data' => $bizData]);
+
+        $bizData = $order->business_data ?? [];
+        if ($request->filled('welcome_message')) {
+            $bizData['welcome_message'] = $request->input('welcome_message');
         }
+        if ($request->filled('whatsapp_cs')) {
+            $bizData['whatsapp'] = $request->input('whatsapp_cs');
+        }
+        if (! empty($alamat)) {
+            $bizData['address'] = $alamat;
+        }
+        $order->update(['business_data' => $bizData]);
 
         $msg = $isSuccess
             ? 'Pengaturan & informasi bisnis berhasil disimpan! Asisten AI website Anda langsung diperbarui.'
-            : 'Gagal memperbarui informasi bisnis ke AI. Silakan coba lagi.';
+            : 'Pengaturan bisnis berhasil disimpan di portal. Sinkronisasi ke chatbot akan berjalan saat layanan AI aktif.';
 
         if ($request->wantsJson() || $request->ajax()) {
             return response()->json([
-                'status' => $isSuccess ? 'success' : 'error',
+                'status' => 'success',
                 'message' => $msg,
-            ], $isSuccess ? 200 : 500);
+                'ai_synced' => $isSuccess,
+            ], 200);
         }
 
-        return $isSuccess
-            ? redirect()->back()->with('success', $msg)
-            : redirect()->back()->with('error', $msg);
+        return redirect()->back()->with('success', $msg);
     }
 
     /**
@@ -343,6 +341,7 @@ public function simulateChat(Request $request): JsonResponse
         }
 
         $res = AiQuotaService::simulateChat($order->site_slug, $request->input('message'));
+
         return response()->json($res);
     }
 }

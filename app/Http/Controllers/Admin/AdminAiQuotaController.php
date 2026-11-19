@@ -8,9 +8,9 @@ use App\Models\WebiaPackage;
 use App\Services\AiQuotaService;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class AdminAiQuotaController extends Controller
@@ -48,10 +48,10 @@ class AdminAiQuotaController extends Controller
             $statusCategory = $isExhausted ? 'habis' : ($isWarning ? 'waspada' : 'aman');
 
             $bizName = $matchedOrder?->business_data['business_name'] ?? ($tenant['name'] ?? ucwords(str_replace(['tenant_', '_', '-'], ' ', $tenantId)));
-            $clientName = $matchedOrder?->user?->name ?? ('Klien ' . ucfirst($tenant['category'] ?? 'Bisnis'));
-            $clientEmail = $matchedOrder?->user?->email ?? (strtolower(str_replace(' ', '', $bizName)) . '@example.com');
+            $clientName = $matchedOrder?->user?->name ?? ('Klien '.ucfirst($tenant['category'] ?? 'Bisnis'));
+            $clientEmail = $matchedOrder?->user?->email ?? (strtolower(str_replace(' ', '', $bizName)).'@example.com');
             $phone = $matchedOrder?->business_data['whatsapp'] ?? '081234567890';
-            $templateName = $matchedOrder?->template?->name ?? $matchedOrder?->template_snapshot['name'] ?? (ucwords($tenant['category'] ?? 'General') . ' Template');
+            $templateName = $matchedOrder?->template?->name ?? $matchedOrder?->template_snapshot['name'] ?? (ucwords($tenant['category'] ?? 'General').' Template');
 
             $clients[] = [
                 'order' => $matchedOrder,
@@ -134,7 +134,7 @@ class AdminAiQuotaController extends Controller
         $endOfMonth = Carbon::now()->endOfMonth();
         $resetDateFormatted = $endOfMonth->locale('id')->isoFormat('D MMMM Y');
         $daysUntilReset = max(1, (int) Carbon::now()->diffInDays($endOfMonth, false));
-        $lastSyncedTime = Carbon::now()->locale('id')->format('H:i:s') . ' WIB';
+        $lastSyncedTime = Carbon::now()->locale('id')->format('H:i:s').' WIB';
         $cacheStats = AiQuotaService::getCacheStats();
 
         return view('admin.ai.index', compact(
@@ -196,7 +196,7 @@ class AdminAiQuotaController extends Controller
     public function export(Request $request): StreamedResponse
     {
         $clients = $this->getClientsData();
-        $filename = 'laporan-kuota-ai-webia-' . Carbon::now()->format('Y-m-d') . '.csv';
+        $filename = 'laporan-kuota-ai-webia-'.Carbon::now()->format('Y-m-d').'.csv';
 
         $headers = [
             'Content-Type' => 'text/csv; charset=UTF-8',
@@ -209,7 +209,7 @@ class AdminAiQuotaController extends Controller
         $callback = function () use ($clients) {
             $handle = fopen('php://output', 'w');
             // UTF-8 BOM untuk Microsoft Excel compatibility
-            fputs($handle, "\xEF\xBB\xBF");
+            fwrite($handle, "\xEF\xBB\xBF");
 
             // Header baris CSV
             fputcsv($handle, [
@@ -239,7 +239,7 @@ class AdminAiQuotaController extends Controller
                     $c['monthly_quota'],
                     $c['used_messages'],
                     $c['remaining_messages'],
-                    $c['percentage'] . '%',
+                    $c['percentage'].'%',
                     strtoupper($c['status_category']),
                     $nowStr,
                 ]);

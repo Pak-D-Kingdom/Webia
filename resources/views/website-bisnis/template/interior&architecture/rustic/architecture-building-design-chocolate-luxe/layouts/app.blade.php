@@ -27,6 +27,7 @@
         'img'      => asset($site['img']),
         'faq'      => $site['faq'],
         'quick'    => $site['quick'],
+        'topics'   => $site['topics'],
         'search'   => $search,
         'popular'  => ['Booking Konsultasi', 'Rumah Modern Minimalis', 'Desain Interior', 'Denah Tipe 72 Modern', 'Permintaan Penawaran'],
     ];

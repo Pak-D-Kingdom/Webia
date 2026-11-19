@@ -11,16 +11,16 @@
 return [
 
     'brand' => [
-        'name'    => 'Al Hijrah Travel',
+        'name' => 'Al Hijrah Travel',
         'tagline' => 'Your Journey to The Holy Land',
     ],
 
     'contact' => [
-        'city'    => 'Jakarta, Indonesia',
-        'hours'   => 'Sen - Min : 08.00 - 21.00',
-        'email'   => 'info@alhijrahtravel.co.id',
-        'phone'   => '+62 895-6303-00345',
-        'wa'      => '62895630300345',
+        'city' => 'Jakarta, Indonesia',
+        'hours' => 'Sen - Min : 08.00 - 21.00',
+        'email' => 'info@alhijrahtravel.co.id',
+        'phone' => '+62 895-6303-00345',
+        'wa' => '62895630300345',
         'address' => 'Jl. Melati No. 25, Jakarta Selatan',
         'wa_text' => "Assalamu'alaikum Al Hijrah Travel, saya ingin bertanya tentang paket Umrah & Haji.",
         'wa_daftar' => "Assalamu'alaikum Al Hijrah Travel, saya ingin mendaftar paket Umrah/Haji.",
@@ -67,14 +67,13 @@ return [
         ['chat', 'AI Chat — FAQ Paket & Pendaftaran', 'bot', 'Tanya jawab otomatis seputar paket dan pendaftaran', 'ai chat asisten bantuan faq tanya'],
     ],
 
-
     'hero' => [
         'eyebrow' => 'IBADAH SUCI, PERJALANAN MULIA',
         'title_1' => 'Umrah',
         'title_2' => 'Haji',
         'title_3' => 'Bersama Al Hijrah Travel',
-        'desc'    => 'Wujudkan impian suci Anda bersama kami. Dengan pelayanan profesional, pembimbing berpengalaman, dan fasilitas terbaik, kami siap menemani perjalanan ibadah Anda ke Tanah Suci.',
-        'quote'   => 'Dan bersiaplah untuk perjalanan yang paling mulia dalam hidup Anda.',
+        'desc' => 'Wujudkan impian suci Anda bersama kami. Dengan pelayanan profesional, pembimbing berpengalaman, dan fasilitas terbaik, kami siap menemani perjalanan ibadah Anda ke Tanah Suci.',
+        'quote' => 'Dan bersiaplah untuk perjalanan yang paling mulia dalam hidup Anda.',
         'features' => [
             ['shield', 'Aman &', 'Terpercaya'],
             ['hand', 'Pembimbing', 'Berpengalaman'],
@@ -255,7 +254,7 @@ return [
     'chat' => [
         'greeting' => "Assalamu'alaikum! Ada yang bisa kami bantu? Pilih topik di bawah ini ya!",
         'fallback' => 'Maaf, saya belum menemukan jawaban yang tepat. Silakan pilih topik di bawah atau hubungi tim kami melalui WhatsApp.',
-        'quick'    => ['Paket Umrah & Haji', 'Jadwal Keberangkatan', 'Harga & Promo', 'Persyaratan Pendaftaran', 'Cara Mendaftar'],
+        'quick' => ['Paket Umrah & Haji', 'Jadwal Keberangkatan', 'Harga & Promo', 'Persyaratan Pendaftaran', 'Cara Mendaftar'],
     ],
 
     'footer' => [

@@ -354,6 +354,7 @@
 {{-- ============ HEADER HALAMAN DALAM ============ --}}
 <section class="rr-ph">
     <div class="rr-ph__bg" style="background-image:url('{{ $img('hero-bg.jpg') }}')"></div>
+    <div class="rr-ph__tools" aria-hidden="true"><svg class="rr-i"><use href="#i-tools"/></svg><svg class="rr-i"><use href="#i-helmet"/></svg><svg class="rr-i"><use href="#i-ruler"/></svg><svg class="rr-i"><use href="#i-roller"/></svg><svg class="rr-i"><use href="#i-pen"/></svg></div>
     <div class="rr-dust rr-dust--ph" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
     <div class="rr-container rr-ph__in">
         <div class="rr-ph__copy">

@@ -140,6 +140,16 @@ Route::get(
 )->name('collections');
 
 Route::view(
+    '/webia/template/aethelgard-digital-museum',
+    'website-bisnis.templates.education-culture.aethelgard-digital-museum'
+)->name('webia.template.aethelgard-digital-museum');
+
+Route::view(
+    '/webia/template/aquaverse-interactive-heritage',
+    'website-bisnis.templates.education-culture.aquaverse-interactive-heritage'
+)->name('webia.template.aquaverse-interactive-heritage');
+
+Route::view(
     '/webia/template/pawlora-animal-care',
     'website-bisnis.templates.pet-animal-service.pawlora-animal-care'
 )->name('webia.template.pet-animal-service.pawlora-animal-care');
@@ -1524,19 +1534,19 @@ Route::prefix('webia/template/professional-service/creative/branding-creative-ag
     ->group(function () {
         $v = 'website-bisnis.template.professional-service.creative.branding-creative-agency-cobalt-pop.';
 
-        Route::view('/', $v . 'index')->name('home');
-        Route::view('/about-us', $v . 'about')->name('about');
-        Route::view('/services', $v . 'services')->name('services');
-        Route::view('/portfolio', $v . 'portfolio')->name('portfolio');
-        Route::view('/branding-showcase', $v . 'branding-showcase')->name('branding-showcase');
-        Route::view('/our-process', $v . 'process')->name('process');
-        Route::view('/our-team', $v . 'team')->name('team');
-        Route::view('/our-clients', $v . 'clients')->name('clients');
-        Route::view('/testimonials', $v . 'testimonials')->name('testimonials');
-        Route::view('/creative-journal', $v . 'journal')->name('journal');
-        Route::view('/contact-us', $v . 'contact')->name('contact');
+        Route::view('/', $v.'index')->name('home');
+        Route::view('/about-us', $v.'about')->name('about');
+        Route::view('/services', $v.'services')->name('services');
+        Route::view('/portfolio', $v.'portfolio')->name('portfolio');
+        Route::view('/branding-showcase', $v.'branding-showcase')->name('branding-showcase');
+        Route::view('/our-process', $v.'process')->name('process');
+        Route::view('/our-team', $v.'team')->name('team');
+        Route::view('/our-clients', $v.'clients')->name('clients');
+        Route::view('/testimonials', $v.'testimonials')->name('testimonials');
+        Route::view('/creative-journal', $v.'journal')->name('journal');
+        Route::view('/contact-us', $v.'contact')->name('contact');
     });
-    
+
 Route::prefix('webia/template/home-services/organic/home-renovation-repair-sage-green')
     ->name('webia.template.home-services.organic.home-renovation-repair-sage-green.')
     ->group(function () {
@@ -1907,6 +1917,14 @@ Route::prefix('webia/template')->group(function () {
         '/sodatable-family-meal-plan',
         'website-bisnis.templates.food-subscription.weekly-family-meal-plan.sodatable.sodatable'
     )->name('webia.template.sodatable-family-meal-plan');
+    Route::view(
+        '/tirtaceria-swim-academy',
+        'website-bisnis.templates.sports.swimming-school.tirtaceria.tirtaceria'
+    )->name('webia.template.tirtaceria-swim-academy');
+    Route::view(
+        '/splashkids-swim-school',
+        'website-bisnis.templates.sports.swimming-school.splashkids.splashkids'
+    )->name('webia.template.splashkids-swim-school');
 });
 
 Route::get('webia/template/{path}', TemplatePreviewController::class)

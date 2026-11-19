@@ -14,22 +14,22 @@
 return [
 
     // ---------- Basis path & nama route ----------
-    'view'       => 'website-bisnis.template.home-services.minimalis.laundry-mint-fresh',
+    'view' => 'website-bisnis.template.home-services.minimalis.laundry-mint-fresh',
     'asset_path' => 'website-bisnis/template/home-services/minimalis/laundry-mint-fresh',
-    'route'      => 'laundry-mint-fresh.',
+    'route' => 'laundry-mint-fresh.',
 
     // ---------- Brand & kontak ----------
     'brand' => [
-        'name'    => 'FreshWash',
+        'name' => 'FreshWash',
         'tagline' => 'Clean Clothes, Happy Life',
-        'credit'  => '© 2026 WEBIA by D-KREASI. Seluruh hak cipta dilindungi.',
+        'credit' => '© 2026 WEBIA by D-KREASI. Seluruh hak cipta dilindungi.',
     ],
 
     'contact' => [
-        'address'  => 'Jl. Melati No. 12, Surabaya',
-        'phone'    => '+62 812 3456 7890',
-        'email'    => 'hello@freshwash.id',
-        'hours'    => 'Sen - Min 08.00 - 20.00',
+        'address' => 'Jl. Melati No. 12, Surabaya',
+        'phone' => '+62 812 3456 7890',
+        'email' => 'hello@freshwash.id',
+        'hours' => 'Sen - Min 08.00 - 20.00',
         // Nomor tujuan semua tombol/form WhatsApp (format internasional tanpa +)
         'whatsapp' => '62895630300345',
     ],
@@ -60,34 +60,34 @@ return [
 
     // Pita ajakan di bagian bawah halaman dalam
     'cta' => [
-        'title'   => 'Siap menjaga pakaian kesayangan Anda?',
-        'text'    => 'Pesan sekarang atau tanya FreshBot seputar harga dan proses laundry.',
+        'title' => 'Siap menjaga pakaian kesayangan Anda?',
+        'text' => 'Pesan sekarang atau tanya FreshBot seputar harga dan proses laundry.',
         'primary' => 'Pesan Sekarang',
-        'wa'      => 'Chat WhatsApp',
-        'bot'     => 'Tanya FreshBot',
+        'wa' => 'Chat WhatsApp',
+        'bot' => 'Tanya FreshBot',
     ],
 
     // ---------- Gambar (nama file di folder images template) ----------
     // hero, area, clock, bot_left, bot_right diambil langsung dari desain UI.
     'img' => [
-        'logo'      => 'logo.svg',
-        'hero'      => 'hero.webp',
-        'area'      => 'area-art.webp',
-        'clock'     => 'clock-art.webp',
-        'bot_left'  => 'bot-left.webp',
+        'logo' => 'logo.svg',
+        'hero' => 'hero.webp',
+        'area' => 'area-art.webp',
+        'clock' => 'clock-art.webp',
+        'bot_left' => 'bot-left.webp',
         'bot_right' => 'bot-right.webp',
-        'robot'     => 'chatbot-robot.svg',
-        'leaf_l'    => 'leaf-left.svg',
-        'leaf_r'    => 'leaf-right.svg',
+        'robot' => 'chatbot-robot.svg',
+        'leaf_l' => 'leaf-left.svg',
+        'leaf_r' => 'leaf-right.svg',
     ],
 
     // ---------- Hero ----------
     'hero' => [
-        'badge'    => 'Laundry & Cleaning Service',
-        'title_1'  => 'Pakaian Bersih,',
-        'title_2'  => 'Hidup Lebih Segar',
-        'text'     => 'Layanan laundry profesional dengan hasil bersih, wangi, dan rapi. Kami siap menjaga pakaian kesayangan Anda.',
-        'cta'      => 'Pesan Sekarang',
+        'badge' => 'Laundry & Cleaning Service',
+        'title_1' => 'Pakaian Bersih,',
+        'title_2' => 'Hidup Lebih Segar',
+        'text' => 'Layanan laundry profesional dengan hasil bersih, wangi, dan rapi. Kami siap menjaga pakaian kesayangan Anda.',
+        'cta' => 'Pesan Sekarang',
         'features' => [
             ['icon' => 'drop',   'l1' => 'Bersih',            'l2' => '& Higienis'],
             ['icon' => 'shield', 'l1' => 'Aman untuk',        'l2' => 'Semua Jenis Kain'],
@@ -99,30 +99,30 @@ return [
     // ---------- Laundry Services ----------
     'services' => [
         'title' => 'Layanan Laundry',
-        'sub'   => 'Solusi terbaik untuk semua kebutuhan laundry Anda.',
+        'sub' => 'Solusi terbaik untuk semua kebutuhan laundry Anda.',
         'items' => [
             [
                 'key' => 'kiloan', 'icon' => 'basket', 'name' => 'Laundry Kiloan', 'tag' => 'Bersih & Ekonomis',
-                'desc'     => 'Cuci, kering, dan lipat rapi dengan harga per kilogram. Cocok untuk pakaian harian satu keluarga.',
-                'from'     => 'Rp 6.000 / kg', 'time' => '1 - 2 hari',
+                'desc' => 'Cuci, kering, dan lipat rapi dengan harga per kilogram. Cocok untuk pakaian harian satu keluarga.',
+                'from' => 'Rp 6.000 / kg', 'time' => '1 - 2 hari',
                 'features' => ['Dicuci terpisah warna putih & berwarna', 'Pelembut & pewangi premium', 'Dilipat & dikemas rapi'],
             ],
             [
                 'key' => 'satuan', 'icon' => 'bag', 'name' => 'Laundry Satuan', 'tag' => 'Perawatan Khusus',
-                'desc'     => 'Perawatan per potong untuk kemeja, jaket, dress, dan pakaian bernilai tinggi dengan penanganan ekstra hati-hati.',
-                'from'     => 'Rp 12.000 / item', 'time' => '1 - 2 hari',
+                'desc' => 'Perawatan per potong untuk kemeja, jaket, dress, dan pakaian bernilai tinggi dengan penanganan ekstra hati-hati.',
+                'from' => 'Rp 12.000 / item', 'time' => '1 - 2 hari',
                 'features' => ['Penanganan sesuai label kain', 'Pengecekan noda sebelum cuci', 'Digantung atau dilipat sesuai permintaan'],
             ],
             [
                 'key' => 'cuci-kering', 'icon' => 'wind', 'name' => 'Cuci Kering', 'tag' => 'Tanpa Air',
-                'desc'     => 'Dry cleaning untuk bahan yang tidak boleh terkena air seperti jas, blazer, gaun pesta, dan kain halus.',
-                'from'     => 'Rp 25.000 / item', 'time' => '2 - 3 hari',
+                'desc' => 'Dry cleaning untuk bahan yang tidak boleh terkena air seperti jas, blazer, gaun pesta, dan kain halus.',
+                'from' => 'Rp 25.000 / item', 'time' => '2 - 3 hari',
                 'features' => ['Tanpa rendam air', 'Menjaga bentuk & warna kain', 'Dikemas dengan penutup pelindung'],
             ],
             [
                 'key' => 'setrika', 'icon' => 'iron', 'name' => 'Setrika', 'tag' => 'Rapi & Siap Pakai',
-                'desc'     => 'Layanan setrika uap untuk pakaian bersih milik Anda, licin, rapi, dan siap langsung dipakai.',
-                'from'     => 'Rp 5.000 / kg', 'time' => '1 hari',
+                'desc' => 'Layanan setrika uap untuk pakaian bersih milik Anda, licin, rapi, dan siap langsung dipakai.',
+                'from' => 'Rp 5.000 / kg', 'time' => '1 hari',
                 'features' => ['Setrika uap anti kusut', 'Digantung atau dilipat', 'Cocok untuk pakaian kerja & seragam'],
             ],
         ],
@@ -131,9 +131,9 @@ return [
     // ---------- Price list ----------
     'prices' => [
         'title' => 'Daftar Harga',
-        'sub'   => 'Transparan, jelas, dan sesuai kualitas layanan kami.',
-        'note'  => 'Harga dapat berubah sewaktu-waktu. Estimasi final dikonfirmasi tim kami saat penjemputan.',
-        'item'  => [
+        'sub' => 'Transparan, jelas, dan sesuai kualitas layanan kami.',
+        'note' => 'Harga dapat berubah sewaktu-waktu. Estimasi final dikonfirmasi tim kami saat penjemputan.',
+        'item' => [
             ['icon' => 'shirt',  'name' => 'Kemeja',         'price' => 15000],
             ['icon' => 'tshirt', 'name' => 'Kaos',           'price' => 12000],
             ['icon' => 'pants',  'name' => 'Celana Panjang', 'price' => 18000],
@@ -143,7 +143,7 @@ return [
             ['icon' => 'bag',    'name' => 'Selimut',        'price' => 40000],
             ['icon' => 'bag',    'name' => 'Bedcover',       'price' => 55000],
         ],
-        'kg'    => [
+        'kg' => [
             ['icon' => 'basket', 'name' => 'Cuci Kering Lipat',    'price' => 6000],
             ['icon' => 'iron',   'name' => 'Setrika Saja',         'price' => 5000],
             ['icon' => 'basket', 'name' => 'Cuci + Setrika',       'price' => 8000],
@@ -156,7 +156,7 @@ return [
     // ---------- Service options ----------
     'options' => [
         'title' => 'Opsi Layanan',
-        'sub'   => 'Pilih layanan sesuai kebutuhan Anda.',
+        'sub' => 'Pilih layanan sesuai kebutuhan Anda.',
         'items' => [
             ['icon' => 'clock',  'name' => 'Express Service', 'desc' => 'Selesai dalam 24 jam',     'long' => 'Prioritas pengerjaan untuk Anda yang butuh pakaian cepat kembali. Cocok untuk seragam, pakaian kerja, atau perjalanan mendadak.', 'extra' => 'Tambahan biaya mulai Rp 4.000 / kg'],
             ['icon' => 'calendar', 'name' => 'Regular Service', 'desc' => 'Selesai dalam 2-3 hari', 'long' => 'Layanan standar dengan kualitas penuh dan harga paling bersahabat. Pilihan terbaik untuk kebutuhan laundry rutin.', 'extra' => 'Tanpa biaya tambahan'],
@@ -168,7 +168,7 @@ return [
     // ---------- Turnaround ----------
     'turnaround' => [
         'title' => 'Estimasi Waktu Pengerjaan',
-        'sub'   => 'Waktu pengerjaan dapat berubah tergantung jumlah dan jenis layanan.',
+        'sub' => 'Waktu pengerjaan dapat berubah tergantung jumlah dan jenis layanan.',
         'items' => [
             ['icon' => 'basket', 'name' => 'Laundry Kiloan', 'time' => '1 - 2 hari'],
             ['icon' => 'bag',    'name' => 'Laundry Satuan', 'time' => '1 - 2 hari'],
@@ -190,23 +190,23 @@ return [
     // ---------- Pickup & delivery coverage ----------
     'coverage' => [
         'title' => 'Area Jemput & Antar',
-        'sub'   => 'Kami siap menjemput dan mengantar laundry Anda di area berikut.',
+        'sub' => 'Kami siap menjemput dan mengantar laundry Anda di area berikut.',
         'badge' => 'Gratis Jemput & Antar',
-        'min'   => 'Minimal order 3 kg atau Rp 30.000 untuk gratis jemput & antar.',
+        'min' => 'Minimal order 3 kg atau Rp 30.000 untuk gratis jemput & antar.',
         'areas' => [
             ['name' => 'Surabaya', 'scope' => 'Seluruh Kecamatan', 'free' => true,
-             'list' => ['Gubeng', 'Tegalsari', 'Wonokromo', 'Rungkut', 'Sukolilo', 'Tandes', 'Mulyorejo', 'Genteng']],
+                'list' => ['Gubeng', 'Tegalsari', 'Wonokromo', 'Rungkut', 'Sukolilo', 'Tandes', 'Mulyorejo', 'Genteng']],
             ['name' => 'Sidoarjo', 'scope' => 'Beberapa Area', 'free' => true,
-             'list' => ['Waru', 'Gedangan', 'Taman', 'Sidoarjo Kota', 'Buduran']],
+                'list' => ['Waru', 'Gedangan', 'Taman', 'Sidoarjo Kota', 'Buduran']],
             ['name' => 'Gresik', 'scope' => 'Beberapa Area', 'free' => true,
-             'list' => ['Gresik Kota', 'Kebomas', 'Driyorejo', 'Menganti']],
+                'list' => ['Gresik Kota', 'Kebomas', 'Driyorejo', 'Menganti']],
         ],
     ],
 
     // ---------- Order instructions ----------
     'steps' => [
         'title' => 'Cara Pemesanan',
-        'sub'   => 'Mudah dan cepat, ikuti langkah berikut:',
+        'sub' => 'Mudah dan cepat, ikuti langkah berikut:',
         'items' => [
             ['icon' => 'basket', 'name' => 'Pilih Layanan',  'desc' => 'Tentukan jenis layanan yang dibutuhkan', 'long' => 'Pilih layanan (kiloan, satuan, cuci kering, atau setrika) dan opsi kecepatan yang Anda inginkan.'],
             ['icon' => 'form',   'name' => 'Isi Form',       'desc' => 'Lengkapi data dan alamat penjemputan',   'long' => 'Isi nama, nomor WhatsApp, alamat, dan catatan khusus pada form Order Inquiry.'],
@@ -219,12 +219,12 @@ return [
     // ---------- Operating hours ----------
     'hours' => [
         'title' => 'Jam Operasional',
-        'time'  => '08.00 - 20.00',
-        'open'  => 8,
+        'time' => '08.00 - 20.00',
+        'open' => 8,
         'close' => 20,
         'label' => 'Setiap hari',
-        'note'  => 'Termasuk hari libur nasional (dengan penyesuaian)',
-        'days'  => [
+        'note' => 'Termasuk hari libur nasional (dengan penyesuaian)',
+        'days' => [
             ['d' => 'Senin',  'n' => 1], ['d' => 'Selasa', 'n' => 2], ['d' => 'Rabu',   'n' => 3],
             ['d' => 'Kamis',  'n' => 4], ['d' => 'Jumat',  'n' => 5], ['d' => 'Sabtu',  'n' => 6],
             ['d' => 'Minggu', 'n' => 0],
@@ -233,43 +233,43 @@ return [
 
     // ---------- Order inquiry ----------
     'inquiry' => [
-        'title'   => 'Order Inquiry',
-        'sub'     => 'Hubungi kami untuk pertanyaan, info harga, atau pemesanan.',
-        'cta'     => 'Hubungi Kami',
+        'title' => 'Order Inquiry',
+        'sub' => 'Hubungi kami untuk pertanyaan, info harga, atau pemesanan.',
+        'cta' => 'Hubungi Kami',
         'form_cta' => 'Kirim via WhatsApp',
     ],
 
     // ---------- AI Chatbot ----------
     'chatbot' => [
-        'name'    => 'FreshBot',
-        'title'   => 'AI Chatbot',
-        'sub'     => 'Tanya apa saja tentang harga, layanan, atau proses laundry. Kami siap membantu!',
-        'cta'     => 'Mulai Chat',
-        'teaser'  => 'Ada Pertanyaan? Chat Yuk!',
+        'name' => 'FreshBot',
+        'title' => 'AI Chatbot',
+        'sub' => 'Tanya apa saja tentang harga, layanan, atau proses laundry. Kami siap membantu!',
+        'cta' => 'Mulai Chat',
+        'teaser' => 'Ada Pertanyaan? Chat Yuk!',
         'welcome' => 'Halo! Saya FreshBot, asisten FreshWash. Mau tanya soal harga atau proses laundry?',
         'fallback' => 'Maaf, saya belum menemukan jawaban untuk itu. Coba pilih salah satu topik di bawah, atau tanya tim kami langsung lewat WhatsApp.',
         // Kartu FAQ pada beranda → juga menjadi topik cepat di chatbot
         'faq' => [
             ['key' => 'harga',   'icon' => 'tag',     'label' => ['Daftar Harga', '& Layanan'],
-             'keywords' => ['harga', 'biaya', 'tarif', 'berapa', 'murah', 'layanan', 'kiloan', 'satuan', 'kemeja', 'kaos', 'celana', 'jaket', 'dress', 'selimut', 'bedcover', 'blazer'],
-             'answer'   => 'Harga kiloan mulai Rp 6.000/kg (cuci kering lipat) dan Rp 8.000/kg (cuci + setrika). Untuk satuan: kemeja Rp 15.000, kaos Rp 12.000, celana panjang Rp 18.000, jaket Rp 25.000, dress Rp 30.000. Lihat daftar lengkap di halaman Price List.',
-             'link'     => 'harga', 'link_label' => 'Lihat Daftar Harga'],
+                'keywords' => ['harga', 'biaya', 'tarif', 'berapa', 'murah', 'layanan', 'kiloan', 'satuan', 'kemeja', 'kaos', 'celana', 'jaket', 'dress', 'selimut', 'bedcover', 'blazer'],
+                'answer' => 'Harga kiloan mulai Rp 6.000/kg (cuci kering lipat) dan Rp 8.000/kg (cuci + setrika). Untuk satuan: kemeja Rp 15.000, kaos Rp 12.000, celana panjang Rp 18.000, jaket Rp 25.000, dress Rp 30.000. Lihat daftar lengkap di halaman Price List.',
+                'link' => 'harga', 'link_label' => 'Lihat Daftar Harga'],
             ['key' => 'proses',  'icon' => 'sparkle', 'label' => ['Proses Laundry', '& Estimasi Waktu'],
-             'keywords' => ['proses', 'estimasi', 'lama', 'berapa lama', 'waktu', 'selesai', 'hari', 'express', 'cepat', 'durasi', 'tahap', 'cuci'],
-             'answer'   => 'Alurnya: pakaian dipilah → dicuci sesuai jenis kain → dikeringkan → disetrika → dicek kualitas → dikemas. Estimasi: kiloan 1-2 hari, satuan 1-2 hari, cuci kering 2-3 hari, setrika 1 hari. Pilih Express untuk selesai dalam 24 jam.',
-             'link'     => 'estimasi', 'link_label' => 'Lihat Estimasi Waktu'],
+                'keywords' => ['proses', 'estimasi', 'lama', 'berapa lama', 'waktu', 'selesai', 'hari', 'express', 'cepat', 'durasi', 'tahap', 'cuci'],
+                'answer' => 'Alurnya: pakaian dipilah → dicuci sesuai jenis kain → dikeringkan → disetrika → dicek kualitas → dikemas. Estimasi: kiloan 1-2 hari, satuan 1-2 hari, cuci kering 2-3 hari, setrika 1 hari. Pilih Express untuk selesai dalam 24 jam.',
+                'link' => 'estimasi', 'link_label' => 'Lihat Estimasi Waktu'],
             ['key' => 'area',    'icon' => 'pin',     'label' => ['Area Jemput', '& Antar'],
-             'keywords' => ['area', 'jemput', 'antar', 'lokasi', 'wilayah', 'surabaya', 'sidoarjo', 'gresik', 'ongkir', 'gratis', 'jangkauan'],
-             'answer'   => 'Kami melayani jemput & antar GRATIS di seluruh kecamatan Surabaya, serta beberapa area Sidoarjo dan Gresik (minimal order 3 kg atau Rp 30.000).',
-             'link'     => 'area', 'link_label' => 'Cek Area Layanan'],
+                'keywords' => ['area', 'jemput', 'antar', 'lokasi', 'wilayah', 'surabaya', 'sidoarjo', 'gresik', 'ongkir', 'gratis', 'jangkauan'],
+                'answer' => 'Kami melayani jemput & antar GRATIS di seluruh kecamatan Surabaya, serta beberapa area Sidoarjo dan Gresik (minimal order 3 kg atau Rp 30.000).',
+                'link' => 'area', 'link_label' => 'Cek Area Layanan'],
             ['key' => 'pesan',   'icon' => 'form',    'label' => ['Cara Pemesanan', '& Pembayaran'],
-             'keywords' => ['pesan', 'order', 'pemesanan', 'bayar', 'pembayaran', 'transfer', 'cod', 'tunai', 'ewallet', 'form', 'daftar'],
-             'answer'   => 'Pesan lewat form Order Inquiry atau WhatsApp: pilih layanan → isi data & alamat → tunggu konfirmasi admin → pakaian dijemput. Pembayaran bisa tunai, transfer bank, atau e-wallet setelah pakaian diantar.',
-             'link'     => 'cara', 'link_label' => 'Lihat Cara Pemesanan'],
+                'keywords' => ['pesan', 'order', 'pemesanan', 'bayar', 'pembayaran', 'transfer', 'cod', 'tunai', 'ewallet', 'form', 'daftar'],
+                'answer' => 'Pesan lewat form Order Inquiry atau WhatsApp: pilih layanan → isi data & alamat → tunggu konfirmasi admin → pakaian dijemput. Pembayaran bisa tunai, transfer bank, atau e-wallet setelah pakaian diantar.',
+                'link' => 'cara', 'link_label' => 'Lihat Cara Pemesanan'],
             ['key' => 'tips',    'icon' => 'drop',    'label' => ['Tips Merawat', 'Pakaian'],
-             'keywords' => ['tips', 'rawat', 'merawat', 'noda', 'luntur', 'menyusut', 'kusut', 'wangi', 'label', 'perawatan'],
-             'answer'   => 'Tips singkat: pisahkan pakaian putih dan berwarna, baca label perawatan kain, keluarkan isi saku, dan beri tahu kami jika ada noda spesifik atau kain sensitif agar bisa ditangani khusus.',
-             'link'     => 'layanan', 'link_label' => 'Lihat Layanan'],
+                'keywords' => ['tips', 'rawat', 'merawat', 'noda', 'luntur', 'menyusut', 'kusut', 'wangi', 'label', 'perawatan'],
+                'answer' => 'Tips singkat: pisahkan pakaian putih dan berwarna, baca label perawatan kain, keluarkan isi saku, dan beri tahu kami jika ada noda spesifik atau kain sensitif agar bisa ditangani khusus.',
+                'link' => 'layanan', 'link_label' => 'Lihat Layanan'],
         ],
         'hours_answer' => 'Kami buka setiap hari pukul 08.00 - 20.00 WIB, termasuk hari libur nasional (dengan penyesuaian).',
         'hours_keywords' => ['jam', 'buka', 'tutup', 'operasional'],
