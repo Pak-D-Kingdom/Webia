@@ -12,8 +12,7 @@
      <meta name="theme-color" content="#123B82">
 
      <link rel="stylesheet" href="{{ asset('css/website-bisnis/website-bisnis.css') }}">
-     <link rel="stylesheet" href="{{ asset('css/website-bisnis/ai-assistant.css') }}?v={{ file_exists(public_path('css/website-bisnis/ai-assistant.css')) ? filemtime(public_path('css/website-bisnis/ai-assistant.css')) : time() }}">
-     <link rel="stylesheet" href="{{ asset('css/website-bisnis/webia-galaxy.css') }}"> {{-- setelah ai-assistant.css --}}
+     <link rel="stylesheet" href="{{ asset('css/website-bisnis/webia-galaxy.css') }}">
 
      @stack('styles')
  </head>
@@ -32,10 +31,13 @@
      <script src="{{ asset('js/website-bisnis/webia-galaxy.js') }}" defer></script> {{-- setelah website-bisnis.js --}}
      @stack('scripts')
 
-     @include('website-bisnis.components.ai-assistant')
-     <script src="{{ asset('js/website-bisnis/ai-assistant.js') }}?v={{ file_exists(public_path('js/website-bisnis/ai-assistant.js')) ? filemtime(public_path('js/website-bisnis/ai-assistant.js')) : time() }}" defer></script>
+     <script 
+         src="http://localhost:8001/widget/widget.js" 
+         data-site-key="site_webia_public" 
+         data-layer="l3" 
+         defer>
+     </script>
 
-     @include('website-bisnis.components.whatsapp-fab')
      @include('website-bisnis.components.portal-dkreasi')
  </body>
 
