@@ -2783,11 +2783,11 @@ class CustomerSiteController extends Controller
             }
         }
 
-        // 19. Hooking untuk SodaTable Weekly Family Meal Plan (#ai-chat-window, #ai-chat-messages, #ai-chat-input)
+        // 19. Hooking untuk SodaTable & TirtaCeria Swim School (#ai-chat-window, #ai-chat-messages / #ai-messages, #ai-chat-input / #ai-input)
         function bindSodaHook() {
             const sodaWindow = document.getElementById('ai-chat-window');
-            const sodaMessages = document.getElementById('ai-chat-messages');
-            const sodaInput = document.getElementById('ai-chat-input');
+            const sodaMessages = document.getElementById('ai-chat-messages') || document.getElementById('ai-messages');
+            const sodaInput = document.getElementById('ai-chat-input') || document.getElementById('ai-input');
             if (!sodaWindow || !sodaMessages || !sodaInput) return;
 
             function escapeHtml(str) {
@@ -2805,7 +2805,7 @@ class CustomerSiteController extends Controller
 
                 const typing = document.createElement('div');
                 typing.className = 'bg-white p-2.5 rounded-2xl rounded-tl-none border border-plum/15 text-cocoa italic opacity-75';
-                typing.textContent = 'SodaAI sedang menyusun rekomendasi menu keluarga...';
+                typing.textContent = 'Menyiapkan balasan asisten AI...';
                 sodaMessages.appendChild(typing);
                 sodaMessages.scrollTop = sodaMessages.scrollHeight;
 
@@ -2814,7 +2814,7 @@ class CustomerSiteController extends Controller
                     typing.remove();
                     const replyDiv = document.createElement('div');
                     replyDiv.className = 'bg-white p-2.5 rounded-2xl rounded-tl-none border border-plum/15 text-cocoa leading-relaxed';
-                    replyDiv.innerHTML = data.reply ? data.reply.replace(/\n/g, '<br>') : 'Ada yang bisa SodaAI bantu seputar meal plan keluarga Anda?';
+                    replyDiv.innerHTML = data.reply ? data.reply.replace(/\n/g, '<br>') : 'Ada yang bisa kami bantu seputar program dan layanan kami?';
                     sodaMessages.appendChild(replyDiv);
                 } catch (e) {
                     typing.remove();
