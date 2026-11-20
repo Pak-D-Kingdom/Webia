@@ -36,12 +36,18 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // AI Assistant sementara
+    // Buka AI Assistant Chatbot
     document.querySelectorAll('[data-ai]').forEach(button => {
-        button.addEventListener('click', () => {
-            alert(
-                'AI Assistant akan dihubungkan oleh tim AI. Untuk saat ini, silakan pilih layanan yang tersedia.'
-            );
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (window.PakdeAI && typeof window.PakdeAI.open === 'function') {
+                window.PakdeAI.open();
+            } else {
+                const launcher = document.getElementById('pakde-ai-launcher');
+                if (launcher) {
+                    launcher.click();
+                }
+            }
         });
     });
 });

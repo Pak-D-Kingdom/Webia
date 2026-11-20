@@ -2932,6 +2932,142 @@ class CustomerSiteController extends Controller
         }
         setTimeout(bindSodaHook, 400);
         setTimeout(bindSodaHook, 900);
+
+        // 20. Hooking untuk TirtaCeria Swim Academy (#ai-chat-window, #ai-messages, #ai-input, askCoachAI)
+        function bindTirtaHook() {
+            const tirtaMsgs = document.getElementById('ai-messages');
+            const tirtaInput = document.getElementById('ai-input');
+            if (!tirtaMsgs || !tirtaInput) return;
+
+            async function handleTirtaAiSend(text) {
+                if (!text || !text.trim()) return;
+                const query = text.trim();
+
+                const uMsg = document.createElement('div');
+                uMsg.className = 'bg-aqua text-white p-3 rounded-2xl rounded-tr-none ml-auto max-w-[82%] font-medium shadow-sm';
+                uMsg.textContent = query;
+                tirtaMsgs.appendChild(uMsg);
+                tirtaInput.value = '';
+                tirtaMsgs.scrollTop = tirtaMsgs.scrollHeight;
+
+                const typing = document.createElement('div');
+                typing.className = 'bg-mint/30 text-navy p-3 rounded-2xl rounded-tl-none mr-auto max-w-[88%] font-medium shadow-sm italic opacity-75';
+                typing.textContent = 'Coach Splash sedang mencari info program...';
+                tirtaMsgs.appendChild(typing);
+                tirtaMsgs.scrollTop = tirtaMsgs.scrollHeight;
+
+                try {
+                    const data = await sendToAi(query);
+                    typing.remove();
+                    const bMsg = document.createElement('div');
+                    bMsg.className = 'bg-mint/30 text-navy p-3 rounded-2xl rounded-tl-none mr-auto max-w-[88%] font-medium shadow-sm leading-relaxed';
+                    bMsg.innerHTML = (data.reply || 'Ada yang bisa Coach Splash bantu seputar program renang?').replace(/\n/g, '<br>');
+                    tirtaMsgs.appendChild(bMsg);
+                } catch(e) {
+                    typing.remove();
+                    const err = document.createElement('div');
+                    err.className = 'bg-red-50 text-red-600 p-2.5 rounded-2xl rounded-tl-none mr-auto max-w-[88%] text-xs';
+                    err.textContent = 'Mohon maaf, terjadi kendala jaringan. Silakan hubungi WhatsApp kami.';
+                    tirtaMsgs.appendChild(err);
+                }
+                tirtaMsgs.scrollTop = tirtaMsgs.scrollHeight;
+            }
+
+            window.askCoachAI = function(question) {
+                handleTirtaAiSend(question);
+            };
+
+            const origHandleAIChatSubmit = window.handleAIChatSubmit;
+            window.handleAIChatSubmit = function(e) {
+                if (e) {
+                    e.preventDefault();
+                    if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
+                }
+                if (tirtaInput && tirtaInput.value) {
+                    handleTirtaAiSend(tirtaInput.value);
+                } else if (typeof origHandleAIChatSubmit === 'function') {
+                    origHandleAIChatSubmit(e);
+                }
+            };
+
+            const tirtaForm = tirtaInput.closest('form');
+            if (tirtaForm && !tirtaForm.dataset.webiaBound) {
+                tirtaForm.dataset.webiaBound = '1';
+                tirtaForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    if (tirtaInput && tirtaInput.value) {
+                        handleTirtaAiSend(tirtaInput.value);
+                    }
+                }, true);
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', bindTirtaHook);
+        } else {
+            bindTirtaHook();
+        }
+        setTimeout(bindTirtaHook, 400);
+        setTimeout(bindTirtaHook, 900);
+
+        // 21. Hooking untuk Museum & Heritage (Aethelgard, Aquaverse - sendAIMessage, #ai-input, #ai-chat-box)
+        function bindMuseumHook() {
+            const mChatBox = document.getElementById('ai-chat-box');
+            const mInput = document.getElementById('ai-input');
+            if (!mChatBox || !mInput) return;
+
+            window.sendAIMessage = async function(e) {
+                if (e) {
+                    e.preventDefault();
+                    if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
+                }
+                const query = mInput.value.trim();
+                if (!query) return;
+
+                const uMsg = document.createElement('p');
+                uMsg.innerHTML = '<strong>Pengunjung:</strong> ' + query.replace(/</g, '&lt;');
+                mChatBox.appendChild(uMsg);
+                mInput.value = '';
+                mChatBox.scrollTop = mChatBox.scrollHeight;
+
+                const typing = document.createElement('p');
+                typing.style.opacity = '0.7';
+                typing.style.fontStyle = 'italic';
+                typing.textContent = 'Kurator AI sedang mencari arsip sejarah...';
+                mChatBox.appendChild(typing);
+                mChatBox.scrollTop = mChatBox.scrollHeight;
+
+                try {
+                    const data = await sendToAi(query);
+                    typing.remove();
+                    const bMsg = document.createElement('p');
+                    bMsg.innerHTML = '<strong>Panduan AI:</strong> ' + (data.reply || 'Ada artefak atau informasi pameran yang ingin Anda ketahui?').replace(/\n/g, '<br>');
+                    mChatBox.appendChild(bMsg);
+                } catch(err) {
+                    typing.remove();
+                    const errMsg = document.createElement('p');
+                    errMsg.style.color = '#ef4444';
+                    errMsg.textContent = 'Mohon maaf, terjadi kendala jaringan saat menghubungi Kurator AI.';
+                    mChatBox.appendChild(errMsg);
+                }
+                mChatBox.scrollTop = mChatBox.scrollHeight;
+            };
+
+            const mForm = mInput.closest('form');
+            if (mForm && !mForm.dataset.webiaBound) {
+                mForm.dataset.webiaBound = '1';
+                mForm.addEventListener('submit', window.sendAIMessage, true);
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', bindMuseumHook);
+        } else {
+            bindMuseumHook();
+        }
+        setTimeout(bindMuseumHook, 400);
+        setTimeout(bindMuseumHook, 900);
     });
 })();
 </script>
