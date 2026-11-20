@@ -1,0 +1,39 @@
+@theme {
+    --color-verdant-sage-950: #141d18;
+    --color-verdant-sage-900: #1f2d25;
+    --color-verdant-sage-800: #2e4237;
+    --color-verdant-sage-700: #3f594b;
+    --color-verdant-sage-600: #537362;
+    --color-verdant-sage-500: #6b8e7b;
+    --color-verdant-sage-400: #8eae9c;
+    --color-verdant-sage-300: #b5ccb9;
+    --color-verdant-sage-200: #d7e3d9;
+    --color-verdant-sage-100: #ecf2ed;
+    --color-verdant-sage-50: #f6f9f6;
+    --color-verdant-paper-50: #fbfbf9;
+    --color-verdant-paper-100: #f4f4f0;
+    --color-verdant-paper-200: #e7e7e0;
+    --font-verdant-serif: 'Newsreader', Georgia, serif;
+    --font-verdant-sans: 'Plus Jakarta Sans', sans-serif;
+    --font-verdant-mono: 'IBM Plex Mono', monospace;
+}
+
+.verdant-page {
+    background-color: #fbfbf9;
+    color: #1f2d25;
+}
+
+.verdant-archival-border {
+    border-color: #d7e3d9;
+}
+
+.verdant-archival-card {
+    background-color: #fff;
+    border: 1px solid #d7e3d9;
+    transition: border-color 0.25s ease, background-color 0.25s ease;
+}
+
+.verdant-archival-card:hover {
+    border-color: #537362;
+    background-color: #f6f9f6;
+}
