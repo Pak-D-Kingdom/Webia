@@ -96,6 +96,10 @@ class CustomerSiteController extends Controller
         if (str_starts_with($siteConfigPath, 'home-services/')) {
             return $this->handleHomeServices($order, $siteConfigPath, $pageKey);
         }
+
+        if (str_starts_with($siteConfigPath, 'nonprofit-community/')) {
+            return $this->handleNonprofit($order, $siteConfigPath, $pageKey);
+        }
         $views = match (true) {
             $isBrandingAgency => array_fill_keys(['home', 'layanan', 'keahlian', 'portofolio', 'janji'], 'branding-creative-agency'),
             str_starts_with($siteConfigPath, 'company/') => ['home' => 'index', 'tentang-kami' => 'tentang-kami', 'portofolio' => 'portofolio'],
@@ -1786,6 +1790,104 @@ class CustomerSiteController extends Controller
             '/webia/template/astroclean-home-cleaning-cosmic' => $siteBase,
             '/webia/template/matcha-clean-organic-deep-cleaning' => $siteBase,
             '/webia/template/aurelia-home-renovation' => $siteBase,
+        ];
+        uksort($pairs, fn ($a, $b) => strlen($b) <=> strlen($a));
+        foreach ($pairs as $from => $to) {
+            $html = str_replace(url($from), $to, $html);
+            $html = str_replace($from, $to, $html);
+        }
+
+        return $html;
+    }
+
+    private const NONPROFIT_VIEWS = [
+        'relakita-volunteer-warm-sunrise' => ['home' => 'website-bisnis.templates.nonprofit-community.relakita-volunteer-warm-sunrise'],
+        'kolektif-aksi-kita-volunteer-midnight-navy' => ['home' => 'website-bisnis.templates.nonprofit-community.kolektif-aksi-kita-volunteer-midnight-navy'],
+        'revolt-impact-social-organization' => ['home' => 'website-bisnis.templates.nonprofit-community.social-organization.revolt-impact.revolt-impact'],
+        'lentera-nusantara-volunteer-group' => ['home' => 'website-bisnis.templates.nonprofit-community.volunteer-group.lentera-nusantara.lentera-nusantara'],
+    ];
+
+    private function handleNonprofit(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $slug = Str::after($siteConfigPath, 'nonprofit-community/');
+        abort_unless(isset(self::NONPROFIT_VIEWS[$slug]), 404);
+        abort_unless(isset(self::NONPROFIT_VIEWS[$slug][$pageKey]), 404);
+
+        $viewName = self::NONPROFIT_VIEWS[$slug][$pageKey];
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $instagram = ltrim($business['instagram'] ?? '', '@');
+
+        $renderedHtml = view($viewName, [
+            'order' => $order,
+            'page' => $pageKey,
+            'business' => $business,
+            'whatsapp' => $whatsapp,
+            'instagram' => $instagram,
+        ])->render();
+
+        $renderedHtml = $this->transformNonprofitHtml($renderedHtml, $business, $whatsapp, $slug, $order);
+
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+        return response($renderedHtml);
+    }
+
+    private function transformNonprofitHtml(string $html, array $business, string $whatsapp, string $slug, WebiaOrder $order): string
+    {
+        $bizName = $business['business_name'] ?? '';
+        if ($bizName !== '') {
+            $brandMap = [
+                'Kolektif Aksi Kita' => $bizName,
+                'REVOLT // IMPACT' => strtoupper($bizName),
+                'REVOLT' => strtoupper($bizName),
+                'Lentera Nusantara' => $bizName,
+                'Relakita' => $bizName,
+            ];
+            // mixed-case title entries for uppercase brands
+            $brandMap['REVOLT // IMPACT — Social Organization'] = $bizName.' — Social Organization';
+            uksort($brandMap, fn ($a, $b) => strlen($b) <=> strlen($a));
+            $html = str_replace(array_keys($brandMap), array_values($brandMap), $html);
+        }
+
+        $custWa = $whatsapp ?: '6281234567890';
+        $rawWa = $business['whatsapp'] ?? $custWa;
+        $html = str_replace(
+            ['6281234567890', '+62 812-3456-7890', '0812-3456-7890'],
+            [$custWa, $rawWa, $rawWa],
+            $html
+        );
+
+        $address = $this->businessAddress($business);
+        if ($address !== '') {
+            $html = str_replace(
+                [
+                    'Jl. Cikini Raya No. 45, Menteng',
+                    'Jl. Tebet Barat Raya No. 45, Jakarta Selatan 12810.',
+                ],
+                $address,
+                $html
+            );
+        }
+
+        if (! empty($business['email'])) {
+            $email = $business['email'];
+            $html = str_replace(
+                [
+                    'kontak@relakita.org',
+                ],
+                $email,
+                $html
+            );
+        }
+
+        // Remap preview links to published site routes
+        $siteBase = url('/s/'.$order->site_slug);
+        $pairs = [
+            '/webia/template/relakita-volunteer-warm-sunrise' => $siteBase,
+            '/webia/template/kolektif-aksi-kita-volunteer-midnight-navy' => $siteBase,
+            '/webia/template/revolt-impact-social-organization' => $siteBase,
+            '/webia/template/lentera-nusantara-volunteer-group' => $siteBase,
         ];
         uksort($pairs, fn ($a, $b) => strlen($b) <=> strlen($a));
         foreach ($pairs as $from => $to) {
