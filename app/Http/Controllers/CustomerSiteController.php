@@ -92,6 +92,10 @@ class CustomerSiteController extends Controller
         if (str_starts_with($siteConfigPath, 'photography/')) {
             return $this->handlePhotography($order, $siteConfigPath, $pageKey);
         }
+
+        if (str_starts_with($siteConfigPath, 'home-services/')) {
+            return $this->handleHomeServices($order, $siteConfigPath, $pageKey);
+        }
         $views = match (true) {
             $isBrandingAgency => array_fill_keys(['home', 'layanan', 'keahlian', 'portofolio', 'janji'], 'branding-creative-agency'),
             str_starts_with($siteConfigPath, 'company/') => ['home' => 'index', 'tentang-kami' => 'tentang-kami', 'portofolio' => 'portofolio'],
@@ -1684,6 +1688,104 @@ class CustomerSiteController extends Controller
             '/webia/template/candy-cloud-ugc-content-creator-studio' => $siteBase,
             '/webia/template/photography-motiongraphics-premiumminimal-champagneglow-putri' => $siteBase,
             '/webia/template/photography-motiongraphics-traditionalcultural-coralpeach-putri' => $siteBase,
+        ];
+        uksort($pairs, fn ($a, $b) => strlen($b) <=> strlen($a));
+        foreach ($pairs as $from => $to) {
+            $html = str_replace(url($from), $to, $html);
+            $html = str_replace($from, $to, $html);
+        }
+
+        return $html;
+    }
+
+    private const HOME_SERVICES_VIEWS = [
+        'madubersih-home-cleaning-vintage' => ['home' => 'website-bisnis.templates.home-services.home-cleaning-deep-cleaning.madubersih-vintage'],
+        'astroclean-home-cleaning-cosmic' => ['home' => 'website-bisnis.templates.home-services.home-cleaning-deep-cleaning.astroclean-cosmic'],
+        'matcha-clean-organic-deep-cleaning' => ['home' => 'website-bisnis.templates.home-services.home-cleaning-deep-cleaning.matcha-clean.matcha-clean'],
+        'aurelia-home-renovation' => ['home' => 'website-bisnis.templates.home-services.home-renovation-repair.aurelia.aurelia'],
+    ];
+
+    private function handleHomeServices(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $slug = Str::after($siteConfigPath, 'home-services/');
+        abort_unless(isset(self::HOME_SERVICES_VIEWS[$slug]), 404);
+        abort_unless(isset(self::HOME_SERVICES_VIEWS[$slug][$pageKey]), 404);
+
+        $viewName = self::HOME_SERVICES_VIEWS[$slug][$pageKey];
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $instagram = ltrim($business['instagram'] ?? '', '@');
+
+        $renderedHtml = view($viewName, [
+            'order' => $order,
+            'page' => $pageKey,
+            'business' => $business,
+            'whatsapp' => $whatsapp,
+            'instagram' => $instagram,
+        ])->render();
+
+        $renderedHtml = $this->transformHomeServicesHtml($renderedHtml, $business, $whatsapp, $slug, $order);
+
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+        return response($renderedHtml);
+    }
+
+    private function transformHomeServicesHtml(string $html, array $business, string $whatsapp, string $slug, WebiaOrder $order): string
+    {
+        $bizName = $business['business_name'] ?? '';
+        if ($bizName !== '') {
+            $brandMap = [
+                'MaduBersih' => $bizName,
+                'AstroClean' => $bizName,
+                'MATCHA CLEAN' => strtoupper($bizName),
+                'MATCHA' => strtoupper($bizName),
+                'MATCHA CLEAN | Organic Botanical & Deep Home Sanitization' => $bizName.' | Organic Botanical & Deep Home Sanitization',
+                'AURELIA' => strtoupper($bizName),
+                'AURELIA | Haute Architecture &amp; Renovation Services' => $bizName.' | Haute Architecture &amp; Renovation Services',
+            ];
+            uksort($brandMap, fn ($a, $b) => strlen($b) <=> strlen($a));
+            $html = str_replace(array_keys($brandMap), array_values($brandMap), $html);
+        }
+
+        $custWa = $whatsapp ?: '6281234567890';
+        $rawWa = $business['whatsapp'] ?? $custWa;
+        $html = str_replace(
+            ['6281234567890', '6281298765432', '+62 812-3456-7890', '0812-3456-7890'],
+            [$custWa, $custWa, $rawWa, $rawWa],
+            $html
+        );
+
+        $address = $this->businessAddress($business);
+        if ($address !== '') {
+            $html = str_replace(
+                [
+                    'Jakarta Selatan & Kebayoran',
+                    'Beverly Hills',
+                ],
+                $address,
+                $html
+            );
+        }
+
+        if (! empty($business['email'])) {
+            $email = $business['email'];
+            $html = str_replace(
+                [
+                    'harrington@estate.com',
+                ],
+                $email,
+                $html
+            );
+        }
+
+        // Remap preview links to published site routes
+        $siteBase = url('/s/'.$order->site_slug);
+        $pairs = [
+            '/webia/template/madubersih-home-cleaning-vintage' => $siteBase,
+            '/webia/template/astroclean-home-cleaning-cosmic' => $siteBase,
+            '/webia/template/matcha-clean-organic-deep-cleaning' => $siteBase,
+            '/webia/template/aurelia-home-renovation' => $siteBase,
         ];
         uksort($pairs, fn ($a, $b) => strlen($b) <=> strlen($a));
         foreach ($pairs as $from => $to) {
