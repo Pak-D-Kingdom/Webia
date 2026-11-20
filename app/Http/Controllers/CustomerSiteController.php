@@ -104,6 +104,10 @@ class CustomerSiteController extends Controller
         if (str_starts_with($siteConfigPath, 'interior-architecture/')) {
             return $this->handleInterior($order, $siteConfigPath, $pageKey);
         }
+
+        if (str_starts_with($siteConfigPath, 'agriculture/')) {
+            return $this->handleAgriculture($order, $siteConfigPath, $pageKey);
+        }
         $views = match (true) {
             $isBrandingAgency => array_fill_keys(['home', 'layanan', 'keahlian', 'portofolio', 'janji'], 'branding-creative-agency'),
             str_starts_with($siteConfigPath, 'company/') => ['home' => 'index', 'tentang-kami' => 'tentang-kami', 'portofolio' => 'portofolio'],
@@ -1992,6 +1996,109 @@ class CustomerSiteController extends Controller
             '/webia/template/interior-design-studio-artistic-terracotta' => $siteBase,
             '/webia/template/aethel-moss-architectural-studio' => $siteBase,
             '/webia/template/nantara-architecture-traditional-cultural' => $siteBase,
+        ];
+        uksort($pairs, fn ($a, $b) => strlen($b) <=> strlen($a));
+        foreach ($pairs as $from => $to) {
+            $html = str_replace(url($from), $to, $html);
+            $html = str_replace($from, $to, $html);
+        }
+
+        return $html;
+    }
+
+    private const AGRICULTURE_VIEWS = [
+        'agriternak-organic-ethical-precision' => ['home' => 'website-bisnis.templates.agriculture.agriternak-organic-ethical-precision'],
+        'agriternak-futuristic-iot' => ['home' => 'website-bisnis.templates.agriculture.agriternak-futuristic-iot'],
+        'agriternak-bold-livestock' => ['home' => 'website-bisnis.templates.agriculture.agriternak-bold-livestock'],
+        'agriculture-peralatanpertanian-corporate-sagegreen-putri' => ['home' => 'website-bisnis.templates.agriculture.peralatan-pertanian.agriculture-peralatanpertanian-corporate-sagegreen-putri'],
+        'agriculture-peralatanpertanian-creative-matchalatte-putri' => ['home' => 'website-bisnis.templates.agriculture.peralatan-pertanian.agriculture-peralatanpertanian-creative-matchalatte-putri'],
+        'agriculture-peralatanpertanian-playfulcolorful-arcticfrost-putri' => ['home' => 'website-bisnis.templates.agriculture.peralatan-pertanian.agriculture-peralatanpertanian-playfulcolorful-arcticfrost-putri'],
+    ];
+
+    private function handleAgriculture(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $slug = Str::after($siteConfigPath, 'agriculture/');
+        abort_unless(isset(self::AGRICULTURE_VIEWS[$slug]), 404);
+        abort_unless(isset(self::AGRICULTURE_VIEWS[$slug][$pageKey]), 404);
+
+        $viewName = self::AGRICULTURE_VIEWS[$slug][$pageKey];
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $instagram = ltrim($business['instagram'] ?? '', '@');
+
+        $renderedHtml = view($viewName, [
+            'order' => $order,
+            'page' => $pageKey,
+            'business' => $business,
+            'whatsapp' => $whatsapp,
+            'instagram' => $instagram,
+        ])->render();
+
+        $renderedHtml = $this->transformAgricultureHtml($renderedHtml, $business, $whatsapp, $slug, $order);
+
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+        return response($renderedHtml);
+    }
+
+    private function transformAgricultureHtml(string $html, array $business, string $whatsapp, string $slug, WebiaOrder $order): string
+    {
+        $bizName = $business['business_name'] ?? '';
+        if ($bizName !== '') {
+            $brandMap = [
+                'AgriTernak' => $bizName,
+                'AgroPratama Machinery' => $bizName,
+                'AgroPratama' => $bizName,
+                'MatchaAgro Machinery' => $bizName,
+                'MatchaAgro' => $bizName,
+                'FrostyAgro Equipment' => $bizName,
+                'FrostyAgro' => $bizName,
+            ];
+            uksort($brandMap, fn ($a, $b) => strlen($b) <=> strlen($a));
+            $html = str_replace(array_keys($brandMap), array_values($brandMap), $html);
+        }
+
+        $custWa = $whatsapp ?: '6281234567890';
+        $rawWa = $business['whatsapp'] ?? $custWa;
+        $html = str_replace(
+            ['6281234567890', '+62 812-3456-7890', '0812-3456-7890'],
+            [$custWa, $rawWa, $rawWa],
+            $html
+        );
+
+        $address = $this->businessAddress($business);
+        if ($address !== '') {
+            $html = str_replace(
+                [
+                    'Jl. Agro Industri No. 42, Bogor, Jawa Barat',
+                    'Jl. Agro Industri No. 42, Bogor, Jawa Barat 16115',
+                ],
+                $address,
+                $html
+            );
+        }
+
+        if (! empty($business['email'])) {
+            $email = $business['email'];
+            $html = str_replace(
+                [
+                    'halo@agriternak.id',
+                    'hendra@perusahaan.co.id',
+                ],
+                $email,
+                $html
+            );
+        }
+
+        // Remap preview links to published site routes
+        $siteBase = url('/s/'.$order->site_slug);
+        $pairs = [
+            '/webia/template/agriternak-organic-ethical-precision' => $siteBase,
+            '/webia/template/agriternak-futuristic-iot' => $siteBase,
+            '/webia/template/agriternak-bold-livestock' => $siteBase,
+            '/webia/template/agriculture-peralatanpertanian-corporate-sagegreen-putri' => $siteBase,
+            '/webia/template/agriculture-peralatanpertanian-creative-matchalatte-putri' => $siteBase,
+            '/webia/template/agriculture-peralatanpertanian-playfulcolorful-arcticfrost-putri' => $siteBase,
         ];
         uksort($pairs, fn ($a, $b) => strlen($b) <=> strlen($a));
         foreach ($pairs as $from => $to) {
