@@ -266,7 +266,7 @@
 
 
     <script>
-        window.IRONPULSE_WA_ADMIN = window.IRONPULSE_WA_ADMIN || '6281234567890';
+        window.WEBIA_WA_ADMIN = window.WEBIA_WA_ADMIN || '6281234567890';
     </script>
     <script src="{{ asset('js/website-bisnis/templates/sports-fitness/gym-fitness-center/ironpulse/ironpulse.js') }}" defer>
     </script>

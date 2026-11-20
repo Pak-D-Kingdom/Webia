@@ -80,6 +80,10 @@ class CustomerSiteController extends Controller
         if (str_starts_with($siteConfigPath, 'education/')) {
             return $this->handleEducation($order, $siteConfigPath, $pageKey);
         }
+
+        if (str_starts_with($siteConfigPath, 'sports-fitness/')) {
+            return $this->handleSportsFitness($order, $siteConfigPath, $pageKey);
+        }
         $views = match (true) {
             $isBrandingAgency => array_fill_keys(['home', 'layanan', 'keahlian', 'portofolio', 'janji'], 'branding-creative-agency'),
             str_starts_with($siteConfigPath, 'company/') => ['home' => 'index', 'tentang-kami' => 'tentang-kami', 'portofolio' => 'portofolio'],
@@ -1237,6 +1241,165 @@ class CustomerSiteController extends Controller
                 .'document.getElementById("ok").style.display="block";'
                 .'window.open("https://wa.me/'.$custWa.'?text="+encodeURIComponent(t),"_blank")};</script>';
             $html = str_replace('rumah-latte-preschool-daycare.js"></script>', 'rumah-latte-preschool-daycare.js"></script>'.$shim, $html);
+        }
+
+        return $html;
+    }
+
+    private const SPORTS_FITNESS_VIEWS = [
+        'sports-gym-bold' => ['home' => 'website-bisnis.templates.sports-fitness.gym.sports-gym-bold'],
+        'ironpulse-gym-fitness-center' => ['home' => 'website-bisnis.templates.sports-fitness.gym-fitness-center.ironpulse.ironpulse'],
+        'personal-trainer-playful-colorful-jelly-pop' => [
+            'home' => 'website-bisnis.templates.sports-fitness.personal-trainer.jelly-pop.personal-trainer-jelly-pop',
+            'detail' => 'website-bisnis.templates.sports-fitness.personal-trainer.jelly-pop.personal-trainer-detail-jelly-pop',
+        ],
+        'northline-performance-corporate-personal-trainer' => ['home' => 'website-bisnis.templates.sports-fitness.personal-trainer.northline-blue.northline-blue'],
+        'vanta-form-cyber-neon-personal-trainer' => ['home' => 'website-bisnis.templates.sports-fitness.personal-trainer.cyber-neon.cyber-neon'],
+        'pilates-studio-strawberry-fizz' => [
+            'home' => 'website-bisnis.templates.sports-fitness.pilates-studio.strawberry-fizz.pilates-strawberry-fizz',
+            'classes' => 'website-bisnis.templates.sports-fitness.pilates-studio.strawberry-fizz.pilates-classes-strawberry-fizz',
+            'class-detail' => 'website-bisnis.templates.sports-fitness.pilates-studio.strawberry-fizz.pilates-class-detail-strawberry-fizz',
+        ],
+    ];
+
+    private function handleSportsFitness(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $slug = Str::after($siteConfigPath, 'sports-fitness/');
+        abort_unless(isset(self::SPORTS_FITNESS_VIEWS[$slug]), 404);
+        abort_unless(isset(self::SPORTS_FITNESS_VIEWS[$slug][$pageKey]), 404);
+
+        $viewName = self::SPORTS_FITNESS_VIEWS[$slug][$pageKey];
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $instagram = ltrim($business['instagram'] ?? '', '@');
+
+        $renderedHtml = view($viewName, [
+            'order' => $order,
+            'page' => $pageKey,
+            'business' => $business,
+            'whatsapp' => $whatsapp,
+            'instagram' => $instagram,
+        ])->render();
+
+        $renderedHtml = $this->transformSportsFitnessHtml($renderedHtml, $business, $whatsapp, $slug, $order);
+
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+        return response($renderedHtml);
+    }
+
+    private function transformSportsFitnessHtml(string $html, array $business, string $whatsapp, string $slug, WebiaOrder $order): string
+    {
+        // Protect inline JS config variable names from brand-name replacement corruption.
+        $configTokens = [
+            "window.VANTA_CONFIG={whatsappNumber:'6281399007744'}" => '@@0001@@',
+            "window.NORTHLINE_CONFIG={whatsappNumber:'628112040880'}" => '@@0002@@',
+            "window.JELLY_POP_CONFIG={whatsappNumber:'6285850180285'}" => '@@0003@@',
+            "window.WEBIA_WA_ADMIN = window.WEBIA_WA_ADMIN || '6281234567890';" => '@@0004@@',
+        ];
+        foreach ($configTokens as $src => $token) {
+            $html = str_replace($src, $token, $html);
+        }
+
+        $bizName = $business['business_name'] ?? '';
+        if ($bizName !== '') {
+            $brandMap = [
+                'APEX PULSE' => strtoupper($bizName),
+                'Apex Pulse Fitness' => $bizName,
+                'Apex Pulse' => $bizName,
+                'APEX<span class="text-[#ccff00]">PULSE</span>' => strtoupper($bizName),
+                'IRONPULSE' => strtoupper($bizName),
+                'IRON<b>PULSE</b>' => strtoupper($bizName),
+                'IronPulse' => $bizName,
+                'Iron Pulse' => $bizName,
+                'IRONPULSE Gym & Fitness Center' => $bizName.' Gym & Fitness Center',
+                'jelly pop' => strtolower($bizName),
+                'Jelly Pop' => $bizName,
+                'JELLY POP' => strtoupper($bizName),
+                'NORTHLINE' => strtoupper($bizName),
+                'Northline Performance' => $bizName,
+                'Northline' => $bizName,
+                'VANTA//FORM' => strtoupper($bizName),
+                'VANTA FORM' => strtoupper($bizName),
+                'Vanta Form' => $bizName,
+                'VANTA<span>//</span>FORM' => strtoupper($bizName),
+                'VANTA//FORM — Personal Training Lab' => $bizName.' — Personal Training Lab',
+                'strawberry fizz' => strtolower($bizName),
+                'Rustic Strawberry Fizz' => $bizName,
+                'Strawberry Fizz' => $bizName,
+            ];
+            uksort($brandMap, fn ($a, $b) => strlen($b) <=> strlen($a));
+            $html = str_replace(array_keys($brandMap), array_values($brandMap), $html);
+            if ($slug === 'ironpulse-gym-fitness-center') {
+                file_put_contents(storage_path('debug-posttitle-iron.txt'), (preg_match('/<title>(.*?)<\/title>/s', $html, $m) ? $m[1] : 'NOTITLE'));
+            }
+        }
+
+        $custWa = $whatsapp ?: '6281234567890';
+        $rawWa = $business['whatsapp'] ?? $custWa;
+        $html = str_replace(
+            ['6285850180285', '6281234567890', '6281399007744', '628112040880', '+62 812-3456-7890', '0812-3456-7890'],
+            [$custWa, $custWa, $custWa, $custWa, $rawWa, $rawWa],
+            $html
+        );
+
+        // Inline config overrides for JS-driven templates
+        $html = str_replace('@@0001@@', "window.VANTA_CONFIG={whatsappNumber:'".$custWa."'}", $html);
+        $html = str_replace('@@0002@@', "window.NORTHLINE_CONFIG={whatsappNumber:'".$custWa."'}", $html);
+        $html = str_replace('@@0003@@', "window.JELLY_POP_CONFIG={whatsappNumber:'".$custWa."'}", $html);
+        $html = str_replace('@@0004@@', "window.WEBIA_WA_ADMIN = window.WEBIA_WA_ADMIN || '".$custWa."';", $html);
+
+        $address = $this->businessAddress($business);
+        if ($address !== '') {
+            $html = str_replace(
+                [
+                    'Mega Gym Mall Lt. 3, Jakarta Selatan',
+                    'Kav. 45 Jakarta Selatan',
+                    'Jl. Contoh Raya No. 88, Surabaya, Jawa Timur (alamat demo)',
+                    'Jl. Contoh Raya No. 88, Surabaya',
+                    'Jl. Senopati Aesthetic No. 88, Upper Level 2, Jakarta',
+                ],
+                $address,
+                $html
+            );
+        }
+
+        if (! empty($business['email'])) {
+            $email = $business['email'];
+            $html = str_replace(
+                [
+                    'hello@ironpulse.id',
+                    'hello@strawberryfizzpilates.com',
+                ],
+                $email,
+                $html
+            );
+        }
+
+        // Strawberry Fizz external JS hardcodes ADMIN_WHATSAPP; patch window.open at runtime.
+        if ($slug === 'pilates-studio-strawberry-fizz') {
+            $shim = '<script>(function(){const o=window.open;window.open=function(u,t,f){if(typeof u==="string"){u=u.replace(/6281234567890/g,'.json_encode($custWa).');}return o.call(window,u,t,f);};})();</script>';
+            $html = str_replace('</body>', $shim.'</body>', $html);
+        }
+
+        // Remap preview links to published site routes
+        $siteBase = url('/s/'.$order->site_slug);
+        $pairs = [
+            '/webia/template/personal-trainer-jelly-pop/detail' => $siteBase.'/detail',
+            '/webia/template/personal-trainer-jelly-pop' => $siteBase,
+            '/webia/template/pilates-studio-strawberry-fizz/classes' => $siteBase.'/classes',
+            '/webia/template/pilates-studio-strawberry-fizz/class-detail' => $siteBase.'/class-detail',
+            '/webia/template/pilates-studio-strawberry-fizz' => $siteBase,
+            '/webia/template/sports-gym-bold' => $siteBase,
+            '/webia/template/ironpulse-gym-fitness-center' => $siteBase,
+            '/webia/template/sports-fitness/personal-trainer/northline-blue' => $siteBase,
+            '/webia/template/sports-fitness/personal-trainer/cyber-neon' => $siteBase,
+        ];
+        // Replace longer paths first
+        uksort($pairs, fn ($a, $b) => strlen($b) <=> strlen($a));
+        foreach ($pairs as $from => $to) {
+            $html = str_replace(url($from), $to, $html);
+            $html = str_replace($from, $to, $html);
         }
 
         return $html;

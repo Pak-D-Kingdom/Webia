@@ -41,7 +41,7 @@ document.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{mode=b.dataset.f
 $('#fm').onsubmit=e=>{
  e.preventDefault(); const form=e.currentTarget; const fd=new FormData(form);
  const nama=(fd.get('n')||'').trim(), whatsapp=(fd.get('w')||'').trim(), email=(fd.get('e')||'').trim(), tanggal=(fd.get('d')||'').trim(), paket=$('#pk').value;
- const adminNumber=window.IRONPULSE_WA_ADMIN||'6281234567890';
+ const adminNumber=window.WEBIA_WA_ADMIN||'6281234567890';
  const lines=mode==='reg'?['Halo Admin IRONPULSE, saya ingin mendaftar membership.','',`Nama: ${nama}`,`No. WhatsApp: ${whatsapp}`,`Email: ${email}`,`Paket: ${paket}`,'','Mohon informasi proses konfirmasi dan pembayaran.']:['Halo Admin IRONPULSE, saya ingin booking Free Trial.','',`Nama: ${nama}`,`No. WhatsApp: ${whatsapp}`,`Tanggal kunjungan: ${tanggal}`,'','Mohon konfirmasi ketersediaan jadwal trial.'];
  $('#ok').textContent='Menyiapkan WhatsApp untuk mengirim permintaan Anda…'; window.open(`https://wa.me/${adminNumber}?text=${encodeURIComponent(lines.join('\n'))}`,'_blank','noopener,noreferrer');
 };
