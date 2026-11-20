@@ -624,6 +624,7 @@ class WebiaTemplateSeeder extends Seeder
                 'headline' => 'Crafting Viral UGC Content for Iconic Brands',
                 'tag' => 'UGC & Content Creator Studio · Candy Cloud',
                 'preview_folder' => null,
+                'site_config_path' => 'photography/candy-cloud-ugc-content-creator-studio',
                 'template_url' => '/webia/template/candy-cloud-ugc-content-creator-studio',
                 'is_active' => true,
                 'sort_order' => 34,

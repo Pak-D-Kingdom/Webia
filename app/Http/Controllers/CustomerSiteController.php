@@ -88,6 +88,10 @@ class CustomerSiteController extends Controller
         if (str_starts_with($siteConfigPath, 'pet-animal-service/')) {
             return $this->handlePetAnimalService($order, $siteConfigPath, $pageKey);
         }
+
+        if (str_starts_with($siteConfigPath, 'photography/')) {
+            return $this->handlePhotography($order, $siteConfigPath, $pageKey);
+        }
         $views = match (true) {
             $isBrandingAgency => array_fill_keys(['home', 'layanan', 'keahlian', 'portofolio', 'janji'], 'branding-creative-agency'),
             str_starts_with($siteConfigPath, 'company/') => ['home' => 'index', 'tentang-kami' => 'tentang-kami', 'portofolio' => 'portofolio'],
@@ -1568,6 +1572,118 @@ class CustomerSiteController extends Controller
             '/webia/template/paws-canine-terra-earth-tone' => $siteBase,
             '/webia/template/pawtopia-animal-care' => $siteBase,
             '/webia/template/pawstead' => $siteBase,
+        ];
+        uksort($pairs, fn ($a, $b) => strlen($b) <=> strlen($a));
+        foreach ($pairs as $from => $to) {
+            $html = str_replace(url($from), $to, $html);
+            $html = str_replace($from, $to, $html);
+        }
+
+        return $html;
+    }
+
+    private const PHOTOGRAPHY_VIEWS = [
+        'lumiere-photography-studio' => ['home' => 'website-bisnis.templates.photography.lumiere-photography-studio'],
+        'noir-studio-photography' => ['home' => 'website-bisnis.templates.photography.noir-studio-photography'],
+        'peachy-studio' => ['home' => 'website-bisnis.templates.photography.peachy-studio'],
+        'candy-cloud-ugc-content-creator-studio' => ['home' => 'website-bisnis.templates.photography-creative.ugc-content-creator-studio.candy-cloud-studio.candy-cloud-studio'],
+        'photography-motiongraphics-premiumminimal-champagneglow-putri' => ['home' => 'website-bisnis.templates.photography-creative.motion-graphics.photography-motiongraphics-premiumminimal-champagneglow-putri'],
+        'photography-motiongraphics-traditionalcultural-coralpeach-putri' => ['home' => 'website-bisnis.templates.photography-creative.motion-graphics.photography-motiongraphics-traditionalcultural-coralpeach-putri'],
+    ];
+
+    private function handlePhotography(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $slug = Str::after($siteConfigPath, 'photography/');
+        abort_unless(isset(self::PHOTOGRAPHY_VIEWS[$slug]), 404);
+        abort_unless(isset(self::PHOTOGRAPHY_VIEWS[$slug][$pageKey]), 404);
+
+        $viewName = self::PHOTOGRAPHY_VIEWS[$slug][$pageKey];
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $instagram = ltrim($business['instagram'] ?? '', '@');
+
+        $renderedHtml = view($viewName, [
+            'order' => $order,
+            'page' => $pageKey,
+            'business' => $business,
+            'whatsapp' => $whatsapp,
+            'instagram' => $instagram,
+        ])->render();
+
+        $renderedHtml = $this->transformPhotographyHtml($renderedHtml, $business, $whatsapp, $slug, $order);
+
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+        return response($renderedHtml);
+    }
+
+    private function transformPhotographyHtml(string $html, array $business, string $whatsapp, string $slug, WebiaOrder $order): string
+    {
+        $bizName = $business['business_name'] ?? '';
+        if ($bizName !== '') {
+            $brandMap = [
+                'Lumière Studio' => $bizName,
+                'Lumiere Studio' => $bizName,
+                'Noir Studio' => $bizName,
+                'Peachy Studio' => $bizName,
+                'Candy Cloud Studio' => $bizName,
+                'Candy Cloud' => $bizName,
+                'AuraMotion 3D Studio' => $bizName,
+                'AuraMotion' => $bizName,
+                'PusakaMotion 3D Studio' => $bizName,
+                'PusakaMotion' => $bizName,
+            ];
+            uksort($brandMap, fn ($a, $b) => strlen($b) <=> strlen($a));
+            $html = str_replace(array_keys($brandMap), array_values($brandMap), $html);
+        }
+
+        $custWa = $whatsapp ?: '6281234567890';
+        $rawWa = $business['whatsapp'] ?? $custWa;
+        $html = str_replace(
+            ['6281234567890', '+62 812-3456-7890', '0812-3456-7890'],
+            [$custWa, $rawWa, $rawWa],
+            $html
+        );
+
+        $address = $this->businessAddress($business);
+        if ($address !== '') {
+            $html = str_replace(
+                [
+                    'Jl. Raya Kertajaya No.123',
+                    'Jl. Melati No. 12, Jakarta Selatan',
+                    'Jl. Tirtodipuran No. 45, Mantrijeron, D.I. Yogyakarta',
+                ],
+                $address,
+                $html
+            );
+        }
+
+        if (! empty($business['email'])) {
+            $email = $business['email'];
+            $html = str_replace(
+                [
+                    'hello@lumiere.studio',
+                    'hello@noirstudio.id',
+                    'hello@peachystudio.com',
+                    'hello@candycloudstudio.com',
+                    'adrian@brand.com',
+                    'brief@pusakamotion.id',
+                    'director@studio.id',
+                ],
+                $email,
+                $html
+            );
+        }
+
+        // Remap preview links to published site routes
+        $siteBase = url('/s/'.$order->site_slug);
+        $pairs = [
+            '/webia/template/lumiere-photography-studio' => $siteBase,
+            '/webia/template/noir-studio-photography' => $siteBase,
+            '/webia/template/peachy-studio' => $siteBase,
+            '/webia/template/candy-cloud-ugc-content-creator-studio' => $siteBase,
+            '/webia/template/photography-motiongraphics-premiumminimal-champagneglow-putri' => $siteBase,
+            '/webia/template/photography-motiongraphics-traditionalcultural-coralpeach-putri' => $siteBase,
         ];
         uksort($pairs, fn ($a, $b) => strlen($b) <=> strlen($a));
         foreach ($pairs as $from => $to) {
