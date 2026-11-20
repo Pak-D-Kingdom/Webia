@@ -944,3 +944,8 @@ body.rr::before { /* butiran kertas vintage */
 .rr-form__foot .rr-btn:hover .rr-i--whatsapp { transform: rotate(-12deg) scale(1.15); }
 .rr-fc__head h2 { background: linear-gradient(90deg, var(--ink) 40%, var(--copper) 50%, var(--ink) 60%) 100% 0 / 250% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: rr-line 7s linear infinite; }
 @media (max-width: 899px) { .rr-ph__tools .rr-i:nth-child(n+3) { display: none; } .rr-ph__tools .rr-i:nth-child(1) { left: 70%; } .rr-ph__tools .rr-i:nth-child(2) { left: 84%; top: 60%; } }
+
+/* paralaks header halaman dalam (mengikuti scroll) */
+.rr-ph__bg { inset: -120px 0 0 0; translate: 0 calc(var(--sy, 0) * .12px); }
+.rr-ph__visual { translate: 0 calc(var(--sy, 0) * -.05px); }
+@media (prefers-reduced-motion: reduce) { .rr-ph__bg, .rr-ph__visual { translate: none; } }
