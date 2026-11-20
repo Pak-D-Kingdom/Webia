@@ -9,6 +9,7 @@ use App\Models\HostingService;
 use App\Models\HostingTask;
 use App\Models\User;
 use App\Models\WebiaOrder;
+use App\Models\WebiaOrderLog;
 use App\Models\WebiaPackage;
 use App\Models\WebiaTemplate;
 use App\Services\AiQuotaService;
@@ -42,9 +43,21 @@ class CustomerAccountsSeeder extends Seeder
             HostingPriceChange::truncate();
             HostingInvoice::truncate();
             HostingService::truncate();
+            WebiaOrderLog::truncate();
             WebiaOrder::truncate();
             User::where('role', '!=', 'admin')->delete();
         });
+
+        // Pastikan akun Superadmin selalu ada dan aktif
+        $admin = User::updateOrCreate(
+            ['email' => 'admin@webia.test'],
+            [
+                'name' => 'Admin WEBIA',
+                'password' => Hash::make('password'),
+                'role' => 'admin',
+                'email_verified_at' => $now,
+            ]
+        );
 
         // Reset SQLite AI app.db
         $sqliteCandidates = [
@@ -164,7 +177,178 @@ class CustomerAccountsSeeder extends Seeder
             'site_slug' => null,
         ]);
 
-        // 2.4 Website In-Progress
+        // 2.4 Payment Rejected
+        $uRejected = User::create([
+            'name' => 'Bambang Sudarmono',
+            'email' => 'bambang.rejected@gmail.com',
+            'password' => Hash::make('password123'),
+            'role' => 'customer',
+            'email_verified_at' => $now,
+        ]);
+        $tmplRejected = WebiaTemplate::where('slug', 'otto-artistic-workshop')->orWhere('slug', 'automotive-workshop')->first();
+        $oRejected = WebiaOrder::create([
+            'order_number' => 'WEB-261111-REJ',
+            'user_id' => $uRejected->id,
+            'guest_name' => $uRejected->name,
+            'guest_email' => $uRejected->email,
+            'webia_package_id' => $pkgPulse?->id ?? 2,
+            'package_snapshot' => [
+                'name' => 'Pulse',
+                'slug' => 'pulse',
+                'price' => 899000,
+                'chatbot_monthly_quota' => 1500,
+            ],
+            'webia_template_id' => $tmplRejected?->id,
+            'template_snapshot' => [
+                'name' => $tmplRejected?->name ?? 'Otto Artistic Workshop',
+                'slug' => $tmplRejected?->slug ?? 'otto-artistic-workshop',
+                'tag' => 'Automotive · Workshop',
+            ],
+            'category_slug' => 'automotive',
+            'status' => 'rejected',
+            'credential_status' => 'issued',
+            'total_price' => 899000,
+            'paid_at' => null,
+            'payment_receipt_path' => 'receipts/dummy_receipt_invalid.jpg',
+            'business_data' => [
+                'business_name' => 'Bambang AC & Variasi Mobil',
+                'owner_name' => 'Bambang Sudarmono',
+                'whatsapp' => '081234560004',
+                'city' => 'Semarang',
+            ],
+            'delivery_status' => 'pending',
+            'site_slug' => null,
+        ]);
+        WebiaOrderLog::create([
+            'webia_order_id' => $oRejected->id,
+            'actor_id' => $admin->id,
+            'from_status' => 'payment_uploaded',
+            'to_status' => 'rejected',
+            'note' => 'Bukti transfer buram dan nominal tidak sesuai (kurang Rp 50.000). Silakan hubungi admin atau lakukan pemesanan ulang.',
+        ]);
+
+        // 2.5 5 Akun Paid - Dalam Proses Mengisi Knowledge Base (KB Masih Kosong)
+        $unfilledKbClients = [
+            [
+                'name' => 'Ruli Hidayat (Testing KB)',
+                'email' => 'rhs.ruli@gmail.com',
+                'order_num' => 'WEB-261111-KB01',
+                'pkg_slug' => 'pulse',
+                'business' => 'Artisan Roti Nusantara',
+                'tmpl_slug' => 'fnb-bakery-playful-colorful-pastel-mix',
+                'cat' => 'fnb',
+                'tag' => 'F&B · Bakery',
+                'phone' => '081234560005',
+                'city' => 'Surabaya',
+                'hours_ago' => 2,
+            ],
+            [
+                'name' => 'Anita Lestari',
+                'email' => 'anita.kopi@gmail.com',
+                'order_num' => 'WEB-261111-KB02',
+                'pkg_slug' => 'pulse',
+                'business' => 'Senja Corner Coffee & Roastery',
+                'tmpl_slug' => 'origins-cafe',
+                'cat' => 'fnb',
+                'tag' => 'F&B · Coffee Shop',
+                'phone' => '081234560006',
+                'city' => 'Bandung',
+                'hours_ago' => 4,
+            ],
+            [
+                'name' => 'Claudia Siregar',
+                'email' => 'claudia.fashion@gmail.com',
+                'order_num' => 'WEB-261111-KB03',
+                'pkg_slug' => 'pixel',
+                'business' => 'Glow Studio Boutique & Hijab',
+                'tmpl_slug' => 'glow-lab-creative-beauty-clinic',
+                'cat' => 'beauty',
+                'tag' => 'Fashion · Boutique',
+                'phone' => '081234560007',
+                'city' => 'Jakarta Selatan',
+                'hours_ago' => 6,
+            ],
+            [
+                'name' => 'Bayu Nugroho',
+                'email' => 'bayu.service@gmail.com',
+                'order_num' => 'WEB-261111-KB04',
+                'pkg_slug' => 'pulse',
+                'business' => 'Sejuk Abadi Teknik AC & Kelistrikan',
+                'tmpl_slug' => 'home-services-laundry-mint-fresh',
+                'cat' => 'services',
+                'tag' => 'Services · Maintenance',
+                'phone' => '081234560008',
+                'city' => 'Semarang',
+                'hours_ago' => 8,
+            ],
+            [
+                'name' => 'drg. Nadia Savitri',
+                'email' => 'drg.nadia@gmail.com',
+                'order_num' => 'WEB-261111-KB05',
+                'pkg_slug' => 'nexus',
+                'business' => 'Nadia Dental & Oral Healthcare',
+                'tmpl_slug' => 'healthcare-dental-azure',
+                'cat' => 'healthcare',
+                'tag' => 'Healthcare · Dental',
+                'phone' => '081234560009',
+                'city' => 'Yogyakarta',
+                'hours_ago' => 12,
+            ],
+        ];
+
+        foreach ($unfilledKbClients as $kbClient) {
+            $u = User::create([
+                'name' => $kbClient['name'],
+                'email' => $kbClient['email'],
+                'password' => Hash::make('password123'),
+                'role' => 'customer',
+                'email_verified_at' => $now,
+            ]);
+
+            $pkg = $packages->get($kbClient['pkg_slug']);
+            $tmpl = WebiaTemplate::where('slug', $kbClient['tmpl_slug'])->first();
+            $limit = $pkg?->chatbot_monthly_quota ?? 1500;
+            $price = $pkg?->price ?? 899000;
+
+            WebiaOrder::create([
+                'order_number' => $kbClient['order_num'],
+                'user_id' => $u->id,
+                'guest_name' => $u->name,
+                'guest_email' => $u->email,
+                'webia_package_id' => $pkg?->id ?? 2,
+                'package_snapshot' => [
+                    'name' => $pkg?->name ?? ucfirst($kbClient['pkg_slug']),
+                    'slug' => $kbClient['pkg_slug'],
+                    'price' => $price,
+                    'chatbot_monthly_quota' => $limit,
+                ],
+                'webia_template_id' => $tmpl?->id,
+                'template_snapshot' => [
+                    'name' => $tmpl?->name ?? $kbClient['business'],
+                    'slug' => $tmpl?->slug ?? $kbClient['tmpl_slug'],
+                    'tag' => $kbClient['tag'],
+                ],
+                'category_slug' => $kbClient['cat'],
+                'status' => 'paid',
+                'credential_status' => 'issued',
+                'total_price' => $price,
+                'paid_at' => $now->copy()->subHours($kbClient['hours_ago']),
+                'business_data' => [
+                    'business_name' => $kbClient['business'],
+                    'owner_name' => $kbClient['name'],
+                    'whatsapp' => $kbClient['phone'],
+                    'city' => $kbClient['city'],
+                    'kb_layanan' => null,
+                    'kb_faq' => null,
+                    'kb_kebijakan' => null,
+                    'kb_profil' => null,
+                ],
+                'delivery_status' => 'in_progress',
+                'site_slug' => null,
+            ]);
+        }
+
+        // 2.6 Website In-Progress (Data Profil & 4 Tab Knowledge Base Sudah Terisi Lengkap)
         $uProgress = User::create([
             'name' => 'Iwan Setiawan',
             'email' => 'iwan.progress@gmail.com',
@@ -201,6 +385,10 @@ class CustomerAccountsSeeder extends Seeder
                 'owner_name' => 'Iwan Setiawan',
                 'whatsapp' => '081234560003',
                 'city' => 'Yogyakarta',
+                'kb_layanan' => "# Daftar Tipe Rumah & Layanan Griya Indah Residence\n\n1. **Tipe 36/60 (Cempaka)**: 2 KT, 1 KM, Carport. Harga mulai Rp 350 Juta.\n2. **Tipe 45/84 (Bougenville)**: 2 KT, 1 KM, Dapur terpisah, Taman. Harga Rp 475 Juta.\n3. **Tipe 60/100 (Mahoni - 2 Lantai)**: 3 KT, 2 KM, Balkon. Harga Rp 750 Juta.\n\n*Layanan tambahan: Konsultasi KPR Gratis, Bantuan Pengurusan SHM & IMB.*",
+                'kb_faq' => "# Frequently Asked Questions (FAQ)\n\n**Q: Apakah bisa pengajuan KPR Syariah?**\nA: Ya, kami bekerja sama dengan BSI, BTN Syariah, dan Bank Muamalat.\n\n**Q: Berapa minimal DP (Uang Muka)?**\nA: Promo bulan ini DP 0% khusus Tipe 36, cukup bayar booking fee Rp 2 Juta langsung proses akad.\n\n**Q: Berapa lama estimasi serah terima kunci (STK)?**\nA: Unit ready stock 1 bulan setelah akad, unit inden 6-8 bulan.",
+                'kb_kebijakan' => "# Kebijakan Pembelian & Garansi Bangunan\n\n- Booking fee hangus apabila pembeli membatalkan sepihak setelah berkas KPR diajukan.\n- Pengembalian dana 100% (kecuali admin Rp 250rb) bila KPR ditolak bank.\n- Garansi kebocoran atap dan instalasi air selama 3 bulan pertama pasca serah terima kunci.",
+                'kb_profil' => "# Profil Asisten AI Griya Indah\n\n- **Nama Bot**: GriyaBot\n- **Peran**: Asisten Virtual Sales & Customer Service Griya Indah Residence.\n- **Gaya Bahasa**: Ramah, informatif, profesional, dan meyakinkan.\n- **Instruksi Khusus**: Arahkan calon pembeli untuk survey lokasi dan jadwalkan janji temu dengan Tim Marketing via WhatsApp.",
             ],
             'delivery_status' => 'in_progress',
             'site_slug' => null,
@@ -221,7 +409,7 @@ class CustomerAccountsSeeder extends Seeder
                 'phone' => '081234560101',
                 'city' => 'Surabaya',
                 'widget_theme' => 'dark_cyber',
-                'used_quota' => 120, // Kuota aman untuk testing
+                'used_quota' => 486, // 97.2% -> WARNING
                 'hosting' => [
                     'type' => 'unpaid',
                     'domain' => 'pakdemotor.id',
@@ -243,7 +431,7 @@ class CustomerAccountsSeeder extends Seeder
                 'phone' => '081234560102',
                 'city' => 'Jakarta Selatan',
                 'widget_theme' => 'pastel_rose',
-                'used_quota' => 150, // Kuota aman untuk testing
+                'used_quota' => 500, // 100.0% -> HABIS / BLOCKED
                 'hosting' => [
                     'type' => 'paid',
                     'domain' => 'glowclinic.id',
@@ -304,7 +492,7 @@ class CustomerAccountsSeeder extends Seeder
                 'phone' => '081234560201',
                 'city' => 'Surabaya',
                 'widget_theme' => 'ocean_teal',
-                'used_quota' => 120, // Kuota aman untuk testing
+                'used_quota' => 1500, // 100.0% -> HABIS / BLOCKED
                 'hosting' => [
                     'type' => 'unpaid',
                     'domain' => 'kliniksehat.id',

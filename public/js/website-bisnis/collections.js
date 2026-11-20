@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'Japanese Minimalist','Botanical Elegant','Bold Contemporary','Playful Modern','Organic Modern','Sporty Minimalist','Warm Contemporary','Modern Industrial',
         'Technical Corporate','Bold Digital','Creative Tech','Sustainable Futuristic','High-Tech Corporate','Industrial Futuristic','Modern Smart Living',
         'Futuristic Minimalist','Architectural Modern','Dynamic Automotive','Urban Adventure','Scandinavian Minimalist','Classic Contemporary','Ocean Adventure',
-        'Fresh Aquatic Playful','Clean Sporty','Playful Illustrative','Artistic Watercolor','Bold Artistic','Handcrafted Editorial','Elegant Classical',
+        'Fresh Aquatic Playful','Clean Sporty','Playful Illustrative','Artistic Watercolor','Bold Artistic','Handcrafted Editorial','Heritage Editor','Elegant Classical',
         'Urban Creative','Expressive Contemporary','Refined Classical','Bold Rhythmic','Energetic Sporty','Dynamic Athletic','Premium Sport Club',
         'Modern Competitive','Energetic Team Sport','Urban Athletic','Bold Sporty','Professional Athletic','Traditional Discipline','Industrial Grit',
         'Tactical Modern','Cultural Heritage','High-Fashion Editorial','Dramatic Cinematic', 'Warm Family Modern'

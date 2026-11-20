@@ -483,6 +483,8 @@ class CustomerSiteController extends Controller
                 'Tidal Detail' => $bizName,
                 'Noir Atelier' => $bizName,
                 'NOIR ATELIER' => strtoupper($bizName),
+                'NOIR<i>.</i>ATELIER' => $bizName,
+                'Concierge NOIR' => 'Concierge '.$bizName,
                 'FORM / Auto Care' => $bizName,
                 'FORM Auto Care' => $bizName,
                 'Samudra Detailing' => $bizName,
@@ -2033,7 +2035,7 @@ class CustomerSiteController extends Controller
         return await res.json();
     }
 
-    // 1. Hooking untuk template dengan ask(q) & say(t, role) (Bengkel Otto, Glow Lab, Bangun Karsa, dll.)
+    // 1. Hooking untuk template dengan ask(q) & say(t, role)
     function bindAskHook() {
         if (typeof window.ask === 'function') {
             window.ask = async function(query) {
@@ -2122,7 +2124,7 @@ class CustomerSiteController extends Controller
         }
     });
 
-    // 3. Hooking untuk Laundry Mint Fresh (FreshBot AI masot robot)
+    // 3. Hooking untuk UI chat dengan [data-lw-chat-form] dan [data-lw-chat-log]
     document.addEventListener('DOMContentLoaded', function() {
         const lwForm = document.querySelector('[data-lw-chat-form]');
         const lwLog = document.querySelector('[data-lw-chat-log]');
@@ -2173,7 +2175,7 @@ class CustomerSiteController extends Controller
         }
     });
 
-    // 4. Hooking untuk AgriTernak Organic (window.handleAiSubmit & window.appendAiMessage)
+    // 4. Hooking untuk UI chat dengan window.handleAiSubmit & window.appendAiMessage
     function bindAgriHook() {
         if (typeof window.handleAiSubmit === 'function' || document.getElementById('ai-chat-box')) {
             window.handleAiSubmit = async function(event) {
@@ -2215,7 +2217,7 @@ class CustomerSiteController extends Controller
     }
     setTimeout(bindAgriHook, 400);
 
-    // 5. Hooking untuk Azure Smile Clinic (#ascChatForm, #ascChatInput, #ascChatMessages)
+    // 5. Hooking untuk UI chat dengan #ascChatForm, #ascChatInput, #ascChatMessages
     document.addEventListener('DOMContentLoaded', function() {
         const ascForm = document.getElementById('ascChatForm');
         const ascInput = document.getElementById('ascChatInput');
@@ -2268,7 +2270,7 @@ class CustomerSiteController extends Controller
         }
     });
 
-    // 6. Hooking untuk Laut Biru Seafood (#lb-chat-form, #lb-chat-input, #lb-messages)
+    // 6. Hooking untuk UI chat dengan #lb-chat-form, #lb-chat-input, #lb-messages
     document.addEventListener('DOMContentLoaded', function() {
         const lbForm = document.getElementById('lb-chat-form');
         const lbInput = document.getElementById('lb-chat-input');
@@ -2311,7 +2313,7 @@ class CustomerSiteController extends Controller
         }
     });
 
-    // 7. Hooking untuk Arya Sanjaya (window.handleAiChat, #ai-input, #ai-chat-body)
+    // 7. Hooking untuk UI chat dengan window.handleAiChat, #ai-input, #ai-chat-body
     function bindAryaHook() {
         if (typeof window.handleAiChat === 'function' || document.getElementById('ai-modal-box')) {
             window.handleAiChat = async function(e) {
@@ -2353,7 +2355,7 @@ class CustomerSiteController extends Controller
     }
     setTimeout(bindAryaHook, 400);
 
-    // 8. Hooking untuk CocoExpress (window.handleAiMessage, #aiChatBox, #aiInput, #chatMessages)
+    // 8. Hooking untuk UI chat dengan window.handleAiMessage, #aiChatBox, #aiInput, #chatMessages
     function bindCocoHook() {
         if (typeof window.handleAiMessage === 'function' || document.getElementById('aiChatBox')) {
             window.handleAiMessage = async function(event) {
@@ -2395,7 +2397,7 @@ class CustomerSiteController extends Controller
     }
     setTimeout(bindCocoHook, 400);
 
-    // 9. Hooking untuk Artistic Terracotta Studio (window.sendChatMessage, #chat-input, #chat-messages)
+    // 9. Hooking untuk UI chat dengan window.sendChatMessage, #chat-input, #chat-messages
     function bindTerraHook() {
         if (typeof window.sendChatMessage === 'function' || document.getElementById('ai-chat-modal')) {
             window.sendChatMessage = async function() {
@@ -2436,7 +2438,7 @@ class CustomerSiteController extends Controller
     }
     setTimeout(bindTerraHook, 400);
 
-    // 10. Hooking untuk Wildtrail & Baitul Safar (#qb button, #ms)
+    // 10. Hooking untuk UI chat dengan #qb button, #ms
     document.addEventListener('DOMContentLoaded', function() {
         const qb = document.getElementById('qb');
         const ms = document.getElementById('ms');
@@ -2475,7 +2477,7 @@ class CustomerSiteController extends Controller
         }
     });
 
-    // 11. Hooking untuk Pawtopia Animal Care (.chips button, #msgs)
+    // 11. Hooking untuk UI chat dengan .chips button, #msgs
     document.addEventListener('DOMContentLoaded', function() {
         const pawChips = document.querySelector('#chat .chips');
         const pawMsgs = document.getElementById('msgs');
@@ -2514,7 +2516,7 @@ class CustomerSiteController extends Controller
         }
     });
 
-    // 12. Hooking untuk Hearthstone Property (.cq button, #msgs)
+    // 12. Hooking untuk UI chat dengan .cq button, #msgs
     document.addEventListener('DOMContentLoaded', function() {
         const hearthCq = document.querySelector('#chat .cq');
         const msgs = document.getElementById('msgs');
@@ -2553,7 +2555,7 @@ class CustomerSiteController extends Controller
         }
     });
 
-    // 13. Hooking untuk IRONPULSE (#ch, [data-q], #ms)
+    // 13. Hooking untuk UI chat dengan #ch, [data-q], #ms
     document.addEventListener('DOMContentLoaded', function() {
         const ch = document.getElementById('ch');
         if (ch) {
@@ -2593,7 +2595,7 @@ class CustomerSiteController extends Controller
         }
     });
 
-    // 14. Hooking untuk Renovaku Sage Green (data-chat-form, data-chat-log, data-chat-ask)
+    // 14. Hooking untuk UI chat dengan data-chat-form, data-chat-log, data-chat-ask
     document.addEventListener('DOMContentLoaded', function() {
         const hrForm = document.querySelector('[data-chat-form]');
         const hrLog = document.querySelector('[data-chat-log]');
@@ -2643,7 +2645,7 @@ class CustomerSiteController extends Controller
         }
     });
 
-    // 15. Hooking untuk Renovaku Chocolate Luxe (#rr-chat-form, #rr-chat-log, #rr-chat-input)
+    // 15. Hooking untuk UI chat dengan #rr-chat-form, #rr-chat-log, #rr-chat-input
     document.addEventListener('DOMContentLoaded', function() {
         const rrForm = document.getElementById('rr-chat-form');
         const rrLog = document.getElementById('rr-chat-log');
@@ -2693,7 +2695,7 @@ class CustomerSiteController extends Controller
         }
     });
 
-    // 16. Hooking untuk HarapanBot Foundation (.fd-chat__form, .fd-chat__body, .fd-chat__chips button)
+    // 16. Hooking untuk UI chat dengan .fd-chat__form, .fd-chat__body, .fd-chat__chips button
     document.addEventListener('DOMContentLoaded', function() {
         const fdForm = document.querySelector('.fd-chat__form');
         const fdBody = document.querySelector('.fd-chat__body');
@@ -2743,7 +2745,7 @@ class CustomerSiteController extends Controller
         }
     });
 
-    // 17. Hooking untuk Muthawwif AI Umrah Emerald Green ([data-uh-chatbot])
+    // 17. Hooking untuk UI chat dengan [data-uh-chatbot]
     document.addEventListener('DOMContentLoaded', function() {
         const uhForm = document.querySelector('[data-uh-chatbot] form') || document.querySelector('.uh-chatwin__form');
         const uhBody = document.querySelector('.uh-chatwin__body') || document.querySelector('[data-uh-chatlog]');
@@ -2793,7 +2795,7 @@ class CustomerSiteController extends Controller
         }
     });
 
-    // 18. Hooking untuk Branding Creative Agency Cobalt Pop ([data-bca-chat])
+    // 18. Hooking untuk UI chat dengan [data-bca-chat]
     document.addEventListener('DOMContentLoaded', function() {
         const bcaChat = document.querySelector('[data-bca-chat]');
         if (bcaChat) {
@@ -2853,7 +2855,7 @@ class CustomerSiteController extends Controller
             }
         }
 
-        // 19. Hooking untuk SodaTable Weekly Family Meal Plan (#ai-chat-window, #ai-chat-messages, #ai-chat-input)
+        // 19. Hooking untuk UI chat dengan #ai-chat-window, #ai-chat-messages, #ai-chat-input
         function bindSodaHook() {
             const sodaWindow = document.getElementById('ai-chat-window');
             const sodaMessages = document.getElementById('ai-chat-messages');
@@ -2930,6 +2932,142 @@ class CustomerSiteController extends Controller
         }
         setTimeout(bindSodaHook, 400);
         setTimeout(bindSodaHook, 900);
+
+        // 20. Hooking untuk TirtaCeria Swim Academy (#ai-chat-window, #ai-messages, #ai-input, askCoachAI)
+        function bindTirtaHook() {
+            const tirtaMsgs = document.getElementById('ai-messages');
+            const tirtaInput = document.getElementById('ai-input');
+            if (!tirtaMsgs || !tirtaInput) return;
+
+            async function handleTirtaAiSend(text) {
+                if (!text || !text.trim()) return;
+                const query = text.trim();
+
+                const uMsg = document.createElement('div');
+                uMsg.className = 'bg-aqua text-white p-3 rounded-2xl rounded-tr-none ml-auto max-w-[82%] font-medium shadow-sm';
+                uMsg.textContent = query;
+                tirtaMsgs.appendChild(uMsg);
+                tirtaInput.value = '';
+                tirtaMsgs.scrollTop = tirtaMsgs.scrollHeight;
+
+                const typing = document.createElement('div');
+                typing.className = 'bg-mint/30 text-navy p-3 rounded-2xl rounded-tl-none mr-auto max-w-[88%] font-medium shadow-sm italic opacity-75';
+                typing.textContent = 'Coach Splash sedang mencari info program...';
+                tirtaMsgs.appendChild(typing);
+                tirtaMsgs.scrollTop = tirtaMsgs.scrollHeight;
+
+                try {
+                    const data = await sendToAi(query);
+                    typing.remove();
+                    const bMsg = document.createElement('div');
+                    bMsg.className = 'bg-mint/30 text-navy p-3 rounded-2xl rounded-tl-none mr-auto max-w-[88%] font-medium shadow-sm leading-relaxed';
+                    bMsg.innerHTML = (data.reply || 'Ada yang bisa Coach Splash bantu seputar program renang?').replace(/\n/g, '<br>');
+                    tirtaMsgs.appendChild(bMsg);
+                } catch(e) {
+                    typing.remove();
+                    const err = document.createElement('div');
+                    err.className = 'bg-red-50 text-red-600 p-2.5 rounded-2xl rounded-tl-none mr-auto max-w-[88%] text-xs';
+                    err.textContent = 'Mohon maaf, terjadi kendala jaringan. Silakan hubungi WhatsApp kami.';
+                    tirtaMsgs.appendChild(err);
+                }
+                tirtaMsgs.scrollTop = tirtaMsgs.scrollHeight;
+            }
+
+            window.askCoachAI = function(question) {
+                handleTirtaAiSend(question);
+            };
+
+            const origHandleAIChatSubmit = window.handleAIChatSubmit;
+            window.handleAIChatSubmit = function(e) {
+                if (e) {
+                    e.preventDefault();
+                    if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
+                }
+                if (tirtaInput && tirtaInput.value) {
+                    handleTirtaAiSend(tirtaInput.value);
+                } else if (typeof origHandleAIChatSubmit === 'function') {
+                    origHandleAIChatSubmit(e);
+                }
+            };
+
+            const tirtaForm = tirtaInput.closest('form');
+            if (tirtaForm && !tirtaForm.dataset.webiaBound) {
+                tirtaForm.dataset.webiaBound = '1';
+                tirtaForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    if (tirtaInput && tirtaInput.value) {
+                        handleTirtaAiSend(tirtaInput.value);
+                    }
+                }, true);
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', bindTirtaHook);
+        } else {
+            bindTirtaHook();
+        }
+        setTimeout(bindTirtaHook, 400);
+        setTimeout(bindTirtaHook, 900);
+
+        // 21. Hooking untuk Museum & Heritage (Aethelgard, Aquaverse - sendAIMessage, #ai-input, #ai-chat-box)
+        function bindMuseumHook() {
+            const mChatBox = document.getElementById('ai-chat-box');
+            const mInput = document.getElementById('ai-input');
+            if (!mChatBox || !mInput) return;
+
+            window.sendAIMessage = async function(e) {
+                if (e) {
+                    e.preventDefault();
+                    if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
+                }
+                const query = mInput.value.trim();
+                if (!query) return;
+
+                const uMsg = document.createElement('p');
+                uMsg.innerHTML = '<strong>Pengunjung:</strong> ' + query.replace(/</g, '&lt;');
+                mChatBox.appendChild(uMsg);
+                mInput.value = '';
+                mChatBox.scrollTop = mChatBox.scrollHeight;
+
+                const typing = document.createElement('p');
+                typing.style.opacity = '0.7';
+                typing.style.fontStyle = 'italic';
+                typing.textContent = 'Kurator AI sedang mencari arsip sejarah...';
+                mChatBox.appendChild(typing);
+                mChatBox.scrollTop = mChatBox.scrollHeight;
+
+                try {
+                    const data = await sendToAi(query);
+                    typing.remove();
+                    const bMsg = document.createElement('p');
+                    bMsg.innerHTML = '<strong>Panduan AI:</strong> ' + (data.reply || 'Ada artefak atau informasi pameran yang ingin Anda ketahui?').replace(/\n/g, '<br>');
+                    mChatBox.appendChild(bMsg);
+                } catch(err) {
+                    typing.remove();
+                    const errMsg = document.createElement('p');
+                    errMsg.style.color = '#ef4444';
+                    errMsg.textContent = 'Mohon maaf, terjadi kendala jaringan saat menghubungi Kurator AI.';
+                    mChatBox.appendChild(errMsg);
+                }
+                mChatBox.scrollTop = mChatBox.scrollHeight;
+            };
+
+            const mForm = mInput.closest('form');
+            if (mForm && !mForm.dataset.webiaBound) {
+                mForm.dataset.webiaBound = '1';
+                mForm.addEventListener('submit', window.sendAIMessage, true);
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', bindMuseumHook);
+        } else {
+            bindMuseumHook();
+        }
+        setTimeout(bindMuseumHook, 400);
+        setTimeout(bindMuseumHook, 900);
     });
 })();
 </script>
