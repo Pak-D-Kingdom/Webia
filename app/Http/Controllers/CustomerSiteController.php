@@ -100,6 +100,10 @@ class CustomerSiteController extends Controller
         if (str_starts_with($siteConfigPath, 'nonprofit-community/')) {
             return $this->handleNonprofit($order, $siteConfigPath, $pageKey);
         }
+
+        if (str_starts_with($siteConfigPath, 'interior-architecture/')) {
+            return $this->handleInterior($order, $siteConfigPath, $pageKey);
+        }
         $views = match (true) {
             $isBrandingAgency => array_fill_keys(['home', 'layanan', 'keahlian', 'portofolio', 'janji'], 'branding-creative-agency'),
             str_starts_with($siteConfigPath, 'company/') => ['home' => 'index', 'tentang-kami' => 'tentang-kami', 'portofolio' => 'portofolio'],
@@ -1888,6 +1892,106 @@ class CustomerSiteController extends Controller
             '/webia/template/kolektif-aksi-kita-volunteer-midnight-navy' => $siteBase,
             '/webia/template/revolt-impact-social-organization' => $siteBase,
             '/webia/template/lentera-nusantara-volunteer-group' => $siteBase,
+        ];
+        uksort($pairs, fn ($a, $b) => strlen($b) <=> strlen($a));
+        foreach ($pairs as $from => $to) {
+            $html = str_replace(url($from), $to, $html);
+            $html = str_replace($from, $to, $html);
+        }
+
+        return $html;
+    }
+
+    private const INTERIOR_VIEWS = [
+        'interior-design-studio-artistic-terracotta' => ['home' => 'website-bisnis.templates.interior-architecture.interior-design-studio.artistic-terracotta.artistic-terracotta'],
+        'aethel-moss-architectural-studio' => ['home' => 'website-bisnis.templates.interior-architecture.architecture-building-design.aethel-moss.aethel-moss'],
+        'nantara-architecture-traditional-cultural' => ['home' => 'website-bisnis.templates.interior-architecture.architecture-building-design.nantara-architecture.nantara-architecture'],
+    ];
+
+    private function handleInterior(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $slug = Str::after($siteConfigPath, 'interior-architecture/');
+        abort_unless(isset(self::INTERIOR_VIEWS[$slug]), 404);
+        abort_unless(isset(self::INTERIOR_VIEWS[$slug][$pageKey]), 404);
+
+        $viewName = self::INTERIOR_VIEWS[$slug][$pageKey];
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $instagram = ltrim($business['instagram'] ?? '', '@');
+
+        $renderedHtml = view($viewName, [
+            'order' => $order,
+            'page' => $pageKey,
+            'business' => $business,
+            'whatsapp' => $whatsapp,
+            'instagram' => $instagram,
+        ])->render();
+
+        $renderedHtml = $this->transformInteriorHtml($renderedHtml, $business, $whatsapp, $slug, $order);
+
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+        return response($renderedHtml);
+    }
+
+    private function transformInteriorHtml(string $html, array $business, string $whatsapp, string $slug, WebiaOrder $order): string
+    {
+        $bizName = $business['business_name'] ?? '';
+        if ($bizName !== '') {
+            $brandMap = [
+                'Artistic Terracotta' => $bizName,
+                'Terracotta Studio' => $bizName,
+                'AETHEL MOSS' => strtoupper($bizName),
+                'Aethel Moss' => $bizName,
+                'Aethel Moss Studio' => $bizName,
+                'Nantara Architecture' => $bizName,
+            ];
+            $brandMap['AETHEL MOSS | Architectural'] = $bizName.' | Architectural';
+            uksort($brandMap, fn ($a, $b) => strlen($b) <=> strlen($a));
+            $html = str_replace(array_keys($brandMap), array_values($brandMap), $html);
+        }
+
+        $custWa = $whatsapp ?: '6281234567890';
+        $rawWa = $business['whatsapp'] ?? $custWa;
+        $html = str_replace(
+            ['6281234567890', '+62 812-3456-7890', '0812-3456-7890'],
+            [$custWa, $rawWa, $rawWa],
+            $html
+        );
+
+        $address = $this->businessAddress($business);
+        if ($address !== '') {
+            $html = str_replace(
+                [
+                    'Jl. Senopati No. 88, Kebayoran Baru, Jakarta Selatan',
+                    'Jl. Raya Canggu No. 12, Badung, Bali',
+                    'Jl. Palagan Tentara Pelajar Km 9, Sleman, DI Yogyakarta',
+                    'Jl. Raya Solo-Jepara Km 12, Surakarta',
+                ],
+                $address,
+                $html
+            );
+        }
+
+        if (! empty($business['email'])) {
+            $email = $business['email'];
+            $html = str_replace(
+                [
+                    'contact@terracottastudio.com',
+                    'alexandra@domain.com',
+                    'studio@aethelmoss.com',
+                ],
+                $email,
+                $html
+            );
+        }
+
+        // Remap preview links to published site routes
+        $siteBase = url('/s/'.$order->site_slug);
+        $pairs = [
+            '/webia/template/interior-design-studio-artistic-terracotta' => $siteBase,
+            '/webia/template/aethel-moss-architectural-studio' => $siteBase,
+            '/webia/template/nantara-architecture-traditional-cultural' => $siteBase,
         ];
         uksort($pairs, fn ($a, $b) => strlen($b) <=> strlen($a));
         foreach ($pairs as $from => $to) {
