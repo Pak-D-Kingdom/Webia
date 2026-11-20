@@ -101,7 +101,7 @@
 <script>
 window.PAWMART_CONFIG = {
     whatsappNumber: '6285850180285',
-    productSlug: @json(request()->route('slug'))
+    productSlug: @json($slug ?? request()->route('slug'))
 };
 </script>
 <script src="{{ asset('js/website-bisnis/templates/pet-animal-service/petshop/glacierblue/petshop-produk-minimalist-glacierblue.js') }}"></script>

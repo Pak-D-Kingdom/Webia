@@ -166,7 +166,7 @@
     <script>
         window.FURRY_CONFIG = {
             whatsappNumber: '6285850180285',
-            productSlug: @json(request()->route('slug'))
+            productSlug: @json($slug ?? request()->route('slug'))
         };
     </script>
     <script

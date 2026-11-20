@@ -84,6 +84,10 @@ class CustomerSiteController extends Controller
         if (str_starts_with($siteConfigPath, 'sports-fitness/')) {
             return $this->handleSportsFitness($order, $siteConfigPath, $pageKey);
         }
+
+        if (str_starts_with($siteConfigPath, 'pet-animal-service/')) {
+            return $this->handlePetAnimalService($order, $siteConfigPath, $pageKey);
+        }
         $views = match (true) {
             $isBrandingAgency => array_fill_keys(['home', 'layanan', 'keahlian', 'portofolio', 'janji'], 'branding-creative-agency'),
             str_starts_with($siteConfigPath, 'company/') => ['home' => 'index', 'tentang-kami' => 'tentang-kami', 'portofolio' => 'portofolio'],
@@ -1396,6 +1400,175 @@ class CustomerSiteController extends Controller
             '/webia/template/sports-fitness/personal-trainer/cyber-neon' => $siteBase,
         ];
         // Replace longer paths first
+        uksort($pairs, fn ($a, $b) => strlen($b) <=> strlen($a));
+        foreach ($pairs as $from => $to) {
+            $html = str_replace(url($from), $to, $html);
+            $html = str_replace($from, $to, $html);
+        }
+
+        return $html;
+    }
+
+    private const PET_ANIMAL_SERVICE_VIEWS = [
+        'paws-clever-creative' => ['home' => 'website-bisnis.templates.pet-animal-service.paws-clever-creative'],
+        'paws-joy-jellypop' => ['home' => 'website-bisnis.templates.pet-animal-service.paws-joy-jellypop'],
+        'paws-canine-terra-earth-tone' => ['home' => 'website-bisnis.templates.pet-animal-service.paws-canine-terra-earth-tone'],
+        'pawtopia-animal-care' => ['home' => 'website-bisnis.templates.pet-animal-service.pawtopia-animal-care'],
+        'pawlora-animal-care' => ['home' => 'website-bisnis.templates.pet-animal-service.pawlora-animal-care'],
+        'pawstead-animal-care' => ['home' => 'website-bisnis.templates.pet-animal-service.pawstead'],
+        'petshop-minimalist-glacierblue' => [
+            'home' => 'website-bisnis.templates.pet-animal-service.petshop.glacierblue.petshop-minimalist-glacierblue',
+            'katalog' => 'website-bisnis.templates.pet-animal-service.petshop.glacierblue.petshop-katalog-minimalist-glacierblue',
+            'produk' => 'website-bisnis.templates.pet-animal-service.petshop.glacierblue.petshop-produk-minimalist-glacierblue',
+        ],
+        'petshop-luxury-rosegold' => [
+            'home' => 'website-bisnis.templates.pet-animal-service.petshop.rosegold.petshop-luxury-rosegold',
+            'katalog' => 'website-bisnis.templates.pet-animal-service.petshop.rosegold.petshop-katalog-luxury-rosegold',
+            'produk' => 'website-bisnis.templates.pet-animal-service.petshop.rosegold.petshop-produk-luxury-rosegold',
+        ],
+        'petshop-corporate-plumvelvet' => [
+            'home' => 'website-bisnis.templates.pet-animal-service.petshop.plumvelvet.petshop-corporate-plumvelvet',
+            'katalog' => 'website-bisnis.templates.pet-animal-service.petshop.plumvelvet.petshop-katalog-corporate-plumvelvet',
+            'produk' => 'website-bisnis.templates.pet-animal-service.petshop.plumvelvet.petshop-produk-corporate-plumvelvet',
+        ],
+    ];
+
+    private function handlePetAnimalService(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $slug = Str::after($siteConfigPath, 'pet-animal-service/');
+        abort_unless(isset(self::PET_ANIMAL_SERVICE_VIEWS[$slug]), 404);
+
+        $baseKey = str_starts_with($pageKey, 'produk/') ? 'produk' : $pageKey;
+        abort_unless(isset(self::PET_ANIMAL_SERVICE_VIEWS[$slug][$baseKey]), 404);
+
+        $viewName = self::PET_ANIMAL_SERVICE_VIEWS[$slug][$baseKey];
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $instagram = ltrim($business['instagram'] ?? '', '@');
+
+        $productSlug = str_starts_with($pageKey, 'produk/') ? Str::after($pageKey, 'produk/') : null;
+
+        $viewData = [
+            'order' => $order,
+            'page' => $pageKey,
+            'business' => $business,
+            'whatsapp' => $whatsapp,
+            'instagram' => $instagram,
+            'slug' => $productSlug,
+        ];
+        if (in_array($slug, ['petshop-corporate-plumvelvet'], true)) {
+            $viewData['product'] = [
+                'name' => 'Produk Contoh',
+                'brand' => $business['business_name'] ?? 'PetBase',
+                'category' => 'Pet',
+                'price' => 100000,
+                'description' => '',
+                'specifications' => [],
+            ];
+        }
+
+        $renderedHtml = view($viewName, $viewData)->render();
+
+        $renderedHtml = $this->transformPetAnimalServiceHtml($renderedHtml, $business, $whatsapp, $slug, $order);
+
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+        return response($renderedHtml);
+    }
+
+    private function transformPetAnimalServiceHtml(string $html, array $business, string $whatsapp, string $slug, WebiaOrder $order): string
+    {
+        $bizName = $business['business_name'] ?? '';
+        if ($bizName !== '') {
+            $brandMap = [
+                'Pawlora' => $bizName,
+                'Canine Terra' => $bizName,
+                'Paws & Clever' => $bizName,
+                'Paws &amp; Clever' => $bizName,
+                'Paws & Joy' => $bizName,
+                'Paws &amp; Joy' => $bizName,
+                'Pawstead' => $bizName,
+                'Pawtopia' => $bizName,
+                'PawMart' => $bizName,
+                'PetBase' => $bizName,
+                'Furry & Co.' => $bizName,
+                'Furry &amp; Co.' => $bizName,
+                'Furry & Co' => $bizName,
+            ];
+            uksort($brandMap, fn ($a, $b) => strlen($b) <=> strlen($a));
+            $html = str_replace(array_keys($brandMap), array_values($brandMap), $html);
+        }
+
+        $custWa = $whatsapp ?: '6281234567890';
+        $rawWa = $business['whatsapp'] ?? $custWa;
+        $html = str_replace(
+            ['6281234567890', '6281277889900', '6281299008812', '6285850180285', '+62 812-3456-7890', '0812-3456-7890'],
+            [$custWa, $custWa, $custWa, $custWa, $rawWa, $rawWa],
+            $html
+        );
+
+        // Inline config overrides for petshop templates
+        $configTokens = [
+            'window.PAWMART_CONFIG = {' => '@@PAWMART_CFG@@',
+            'window.PETBASE_CONFIG = {' => '@@PETBASE_CFG@@',
+            'window.FURRY_CONFIG = {' => '@@FURRY_CFG@@',
+        ];
+        foreach ($configTokens as $src => $token) {
+            $html = str_replace($src, $token, $html);
+        }
+        // Restore with whatsappNumber override (best-effort: replace the number inside the protected block by re-injecting)
+        $html = str_replace('@@PAWMART_CFG@@', 'window.PAWMART_CONFIG = {', $html);
+        $html = str_replace('@@PETBASE_CFG@@', 'window.PETBASE_CONFIG = {', $html);
+        $html = str_replace('@@FURRY_CFG@@', 'window.FURRY_CONFIG = {', $html);
+
+        // Replace whatsappNumber values inside config blocks
+        $html = preg_replace("/(window\.(?:PAWMART|PETBASE|FURRY)_CONFIG\s*=\s*\{[^}]*?whatsappNumber:\s*')\d+(')/s", '${1}'.$custWa.'${2}', $html);
+
+        $address = $this->businessAddress($business);
+        if ($address !== '') {
+            $html = str_replace(
+                [
+                    'Jl. Taman Flora Boulevard No. 18, BSD City, Serpong, Tangerang Selatan 15310',
+                    'Jl. Boulevard Raya Blok PA-12, Kelapa Gading (Indoor AC Stud',
+                ],
+                $address,
+                $html
+            );
+        }
+
+        if (! empty($business['email'])) {
+            $email = $business['email'];
+            $html = str_replace(
+                [
+                    'halo@pawlora.id',
+                    'halo@pawsandclever.id',
+                    'halo@pawstead.id',
+                    'halo@pawtopia.id',
+                ],
+                $email,
+                $html
+            );
+        }
+
+        // Remap preview links to published site routes
+        $siteBase = url('/s/'.$order->site_slug);
+        $pairs = [
+            '/webia/template/petshop-minimalist-glacierblue/katalog' => $siteBase.'/katalog',
+            '/webia/template/petshop-minimalist-glacierblue/produk/' => $siteBase.'/produk/',
+            '/webia/template/petshop-minimalist-glacierblue' => $siteBase,
+            '/webia/template/petshop-luxury-rosegold/katalog' => $siteBase.'/katalog',
+            '/webia/template/petshop-luxury-rosegold/produk/' => $siteBase.'/produk/',
+            '/webia/template/petshop-luxury-rosegold' => $siteBase,
+            '/webia/template/petshop-corporate-plumvelvet/katalog' => $siteBase.'/katalog',
+            '/webia/template/petshop-corporate-plumvelvet/produk/' => $siteBase.'/produk/',
+            '/webia/template/petshop-corporate-plumvelvet' => $siteBase,
+            '/webia/template/pawlora-animal-care' => $siteBase,
+            '/webia/template/paws-clever-creative' => $siteBase,
+            '/webia/template/paws-joy-jellypop' => $siteBase,
+            '/webia/template/paws-canine-terra-earth-tone' => $siteBase,
+            '/webia/template/pawtopia-animal-care' => $siteBase,
+            '/webia/template/pawstead' => $siteBase,
+        ];
         uksort($pairs, fn ($a, $b) => strlen($b) <=> strlen($a));
         foreach ($pairs as $from => $to) {
             $html = str_replace(url($from), $to, $html);
