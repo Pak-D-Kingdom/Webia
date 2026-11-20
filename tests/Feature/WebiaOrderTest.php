@@ -398,7 +398,7 @@ class WebiaOrderTest extends TestCase
             'city' => 'Bandung',
             'address_url' => 'https://maps.google.com/?q=salon-ayu',
             'instagram' => '@salonayu',
-        ])->assertRedirect(route('orders.show', $order));
+        ])->assertRedirect(route('orders.show', ['order' => $order, 'tab' => 'profile']));
 
         $order->refresh();
         $this->assertSame('Salon Ayu', $order->business_data['business_name']);

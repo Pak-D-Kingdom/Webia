@@ -153,6 +153,8 @@ Route::view(
     '/webia/template/rubra-memoria-artistic-heritage',
     'website-bisnis.templates.education-culture.rubra-memoria-artistic-heritage'
 )->name('webia.template.rubra-memoria-artistic-heritage');
+
+Route::view(
     '/webia/template/arsip-kain-heritage-editorial',
     'website-bisnis.templates.traditional-textiles-heritage-fashion.arsip-kain-heritage-editorial'
 )->name('webia.template.arsip-kain-heritage-editorial');
