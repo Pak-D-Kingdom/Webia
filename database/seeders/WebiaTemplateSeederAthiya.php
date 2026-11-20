@@ -498,6 +498,24 @@ class WebiaTemplateSeederAthiya extends Seeder
                 'is_active' => true,
                 'sort_order' => 42,
             ],
+            [
+                'name' => 'Kebun Seduh — Botanical Elegant',
+                'slug' => 'kebun-seduh-botanical-elegant',
+                'category_slug' => 'specialty-beverage',
+                'category_label' => 'Specialty Beverage & Drink Concepts',
+                'business_types' => ['Specialty Tea Subscription'],
+                'design_style' => 'Botanical Elegant',
+                'color_theme' => 'Sage Green',
+                'description' => 'Website langganan teh spesialti dengan kotak bulanan, herbarium teh, konfigurator paket langganan, kartu hadiah, pilihan kafein, dan konsultasi WhatsApp.',
+                'preview_style' => 'preview-glow',
+                'eyebrow' => 'SPECIALTY TEA · BOTANICAL ELEGANT',
+                'headline' => 'Kebun kecil di cangkirmu,<br>setiap bulan.',
+                'tag' => 'Specialty Beverage & Drink Concepts · Specialty Tea Subscription · Botanical Elegant',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/kebun-seduh-botanical-elegant',
+                'is_active' => true,
+                'sort_order' => 43,
+            ],
         ];
 
         foreach ($templates as $template) {

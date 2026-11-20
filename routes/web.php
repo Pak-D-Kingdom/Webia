@@ -165,6 +165,11 @@ Route::view(
 )->name('webia.template.koharu-matcha-japanese-minimalist');
 
 Route::view(
+    '/webia/template/kebun-seduh-botanical-elegant',
+    'website-bisnis.templates.specialty-beverage.kebun-seduh-botanical-elegant'
+)->name('webia.template.kebun-seduh-botanical-elegant');
+
+Route::view(
     '/webia/template/pawlora-animal-care',
     'website-bisnis.templates.pet-animal-service.pawlora-animal-care'
 )->name('webia.template.pet-animal-service.pawlora-animal-care');
