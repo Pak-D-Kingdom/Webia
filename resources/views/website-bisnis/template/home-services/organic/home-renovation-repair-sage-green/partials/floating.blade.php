@@ -9,10 +9,15 @@
             <small><i class="hr-dot"></i> Online · Service &amp; Estimate FAQ</small>
         </div>
         <div class="hr-chat__tools">
+            <button type="button" data-chat-expand aria-label="Perbesar panel" aria-pressed="false" title="Perbesar">{{ $i('expand') }}</button>
             <button type="button" data-chat-reset aria-label="Mulai percakapan baru" title="Mulai ulang">{{ $i('refresh') }}</button>
             <button type="button" data-chat-close aria-label="Tutup chat" title="Tutup">{{ $i('close') }}</button>
         </div>
     </header>
+    <div class="hr-chat__bar">
+        <span class="hr-chat__human"><i aria-hidden="true"></i><span data-human-status>Tim kami: {{ $cfg['site']['hours'] }}</span></span>
+        <a class="hr-chat__handoff" href="https://wa.me/{{ $cfg['site']['whatsapp'] }}?text={{ rawurlencode('Halo Renovaku, saya ingin bicara dengan tim.') }}" target="_blank" rel="noopener noreferrer">{{ $i('whatsapp') }}<span>Chat tim</span></a>
+    </div>
 
     <div class="hr-chat__views">
         {{-- Tab 1: Obrolan --}}
@@ -22,7 +27,7 @@
                     <div class="hr-welcome__hero">
                         <span class="hr-welcome__bot">@include($vp.'robot')</span>
                         <div>
-                            <strong>Halo, saya asisten Renovaku!</strong>
+                            <strong data-greet>Halo, saya asisten Renovaku!</strong>
                             <p>Tanya seputar layanan, paket, proyek, atau hitung estimasi biaya renovasi Anda.</p>
                         </div>
                     </div>
@@ -83,7 +88,7 @@
                 </div>
                 <div class="hr-calc__foot">
                 <div class="hr-calc__result" aria-live="polite">
-                    <small>Perkiraan biaya</small>
+                    <div class="hr-calc__rhead"><small>Perkiraan biaya</small><button type="button" class="hr-calc__copy" data-calc-copy aria-label="Salin hasil estimasi">{{ $i('copy') }}<span>Salin</span></button></div>
                     <b data-calc-range>—</b>
                     <span class="hr-calc__bar"><i data-calc-bar></i></span>
                     <small data-calc-note>—</small>
@@ -102,6 +107,7 @@
         <div class="hr-view" data-view="faq" role="tabpanel" aria-label="FAQ" hidden>
             <div class="hr-faqv">
                 <label class="hr-faqv__search">{{ $i('search') }}<input type="search" data-faqv-q placeholder="Cari pertanyaan, mis. garansi…" autocomplete="off" aria-label="Cari pertanyaan"></label>
+                <div class="hr-faqv__cats" data-faqv-cats role="group" aria-label="Kategori pertanyaan"></div>
                 <ul class="hr-faqv__list" data-faqv-list></ul>
                 <p class="hr-faqv__empty" data-faqv-empty hidden>Tidak ada pertanyaan yang cocok. <button type="button" data-faqv-ask>Tanya langsung ke asisten</button></p>
             </div>

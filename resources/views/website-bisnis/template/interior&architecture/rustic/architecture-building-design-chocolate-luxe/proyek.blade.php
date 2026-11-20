@@ -10,7 +10,7 @@
     $v   = $site["view"];
 @endphp
 @php $groups = ['residensial' => ['Proyek Residensial', 'Hunian impian untuk keluarga Anda.', 'home'], 'komersial' => ['Proyek Komersial', 'Bangunan bisnis modern yang mendukung operasional.', 'building']]; @endphp
-@include($v . '.partials.page-hero', ['title' => 'Proyek Residensial & Komersial', 'sub' => 'Dari hunian impian hingga bangunan bisnis modern.', 'bg' => 'com-02.jpg', 'icon' => 'home', 'crumb' => 'Proyek'])
+@include($v . '.partials.page-hero', ['key' => 'proyek'])
 
 <section class="abd-section">
     <div class="abd-container">

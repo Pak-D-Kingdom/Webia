@@ -21,7 +21,7 @@
             <select id="{{ $idp }}-{{ $f['name'] }}" name="{{ $f['name'] }}" data-label="{{ $f['label'] }}" data-ph="{{ $f['ph'] ?? 'Pilih' }}" data-ico="{{ $f['icon'] ?? '' }}" @if (!empty($f['req'])) required @endif>
                 <option value="">{{ $f['ph'] ?? 'Pilih' }}</option>
                 @foreach ($f['options'] as $o)
-                    <option value="{{ $o[0] }}" data-icon="{{ $o[1] ?? '' }}">{{ $o[0] }}</option>
+                    <option value="{{ $o[0] }}" data-icon="{{ $o[1] ?? '' }}" data-desc="{{ $o[2] ?? '' }}">{{ $o[0] }}</option>
                 @endforeach
             </select>
         </div>

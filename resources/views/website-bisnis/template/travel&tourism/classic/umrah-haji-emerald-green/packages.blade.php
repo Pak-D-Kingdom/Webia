@@ -22,8 +22,8 @@
             <div class="uh-pkpage" data-uh-filter-list="packages">
                 @foreach ($uh['packages'] as $pkg)
                     <article class="uh-pkcard" id="{{ $pkg['slug'] }}" data-type="{{ $pkg['type'] }}">
-                        <figure class="uh-pkcard__media uh-frame"><img class="uh-frame__bg" src="{{ $img($pkg['image']) }}" alt="" aria-hidden="true" loading="lazy">
-                            <img src="{{ $img($pkg['image']) }}" alt="{{ $pkg['name'] }}" width="252" height="202" loading="lazy">
+                        <figure class="uh-pkcard__media">
+                            <img src="{{ $img($pkg['image']) }}" alt="{{ $pkg['name'] }}" width="606" height="486" loading="lazy">
                             @if ($pkg['ribbon'])
                                 <span class="uh-ribbon uh-ribbon--lg">{{ $pkg['ribbon'] }}</span>
                             @endif

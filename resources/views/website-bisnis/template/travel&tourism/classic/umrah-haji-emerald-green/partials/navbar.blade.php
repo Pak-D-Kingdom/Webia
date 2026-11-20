@@ -1,7 +1,7 @@
 <header class="uh-navbar" data-uh-navbar>
     <div class="uh-container uh-navbar__inner">
         <a class="uh-brand" href="{{ $url('home') }}" aria-label="{{ $uh['brand']['name'] }} — Beranda">
-            <img class="uh-brand__logo" src="{{ $img('logo-emblem-terang.jpg') }}" width="46" height="52" alt="">
+            <span class="uh-brand__mark">@include('website-bisnis.template.travel&tourism.classic.umrah-haji-emerald-green.partials.emblem', ['gid' => 'nav'])</span>
             <span class="uh-brand__text">
                 <span class="uh-brand__name">{{ $uh['brand']['name'] }}</span>
                 <span class="uh-brand__tag">{{ $uh['brand']['tagline'] }}</span>

@@ -142,12 +142,18 @@
                 <header class="abd-card__head abd-card__head--tight">
                     <span class="abd-card__ico"><svg class="i" aria-hidden="true"><use href="#i-badge"/></svg></span>
                     <div class="abd-card__ttl"><h2>Sertifikasi &amp; Lisensi</h2><p>Profesional dan terpercaya.</p></div>
+                    <a class="abd-link" href="{{ $u('/sertifikasi') }}" aria-label="Lihat semua sertifikasi"><svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a>
                 </header>
-                <a class="abd-logos" href="{{ $u('/sertifikasi') }}" aria-label="Lihat sertifikasi dan lisensi">
+                <div class="abd-certs">
                     @foreach ($site['certs'] as $c)
-                        <img src="{{ $img($c['img']) }}" alt="{{ $c['title'] }}" loading="lazy" width="160" height="100">
+                        <a class="abd-certmini" href="{{ $u('/sertifikasi') }}" style="--i:{{ $loop->iteration }}" aria-label="{{ $c['title'] }} — {{ $c['org'] }}">
+                            <span class="abd-certmini__ok" aria-hidden="true"><svg class="i"><use href="#i-check"/></svg></span>
+                            <span class="abd-certmini__logo"><img src="{{ $img($c['img']) }}" alt="" loading="lazy" width="160" height="100"></span>
+                            <strong>{{ $c['short'] }}</strong>
+                            <small>{{ $c['sub'] }}</small>
+                        </a>
                     @endforeach
-                </a>
+                </div>
             </article>
 
             {{-- Booking Konsultasi --}}
@@ -180,7 +186,7 @@
                     </div>
                     <ul class="abd-chatprev__chips">
                         @foreach ($site['quick'] as $q)
-                            <li><button type="button" data-chat-ask="{{ $q }}">{{ $q }}</button></li>
+                            <li style="--i:{{ $loop->iteration }}"><button type="button" data-chat-ask="{{ $q }}"><svg class="i" aria-hidden="true"><use href="#i-spark"/></svg><span>{{ $q }}</span></button></li>
                         @endforeach
                     </ul>
                     <form class="abd-chatprev__form" data-chatprev-form autocomplete="off">

@@ -1031,11 +1031,8 @@ body.uh-page-chatbot .uh-chat { display: none; }
 .uh-pagehero__head { display: flex; align-items: center; gap: 20px; margin-top: 20px; }
 .uh-pagehero__icon { display: grid; place-items: center; flex: none; width: 68px; height: 68px; border-radius: 20px; border: 1px solid rgba(227, 201, 147, .55); background: linear-gradient(180deg, rgba(255, 255, 255, .16), rgba(255, 255, 255, .04)); color: var(--uh-gold-300); font-size: 32px; box-shadow: 0 12px 28px rgba(0, 0, 0, .25); animation: uhFloatCard 6s ease-in-out infinite; }
 .uh-pagehero__title { margin-top: 0; }
-.uh-pagehero__arch { position: absolute; right: 7%; top: 28px; bottom: -1px; width: min(28%, 330px); border: 1px solid rgba(227, 201, 147, .3); border-bottom: 0; border-radius: 260px 260px 0 0; }
-.uh-pagehero__arch::after { content: ""; position: absolute; inset: 22px 22px 0; border: 1px solid rgba(227, 201, 147, .18); border-bottom: 0; border-radius: 240px 240px 0 0; }
-.uh-pagehero__bg img.uh-pagehero__lantern { position: absolute; right: calc(7% + min(14%, 165px) - 18px); top: 0; width: 36px; height: auto; max-width: none; opacity: 1; object-fit: contain; transform-origin: 50% 0; animation: uhSwing 5.5s ease-in-out infinite; filter: drop-shadow(0 6px 10px rgba(0, 0, 0, .4)); }
 .uh-pagehero__inner { padding-bottom: 0; }
-@media (max-width: 640px) { .uh-pagehero__icon { width: 52px; height: 52px; font-size: 24px; border-radius: 16px; } .uh-pagehero__head { gap: 14px; } .uh-pagehero__arch, .uh-pagehero__bg img.uh-pagehero__lantern { display: none; } .uh-pagehero__text { font-size: 13.5px; } }
+@media (max-width: 640px) { .uh-pagehero__icon { width: 52px; height: 52px; font-size: 24px; border-radius: 16px; } .uh-pagehero__head { gap: 14px; } .uh-pagehero__text { font-size: 13.5px; } }
 
 /* --- 15h. Poles halaman dalam --- */
 .uh-facts:not(.uh-facts--list) > div { display: grid; grid-template-columns: 38px minmax(0, 1fr); column-gap: 12px; align-items: center; }
@@ -1540,3 +1537,217 @@ body.uh-page-chatbot .uh-chat { display: none; }
 @media (max-width: 559px) { .uh-cpanel { left: 8px; right: 8px; width: auto; bottom: calc(8px + env(safe-area-inset-bottom, 0px)); height: min(86vh, 680px); border-radius: 22px; } }
 @media print { .uh-cpanel, .uh-search { display: none !important; } }
 .uh-search__input:focus, .uh-search__input:focus-visible { outline: none; box-shadow: none; }
+
+/* ==========================================================================
+   18. REVISI 5 — tombol filter terpisah, hero halaman dalam, kotak input chat, animasi
+   ========================================================================== */
+
+/* --- 18a. Tombol filter / tab: setiap pilihan berdiri sendiri (tidak tersambung) --- */
+.uh-seg, .uh-tabs__list { display: flex; flex-wrap: wrap; gap: 12px; max-width: 100%; padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; overflow: visible; }
+.uh-seg__thumb { display: none !important; }
+.uh-seg__btn, .uh-tab { position: relative; display: inline-flex; align-items: center; flex: none; gap: 10px; height: 48px; padding: 0 20px 0 8px; border: 1px solid rgba(179, 138, 86, .5); border-radius: 999px; background: linear-gradient(180deg, #fff, #fbf5e8); box-shadow: 0 6px 14px rgba(48, 66, 52, .08); font-size: 13px; font-weight: 500; color: var(--uh-text); white-space: nowrap; transition: transform .35s var(--uh-ease), box-shadow .35s, border-color .3s, background .3s, color .3s; }
+.uh-tab { padding: 0 24px; }
+.uh-seg__btn:hover, .uh-tab:hover { transform: translateY(-3px); border-color: var(--uh-gold-500); background: linear-gradient(180deg, #fff, #f9f0da); box-shadow: 0 14px 24px rgba(48, 66, 52, .14); color: var(--uh-text); }
+.uh-seg__btn.is-active, .uh-tab.is-active, .uh-seg__btn.is-active:hover, .uh-tab.is-active:hover { transform: translateY(-2px); border-color: #0a3a33; background: linear-gradient(180deg, #106153, #0a3a33); box-shadow: 0 14px 26px rgba(10, 44, 40, .35), inset 0 0 0 1px rgba(227, 201, 147, .4); color: #fff; }
+.uh-seg__btn.is-active::after, .uh-tab.is-active::after { content: ""; position: absolute; left: 50%; bottom: -8px; width: 8px; height: 8px; border-radius: 50%; background: var(--uh-gold-400); box-shadow: 0 0 0 3px var(--uh-cream); transform: translateX(-50%); animation: uhPop .5s var(--uh-ease); }
+.uh-seg--room .uh-seg__btn { height: 62px; padding-right: 28px; border-radius: 22px; }
+.uh-seg__btn:active, .uh-tab:active { transform: translateY(0) scale(.97); }
+@media (max-width: 640px) {
+    .uh-seg { width: 100%; gap: 10px; }
+    .uh-seg__btn { flex: 1 1 calc(33.333% - 10px); justify-content: center; padding: 0 10px 0 6px; }
+    .uh-seg--room .uh-seg__btn { padding: 0 10px 0 6px; }
+    .uh-tabs__list { flex-wrap: nowrap; overflow-x: auto; padding: 8px 4px 18px; margin: -8px -4px 6px; scrollbar-width: none; }
+    .uh-tabs__list::-webkit-scrollbar { display: none; }
+}
+
+/* --- 18b. Hero halaman dalam --- */
+.uh-pagehero { position: relative; isolation: isolate; padding: 44px 0 78px; background: #072420; color: #fff; overflow: hidden; }
+.uh-pagehero__bg { position: absolute; inset: 0; z-index: -1; overflow: hidden; }
+.uh-pagehero__bg .uh-pagehero__photo { position: absolute; left: 0; top: -9%; width: 100%; height: 118%; max-width: none; object-fit: cover; object-position: var(--uh-focus, 60% 40%); opacity: .5; scale: 1.05; translate: calc(var(--px, 0) * -14px) calc(var(--py, 0) * -8px + var(--sy, 0) * .2px); animation: uhKenSoft 26s ease-in-out infinite alternate; }
+.uh-pagehero__shade { position: absolute; inset: 0; background: linear-gradient(100deg, #072420 6%, rgba(7, 36, 32, .8) 48%, rgba(7, 36, 32, .38) 100%), linear-gradient(0deg, rgba(7, 36, 32, .55), transparent 45%); }
+.uh-pagehero__shade::after { content: ""; position: absolute; inset: -20%; background: radial-gradient(40% 50% at 78% 28%, rgba(227, 201, 147, .22), transparent 70%); animation: uhAurora 14s ease-in-out infinite alternate; }
+.uh-pagehero__pattern { position: absolute; inset: 0; background-image: var(--uh-pattern); opacity: .45; mix-blend-mode: screen; translate: calc(var(--px, 0) * 8px) calc(var(--sy, 0) * -.08px); }
+.uh-pagehero__flight { position: absolute; left: 0; top: 26%; display: flex; align-items: center; opacity: 0; color: #f3e5c4; animation: uhFly3 24s linear 2s infinite; pointer-events: none; }
+.uh-pagehero__flight .uh-i { width: 22px; height: 22px; filter: drop-shadow(0 2px 6px rgba(0, 0, 0, .45)); }
+.uh-pagehero__trail { width: 120px; height: 2px; margin-right: -2px; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .75)); border-radius: 2px; }
+@keyframes uhFly3 { 0% { transform: translate(-200px, 36px) rotate(-5deg); opacity: 0; } 5% { opacity: .9; } 95% { opacity: .9; } 100% { transform: translate(calc(100vw + 60px), -46px) rotate(-5deg); opacity: 0; } }
+@keyframes uhAurora { from { transform: translate3d(-6%, 0, 0) scale(1); } to { transform: translate3d(8%, 10%, 0) scale(1.15); } }
+
+.uh-pagehero__inner { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, .7fr); align-items: center; gap: 40px; padding-bottom: 0; }
+.uh-pagehero__copy { min-width: 0; }
+.uh-crumbs { display: inline-flex; align-items: center; padding: 7px 15px; border: 1px solid rgba(227, 201, 147, .3); border-radius: 999px; background: rgba(255, 255, 255, .08); backdrop-filter: blur(6px); font-size: 12px; animation: uhFadeUp .7s var(--uh-ease) both; }
+.uh-pagehero__head { display: flex; align-items: center; gap: 20px; margin-top: 22px; }
+.uh-pagehero__icon { position: relative; display: grid; place-items: center; flex: none; width: 74px; height: 74px; border: 0; border-radius: 24px; background: linear-gradient(160deg, rgba(255, 255, 255, .18), rgba(255, 255, 255, .04)); color: var(--uh-gold-300); font-size: 34px; box-shadow: 0 14px 30px rgba(0, 0, 0, .3); animation: uhFloatCard 6s ease-in-out infinite; }
+.uh-pagehero__icon::before { content: ""; position: absolute; inset: -2px; border-radius: 26px; background: conic-gradient(from 0deg, #f0dcae, transparent 28%, #f0dcae 58%, transparent 86%, #f0dcae); -webkit-mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); padding: 2px; animation: uhSpin 9s linear infinite; }
+.uh-pagehero__eyebrow { font-size: 11px; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; color: var(--uh-gold-300); animation: uhFadeUp .7s .1s var(--uh-ease) both; }
+.uh-pagehero__title { margin-top: 4px; font-size: clamp(32px, 4.4vw, 54px); line-height: 1.08; perspective: 600px; animation: none; }
+.uh-w { display: inline-block; margin-right: .26em; transform-origin: 50% 100%; animation: uhWord .9s var(--uh-ease) both; animation-delay: calc(var(--i, 0) * 95ms + 180ms); }
+@keyframes uhWord { from { opacity: 0; transform: translateY(55%) rotateX(-55deg); filter: blur(7px); } to { opacity: 1; transform: none; filter: blur(0); } }
+.uh-pagehero__rule { position: relative; display: block; width: 130px; height: 2px; margin: 18px 0 16px; border-radius: 2px; background: linear-gradient(90deg, var(--uh-gold-300), transparent); transform-origin: left; animation: uhRule 1.1s .6s var(--uh-ease) both; }
+.uh-pagehero__rule i { position: absolute; left: 0; top: -3px; width: 8px; height: 8px; border-radius: 50%; background: var(--uh-gold-300); box-shadow: 0 0 12px 3px rgba(227, 201, 147, .8); animation: uhSlide 3.6s 1.6s ease-in-out infinite; }
+@keyframes uhRule { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes uhSlide { 0% { left: 0; opacity: 0; } 15%, 85% { opacity: 1; } 100% { left: calc(100% - 8px); opacity: 0; } }
+.uh-pagehero__text { max-width: 560px; margin-top: 0; font-size: 15px; line-height: 1.7; color: rgba(255, 255, 255, .88); animation: uhFadeUp .8s .5s var(--uh-ease) both; }
+.uh-pagehero__chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+.uh-pagehero__chips li { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border: 1px solid rgba(227, 201, 147, .38); border-radius: 999px; background: rgba(255, 255, 255, .09); backdrop-filter: blur(6px); font-size: 12.5px; font-weight: 500; animation: uhChip .7s var(--uh-ease) both; animation-delay: calc(var(--i, 0) * 110ms + 750ms); transition: transform .3s var(--uh-ease), background-color .3s; }
+.uh-pagehero__chips li:hover { transform: translateY(-3px); background: rgba(255, 255, 255, .18); }
+.uh-pagehero__chips .uh-i { font-size: 15px; color: var(--uh-gold-300); }
+@keyframes uhChip { from { opacity: 0; transform: translateY(14px) scale(.85); } to { opacity: 1; transform: none; } }
+
+.uh-pagehero__art { position: relative; justify-self: end; width: min(100%, 320px); aspect-ratio: 3 / 4.1; translate: calc(var(--px, 0) * 12px) calc(var(--py, 0) * 7px); }
+.uh-pagehero__orbit { position: absolute; left: 50%; top: 50%; width: 132%; aspect-ratio: 1; border: 1px dashed rgba(227, 201, 147, .38); border-radius: 50%; translate: -50% -50%; animation: uhSpin 46s linear infinite; }
+.uh-pagehero__orbit i { position: absolute; width: 9px; height: 9px; border-radius: 50%; background: var(--uh-gold-300); box-shadow: 0 0 14px 4px rgba(227, 201, 147, .75); }
+.uh-pagehero__orbit i:nth-child(1) { left: 50%; top: -4px; } .uh-pagehero__orbit i:nth-child(2) { right: 6%; bottom: 16%; width: 6px; height: 6px; } .uh-pagehero__orbit i:nth-child(3) { left: 4%; bottom: 30%; width: 7px; height: 7px; }
+.uh-pagehero__arch { position: absolute; inset: 0; padding: 9px; border-radius: 999px 999px 26px 26px; background: linear-gradient(150deg, #f4e2b4, #a07b49 46%, #e8cf98); box-shadow: 0 34px 64px rgba(0, 0, 0, .5), inset 0 0 0 1px rgba(255, 255, 255, .25); animation: uhFloatCard 7s ease-in-out infinite; }
+.uh-pagehero__window { position: relative; height: 100%; border-radius: 999px 999px 18px 18px; background: #0a2c28; overflow: hidden; }
+.uh-pagehero__window img { width: 100%; height: 100%; max-width: none; object-fit: cover; object-position: var(--uh-focus, 60% 40%); animation: uhKen 24s ease-in-out infinite alternate; }
+.uh-pagehero__window::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(7, 36, 32, .05), rgba(7, 36, 32, .5)); }
+.uh-pagehero__window::after { content: ""; position: absolute; inset: 0; z-index: 2; background: linear-gradient(115deg, transparent 38%, rgba(255, 255, 255, .3) 50%, transparent 62%); transform: translateX(-130%); animation: uhShine 7s 2s infinite; }
+.uh-pagehero__lantern { position: absolute; z-index: 3; right: 8px; top: -44px; width: 42px; height: auto; transform-origin: 50% 0; translate: calc(var(--px, 0) * -9px) 0; animation: uhSwing 5.5s ease-in-out infinite; filter: drop-shadow(0 6px 10px rgba(0, 0, 0, .45)); }
+.uh-pagehero__crescent { position: absolute; z-index: 3; left: -26px; top: 8%; width: 46px; height: 46px; border-radius: 50%; box-shadow: inset -13px 4px 0 0 #f0dba8; transform: rotate(-24deg); filter: drop-shadow(0 0 14px rgba(240, 219, 168, .6)); animation: uhGlow 4.5s ease-in-out infinite; }
+@keyframes uhGlow { 0%, 100% { opacity: .75; filter: drop-shadow(0 0 8px rgba(240, 219, 168, .4)); } 50% { opacity: 1; filter: drop-shadow(0 0 20px rgba(240, 219, 168, .85)); } }
+.uh-pagehero__edge { position: absolute; left: 0; right: 0; bottom: -1px; z-index: 3; height: 24px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='24' viewBox='0 0 30 24'%3E%3Cpath d='M0 24V17C0 9 9 4 15 0c6 4 15 9 15 17v7z' fill='%23f7f4ed'/%3E%3C/svg%3E") repeat-x left bottom / 30px 24px; }
+.uh-pagehero .uh-spark, .uh-pagehero .uh-dust { z-index: 0; }
+@media (max-width: 960px) {
+    .uh-pagehero { padding: 34px 0 68px; }
+    .uh-pagehero__inner { grid-template-columns: minmax(0, 1fr); }
+    .uh-pagehero__art { display: none; }
+}
+@media (max-width: 560px) {
+    .uh-pagehero__icon { width: 56px; height: 56px; border-radius: 18px; font-size: 26px; }
+    .uh-pagehero__icon::before { border-radius: 20px; }
+    .uh-pagehero__head { gap: 14px; }
+    .uh-pagehero__text { font-size: 13.5px; }
+    .uh-pagehero__chips li { font-size: 11.5px; padding: 7px 12px; }
+}
+
+/* --- 18c. Kotak input chat (panel + halaman): saran otomatis, hapus, penghitung --- */
+.uh-cpanel__form, .uh-chatwin__form { position: relative; display: block; flex: none; padding: 12px 14px 6px; border-top: 1px solid var(--uh-line); background: var(--uh-paper); }
+.uh-chatwin__form { padding: 14px 18px 18px; }
+.uh-cpanel__suggest:not([hidden]) + .uh-cpanel__form { border-top: 0; padding-top: 4px; }
+.uh-chatfield { position: relative; display: flex; align-items: center; gap: 8px; width: 100%; }
+.uh-chatfield__box { flex: 1; display: flex; align-items: center; gap: 10px; min-width: 0; height: 50px; padding: 0 10px 0 16px; border: 1px solid rgba(179, 138, 86, .5); border-radius: 999px; background: linear-gradient(180deg, #fff, #fbf6ea); box-shadow: inset 0 2px 5px rgba(10, 44, 40, .05); transition: border-color .25s, box-shadow .25s; cursor: text; }
+.uh-chatfield__box:focus-within { border-color: var(--uh-gold-500); box-shadow: 0 0 0 3px rgba(179, 138, 86, .22), 0 10px 22px rgba(48, 66, 52, .1); }
+.uh-chatfield__lens { flex: none; font-size: 17px; color: var(--uh-gold-600); transition: transform .35s var(--uh-ease); }
+.uh-chatfield__box:focus-within .uh-chatfield__lens { transform: scale(1.14) rotate(-8deg); }
+.uh-chatfield__input { flex: 1; min-width: 0; height: 100%; border: 0; background: none; font-size: 13.5px; color: var(--uh-ink); outline: none; box-shadow: none; }
+.uh-chatfield__input:focus, .uh-chatfield__input:focus-visible { outline: none; box-shadow: none; }
+.uh-chatfield__input::placeholder { color: #8f9c95; }
+.uh-chatfield__count { flex: none; font-size: 10.5px; font-variant-numeric: tabular-nums; color: var(--uh-muted); }
+.uh-chatfield__count.is-warn { color: #b0463a; font-weight: 600; }
+.uh-chatfield__clear { display: grid; place-items: center; flex: none; width: 28px; height: 28px; border: 0; border-radius: 50%; background: #eee6d3; color: var(--uh-muted); font-size: 13px; transition: background-color .2s, transform .3s var(--uh-ease); }
+.uh-chatfield__clear:hover { background: var(--uh-gold-300); color: var(--uh-ink); transform: rotate(90deg); }
+.uh-chatfield__send { display: grid; place-items: center; flex: none; width: 50px; height: 50px; border: 0; border-radius: 50%; background: linear-gradient(180deg, #106153, #0a3a33); color: #fff; font-size: 19px; box-shadow: 0 10px 20px rgba(10, 44, 40, .32); transition: transform .3s var(--uh-ease), opacity .3s, filter .3s; }
+.uh-chatfield__send:not(:disabled) { animation: uhSendPulse 2.6s ease-in-out infinite; }
+.uh-chatfield__send:not(:disabled):hover { transform: scale(1.08) rotate(-12deg); }
+.uh-chatfield__send:disabled { opacity: .45; filter: grayscale(.5); box-shadow: none; cursor: not-allowed; }
+@keyframes uhSendPulse { 0%, 100% { box-shadow: 0 10px 20px rgba(10, 44, 40, .32), 0 0 0 0 rgba(16, 97, 83, .4); } 60% { box-shadow: 0 10px 20px rgba(10, 44, 40, .32), 0 0 0 9px rgba(16, 97, 83, 0); } }
+.uh-sugg { position: absolute; z-index: 6; left: 0; right: 0; bottom: calc(100% + 10px); max-height: 244px; padding: 6px; overflow-y: auto; border: 1px solid var(--uh-gold-300); border-radius: 18px; background: var(--uh-paper); box-shadow: 0 22px 46px rgba(7, 36, 32, .3); animation: uhPopIn .22s var(--uh-ease) both; transform-origin: 50% 100%; }
+.uh-sugg__title { padding: 7px 10px 5px; font-size: 10.5px; font-weight: 600; letter-spacing: .13em; text-transform: uppercase; color: var(--uh-gold-600); }
+.uh-sugg__item { display: flex; align-items: center; gap: 10px; width: 100%; padding: 9px 10px; border: 0; border-radius: 12px; background: none; text-align: left; font-size: 12.5px; line-height: 1.4; color: var(--uh-ink); cursor: pointer; animation: uhMsgIn .3s var(--uh-ease) both; animation-delay: calc(var(--i, 0) * 30ms); transition: background-color .15s; }
+.uh-sugg__item > .uh-i { flex: none; font-size: 15px; color: var(--uh-gold-600); }
+.uh-sugg__txt { flex: 1; min-width: 0; }
+.uh-sugg__item mark { padding: 0 1px; border-radius: 3px; background: rgba(205, 171, 118, .5); color: inherit; }
+.uh-sugg__go { margin-left: auto; font-size: 13px; opacity: 0; transform: translateX(-4px); transition: opacity .2s, transform .25s; }
+.uh-sugg__item.is-active, .uh-sugg__item:hover { background: var(--uh-gold-200); }
+.uh-sugg__item.is-active .uh-sugg__go { opacity: 1; transform: none; }
+.uh-sugg__empty { padding: 12px 12px 10px; font-size: 12.5px; color: var(--uh-muted); }
+.uh-cpanel__hint { display: flex; justify-content: center; gap: 16px; margin: 8px 0 4px; font-size: 10.5px; color: var(--uh-muted); }
+.uh-cpanel__hint kbd { margin-right: 4px; padding: 1px 6px; border: 1px solid var(--uh-line); border-bottom-width: 2px; border-radius: 5px; background: #fff; font-family: var(--uh-font-sans); font-size: 10px; }
+@media (max-width: 559px) { .uh-cpanel__hint { display: none; } }
+
+/* --- 18d. Animasi tambahan --- */
+.uh-scrollbar { position: fixed; z-index: 130; left: 0; right: 0; top: 0; height: 3px; pointer-events: none; }
+.uh-scrollbar i { display: block; width: 0; height: 100%; background: linear-gradient(90deg, #106153, #e3c993); box-shadow: 0 0 10px rgba(227, 201, 147, .7); }
+.uh-hero__photo { translate: calc(var(--px, 0) * -12px) calc(var(--py, 0) * -6px); }
+.uh-hero__panel { translate: calc(var(--px, 0) * 7px) 0; }
+.uh-hero__lantern { translate: calc(var(--px, 0) * -11px) calc(var(--py, 0) * -3px); }
+.uh-hero__calli { translate: calc(var(--px, 0) * -14px) calc(var(--py, 0) * -7px); }
+.uh-ai { translate: calc(var(--px, 0) * 6px) calc(var(--py, 0) * 4px); }
+.uh-footer__main::after { content: ""; position: absolute; inset: 0; pointer-events: none; background-image: radial-gradient(1.6px 1.6px at 8% 24%, rgba(240, 214, 160, .95), transparent), radial-gradient(1.4px 1.4px at 27% 72%, rgba(240, 214, 160, .8), transparent), radial-gradient(1.6px 1.6px at 46% 18%, rgba(240, 214, 160, .9), transparent), radial-gradient(1.3px 1.3px at 63% 66%, rgba(240, 214, 160, .8), transparent), radial-gradient(1.6px 1.6px at 81% 30%, rgba(240, 214, 160, .95), transparent), radial-gradient(1.4px 1.4px at 93% 78%, rgba(240, 214, 160, .8), transparent); animation: uhTwinkleBg 6s ease-in-out infinite; }
+@keyframes uhTwinkleBg { 0%, 100% { opacity: .25; } 50% { opacity: 1; } }
+[data-uh-tilt] { transform-style: flat; }
+.uh-sch__seatrow strong span { font-variant-numeric: tabular-nums; }
+@media (prefers-reduced-motion: reduce) {
+    .uh-w, .uh-pagehero__chips li, .uh-pagehero__rule, .uh-pagehero__text, .uh-crumbs { animation: none !important; opacity: 1 !important; transform: none !important; filter: none !important; }
+}
+
+/* ==========================================================================
+   19. REVISI 6 — hero menyatu, gambar memenuhi kartu, logo vektor, animasi
+   ========================================================================== */
+
+/* --- 19a. Hero beranda: foto & panel hijau menyatu (tanpa celah/pemisah) --- */
+.uh-hero__photo { top: -10px; bottom: -10px; }
+@media (min-width: 1180px) {
+    .uh-hero__panel { right: -18px; width: calc(var(--panel-w) + 186px); -webkit-mask-image: linear-gradient(90deg, transparent 0, rgba(0, 0, 0, .55) 70px, #000 175px); mask-image: linear-gradient(90deg, transparent 0, rgba(0, 0, 0, .55) 70px, #000 175px); }
+    .uh-hero__arch--outer { left: 190px; right: 44px; }
+    .uh-hero__arch--inner { left: 218px; right: 72px; }
+    .uh-hero__lantern { right: 36px; }
+}
+
+/* --- 19b. Gambar memenuhi kartu (bukan dalam bingkai), dengan penajaman tampilan --- */
+.uh-pkcard__media, .uh-feature__media, .uh-pass__media, .uh-asidecard__media { position: relative; overflow: hidden; margin: 0; }
+.uh-pkcard__media { min-height: 290px; }
+.uh-feature__media { min-height: 340px; }
+.uh-pass__media { min-height: 200px; border-radius: 16px; }
+.uh-asidecard__media { aspect-ratio: 16 / 10.5; border-radius: 14px; }
+.uh-pkcard__media img, .uh-feature__media img, .uh-pass__media img, .uh-asidecard__media img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: cover; object-position: 50% 45%; border: 0; border-radius: 0; box-shadow: none; filter: contrast(1.05) saturate(1.06); animation: none; transition: transform 1.2s var(--uh-ease); }
+.uh-pkcard:hover .uh-pkcard__media img, .uh-feature:hover .uh-feature__media img, .uh-pass:hover .uh-pass__media img, .uh-asidecard:hover .uh-asidecard__media img { transform: scale(1.06); }
+.uh-pkcard__media::after, .uh-feature__media::after, .uh-pass__media::after, .uh-asidecard__media::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(180deg, transparent 55%, rgba(7, 36, 32, .22)), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E") 0 0 / auto, auto; background-blend-mode: normal, soft-light; opacity: .9; }
+.uh-gcard__photo { width: 132px; height: 132px; }
+.uh-gcard__photo img, .uh-tm__photo img, .uh-avatar img { filter: contrast(1.05) saturate(1.06); }
+@media (max-width: 860px) { .uh-pkcard__media { min-height: 0; aspect-ratio: 16 / 10; } .uh-feature__media { min-height: 0; aspect-ratio: 16 / 9; } }
+
+/* --- 19c. Logo: lambang vektor + wordmark --- */
+.uh-brand { gap: 12px; }
+.uh-brand__mark { position: relative; display: grid; place-items: center; flex: none; width: 44px; height: 49px; transition: transform .5s var(--uh-ease); }
+.uh-brand:hover .uh-brand__mark { transform: translateY(-2px) rotate(-3deg) scale(1.06); }
+.uh-emblem { width: 100%; height: 100%; overflow: visible; --em-ga: #0f7a5b; --em-gb: #094536; --em-hi: #3fc29a; }
+.uh-brand--light .uh-emblem, .uh-ai__emblem .uh-emblem { --em-ga: #14a27c; --em-gb: #0a5c47; --em-hi: #6fe0b8; }
+.uh-emblem__halo { transform-box: fill-box; transform-origin: center; animation: uhHalo 4.5s ease-in-out infinite; }
+@keyframes uhHalo { 0%, 100% { opacity: .5; transform: scale(.92); } 50% { opacity: 1; transform: scale(1.07); } }
+.uh-emblem__tassel { transform-box: fill-box; transform-origin: 50% 0; animation: uhTassel 4.6s ease-in-out infinite; }
+.uh-emblem__tassel--r { animation-delay: -2.3s; }
+@keyframes uhTassel { 0%, 100% { transform: rotate(-4.5deg); } 50% { transform: rotate(4.5deg); } }
+.uh-emblem__star { transform-box: fill-box; transform-origin: center; animation: uhTwinkleStar 3.8s ease-in-out infinite; }
+.uh-emblem__lantern { animation: uhLanternGlow 5s ease-in-out infinite; }
+@keyframes uhLanternGlow { 0%, 100% { filter: drop-shadow(0 0 0 rgba(243, 220, 164, 0)); } 50% { filter: drop-shadow(0 0 2.5px rgba(243, 220, 164, .9)); } }
+.uh-brand__name { font-size: 21px; font-weight: 600; letter-spacing: .005em; background: linear-gradient(100deg, #0a3a33 0%, #0a3a33 42%, #c79a5b 50%, #0a3a33 58%, #0a3a33 100%) 0 0 / 260% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; animation: uhNameShine 8s linear infinite; }
+.uh-brand--light .uh-brand__name { background-image: linear-gradient(100deg, #f6ecd6 0%, #f6ecd6 42%, #e3c993 49%, #fff 53%, #f6ecd6 60%, #f6ecd6 100%); }
+@keyframes uhNameShine { 0% { background-position: 130% 0; } 55%, 100% { background-position: -60% 0; } }
+.uh-brand__tag { display: flex; align-items: center; gap: 7px; margin-top: 4px; font-size: 8.6px; font-weight: 500; letter-spacing: .13em; text-transform: uppercase; color: var(--uh-gold-700); }
+.uh-brand__tag::before { content: ""; flex: none; width: 16px; height: 1px; background: linear-gradient(90deg, transparent, var(--uh-gold-500)); }
+.uh-brand--light .uh-brand__tag { color: var(--uh-gold-300); }
+.uh-ai__emblem .uh-emblem { width: 22px; height: 25px; }
+@media (min-width: 1180px) and (max-width: 1519px) { .uh-brand__mark { width: 38px; height: 42px; } .uh-brand__name { font-size: 18px; } .uh-brand__tag { font-size: 7.6px; letter-spacing: .09em; } .uh-brand__tag::before { width: 10px; } }
+@media (max-width: 640px) { .uh-brand__mark { width: 38px; height: 42px; } .uh-brand__name { font-size: 18px; } .uh-brand__tag { font-size: 7.8px; letter-spacing: .08em; } }
+@media (max-width: 400px) { .uh-brand__tag { display: none; } }
+
+/* --- 19d. Animasi: kawanan burung, riak tombol --- */
+.uh-birds { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.uh-bird { position: absolute; left: 0; top: var(--y, 20%); width: calc(26px * var(--s, 1)); opacity: 0; animation: uhBirdX var(--t, 32s) linear var(--d, 0s) infinite; }
+.uh-bird svg { display: block; width: 100%; height: auto; overflow: visible; animation: uhBirdBob 3.4s ease-in-out infinite; }
+.uh-bird path { fill: none; stroke: rgba(255, 255, 255, .8); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.uh-bird__wings { transform-box: fill-box; transform-origin: 50% 100%; animation: uhFlap .55s ease-in-out infinite alternate; }
+@keyframes uhFlap { from { transform: scaleY(1); } to { transform: scaleY(.3); } }
+@keyframes uhBirdBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+@keyframes uhBirdX { 0% { transform: translateX(-90px); opacity: 0; } 6% { opacity: 1; } 94% { opacity: 1; } 100% { transform: translateX(calc(100vw + 40px)); opacity: 0; } }
+.uh-hero .uh-birds { z-index: 0; }
+.uh-hero .uh-bird path { stroke: rgba(255, 255, 255, .7); }
+.uh-btn { position: relative; overflow: hidden; }
+.uh-ripple { position: absolute; border-radius: 50%; background: rgba(255, 255, 255, .45); pointer-events: none; transform: scale(0); animation: uhRipple .7s ease-out forwards; }
+@keyframes uhRipple { to { transform: scale(1); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .uh-bird, .uh-emblem__halo, .uh-emblem__tassel, .uh-emblem__star, .uh-emblem__lantern, .uh-brand__name { animation: none !important; } .uh-brand__name { background-position: 0 0; } }
+.uh-pkcard { grid-template-columns: minmax(300px, 380px) minmax(0, 1fr); }
+@media (max-width: 860px) { .uh-pkcard { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 380px) {
+    .uh-navbar__inner { gap: 8px; }
+    .uh-navbar__actions { gap: 8px; }
+    .uh-brand { gap: 8px; }
+    .uh-brand__mark { width: 32px; height: 36px; }
+    .uh-brand__name { font-size: 15.5px; }
+    .uh-iconbtn { width: 34px; height: 34px; }
+    .uh-burger { width: 36px; height: 36px; }
+}
+.uh-asidecard > *, .uh-split > *, .uh-aside { min-width: 0; }
+.uh-asidecard__media { width: 100%; }

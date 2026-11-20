@@ -3,7 +3,7 @@
         <div class="uh-container uh-footer__grid">
             <div class="uh-footer__brand">
                 <a class="uh-brand uh-brand--light" href="{{ $url('home') }}" aria-label="{{ $uh['brand']['name'] }} — Beranda">
-                    <img class="uh-brand__logo" src="{{ $img('logo-emblem-gelap.jpg') }}" width="48" height="52" alt="">
+                    <span class="uh-brand__mark">@include('website-bisnis.template.travel&tourism.classic.umrah-haji-emerald-green.partials.emblem', ['gid' => 'ft'])</span>
                     <span class="uh-brand__text">
                         <span class="uh-brand__name">{{ $uh['brand']['name'] }}</span>
                         <span class="uh-brand__tag">{{ $uh['brand']['tagline'] }}</span>

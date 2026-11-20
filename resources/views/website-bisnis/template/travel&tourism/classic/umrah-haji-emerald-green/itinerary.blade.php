@@ -36,7 +36,7 @@
 
             <aside class="uh-aside">
                 <div class="uh-card uh-asidecard">
-                    <figure class="uh-asidecard__media uh-frame"><img class="uh-frame__bg" src="{{ $img($uh['itinerary']['image']) }}" alt="" aria-hidden="true" loading="lazy"><img src="{{ $img($uh['itinerary']['image']) }}" alt="Masjid dan menara di tengah kota" width="260" height="204" loading="lazy"></figure>
+                    <figure class="uh-asidecard__media"><img src="{{ $img($uh['itinerary']['image']) }}" alt="Masjid dan menara di tengah kota" width="780" height="612" loading="lazy"></figure>
                     <h2 class="uh-asidecard__title">Ringkasan perjalanan</h2>
                     <ol class="uh-mini">
                         @foreach ($uh['itinerary']['steps'] as $s)

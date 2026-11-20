@@ -13,8 +13,8 @@
     $search = [];
     foreach ($site['nav'] as $n) { $search[] = ['t' => $n['label'], 'u' => $u($n['path']), 'g' => 'Halaman', 'i' => $ico[$n['key']] ?? 'arrow', 's' => 'Buka halaman']; }
     $search[] = ['t' => 'Permintaan Penawaran', 'u' => $u('/penawaran'), 'g' => 'Halaman', 'i' => 'doc', 's' => 'Buka halaman'];
-    foreach ($site['portfolio'] as $p) { $search[] = ['t' => $p['title'], 'u' => $u('/portofolio'), 'g' => 'Portofolio', 'i' => 'grid', 's' => $p['loc'] . ' · ' . $p['year']]; }
-    foreach ($site['projects'] as $group => $items) { foreach ($items as $p) { $search[] = ['t' => $p['title'], 'u' => $u('/proyek#' . $group), 'g' => 'Proyek', 'i' => $group === 'komersial' ? 'building' : 'home', 's' => ucfirst($group) . ' · ' . $p['loc']]; } }
+    foreach ($site['portfolio'] as $p) { $search[] = ['t' => $p['title'], 'u' => $u('/portofolio'), 'g' => 'Portofolio', 'i' => 'grid', 's' => $p['loc'] . ' · ' . $p['year'], 'm' => asset($site['img'] . '/' . $p['img'])]; }
+    foreach ($site['projects'] as $group => $items) { foreach ($items as $p) { $search[] = ['t' => $p['title'], 'u' => $u('/proyek#' . $group), 'g' => 'Proyek', 'i' => $group === 'komersial' ? 'building' : 'home', 's' => ucfirst($group) . ' · ' . $p['loc'], 'm' => asset($site['img'] . '/' . $p['img'])]; } }
     foreach ($site['services'] as $s) { $search[] = ['t' => $s['title'], 'u' => $u('/layanan'), 'g' => 'Layanan', 'i' => $s['icon'], 's' => 'Layanan desain']; }
     foreach ($site['plans'] as $p) { $search[] = ['t' => 'Denah ' . $p['title'], 'u' => $u('/denah-3d'), 'g' => 'Denah & 3D', 'i' => 'plan', 's' => $p['area'] . ' · ' . $p['rooms']]; }
     foreach ($site['process'] as $p) { $search[] = ['t' => $p['title'], 'u' => $u('/proses'), 'g' => 'Proses', 'i' => $p['icon'], 's' => $p['time']]; }

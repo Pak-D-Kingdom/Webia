@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0a2c28">
     <title>@yield('title', 'Nur Rahmat Travel — Umrah &amp; Haji')</title>
     <meta name="description" content="@yield('description', 'Paket umrah dan haji bersama Nur Rahmat Travel: pembimbing berpengalaman, fasilitas premium, harga terbaik, dan pelayanan 24 jam.')">
-    <link rel="icon" type="image/jpeg" href="{{ $img('logo-emblem-terang.jpg') }}">
+    <link rel="icon" type="image/svg+xml" href="{{ $img('logo-emblem.svg') }}">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,6 +18,7 @@
 <body class="uh-body uh-page-{{ $active }}" data-uh-page="{{ $active }}">
     @include('website-bisnis.template.travel&tourism.classic.umrah-haji-emerald-green.partials.icons')
 
+    <div class="uh-scrollbar" aria-hidden="true"><i data-uh-scrollbar></i></div>
     <a class="uh-skip" href="#uh-main">Lewati ke konten utama</a>
 
     @include('website-bisnis.template.travel&tourism.classic.umrah-haji-emerald-green.partials.topbar')

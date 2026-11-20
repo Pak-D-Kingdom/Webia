@@ -6,7 +6,7 @@
 @section('title', 'Misi & Visi — Harapan Untuk Negeri Foundation')
 
 @section('content')
-@include($fdBase . '.partials.page-hero', ['title' => 'Misi & Visi Kami', 'lead' => $fd['mission']['summary']])
+@include($fdBase . '.partials.page-hero', ['title' => 'Misi & Visi Kami', 'lead' => $fd['mission']['summary'], 'icon' => 'heart', 'chips' => []])
 
 <section class="fd-section">
     <div class="fd-wrap fd-split">

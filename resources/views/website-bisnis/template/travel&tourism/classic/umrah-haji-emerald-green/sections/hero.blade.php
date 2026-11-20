@@ -1,4 +1,4 @@
-<section class="uh-hero" aria-labelledby="uh-hero-title">
+<section class="uh-hero" aria-labelledby="uh-hero-title" data-uh-parallax>
     <div class="uh-hero__bg" aria-hidden="true">
         <div class="uh-hero__photo">
             <img src="{{ $img('hero-kaaba.jpg') }}" alt="" width="1890" height="834" fetchpriority="high">
@@ -13,6 +13,7 @@
             <i class="uh-spark uh-spark--4"></i>
         </div>
         <svg class="uh-hero__plane" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-plane"/></svg>
+        @include('website-bisnis.template.travel&tourism.classic.umrah-haji-emerald-green.partials.birds')
         <i class="uh-dust uh-dust--1"></i>
         <i class="uh-dust uh-dust--2"></i>
         <i class="uh-dust uh-dust--3"></i>

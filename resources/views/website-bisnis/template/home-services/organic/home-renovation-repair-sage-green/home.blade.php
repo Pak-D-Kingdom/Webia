@@ -142,6 +142,7 @@
             </header>
             <div class="hr-map">
                 <img src="{{ $img('coverage-map.png') }}" alt="Peta persebaran area layanan Renovaku di Indonesia" width="1017" height="252" loading="lazy" decoding="async">
+                <span class="hr-pins" aria-hidden="true">@foreach ($cfg['map_pins'] as $pin)<i style="--x: {{ $pin[0] }}; --y: {{ $pin[1] }}; --d: {{ $loop->index }}"></i>@endforeach</span>
                 <a class="hr-btn hr-btn--primary hr-btn--xs hr-map__btn" href="{{ $go('area-layanan') }}"><span>Cek Area Layanan</span>{{ $i('arrow') }}</a>
             </div>
         </article>

@@ -54,4 +54,12 @@
     <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M5 19C4 11 9 5 20 4c0 11-5 16-13 16"/><path d="M5 19c3-5 6-8 10-10"/></symbol>
     <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
     <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M9 21h6"/></symbol>
+    <symbol id="i-expand" viewBox="0 0 24 24"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/></symbol>
+    <symbol id="i-shrink" viewBox="0 0 24 24"><path d="M20 10h-6V4M4 14h6v6M14 10l7-7M10 14l-7 7"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M5 15V6.5A2.5 2.5 0 0 1 7.5 4H15"/></symbol>
+    <symbol id="i-thumb-up" viewBox="0 0 24 24"><path d="M7 11v9H4v-9z"/><path d="M7 11l4-7a2 2 0 0 1 2 2.2L12.5 9H18a2 2 0 0 1 2 2.4l-1.3 6.5A2 2 0 0 1 16.8 19H7"/></symbol>
+    <symbol id="i-thumb-down" viewBox="0 0 24 24"><path d="M7 13V4H4v9z"/><path d="M7 13l4 7a2 2 0 0 0 2-2.2L12.5 15H18a2 2 0 0 0 2-2.4l-1.3-6.5A2 2 0 0 0 16.8 5H7"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1 1"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1-1"/></symbol>
 </svg>

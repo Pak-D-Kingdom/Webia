@@ -45,7 +45,7 @@
                             </ul>
                         </div>
                         <div class="uh-sch__seats">
-                            <p class="uh-sch__seatrow"><span>Sisa kursi</span><strong>{{ $row['left'] }}<small> / {{ $row['quota'] }}</small></strong></p>
+                            <p class="uh-sch__seatrow"><span>Sisa kursi</span><strong><span data-uh-countup="{{ $row['left'] }}">{{ $row['left'] }}</span><small> / {{ $row['quota'] }}</small></strong></p>
                             <div class="uh-meter" role="img" aria-label="{{ $row['left'] }} kursi tersisa dari {{ $row['quota'] }}">
                                 <span class="uh-meter__bar" style="--fill: {{ $row['fill'] }}%"></span>
                             </div>

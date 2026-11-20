@@ -27,11 +27,21 @@
                 </div>
 
                 <form class="uh-chatwin__form" data-uh-chat-form autocomplete="off">
-                    <label class="uh-sr" for="uh-chat-input">Tulis pertanyaan Anda</label>
-                    <input id="uh-chat-input" class="uh-chatwin__input" type="text" name="q" maxlength="200" placeholder="Tulis pertanyaan Anda, misalnya: apa saja syarat pendaftaran?" data-uh-chat-input>
-                    <button type="submit" class="uh-chatwin__send" aria-label="Kirim pertanyaan">
-                        <svg class="uh-i" aria-hidden="true"><use href="#i-send"/></svg>
-                    </button>
+                    <span class="uh-sr" id="uh-chat-label">Tulis pertanyaan Anda</span>
+                    <div class="uh-chatfield">
+            <div class="uh-sugg" data-uh-chat-suggest id="uh-chat-input-sugg" role="listbox" aria-label="Saran pertanyaan" hidden></div>
+            <label class="uh-chatfield__box" for="uh-chat-input">
+                <svg class="uh-i uh-chatfield__lens" aria-hidden="true"><use href="#i-search"/></svg>
+                <input id="uh-chat-input" class="uh-chatfield__input" type="text" name="q" maxlength="200" placeholder="Cari atau tulis pertanyaan Anda, misalnya: syarat pendaftaran" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="uh-chat-input-sugg" data-uh-chat-input>
+                <span class="uh-chatfield__count" data-uh-chat-count hidden></span>
+                <button type="button" class="uh-chatfield__clear" data-uh-chat-clear aria-label="Hapus pertanyaan" hidden>
+                    <svg class="uh-i" aria-hidden="true"><use href="#i-x"/></svg>
+                </button>
+            </label>
+            <button type="submit" class="uh-chatfield__send" aria-label="Kirim pertanyaan" disabled>
+                <svg class="uh-i" aria-hidden="true"><use href="#i-send"/></svg>
+            </button>
+        </div>
                 </form>
             </div>
 

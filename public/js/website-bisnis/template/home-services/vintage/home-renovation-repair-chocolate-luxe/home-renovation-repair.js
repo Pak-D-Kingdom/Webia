@@ -190,6 +190,19 @@
     }
   }
 
+  /* ---------- transisi antar-halaman ---------- */
+  if (!reduced) {
+    document.addEventListener('click', function (e) {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) { return; }
+      var a = e.target.closest && e.target.closest('a[href]'); if (!a || a.target === '_blank' || a.hasAttribute('download')) { return; }
+      var u; try { u = new URL(a.href, window.location.href); } catch (err) { return; }
+      if (u.origin !== window.location.origin || (u.pathname === window.location.pathname && u.search === window.location.search)) { return; }
+      e.preventDefault(); document.body.classList.add('rr-leave');
+      setTimeout(function () { window.location.href = u.href; }, 220);
+    });
+    window.addEventListener('pageshow', function () { document.body.classList.remove('rr-leave'); });
+  }
+
   /* ---------- reveal saat scroll ---------- */
   var reveal = $$('[data-rr-in]');
   reveal.forEach(function (e) { var i = Array.prototype.indexOf.call(e.parentNode.children, e); e.style.setProperty('--d', (i % 4) * 0.09 + 's'); });

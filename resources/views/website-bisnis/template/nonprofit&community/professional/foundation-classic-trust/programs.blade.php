@@ -6,7 +6,7 @@
 @section('title', 'Program Kami — Harapan Untuk Negeri Foundation')
 
 @section('content')
-@include($fdBase . '.partials.page-hero', ['title' => 'Program Kami', 'lead' => 'Berbagai program untuk mewujudkan dampak nyata bagi pendidikan, kesehatan, ekonomi, dan lingkungan.'])
+@include($fdBase . '.partials.page-hero', ['title' => 'Program Kami', 'lead' => 'Berbagai program untuk mewujudkan dampak nyata bagi pendidikan, kesehatan, ekonomi, dan lingkungan.', 'icon' => 'grid', 'chips' => [['Pendidikan', '#pendidikan'], ['Kesehatan', '#kesehatan'], ['Ekonomi', '#pemberdayaan'], ['Lingkungan', '#lingkungan']]])
 
 <section class="fd-section">
     <div class="fd-wrap" style="display:grid;gap:56px">
@@ -14,7 +14,7 @@
             <article id="{{ $p['slug'] }}" class="fd-split fd-reveal {{ $idx % 2 ? 'fd-split--rev' : '' }}">
                 <div class="fd-pframe">
                     <span class="fd-pframe__bg" aria-hidden="true"></span>
-                    <div class="fd-pframe__photo" data-fd-tilt><img src="{{ $i($p['photo']) }}" alt="Kegiatan program {{ $p['title'] }}" loading="lazy" width="1200" height="900"></div>
+                    <div class="fd-pframe__photo fd-pbox" data-fd-tilt style="--pw:{{ str_starts_with($p['photo'], 'photo-') ? 300 : 230 }}px"><img class="fd-pbox__bg" src="{{ $i($p['photo']) }}" alt="" aria-hidden="true" loading="lazy"><img src="{{ $i($p['photo']) }}" alt="Kegiatan program {{ $p['title'] }}" loading="lazy" width="1200" height="900"></div>
                     <div class="fd-pframe__badge"><strong data-fd-auto>{{ $p['stat'][0] }}</strong><small>{{ $p['stat'][1] }}</small></div>
                 </div>
                 <div>
