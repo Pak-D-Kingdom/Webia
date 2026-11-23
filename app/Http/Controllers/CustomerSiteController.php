@@ -1764,6 +1764,10 @@ class CustomerSiteController extends Controller
     private function handleHomeServices(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
     {
         $slug = Str::after($siteConfigPath, 'home-services/');
+        if (isset(self::HOME_SERVICES_CONFIG_VIEWS[$slug])) {
+            return $this->handleHomeServicesConfig($order, $siteConfigPath, $pageKey);
+        }
+
         abort_unless(isset(self::HOME_SERVICES_VIEWS[$slug]), 404);
         abort_unless(isset(self::HOME_SERVICES_VIEWS[$slug][$pageKey]), 404);
 
@@ -2803,6 +2807,149 @@ class CustomerSiteController extends Controller
         $html = $this->attachAiChatWidget($html, $order, $business, $whatsapp);
 
         return response($html);
+    }
+
+    private const HOME_SERVICES_CONFIG_VIEWS = [
+        'modern/laundry-baby-blue/laundry' => 'baby-blue',
+        'minimalis/laundry-mint-fresh/laundry' => 'mint-fresh',
+        'professional/laundry-classic-trust/laundry' => 'classic-trust',
+    ];
+
+    private function handleHomeServicesConfig(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $slug = Str::after($siteConfigPath, 'home-services/');
+        $variant = self::HOME_SERVICES_CONFIG_VIEWS[$slug] ?? null;
+        abort_unless($variant !== null, 404);
+
+        $configKey = match ($variant) {
+            'baby-blue' => 'template.home-services.modern.laundry-baby-blue.laundry',
+            'mint-fresh' => 'template.home-services.minimalis.laundry-mint-fresh.laundry',
+            'classic-trust' => 'template.home-services.professional.laundry-classic-trust.laundry',
+        };
+
+        $viewMap = match ($variant) {
+            'baby-blue' => [
+                'home' => 'website-bisnis.template.home-services.modern.laundry-baby-blue.index',
+                'layanan' => 'website-bisnis.template.home-services.modern.laundry-baby-blue.layanan',
+                'harga' => 'website-bisnis.template.home-services.modern.laundry-baby-blue.harga',
+                'pilihan-layanan' => 'website-bisnis.template.home-services.modern.laundry-baby-blue.pilihan-layanan',
+                'estimasi-waktu' => 'website-bisnis.template.home-services.modern.laundry-baby-blue.estimasi-waktu',
+                'area-layanan' => 'website-bisnis.template.home-services.modern.laundry-baby-blue.area-layanan',
+                'cara-order' => 'website-bisnis.template.home-services.modern.laundry-baby-blue.cara-order',
+                'jam-operasional' => 'website-bisnis.template.home-services.modern.laundry-baby-blue.jam-operasional',
+                'order-inquiry' => 'website-bisnis.template.home-services.modern.laundry-baby-blue.order-inquiry',
+                'ai-chatbot' => 'website-bisnis.template.home-services.modern.laundry-baby-blue.ai-chatbot',
+            ],
+            'mint-fresh' => [
+                'home' => 'website-bisnis.template.home-services.minimalis.laundry-mint-fresh.pages.home',
+                'layanan' => 'website-bisnis.template.home-services.minimalis.laundry-mint-fresh.pages.layanan',
+                'daftar-harga' => 'website-bisnis.template.home-services.minimalis.laundry-mint-fresh.pages.harga',
+                'opsi-layanan' => 'website-bisnis.template.home-services.minimalis.laundry-mint-fresh.pages.opsi',
+                'estimasi-waktu' => 'website-bisnis.template.home-services.minimalis.laundry-mint-fresh.pages.estimasi',
+                'area-jemput-antar' => 'website-bisnis.template.home-services.minimalis.laundry-mint-fresh.pages.area',
+                'cara-pemesanan' => 'website-bisnis.template.home-services.minimalis.laundry-mint-fresh.pages.cara',
+                'jam-operasional' => 'website-bisnis.template.home-services.minimalis.laundry-mint-fresh.pages.jam',
+                'order-inquiry' => 'website-bisnis.template.home-services.minimalis.laundry-mint-fresh.pages.inquiry',
+            ],
+            'classic-trust' => [
+                'home' => 'website-bisnis.template.home-services.professional.laundry-classic-trust.index',
+                'layanan-laundry' => 'website-bisnis.template.home-services.professional.laundry-classic-trust.services',
+                'daftar-harga' => 'website-bisnis.template.home-services.professional.laundry-classic-trust.prices',
+                'service-options' => 'website-bisnis.template.home-services.professional.laundry-classic-trust.options',
+                'estimasi-waktu' => 'website-bisnis.template.home-services.professional.laundry-classic-trust.turnaround',
+                'area-jemput-antar' => 'website-bisnis.template.home-services.professional.laundry-classic-trust.coverage',
+                'cara-pemesanan' => 'website-bisnis.template.home-services.professional.laundry-classic-trust.instructions',
+                'jam-operasional' => 'website-bisnis.template.home-services.professional.laundry-classic-trust.hours',
+                'order-inquiry' => 'website-bisnis.template.home-services.professional.laundry-classic-trust.inquiry',
+            ],
+        };
+
+        $page = $pageKey === 'home' ? 'home' : $pageKey;
+        abort_unless(isset($viewMap[$page]), 404);
+        $viewName = $viewMap[$page];
+
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $instagram = ltrim($business['instagram'] ?? '', '@');
+
+        // Override demo config with customer business data.
+        $siteConfig = config($configKey);
+        if (is_array($siteConfig)) {
+            if (isset($siteConfig['brand']['name']) && ! empty($business['business_name'])) {
+                $siteConfig['brand']['name'] = $business['business_name'];
+            }
+            if (isset($siteConfig['contact']) && is_array($siteConfig['contact'])) {
+                if ($whatsapp !== '') {
+                    $siteConfig['contact']['whatsapp'] = $whatsapp;
+                    $siteConfig['contact']['phone'] = $business['whatsapp'] ?? $siteConfig['contact']['phone'] ?? '';
+                }
+                if (! empty($business['email'])) {
+                    $siteConfig['contact']['email'] = $business['email'];
+                }
+                if (! empty($business['address'])) {
+                    $siteConfig['contact']['address'] = $business['address'];
+                }
+            }
+            config([$configKey => $siteConfig]);
+        }
+
+        $renderedHtml = view($viewName, [
+            'laundry' => $siteConfig ?? config($configKey),
+            'order' => $order,
+            'page' => $pageKey,
+            'business' => $business,
+            'whatsapp' => $whatsapp,
+            'instagram' => $instagram,
+        ])->render();
+
+        // Transform any remaining demo brand/WA/email/address strings.
+        $bizName = $business['business_name'] ?? '';
+        $custWa = $whatsapp ?: '62895630300345';
+        $demoBrands = match ($variant) {
+            'baby-blue' => ['BlueLaundry'],
+            'mint-fresh' => ['FreshWash'],
+            'classic-trust' => ['FreshWash'],
+        };
+        if ($bizName !== '') {
+            foreach ($demoBrands as $demo) {
+                $renderedHtml = str_replace($demo, $bizName, $renderedHtml);
+            }
+        }
+        $renderedHtml = str_replace('62895630300345', $custWa, $renderedHtml);
+
+        if (! empty($business['email'])) {
+            $demoEmails = match ($variant) {
+                'baby-blue' => ['info@bluelaundry.id'],
+                'mint-fresh' => ['hello@freshwash.id'],
+                'classic-trust' => ['hello@freshwash.id'],
+            };
+            $renderedHtml = str_replace($demoEmails, $business['email'], $renderedHtml);
+        }
+
+        $address = $this->businessAddress($business);
+        if ($address !== '') {
+            $demoAddresses = match ($variant) {
+                'baby-blue' => ['Jl. Melati No.12, Surabaya', 'Jl. Melati No.12, Surabaya'],
+                'mint-fresh' => ['Jl. Melati No. 12, Surabaya'],
+                'classic-trust' => ['Jl. Melati No. 12, Surabaya'],
+            };
+            $renderedHtml = str_replace($demoAddresses, $address, $renderedHtml);
+        }
+
+        // Remap preview links to published site routes.
+        $siteBase = url('/s/'.$order->site_slug);
+        $previewBases = match ($variant) {
+            'baby-blue' => ['http://localhost:8000/webia/template/home-services/modern/laundry-baby-blue', url('/webia/template/home-services/modern/laundry-baby-blue')],
+            'mint-fresh' => ['http://localhost:8000/webia/template/home-services/minimalis/laundry-mint-fresh', url('/webia/template/home-services/minimalis/laundry-mint-fresh')],
+            'classic-trust' => ['http://localhost:8000/webia/template/home-services/professional/laundry-classic-trust', url('/webia/template/home-services/professional/laundry-classic-trust')],
+        };
+        foreach ($previewBases as $pb) {
+            $renderedHtml = str_replace($pb, $siteBase, $renderedHtml);
+        }
+
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+        return response($renderedHtml);
     }
 
     private function brandingAgencyConfig(array $siteConfig, array $business, string $whatsapp): array
