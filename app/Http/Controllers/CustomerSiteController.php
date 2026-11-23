@@ -157,6 +157,10 @@ class CustomerSiteController extends Controller
             return $this->handleInteriorConfig($order, $siteConfigPath, $pageKey);
         }
 
+        if (str_starts_with($siteConfigPath, 'nonprofit&community/')) {
+            return $this->handleNonprofitConfig($order, $siteConfigPath, $pageKey);
+        }
+
         if (str_starts_with($siteConfigPath, 'healthcare-standalone/')) {
             return $this->handleHealthcareStandalone($order, $siteConfigPath, $pageKey);
         }
@@ -3344,6 +3348,288 @@ class CustomerSiteController extends Controller
             'terracotta' => [url('/webia/template/interior-architecture/rustic/furniture-terracotta')],
             'mocha' => [url('/webia/template/interior-architecture/premium-minimal/furniture-mocha-cream')],
             'chocolate' => [url('/webia/template/interior-architecture/luxury/furniture-chocolate-luxe')],
+        };
+        foreach ($previewBases as $pb) {
+            $renderedHtml = str_replace($pb, $siteBase, $renderedHtml);
+        }
+
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+        return response($renderedHtml);
+    }
+
+    private function handleNonprofitConfig(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $variant = match (true) {
+            str_starts_with($siteConfigPath, 'nonprofit&community/professional/') => 'foundation-classic',
+            str_starts_with($siteConfigPath, 'nonprofit&community/creative/foundation-nature-green') => 'foundation-nature',
+            str_starts_with($siteConfigPath, 'nonprofit&community/minimalis/') => 'foundation-warm',
+            str_starts_with($siteConfigPath, 'nonprofit&community/bold/') => 'citrus-pop',
+            str_starts_with($siteConfigPath, 'nonprofit&community/creative/social-organization-tropical-rush') => 'tropical-rush',
+            default => null,
+        };
+        abort_unless($variant !== null, 404);
+
+        $configKey = match ($variant) {
+            'foundation-classic' => 'template.nonprofit&community.professional.foundation-classic-trust.foundation',
+            'foundation-nature' => 'template.nonprofit&community.creative.foundation-nature-green.foundation',
+            'foundation-warm' => 'template.nonprofit&community.minimalis.foundation-warm-neutral.foundation',
+            'citrus-pop' => 'template.nonprofit&community.bold.social-organization-citrus-pop.social-organization',
+            'tropical-rush' => null,
+        };
+
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $instagram = ltrim($business['instagram'] ?? '', '@');
+        $custWa = $whatsapp ?: '62895630300345';
+
+        // Single-blade variants (citrus-pop, tropical-rush) use $page param.
+        if (in_array($variant, ['citrus-pop', 'tropical-rush'], true)) {
+            $viewName = match ($variant) {
+                'citrus-pop' => 'website-bisnis.template.nonprofit&community.bold.social-organization-citrus-pop.social-organization',
+                'tropical-rush' => 'website-bisnis.template.nonprofit&community.creative.social-organization-tropical-rush.social-organization',
+            };
+            $validPages = ['home', 'profil', 'program', 'galeri', 'dampak', 'event', 'gabung', 'mitra', 'kontak', 'faq-ai'];
+            $page = in_array($pageKey, $validPages, true) ? $pageKey : 'home';
+            abort_unless($pageKey === 'home' || in_array($pageKey, $validPages, true), 404);
+
+            if ($configKey !== null) {
+                $siteConfig = config($configKey);
+                if (is_array($siteConfig)) {
+                    if (isset($siteConfig['org']) && is_array($siteConfig['org'])) {
+                        if (! empty($business['business_name'])) {
+                            $siteConfig['org']['name'] = $business['business_name'];
+                        }
+                        if ($whatsapp !== '') {
+                            $siteConfig['org']['wa'] = $whatsapp;
+                        }
+                        if (! empty($business['email'])) {
+                            $siteConfig['org']['email'] = $business['email'];
+                        }
+                        if (! empty($business['address'])) {
+                            $siteConfig['org']['addr'] = $business['address'];
+                        }
+                    }
+                    config([$configKey => $siteConfig]);
+                }
+            }
+
+            $viewData = ['page' => $page];
+            if ($variant === 'citrus-pop') {
+                $siteConfig = $configKey !== null ? (config($configKey) ?? []) : [];
+                $viewData['d'] = $siteConfig;
+                $viewData['v'] = 'website-bisnis.template.nonprofit&community.bold.social-organization-citrus-pop.';
+                $viewData['title'] = $siteConfig['pages'][$page]['t'] ?? 'SegarKita';
+                $viewData['base'] = url('/s/'.$order->site_slug);
+                $viewData['img'] = asset('images/website-bisnis/template/nonprofit&community/bold/social-organization-citrus-pop/');
+                $viewData['css'] = asset('css/website-bisnis/template/nonprofit&community/bold/social-organization-citrus-pop/social-organization.css');
+                $viewData['js'] = asset('js/website-bisnis/template/nonprofit&community/bold/social-organization-citrus-pop/social-organization.js');
+                $viewData['inc'] = $viewData['v'].'partials.'.$page;
+            }
+
+            $renderedHtml = view($viewName, $viewData)->render();
+
+            // Transform remaining demo brand/WA strings.
+            $bizName = $business['business_name'] ?? '';
+            $demoBrands = $variant === 'citrus-pop' ? ['SegarKita'] : ['Gerak Nusa'];
+            if ($bizName !== '') {
+                foreach ($demoBrands as $demo) {
+                    $renderedHtml = str_replace($demo, $bizName, $renderedHtml);
+                }
+            }
+            $renderedHtml = str_replace('62895630300345', $custWa, $renderedHtml);
+
+            // Remap preview links.
+            $siteBase = url('/s/'.$order->site_slug);
+            $previewBases = $variant === 'citrus-pop'
+                ? [url('/webia/template/nonprofit-community/bold/social-organization-citrus-pop')]
+                : [url('/webia/template/nonprofit-community/creative/social-organization-tropical-rush')];
+            foreach ($previewBases as $pb) {
+                $renderedHtml = str_replace($pb, $siteBase, $renderedHtml);
+            }
+
+            $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+            return response($renderedHtml);
+        }
+
+        // Multi-page variants.
+        $viewMap = match ($variant) {
+            'foundation-classic' => [
+                'home' => 'website-bisnis.template.nonprofit&community.professional.foundation-classic-trust.index',
+                'tentang-kami' => 'website-bisnis.template.nonprofit&community.professional.foundation-classic-trust.mission-vision',
+                'program-kami' => 'website-bisnis.template.nonprofit&community.professional.foundation-classic-trust.programs',
+                'dampak' => 'website-bisnis.template.nonprofit&community.professional.foundation-classic-trust.impact',
+                'donasi' => 'website-bisnis.template.nonprofit&community.professional.foundation-classic-trust.donation',
+                'transparansi-keuangan' => 'website-bisnis.template.nonprofit&community.professional.foundation-classic-trust.financial-report',
+                'mitra-sponsor' => 'website-bisnis.template.nonprofit&community.professional.foundation-classic-trust.partners',
+                'relawan' => 'website-bisnis.template.nonprofit&community.professional.foundation-classic-trust.volunteer',
+                'berita-acara' => 'website-bisnis.template.nonprofit&community.professional.foundation-classic-trust.news-events',
+                'chatbot' => 'website-bisnis.template.nonprofit&community.professional.foundation-classic-trust.chatbot',
+            ],
+            'foundation-nature' => [
+                'home' => 'website-bisnis.template.nonprofit&community.creative.foundation-nature-green.index',
+                'tentang-kami' => 'website-bisnis.template.nonprofit&community.creative.foundation-nature-green.tentang-kami',
+                'program' => 'website-bisnis.template.nonprofit&community.creative.foundation-nature-green.program',
+                'dampak' => 'website-bisnis.template.nonprofit&community.creative.foundation-nature-green.dampak',
+                'donasi' => 'website-bisnis.template.nonprofit&community.creative.foundation-nature-green.donasi',
+                'transparansi' => 'website-bisnis.template.nonprofit&community.creative.foundation-nature-green.transparansi',
+                'mitra' => 'website-bisnis.template.nonprofit&community.creative.foundation-nature-green.mitra',
+                'relawan' => 'website-bisnis.template.nonprofit&community.creative.foundation-nature-green.relawan',
+                'berita' => 'website-bisnis.template.nonprofit&community.creative.foundation-nature-green.berita',
+                'ai-chatbot' => 'website-bisnis.template.nonprofit&community.creative.foundation-nature-green.ai-chatbot',
+            ],
+            'foundation-warm' => [
+                'home' => 'website-bisnis.template.nonprofit&community.minimalis.foundation-warm-neutral.index',
+                'misi-visi' => 'website-bisnis.template.nonprofit&community.minimalis.foundation-warm-neutral.mission-vision',
+                'program' => 'website-bisnis.template.nonprofit&community.minimalis.foundation-warm-neutral.programs',
+                'dampak' => 'website-bisnis.template.nonprofit&community.minimalis.foundation-warm-neutral.impact',
+                'donasi' => 'website-bisnis.template.nonprofit&community.minimalis.foundation-warm-neutral.donation',
+                'transparansi' => 'website-bisnis.template.nonprofit&community.minimalis.foundation-warm-neutral.transparency',
+                'mitra-sponsor' => 'website-bisnis.template.nonprofit&community.minimalis.foundation-warm-neutral.partners',
+                'relawan' => 'website-bisnis.template.nonprofit&community.minimalis.foundation-warm-neutral.volunteer',
+                'berita-acara' => 'website-bisnis.template.nonprofit&community.minimalis.foundation-warm-neutral.news',
+                'hopebot' => 'website-bisnis.template.nonprofit&community.minimalis.foundation-warm-neutral.chatbot',
+            ],
+        };
+
+        $page = $pageKey === 'home' ? 'home' : $pageKey;
+        abort_unless(isset($viewMap[$page]), 404);
+        $viewName = $viewMap[$page];
+
+        $siteConfig = $configKey !== null ? config($configKey) : null;
+        if (is_array($siteConfig)) {
+            if ($variant === 'foundation-classic') {
+                if (isset($siteConfig['brand']) && is_array($siteConfig['brand'])) {
+                    if (! empty($business['business_name'])) {
+                        $siteConfig['brand']['name'] = $business['business_name'];
+                    }
+                }
+                if (isset($siteConfig['contact']) && is_array($siteConfig['contact'])) {
+                    if ($whatsapp !== '') {
+                        $siteConfig['contact']['whatsapp'] = $whatsapp;
+                    }
+                    if (! empty($business['email'])) {
+                        $siteConfig['contact']['email'] = $business['email'];
+                    }
+                    if (! empty($business['address'])) {
+                        $siteConfig['contact']['address'] = $business['address'];
+                    }
+                }
+            } elseif ($variant === 'foundation-nature') {
+                if (isset($siteConfig['brand']) && is_array($siteConfig['brand'])) {
+                    if (! empty($business['business_name'])) {
+                        $siteConfig['brand']['name'] = $business['business_name'];
+                    }
+                }
+                if (isset($siteConfig['contact']) && is_array($siteConfig['contact'])) {
+                    if ($whatsapp !== '') {
+                        $siteConfig['contact']['whatsapp'] = $whatsapp;
+                    }
+                    if (! empty($business['email'])) {
+                        $siteConfig['contact']['email'] = $business['email'];
+                    }
+                    if (! empty($business['address'])) {
+                        $siteConfig['contact']['address'] = $business['address'];
+                    }
+                }
+            } elseif ($variant === 'foundation-warm') {
+                if (isset($siteConfig['brand']) && is_array($siteConfig['brand'])) {
+                    if (! empty($business['business_name'])) {
+                        $siteConfig['brand']['name'] = $business['business_name'];
+                    }
+                }
+                if (isset($siteConfig['contact']) && is_array($siteConfig['contact'])) {
+                    if ($whatsapp !== '') {
+                        $siteConfig['contact']['whatsapp'] = $whatsapp;
+                    }
+                    if (! empty($business['email'])) {
+                        $siteConfig['contact']['email'] = $business['email'];
+                    }
+                    if (! empty($business['address'])) {
+                        $siteConfig['contact']['address'] = $business['address'];
+                    }
+                }
+            }
+            config([$configKey => $siteConfig]);
+        }
+
+        // Build view data per variant.
+        $viewData = ['order' => $order, 'page' => $pageKey, 'business' => $business, 'whatsapp' => $whatsapp, 'instagram' => $instagram];
+        if ($variant === 'foundation-classic') {
+            $base = 'website-bisnis.template.nonprofit&community.professional.foundation-classic-trust';
+            $path = 'website-bisnis/template/nonprofit&community/professional/foundation-classic-trust';
+            $viewData['fd'] = $siteConfig ?? config($configKey);
+            $viewData['fdBase'] = $base;
+            $viewData['fdImg'] = 'images/'.$path;
+            $viewData['fdCss'] = 'css/'.$path.'/foundation.css';
+            $viewData['fdJs'] = 'js/'.$path.'/foundation.js';
+        } elseif ($variant === 'foundation-warm') {
+            $viewBase = 'website-bisnis.template.nonprofit&community.minimalis.foundation-warm-neutral';
+            $assetDir = 'template/nonprofit&community/minimalis/foundation-warm-neutral';
+            $viewData['f'] = $siteConfig ?? config($configKey);
+            $viewData['v'] = $viewBase;
+            $viewData['rp'] = 'foundation-warm-neutral.';
+            $viewData['img'] = 'images/website-bisnis/'.$assetDir;
+            $viewData['css'] = 'css/website-bisnis/'.$assetDir.'/foundation.css';
+            $viewData['js'] = 'js/website-bisnis/'.$assetDir.'/foundation.js';
+        }
+        // foundation-nature: blade self-loads config via layout.
+
+        $renderedHtml = view($viewName, $viewData)->render();
+
+        // Transform remaining demo brand/WA/email/address strings.
+        $bizName = $business['business_name'] ?? '';
+        $custWa = $whatsapp ?: '62895630300345';
+        $demoBrands = match ($variant) {
+            'foundation-classic' => ['Harapan Untuk Negeri'],
+            'foundation-nature' => ['GreenHope'],
+            'foundation-warm' => ['HopeTogether'],
+            'citrus-pop' => ['SegarKita'],
+            'tropical-rush' => ['Gerak Nusa'],
+        };
+        if ($bizName !== '') {
+            foreach ($demoBrands as $demo) {
+                $renderedHtml = str_replace($demo, $bizName, $renderedHtml);
+            }
+        }
+        $renderedHtml = str_replace('62895630300345', $custWa, $renderedHtml);
+
+        if (! empty($business['email'])) {
+            $demoEmails = match ($variant) {
+                'foundation-classic' => ['halo@harapanuntuknegeri.org'],
+                'foundation-nature' => ['info@greenhope.or.id'],
+                'foundation-warm' => ['info@hopetogether.or.id'],
+                'citrus-pop' => ['halo@segarkita.id'],
+                'tropical-rush' => [],
+            };
+            if (! empty($demoEmails)) {
+                $renderedHtml = str_replace($demoEmails, $business['email'], $renderedHtml);
+            }
+        }
+
+        $address = $this->businessAddress($business);
+        if ($address !== '') {
+            $demoAddresses = match ($variant) {
+                'foundation-classic' => ['Jl. Kebahagiaan No. 100, Jakarta Pusat'],
+                'foundation-nature' => ['Jl. Merdeka No. 123, Bandung, Jawa Barat'],
+                'foundation-warm' => ['Jl. Harapan Baru No. 77, Jakarta Selatan'],
+                'citrus-pop' => ['Rumah Segar, Jl. Kebon Jeruk No. 12'],
+                'tropical-rush' => [],
+            };
+            if (! empty($demoAddresses)) {
+                $renderedHtml = str_replace($demoAddresses, $address, $renderedHtml);
+            }
+        }
+
+        // Remap preview links to published site routes.
+        $siteBase = url('/s/'.$order->site_slug);
+        $previewBases = match ($variant) {
+            'foundation-classic' => [url('/webia/template/nonprofit-community/professional/foundation-classic-trust')],
+            'foundation-nature' => [url('/webia/template/nonprofit-community/creative/foundation-nature-green')],
+            'foundation-warm' => [url('/webia/template/nonprofit-community/minimalis/foundation-warm-neutral')],
+            'citrus-pop' => [url('/webia/template/nonprofit-community/bold/social-organization-citrus-pop')],
+            'tropical-rush' => [url('/webia/template/nonprofit-community/creative/social-organization-tropical-rush')],
         };
         foreach ($previewBases as $pb) {
             $renderedHtml = str_replace($pb, $siteBase, $renderedHtml);
