@@ -1035,11 +1035,11 @@ class WebiaTemplateSeeder extends Seeder
                 'headline' => 'Keagungan Nusantara & Dunia',
                 'tag' => 'Traditional Costume Rental',
                 'preview_folder' => 'traditional-textiles-heritage-fashion/traditional-costume-rental/kencana-wastra',
+                'site_config_path' => 'traditional-costume-rental/kencana-wastra',
                 'template_url' => '/webia/template/kencana-wastra-traditional-costume-rental',
                 'is_active' => true,
                 'sort_order' => 43,
             ],
-
 
         ];
 

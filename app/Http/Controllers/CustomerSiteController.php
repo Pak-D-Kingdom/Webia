@@ -172,6 +172,14 @@ class CustomerSiteController extends Controller
         if (str_starts_with($siteConfigPath, 'healthcare-standalone/')) {
             return $this->handleHealthcareStandalone($order, $siteConfigPath, $pageKey);
         }
+
+        if (str_starts_with($siteConfigPath, 'traditional-costume-rental/')) {
+            return $this->handleTraditionalCostumeRental($order, $siteConfigPath, $pageKey);
+        }
+
+        if (str_starts_with($siteConfigPath, 'libraries-digital-archives/')) {
+            return $this->handleLibrariesDigitalArchives($order, $siteConfigPath, $pageKey);
+        }
         $views = match (true) {
             $isBrandingAgency => array_fill_keys(['home', 'layanan', 'keahlian', 'portofolio', 'janji'], 'branding-creative-agency'),
             str_starts_with($siteConfigPath, 'company/') => ['home' => 'index', 'tentang-kami' => 'tentang-kami', 'portofolio' => 'portofolio'],
@@ -4761,6 +4769,302 @@ class CustomerSiteController extends Controller
         $digits = preg_replace('/\D/', '', $number) ?? '';
 
         return Str::startsWith($digits, '0') ? '62'.substr($digits, 1) : $digits;
+    }
+
+    private const TRADITIONAL_COSTUME_RENTAL_VIEWS = [
+        'kencana-wastra' => 'website-bisnis.templates.traditional-textiles-heritage-fashion.traditional-costume-rental.kencana-wastra.kencana-wastra',
+    ];
+
+    private function handleTraditionalCostumeRental(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $slug = Str::after($siteConfigPath, 'traditional-costume-rental/');
+        abort_unless(isset(self::TRADITIONAL_COSTUME_RENTAL_VIEWS[$slug]), 404);
+        abort_unless($pageKey === 'home', 404);
+
+        $viewName = self::TRADITIONAL_COSTUME_RENTAL_VIEWS[$slug];
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $instagram = ltrim($business['instagram'] ?? '', '@');
+
+        $renderedHtml = view($viewName, [
+            'order' => $order,
+            'page' => $pageKey,
+            'business' => $business,
+            'whatsapp' => $whatsapp,
+            'instagram' => $instagram,
+        ])->render();
+
+        $bizName = $business['business_name'] ?? '';
+        $custWa = $whatsapp ?: '6281234567890';
+
+        if ($bizName !== '') {
+            $renderedHtml = str_replace(
+                ['Kencana Wastra', 'KENCANA WASTRA', 'Kencana%20Wastra'],
+                [$bizName, strtoupper($bizName), rawurlencode($bizName)],
+                $renderedHtml
+            );
+        }
+
+        $renderedHtml = str_replace('6281234567890', $custWa, $renderedHtml);
+
+        $address = $this->businessAddress($business);
+        if ($address !== '') {
+            $renderedHtml = str_replace(
+                'Jl. Gunawarman Heritage No. 45, Jakarta Selatan',
+                $address,
+                $renderedHtml
+            );
+        }
+
+        if (! empty($business['email'])) {
+            $renderedHtml = str_replace('info@kencanawastra.id', $business['email'], $renderedHtml);
+        }
+
+        $siteBase = url('/s/'.$order->site_slug);
+        $previewBase = url('/webia/template/kencana-wastra-traditional-costume-rental');
+        $renderedHtml = str_replace($previewBase, $siteBase, $renderedHtml);
+
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+        return response($renderedHtml);
+    }
+
+    private function handleLibrariesDigitalArchives(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $instagram = ltrim($business['instagram'] ?? '', '@');
+        $custWa = $whatsapp ?: '6281234567890';
+        $siteBase = url('/s/'.$order->site_slug);
+
+        if (str_contains($siteConfigPath, 'historical-document-archive')) {
+            $cfgKey = 'template.libraries-digital-archives.vintage-editorial.historical-document-archive-burgundy-classic.historical-document-archive';
+            $rel = 'libraries-digital-archives/vintage-editorial/historical-document-archive-burgundy-classic';
+            $viewBase = 'website-bisnis.template.libraries-digital-archives.vintage-editorial.historical-document-archive-burgundy-classic.';
+
+            $hda = config($cfgKey);
+            abort_unless(is_array($hda), 404);
+
+            if (! empty($business['business_name'])) {
+                $hda['site']['name'] = $business['business_name'];
+                $hda['site']['institution'] = $business['business_name'];
+            }
+            if ($whatsapp !== '') {
+                $hda['site']['whatsapp']['number'] = $whatsapp;
+            }
+            if (! empty($business['email'])) {
+                $hda['site']['email'] = $business['email'];
+            }
+            if (! empty($business['address'])) {
+                $hda['site']['address'] = $business['address'];
+            }
+
+            $routes = $hda['routes'] ?? [];
+            $matchedDef = null;
+            $slug = null;
+            $cleanPage = ($pageKey === 'home') ? '' : $pageKey;
+
+            foreach ($routes as $def) {
+                $uri = trim($def['uri'], '/');
+                if ($uri === $cleanPage) {
+                    $matchedDef = $def;
+                    break;
+                }
+                if (str_contains($uri, '{slug}')) {
+                    $pattern = str_replace('{slug}', '*', $uri);
+                    if (Str::is($pattern, $cleanPage)) {
+                        $matchedDef = $def;
+                        $slug = Str::afterLast($cleanPage, '/');
+                        break;
+                    }
+                }
+            }
+
+            abort_unless($matchedDef !== null, 404);
+
+            $find = fn (string $list, string $s) => collect($hda[$list] ?? [])->firstWhere('slug', $s);
+            $routeUriMap = [];
+            foreach ($routes as $def) {
+                $routeUriMap[$def['name']] = $def['uri'];
+            }
+            $hu = function (string $name, ?string $s = null) use ($routeUriMap, $siteBase) {
+                if ($s === null && str_contains($name, ':')) {
+                    [$name, $s] = explode(':', $name, 2);
+                }
+                $uri = $routeUriMap[$name] ?? $name;
+                if ($s !== null) {
+                    $uri = str_replace('{slug}', $s, $uri);
+                }
+                $cleanUri = trim($uri, '/');
+
+                return $cleanUri === '' ? $siteBase : $siteBase.'/'.$cleanUri;
+            };
+            $ha = fn (string $path) => asset('images/website-bisnis/template/'.$rel.'/'.$path);
+            $hr = fn (string $list, array $slugs) => collect($slugs)->map(fn ($s) => $find($list, $s))->filter()->values()->all();
+            $hw = fn (string $list, string $key, string $val) => collect($hda[$list] ?? [])->where($key, $val)->values()->all();
+
+            $item = null;
+            if (! empty($matchedDef['source'])) {
+                $item = $find($matchedDef['source'], (string) $slug);
+                abort_unless($item, 404);
+            }
+
+            $page = $hda['pages'][$matchedDef['page']] ?? [];
+            if ($item) {
+                $page['title'] = $item['title'];
+                $page['lead'] = $item['desc'] ?? ($item['short'] ?? '');
+            }
+
+            $idx = [];
+            foreach ($hda['documents'] ?? [] as $d) {
+                $idx[] = [
+                    'id' => 'doc:'.$d['slug'],
+                    'type' => $d['type'],
+                    'title' => $d['title'],
+                    'sub' => $d['author'].' · '.$d['year'],
+                    'year' => (int) (preg_match('/\d{3,4}/', (string) $d['year'], $m) ? $m[0] : 0),
+                    'period' => $d['period'],
+                    'category' => $find('categories', $d['category'])['title'] ?? '',
+                    'location' => $find('locations', $d['location'])['title'] ?? '',
+                    'url' => $hu('document', $d['slug']),
+                    'image' => $ha($d['image']),
+                ];
+            }
+            $more = [
+                ['collections', 'col', 'Collection', 'collection'],
+                ['stories', 'story', 'Story', 'story'],
+                ['figures', 'fig', 'Figure', 'figure'],
+                ['events', 'event', 'Event', 'event'],
+                ['exhibitions', 'exh', 'Exhibition', 'exhibition'],
+                ['news', 'news', 'News', 'news-item'],
+            ];
+            foreach ($more as [$list, $key, $label, $routeName]) {
+                foreach ($hda[$list] ?? [] as $x) {
+                    $idx[] = [
+                        'id' => $key.':'.$x['slug'],
+                        'type' => $label,
+                        'title' => $x['title'],
+                        'sub' => $x['author'] ?? ($x['date'] ?? ($x['dates'] ?? ($x['period'] ?? ''))),
+                        'url' => $hu($routeName, $x['slug']),
+                        'image' => $ha($x['image']),
+                    ];
+                }
+            }
+
+            $wa = $hda['site']['whatsapp'] ?? [];
+            $hwa = 'https://wa.me/'.preg_replace('/\D+/', '', (string) ($wa['number'] ?? '')).'?text='.rawurlencode($wa['message'] ?? '');
+            $flags = JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP;
+
+            $probe = [$matchedDef['name'], $page['parent'] ?? ''];
+            $navKey = null;
+            foreach ($hda['nav'] ?? [] as $n) {
+                $nRoutes = array_merge([$n['route'] ?? ''], array_column($n['children'] ?? [], 'route'));
+                if (array_intersect($probe, $nRoutes)) {
+                    $navKey = $n['label'];
+                    break;
+                }
+            }
+
+            $renderedHtml = view($viewBase.$matchedDef['view'], [
+                'hda' => $hda,
+                'hu' => $hu,
+                'ha' => $ha,
+                'hr' => $hr,
+                'hf' => $find,
+                'hw' => $hw,
+                'hv' => $viewBase,
+                'hcss' => asset('css/website-bisnis/template/'.$rel.'/historical-document-archive.css'),
+                'hjs' => asset('js/website-bisnis/template/'.$rel.'/historical-document-archive.js'),
+                'hwa' => $hwa,
+                'hindex' => json_encode($idx, $flags),
+                'hassistant' => json_encode($hda['assistant'] ?? [], $flags),
+                'page' => $page,
+                'item' => $item,
+                'route' => $matchedDef['name'],
+                'navKey' => $navKey,
+                'slug' => $slug,
+            ])->render();
+
+            $bizName = $business['business_name'] ?? '';
+            if ($bizName !== '') {
+                $renderedHtml = str_replace(
+                    ['Historical Document Archive', 'National Historical Archive'],
+                    [$bizName, $bizName],
+                    $renderedHtml
+                );
+            }
+
+            $previewBase = url('/webia/template/libraries-digital-archives/vintage-editorial/historical-document-archive-burgundy-classic');
+            $renderedHtml = str_replace($previewBase, $siteBase, $renderedHtml);
+
+            $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+            return response($renderedHtml);
+        }
+
+        // Digital Library (Arctic Frost & Ocean Blue)
+        $isArctic = str_contains($siteConfigPath, 'arctic-frost');
+        $configKey = $isArctic
+            ? 'template.libraries-digital-archives.academic-minimalist.digital-library-platform-arctic-frost.digital-library-platform'
+            : 'template.libraries-digital-archives.modern.digital-library-platform-ocean-blue.digital-library';
+        $viewBase = $isArctic
+            ? 'website-bisnis.template.libraries-digital-archives.academic-minimalist.digital-library-platform-arctic-frost.'
+            : 'website-bisnis.template.libraries-digital-archives.modern.digital-library-platform-ocean-blue.';
+        $homeView = $isArctic ? $viewBase.'digital-library-platform' : $viewBase.'index';
+        $pageView = $viewBase.'page';
+
+        $validPages = ['home', 'katalog', 'kategori', 'detail-buku', 'baca', 'koleksi-pilihan', 'terbaru', 'terpopuler', 'akademik', 'keanggotaan', 'tentang-kami', 'knowledge-hub', 'artikel', 'faq', 'kontak', 'masuk', 'daftar', 'dashboard', 'pinjaman', 'riwayat', 'wishlist', 'profil'];
+        abort_unless(in_array($pageKey, $validPages, true), 404);
+
+        $siteConfig = config($configKey);
+        if (is_array($siteConfig)) {
+            if (! empty($business['business_name'])) {
+                $siteConfig['name'] = $business['business_name'];
+            }
+            if ($whatsapp !== '') {
+                $siteConfig['whatsapp'] = $whatsapp;
+            }
+            if (! empty($business['email'])) {
+                $siteConfig['email'] = $business['email'];
+            }
+            if (! empty($business['address'])) {
+                $siteConfig['address'] = $business['address'];
+            }
+            config([$configKey => $siteConfig]);
+        }
+
+        $viewName = $pageKey === 'home' ? $homeView : $pageView;
+        $renderedHtml = view($viewName, [
+            'page' => $pageKey,
+            'order' => $order,
+            'business' => $business,
+            'whatsapp' => $whatsapp,
+            'instagram' => $instagram,
+        ])->render();
+
+        $bizName = $business['business_name'] ?? '';
+        if ($bizName !== '') {
+            $renderedHtml = str_replace(['Digital Library', 'DigitalLibrary'], [$bizName, $bizName], $renderedHtml);
+        }
+        $renderedHtml = str_replace(['622112345678', '+62 21 1234 5678'], [$custWa, $custWa], $renderedHtml);
+
+        if (! empty($business['email'])) {
+            $renderedHtml = str_replace('info@digitallibrary.id', $business['email'], $renderedHtml);
+        }
+
+        $address = $this->businessAddress($business);
+        if ($address !== '') {
+            $renderedHtml = str_replace('Jl. Knowledge No. 123, Jakarta', $address, $renderedHtml);
+        }
+
+        $previewBase = $isArctic
+            ? url('/webia/template/libraries-digital-archives/academic-minimalist/digital-library-platform-arctic-frost')
+            : url('/webia/template/libraries-digital-archives/modern/digital-library-platform-ocean-blue');
+        $renderedHtml = str_replace($previewBase, $siteBase, $renderedHtml);
+
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+        return response($renderedHtml);
     }
 
     /**
