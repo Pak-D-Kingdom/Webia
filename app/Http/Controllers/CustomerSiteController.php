@@ -137,6 +137,10 @@ class CustomerSiteController extends Controller
             return $this->handleWeddingStandalone($order, $siteConfigPath, $pageKey);
         }
 
+        if (str_starts_with($siteConfigPath, 'wedding-multi/')) {
+            return $this->handleWeddingMulti($order, $siteConfigPath, $pageKey);
+        }
+
         if (str_starts_with($siteConfigPath, 'travel-baitul/')) {
             return $this->handleTravelBaitul($order, $siteConfigPath, $pageKey);
         }
@@ -2688,6 +2692,52 @@ class CustomerSiteController extends Controller
                 $html
             );
         }
+
+        return $html;
+    }
+
+    private const WEDDING_MULTI_VIEWS = [
+        'catering-wedding-cake-minimalist-ruby-luxe' => ['home' => 'website-bisnis.templates.wedding-event.catering-wedding-cake.ruby-luxe.catering-wedding-cake-ruby-luxe', 'katalog' => 'website-bisnis.templates.wedding-event.catering-wedding-cake.ruby-luxe.catering-katalog-ruby-luxe', 'detail' => 'website-bisnis.templates.wedding-event.catering-wedding-cake.ruby-luxe.catering-detail-ruby-luxe'],
+        'event-organizer-modern-burgundy-wine' => ['home' => 'website-bisnis.templates.wedding-event.event-organizer.burgundy-wine.event-organizer-modern-burgundy-wine', 'katalog' => 'website-bisnis.templates.wedding-event.event-organizer.burgundy-wine.event-organizer-katalog-burgundy-wine', 'detail' => 'website-bisnis.templates.wedding-event.event-organizer.burgundy-wine.event-organizer-detail-burgundy-wine'],
+    ];
+
+    private function handleWeddingMulti(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $slug = Str::after($siteConfigPath, 'wedding-multi/');
+        abort_unless(isset(self::WEDDING_MULTI_VIEWS[$slug]), 404);
+
+        $baseKey = in_array($pageKey, ['home', 'katalog', 'detail'], true) ? $pageKey : $pageKey;
+        abort_unless(isset(self::WEDDING_MULTI_VIEWS[$slug][$baseKey]), 404);
+
+        $viewName = self::WEDDING_MULTI_VIEWS[$slug][$baseKey];
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $instagram = ltrim($business['instagram'] ?? '', '@');
+
+        $renderedHtml = view($viewName, [
+            'order' => $order,
+            'page' => $pageKey,
+            'business' => $business,
+            'whatsapp' => $whatsapp,
+            'instagram' => $instagram,
+        ])->render();
+
+        $renderedHtml = $this->transformWeddingMultiHtml($renderedHtml, $business, $whatsapp);
+
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+        return response($renderedHtml);
+    }
+
+    private function transformWeddingMultiHtml(string $html, array $business, string $whatsapp): string
+    {
+        $bizName = $business['business_name'] ?? '';
+        if ($bizName !== '') {
+            $html = str_replace(['Ruby Luxe', 'Burgundy Moments'], $bizName, $html);
+        }
+
+        $custWa = $whatsapp ?: '6285850180285';
+        $html = str_replace('6285850180285', $custWa, $html);
 
         return $html;
     }
