@@ -6,7 +6,7 @@
 @section('title', 'Dampak Kami — Harapan Untuk Negeri Foundation')
 
 @section('content')
-@include($fdBase . '.partials.page-hero', ['title' => 'Dampak Kami', 'lead' => 'Bersama, kita telah memberikan manfaat untuk banyak orang di seluruh Indonesia.'])
+@include($fdBase . '.partials.page-hero', ['title' => 'Dampak Kami', 'lead' => 'Bersama, kita telah memberikan manfaat untuk banyak orang di seluruh Indonesia.', 'icon' => 'users', 'chips' => []])
 
 <section class="fd-section">
     <div class="fd-wrap">
@@ -27,7 +27,7 @@
         <div class="fd-grid fd-grid--2">
             @foreach ($fd['programs'] as $p)
                 <a class="fd-hcard fd-reveal" href="{{ $r('programs') }}#{{ $p['slug'] }}">
-                    <span class="fd-hcard__img"><img src="{{ $i($p['photo']) }}" alt="" loading="lazy" width="1200" height="900"></span>
+                    <span class="fd-hcard__img fd-pbox" style="--pw:{{ str_starts_with($p['photo'], 'photo-') ? 190 : 150 }}px"><img class="fd-pbox__bg" src="{{ $i($p['photo']) }}" alt="" aria-hidden="true" loading="lazy"><img src="{{ $i($p['photo']) }}" alt="" loading="lazy" width="1200" height="900"></span>
                     <span class="fd-hcard__body">
                         <h3>{{ $p['title'] }}</h3>
                         <span class="fd-pcard__stat"><span data-fd-auto>{{ $p['stat'][0] }}</span><small>{{ $p['stat'][1] }}</small></span>

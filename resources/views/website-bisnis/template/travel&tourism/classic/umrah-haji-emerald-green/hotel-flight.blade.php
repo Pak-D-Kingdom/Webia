@@ -11,8 +11,8 @@
         <div class="uh-container uh-stack">
 
             <article class="uh-feature" id="hotel">
-                <figure class="uh-feature__media uh-frame"><img class="uh-frame__bg" src="{{ $img($uh['hotels']['hotel']['image']) }}" alt="" aria-hidden="true" loading="lazy">
-                    <img src="{{ $img($uh['hotels']['hotel']['image']) }}" alt="Kamar hotel nyaman dekat masjid" width="336" height="170" loading="lazy">
+                <figure class="uh-feature__media">
+                    <img src="{{ $img($uh['hotels']['hotel']['image']) }}" alt="Kamar hotel nyaman dekat masjid" width="840" height="425" loading="lazy">
                 </figure>
                 <div class="uh-feature__body">
                     <span class="uh-eyebrow">Akomodasi</span>
@@ -85,8 +85,8 @@
                 </div>
 
                 <div class="uh-pass__stub">
-                    <figure class="uh-pass__media uh-frame"><img class="uh-frame__bg" src="{{ $img($uh['hotels']['plane']['image']) }}" alt="" aria-hidden="true" loading="lazy">
-                        <img src="{{ $img($uh['hotels']['plane']['image']) }}" alt="Pesawat terbang di atas awan" width="252" height="128" loading="lazy">
+                    <figure class="uh-pass__media">
+                        <img src="{{ $img($uh['hotels']['plane']['image']) }}" alt="Pesawat terbang di atas awan" width="840" height="425" loading="lazy">
                     </figure>
                     <ul class="uh-feature__points">
                         @foreach ($uh['hotels']['plane']['points'] as $p)

@@ -6,7 +6,7 @@
 @section('title', 'HarapanBot — FAQ Program & Donasi')
 
 @section('content')
-@include($fdBase . '.partials.page-hero', ['title' => 'HarapanBot — FAQ Program & Donasi', 'lead' => 'Asisten AI kami siap membantu Anda seputar program, donasi, dan kegiatan terbaru.'])
+@include($fdBase . '.partials.page-hero', ['title' => 'HarapanBot — FAQ Program & Donasi', 'lead' => 'Asisten AI kami siap membantu Anda seputar program, donasi, dan kegiatan terbaru.', 'icon' => 'help', 'chips' => []])
 
 <section class="fd-section">
     <div class="fd-wrap fd-split fd-split--chat">

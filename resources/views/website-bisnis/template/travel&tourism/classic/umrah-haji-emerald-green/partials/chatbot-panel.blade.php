@@ -39,11 +39,22 @@
     </div>
 
     <form class="uh-cpanel__form" data-uh-chat-form autocomplete="off">
-        <label class="uh-sr" for="uh-cpanel-input">Tulis pertanyaan Anda</label>
-        <input id="uh-cpanel-input" class="uh-cpanel__input" type="text" name="q" maxlength="200" placeholder="Tulis pertanyaan Anda…" data-uh-chat-input>
-        <button type="submit" class="uh-cpanel__send" aria-label="Kirim pertanyaan">
-            <svg class="uh-i" aria-hidden="true"><use href="#i-send"/></svg>
-        </button>
+        <span class="uh-sr" id="uh-cpanel-label">Tulis pertanyaan Anda</span>
+        <div class="uh-chatfield">
+            <div class="uh-sugg" data-uh-chat-suggest id="uh-cpanel-input-sugg" role="listbox" aria-label="Saran pertanyaan" hidden></div>
+            <label class="uh-chatfield__box" for="uh-cpanel-input">
+                <svg class="uh-i uh-chatfield__lens" aria-hidden="true"><use href="#i-search"/></svg>
+                <input id="uh-cpanel-input" class="uh-chatfield__input" type="text" name="q" maxlength="200" placeholder="Cari atau tulis pertanyaan Anda…" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="uh-cpanel-input-sugg" data-uh-chat-input>
+                <span class="uh-chatfield__count" data-uh-chat-count hidden></span>
+                <button type="button" class="uh-chatfield__clear" data-uh-chat-clear aria-label="Hapus pertanyaan" hidden>
+                    <svg class="uh-i" aria-hidden="true"><use href="#i-x"/></svg>
+                </button>
+            </label>
+            <button type="submit" class="uh-chatfield__send" aria-label="Kirim pertanyaan" disabled>
+                <svg class="uh-i" aria-hidden="true"><use href="#i-send"/></svg>
+            </button>
+        </div>
+        <p class="uh-cpanel__hint"><span><kbd>Enter</kbd> kirim</span><span><kbd>↑</kbd><kbd>↓</kbd> pilih saran</span></p>
     </form>
     <a class="uh-cpanel__wa" href="{{ $wa($uh['hero']['wa_consult']) }}" target="_blank" rel="noopener noreferrer">
         <svg class="uh-i" aria-hidden="true"><use href="#i-whatsapp"/></svg>

@@ -149,7 +149,7 @@
                 <div class="fd-newsgrid">
                     @foreach (array_slice($fd['news'], 0, 3) as $n)
                         <a class="fd-newsitem" href="{{ $r('news') }}#{{ $n['slug'] }}">
-                            <span class="fd-newsitem__img"><img src="{{ $i($n['image']) }}" alt="" loading="lazy" width="525" height="360"></span>
+                            <span class="fd-newsitem__img fd-pbox" style="--pw:136px"><img class="fd-pbox__bg" src="{{ $i($n['image']) }}" alt="" aria-hidden="true" loading="lazy"><img src="{{ $i($n['image']) }}" alt="" loading="lazy" width="570" height="366"></span>
                             <b>{{ $n['title'] }}</b>
                             <small><svg class="fd-ico"><use href="#fd-i-calendar"/></svg>{{ $n['date'] }}</small>
                         </a>

@@ -6,7 +6,7 @@
 @section('title', 'Transparansi Keuangan — Harapan Untuk Negeri Foundation')
 
 @section('content')
-@include($fdBase . '.partials.page-hero', ['title' => 'Laporan Transparansi Keuangan', 'lead' => $fd['financial']['summary']])
+@include($fdBase . '.partials.page-hero', ['title' => 'Laporan Transparansi Keuangan', 'lead' => $fd['financial']['summary'], 'icon' => 'doc', 'chips' => []])
 
 <section class="fd-section">
     <div class="fd-wrap fd-split" style="align-items:start">

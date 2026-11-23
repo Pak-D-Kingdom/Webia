@@ -6,7 +6,7 @@
 @section('title', 'Pendaftaran Relawan — Harapan Untuk Negeri Foundation')
 
 @section('content')
-@include($fdBase . '.partials.page-hero', ['title' => 'Jadilah Relawan!', 'lead' => 'Bersama kita bisa memberikan lebih banyak manfaat. Daftarkan diri Anda dan bergabung dengan relawan dari seluruh Indonesia.'])
+@include($fdBase . '.partials.page-hero', ['title' => 'Jadilah Relawan!', 'lead' => 'Bersama kita bisa memberikan lebih banyak manfaat. Daftarkan diri Anda dan bergabung dengan relawan dari seluruh Indonesia.', 'icon' => 'users', 'chips' => []])
 
 <section class="fd-section">
     <div class="fd-wrap fd-split fd-split--form">

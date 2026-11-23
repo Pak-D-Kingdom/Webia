@@ -32,6 +32,12 @@
         $searchIndex[] = ['g' => 'Area', 't' => $r['name'], 'd' => $r['cities'], 'u' => $go('area-layanan').'#wilayah-'.$n, 'i' => 'pin', 'm' => $img('coverage-map.png'), 'x' => $r['lead']];
     }
     $jsData['search'] = $searchIndex;
+    $jsData['cards'] = [
+        'paket' => array_map(fn ($p) => ['title' => $p['name'], 'price' => $p['price'], 'sub' => $p['tagline'], 'pop' => $p['popular'], 'icon' => $p['icon'], 'href' => $go('permintaan-penawaran').'?paket='.$p['id'], 'label' => 'Pilih paket'], $cfg['packages']),
+        'proyek' => array_map(fn ($p) => ['title' => $p['title'], 'sub' => $p['location'], 'img' => $img($p['image']), 'href' => $go('proyek').'#'.$p['id'], 'label' => 'Lihat proyek'], $cfg['projects']),
+        'layanan' => array_map(fn ($s) => ['title' => $s['title'], 'sub' => $s['duration'], 'icon' => $s['icon'], 'href' => $go('layanan').'#'.$s['id'], 'label' => 'Lihat layanan'], $cfg['services']),
+        'area' => array_map(fn ($r) => ['title' => $r['name'], 'sub' => $r['lead'], 'icon' => 'pin', 'href' => $go('area-layanan'), 'label' => 'Cek area'], $cfg['regions']),
+    ];
 @endphp
 <!DOCTYPE html>
 <html lang="id">
@@ -69,6 +75,8 @@
         <figure><img data-lightbox-img src="" alt=""><figcaption data-lightbox-cap></figcaption></figure>
         <button type="button" class="hr-lightbox__nav hr-lightbox__nav--next" data-lightbox-next aria-label="Gambar berikutnya">{{ $i('chevron-right') }}</button>
     </div>
+
+    <div class="hr-wipe" data-wipe aria-hidden="true"><span></span><span></span><span></span></div>
 
     <script>window.HRR = {!! json_encode($jsData, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!};</script>
     <script src="{{ asset($cfg['paths']['js'].'/home-renovation-repair.js') }}" defer></script>

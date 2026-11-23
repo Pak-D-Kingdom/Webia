@@ -9,7 +9,7 @@
     $img = fn (string $f) => asset($site["img"] . "/" . $f);
     $v   = $site["view"];
 @endphp
-@include($v . '.partials.page-hero', ['title' => 'Layanan Desain Kami', 'sub' => 'Layanan profesional untuk berbagai kebutuhan Anda.', 'bg' => 'interior-service.jpg', 'icon' => 'compass', 'crumb' => 'Layanan'])
+@include($v . '.partials.page-hero', ['key' => 'layanan'])
 
 <section class="abd-section">
     <div class="abd-container">

@@ -949,3 +949,8 @@ body.rr::before { /* butiran kertas vintage */
 .rr-ph__bg { inset: -120px 0 0 0; translate: 0 calc(var(--sy, 0) * .12px); }
 .rr-ph__visual { translate: 0 calc(var(--sy, 0) * -.05px); }
 @media (prefers-reduced-motion: reduce) { .rr-ph__bg, .rr-ph__visual { translate: none; } }
+
+/* transisi antar-halaman (keluar) */
+@keyframes rr-pageout { to { opacity: 0; transform: translateY(-10px); } }
+.rr-leave #rr-main { animation: rr-pageout .22s ease both; }
+@media (prefers-reduced-motion: reduce) { .rr-leave #rr-main { animation: none; } }

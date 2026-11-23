@@ -1584,30 +1584,24 @@ view()->composer(
     'website-bisnis.template.travel&tourism.classic.umrah-haji-emerald-green.*',
     function ($view) {
         $request = request();
-        $shared = $request->attributes->get('umrah-haji-emerald-green.shared');
+        $shared  = $request->attributes->get('umrah-haji-emerald-green.shared');
 
         if ($shared === null) {
-            $uh = config('template.travel&tourism.classic.umrah-haji-emerald-green.umrah-haji');
+            $uh      = config('template.travel&tourism.classic.umrah-haji-emerald-green.umrah-haji');
             $imgBase = 'images/website-bisnis/template/travel&tourism/classic/umrah-haji-emerald-green/';
-            $prefix = 'umrah-haji-emerald-green.';
-            $name = optional($request->route())->getName();
-            $active = is_string($name) && str_starts_with($name, $prefix)
+            $prefix  = 'umrah-haji-emerald-green.';
+            $name    = optional($request->route())->getName();
+            $active  = is_string($name) && str_starts_with($name, $prefix)
                 ? substr($name, strlen($prefix))
                 : 'home';
 
-            $url = fn (string $key) => route($prefix.$key);
-            $img = fn (string $file) => asset($imgBase.$file);
-            $wa = fn (string $text) => 'https://wa.me/'.$uh['brand']['whatsapp'].'?text='.rawurlencode($text);
+            $url = fn (string $key) => route($prefix . $key);
+            $img = fn (string $file) => asset($imgBase . $file);
+            $wa  = fn (string $text) => 'https://wa.me/' . $uh['brand']['whatsapp'] . '?text=' . rawurlencode($text);
 
             $icons = [
-                'packages' => 'kaaba',
-                'schedules' => 'calendar',
-                'prices' => 'tag',
-                'hotel-flight' => 'hotel',
-                'itinerary' => 'route',
-                'team' => 'guide',
-                'requirements' => 'file',
-                'testimonials' => 'star',
+                'packages' => 'kaaba', 'schedules' => 'calendar', 'prices' => 'tag', 'hotel-flight' => 'hotel',
+                'itinerary' => 'route', 'team' => 'guide', 'requirements' => 'file', 'testimonials' => 'star',
             ];
 
             // indeks pencarian
@@ -1618,58 +1612,62 @@ view()->composer(
                 }
                 $search[] = [
                     'label' => $item['label'],
-                    'text' => $uh['pages'][$item['key']]['text'] ?? '',
-                    'url' => $url($item['key']),
-                    'icon' => $icons[$item['key']] ?? 'file',
+                    'text'  => $uh['pages'][$item['key']]['text'] ?? '',
+                    'url'   => $url($item['key']),
+                    'icon'  => $icons[$item['key']] ?? 'file',
                     'group' => 'Halaman',
-                    'keys' => '',
+                    'keys'  => '',
                 ];
             }
             foreach ($uh['packages'] as $pkg) {
                 $search[] = [
                     'label' => $pkg['name'],
-                    'text' => $pkg['duration'].' · mulai '.$pkg['price'],
-                    'url' => $url('packages').'#'.$pkg['slug'],
-                    'icon' => 'kaaba',
-                    'keys' => $pkg['type'].' '.$pkg['route'],
+                    'text'  => $pkg['duration'] . ' · mulai ' . $pkg['price'],
+                    'url'   => $url('packages') . '#' . $pkg['slug'],
+                    'icon'  => 'kaaba',
+                    'image' => $img($pkg['image']),
+                    'group' => 'Paket',
+                    'keys'  => $pkg['type'] . ' ' . $pkg['route'],
                 ];
             }
             $search[] = [
                 'label' => $uh['pages']['chatbot']['title'],
-                'text' => $uh['pages']['chatbot']['text'],
-                'url' => $url('chatbot'),
-                'icon' => 'message',
+                'text'  => $uh['pages']['chatbot']['text'],
+                'url'   => $url('chatbot'),
+                'icon'  => 'message',
                 'group' => 'Halaman',
-                'keys' => 'faq tanya chat bantuan',
+                'keys'  => 'faq tanya chat bantuan',
             ];
 
             // FAQ chatbot (tautan sudah berupa URL penuh)
             $faq = [];
             foreach ($uh['faq'] as $f) {
                 $faq[] = [
-                    'keys' => $f['keys'],
-                    'a' => $f['a'],
-                    'url' => isset($f['link']) ? $url($f['link']) : null,
+                    'q'          => $f['q'],
+                    'keys'       => $f['keys'],
+                    'a'          => $f['a'],
+                    'url'        => isset($f['link']) ? $url($f['link']) : null,
                     'link_label' => $f['link_label'] ?? null,
                 ];
             }
 
             $shared = [
-                'uh' => $uh,
+                'uh'     => $uh,
                 'active' => $active,
-                'url' => $url,
-                'img' => $img,
-                'wa' => $wa,
-                'css' => asset('css/website-bisnis/template/travel&tourism/classic/umrah-haji-emerald-green/umrah-haji.css'),
-                'js' => asset('js/website-bisnis/template/travel&tourism/classic/umrah-haji-emerald-green/umrah-haji.js'),
+                'url'    => $url,
+                'img'    => $img,
+                'wa'     => $wa,
+                'css'    => asset('css/website-bisnis/template/travel&tourism/classic/umrah-haji-emerald-green/umrah-haji.css'),
+                'js'     => asset('js/website-bisnis/template/travel&tourism/classic/umrah-haji-emerald-green/umrah-haji.js'),
                 'jsData' => [
-                    'wa' => $wa($uh['hero']['wa_consult']),
-                    'waNumber' => $uh['brand']['whatsapp'],
-                    'waIntro' => $uh['requirements']['form']['intro'],
-                    'popular' => $uh['search_popular'],
-                    'ai' => ['welcome' => $uh['ai']['welcome'], 'fallback' => $uh['ai']['fallback']],
-                    'faq' => $faq,
-                    'search' => $search,
+                    'wa'        => $wa($uh['hero']['wa_consult']),
+                    'botImg'    => $img('maskot-robot.png'),
+                    'waNumber'  => $uh['brand']['whatsapp'],
+                    'waIntro'   => $uh['requirements']['form']['intro'],
+                    'popular'   => $uh['search_popular'],
+                    'ai'        => ['welcome' => $uh['ai']['welcome'], 'fallback' => $uh['ai']['fallback']],
+                    'faq'       => $faq,
+                    'search'    => $search,
                 ],
             ];
 
@@ -1686,16 +1684,16 @@ Route::prefix('webia/template/travel-tourism/classic/umrah-haji-emerald-green')
     ->group(function () {
         $v = 'website-bisnis.template.travel&tourism.classic.umrah-haji-emerald-green';
 
-        Route::view('/', $v.'.index')->name('home');
-        Route::view('/paket', $v.'.packages')->name('packages');
-        Route::view('/jadwal', $v.'.schedules')->name('schedules');
-        Route::view('/harga', $v.'.prices')->name('prices');
-        Route::view('/hotel-pesawat', $v.'.hotel-flight')->name('hotel-flight');
-        Route::view('/itinerary', $v.'.itinerary')->name('itinerary');
-        Route::view('/tim', $v.'.team')->name('team');
-        Route::view('/persyaratan', $v.'.requirements')->name('requirements');
-        Route::view('/testimoni', $v.'.testimonials')->name('testimonials');
-        Route::view('/chatbot', $v.'.chatbot')->name('chatbot');
+        Route::view('/', $v . '.index')->name('home');
+        Route::view('/paket', $v . '.packages')->name('packages');
+        Route::view('/jadwal', $v . '.schedules')->name('schedules');
+        Route::view('/harga', $v . '.prices')->name('prices');
+        Route::view('/hotel-pesawat', $v . '.hotel-flight')->name('hotel-flight');
+        Route::view('/itinerary', $v . '.itinerary')->name('itinerary');
+        Route::view('/tim', $v . '.team')->name('team');
+        Route::view('/persyaratan', $v . '.requirements')->name('requirements');
+        Route::view('/testimoni', $v . '.testimonials')->name('testimonials');
+        Route::view('/chatbot', $v . '.chatbot')->name('chatbot');
     });
 
 Route::prefix('webia/template/professional-service/artistic/branding-creative-agency-terracotta')

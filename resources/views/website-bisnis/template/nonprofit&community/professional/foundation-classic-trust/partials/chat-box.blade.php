@@ -10,7 +10,13 @@
         @endunless
     </div>
     <div class="fd-chat__body" role="log" aria-live="polite" tabindex="0"></div>
-    <div class="fd-chat__quick"><span>Pertanyaan cepat</span><div class="fd-chat__chips" aria-label="Pertanyaan cepat"></div></div>
+    <div class="fd-chat__quick"><span>Pertanyaan cepat</span>
+        <div class="fd-chat__scroller">
+            <button type="button" class="fd-chat__nav fd-chat__nav--prev is-hidden" data-fd-chips-prev aria-label="Geser ke kiri" tabindex="-1"><svg class="fd-ico"><use href="#fd-i-chevron"/></svg></button>
+            <div class="fd-chat__chips" aria-label="Pertanyaan cepat"></div>
+            <button type="button" class="fd-chat__nav fd-chat__nav--next" data-fd-chips-next aria-label="Geser ke kanan" tabindex="-1"><svg class="fd-ico"><use href="#fd-i-chevron"/></svg></button>
+        </div>
+    </div>
     <form class="fd-chat__form" autocomplete="off">
         <input type="text" placeholder="Tulis pertanyaan Anda…" aria-label="Tulis pertanyaan Anda" maxlength="200">
         <button type="submit" class="fd-sendbtn" aria-label="Kirim"><svg class="fd-ico"><use href="#fd-i-send"/></svg></button>

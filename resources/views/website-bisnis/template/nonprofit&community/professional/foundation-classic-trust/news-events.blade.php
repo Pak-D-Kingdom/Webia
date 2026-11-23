@@ -6,7 +6,7 @@
 @section('title', 'Berita & Acara — Harapan Untuk Negeri Foundation')
 
 @section('content')
-@include($fdBase . '.partials.page-hero', ['title' => 'Berita & Acara Terbaru', 'lead' => 'Ikuti kabar terbaru dan kegiatan kami di lapangan.'])
+@include($fdBase . '.partials.page-hero', ['title' => 'Berita & Acara Terbaru', 'lead' => 'Ikuti kabar terbaru dan kegiatan kami di lapangan.', 'icon' => 'news', 'chips' => []])
 
 <section class="fd-section">
     <div class="fd-wrap">
@@ -18,7 +18,7 @@
         <div class="fd-grid fd-grid--2">
             @foreach ($fd['news'] as $n)
                 <article id="{{ $n['slug'] }}" class="fd-hcard fd-ncard fd-reveal" data-cat="{{ $n['category'] }}">
-                    <span class="fd-hcard__img"><img src="{{ $i($n['photo']) }}" alt="" loading="lazy" width="1200" height="900"><span class="fd-tag {{ $n['category'] === 'Acara' ? 'fd-tag--gold' : '' }}">{{ $n['category'] }}</span></span>
+                    <span class="fd-hcard__img fd-pbox" style="--pw:{{ str_starts_with($n['photo'], 'photo-') ? 190 : 150 }}px"><img class="fd-pbox__bg" src="{{ $i($n['photo']) }}" alt="" aria-hidden="true" loading="lazy"><img src="{{ $i($n['photo']) }}" alt="" loading="lazy" width="1200" height="900"><span class="fd-tag {{ $n['category'] === 'Acara' ? 'fd-tag--gold' : '' }}">{{ $n['category'] }}</span></span>
                     <div class="fd-hcard__body">
                         <small class="fd-hcard__date"><svg class="fd-ico"><use href="#fd-i-calendar"/></svg>{{ $n['date'] }}</small>
                         <h3>{{ $n['title'] }}</h3>

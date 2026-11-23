@@ -6,17 +6,7 @@
 @section('title', 'Mitra & Sponsor — Harapan Untuk Negeri Foundation')
 
 @section('content')
-@include($fdBase . '.partials.page-hero', ['title' => 'Mitra & Sponsor', 'lead' => 'Bersama dengan berbagai pihak terpercaya untuk memperluas manfaat bagi masyarakat.'])
-
-<section class="fd-marquee" aria-label="Mitra dan sponsor kami">
-    <div class="fd-marquee__track">
-        @foreach ([1, 2] as $dup)
-            @foreach ($fd['partners'] as $p)
-                <span class="fd-marquee__item" @if($dup === 2) aria-hidden="true" @endif><img src="{{ $i($p['image']) }}" alt="@if($dup === 1){{ $p['name'] }}@endif" loading="lazy" width="360" height="240"></span>
-            @endforeach
-        @endforeach
-    </div>
-</section>
+@include($fdBase . '.partials.page-hero', ['title' => 'Mitra & Sponsor', 'lead' => 'Bersama dengan berbagai pihak terpercaya untuk memperluas manfaat bagi masyarakat.', 'icon' => 'users', 'chips' => []])
 
 <section class="fd-section">
     <div class="fd-wrap">

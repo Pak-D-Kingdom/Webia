@@ -6,7 +6,7 @@
 @section('title', 'Pilihan Donasi — Harapan Untuk Negeri Foundation')
 
 @section('content')
-@include($fdBase . '.partials.page-hero', ['title' => 'Pilihan Donasi', 'lead' => 'Pilih cara terbaik untuk berbagi kebaikan. Konfirmasi donasi Anda melalui WhatsApp dan tim kami akan memandu langkah berikutnya.'])
+@include($fdBase . '.partials.page-hero', ['title' => 'Pilihan Donasi', 'lead' => 'Pilih cara terbaik untuk berbagi kebaikan. Konfirmasi donasi Anda melalui WhatsApp dan tim kami akan memandu langkah berikutnya.', 'icon' => 'heart', 'chips' => []])
 
 <section class="fd-section">
     <div class="fd-wrap fd-split fd-split--form">

@@ -173,7 +173,12 @@
     });
   }
 
-  /* ---------- Reveal saat scroll ---------- */
+  /* ---------- Reveal saat scroll (arah bergantian) ---------- */
+  $$('.fd-row').forEach(function (row) {
+    $$(':scope > .fd-reveal', row).forEach(function (el, i) { el.setAttribute('data-dir', ['l', 'z', 'r'][i % 3]); });
+  });
+  $$('.fd-grid--2 > .fd-hcard.fd-reveal').forEach(function (el, i) { el.setAttribute('data-dir', i % 2 ? 'r' : 'l'); });
+  $$('.fd-split.fd-reveal').forEach(function (el, i) { el.setAttribute('data-dir', i % 2 ? 'r' : 'l'); });
   var reveals = $$('.fd-reveal');
   if ('IntersectionObserver' in W && !reduced) {
     var ro = new IntersectionObserver(function (entries) {
@@ -181,6 +186,53 @@
     }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
     reveals.forEach(function (el, i) { el.style.setProperty('--d', ((i % 3) * 0.1) + 's'); ro.observe(el); });
   } else { reveals.forEach(function (el) { el.classList.add('is-in'); }); }
+
+  /* ---------- Efek gerak lanjutan ---------- */
+  var hoverOK = W.matchMedia && W.matchMedia('(hover: hover)').matches;
+  if (!reduced) {
+    // progres scroll + paralaks foto hero
+    var pb = D.createElement('div'); pb.className = 'fd-progressbar'; pb.setAttribute('aria-hidden', 'true'); D.body.appendChild(pb);
+    var ticking = false;
+    function onScrollFx() {
+      var max = Math.max(1, D.documentElement.scrollHeight - W.innerHeight), y = W.scrollY;
+      pb.style.transform = 'scaleX(' + Math.min(1, y / max) + ')';
+      root.style.setProperty('--sy', Math.min(y, 900));
+      ticking = false;
+    }
+    W.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(onScrollFx); } }, { passive: true });
+    onScrollFx();
+    if (hoverOK) {
+      // paralaks bola cahaya mengikuti kursor
+      $$('.fd-hero, [data-fd-parallax]').forEach(function (sec) {
+        sec.addEventListener('pointermove', function (e) {
+          var r = sec.getBoundingClientRect();
+          sec.style.setProperty('--px', ((e.clientX - r.left) / r.width - 0.5) * 2);
+          sec.style.setProperty('--py', ((e.clientY - r.top) / r.height - 0.5) * 2);
+        });
+      });
+      // sorotan cahaya pada kartu
+      var spotSel = '.fd-card:not(.fd-c-quote), .fd-fcard, .fd-hcard, .fd-panel';
+      $$(spotSel).forEach(function (el) { var i = D.createElement('i'); i.className = 'fd-spot'; i.setAttribute('aria-hidden', 'true'); el.appendChild(i); });
+      var spotRaf = false, lastEv = null;
+      D.addEventListener('pointermove', function (e) {
+        lastEv = e;
+        if (spotRaf) return; spotRaf = true;
+        requestAnimationFrame(function () {
+          spotRaf = false;
+          var t = lastEv.target.closest && lastEv.target.closest(spotSel);
+          if (t) { var r = t.getBoundingClientRect(); t.style.setProperty('--mx', (lastEv.clientX - r.left) + 'px'); t.style.setProperty('--my', (lastEv.clientY - r.top) + 'px'); }
+        });
+      }, { passive: true });
+      // tombol "magnetik"
+      $$('.fd-btn--gold:not(.fd-btn--sm), .fd-btn--navy:not(.fd-btn--sm)').forEach(function (b) {
+        b.addEventListener('pointermove', function (e) {
+          var r = b.getBoundingClientRect();
+          b.style.translate = ((e.clientX - r.left - r.width / 2) * 0.14) + 'px ' + ((e.clientY - r.top - r.height / 2) * 0.25) + 'px';
+        });
+        b.addEventListener('pointerleave', function () { b.style.translate = ''; });
+      });
+    }
+  }
 
   /* ---------- Counter, bar & meter ---------- */
   function fmt(n) { try { return Number(n).toLocaleString('id-ID'); } catch (e) { return String(n); } }
@@ -307,6 +359,19 @@
         chips.appendChild(c);
       });
       body.appendChild(suggest);
+      setTimeout(navUpdate, 80);
+    }
+    var prevB = $('[data-fd-chips-prev]', rootEl), nextB = $('[data-fd-chips-next]', rootEl);
+    function navUpdate() {
+      if (!prevB || !nextB) return;
+      prevB.classList.toggle('is-hidden', chips.scrollLeft < 8);
+      nextB.classList.toggle('is-hidden', chips.scrollLeft + chips.clientWidth >= chips.scrollWidth - 8);
+    }
+    if (prevB && nextB) {
+      chips.addEventListener('scroll', navUpdate, { passive: true });
+      prevB.addEventListener('click', function () { chips.scrollBy({ left: -190, behavior: reduced ? 'auto' : 'smooth' }); });
+      nextB.addEventListener('click', function () { chips.scrollBy({ left: 190, behavior: reduced ? 'auto' : 'smooth' }); });
+      W.addEventListener('resize', navUpdate);
     }
     function reset() { body.textContent = ''; chips.textContent = ''; greeted = false; suggest = null; greet(); }
     var rb = $('[data-fd-chat-reset]', rootEl);

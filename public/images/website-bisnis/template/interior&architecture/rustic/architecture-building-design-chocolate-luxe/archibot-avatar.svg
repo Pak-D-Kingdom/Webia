@@ -1,15 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200"><defs>
-<radialGradient id="bg" cx=".5" cy=".3" r=".8"><stop offset="0" stop-color="#fff9ee"/><stop offset="1" stop-color="#ecd3ab"/></radialGradient>
-<linearGradient id="bd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#e3d3bd"/></linearGradient>
-<linearGradient id="hat" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fbdc98"/><stop offset="1" stop-color="#d8962f"/></linearGradient>
-<radialGradient id="eg"><stop offset="0" stop-color="#9ff3ff"/><stop offset="1" stop-color="#2fb8e8"/></radialGradient>
+<radialGradient id="bg" cx=".5" cy=".3" r=".9"><stop offset="0" stop-color="#fff9ee"/><stop offset="1" stop-color="#ecd3ab"/></radialGradient>
+<linearGradient id="sh" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".6" stop-color="#eef1f6"/><stop offset="1" stop-color="#bcc5d4"/></linearGradient>
+<linearGradient id="vis" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c2b4d"/><stop offset="1" stop-color="#0a1020"/></linearGradient>
+<linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f9d58b"/><stop offset="1" stop-color="#c98a2b"/></linearGradient>
+<radialGradient id="eye"><stop offset="0" stop-color="#d6f6ff"/><stop offset=".5" stop-color="#54d2ff"/><stop offset="1" stop-color="#1c8fe0"/></radialGradient>
 <style>.eye{transform-box:fill-box;transform-origin:center;animation:b 4.5s infinite}.led{animation:l 1.6s infinite}@keyframes b{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}@keyframes l{0%,100%{opacity:.35}50%{opacity:1}}</style></defs>
-<rect width="200" height="200" fill="url(#bg)"/>
-<ellipse cx="100" cy="204" rx="78" ry="34" fill="url(#bd)"/>
-<circle cx="40" cy="122" r="14" fill="#5a3721"/><circle cx="40" cy="122" r="7" fill="#e8b96a"/><circle cx="160" cy="122" r="14" fill="#5a3721"/><circle cx="160" cy="122" r="7" fill="#e8b96a"/>
-<circle cx="100" cy="116" r="60" fill="url(#bd)" stroke="#d6c4ac" stroke-width="2"/>
-<rect x="56" y="92" width="88" height="58" rx="28" fill="#1d1410"/><path d="M66 102 Q100 90 134 102" stroke="#fff" stroke-width="3" fill="none" opacity=".18" stroke-linecap="round"/>
-<ellipse class="eye" cx="80" cy="121" rx="10" ry="12" fill="url(#eg)"/><ellipse class="eye" cx="120" cy="121" rx="10" ry="12" fill="url(#eg)"/><path d="M87 139 Q100 149 113 139" stroke="#9ff3ff" stroke-width="4" fill="none" stroke-linecap="round"/>
-<path d="M36 100 Q100 6 164 100Z" fill="url(#hat)"/><rect x="28" y="94" width="144" height="14" rx="7" fill="#c98a2b"/><rect x="92" y="34" width="16" height="60" rx="6" fill="#fbdc98" opacity=".85"/>
-<circle cx="100" cy="72" r="13" fill="#fff"/><path d="M92 78 L100 66 L108 78 M95 78 V83 H105 V78" stroke="#5a3721" stroke-width="2.4" fill="none" stroke-linejoin="round" stroke-linecap="round"/><circle class="led" cx="100" cy="26" r="4.5" fill="#ff8a4a"/>
+<rect width="200" height="200" fill="url(#bg)"/><ellipse cx="100" cy="206" rx="80" ry="34" fill="url(#sh)"/>
+<circle cx="38" cy="124" r="15" fill="#273450"/><circle cx="38" cy="124" r="8" fill="none" stroke="#54d2ff" stroke-width="3"/><circle cx="162" cy="124" r="15" fill="#273450"/><circle cx="162" cy="124" r="8" fill="none" stroke="#54d2ff" stroke-width="3"/>
+<circle cx="100" cy="118" r="62" fill="url(#sh)" stroke="#c5ccd8" stroke-width="2"/>
+<rect x="52" y="92" width="96" height="62" rx="30" fill="url(#vis)"/><path d="M62 104 Q100 90 138 104" stroke="#fff" stroke-width="3" fill="none" opacity=".18" stroke-linecap="round"/>
+<rect class="eye" x="72" y="108" width="15" height="26" rx="7.5" fill="url(#eye)"/><rect class="eye" x="113" y="108" width="15" height="26" rx="7.5" fill="url(#eye)"/><path d="M88 142 Q100 150 112 142" stroke="#54d2ff" stroke-width="4" fill="none" stroke-linecap="round"/>
+<path d="M34 100 Q100 2 166 100Z" fill="url(#sh)" stroke="#c5ccd8" stroke-width="2"/><rect x="92" y="32" width="16" height="64" rx="6" fill="url(#gold)"/><rect x="26" y="94" width="148" height="15" rx="7.5" fill="#f2f5fa" stroke="#c5ccd8"/><rect x="30" y="102" width="140" height="4" rx="2" fill="url(#gold)"/>
+<circle cx="100" cy="72" r="14" fill="#fff" stroke="url(#gold)" stroke-width="3"/><path d="M92 78 L100 66 L108 78 M95 78 V83 H105 V78" stroke="#a8691f" stroke-width="2.4" fill="none" stroke-linejoin="round" stroke-linecap="round"/><circle class="led" cx="100" cy="26" r="4.5" fill="#ff8a4a"/>
 </svg>

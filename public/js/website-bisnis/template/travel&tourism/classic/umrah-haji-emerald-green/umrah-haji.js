@@ -848,9 +848,147 @@
             var v = input.value;
             input.value = '';
             ask(v);
+            afterSubmit();
             input.focus();
         });
         $$('[data-q]', win).forEach(function (b) { on(b, 'click', function () { ask(b.getAttribute('data-q')); }); });
+
+        /* ----- kotak input: saran otomatis, hapus, penghitung, tombol kirim ----- */
+        var sugg = $('[data-uh-chat-suggest]', win);
+        var clearBtn = $('[data-uh-chat-clear]', win);
+        var countEl = $('[data-uh-chat-count]', win);
+        var sendBtn = $('button[type="submit"]', form);
+        var sItems = [];
+        var sActive = -1;
+
+        function updateState() {
+            var v = input.value;
+            if (clearBtn) { clearBtn.hidden = !v; }
+            if (sendBtn) { sendBtn.disabled = !v.trim(); }
+            if (countEl) {
+                var show = v.length >= 150;
+                countEl.hidden = !show;
+                countEl.textContent = v.length + '/200';
+                countEl.classList.toggle('is-warn', v.length >= 185);
+            }
+        }
+        function closeSugg() {
+            if (!sugg) { return; }
+            sugg.hidden = true;
+            sActive = -1;
+            input.setAttribute('aria-expanded', 'false');
+            input.removeAttribute('aria-activedescendant');
+        }
+        function highlightIn(el, text, q) {
+            var i = q ? text.toLowerCase().indexOf(q.toLowerCase()) : -1;
+            if (i < 0) { el.textContent = text; return; }
+            el.appendChild(doc.createTextNode(text.slice(0, i)));
+            var m = doc.createElement('mark');
+            m.textContent = text.slice(i, i + q.length);
+            el.appendChild(m);
+            el.appendChild(doc.createTextNode(text.slice(i + q.length)));
+        }
+        function setSActive(n) {
+            if (!sItems.length) { sActive = -1; return; }
+            sActive = (n + sItems.length) % sItems.length;
+            sItems.forEach(function (b, i) {
+                b.classList.toggle('is-active', i === sActive);
+                b.setAttribute('aria-selected', i === sActive ? 'true' : 'false');
+            });
+            input.setAttribute('aria-activedescendant', sItems[sActive].id);
+            sItems[sActive].scrollIntoView({ block: 'nearest' });
+        }
+        function pick(q) {
+            input.value = '';
+            closeSugg();
+            updateState();
+            ask(q);
+        }
+        function renderSugg() {
+            if (!sugg) { return; }
+            var raw = input.value.trim();
+            var n = norm(raw);
+            var list = faq.filter(function (f) { return f.q; });
+            var tokens = n ? n.split(' ').filter(Boolean) : [];
+            var matches;
+            if (!n) { matches = list.slice(0, 4); }
+            else {
+                matches = list.map(function (f) {
+                    var hay = norm(f.q + ' ' + (f.keys || []).join(' '));
+                    var score = 0;
+                    tokens.forEach(function (t) { if (hay.indexOf(t) !== -1) { score++; } });
+                    if (norm(f.q).indexOf(n) !== -1) { score += 2; }
+                    return { f: f, score: score };
+                }).filter(function (m) { return m.score >= Math.ceil(tokens.length / 2); })
+                  .sort(function (a, b) { return b.score - a.score; })
+                  .slice(0, 5);
+                matches = matches.map(function (m) { return m.f; });
+            }
+            sugg.innerHTML = '';
+            sItems = [];
+            var title = doc.createElement('p');
+            title.className = 'uh-sugg__title';
+            title.textContent = n ? 'Saran pertanyaan' : 'Pertanyaan populer';
+            sugg.appendChild(title);
+            if (!matches.length) {
+                var em = doc.createElement('p');
+                em.className = 'uh-sugg__empty';
+                em.textContent = 'Belum ada saran. Tekan Enter untuk bertanya langsung.';
+                sugg.appendChild(em);
+            }
+            matches.forEach(function (f, i) {
+                var b = doc.createElement('button');
+                b.type = 'button';
+                b.className = 'uh-sugg__item';
+                b.id = sugg.id + '-' + i;
+                b.style.setProperty('--i', i);
+                b.setAttribute('role', 'option');
+                b.setAttribute('aria-selected', 'false');
+                b.appendChild(icon('search'));
+                var t = doc.createElement('span');
+                t.className = 'uh-sugg__txt';
+                highlightIn(t, f.q, raw);
+                b.appendChild(t);
+                var go = icon('arrow-right');
+                go.setAttribute('class', 'uh-i uh-sugg__go');
+                b.appendChild(go);
+                on(b, 'mousedown', function (e) { e.preventDefault(); });
+                on(b, 'click', function () { pick(f.q); input.focus(); });
+                on(b, 'mouseenter', function () { setSActive(i); });
+                sugg.appendChild(b);
+                sItems.push(b);
+            });
+            sugg.hidden = false;
+            sActive = -1;
+            input.setAttribute('aria-expanded', 'true');
+        }
+        function afterSubmit() { closeSugg(); updateState(); }
+
+        if (sugg && form) {
+            var blurTimer = null;
+            // fokus otomatis (saat panel dibuka) tidak membuka saran; saran muncul saat diklik, diketik, atau ditekan panah
+            on(input, 'focus', function () { if (blurTimer) { window.clearTimeout(blurTimer); blurTimer = null; } });
+            on(input, 'click', renderSugg);
+            on(input, 'input', function () { updateState(); renderSugg(); });
+            on(input, 'blur', function () { blurTimer = window.setTimeout(closeSugg, 120); });
+            on(input, 'keydown', function (e) {
+                var open = !sugg.hidden;
+                if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    if (!open) { renderSugg(); }
+                    setSActive(e.key === 'ArrowDown' ? sActive + 1 : (sActive < 0 ? sItems.length - 1 : sActive - 1));
+                } else if (e.key === 'Enter' && open && sActive >= 0) {
+                    e.preventDefault();
+                    pick(sItems[sActive].textContent);
+                } else if (e.key === 'Escape' && open) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    closeSugg();
+                }
+            });
+            on(clearBtn, 'click', function () { input.value = ''; updateState(); renderSugg(); input.focus(); });
+            updateState();
+        }
 
         return { ask: ask, focus: function () { if (input) { input.focus(); } } };
     }
@@ -910,6 +1048,121 @@
         on($('[data-uh-cpanel-close]', panel), 'click', close);
         on(doc, 'keydown', function (e) { if (e.key === 'Escape') { close(); } });
     })();
+
+    /* ---------- paralaks hero (pointer + scroll) ---------- */
+    (function parallax() {
+        var heroes = $$('[data-uh-parallax]');
+        if (!heroes.length || reduceMotion) { return; }
+        var tx = 0, ty = 0, cx = 0, cy = 0, raf = null;
+        function frame() {
+            cx += (tx - cx) * 0.09;
+            cy += (ty - cy) * 0.09;
+            var sy = Math.min(window.scrollY, 700);
+            heroes.forEach(function (h) {
+                h.style.setProperty('--px', cx.toFixed(3));
+                h.style.setProperty('--py', cy.toFixed(3));
+                h.style.setProperty('--sy', String(sy));
+            });
+            raf = (Math.abs(tx - cx) > 0.002 || Math.abs(ty - cy) > 0.002) ? window.requestAnimationFrame(frame) : null;
+        }
+        function kick() { if (!raf) { raf = window.requestAnimationFrame(frame); } }
+        heroes.forEach(function (h) {
+            on(h, 'pointermove', function (e) {
+                if (e.pointerType !== 'mouse') { return; }
+                var r = h.getBoundingClientRect();
+                tx = ((e.clientX - r.left) / r.width - 0.5) * 2;
+                ty = ((e.clientY - r.top) / r.height - 0.5) * 2;
+                kick();
+            });
+            on(h, 'pointerleave', function () { tx = 0; ty = 0; kick(); });
+        });
+        on(window, 'scroll', kick, { passive: true });
+        kick();
+    })();
+
+    /* ---------- judul halaman muncul kata demi kata ---------- */
+    $$('[data-uh-words]').forEach(function (h) {
+        var t = h.textContent.trim();
+        if (!t || reduceMotion) { return; }
+        h.setAttribute('aria-label', t);
+        h.textContent = '';
+        t.split(/\s+/).forEach(function (word, i) {
+            var sp = doc.createElement('span');
+            sp.className = 'uh-w';
+            sp.style.setProperty('--i', i);
+            sp.setAttribute('aria-hidden', 'true');
+            sp.textContent = word;
+            h.appendChild(sp);
+        });
+    });
+
+    /* ---------- hitung naik (sisa kursi) saat terlihat ---------- */
+    (function countUp() {
+        var els = $$('[data-uh-countup]');
+        if (!els.length || reduceMotion || !('IntersectionObserver' in window)) { return; }
+        function run(el) {
+            var to = parseInt(el.getAttribute('data-uh-countup'), 10);
+            if (isNaN(to)) { return; }
+            var start = window.performance.now();
+            function step(now) {
+                var p = Math.min((now - start) / 1100, 1);
+                el.textContent = String(Math.round(to * (1 - Math.pow(1 - p, 3))));
+                if (p < 1) { window.requestAnimationFrame(step); } else { el.textContent = String(to); }
+            }
+            el.textContent = '0';
+            window.requestAnimationFrame(step);
+        }
+        var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (en) { if (en.isIntersecting) { run(en.target); io.unobserve(en.target); } });
+        }, { threshold: 0.4 });
+        els.forEach(function (el) { io.observe(el); });
+    })();
+
+    /* ---------- kartu miring 3D mengikuti kursor (hanya mouse) ---------- */
+    (function tilt() {
+        if (reduceMotion || !window.matchMedia || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) { return; }
+        $$('.uh-pricecard, .uh-gcard, .uh-tscard, .uh-stay, .uh-pk__item, .uh-tm__item').forEach(function (el) {
+            el.setAttribute('data-uh-tilt', '');
+            on(el, 'pointermove', function (e) {
+                if (e.pointerType !== 'mouse') { return; }
+                var r = el.getBoundingClientRect();
+                var x = (e.clientX - r.left) / r.width - 0.5;
+                var y = (e.clientY - r.top) / r.height - 0.5;
+                el.style.transform = 'perspective(900px) rotateX(' + (-y * 6).toFixed(2) + 'deg) rotateY(' + (x * 7).toFixed(2) + 'deg) translateY(-4px)';
+            });
+            on(el, 'pointerleave', function () { el.style.transform = ''; });
+        });
+    })();
+
+    /* ---------- garis kemajuan scroll ---------- */
+    (function scrollBar() {
+        var bar = $('[data-uh-scrollbar]');
+        if (!bar) { return; }
+        function update() {
+            var h = doc.documentElement.scrollHeight - window.innerHeight;
+            bar.style.width = (h > 0 ? Math.min(window.scrollY / h * 100, 100) : 0).toFixed(1) + '%';
+        }
+        on(window, 'scroll', update, { passive: true });
+        on(window, 'resize', update);
+        update();
+    })();
+
+    /* ---------- riak saat tombol ditekan ---------- */
+    if (!reduceMotion) {
+        on(doc, 'pointerdown', function (e) {
+            var btn = e.target.closest ? e.target.closest('.uh-btn') : null;
+            if (!btn) { return; }
+            var r = btn.getBoundingClientRect();
+            var size = Math.max(r.width, r.height) * 2;
+            var rip = doc.createElement('span');
+            rip.className = 'uh-ripple';
+            rip.style.width = rip.style.height = size + 'px';
+            rip.style.left = (e.clientX - r.left - size / 2) + 'px';
+            rip.style.top = (e.clientY - r.top - size / 2) + 'px';
+            btn.appendChild(rip);
+            window.setTimeout(function () { if (rip.parentNode) { rip.parentNode.removeChild(rip); } }, 750);
+        });
+    }
 
     refreshThumbs();
     window.addEventListener('load', refreshThumbs);

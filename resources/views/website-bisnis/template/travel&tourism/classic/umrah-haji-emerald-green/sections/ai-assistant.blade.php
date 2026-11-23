@@ -2,7 +2,7 @@
     <img class="uh-ai__robot" src="{{ $img('maskot-robot.png') }}" alt="" width="150" height="138" loading="lazy">
     <div class="uh-ai__frame">
         <div class="uh-ai__head">
-            <span class="uh-ai__emblem"><img src="{{ $img('logo-emblem-gelap.jpg') }}" alt="" width="28" height="30"></span>
+            <span class="uh-ai__emblem">@include('website-bisnis.template.travel&tourism.classic.umrah-haji-emerald-green.partials.emblem', ['gid' => 'ai'])</span>
             <h2 id="uh-ai-title" class="uh-ai__title">{{ $uh['ai']['title'] }}</h2>
         </div>
         <p class="uh-ai__text">{{ $uh['ai']['text'] }}</p>

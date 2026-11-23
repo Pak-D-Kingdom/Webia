@@ -4,7 +4,10 @@
     $wa = 'https://wa.me/' . $c['whatsapp'] . '?text=' . rawurlencode('Halo Harapan Untuk Negeri Foundation, saya ingin bertanya.');
 @endphp
 <footer class="fd-footer">
-    <svg class="fd-footer__wave" viewBox="0 0 1440 70" preserveAspectRatio="none" aria-hidden="true"><path d="M0 70V34C200 4 420 2 660 26s520 40 780 6V70z"/></svg>
+    <div class="fd-footer__waves" aria-hidden="true">
+        <svg class="fd-footer__wave fd-footer__wave--b" viewBox="0 0 2880 70" preserveAspectRatio="none" aria-hidden="true"><path d="M0 70V34C200 4 420 2 660 26s520 40 780 6C1640 4 1860 2 2100 26s520 40 780 6V70z"/></svg>
+        <svg class="fd-footer__wave" viewBox="0 0 2880 70" preserveAspectRatio="none" aria-hidden="true"><path d="M0 70V34C200 4 420 2 660 26s520 40 780 6C1640 4 1860 2 2100 26s520 40 780 6V70z"/></svg>
+    </div>
     <div class="fd-footer__bg" aria-hidden="true">
         <img class="fd-footer__mark" src="{{ $i('logo-light.svg') }}" alt="" width="520" height="520">
         <span class="fd-fheart" style="--x:6%;--d:0s;--s:.9"></span><span class="fd-fheart" style="--x:28%;--d:-3s;--s:.7"></span><span class="fd-fheart" style="--x:52%;--d:-6s;--s:1"></span><span class="fd-fheart" style="--x:74%;--d:-2s;--s:.8"></span><span class="fd-fheart" style="--x:92%;--d:-8s;--s:.7"></span>
