@@ -5710,7 +5710,7 @@ class CustomerSiteController extends Controller
                     typing.remove();
                     const replyDiv = document.createElement('div');
                     replyDiv.className = 'bg-white p-2.5 rounded-2xl rounded-tl-none border border-plum/15 text-cocoa leading-relaxed';
-                    replyDiv.innerHTML = data.reply ? data.reply.replace(/\n/g, '<br>') : 'Ada yang bisa SodaAI bantu seputar meal plan keluarga Anda?';
+                    replyDiv.innerHTML = data.reply ? data.reply.replace(/\\n/g, '<br>') : 'Ada yang bisa SodaAI bantu seputar meal plan keluarga Anda?';
                     sodaMessages.appendChild(replyDiv);
                 } catch (e) {
                     typing.remove();
@@ -5785,7 +5785,7 @@ class CustomerSiteController extends Controller
                     typing.remove();
                     const bMsg = document.createElement('div');
                     bMsg.className = 'bg-mint/30 text-navy p-3 rounded-2xl rounded-tl-none mr-auto max-w-[88%] font-medium shadow-sm leading-relaxed';
-                    bMsg.innerHTML = (data.reply || 'Ada yang bisa Coach Splash bantu seputar program renang?').replace(/\n/g, '<br>');
+                    bMsg.innerHTML = (data.reply || 'Ada yang bisa Coach Splash bantu seputar program renang?').replace(/\\n/g, '<br>');
                     tirtaMsgs.appendChild(bMsg);
                 } catch(e) {
                     typing.remove();
@@ -5866,7 +5866,7 @@ class CustomerSiteController extends Controller
                     const data = await sendToAi(query);
                     typing.remove();
                     const bMsg = document.createElement('p');
-                    bMsg.innerHTML = '<strong>Panduan AI:</strong> ' + (data.reply || 'Ada artefak atau informasi pameran yang ingin Anda ketahui?').replace(/\n/g, '<br>');
+                    bMsg.innerHTML = '<strong>Panduan AI:</strong> ' + (data.reply || 'Ada artefak atau informasi pameran yang ingin Anda ketahui?').replace(/\\n/g, '<br>');
                     mChatBox.appendChild(bMsg);
                 } catch(err) {
                     typing.remove();
