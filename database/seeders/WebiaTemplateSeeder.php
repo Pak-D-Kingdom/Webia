@@ -1021,6 +1021,25 @@ class WebiaTemplateSeeder extends Seeder
                 'is_active' => true,
                 'sort_order' => 42,
             ],
+            [
+                'name' => 'Kencana Wastra — Royal Traditional Costume & Heritage Atelier',
+                'slug' => 'kencana-wastra-traditional-costume-rental',
+                'category_slug' => 'traditional-textiles-heritage-fashion',
+                'category_label' => 'Traditional Textiles & Heritage Fashion',
+                'business_types' => ['Traditional Costume Rental'],
+                'design_style' => 'Regal Traditional',
+                'color_theme' => 'Royal Ruby Gold',
+                'description' => 'Royal heritage costume rental atelier featuring traditional costumes, regional collections, accessories, rental packages, size guide, availability calendar, styling consultation, and WhatsApp reservation.',
+                'preview_style' => 'preview-regal',
+                'eyebrow' => 'Royal Heritage Atelier',
+                'headline' => 'Keagungan Nusantara & Dunia',
+                'tag' => 'Traditional Costume Rental',
+                'preview_folder' => 'traditional-textiles-heritage-fashion/traditional-costume-rental/kencana-wastra',
+                'template_url' => '/webia/template/kencana-wastra-traditional-costume-rental',
+                'is_active' => true,
+                'sort_order' => 43,
+            ],
+
 
         ];
 
