@@ -108,6 +108,14 @@ class CustomerSiteController extends Controller
         if (str_starts_with($siteConfigPath, 'agriculture/')) {
             return $this->handleAgriculture($order, $siteConfigPath, $pageKey);
         }
+
+        if (str_starts_with($siteConfigPath, 'education-culture/')) {
+            return $this->handleEducationCulture($order, $siteConfigPath, $pageKey);
+        }
+
+        if (str_starts_with($siteConfigPath, 'specialty-beverage/')) {
+            return $this->handleSpecialtyBeverage($order, $siteConfigPath, $pageKey);
+        }
         $views = match (true) {
             $isBrandingAgency => array_fill_keys(['home', 'layanan', 'keahlian', 'portofolio', 'janji'], 'branding-creative-agency'),
             str_starts_with($siteConfigPath, 'company/') => ['home' => 'index', 'tentang-kami' => 'tentang-kami', 'portofolio' => 'portofolio'],
@@ -2105,6 +2113,109 @@ class CustomerSiteController extends Controller
             $html = str_replace(url($from), $to, $html);
             $html = str_replace($from, $to, $html);
         }
+
+        return $html;
+    }
+
+    private const EDUCATION_CULTURE_VIEWS = [
+        'verdant-archive-museum-collection' => ['home' => 'website-bisnis.templates.education-culture.verdant-archive-museum-collection'],
+    ];
+
+    private function handleEducationCulture(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $slug = Str::after($siteConfigPath, 'education-culture/');
+        abort_unless(isset(self::EDUCATION_CULTURE_VIEWS[$slug]), 404);
+        abort_unless(isset(self::EDUCATION_CULTURE_VIEWS[$slug][$pageKey]), 404);
+
+        $viewName = self::EDUCATION_CULTURE_VIEWS[$slug][$pageKey];
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $instagram = ltrim($business['instagram'] ?? '', '@');
+
+        $renderedHtml = view($viewName, [
+            'order' => $order,
+            'page' => $pageKey,
+            'business' => $business,
+            'whatsapp' => $whatsapp,
+            'instagram' => $instagram,
+        ])->render();
+
+        $renderedHtml = $this->transformEducationCultureHtml($renderedHtml, $business, $whatsapp);
+
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+        return response($renderedHtml);
+    }
+
+    private function transformEducationCultureHtml(string $html, array $business, string $whatsapp): string
+    {
+        $bizName = $business['business_name'] ?? '';
+        if ($bizName !== '') {
+            $brandMap = [
+                'Verdant Archive &amp; Artifact Database' => $bizName,
+                'VERDANT ARCHIVE' => strtoupper($bizName),
+                'Verdant Archive' => $bizName,
+            ];
+            uksort($brandMap, fn ($a, $b) => strlen($b) <=> strlen($a));
+            $html = str_replace(array_keys($brandMap), array_values($brandMap), $html);
+
+            $html = str_replace('Halo%20Verdant%20Archive', 'Halo%20'.rawurlencode($bizName), $html);
+        }
+
+        $custWa = $whatsapp ?: '6281234567890';
+        $html = str_replace('6281234567890', $custWa, $html);
+
+        $address = $this->businessAddress($business);
+        if ($address !== '') {
+            $html = str_replace('Gedung Dokumentasi Budaya Lt. 3, Pusat Arsip', $address, $html);
+        }
+
+        if (! empty($business['email'])) {
+            $html = str_replace('arsip@verdant-heritage.org', $business['email'], $html);
+        }
+
+        return $html;
+    }
+
+    private const SPECIALTY_BEVERAGE_VIEWS = [
+        'kebun-seduh-botanical-elegant' => ['home' => 'website-bisnis.templates.specialty-beverage.kebun-seduh-botanical-elegant'],
+    ];
+
+    private function handleSpecialtyBeverage(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $slug = Str::after($siteConfigPath, 'specialty-beverage/');
+        abort_unless(isset(self::SPECIALTY_BEVERAGE_VIEWS[$slug]), 404);
+        abort_unless(isset(self::SPECIALTY_BEVERAGE_VIEWS[$slug][$pageKey]), 404);
+
+        $viewName = self::SPECIALTY_BEVERAGE_VIEWS[$slug][$pageKey];
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $instagram = ltrim($business['instagram'] ?? '', '@');
+
+        $renderedHtml = view($viewName, [
+            'order' => $order,
+            'page' => $pageKey,
+            'business' => $business,
+            'whatsapp' => $whatsapp,
+            'instagram' => $instagram,
+        ])->render();
+
+        $renderedHtml = $this->transformSpecialtyBeverageHtml($renderedHtml, $business, $whatsapp);
+
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+        return response($renderedHtml);
+    }
+
+    private function transformSpecialtyBeverageHtml(string $html, array $business, string $whatsapp): string
+    {
+        $bizName = $business['business_name'] ?? '';
+        if ($bizName !== '') {
+            $html = str_replace('Kebun Seduh', $bizName, $html);
+        }
+
+        $custWa = $whatsapp ?: '6281234567890';
+        $html = str_replace('6281234567890', $custWa, $html);
 
         return $html;
     }

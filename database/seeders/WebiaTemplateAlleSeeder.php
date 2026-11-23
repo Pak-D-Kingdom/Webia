@@ -526,6 +526,7 @@ class WebiaTemplateAlleSeeder extends Seeder
                 'headline' => 'Basis Data Koleksi Museum & Dokumentasi Artefak Terbuka.',
                 'tag' => 'Education & Culture · Museum Archive · Archival Minimalist',
                 'preview_folder' => null,
+                'site_config_path' => 'education-culture/verdant-archive-museum-collection',
                 'template_url' => '/webia/template/verdant-archive-museum-collection',
                 'preview_view' => 'website-bisnis.templates.education-culture.verdant-archive-museum-collection',
                 'is_active' => true,

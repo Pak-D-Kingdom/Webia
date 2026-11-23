@@ -512,6 +512,7 @@ class WebiaTemplateSeederAthiya extends Seeder
                 'headline' => 'Kebun kecil di cangkirmu,<br>setiap bulan.',
                 'tag' => 'Specialty Beverage & Drink Concepts · Specialty Tea Subscription · Botanical Elegant',
                 'preview_folder' => null,
+                'site_config_path' => 'specialty-beverage/kebun-seduh-botanical-elegant',
                 'template_url' => '/webia/template/kebun-seduh-botanical-elegant',
                 'is_active' => true,
                 'sort_order' => 43,
