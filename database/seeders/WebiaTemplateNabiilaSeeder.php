@@ -940,6 +940,25 @@ class WebiaTemplateNabiilaSeeder extends Seeder
                 'is_active' => true,
                 'sort_order' => 70,
             ],
+            [
+                'name' => 'HistoricalArchive — Libraries & Digital Archives Historical Document Archive Vintage Editorial Burgundy Classic',
+                'slug' => 'libraries-digital-archives-historical-document-archive-burgundy-classic',
+                'category_slug' => 'libraries-digital-archives',
+                'category_label' => 'Libraries & Digital Archives',
+                'business_types' => ['Historical Document Archive'],
+                'design_style' => 'Vintage Editorial',
+                'color_theme' => 'Burgundy Classic',
+                'description' => 'Website arsip dokumen sejarah bergaya vintage editorial dengan warna burgundy classic, pencarian arsip dengan filter, sembilan kategori arsip, koleksi dan dokumen pilihan, timeline sejarah, pembaca dokumen, panduan riset, panduan sitasi, pusat unduhan, FAQ, WhatsApp, dan asisten FAQ Archive Assistant.',
+                'preview_style' => 'preview-glow',
+                'eyebrow' => 'PRESERVING HISTORY, PROTECTING OUR HERITAGE',
+                'headline' => 'Melestarikan sejarah,<br>menjaga warisan kita.',
+                'tag' => 'Libraries & Digital Archives · Historical Document Archive · Vintage Editorial',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/libraries-digital-archives/vintage-editorial/historical-document-archive-burgundy-classic',
+                'site_config_path' => 'libraries-digital-archives/vintage-editorial/historical-document-archive-burgundy-classic/historical-document-archive',
+                'is_active' => true,
+                'sort_order' => 71,
+            ],
         ];
 
         foreach ($templates as $template) {
