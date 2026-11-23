@@ -145,6 +145,10 @@ class CustomerSiteController extends Controller
             return $this->handleTravelBaitul($order, $siteConfigPath, $pageKey);
         }
 
+        if (str_starts_with($siteConfigPath, 'photography-creative-studio/')) {
+            return $this->handlePhotographyConfig($order, $siteConfigPath, $pageKey);
+        }
+
         if (str_starts_with($siteConfigPath, 'healthcare-standalone/')) {
             return $this->handleHealthcareStandalone($order, $siteConfigPath, $pageKey);
         }
@@ -2740,6 +2744,65 @@ class CustomerSiteController extends Controller
         $html = str_replace('6285850180285', $custWa, $html);
 
         return $html;
+    }
+
+    private function handlePhotographyConfig(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $configKey = 'template.'.str_replace('/', '.', $siteConfigPath);
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $instagram = ltrim($business['instagram'] ?? '', '@');
+
+        $validPages = ['home', 'portofolio', 'video-ugc', 'paket', 'hak-guna', 'platform', 'kolaborasi', 'kampanye', 'testimoni', 'tanya-ai'];
+        $page = in_array($pageKey, $validPages, true) ? $pageKey : 'home';
+        abort_unless($pageKey === 'home' || in_array($pageKey, $validPages, true), 404);
+
+        // Override demo config values with customer business data before rendering.
+        $siteConfig = config($configKey);
+        abort_unless(is_array($siteConfig), 404);
+        if (is_array($siteConfig)) {
+            if (! empty($business['business_name'])) {
+                $siteConfig['brand'] = $business['business_name'];
+            }
+            if ($whatsapp !== '') {
+                $siteConfig['whatsapp'] = $whatsapp;
+            }
+            if (! empty($business['email'])) {
+                $siteConfig['email'] = $business['email'];
+            }
+            config([$configKey => $siteConfig]);
+        }
+
+        $viewName = 'website-bisnis.template.photography-creative-studio.bold.ugc-content-creator-studio-pink-voltage.ugc-content-creator-studio';
+        $renderedHtml = view($viewName, [
+            'page' => $page,
+        ])->render();
+
+        $bizName = $business['business_name'] ?? '';
+        $custWa = $whatsapp ?: '62895630300345';
+
+        if ($bizName !== '') {
+            $html = str_replace('VOLT Studio', $bizName, $renderedHtml);
+            $html = str_replace('VOLT', strtoupper($bizName), $html);
+        } else {
+            $html = $renderedHtml;
+        }
+
+        $rawWa = $business['whatsapp'] ?? $custWa;
+        $html = str_replace('62895630300345', $custWa, $html);
+
+        if (! empty($business['email'])) {
+            $html = str_replace('hello@voltstudio.id', $business['email'], $html);
+        }
+
+        // Remap preview links to published site routes.
+        $siteBase = url('/s/'.$order->site_slug);
+        $previewBase = url('/webia/template/photography-creative-studio/bold/ugc-content-creator-studio-pink-voltage');
+        $html = str_replace($previewBase, $siteBase, $html);
+
+        $html = $this->attachAiChatWidget($html, $order, $business, $whatsapp);
+
+        return response($html);
     }
 
     private function brandingAgencyConfig(array $siteConfig, array $business, string $whatsapp): array

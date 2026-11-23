@@ -737,6 +737,7 @@ class WebiaTemplateNabiilaSeeder extends Seeder
                 'headline' => 'Konten yang bikin<br>orang berhenti scroll.',
                 'tag' => 'Photography & Creative Studio · UGC & Content Creator · Bold',
                 'preview_folder' => null,
+                'site_config_path' => 'photography-creative-studio/bold/ugc-content-creator-studio-pink-voltage/ugc-content-creator-studio',
                 'template_url' => '/webia/template/photography-creative-studio/bold/ugc-content-creator-studio-pink-voltage',
                 'is_active' => true,
                 'sort_order' => 59,
