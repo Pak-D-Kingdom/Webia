@@ -501,6 +501,7 @@ class WebiaTemplateSeeder extends Seeder
                 'headline' => 'Crafting Worlds Out of Ink, Silence & Soul',
                 'tag' => 'Author & Writer · Elegant Mint Fresh',
                 'preview_folder' => null,
+                'site_config_path' => 'personal-brand/aria-thorne-author-writer',
                 'template_url' => '/webia/template/aria-thorne-author-writer',
                 'is_active' => true,
                 'sort_order' => 30,

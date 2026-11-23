@@ -120,6 +120,14 @@ class CustomerSiteController extends Controller
         if (str_starts_with($siteConfigPath, 'retail-boutique/')) {
             return $this->handleRetailBoutique($order, $siteConfigPath, $pageKey);
         }
+
+        if (str_starts_with($siteConfigPath, 'personal-brand/')) {
+            return $this->handlePersonalBrand($order, $siteConfigPath, $pageKey);
+        }
+
+        if (str_starts_with($siteConfigPath, 'company-contractor/')) {
+            return $this->handleCompanyContractor($order, $siteConfigPath, $pageKey);
+        }
         $views = match (true) {
             $isBrandingAgency => array_fill_keys(['home', 'layanan', 'keahlian', 'portofolio', 'janji'], 'branding-creative-agency'),
             str_starts_with($siteConfigPath, 'company/') => ['home' => 'index', 'tentang-kami' => 'tentang-kami', 'portofolio' => 'portofolio'],
@@ -2312,6 +2320,109 @@ class CustomerSiteController extends Controller
         if (! empty($business['email'])) {
             $html = str_replace('hello@pebblesprouts.co.id', $business['email'], $html);
         }
+
+        return $html;
+    }
+
+    private const PERSONAL_BRAND_VIEWS = [
+        'aria-thorne-author-writer' => ['home' => 'website-bisnis.templates.personal-brand.author-writer.aria-thorne.aria-thorne'],
+        'arya-sanjaya-plum-velvet' => ['home' => 'website-bisnis.templates.personal-brand.author-writer.arya-sanjaya-plum-velvet'],
+        'arya-sanjaya-ruby-editorial' => ['home' => 'website-bisnis.templates.personal-brand.author-writer.arya-sanjaya-ruby-editorial'],
+    ];
+
+    private function handlePersonalBrand(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $slug = Str::after($siteConfigPath, 'personal-brand/');
+        abort_unless(isset(self::PERSONAL_BRAND_VIEWS[$slug]), 404);
+        abort_unless(isset(self::PERSONAL_BRAND_VIEWS[$slug][$pageKey]), 404);
+
+        $viewName = self::PERSONAL_BRAND_VIEWS[$slug][$pageKey];
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $instagram = ltrim($business['instagram'] ?? '', '@');
+
+        $renderedHtml = view($viewName, [
+            'order' => $order,
+            'page' => $pageKey,
+            'business' => $business,
+            'whatsapp' => $whatsapp,
+            'instagram' => $instagram,
+        ])->render();
+
+        $renderedHtml = $this->transformPersonalBrandHtml($renderedHtml, $business, $whatsapp);
+
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+        return response($renderedHtml);
+    }
+
+    private function transformPersonalBrandHtml(string $html, array $business, string $whatsapp): string
+    {
+        $bizName = $business['business_name'] ?? '';
+        if ($bizName !== '') {
+            $html = str_replace(['Arya Sanjaya', 'Aria Thorne'], $bizName, $html);
+            $html = preg_replace_callback('/\b(?:Aria|Thorne)\b/', fn () => $bizName, $html) ?? $html;
+            $html = str_replace(
+                ['Halo%20Tim%20Aria%20Thorne'],
+                ['Halo%20Tim%20'.rawurlencode($bizName)],
+                $html
+            );
+        }
+
+        $custWa = $whatsapp ?: '6281234567890';
+        $html = str_replace(
+            ['6281234567890', '628123456789'],
+            [$custWa, $custWa],
+            $html
+        );
+
+        return $html;
+    }
+
+    private const COMPANY_CONTRACTOR_VIEWS = [
+        'bangun-karsa-contractor-professional' => ['home' => 'website-bisnis.templates.company.bangun-karsa-contractor-professional'],
+        'langit-karya-contractor-minimalist' => ['home' => 'website-bisnis.templates.company.langit-karya-contractor-minimalist'],
+    ];
+
+    private function handleCompanyContractor(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $slug = Str::after($siteConfigPath, 'company-contractor/');
+        abort_unless(isset(self::COMPANY_CONTRACTOR_VIEWS[$slug]), 404);
+        abort_unless(isset(self::COMPANY_CONTRACTOR_VIEWS[$slug][$pageKey]), 404);
+
+        $viewName = self::COMPANY_CONTRACTOR_VIEWS[$slug][$pageKey];
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $instagram = ltrim($business['instagram'] ?? '', '@');
+
+        $renderedHtml = view($viewName, [
+            'order' => $order,
+            'page' => $pageKey,
+            'business' => $business,
+            'whatsapp' => $whatsapp,
+            'instagram' => $instagram,
+        ])->render();
+
+        $renderedHtml = $this->transformCompanyContractorHtml($renderedHtml, $business, $whatsapp);
+
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+        return response($renderedHtml);
+    }
+
+    private function transformCompanyContractorHtml(string $html, array $business, string $whatsapp): string
+    {
+        $bizName = $business['business_name'] ?? '';
+        if ($bizName !== '') {
+            $brandMap = [
+                'Bangun Karsa' => $bizName,
+                'Langit Karya' => $bizName,
+            ];
+            $html = str_replace(array_keys($brandMap), array_values($brandMap), $html);
+        }
+
+        $custWa = $whatsapp ?: '6281234567890';
+        $html = str_replace('6281234567890', $custWa, $html);
 
         return $html;
     }
