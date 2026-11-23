@@ -116,6 +116,10 @@ class CustomerSiteController extends Controller
         if (str_starts_with($siteConfigPath, 'specialty-beverage/')) {
             return $this->handleSpecialtyBeverage($order, $siteConfigPath, $pageKey);
         }
+
+        if (str_starts_with($siteConfigPath, 'retail-boutique/')) {
+            return $this->handleRetailBoutique($order, $siteConfigPath, $pageKey);
+        }
         $views = match (true) {
             $isBrandingAgency => array_fill_keys(['home', 'layanan', 'keahlian', 'portofolio', 'janji'], 'branding-creative-agency'),
             str_starts_with($siteConfigPath, 'company/') => ['home' => 'index', 'tentang-kami' => 'tentang-kami', 'portofolio' => 'portofolio'],
@@ -2216,6 +2220,98 @@ class CustomerSiteController extends Controller
 
         $custWa = $whatsapp ?: '6281234567890';
         $html = str_replace('6281234567890', $custWa, $html);
+
+        return $html;
+    }
+
+    private const RETAIL_BOUTIQUE_VIEWS = [
+        'aurora-petit-yellow-sunshine' => ['home' => 'website-bisnis.templates.retail.baby-kids-products.aurora-petit-yellow-sunshine'],
+        'petit-wonder-candy-cloud' => ['home' => 'website-bisnis.templates.retail.baby-kids-products.petit-wonder-candy-cloud'],
+        'pebble-sprouts-baby-kids' => ['home' => 'website-bisnis.templates.retail.baby-kids-products.pebble-sprouts.pebble-sprouts'],
+        'vibesnatch-fashion-store' => ['home' => 'website-bisnis.templates.retail.fashion-clothing-store.vibesnatch.vibesnatch'],
+    ];
+
+    private function handleRetailBoutique(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $slug = Str::after($siteConfigPath, 'retail-boutique/');
+        abort_unless(isset(self::RETAIL_BOUTIQUE_VIEWS[$slug]), 404);
+        abort_unless(isset(self::RETAIL_BOUTIQUE_VIEWS[$slug][$pageKey]), 404);
+
+        $viewName = self::RETAIL_BOUTIQUE_VIEWS[$slug][$pageKey];
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $instagram = ltrim($business['instagram'] ?? '', '@');
+
+        $renderedHtml = view($viewName, [
+            'order' => $order,
+            'page' => $pageKey,
+            'business' => $business,
+            'whatsapp' => $whatsapp,
+            'instagram' => $instagram,
+        ])->render();
+
+        $renderedHtml = $this->transformRetailBoutiqueHtml($renderedHtml, $business, $whatsapp);
+
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+        return response($renderedHtml);
+    }
+
+    private function transformRetailBoutiqueHtml(string $html, array $business, string $whatsapp): string
+    {
+        $bizName = $business['business_name'] ?? '';
+        $custWa = $whatsapp ?: '6281234567890';
+
+        if ($bizName !== '') {
+            $encodedName = rawurlencode($bizName);
+            $html = str_replace(
+                ['Halo%20Aurora%20Petit', 'Halo%20Admin%20Petit%20Wonder', 'Hi%20VIBESNATCH'],
+                ['Halo%20'.$encodedName, 'Halo%20Admin%20'.$encodedName, 'Hi%20'.$encodedName],
+                $html
+            );
+
+            $brandMap = [
+                'AURORA &amp; PETIT' => strtoupper($bizName),
+                'Aurora &amp; Petit' => $bizName,
+                'AURORA & PETIT' => strtoupper($bizName),
+                'PETIT WONDER' => strtoupper($bizName),
+                'Petit Wonder' => $bizName,
+                'Pebble &amp; Sprouts' => $bizName,
+                'Pebble & Sprouts' => $bizName,
+                'Pebble Sprouts' => $bizName,
+                'VIBESNATCH' => strtoupper($bizName),
+            ];
+            uksort($brandMap, fn ($a, $b) => strlen($b) <=> strlen($a));
+            $html = str_replace(array_keys($brandMap), array_values($brandMap), $html);
+        }
+
+        $rawWa = $business['whatsapp'] ?? $custWa;
+        $html = str_replace(
+            ['6281234567890', '+62 812-3456-7890', '628123456789'],
+            [$custWa, $rawWa, $custWa],
+            $html
+        );
+
+        $address = $this->businessAddress($business);
+        if ($address !== '') {
+            $html = str_replace(
+                [
+                    'Pondok Indah Mall 3 (PIM 3), Lantai 2 Unit 208, Jakarta Selatan',
+                    'Tunjungan Plaza 6, Lantai 4, Surabaya Pusat',
+                    'Jl. Kemang Timur No. 42B, Jakarta Selatan',
+                    'Pakuwon Mall Level 2, Unit 88, Surabaya',
+                    'Jl. Kemang Raya No. 45B, Jakarta Selatan',
+                    'PIK Avenue Mall L2 #204, Jakarta Utara',
+                    'Jl. Raya Darmo No. 88, Surabaya Barat',
+                ],
+                $address,
+                $html
+            );
+        }
+
+        if (! empty($business['email'])) {
+            $html = str_replace('hello@pebblesprouts.co.id', $business['email'], $html);
+        }
 
         return $html;
     }
