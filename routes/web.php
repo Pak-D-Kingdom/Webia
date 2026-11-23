@@ -155,6 +155,11 @@ Route::view(
 )->name('webia.template.rubra-memoria-artistic-heritage');
 
 Route::view(
+    '/webia/template/verdant-archive-museum-collection',
+    'website-bisnis.templates.education-culture.verdant-archive-museum-collection'
+)->name('webia.template.verdant-archive-museum-collection');
+
+Route::view(
     '/webia/template/arsip-kain-heritage-editorial',
     'website-bisnis.templates.traditional-textiles-heritage-fashion.arsip-kain-heritage-editorial'
 )->name('webia.template.arsip-kain-heritage-editorial');

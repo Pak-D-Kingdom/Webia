@@ -510,5 +510,27 @@ class WebiaTemplateAlleSeeder extends Seeder
                 'sort_order' => 55,
             ]
         );
+
+        WebiaTemplate::updateOrCreate(
+            ['slug' => 'verdant-archive-museum-collection'],
+            [
+                'name' => 'Verdant Archive — Museum Collection & Artifact Database',
+                'category_slug' => 'education-culture',
+                'category_label' => 'Education & Culture',
+                'business_types' => ['Museum Collection & Artifact Archive'],
+                'design_style' => 'Archival Minimalist',
+                'color_theme' => 'Sage Green & Archival Paper',
+                'description' => 'Minimalist museum archive with an artifact collection catalog, searchable records, open-access and institutional licensing tiers, research contact details, FAQs, WhatsApp support, and an AI archivist demo.',
+                'preview_style' => 'preview-verdant-archive-museum-collection',
+                'eyebrow' => 'OPEN ACCESS · MUSEUM COLLECTION DATABASE',
+                'headline' => 'Basis Data Koleksi Museum & Dokumentasi Artefak Terbuka.',
+                'tag' => 'Education & Culture · Museum Archive · Archival Minimalist',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/verdant-archive-museum-collection',
+                'preview_view' => 'website-bisnis.templates.education-culture.verdant-archive-museum-collection',
+                'is_active' => true,
+                'sort_order' => 56,
+            ]
+        );
     }
 }

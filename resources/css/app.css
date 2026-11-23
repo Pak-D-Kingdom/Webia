@@ -9,6 +9,7 @@
 @import './aethelgard-museum-theme.css';
 @import './aquaverse-heritage-theme.css';
 @import './rubra-memoria-theme.css';
+@import './verdant-archive-theme.css';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -34,6 +35,7 @@
 @source '../views/website-bisnis/templates/education-culture/aethelgard-digital-museum.blade.php';
 @source '../views/website-bisnis/templates/education-culture/aquaverse-interactive-heritage.blade.php';
 @source '../views/website-bisnis/templates/education-culture/rubra-memoria-artistic-heritage.blade.php';
+@source '../views/website-bisnis/templates/education-culture/verdant-archive-museum-collection.blade.php';
 
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
