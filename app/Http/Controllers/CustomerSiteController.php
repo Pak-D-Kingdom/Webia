@@ -109,6 +109,10 @@ class CustomerSiteController extends Controller
             return $this->handleAgriculture($order, $siteConfigPath, $pageKey);
         }
 
+        if (str_starts_with($siteConfigPath, 'agriculture&farming/')) {
+            return $this->handleAgricultureConfig($order, $siteConfigPath, $pageKey);
+        }
+
         if (str_starts_with($siteConfigPath, 'education-culture/')) {
             return $this->handleEducationCulture($order, $siteConfigPath, $pageKey);
         }
@@ -2942,6 +2946,209 @@ class CustomerSiteController extends Controller
             'baby-blue' => ['http://localhost:8000/webia/template/home-services/modern/laundry-baby-blue', url('/webia/template/home-services/modern/laundry-baby-blue')],
             'mint-fresh' => ['http://localhost:8000/webia/template/home-services/minimalis/laundry-mint-fresh', url('/webia/template/home-services/minimalis/laundry-mint-fresh')],
             'classic-trust' => ['http://localhost:8000/webia/template/home-services/professional/laundry-classic-trust', url('/webia/template/home-services/professional/laundry-classic-trust')],
+        };
+        foreach ($previewBases as $pb) {
+            $renderedHtml = str_replace($pb, $siteBase, $renderedHtml);
+        }
+
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+        return response($renderedHtml);
+    }
+
+    private function handleAgricultureConfig(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $variant = match (true) {
+            str_starts_with($siteConfigPath, 'agriculture&farming/corporate/') => 'forest-moss',
+            str_starts_with($siteConfigPath, 'agriculture&farming/organic/') => 'earth-tone',
+            str_starts_with($siteConfigPath, 'agriculture&farming/professional/') => 'classic-trust',
+            default => null,
+        };
+        abort_unless($variant !== null, 404);
+
+        $configKey = match ($variant) {
+            'forest-moss' => 'template.agriculture&farming.corporate.agribisnis-forest-moss.agribisnis',
+            'earth-tone' => 'template.agriculture&farming.organic.agribisnis-earth-tone.agribisnis',
+            'classic-trust' => 'template.agriculture&farming.professional.agribisnis-classic-trust.agribisnis',
+        };
+
+        $viewMap = match ($variant) {
+            'forest-moss' => [
+                'home' => 'website-bisnis.template.agriculture&farming.corporate.agribisnis-forest-moss.index',
+                'katalog-komoditas' => 'website-bisnis.template.agriculture&farming.corporate.agribisnis-forest-moss.pages.katalog',
+                'informasi-tanaman-panen' => 'website-bisnis.template.agriculture&farming.corporate.agribisnis-forest-moss.pages.panen',
+                'spesifikasi-produk' => 'website-bisnis.template.agriculture&farming.corporate.agribisnis-forest-moss.pages.spesifikasi',
+                'jumlah-pemesanan-minimal' => 'website-bisnis.template.agriculture&farming.corporate.agribisnis-forest-moss.pages.moq',
+                'kapasitas-pasokan' => 'website-bisnis.template.agriculture&farming.corporate.agribisnis-forest-moss.pages.kapasitas',
+                'jangkauan-distribusi' => 'website-bisnis.template.agriculture&farming.corporate.agribisnis-forest-moss.pages.distribusi',
+                'sertifikasi' => 'website-bisnis.template.agriculture&farming.corporate.agribisnis-forest-moss.pages.sertifikasi',
+                'inquiry-b2b' => 'website-bisnis.template.agriculture&farming.corporate.agribisnis-forest-moss.pages.inquiry',
+                'permintaan-penawaran' => 'website-bisnis.template.agriculture&farming.corporate.agribisnis-forest-moss.pages.penawaran',
+                'ai-assistant' => 'website-bisnis.template.agriculture&farming.corporate.agribisnis-forest-moss.pages.chatbot',
+            ],
+            'earth-tone' => [
+                'home' => 'website-bisnis.template.agriculture&farming.organic.agribisnis-earth-tone.index',
+                'komoditas' => 'website-bisnis.template.agriculture&farming.organic.agribisnis-earth-tone.komoditas',
+                'informasi-panen' => 'website-bisnis.template.agriculture&farming.organic.agribisnis-earth-tone.informasi-panen',
+                'spesifikasi-produk' => 'website-bisnis.template.agriculture&farming.organic.agribisnis-earth-tone.spesifikasi-produk',
+                'jumlah-pesanan-minimum' => 'website-bisnis.template.agriculture&farming.organic.agribisnis-earth-tone.jumlah-pesanan-minimum',
+                'kapasitas-pasokan' => 'website-bisnis.template.agriculture&farming.organic.agribisnis-earth-tone.kapasitas-pasokan',
+                'jangkauan-distribusi' => 'website-bisnis.template.agriculture&farming.organic.agribisnis-earth-tone.jangkauan-distribusi',
+                'sertifikasi' => 'website-bisnis.template.agriculture&farming.organic.agribisnis-earth-tone.sertifikasi',
+                'inquiry-b2b' => 'website-bisnis.template.agriculture&farming.organic.agribisnis-earth-tone.inquiry-b2b',
+                'permintaan-penawaran' => 'website-bisnis.template.agriculture&farming.organic.agribisnis-earth-tone.permintaan-penawaran',
+                'ai-chatbot' => 'website-bisnis.template.agriculture&farming.organic.agribisnis-earth-tone.ai-chatbot',
+            ],
+            'classic-trust' => [
+                'home' => 'website-bisnis.template.agriculture&farming.professional.agribisnis-classic-trust.index',
+                'komoditas' => 'website-bisnis.template.agriculture&farming.professional.agribisnis-classic-trust.komoditas',
+                'informasi-panen' => 'website-bisnis.template.agriculture&farming.professional.agribisnis-classic-trust.panen',
+                'spesifikasi-produk' => 'website-bisnis.template.agriculture&farming.professional.agribisnis-classic-trust.spesifikasi',
+                'minimum-order' => 'website-bisnis.template.agriculture&farming.professional.agribisnis-classic-trust.minimum-order',
+                'kapasitas-pasokan' => 'website-bisnis.template.agriculture&farming.professional.agribisnis-classic-trust.kapasitas',
+                'jangkauan-distribusi' => 'website-bisnis.template.agriculture&farming.professional.agribisnis-classic-trust.distribusi',
+                'sertifikasi' => 'website-bisnis.template.agriculture&farming.professional.agribisnis-classic-trust.sertifikasi',
+                'b2b-inquiry' => 'website-bisnis.template.agriculture&farming.professional.agribisnis-classic-trust.b2b-inquiry',
+                'quotation-request' => 'website-bisnis.template.agriculture&farming.professional.agribisnis-classic-trust.quotation-request',
+                'ai-assistant' => 'website-bisnis.template.agriculture&farming.professional.agribisnis-classic-trust.ai-assistant',
+            ],
+        };
+
+        $page = $pageKey === 'home' ? 'home' : $pageKey;
+        abort_unless(isset($viewMap[$page]), 404);
+        $viewName = $viewMap[$page];
+
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $instagram = ltrim($business['instagram'] ?? '', '@');
+
+        // Override demo config with customer business data.
+        $siteConfig = config($configKey);
+        if (is_array($siteConfig)) {
+            if ($variant === 'forest-moss') {
+                if (isset($siteConfig['site']) && is_array($siteConfig['site'])) {
+                    if (! empty($business['business_name'])) {
+                        $siteConfig['site']['name'] = $business['business_name'];
+                    }
+                    if ($whatsapp !== '') {
+                        $siteConfig['site']['whatsapp'] = $whatsapp;
+                    }
+                    if (! empty($business['email'])) {
+                        $siteConfig['site']['email'] = $business['email'];
+                    }
+                    if (! empty($business['address'])) {
+                        $siteConfig['site']['address'] = $business['address'];
+                    }
+                }
+            } elseif ($variant === 'earth-tone') {
+                if (isset($siteConfig['brand']) && is_array($siteConfig['brand'])) {
+                    if (! empty($business['business_name'])) {
+                        $siteConfig['brand']['name'] = $business['business_name'];
+                    }
+                }
+                if (isset($siteConfig['contact']) && is_array($siteConfig['contact'])) {
+                    if ($whatsapp !== '') {
+                        $siteConfig['contact']['whatsapp'] = $whatsapp;
+                    }
+                    if (! empty($business['email'])) {
+                        $siteConfig['contact']['email'] = $business['email'];
+                    }
+                    if (! empty($business['address'])) {
+                        $siteConfig['contact']['address'] = $business['address'];
+                    }
+                }
+            } elseif ($variant === 'classic-trust') {
+                if (isset($siteConfig['meta']) && is_array($siteConfig['meta'])) {
+                    if (! empty($business['business_name'])) {
+                        $siteConfig['meta']['brand'] = $business['business_name'];
+                    }
+                    if (isset($siteConfig['meta']['whatsapp']) && is_array($siteConfig['meta']['whatsapp'])) {
+                        if ($whatsapp !== '') {
+                            $siteConfig['meta']['whatsapp']['number'] = $whatsapp;
+                        }
+                    }
+                }
+            }
+            config([$configKey => $siteConfig]);
+        }
+
+        $viewData = ['order' => $order, 'page' => $pageKey, 'business' => $business, 'whatsapp' => $whatsapp, 'instagram' => $instagram];
+        if ($variant === 'classic-trust') {
+            $viewData['agro'] = $siteConfig ?? config($configKey);
+            $viewData['v'] = 'website-bisnis.template.agriculture&farming.professional.agribisnis-classic-trust';
+        } elseif ($variant === 'earth-tone') {
+            $prefix = 'webia/template/agriculture-farming/organic/agribisnis-earth-tone';
+            $previewBase = url($prefix);
+            $viewData['u'] = [
+                'home' => $previewBase,
+                'komoditas' => url($prefix.'/komoditas'),
+                'panen' => url($prefix.'/informasi-panen'),
+                'spesifikasi' => url($prefix.'/spesifikasi-produk'),
+                'moq' => url($prefix.'/jumlah-pesanan-minimum'),
+                'kapasitas' => url($prefix.'/kapasitas-pasokan'),
+                'distribusi' => url($prefix.'/jangkauan-distribusi'),
+                'sertifikasi' => url($prefix.'/sertifikasi'),
+                'b2b' => url($prefix.'/inquiry-b2b'),
+                'penawaran' => url($prefix.'/permintaan-penawaran'),
+                'chatbot' => url($prefix.'/ai-chatbot'),
+                'whatsapp' => 'https://wa.me/'.($siteConfig['contact']['whatsapp'] ?? '62895630300345').'?text='.rawurlencode($siteConfig['contact']['whatsapp_text'] ?? 'Halo AgroHarvest, saya ingin bertanya tentang komoditas dan kemitraan.'),
+                'whatsapp_karir' => 'https://wa.me/'.($siteConfig['contact']['whatsapp'] ?? '62895630300345').'?text='.rawurlencode('Halo AgroHarvest, saya tertarik dengan informasi karir.'),
+            ];
+            $viewData['data'] = $siteConfig ?? config($configKey);
+            $viewData['v'] = 'website-bisnis.template.agriculture&farming.organic.agribisnis-earth-tone';
+            $viewData['css'] = asset('css/website-bisnis/template/agriculture&farming/organic/agribisnis-earth-tone/agribisnis.css');
+            $viewData['js'] = asset('js/website-bisnis/template/agriculture&farming/organic/agribisnis-earth-tone/agribisnis.js');
+            $viewData['img'] = asset('images/website-bisnis/template/agriculture&farming/organic/agribisnis-earth-tone');
+        } else {
+            $viewData['cfg'] = $siteConfig ?? config($configKey);
+        }
+
+        $renderedHtml = view($viewName, $viewData)->render();
+
+        // Transform remaining demo brand/WA/email/address strings.
+        $bizName = $business['business_name'] ?? '';
+        $custWa = $whatsapp ?: '62895630300345';
+        $demoBrands = match ($variant) {
+            'forest-moss' => ['Green Harvest', 'GREEN HARVEST'],
+            'earth-tone' => ['AgroHarvest'],
+            'classic-trust' => ['AgroTrade'],
+        };
+        if ($bizName !== '') {
+            foreach ($demoBrands as $demo) {
+                $renderedHtml = str_replace($demo, $bizName, $renderedHtml);
+            }
+        }
+        $renderedHtml = str_replace('62895630300345', $custWa, $renderedHtml);
+
+        if (! empty($business['email'])) {
+            $demoEmails = match ($variant) {
+                'forest-moss' => ['info@greenharvest.co.id'],
+                'earth-tone' => ['sales@agroharvest.co.id'],
+                'classic-trust' => [],
+            };
+            if (! empty($demoEmails)) {
+                $renderedHtml = str_replace($demoEmails, $business['email'], $renderedHtml);
+            }
+        }
+
+        $address = $this->businessAddress($business);
+        if ($address !== '') {
+            $demoAddresses = match ($variant) {
+                'forest-moss' => ['Banyuwangi, Jawa Timur, Indonesia'],
+                'earth-tone' => ['Jl. Pertanian No. 88, Surabaya, Indonesia'],
+                'classic-trust' => [],
+            };
+            if (! empty($demoAddresses)) {
+                $renderedHtml = str_replace($demoAddresses, $address, $renderedHtml);
+            }
+        }
+
+        // Remap preview links to published site routes.
+        $siteBase = url('/s/'.$order->site_slug);
+        $previewBases = match ($variant) {
+            'forest-moss' => [url('/webia/template/agriculture-farming/corporate/agribisnis-forest-moss')],
+            'earth-tone' => [url('/webia/template/agriculture-farming/organic/agribisnis-earth-tone')],
+            'classic-trust' => [url('/webia/template/agribisnis-classic-trust')],
         };
         foreach ($previewBases as $pb) {
             $renderedHtml = str_replace($pb, $siteBase, $renderedHtml);
