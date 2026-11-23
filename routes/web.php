@@ -1802,14 +1802,129 @@ Route::prefix('webia/template/interior-architecture/rustic/architecture-building
         Route::view('/penawaran', $v . '.penawaran')->name('penawaran');
     });
 
-$prefix = '/webia/template/libraries-digital-archives/modern/digital-library-platform-ocean-blue';
-$view = 'website-bisnis.template.libraries-digital-archives.modern.digital-library-platform-ocean-blue';
+$prefix = '/webia/template/libraries-digital-archives/academic-minimalist/digital-library-platform-arctic-frost';
+$view = 'website-bisnis.template.libraries-digital-archives.academic-minimalist.digital-library-platform-arctic-frost';
 
-Route::get($prefix, fn() => view($view . '.index'))->name('webia.dl.home');
+Route::get($prefix, fn () => view($view.'.digital-library-platform'))->name('webia.dlaf.home');
 
 foreach (['katalog', 'kategori', 'detail-buku', 'baca', 'koleksi-pilihan', 'terbaru', 'terpopuler', 'akademik', 'keanggotaan', 'tentang-kami', 'knowledge-hub', 'artikel', 'faq', 'kontak', 'masuk', 'daftar', 'dashboard', 'pinjaman', 'riwayat', 'wishlist', 'profil'] as $slug) {
-    Route::get($prefix . '/' . $slug, fn() => view($view . '.page', ['page' => $slug]))->name('webia.dl.' . $slug);
+    Route::get($prefix.'/'.$slug, fn () => view($view.'.page', ['page' => $slug]))->name('webia.dlaf.'.$slug);
 }
+
+Route::prefix('webia/template/libraries-digital-archives/vintage-editorial/historical-document-archive-burgundy-classic')
+    ->name('webia.hda-burgundy.')
+    ->group(function () {
+        $cfgKey   = 'template.libraries-digital-archives.vintage-editorial.historical-document-archive-burgundy-classic.historical-document-archive';
+        $rel      = 'libraries-digital-archives/vintage-editorial/historical-document-archive-burgundy-classic';
+        $viewBase = 'website-bisnis.template.libraries-digital-archives.vintage-editorial.historical-document-archive-burgundy-classic.';
+
+        foreach ((array) config($cfgKey . '.routes', []) as $def) {
+            Route::get($def['uri'], function (?string $slug = null) use ($def, $cfgKey, $rel, $viewBase) {
+                $hda    = config($cfgKey);
+                $prefix = 'webia.hda-burgundy.';
+
+                // ---- view helpers ------------------------------------------------
+                $find = fn (string $list, string $s) => collect($hda[$list] ?? [])->firstWhere('slug', $s);
+                $hu = function (string $name, ?string $s = null) use ($prefix) {
+                    if ($s === null && strpos($name, ':') !== false) {
+                        [$name, $s] = explode(':', $name, 2);
+                    }
+
+                    return route($prefix . $name, $s === null ? [] : ['slug' => $s]);
+                };
+                $ha = fn (string $path) => asset('images/website-bisnis/template/' . $rel . '/' . $path);
+                $hr = fn (string $list, array $slugs) => collect($slugs)->map(fn ($s) => $find($list, $s))->filter()->values()->all();
+                $hw = fn (string $list, string $key, string $val) => collect($hda[$list] ?? [])->where($key, $val)->values()->all();
+
+                // ---- current item (detail pages) ----------------------------------
+                $item = null;
+                if (! empty($def['source'])) {
+                    $item = $find($def['source'], (string) $slug);
+                    abort_unless($item, 404);
+                }
+
+                $page = $hda['pages'][$def['page']];
+                if ($item) {
+                    $page['title'] = $item['title'];
+                    $page['lead']  = $item['desc'] ?? ($item['short'] ?? '');
+                }
+
+                // ---- active top-level nav item -----------------------------------
+                $probe  = [$def['name'], $page['parent'] ?? ''];
+                $navKey = null;
+                foreach ($hda['nav'] as $n) {
+                    $routes = array_merge([$n['route']], array_column($n['children'] ?? [], 'route'));
+                    if (array_intersect($probe, $routes)) {
+                        $navKey = $n['label'];
+                        break;
+                    }
+                }
+
+                // ---- static search index (used by suggestions, search page, saved list)
+                $idx = [];
+                foreach ($hda['documents'] as $d) {
+                    $idx[] = [
+                        'id'       => 'doc:' . $d['slug'],
+                        'type'     => $d['type'],
+                        'title'    => $d['title'],
+                        'sub'      => $d['author'] . ' · ' . $d['year'],
+                        'year'     => (int) (preg_match('/\d{3,4}/', (string) $d['year'], $m) ? $m[0] : 0),
+                        'period'   => $d['period'],
+                        'category' => $find('categories', $d['category'])['title'] ?? '',
+                        'location' => $find('locations', $d['location'])['title'] ?? '',
+                        'url'      => $hu('document', $d['slug']),
+                        'image'    => $ha($d['image']),
+                    ];
+                }
+                $more = [
+                    ['collections', 'col', 'Collection', 'collection'],
+                    ['stories', 'story', 'Story', 'story'],
+                    ['figures', 'fig', 'Figure', 'figure'],
+                    ['events', 'event', 'Event', 'event'],
+                    ['exhibitions', 'exh', 'Exhibition', 'exhibition'],
+                    ['news', 'news', 'News', 'news-item'],
+                ];
+                foreach ($more as [$list, $key, $label, $routeName]) {
+                    foreach ($hda[$list] as $x) {
+                        $idx[] = [
+                            'id'    => $key . ':' . $x['slug'],
+                            'type'  => $label,
+                            'title' => $x['title'],
+                            'sub'   => $x['author'] ?? ($x['date'] ?? ($x['dates'] ?? ($x['period'] ?? ''))),
+                            'url'   => $hu($routeName, $x['slug']),
+                            'image' => $ha($x['image']),
+                        ];
+                    }
+                }
+
+                // ---- WhatsApp link: number comes from .env (HDA_WHATSAPP_NUMBER), never hard-coded
+                $wa  = $hda['site']['whatsapp'];
+                $hwa = 'https://wa.me/' . preg_replace('/\D+/', '', (string) $wa['number']) . '?text=' . rawurlencode($wa['message']);
+
+                $flags = JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP;
+
+                return view($viewBase . $def['view'], [
+                    'hda'        => $hda,
+                    'hu'         => $hu,
+                    'ha'         => $ha,
+                    'hr'         => $hr,
+                    'hf'         => $find,
+                    'hw'         => $hw,
+                    'hv'         => $viewBase,
+                    'hcss'       => asset('css/website-bisnis/template/' . $rel . '/historical-document-archive.css'),
+                    'hjs'        => asset('js/website-bisnis/template/' . $rel . '/historical-document-archive.js'),
+                    'hwa'        => $hwa,
+                    'hindex'     => json_encode($idx, $flags),
+                    'hassistant' => json_encode($hda['assistant'], $flags),
+                    'page'       => $page,
+                    'item'       => $item,
+                    'route'      => $def['name'],
+                    'navKey'     => $navKey,
+                    'slug'       => $slug,
+                ]);
+            })->name($def['name']);
+        }
+    });
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------
 
