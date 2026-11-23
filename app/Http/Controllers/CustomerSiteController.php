@@ -149,6 +149,10 @@ class CustomerSiteController extends Controller
             return $this->handleTravelBaitul($order, $siteConfigPath, $pageKey);
         }
 
+        if (str_starts_with($siteConfigPath, 'photography-creative-studio/futuristic/')) {
+            return $this->handleUgcDarkMode($order, $siteConfigPath, $pageKey);
+        }
+
         if (str_starts_with($siteConfigPath, 'photography-creative-studio/')) {
             return $this->handlePhotographyConfig($order, $siteConfigPath, $pageKey);
         }
@@ -1777,9 +1781,18 @@ class CustomerSiteController extends Controller
         'aurelia-home-renovation' => ['home' => 'website-bisnis.templates.home-services.home-renovation-repair.aurelia.aurelia'],
     ];
 
+    private const HOME_RENOVATION_CONFIG_VIEWS = [
+        'organic/home-renovation-repair-sage-green/home-renovation-repair' => 'sage',
+        'vintage/home-renovation-repair-chocolate-luxe/home-renovation-repair' => 'chocolate',
+    ];
+
     private function handleHomeServices(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
     {
         $slug = Str::after($siteConfigPath, 'home-services/');
+        if (isset(self::HOME_RENOVATION_CONFIG_VIEWS[$slug])) {
+            return $this->handleHomeRenovationConfig($order, $siteConfigPath, $pageKey);
+        }
+
         if (isset(self::HOME_SERVICES_CONFIG_VIEWS[$slug])) {
             return $this->handleHomeServicesConfig($order, $siteConfigPath, $pageKey);
         }
@@ -3830,6 +3843,223 @@ class CustomerSiteController extends Controller
         foreach ($previewBases as $pb) {
             $renderedHtml = str_replace($pb, $siteBase, $renderedHtml);
         }
+
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+        return response($renderedHtml);
+    }
+
+    private function handleHomeRenovationConfig(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $variant = self::HOME_RENOVATION_CONFIG_VIEWS[Str::after($siteConfigPath, 'home-services/')] ?? null;
+        abort_unless($variant !== null, 404);
+
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $instagram = ltrim($business['instagram'] ?? '', '@');
+        $custWa = $whatsapp ?: '62895630300345';
+
+        if ($variant === 'sage') {
+            $configKey = 'template.home-services.organic.home-renovation-repair-sage-green.home-renovation-repair';
+            $viewBase = 'website-bisnis.template.home-services.organic.home-renovation-repair-sage-green';
+            $viewMap = [
+                'home' => $viewBase.'.home',
+                'layanan' => $viewBase.'.pages.layanan',
+                'paket-layanan' => $viewBase.'.pages.paket-layanan',
+                'galeri' => $viewBase.'.pages.galeri',
+                'proyek' => $viewBase.'.pages.proyek',
+                'area-layanan' => $viewBase.'.pages.area-layanan',
+                'proses-kerja' => $viewBase.'.pages.proses-kerja',
+                'permintaan-penawaran' => $viewBase.'.pages.permintaan-penawaran',
+                'booking-survei' => $viewBase.'.pages.booking-survei',
+            ];
+            $page = $pageKey === 'home' ? 'home' : $pageKey;
+            abort_unless(isset($viewMap[$page]), 404);
+            $viewName = $viewMap[$page];
+
+            $siteConfig = config($configKey);
+            if (is_array($siteConfig)) {
+                if (isset($siteConfig['site']) && is_array($siteConfig['site'])) {
+                    if (! empty($business['business_name'])) {
+                        $siteConfig['site']['name'] = $business['business_name'];
+                    }
+                    if ($whatsapp !== '') {
+                        $siteConfig['site']['whatsapp'] = $whatsapp;
+                    }
+                    if (! empty($business['email'])) {
+                        $siteConfig['site']['email'] = $business['email'];
+                    }
+                    if (! empty($business['address'])) {
+                        $siteConfig['site']['address'] = $business['address'];
+                    }
+                }
+                config([$configKey => $siteConfig]);
+            }
+
+            $renderedHtml = view($viewName, [
+                'page' => $pageKey === 'home' ? 'home' : $pageKey,
+                'order' => $order,
+                'business' => $business,
+                'whatsapp' => $whatsapp,
+                'instagram' => $instagram,
+            ])->render();
+
+            // Transform
+            $bizName = $business['business_name'] ?? '';
+            if ($bizName !== '') {
+                $renderedHtml = str_replace('Renovaku', $bizName, $renderedHtml);
+            }
+            $renderedHtml = str_replace('62895630300345', $custWa, $renderedHtml);
+            if (! empty($business['email'])) {
+                $renderedHtml = str_replace('info@renovaku.id', $business['email'], $renderedHtml);
+            }
+            $address = $this->businessAddress($business);
+            if ($address !== '') {
+                $renderedHtml = str_replace('Jl. Melati Indah No. 45, Jakarta', $address, $renderedHtml);
+            }
+            $siteBase = url('/s/'.$order->site_slug);
+            $previewBase = url('/webia/template/home-services/organic/home-renovation-repair-sage-green');
+            $renderedHtml = str_replace($previewBase, $siteBase, $renderedHtml);
+        } else {
+            $configKey = 'template.home-services.vintage.home-renovation-repair-chocolate-luxe.home-renovation-repair';
+            $view = 'website-bisnis.template.home-services.vintage.home-renovation-repair-chocolate-luxe.home-renovation-repair';
+            $pageMap = [
+                'home' => 'home',
+                'layanan' => 'layanan',
+                'paket' => 'paket',
+                'galeri' => 'galeri',
+                'proyek' => 'proyek',
+                'area' => 'area',
+                'proses' => 'proses',
+                'penawaran' => 'penawaran',
+                'survei' => 'survei',
+            ];
+            $page = $pageMap[$pageKey] ?? null;
+            abort_unless($page !== null, 404);
+            $viewName = $view;
+
+            $siteConfig = config($configKey);
+            if (is_array($siteConfig)) {
+                if (isset($siteConfig['brand']) && is_array($siteConfig['brand'])) {
+                    if (! empty($business['business_name'])) {
+                        $siteConfig['brand']['name'] = $business['business_name'];
+                    }
+                    if (isset($siteConfig['brand']['whatsapp']) && is_array($siteConfig['brand']['whatsapp'])) {
+                        if ($whatsapp !== '') {
+                            $siteConfig['brand']['whatsapp']['number'] = $whatsapp;
+                        }
+                    }
+                }
+                if (isset($siteConfig['contact']) && is_array($siteConfig['contact'])) {
+                    if ($whatsapp !== '') {
+                        $siteConfig['contact']['whatsapp'] = $whatsapp;
+                    }
+                    if (! empty($business['email'])) {
+                        $siteConfig['contact']['email'] = $business['email'];
+                    }
+                    if (! empty($business['address'])) {
+                        $siteConfig['contact']['address'] = $business['address'];
+                    }
+                }
+                config([$configKey => $siteConfig]);
+            }
+
+            $renderedHtml = view($viewName, [
+                'page' => $page,
+                'order' => $order,
+                'business' => $business,
+                'whatsapp' => $whatsapp,
+                'instagram' => $instagram,
+            ])->render();
+
+            $bizName = $business['business_name'] ?? '';
+            if ($bizName !== '') {
+                $renderedHtml = str_replace('Renovate', $bizName, $renderedHtml);
+            }
+            $renderedHtml = str_replace('62895630300345', $custWa, $renderedHtml);
+            if (! empty($business['email'])) {
+                $renderedHtml = str_replace('hello@renovate.id', $business['email'], $renderedHtml);
+            }
+            $address = $this->businessAddress($business);
+            if ($address !== '') {
+                $renderedHtml = str_replace('Jl. Kemang Raya No. 88, Jakarta', $address, $renderedHtml);
+            }
+            $siteBase = url('/s/'.$order->site_slug);
+            $previewBase = url('/webia/template/home-services/vintage/home-renovation-repair-chocolate-luxe');
+            $renderedHtml = str_replace($previewBase, $siteBase, $renderedHtml);
+        }
+
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+        return response($renderedHtml);
+    }
+
+    private function handleUgcDarkMode(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $configKey = 'template.photography-creative-studio.futuristic.ugc-content-creator-studio-dark-mode.ugc-content-creator-studio';
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $instagram = ltrim($business['instagram'] ?? '', '@');
+        $custWa = $whatsapp ?: '62895630300345';
+
+        $validPages = ['home', 'portfolio', 'samples', 'packages', 'rights', 'platforms', 'brands', 'inquiry', 'testimonials', 'faq'];
+        $page = in_array($pageKey, $validPages, true) ? $pageKey : 'home';
+        abort_unless($pageKey === 'home' || in_array($pageKey, $validPages, true), 404);
+
+        $siteConfig = config($configKey);
+        if (is_array($siteConfig)) {
+            if (isset($siteConfig['brand']) && is_array($siteConfig['brand'])) {
+                if (! empty($business['business_name'])) {
+                    $siteConfig['brand']['name'] = $business['business_name'];
+                }
+            }
+            if (isset($siteConfig['contact']) && is_array($siteConfig['contact'])) {
+                if ($whatsapp !== '') {
+                    $siteConfig['contact']['wa'] = $whatsapp;
+                }
+                if (! empty($business['email'])) {
+                    $siteConfig['contact']['email'] = $business['email'];
+                }
+            }
+            config([$configKey => $siteConfig]);
+        }
+
+        $data = require config_path('template/photography-creative-studio/futuristic/ugc-content-creator-studio-dark-mode/ugc-content-creator-studio.php');
+        if (is_array($siteConfig)) {
+            if (isset($data['brand']) && is_array($data['brand'])) {
+                if (! empty($business['business_name'])) {
+                    $data['brand']['name'] = $business['business_name'];
+                }
+            }
+            if (isset($data['contact']) && is_array($data['contact'])) {
+                if ($whatsapp !== '') {
+                    $data['contact']['wa'] = $whatsapp;
+                }
+                if (! empty($business['email'])) {
+                    $data['contact']['email'] = $business['email'];
+                }
+            }
+        }
+
+        $viewName = 'website-bisnis.template.photography-creative-studio.futuristic.ugc-content-creator-studio-dark-mode.ugc-content-creator-studio';
+        $renderedHtml = view($viewName, [
+            'page' => $page,
+            'd' => $data,
+        ])->render();
+
+        $bizName = $business['business_name'] ?? '';
+        if ($bizName !== '') {
+            $renderedHtml = str_replace('SOROT Studio', $bizName, $renderedHtml);
+            $renderedHtml = str_replace('SOROT', strtoupper($bizName), $renderedHtml);
+        }
+        $renderedHtml = str_replace('62895630300345', $custWa, $renderedHtml);
+        if (! empty($business['email'])) {
+            $renderedHtml = str_replace('halo@sorotstudio.id', $business['email'], $renderedHtml);
+        }
+
+        $siteBase = url('/s/'.$order->site_slug);
+        $previewBase = url('/webia/template/photography-creative-studio/futuristic/ugc-content-creator-studio-dark-mode');
+        $renderedHtml = str_replace($previewBase, $siteBase, $renderedHtml);
 
         $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
 
