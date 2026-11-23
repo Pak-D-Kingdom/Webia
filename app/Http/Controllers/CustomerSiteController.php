@@ -161,6 +161,10 @@ class CustomerSiteController extends Controller
             return $this->handleNonprofitConfig($order, $siteConfigPath, $pageKey);
         }
 
+        if (str_starts_with($siteConfigPath, 'travel&tourism/')) {
+            return $this->handleTravelConfig($order, $siteConfigPath, $pageKey);
+        }
+
         if (str_starts_with($siteConfigPath, 'healthcare-standalone/')) {
             return $this->handleHealthcareStandalone($order, $siteConfigPath, $pageKey);
         }
@@ -3630,6 +3634,198 @@ class CustomerSiteController extends Controller
             'foundation-warm' => [url('/webia/template/nonprofit-community/minimalis/foundation-warm-neutral')],
             'citrus-pop' => [url('/webia/template/nonprofit-community/bold/social-organization-citrus-pop')],
             'tropical-rush' => [url('/webia/template/nonprofit-community/creative/social-organization-tropical-rush')],
+        };
+        foreach ($previewBases as $pb) {
+            $renderedHtml = str_replace($pb, $siteBase, $renderedHtml);
+        }
+
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+        return response($renderedHtml);
+    }
+
+    private function handleTravelConfig(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $variant = match (true) {
+            str_starts_with($siteConfigPath, 'travel&tourism/modern/') => 'ocean-teal',
+            str_starts_with($siteConfigPath, 'travel&tourism/organic/') => 'forest-moss',
+            str_starts_with($siteConfigPath, 'travel&tourism/luxury/') => 'navy',
+            default => null,
+        };
+        abort_unless($variant !== null, 404);
+
+        $configKey = match ($variant) {
+            'ocean-teal' => 'template.travel&tourism.modern.travel-agent-ocean-teal.travel-agent',
+            'forest-moss' => 'template.travel&tourism.organic.travel-agent-forest-moss.travel-agent',
+            'navy' => 'template.travel&tourism.luxury.travel-agent-navy-champagne-gold.travel-agent',
+        };
+
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $instagram = ltrim($business['instagram'] ?? '', '@');
+        $custWa = $whatsapp ?: '62895630300345';
+
+        // Override config.
+        $siteConfig = config($configKey);
+        if (is_array($siteConfig)) {
+            if (isset($siteConfig['brand']) && is_array($siteConfig['brand'])) {
+                if (! empty($business['business_name'])) {
+                    $siteConfig['brand']['name'] = $business['business_name'];
+                }
+            }
+            if (isset($siteConfig['contact']) && is_array($siteConfig['contact'])) {
+                if ($whatsapp !== '') {
+                    $siteConfig['contact']['whatsapp'] = $whatsapp;
+                }
+                if (! empty($business['email'])) {
+                    $siteConfig['contact']['email'] = $business['email'];
+                }
+                if (! empty($business['address'])) {
+                    $siteConfig['contact']['address'] = $business['address'];
+                }
+            }
+            config([$configKey => $siteConfig]);
+        }
+        $cfg = $siteConfig ?? config($configKey);
+
+        if ($variant === 'ocean-teal') {
+            $taNs = 'website-bisnis.template.travel&tourism.modern.travel-agent-ocean-teal';
+            $taPath = 'template/travel&tourism/modern/travel-agent-ocean-teal';
+            $taPages = ['index', 'destinasi', 'paket-tour', 'itinerary', 'harga', 'jadwal', 'galeri', 'inquiry', 'testimoni', 'ai-chat'];
+            $page = in_array($pageKey, $taPages, true) ? $pageKey : 'index';
+            abort_unless(in_array($pageKey, $taPages, true) || $pageKey === 'home', 404);
+            if ($pageKey === 'home') {
+                $page = 'index';
+            }
+            $viewName = $taNs.'.'.$page;
+            $taName = 'template.travel-agent-ocean-teal.';
+            $imgBase = 'images/website-bisnis/'.$taPath;
+            $previewBase = url('/webia/template/travel-agent-ocean-teal');
+            $routes = [];
+            foreach ($taPages as $name) {
+                $routes[$name] = rtrim($previewBase.'/'.($name === 'index' ? '' : $name), '/');
+            }
+            $viewData = [
+                'ns' => $taNs,
+                'active' => $page,
+                'ta' => $cfg,
+                'assets' => [
+                    'css' => asset('css/website-bisnis/'.$taPath.'/travel-agent.css'),
+                    'js' => asset('js/website-bisnis/'.$taPath.'/travel-agent.js'),
+                ],
+                'routes' => $routes,
+                'img' => fn (string $file) => asset($imgBase.'/'.$file),
+                'rp' => fn ($n) => 'Rp '.number_format($n, 0, ',', '.'),
+                'icon' => fn (string $name, string $class = '') => $name,
+            ];
+        } elseif ($variant === 'forest-moss') {
+            $ns = 'website-bisnis.template.travel&tourism.organic.travel-agent-forest-moss';
+            $path = 'website-bisnis/template/travel&tourism/organic/travel-agent-forest-moss';
+            $pages = ['index', 'destinasi', 'paket-tour', 'itinerary', 'harga', 'jadwal-keberangkatan', 'galeri', 'booking-inquiry', 'testimoni', 'asisten-ai'];
+            // map URL page key to blade name
+            $pageMap = [
+                'home' => 'index',
+                'destinasi' => 'destinasi',
+                'paket-tour' => 'paket-tour',
+                'itinerary' => 'itinerary',
+                'harga' => 'harga',
+                'jadwal' => 'jadwal-keberangkatan',
+                'galeri' => 'galeri',
+                'inquiry' => 'booking-inquiry',
+                'testimoni' => 'testimoni',
+                'ai-chat' => 'asisten-ai',
+            ];
+            $page = $pageKey === 'home' ? 'index' : ($pageMap[$pageKey] ?? null);
+            abort_unless($page !== null && in_array($page, $pages, true), 404);
+            $viewName = $ns.'.'.$page;
+            $assets = [
+                'css' => asset('css/'.$path.'/travel-agent.css'),
+                'js' => asset('js/'.$path.'/travel-agent.js'),
+                'img' => asset('images/'.$path),
+            ];
+            $viewData = [
+                'ns' => $ns,
+                'cfg' => $cfg,
+                'assets' => $assets,
+                'r' => fn (string $name) => url('/s/'.$order->site_slug),
+                'img' => fn (string $file) => $assets['img'].'/'.$file,
+            ];
+        } else {
+            $ns = 'website-bisnis.template.travel&tourism.luxury.travel-agent-navy-champagne-gold';
+            $tvPath = 'travel&tourism/luxury/travel-agent-navy-champagne-gold';
+            $pages = ['beranda', 'destinasi', 'paket', 'itinerary', 'harga', 'jadwal', 'galeri', 'testimoni', 'inquiry', 'faq'];
+            // URL page keys map to page names
+            $pageMap = [
+                'home' => 'beranda',
+                'destinasi' => 'destinasi',
+                'paket' => 'paket',
+                'itinerary' => 'itinerary',
+                'harga' => 'harga',
+                'jadwal' => 'jadwal',
+                'galeri' => 'galeri',
+                'testimoni' => 'testimoni',
+                'inquiry' => 'inquiry',
+                'faq' => 'faq',
+            ];
+            $page = $pageKey === 'home' ? 'beranda' : ($pageMap[$pageKey] ?? null);
+            abort_unless($page !== null && in_array($page, $pages, true), 404);
+            $viewName = $ns.'.'.($page === 'beranda' ? 'index' : $page);
+            $viewData = [
+                'ns' => $ns,
+                'page' => $page,
+                't' => $cfg,
+                'css' => asset('css/website-bisnis/template/'.$tvPath.'/travel-agent.css'),
+                'js' => asset('js/website-bisnis/template/'.$tvPath.'/travel-agent.js'),
+                'url' => fn (string $p = '') => url('/s/'.$order->site_slug.($p !== '' ? '/'.ltrim($p, '/') : '')),
+                'img' => fn (string $f) => asset('images/website-bisnis/template/'.$tvPath.'/'.$f),
+                'idr' => fn ($n) => 'Rp '.number_format((int) $n, 0, ',', '.'),
+                'icon' => fn (string $n) => $n,
+            ];
+        }
+
+        $renderedHtml = view($viewName, $viewData)->render();
+
+        // Transform remaining demo brand/WA/email/address strings.
+        $bizName = $business['business_name'] ?? '';
+        $demoBrands = match ($variant) {
+            'ocean-teal' => ['OceanJourney'],
+            'forest-moss' => ['GreenTrip'],
+            'navy' => ['GrandJourney'],
+        };
+        if ($bizName !== '') {
+            foreach ($demoBrands as $demo) {
+                $renderedHtml = str_replace($demo, $bizName, $renderedHtml);
+            }
+        }
+        $renderedHtml = str_replace('62895630300345', $custWa, $renderedHtml);
+
+        if (! empty($business['email'])) {
+            $demoEmails = match ($variant) {
+                'ocean-teal' => ['halo@oceanjourney.id'],
+                'forest-moss' => ['halo@greentrip.id'],
+                'navy' => ['info@grandjourney.id'],
+            };
+            $renderedHtml = str_replace($demoEmails, $business['email'], $renderedHtml);
+        }
+
+        $address = $this->businessAddress($business);
+        if ($address !== '') {
+            $demoAddresses = match ($variant) {
+                'ocean-teal' => ['Jl. Pantai Indah No. 88, Jakarta Utara'],
+                'forest-moss' => [],
+                'navy' => [],
+            };
+            if (! empty($demoAddresses)) {
+                $renderedHtml = str_replace($demoAddresses, $address, $renderedHtml);
+            }
+        }
+
+        // Remap preview links to published site routes.
+        $siteBase = url('/s/'.$order->site_slug);
+        $previewBases = match ($variant) {
+            'ocean-teal' => [url('/webia/template/travel-agent-ocean-teal'), url('/webia/template/travel&tourism/modern/travel-agent-ocean-teal')],
+            'forest-moss' => [url('/webia/template/travel&tourism/organic/travel-agent-forest-moss')],
+            'navy' => [url('/webia/template/travel-tourism/luxury/travel-agent-navy-champagne-gold')],
         };
         foreach ($previewBases as $pb) {
             $renderedHtml = str_replace($pb, $siteBase, $renderedHtml);
