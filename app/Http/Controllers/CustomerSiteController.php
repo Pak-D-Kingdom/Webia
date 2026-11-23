@@ -153,6 +153,10 @@ class CustomerSiteController extends Controller
             return $this->handlePhotographyConfig($order, $siteConfigPath, $pageKey);
         }
 
+        if (str_starts_with($siteConfigPath, 'interior&architecture/')) {
+            return $this->handleInteriorConfig($order, $siteConfigPath, $pageKey);
+        }
+
         if (str_starts_with($siteConfigPath, 'healthcare-standalone/')) {
             return $this->handleHealthcareStandalone($order, $siteConfigPath, $pageKey);
         }
@@ -3149,6 +3153,197 @@ class CustomerSiteController extends Controller
             'forest-moss' => [url('/webia/template/agriculture-farming/corporate/agribisnis-forest-moss')],
             'earth-tone' => [url('/webia/template/agriculture-farming/organic/agribisnis-earth-tone')],
             'classic-trust' => [url('/webia/template/agribisnis-classic-trust')],
+        };
+        foreach ($previewBases as $pb) {
+            $renderedHtml = str_replace($pb, $siteBase, $renderedHtml);
+        }
+
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+        return response($renderedHtml);
+    }
+
+    private function handleInteriorConfig(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $variant = match (true) {
+            str_starts_with($siteConfigPath, 'interior&architecture/rustic/') => 'terracotta',
+            str_starts_with($siteConfigPath, 'interior&architecture/premium-minimal/') => 'mocha',
+            str_starts_with($siteConfigPath, 'interior&architecture/luxury/') => 'chocolate',
+            default => null,
+        };
+        abort_unless($variant !== null, 404);
+
+        $configKey = match ($variant) {
+            'terracotta' => 'template.interior&architecture.rustic.furniture-terracotta.furniture',
+            'mocha' => 'template.interior&architecture.premium-minimal.furniture-mocha-cream.furniture',
+            'chocolate' => 'template.interior&architecture.luxury.furniture-chocolate-luxe.furniture',
+        };
+
+        $viewMap = match ($variant) {
+            'terracotta' => [
+                'home' => 'website-bisnis.template.interior&architecture.rustic.furniture-terracotta.index',
+                'hero-banner' => 'website-bisnis.template.interior&architecture.rustic.furniture-terracotta.hero',
+                'katalog' => 'website-bisnis.template.interior&architecture.rustic.furniture-terracotta.catalog',
+                'custom-design' => 'website-bisnis.template.interior&architecture.rustic.furniture-terracotta.custom-design',
+                'material-finishing' => 'website-bisnis.template.interior&architecture.rustic.furniture-terracotta.materials',
+                'dimensi-produk' => 'website-bisnis.template.interior&architecture.rustic.furniture-terracotta.dimensions',
+                'galeri-proyek' => 'website-bisnis.template.interior&architecture.rustic.furniture-terracotta.gallery',
+                'custom-order' => 'website-bisnis.template.interior&architecture.rustic.furniture-terracotta.order-form',
+                'lead-time-produksi' => 'website-bisnis.template.interior&architecture.rustic.furniture-terracotta.lead-time',
+                'permintaan-penawaran' => 'website-bisnis.template.interior&architecture.rustic.furniture-terracotta.quotation',
+                'ai-faq' => 'website-bisnis.template.interior&architecture.rustic.furniture-terracotta.ai-faq',
+            ],
+            'mocha' => [
+                'home' => 'website-bisnis.template.interior&architecture.premium-minimal.furniture-mocha-cream.index',
+                'hero-banner' => 'website-bisnis.template.interior&architecture.premium-minimal.furniture-mocha-cream.hero',
+                'katalog' => 'website-bisnis.template.interior&architecture.premium-minimal.furniture-mocha-cream.katalog',
+                'custom-design' => 'website-bisnis.template.interior&architecture.premium-minimal.furniture-mocha-cream.custom-design',
+                'material-finishing' => 'website-bisnis.template.interior&architecture.premium-minimal.furniture-mocha-cream.material-finishing',
+                'ukuran-produk' => 'website-bisnis.template.interior&architecture.premium-minimal.furniture-mocha-cream.ukuran-produk',
+                'project-gallery' => 'website-bisnis.template.interior&architecture.premium-minimal.furniture-mocha-cream.project-gallery',
+                'custom-order' => 'website-bisnis.template.interior&architecture.premium-minimal.furniture-mocha-cream.custom-order',
+                'production-lead-time' => 'website-bisnis.template.interior&architecture.premium-minimal.furniture-mocha-cream.production-lead-time',
+                'permintaan-penawaran' => 'website-bisnis.template.interior&architecture.premium-minimal.furniture-mocha-cream.permintaan-penawaran',
+                'ai-chatbot' => 'website-bisnis.template.interior&architecture.premium-minimal.furniture-mocha-cream.ai-chatbot',
+            ],
+            'chocolate' => [
+                'home' => 'website-bisnis.template.interior&architecture.luxury.furniture-chocolate-luxe.index',
+                'hero' => 'website-bisnis.template.interior&architecture.luxury.furniture-chocolate-luxe.hero',
+                'katalog' => 'website-bisnis.template.interior&architecture.luxury.furniture-chocolate-luxe.catalog',
+                'custom-design' => 'website-bisnis.template.interior&architecture.luxury.furniture-chocolate-luxe.custom-design',
+                'material-finishing' => 'website-bisnis.template.interior&architecture.luxury.furniture-chocolate-luxe.materials',
+                'dimensi' => 'website-bisnis.template.interior&architecture.luxury.furniture-chocolate-luxe.dimensions',
+                'galeri' => 'website-bisnis.template.interior&architecture.luxury.furniture-chocolate-luxe.gallery',
+                'custom-order' => 'website-bisnis.template.interior&architecture.luxury.furniture-chocolate-luxe.order',
+                'lead-time' => 'website-bisnis.template.interior&architecture.luxury.furniture-chocolate-luxe.lead-time',
+                'penawaran' => 'website-bisnis.template.interior&architecture.luxury.furniture-chocolate-luxe.quotation',
+                'ai-chat' => 'website-bisnis.template.interior&architecture.luxury.furniture-chocolate-luxe.ai-chat',
+            ],
+        };
+
+        $page = $pageKey === 'home' ? 'home' : $pageKey;
+        abort_unless(isset($viewMap[$page]), 404);
+        $viewName = $viewMap[$page];
+
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $instagram = ltrim($business['instagram'] ?? '', '@');
+
+        $siteConfig = config($configKey);
+        if (is_array($siteConfig)) {
+            if ($variant === 'terracotta') {
+                if (isset($siteConfig['meta']) && is_array($siteConfig['meta'])) {
+                    if (! empty($business['business_name'])) {
+                        $siteConfig['meta']['name'] = $business['business_name'];
+                    }
+                }
+                if (isset($siteConfig['contact']) && is_array($siteConfig['contact'])) {
+                    if ($whatsapp !== '') {
+                        $siteConfig['contact']['whatsapp'] = $whatsapp;
+                    }
+                    if (! empty($business['email'])) {
+                        $siteConfig['contact']['email'] = $business['email'];
+                    }
+                    if (! empty($business['address'])) {
+                        $siteConfig['contact']['address'] = $business['address'];
+                    }
+                }
+            } elseif ($variant === 'mocha') {
+                if (isset($siteConfig['brand']) && is_array($siteConfig['brand'])) {
+                    if (! empty($business['business_name'])) {
+                        $siteConfig['brand']['name'] = $business['business_name'];
+                    }
+                }
+                if (isset($siteConfig['contact']) && is_array($siteConfig['contact'])) {
+                    if ($whatsapp !== '') {
+                        $siteConfig['contact']['whatsapp'] = $whatsapp;
+                    }
+                    if (! empty($business['email'])) {
+                        $siteConfig['contact']['email'] = $business['email'];
+                    }
+                    if (! empty($business['address'])) {
+                        $siteConfig['contact']['address'] = $business['address'];
+                    }
+                }
+            } elseif ($variant === 'chocolate') {
+                if (isset($siteConfig['brand']) && is_array($siteConfig['brand'])) {
+                    if (! empty($business['business_name'])) {
+                        $siteConfig['brand']['name'] = $business['business_name'];
+                    }
+                }
+                if (isset($siteConfig['contact']) && is_array($siteConfig['contact'])) {
+                    if ($whatsapp !== '') {
+                        $siteConfig['contact']['whatsapp'] = $whatsapp;
+                    }
+                    if (! empty($business['email'])) {
+                        $siteConfig['contact']['email'] = $business['email'];
+                    }
+                    if (! empty($business['address'])) {
+                        $siteConfig['contact']['address'] = $business['address'];
+                    }
+                }
+            }
+            config([$configKey => $siteConfig]);
+        }
+
+        $viewData = [
+            'order' => $order,
+            'page' => $pageKey,
+            'business' => $business,
+            'whatsapp' => $whatsapp,
+            'instagram' => $instagram,
+        ];
+        if ($variant === 'terracotta') {
+            $viewData['furniture'] = $siteConfig ?? config($configKey);
+        } elseif ($variant === 'mocha') {
+            $viewData['mocha'] = $siteConfig ?? config($configKey);
+        } elseif ($variant === 'chocolate') {
+            $viewData['furniture'] = $siteConfig ?? config($configKey);
+            $viewData['activePage'] = $pageKey === 'home' ? 'home' : $pageKey;
+        }
+
+        $renderedHtml = view($viewName, $viewData)->render();
+
+        // Transform remaining demo brand/WA/email/address strings.
+        $bizName = $business['business_name'] ?? '';
+        $custWa = $whatsapp ?: '62895630300345';
+        $demoBrands = match ($variant) {
+            'terracotta' => ['RusticFurni', 'RUSTICFURNI'],
+            'mocha' => ['WoodenLane'],
+            'chocolate' => ['LuxeFurni'],
+        };
+        if ($bizName !== '') {
+            foreach ($demoBrands as $demo) {
+                $renderedHtml = str_replace($demo, $bizName, $renderedHtml);
+            }
+        }
+        $renderedHtml = str_replace('62895630300345', $custWa, $renderedHtml);
+
+        if (! empty($business['email'])) {
+            $demoEmails = match ($variant) {
+                'terracotta' => ['hello@rusticfurni.id'],
+                'mocha' => ['info@woodenlane.id'],
+                'chocolate' => ['hello@luxefurni.id'],
+            };
+            $renderedHtml = str_replace($demoEmails, $business['email'], $renderedHtml);
+        }
+
+        $address = $this->businessAddress($business);
+        if ($address !== '') {
+            $demoAddresses = match ($variant) {
+                'terracotta' => ['Jl. Suka Maju No. 88, Bandung'],
+                'mocha' => ['Jl. Melati No. 12, Jakarta Selatan'],
+                'chocolate' => ['Jakarta, Indonesia'],
+            };
+            $renderedHtml = str_replace($demoAddresses, $address, $renderedHtml);
+        }
+
+        // Remap preview links to published site routes.
+        $siteBase = url('/s/'.$order->site_slug);
+        $previewBases = match ($variant) {
+            'terracotta' => [url('/webia/template/interior-architecture/rustic/furniture-terracotta')],
+            'mocha' => [url('/webia/template/interior-architecture/premium-minimal/furniture-mocha-cream')],
+            'chocolate' => [url('/webia/template/interior-architecture/luxury/furniture-chocolate-luxe')],
         };
         foreach ($previewBases as $pb) {
             $renderedHtml = str_replace($pb, $siteBase, $renderedHtml);
