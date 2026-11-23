@@ -128,6 +128,22 @@ class CustomerSiteController extends Controller
         if (str_starts_with($siteConfigPath, 'company-contractor/')) {
             return $this->handleCompanyContractor($order, $siteConfigPath, $pageKey);
         }
+
+        if (str_starts_with($siteConfigPath, 'property-standalone/')) {
+            return $this->handlePropertyStandalone($order, $siteConfigPath, $pageKey);
+        }
+
+        if (str_starts_with($siteConfigPath, 'wedding-standalone/')) {
+            return $this->handleWeddingStandalone($order, $siteConfigPath, $pageKey);
+        }
+
+        if (str_starts_with($siteConfigPath, 'travel-baitul/')) {
+            return $this->handleTravelBaitul($order, $siteConfigPath, $pageKey);
+        }
+
+        if (str_starts_with($siteConfigPath, 'healthcare-standalone/')) {
+            return $this->handleHealthcareStandalone($order, $siteConfigPath, $pageKey);
+        }
         $views = match (true) {
             $isBrandingAgency => array_fill_keys(['home', 'layanan', 'keahlian', 'portofolio', 'janji'], 'branding-creative-agency'),
             str_starts_with($siteConfigPath, 'company/') => ['home' => 'index', 'tentang-kami' => 'tentang-kami', 'portofolio' => 'portofolio'],
@@ -2423,6 +2439,255 @@ class CustomerSiteController extends Controller
 
         $custWa = $whatsapp ?: '6281234567890';
         $html = str_replace('6281234567890', $custWa, $html);
+
+        return $html;
+    }
+
+    private const PROPERTY_STANDALONE_VIEWS = [
+        'denim-horizon-property-minimalist' => ['home' => 'website-bisnis.templates.property.property-minimalist'],
+        'pusaka-asri-property-traditional' => ['home' => 'website-bisnis.templates.property.property-traditional'],
+    ];
+
+    private function handlePropertyStandalone(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $slug = Str::after($siteConfigPath, 'property-standalone/');
+        abort_unless(isset(self::PROPERTY_STANDALONE_VIEWS[$slug]), 404);
+        abort_unless(isset(self::PROPERTY_STANDALONE_VIEWS[$slug][$pageKey]), 404);
+
+        $viewName = self::PROPERTY_STANDALONE_VIEWS[$slug][$pageKey];
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $instagram = ltrim($business['instagram'] ?? '', '@');
+
+        $renderedHtml = view($viewName, [
+            'order' => $order,
+            'page' => $pageKey,
+            'business' => $business,
+            'whatsapp' => $whatsapp,
+            'instagram' => $instagram,
+        ])->render();
+
+        $renderedHtml = $this->transformPropertyStandaloneHtml($renderedHtml, $business, $whatsapp);
+
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+        return response($renderedHtml);
+    }
+
+    private function transformPropertyStandaloneHtml(string $html, array $business, string $whatsapp): string
+    {
+        $bizName = $business['business_name'] ?? '';
+        $custWa = $whatsapp ?: '6281234567890';
+
+        if ($bizName !== '') {
+            $encodedName = rawurlencode($bizName);
+            $html = str_replace(
+                ['Denim%20Horizon', 'Pusaka%20Asri'],
+                [$encodedName, $encodedName],
+                $html
+            );
+
+            $brandMap = [
+                'Denim Horizon' => $bizName,
+                'Pusaka Asri' => $bizName,
+            ];
+            $html = str_replace(array_keys($brandMap), array_values($brandMap), $html);
+        }
+
+        $rawWa = $business['whatsapp'] ?? $custWa;
+        $html = str_replace(
+            ['6281277004674', '6281198708889'],
+            [$custWa, $custWa],
+            $html
+        );
+
+        $address = $this->businessAddress($business);
+        if ($address !== '') {
+            $html = str_replace(
+                [
+                    'Jl. Pusaka Raya No. 8, Cilandak Hills',
+                    'Jl. Pusaka Raya No. 8, Cilandak Hills, Pasar Minggu, Jakarta Selatan, DKI Jakarta 12560',
+                ],
+                $address,
+                $html
+            );
+        }
+
+        if (! empty($business['email'])) {
+            $html = str_replace(
+                ['gallery@denimhorizon.id', 'concierge@pusakaasri.co.id'],
+                $business['email'],
+                $html
+            );
+        }
+
+        return $html;
+    }
+
+    private const WEDDING_STANDALONE_VIEWS = [
+        'wedding-organizer-elegant' => ['home' => 'website-bisnis.templates.wedding-event.wedding-organizer.wedding-organizer-elegant'],
+    ];
+
+    private function handleWeddingStandalone(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $slug = Str::after($siteConfigPath, 'wedding-standalone/');
+        abort_unless(isset(self::WEDDING_STANDALONE_VIEWS[$slug]), 404);
+        abort_unless(isset(self::WEDDING_STANDALONE_VIEWS[$slug][$pageKey]), 404);
+
+        $viewName = self::WEDDING_STANDALONE_VIEWS[$slug][$pageKey];
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $instagram = ltrim($business['instagram'] ?? '', '@');
+
+        $renderedHtml = view($viewName, [
+            'order' => $order,
+            'page' => $pageKey,
+            'business' => $business,
+            'whatsapp' => $whatsapp,
+            'instagram' => $instagram,
+        ])->render();
+
+        $renderedHtml = $this->transformWeddingStandaloneHtml($renderedHtml, $business, $whatsapp);
+
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+        return response($renderedHtml);
+    }
+
+    private function transformWeddingStandaloneHtml(string $html, array $business, string $whatsapp): string
+    {
+        $bizName = $business['business_name'] ?? '';
+        $custWa = $whatsapp ?: '6285850180285';
+
+        if ($bizName !== '') {
+            $html = str_replace('Halo%20Aura%20Amour%20Wedding', 'Halo%20'.rawurlencode($bizName), $html);
+
+            $html = str_replace('Aura Amour', $bizName, $html);
+        }
+
+        $html = str_replace('6285850180285', $custWa, $html);
+
+        return $html;
+    }
+
+    private const TRAVEL_BAITUL_VIEWS = [
+        'baitul-safar-umrah-haji' => ['home' => 'website-bisnis.templates.travel-tourism.umrah-haji.baitul-safar.baitul-safar'],
+    ];
+
+    private function handleTravelBaitul(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $slug = Str::after($siteConfigPath, 'travel-baitul/');
+        abort_unless(isset(self::TRAVEL_BAITUL_VIEWS[$slug]), 404);
+        abort_unless(isset(self::TRAVEL_BAITUL_VIEWS[$slug][$pageKey]), 404);
+
+        $viewName = self::TRAVEL_BAITUL_VIEWS[$slug][$pageKey];
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $instagram = ltrim($business['instagram'] ?? '', '@');
+
+        $renderedHtml = view($viewName, [
+            'order' => $order,
+            'page' => $pageKey,
+            'business' => $business,
+            'whatsapp' => $whatsapp,
+            'instagram' => $instagram,
+        ])->render();
+
+        $renderedHtml = $this->transformTravelBaitulHtml($renderedHtml, $business, $whatsapp);
+
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+        return response($renderedHtml);
+    }
+
+    private function transformTravelBaitulHtml(string $html, array $business, string $whatsapp): string
+    {
+        $bizName = $business['business_name'] ?? '';
+        if ($bizName !== '') {
+            $html = str_replace('Baitul Safar', $bizName, $html);
+        }
+
+        $custWa = $whatsapp ?: '6281234567890';
+        $html = str_replace('6281234567890', $custWa, $html);
+
+        return $html;
+    }
+
+    private const HEALTHCARE_STANDALONE_VIEWS = [
+        'healthcare-dental-azure' => ['home' => 'website-bisnis.templates.healthcare.dental.azure-smile-clinic'],
+        'healthcare-dental-mint' => ['home' => 'website-bisnis.templates.healthcare.dental.mint-dental-house'],
+        'healthcare-dental-sunset' => ['home' => 'website-bisnis.templates.healthcare.dental.sunset-dental-care'],
+        'mitra-jiwa-psikologi-konseling' => ['home' => 'website-bisnis.templates.healthcare.psychology.mitra-jiwa'],
+        'ruang-tenang-psikologi-konseling' => ['home' => 'website-bisnis.template.healthcare.psychology.ruang-tenang.index'],
+    ];
+
+    private function handleHealthcareStandalone(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $slug = Str::after($siteConfigPath, 'healthcare-standalone/');
+        abort_unless(isset(self::HEALTHCARE_STANDALONE_VIEWS[$slug]), 404);
+        abort_unless(isset(self::HEALTHCARE_STANDALONE_VIEWS[$slug][$pageKey]), 404);
+
+        $viewName = self::HEALTHCARE_STANDALONE_VIEWS[$slug][$pageKey];
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $instagram = ltrim($business['instagram'] ?? '', '@');
+
+        $renderedHtml = view($viewName, [
+            'order' => $order,
+            'page' => $pageKey,
+            'business' => $business,
+            'whatsapp' => $whatsapp,
+            'instagram' => $instagram,
+        ])->render();
+
+        $renderedHtml = $this->transformHealthcareStandaloneHtml($renderedHtml, $business, $whatsapp);
+
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+        return response($renderedHtml);
+    }
+
+    private function transformHealthcareStandaloneHtml(string $html, array $business, string $whatsapp): string
+    {
+        $bizName = $business['business_name'] ?? '';
+        $custWa = $whatsapp ?: '6281234567890';
+
+        if ($bizName !== '') {
+            $brandMap = [
+                'Azure Smile Clinic' => $bizName,
+                'Mint Dental House' => $bizName,
+                'GlowDental Studio & Orthodontics' => $bizName,
+                'GlowDental Studio' => $bizName,
+                'GlowDental' => $bizName,
+                'Mitra Jiwa' => $bizName,
+                'Ruang Tenang' => $bizName,
+            ];
+            uksort($brandMap, fn ($a, $b) => strlen($b) <=> strlen($a));
+            $html = str_replace(array_keys($brandMap), array_values($brandMap), $html);
+        }
+
+        // Fill empty WhatsApp links (azure/mint/sunset) with customer number
+        $html = preg_replace('/wa\.me\/(?![0-9])/', 'wa.me/'.$custWa, $html) ?? $html;
+
+        $rawWa = $business['whatsapp'] ?? $custWa;
+        $html = str_replace(
+            ['6281234567890', '+62 812-3456-7890'],
+            [$custWa, $rawWa],
+            $html
+        );
+
+        $address = $this->businessAddress($business);
+        if ($address !== '') {
+            $html = str_replace('Jl. Senopati No. 88, Kebayoran Baru, Jakarta Selatan (Samping Parkir Barat)', $address, $html);
+        }
+
+        if (! empty($business['email'])) {
+            $html = str_replace(
+                ['halo@mitrajiwa.id', 'halo@ruangtenang.id'],
+                $business['email'],
+                $html
+            );
+        }
 
         return $html;
     }
