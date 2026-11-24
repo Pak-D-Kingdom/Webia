@@ -455,7 +455,8 @@ Mohon cek ketersediaan slot, instruktur, dan konfirmasi pendaftaran saya terlebi
       }
       const d = getBookingData();
       const msg = encodeURIComponent(generateWhatsAppMessage(d));
-      window.open(`https://wa.me/6285850180285?text=${msg}`, '_blank', 'noopener,noreferrer');
+      const targetWa = window.TIRTACERIA_WA_NUMBER || window.WEBIA_WA_ADMIN || '6285850180285';
+      window.open(`https://wa.me/${targetWa}?text=${msg}`, '_blank', 'noopener,noreferrer');
     }
 
     function copyWhatsAppText() {

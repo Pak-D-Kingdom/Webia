@@ -169,6 +169,10 @@ class CustomerSiteController extends Controller
             return $this->handleTravelConfig($order, $siteConfigPath, $pageKey);
         }
 
+        if (str_starts_with($siteConfigPath, 'travel-standalone/')) {
+            return $this->handleTravelStandalone($order, $siteConfigPath, $pageKey);
+        }
+
         if (str_starts_with($siteConfigPath, 'healthcare-standalone/')) {
             return $this->handleHealthcareStandalone($order, $siteConfigPath, $pageKey);
         }
@@ -1364,6 +1368,8 @@ class CustomerSiteController extends Controller
             'classes' => 'website-bisnis.templates.sports-fitness.pilates-studio.strawberry-fizz.pilates-classes-strawberry-fizz',
             'class-detail' => 'website-bisnis.templates.sports-fitness.pilates-studio.strawberry-fizz.pilates-class-detail-strawberry-fizz',
         ],
+        'swimming-school/tirtaceria' => ['home' => 'website-bisnis.templates.sports.swimming-school.tirtaceria.tirtaceria'],
+        'swimming-school/splashkids' => ['home' => 'website-bisnis.templates.sports.swimming-school.splashkids.splashkids'],
     ];
 
     private function handleSportsFitness(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
@@ -1431,6 +1437,16 @@ class CustomerSiteController extends Controller
                 'strawberry fizz' => strtolower($bizName),
                 'Rustic Strawberry Fizz' => $bizName,
                 'Strawberry Fizz' => $bizName,
+                'TirtaCeria Swim Academy' => $bizName,
+                'TirtaCeria' => $bizName,
+                'Tirta Ceria' => $bizName,
+                'Tirta<span class="text-aqua">Ceria</span>' => e($bizName),
+                'Tirta<span class="text-mint">Ceria</span> Swim Academy' => e($bizName),
+                'SplashKids Swim School' => $bizName,
+                'SplashKids' => $bizName,
+                'Splash Kids' => $bizName,
+                '🌊 SplashKids Swim School' => '🌊 '.e($bizName),
+                '🌊 SplashKids' => '🌊 '.e($bizName),
             ];
             uksort($brandMap, fn ($a, $b) => strlen($b) <=> strlen($a));
             $html = str_replace(array_keys($brandMap), array_values($brandMap), $html);
@@ -1462,8 +1478,18 @@ class CustomerSiteController extends Controller
                     'Jl. Contoh Raya No. 88, Surabaya, Jawa Timur (alamat demo)',
                     'Jl. Contoh Raya No. 88, Surabaya',
                     'Jl. Senopati Aesthetic No. 88, Upper Level 2, Jakarta',
+                    '📍 Jl. Tirta Boulevard No. 88, Jakarta Selatan',
+                    'Jl. Tirta Boulevard No. 88, Jakarta Selatan',
                 ],
-                $address,
+                [
+                    $address,
+                    $address,
+                    $address,
+                    $address,
+                    $address,
+                    '📍 '.$address,
+                    $address,
+                ],
                 $html
             );
         }
@@ -1484,6 +1510,26 @@ class CustomerSiteController extends Controller
         if ($slug === 'pilates-studio-strawberry-fizz') {
             $shim = '<script>(function(){const o=window.open;window.open=function(u,t,f){if(typeof u==="string"){u=u.replace(/6281234567890/g,'.json_encode($custWa).');}return o.call(window,u,t,f);};})();</script>';
             $html = str_replace('</body>', $shim.'</body>', $html);
+        }
+
+        if (str_starts_with($slug, 'swimming-school/')) {
+            $swimShim = '<script>(function(){
+                window.WEBIA_WA_ADMIN = '.json_encode($custWa).';
+                const o = window.open;
+                if (o) {
+                    window.open = function(u,t,f){
+                        if(typeof u==="string"){u=u.replace(/6285850180285|6281234567890/g, '.json_encode($custWa).');}
+                        return o.call(window,u,t,f);
+                    };
+                }
+                document.addEventListener("click", function(e){
+                    const a = e.target.closest && e.target.closest("a[href*=\'wa.me\']");
+                    if (a && typeof a.href === "string") {
+                        a.href = a.href.replace(/6285850180285|6281234567890/g, '.json_encode($custWa).');
+                    }
+                }, true);
+            })();</script>';
+            $html = str_replace('</body>', $swimShim.'</body>', $html);
         }
 
         // Remap preview links to published site routes
@@ -2686,6 +2732,7 @@ class CustomerSiteController extends Controller
         'healthcare-dental-sunset' => ['home' => 'website-bisnis.templates.healthcare.dental.sunset-dental-care'],
         'mitra-jiwa-psikologi-konseling' => ['home' => 'website-bisnis.templates.healthcare.psychology.mitra-jiwa'],
         'ruang-tenang-psikologi-konseling' => ['home' => 'website-bisnis.template.healthcare.psychology.ruang-tenang.index'],
+        'aurelia-mind-psikologi-konseling' => ['home' => 'website-bisnis.templates.healthcare.psychology.aurelia-mind'],
     ];
 
     private function handleHealthcareStandalone(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
@@ -2728,6 +2775,9 @@ class CustomerSiteController extends Controller
                 'GlowDental' => $bizName,
                 'Mitra Jiwa' => $bizName,
                 'Ruang Tenang' => $bizName,
+                'Aurelia Mind — Psikologi & Konseling Eksklusif' => $bizName.' — Psikologi & Konseling Eksklusif',
+                'Aurelia Mind' => $bizName,
+                'Concierge Aurelia' => 'Concierge '.$bizName,
             ];
             uksort($brandMap, fn ($a, $b) => strlen($b) <=> strlen($a));
             $html = str_replace(array_keys($brandMap), array_values($brandMap), $html);
@@ -2750,11 +2800,100 @@ class CustomerSiteController extends Controller
 
         if (! empty($business['email'])) {
             $html = str_replace(
-                ['halo@mitrajiwa.id', 'halo@ruangtenang.id'],
+                ['halo@mitrajiwa.id', 'halo@ruangtenang.id', 'halo@aureliamind.id'],
                 $business['email'],
                 $html
             );
         }
+
+        return $html;
+    }
+
+    private const TRAVEL_STANDALONE_VIEWS = [
+        'wildtrail-adventure-outdoor' => ['home' => 'website-bisnis.templates.travel-tourism.adventure-outdoor-tour.wildtrail.wildtrail'],
+    ];
+
+    private function handleTravelStandalone(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $slug = Str::after($siteConfigPath, 'travel-standalone/');
+        abort_unless(isset(self::TRAVEL_STANDALONE_VIEWS[$slug]), 404);
+        abort_unless(isset(self::TRAVEL_STANDALONE_VIEWS[$slug][$pageKey]), 404);
+
+        $viewName = self::TRAVEL_STANDALONE_VIEWS[$slug][$pageKey];
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $instagram = ltrim($business['instagram'] ?? '', '@');
+
+        $renderedHtml = view($viewName, [
+            'order' => $order,
+            'page' => $pageKey,
+            'business' => $business,
+            'whatsapp' => $whatsapp,
+            'instagram' => $instagram,
+        ])->render();
+
+        $renderedHtml = $this->transformTravelStandaloneHtml($renderedHtml, $business, $whatsapp, $slug, $order);
+
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+        return response($renderedHtml);
+    }
+
+    private function transformTravelStandaloneHtml(string $html, array $business, string $whatsapp, string $slug, WebiaOrder $order): string
+    {
+        $bizName = $business['business_name'] ?? '';
+        if ($bizName !== '') {
+            $brandMap = [
+                'WILDTRAIL — Explore the Wild' => $bizName.' — Explore the Wild',
+                'WILDTRAIL' => strtoupper($bizName),
+                'Wildtrail' => $bizName,
+            ];
+            uksort($brandMap, fn ($a, $b) => strlen($b) <=> strlen($a));
+            $html = str_replace(array_keys($brandMap), array_values($brandMap), $html);
+        }
+
+        $custWa = $whatsapp ?: '6281234567890';
+        $rawWa = $business['whatsapp'] ?? $custWa;
+        $html = str_replace(
+            ['6281234567890', '0812-3456-7890', '+62 812-3456-7890'],
+            [$custWa, $rawWa, $rawWa],
+            $html
+        );
+
+        $address = $this->businessAddress($business);
+        if ($address !== '') {
+            $html = str_replace(
+                ['Surabaya, Jawa Timur', 'Surabaya'],
+                $address,
+                $html
+            );
+        }
+
+        if (! empty($business['email'])) {
+            $html = str_replace('halo@wildtrail.id', $business['email'], $html);
+        }
+
+        $shim = '<script>(function(){
+            window.WEBIA_WA_ADMIN = '.json_encode($custWa).';
+            const o = window.open;
+            if (o) {
+                window.open = function(u,t,f){
+                    if(typeof u==="string"){u=u.replace(/6281234567890/g, '.json_encode($custWa).');}
+                    return o.call(window,u,t,f);
+                };
+            }
+            document.addEventListener("DOMContentLoaded", function(){
+                const wa = document.querySelector(".fab .wa");
+                if (wa) wa.href = "https://wa.me/" + '.json_encode($custWa).';
+            });
+            document.addEventListener("click", function(e){
+                const a = e.target.closest && e.target.closest("a[href*=\'wa.me\']");
+                if (a && typeof a.href === "string") {
+                    a.href = a.href.replace(/6281234567890/g, '.json_encode($custWa).');
+                }
+            }, true);
+        })();</script>';
+        $html = str_replace('</body>', $shim.'</body>', $html);
 
         return $html;
     }
@@ -6208,7 +6347,7 @@ class CustomerSiteController extends Controller
         setTimeout(bindSodaHook, 400);
         setTimeout(bindSodaHook, 900);
 
-        // 20. Hooking untuk TirtaCeria Swim Academy (#ai-chat-window, #ai-messages, #ai-input, askCoachAI)
+        // 20. Hooking untuk Swimming School (#ai-chat-window, #ai-messages, #ai-input, askCoachAI)
         function bindTirtaHook() {
             const tirtaMsgs = document.getElementById('ai-messages');
             const tirtaInput = document.getElementById('ai-input');

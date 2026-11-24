@@ -346,6 +346,7 @@ class WebiaTemplateAqilaSeeder extends Seeder
                 'headline' => 'Ruang privat untuk pulih,<br>tumbuh, dan bersinar.',
                 'tag' => 'Healthcare · Psikologi & konseling · Elegant',
                 'preview_folder' => null,
+                'site_config_path' => 'healthcare-standalone/aurelia-mind-psikologi-konseling',
                 'template_url' => '/webia/template/healthcare/psychology/aurelia-mind',
                 'is_active' => true,
                 'sort_order' => 44,

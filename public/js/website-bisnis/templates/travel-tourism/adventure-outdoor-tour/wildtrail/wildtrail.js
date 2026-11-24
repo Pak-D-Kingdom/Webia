@@ -79,7 +79,7 @@ $("#qb").innerHTML=Object.keys(A).map(k=>`<button>${k}</button>`).join("");$("#q
 
 
 // WEBIA integration layer — replace this number with the business WhatsApp number.
-const WILDTRAIL_WA_NUMBER = "6281234567890";
+const WILDTRAIL_WA_NUMBER = window.WILDTRAIL_WA_NUMBER || window.WEBIA_WA_ADMIN || "6281234567890";
 
 function sub(e, f) {
   e.preventDefault();
