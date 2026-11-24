@@ -40,6 +40,4 @@
             @include('website-bisnis.template.professional-service.creative.branding-creative-agency-cobalt-pop.partials.contact-form', ['fid' => 'bca-contact'])
         </div>
     </section>
-
-    @include('website-bisnis.template.professional-service.creative.branding-creative-agency-cobalt-pop.partials.pager', ['prev_route' => 'journal', 'prev_label' => 'Creative Journal', 'next_route' => 'home', 'next_label' => 'Home'])
 @endsection

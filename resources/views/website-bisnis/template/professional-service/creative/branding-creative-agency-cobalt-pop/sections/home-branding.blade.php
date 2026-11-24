@@ -2,7 +2,7 @@
     <div class="bca-wrap">
         <div class="bca-shead">
             <span class="bca-label">Branding Showcase</span>
-            <h2 class="bca-h2" id="bca-br-h">Identitas yang bekerja, dari logo sampai kemasan.</h2>
+            <h2 class="bca-h2" id="bca-br-h">Identitas yang bekerja, <mark class="bca-hl">dari logo sampai kemasan.</mark></h2>
         </div>
         <div class="bca-bento">
             <figure class="bca-tile bca-tile--board bca-reveal">

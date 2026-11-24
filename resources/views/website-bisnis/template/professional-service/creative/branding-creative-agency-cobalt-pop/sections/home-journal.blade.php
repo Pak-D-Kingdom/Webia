@@ -2,7 +2,7 @@
     <div class="bca-wrap">
         <div class="bca-shead">
             <span class="bca-label">Creative Journal</span>
-            <h2 class="bca-h2" id="bca-jr-h">Catatan dari meja kerja kami.</h2>
+            <h2 class="bca-h2" id="bca-jr-h">Catatan dari <mark class="bca-hl">meja kerja kami.</mark></h2>
         </div>
         <div class="bca-posts bca-posts--home">
             @include('website-bisnis.template.professional-service.creative.branding-creative-agency-cobalt-pop.partials.post-card', ['p' => $site['journal'][0], 'mode' => 'home', 'lead' => true])

@@ -60,10 +60,14 @@
 
     <section class="bca-section bca-tone-yellow" aria-labelledby="bca-ab-adv">
         <div class="bca-wrap">
-            <div class="bca-shead"><span class="bca-label">Keunggulan</span><h2 class="bca-h2" id="bca-ab-adv">Mengapa klien bertahan bersama kami.</h2></div>
-            <ul class="bca-adv">
+            <div class="bca-shead"><span class="bca-label">Keunggulan</span><h2 class="bca-h2" id="bca-ab-adv">Mengapa klien <mark class="bca-hl bca-hl--ink">bertahan</mark> bersama kami.</h2></div>
+            <ul class="bca-advx">
                 @foreach($site['about']['advantages'] as $a)
-                    <li>@include('website-bisnis.template.professional-service.creative.branding-creative-agency-cobalt-pop.partials.icon', ['name' => 'check'])<h3>{{ $a['title'] }}</h3><p>{{ $a['text'] }}</p></li>
+                    <li class="bca-advx__card bca-reveal" data-t="{{ $loop->index }}" style="--bca-d:{{ $loop->index * 0.07 }}s">
+                        <span class="bca-advx__ico">@include('website-bisnis.template.professional-service.creative.branding-creative-agency-cobalt-pop.partials.icon', ['name' => $a['icon']])</span>
+                        <h3>{{ $a['title'] }}</h3>
+                        <p>{{ $a['text'] }}</p>
+                    </li>
                 @endforeach
             </ul>
         </div>
@@ -82,6 +86,4 @@
             </div>
         </div>
     </section>
-
-    @include('website-bisnis.template.professional-service.creative.branding-creative-agency-cobalt-pop.partials.pager', ['prev_route' => 'home', 'prev_label' => 'Home', 'next_route' => 'services', 'next_label' => 'Services'])
 @endsection

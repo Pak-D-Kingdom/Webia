@@ -2,7 +2,7 @@
     <div class="bca-wrap">
         <div class="bca-shead">
             <span class="bca-label">Meet the Team</span>
-            <h2 class="bca-h2" id="bca-tm-h">Orang-orang di balik warna.</h2>
+            <h2 class="bca-h2" id="bca-tm-h">Orang-orang <mark class="bca-hl">di balik warna.</mark></h2>
         </div>
         <div class="bca-team bca-team--home">
             @foreach(array_slice($site['team'], 0, 4) as $m)

@@ -17,15 +17,24 @@
                         More @include('website-bisnis.template.professional-service.creative.branding-creative-agency-cobalt-pop.partials.icon', ['name' => 'chevron'])
                     </button>
                     <div class="bca-nav__sub" id="bca-more-menu" data-open="false">
+                        <p class="bca-nav__sub-title">Jelajahi lebih jauh</p>
                         @foreach($site['nav'] as $item)
                             @if(in_array($item['route'], ['team', 'clients', 'testimonials', 'journal', 'contact']))
-                                <a class="bca-nav__link @if($current === $item['route']) is-active @endif" href="{{ route($site['routes'][$item['route']]) }}" @if($current === $item['route']) aria-current="page" @endif>{{ $item['label'] }}</a>
+                                <a class="bca-subcard @if($current === $item['route']) is-active @endif" data-t="{{ $loop->index % 4 }}" href="{{ route($site['routes'][$item['route']]) }}" @if($current === $item['route']) aria-current="page" @endif>
+                                    <span class="bca-subcard__ico">@include('website-bisnis.template.professional-service.creative.branding-creative-agency-cobalt-pop.partials.icon', ['name' => $item['icon']])</span>
+                                    <span class="bca-subcard__txt"><b>{{ $item['label'] }}</b><small>{{ $item['desc'] }}</small></span>
+                                    <span class="bca-subcard__go" aria-hidden="true">@include('website-bisnis.template.professional-service.creative.branding-creative-agency-cobalt-pop.partials.icon', ['name' => 'arrow-right'])</span>
+                                </a>
                             @endif
                         @endforeach
                     </div>
                 </li>
             </ul>
         </nav>
+
+        <button type="button" class="bca-nav__search" aria-label="Cari di situs" aria-haspopup="dialog" data-bca-search-open>
+            @include('website-bisnis.template.professional-service.creative.branding-creative-agency-cobalt-pop.partials.icon', ['name' => 'search'])<span class="bca-nav__kbd" aria-hidden="true">Ctrl K</span>
+        </button>
 
         <a class="bca-btn bca-btn--sm bca-nav__cta" href="{{ route($site['routes']['contact']) }}">Start a Project @include('website-bisnis.template.professional-service.creative.branding-creative-agency-cobalt-pop.partials.icon', ['name' => 'arrow'])</a>
 

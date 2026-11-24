@@ -10,10 +10,13 @@
     <section class="bca-section bca-tone-paper" aria-labelledby="bca-jp-h" data-bca-filter-scope>
         <div class="bca-wrap">
             <h2 class="bca-sr" id="bca-jp-h">Daftar artikel</h2>
-            <div class="bca-filter" role="group" aria-label="Filter kategori artikel">
-                @foreach($site['journal_filters'] as $f)
-                    <button type="button" data-bca-filter="{{ $f }}" aria-pressed="{{ $loop->first ? 'true' : 'false' }}">{{ $f }}</button>
-                @endforeach
+            <div class="bca-toolbar">
+                <div class="bca-filter" role="group" aria-label="Filter kategori artikel">
+                    @foreach($site['journal_filters'] as $f)
+                        <button type="button" data-bca-filter="{{ $f }}" aria-pressed="{{ $loop->first ? 'true' : 'false' }}">{{ $f }}</button>
+                    @endforeach
+                </div>
+                <label class="bca-finder" for="bca-jr-find">@include('website-bisnis.template.professional-service.creative.branding-creative-agency-cobalt-pop.partials.icon', ['name' => 'search'])<input id="bca-jr-find" type="search" placeholder="Cari artikel…" autocomplete="off" data-bca-find aria-label="Cari artikel"><button type="button" data-bca-find-clear aria-label="Hapus kata kunci" hidden>@include('website-bisnis.template.professional-service.creative.branding-creative-agency-cobalt-pop.partials.icon', ['name' => 'close'])</button></label>
             </div>
             <p class="bca-pf-count" aria-live="polite" data-bca-count-label></p>
             <div class="bca-posts bca-posts--page">
@@ -21,6 +24,7 @@
                     @include('website-bisnis.template.professional-service.creative.branding-creative-agency-cobalt-pop.partials.post-card', ['p' => $p, 'mode' => 'page', 'lead' => $loop->first])
                 @endforeach
             </div>
+            <div class="bca-empty" data-bca-empty hidden><b>Tidak ada artikel yang cocok.</b><p>Coba kata lain atau pilih kategori “Semua”.</p></div>
             <p class="bca-muted" style="margin-top:36px">Artikel pada template ini adalah contoh teks demo.</p>
         </div>
     </section>
@@ -37,6 +41,4 @@
             </div>
         </dialog>
     @endforeach
-
-    @include('website-bisnis.template.professional-service.creative.branding-creative-agency-cobalt-pop.partials.pager', ['prev_route' => 'testimonials', 'prev_label' => 'Testimonials', 'next_route' => 'contact', 'next_label' => 'Contact Us'])
 @endsection
