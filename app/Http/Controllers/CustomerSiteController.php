@@ -137,7 +137,7 @@ class CustomerSiteController extends Controller
             return $this->handlePropertyStandalone($order, $siteConfigPath, $pageKey);
         }
 
-        if (str_starts_with($siteConfigPath, 'wedding-standalone/')) {
+        if (str_starts_with($siteConfigPath, 'wedding-standalone/') || str_starts_with($siteConfigPath, 'wedding-event/')) {
             return $this->handleWeddingStandalone($order, $siteConfigPath, $pageKey);
         }
 
@@ -179,6 +179,14 @@ class CustomerSiteController extends Controller
 
         if (str_starts_with($siteConfigPath, 'libraries-digital-archives/')) {
             return $this->handleLibrariesDigitalArchives($order, $siteConfigPath, $pageKey);
+        }
+
+        if (str_starts_with($siteConfigPath, 'food-subscription/')) {
+            return $this->handleFoodSubscription($order, $siteConfigPath, $pageKey);
+        }
+
+        if (str_starts_with($siteConfigPath, 'professional-service/strike-branding-creative')) {
+            return $this->handleStrikeBranding($order, $siteConfigPath, $pageKey);
         }
         $views = match (true) {
             $isBrandingAgency => array_fill_keys(['home', 'layanan', 'keahlian', 'portofolio', 'janji'], 'branding-creative-agency'),
@@ -2256,6 +2264,7 @@ class CustomerSiteController extends Controller
 
     private const SPECIALTY_BEVERAGE_VIEWS = [
         'kebun-seduh-botanical-elegant' => ['home' => 'website-bisnis.templates.specialty-beverage.kebun-seduh-botanical-elegant'],
+        'koharu-matcha-japanese-minimalist' => ['home' => 'website-bisnis.templates.specialty-beverage.koharu-matcha-japanese-minimalist'],
     ];
 
     private function handleSpecialtyBeverage(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
@@ -2288,7 +2297,11 @@ class CustomerSiteController extends Controller
     {
         $bizName = $business['business_name'] ?? '';
         if ($bizName !== '') {
-            $html = str_replace('Kebun Seduh', $bizName, $html);
+            $html = str_replace(
+                ['Kebun Seduh', 'Koharu Matcha', 'KOHARU MATCHA', 'KOHARU', 'Koharu'],
+                [$bizName, $bizName, strtoupper($bizName), strtoupper($bizName), $bizName],
+                $html
+            );
         }
 
         $custWa = $whatsapp ?: '6281234567890';
@@ -2575,11 +2588,12 @@ class CustomerSiteController extends Controller
 
     private const WEDDING_STANDALONE_VIEWS = [
         'wedding-organizer-elegant' => ['home' => 'website-bisnis.templates.wedding-event.wedding-organizer.wedding-organizer-elegant'],
+        'solenne-sunshine' => ['home' => 'website-bisnis.templates.wedding-event.Catering-Wedding-Cake.solenne-sunshine.solenne-sunshine'],
     ];
 
     private function handleWeddingStandalone(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
     {
-        $slug = Str::after($siteConfigPath, 'wedding-standalone/');
+        $slug = Str::after(Str::after($siteConfigPath, 'wedding-standalone/'), 'wedding-event/');
         abort_unless(isset(self::WEDDING_STANDALONE_VIEWS[$slug]), 404);
         abort_unless(isset(self::WEDDING_STANDALONE_VIEWS[$slug][$pageKey]), 404);
 
@@ -2610,11 +2624,15 @@ class CustomerSiteController extends Controller
 
         if ($bizName !== '') {
             $html = str_replace('Halo%20Aura%20Amour%20Wedding', 'Halo%20'.rawurlencode($bizName), $html);
-
             $html = str_replace('Aura Amour', $bizName, $html);
+            $html = str_replace(
+                ['Solenne & Sugar', 'Solenne <i>&amp;</i> Sugar', 'Solenne &amp; Sugar', 'The Solenne Table', 'Solenne'],
+                [$bizName, '<em>'.e($bizName).'</em>', e($bizName), 'The '.e($bizName).' Table', $bizName],
+                $html
+            );
         }
 
-        $html = str_replace('6285850180285', $custWa, $html);
+        $html = str_replace(['6285850180285', '6281234567890'], $custWa, $html);
 
         return $html;
     }
@@ -5061,6 +5079,135 @@ class CustomerSiteController extends Controller
             ? url('/webia/template/libraries-digital-archives/academic-minimalist/digital-library-platform-arctic-frost')
             : url('/webia/template/libraries-digital-archives/modern/digital-library-platform-ocean-blue');
         $renderedHtml = str_replace($previewBase, $siteBase, $renderedHtml);
+
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+        return response($renderedHtml);
+    }
+
+    private const FOOD_SUBSCRIPTION_VIEWS = [
+        'blushbowl-diet-meal' => ['home' => 'website-bisnis.templates.food-subscription.diet-meal.blushbowl.blushbowl'],
+        'sodatable-family-meal-plan' => ['home' => 'website-bisnis.templates.food-subscription.weekly-family-meal-plan.sodatable.sodatable'],
+    ];
+
+    private function handleFoodSubscription(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $slug = Str::after($siteConfigPath, 'food-subscription/');
+        abort_unless(isset(self::FOOD_SUBSCRIPTION_VIEWS[$slug]), 404);
+        abort_unless(isset(self::FOOD_SUBSCRIPTION_VIEWS[$slug][$pageKey]), 404);
+
+        $viewName = self::FOOD_SUBSCRIPTION_VIEWS[$slug][$pageKey];
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $instagram = ltrim($business['instagram'] ?? '', '@');
+
+        $renderedHtml = view($viewName, [
+            'order' => $order,
+            'page' => $pageKey,
+            'business' => $business,
+            'whatsapp' => $whatsapp,
+            'instagram' => $instagram,
+        ])->render();
+
+        $renderedHtml = $this->transformFoodSubscriptionHtml($renderedHtml, $business, $whatsapp, $slug);
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+        return response($renderedHtml);
+    }
+
+    private function transformFoodSubscriptionHtml(string $html, array $business, string $whatsapp, string $slug): string
+    {
+        $bizName = $business['business_name'] ?? '';
+        $custWa = $whatsapp ?: '6281234567890';
+
+        if ($slug === 'blushbowl-diet-meal') {
+            if ($bizName !== '') {
+                $html = str_replace(
+                    ['BlushBowl Nutrition', 'BlushBowl', 'BLUSHBOWL'],
+                    [$bizName, $bizName, strtoupper($bizName)],
+                    $html
+                );
+            }
+            $html = str_replace('6281234567890', $custWa, $html);
+
+            $address = $this->businessAddress($business);
+            if ($address !== '') {
+                $html = str_replace('Jl. Senopati Nutrisi No. 28, Jakarta Selatan', $address, $html);
+            }
+            if (! empty($business['email'])) {
+                $html = str_replace('halo@blushbowl.id', $business['email'], $html);
+            }
+        } elseif ($slug === 'sodatable-family-meal-plan') {
+            if ($bizName !== '') {
+                $html = str_replace(
+                    ['SodaTable Family Kitchen', 'SodaTable', 'SODATABLE'],
+                    [$bizName, $bizName, strtoupper($bizName)],
+                    $html
+                );
+            }
+            $html = str_replace('6281234567890', $custWa, $html);
+
+            $address = $this->businessAddress($business);
+            if ($address !== '') {
+                $html = str_replace('Jl. Kemang Raya Keluarga No. 18, Jakarta Selatan 12730', $address, $html);
+            }
+            if (! empty($business['email'])) {
+                $html = str_replace('halo@sodatable.id', $business['email'], $html);
+            }
+        }
+
+        return $html;
+    }
+
+    private function handleStrikeBranding(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        abort_unless($pageKey === 'home', 404);
+
+        $viewName = 'website-bisnis.templates.professional-service.branding-creative.strike.strike';
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $instagram = ltrim($business['instagram'] ?? '', '@');
+
+        $renderedHtml = view($viewName, [
+            'order' => $order,
+            'page' => $pageKey,
+            'business' => $business,
+            'whatsapp' => $whatsapp,
+            'instagram' => $instagram,
+        ])->render();
+
+        $bizName = $business['business_name'] ?? '';
+        $custWa = $whatsapp ?: '6281234567890';
+
+        if ($bizName !== '') {
+            $renderedHtml = str_replace(
+                [
+                    'STUDIO BOLD® / STRIKE®',
+                    'STUDIO BOLD®',
+                    'STUDIO BOLD',
+                    'Studio Bold',
+                    'STRIKE STUDIO',
+                    'STRIKE®',
+                    'STRIKE',
+                ],
+                [
+                    $bizName,
+                    $bizName,
+                    strtoupper($bizName),
+                    $bizName,
+                    strtoupper($bizName),
+                    strtoupper($bizName),
+                    strtoupper($bizName),
+                ],
+                $renderedHtml
+            );
+        }
+
+        $renderedHtml = str_replace('6281234567890', $custWa, $renderedHtml);
+
+        if (! empty($business['email'])) {
+            $renderedHtml = str_replace('HELLO@STUDIO-BOLD.COM', strtoupper($business['email']), $renderedHtml);
+        }
 
         $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
 

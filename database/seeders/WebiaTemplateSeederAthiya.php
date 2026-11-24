@@ -496,6 +496,7 @@ class WebiaTemplateSeederAthiya extends Seeder
                 'headline' => 'Satu cangkir<br>ketenangan.',
                 'tag' => 'Specialty Beverage & Drink Concepts · Specialty Matcha / Others Brand · Japanese Minimalist',
                 'preview_folder' => null,
+                'site_config_path' => 'specialty-beverage/koharu-matcha-japanese-minimalist',
                 'template_url' => '/webia/template/koharu-matcha-japanese-minimalist',
                 'is_active' => true,
                 'sort_order' => 42,

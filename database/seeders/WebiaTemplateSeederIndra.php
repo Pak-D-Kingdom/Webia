@@ -138,6 +138,7 @@ class WebiaTemplateSeederIndra extends Seeder
                 'headline' => 'Creating unforgettable<br>wedding experiences.',
                 'tag' => 'Wedding & Event · Catering & Cake · Luxury',
                 'preview_folder' => null,
+                'site_config_path' => 'wedding-event/solenne-sunshine',
                 'template_url' => '/webia/template/wedding-event/catering-wedding-cake/solenne-sunshine',
                 'is_active' => true,
                 'sort_order' => 54,
