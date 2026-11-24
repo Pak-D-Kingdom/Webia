@@ -478,6 +478,7 @@ class WebiaTemplateSeederAthiya extends Seeder
                 'headline' => 'Merawat ingatan<br>yang tertenun.',
                 'tag' => 'Traditional Textiles & Heritage Fashion · Heritage Textile Conservation Service · Heritage Editor',
                 'preview_folder' => null,
+                'site_config_path' => 'traditional-textiles/arsip-kain-heritage-editorial',
                 'template_url' => '/webia/template/arsip-kain-heritage-editorial',
                 'is_active' => true,
                 'sort_order' => 41,

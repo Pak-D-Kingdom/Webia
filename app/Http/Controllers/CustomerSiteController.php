@@ -177,7 +177,7 @@ class CustomerSiteController extends Controller
             return $this->handleHealthcareStandalone($order, $siteConfigPath, $pageKey);
         }
 
-        if (str_starts_with($siteConfigPath, 'traditional-costume-rental/')) {
+        if (str_starts_with($siteConfigPath, 'traditional-costume-rental/') || str_starts_with($siteConfigPath, 'traditional-textiles/')) {
             return $this->handleTraditionalCostumeRental($order, $siteConfigPath, $pageKey);
         }
 
@@ -2250,6 +2250,9 @@ class CustomerSiteController extends Controller
 
     private const EDUCATION_CULTURE_VIEWS = [
         'verdant-archive-museum-collection' => ['home' => 'website-bisnis.templates.education-culture.verdant-archive-museum-collection'],
+        'aethelgard-digital-museum' => ['home' => 'website-bisnis.templates.education-culture.aethelgard-digital-museum'],
+        'aquaverse-interactive-heritage' => ['home' => 'website-bisnis.templates.education-culture.aquaverse-interactive-heritage'],
+        'rubra-memoria-artistic-heritage' => ['home' => 'website-bisnis.templates.education-culture.rubra-memoria-artistic-heritage'],
     ];
 
     private function handleEducationCulture(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
@@ -2273,6 +2276,15 @@ class CustomerSiteController extends Controller
 
         $renderedHtml = $this->transformEducationCultureHtml($renderedHtml, $business, $whatsapp);
 
+        $siteBase = url('/s/'.$order->site_slug);
+        $previewBases = [
+            url('/webia/template/verdant-archive-museum-collection'),
+            url('/webia/template/aethelgard-digital-museum'),
+            url('/webia/template/aquaverse-interactive-heritage'),
+            url('/webia/template/rubra-memoria-artistic-heritage'),
+        ];
+        $renderedHtml = str_replace($previewBases, $siteBase, $renderedHtml);
+
         $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
 
         return response($renderedHtml);
@@ -2286,11 +2298,35 @@ class CustomerSiteController extends Controller
                 'Verdant Archive &amp; Artifact Database' => $bizName,
                 'VERDANT ARCHIVE' => strtoupper($bizName),
                 'Verdant Archive' => $bizName,
+                'Aethelgard Archive — Digital Museum & Heritage Platform' => $bizName,
+                'Aethelgard Digital Heritage' => $bizName,
+                'Aethelgard Archive' => $bizName,
+                'Aethelgard' => $bizName,
+                'Aquaverse — Interactive Heritage Exhibition' => $bizName,
+                'Aquaverse Heritage Lab' => $bizName,
+                'Aquaverse Heritage' => $bizName,
+                'AQUAVERSE' => strtoupper($bizName),
+                'Aquaverse' => $bizName,
+                'Rubra Memoria — Artistic Experimental Heritage Exhibition' => $bizName,
+                'Rubra Memoria Experimental Heritage' => $bizName,
+                'RUBRA MEMORIA' => strtoupper($bizName),
+                'Rubra Memoria' => $bizName,
             ];
             uksort($brandMap, fn ($a, $b) => strlen($b) <=> strlen($a));
             $html = str_replace(array_keys($brandMap), array_values($brandMap), $html);
 
-            $html = str_replace('Halo%20Verdant%20Archive', 'Halo%20'.rawurlencode($bizName), $html);
+            $encodedBiz = rawurlencode($bizName);
+            $html = str_replace(
+                [
+                    'Halo%20Verdant%20Archive',
+                    'Halo%20Kurator%20Aethelgard',
+                    'Halo%20Aquaverse%20Heritage',
+                    'Halo%20Aquaverse',
+                    'Halo%20Rubra%20Memoria',
+                ],
+                'Halo%20'.$encodedBiz,
+                $html
+            );
         }
 
         $custWa = $whatsapp ?: '6281234567890';
@@ -2298,11 +2334,27 @@ class CustomerSiteController extends Controller
 
         $address = $this->businessAddress($business);
         if ($address !== '') {
-            $html = str_replace('Gedung Dokumentasi Budaya Lt. 3, Pusat Arsip', $address, $html);
+            $html = str_replace(
+                [
+                    'Gedung Dokumentasi Budaya Lt. 3, Pusat Arsip',
+                    'Jl. Pusaka Merdeka No. 18, Pusat Kebudayaan',
+                    'Paviliun Maritim Digital, Kawasan Pelabuhan Budaya',
+                    'Gedung Arsip Seni Kontemporer, Distrik Budaya',
+                ],
+                $address,
+                $html
+            );
         }
 
         if (! empty($business['email'])) {
-            $html = str_replace('arsip@verdant-heritage.org', $business['email'], $html);
+            $html = str_replace(
+                [
+                    'arsip@verdant-heritage.org',
+                    'kurator@aethelgard-heritage.id',
+                ],
+                $business['email'],
+                $html
+            );
         }
 
         return $html;
@@ -4930,11 +4982,15 @@ class CustomerSiteController extends Controller
 
     private const TRADITIONAL_COSTUME_RENTAL_VIEWS = [
         'kencana-wastra' => 'website-bisnis.templates.traditional-textiles-heritage-fashion.traditional-costume-rental.kencana-wastra.kencana-wastra',
+        'arsip-kain-heritage-editorial' => 'website-bisnis.templates.traditional-textiles-heritage-fashion.arsip-kain-heritage-editorial',
     ];
 
     private function handleTraditionalCostumeRental(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
     {
-        $slug = Str::after($siteConfigPath, 'traditional-costume-rental/');
+        $slug = str_starts_with($siteConfigPath, 'traditional-textiles/')
+            ? Str::after($siteConfigPath, 'traditional-textiles/')
+            : Str::after($siteConfigPath, 'traditional-costume-rental/');
+
         abort_unless(isset(self::TRADITIONAL_COSTUME_RENTAL_VIEWS[$slug]), 404);
         abort_unless($pageKey === 'home', 404);
 
@@ -4956,18 +5012,47 @@ class CustomerSiteController extends Controller
 
         if ($bizName !== '') {
             $renderedHtml = str_replace(
-                ['Kencana Wastra', 'KENCANA WASTRA', 'Kencana%20Wastra'],
-                [$bizName, strtoupper($bizName), rawurlencode($bizName)],
+                [
+                    'Kencana Wastra',
+                    'KENCANA WASTRA',
+                    'Kencana%20Wastra',
+                    'Arsip Kain – Layanan Konservasi Tekstil Warisan',
+                    'Arsip Kain',
+                    'ARSIP KAIN',
+                    'Arsip%20Kain',
+                ],
+                [
+                    $bizName,
+                    strtoupper($bizName),
+                    rawurlencode($bizName),
+                    $bizName.' – Layanan Konservasi Tekstil Warisan',
+                    $bizName,
+                    strtoupper($bizName),
+                    rawurlencode($bizName),
+                ],
                 $renderedHtml
             );
         }
 
-        $renderedHtml = str_replace('6281234567890', $custWa, $renderedHtml);
+        $renderedHtml = str_replace(
+            [
+                'const WA_NUMBER="6281234567890",BRAND="Arsip Kain";',
+                '6281234567890',
+            ],
+            [
+                'const WA_NUMBER="'.$custWa.'",BRAND="'.addslashes($bizName ?: 'Arsip Kain').'";',
+                $custWa,
+            ],
+            $renderedHtml
+        );
 
         $address = $this->businessAddress($business);
         if ($address !== '') {
             $renderedHtml = str_replace(
-                'Jl. Gunawarman Heritage No. 45, Jakarta Selatan',
+                [
+                    'Jl. Gunawarman Heritage No. 45, Jakarta Selatan',
+                    'Alamat studio (ganti)',
+                ],
                 $address,
                 $renderedHtml
             );
@@ -4978,8 +5063,11 @@ class CustomerSiteController extends Controller
         }
 
         $siteBase = url('/s/'.$order->site_slug);
-        $previewBase = url('/webia/template/kencana-wastra-traditional-costume-rental');
-        $renderedHtml = str_replace($previewBase, $siteBase, $renderedHtml);
+        $previewBases = [
+            url('/webia/template/kencana-wastra-traditional-costume-rental'),
+            url('/webia/template/arsip-kain-heritage-editorial'),
+        ];
+        $renderedHtml = str_replace($previewBases, $siteBase, $renderedHtml);
 
         $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
 
@@ -6425,7 +6513,7 @@ class CustomerSiteController extends Controller
         setTimeout(bindTirtaHook, 400);
         setTimeout(bindTirtaHook, 900);
 
-        // 21. Hooking untuk Museum & Heritage (Aethelgard, Aquaverse - sendAIMessage, #ai-input, #ai-chat-box)
+        // 21. Hooking untuk Museum & Cultural Heritage (sendAIMessage, #ai-input, #ai-chat-box)
         function bindMuseumHook() {
             const mChatBox = document.getElementById('ai-chat-box');
             const mInput = document.getElementById('ai-input');
