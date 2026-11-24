@@ -775,6 +775,9 @@ class CustomerSiteController extends Controller
         'tanah-warna-rustic-makeup-artist' => ['home' => 'website-bisnis.templates.beauty.tanah-warna-rustic-makeup-artist'],
         'rosalind-vintage-makeup-artist' => ['home' => 'website-bisnis.templates.beauty.rosalind-vintage-makeup-artist'],
         'visage-editorial-makeup-artist' => ['home' => 'website-bisnis.templates.beauty.visage-editorial-makeup-artist'],
+        'salon-modern-sage' => ['home' => 'website-bisnis.templates.salon-modern-sage'],
+        'salon-classic-warm-neutral' => ['home' => 'website-bisnis.templates.salon-classic-warm-neutral'],
+        'salon-elegant-soft-pink' => ['home' => 'website-bisnis.templates.salon-elegant-soft-pink'],
     ];
 
     private function handleBeauty(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
@@ -797,6 +800,14 @@ class CustomerSiteController extends Controller
         ])->render();
 
         $renderedHtml = $this->transformBeautyHtml($renderedHtml, $business, $whatsapp);
+
+        $siteBase = url('/s/'.$order->site_slug);
+        $previewBases = [
+            url('/webia/template/salon-modern-sage'),
+            url('/webia/template/salon-classic-warm-neutral'),
+            url('/webia/template/salon-elegant-soft-pink'),
+        ];
+        $renderedHtml = str_replace($previewBases, $siteBase, $renderedHtml);
 
         $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
 
@@ -828,15 +839,44 @@ class CustomerSiteController extends Controller
                 'Rosalind' => $bizName,
                 'VISAGE' => strtoupper($bizName),
                 'Visage' => $bizName,
+                'Sage Bloom Hair & Beauty Studio' => $bizName,
+                'Sage Bloom Salon' => $bizName,
+                'SAGE BLOOM' => strtoupper($bizName),
+                'Sage Bloom' => $bizName,
+                'Maison Élise Salon' => $bizName,
+                'MAISON ÉLISE' => strtoupper($bizName),
+                'Maison Élise' => $bizName,
+                'Maison Elise Salon' => $bizName,
+                'MAISON ELISE' => strtoupper($bizName),
+                'Maison Elise' => $bizName,
+                'Rosé Atelier — Elegant Soft Pink Salon' => $bizName,
+                'Rosé Atelier' => $bizName,
+                'ROSÉ ATELIER' => strtoupper($bizName),
+                'Rose Atelier' => $bizName,
+                'ROSE ATELIER' => strtoupper($bizName),
+                'Halo Rosé Atelier' => 'Halo '.$bizName,
+                'Halo Maison Élise Salon' => 'Halo '.$bizName,
+                'Halo Maison Elise Salon' => 'Halo '.$bizName,
             ];
+            uksort($brandMap, fn ($a, $b) => strlen($b) <=> strlen($a));
             $html = str_replace(array_keys($brandMap), array_values($brandMap), $html);
         }
 
         $custWa = $whatsapp ?: '6281234567890';
         $rawWa = $business['whatsapp'] ?? $custWa;
         $html = str_replace(
-            ['6285850180285', '6281234567890', '+62 858-5018-0285'],
-            [$custWa, $custWa, $rawWa],
+            [
+                '6285850180285',
+                '6281234567890',
+                '+62 858-5018-0285',
+                '+62 812-3456-7890',
+            ],
+            [
+                $custWa,
+                $custWa,
+                $rawWa,
+                $rawWa,
+            ],
             $html
         );
 
@@ -847,6 +887,10 @@ class CustomerSiteController extends Controller
                     'Jakarta, Indonesia',
                     'Surabaya, Indonesia',
                     'Jl. Contoh No. 1, Jakarta',
+                    'Jl. Contoh No. 10, Kota Anda',
+                    'Alamat salon ditampilkan di sini<br>Kota, Provinsi',
+                    'Alamat salon ditampilkan di sini',
+                    'Jl. Contoh No. 18, Kota Anda',
                 ],
                 $address,
                 $html
@@ -6570,6 +6614,143 @@ class CustomerSiteController extends Controller
         }
         setTimeout(bindMuseumHook, 400);
         setTimeout(bindMuseumHook, 900);
+
+        // 22. Hooking untuk Salon & Beauty Chatbots (Sage, Classic, Rose)
+        document.addEventListener('DOMContentLoaded', function() {
+            const sageForm = document.getElementById('sage-chat-form');
+            const sageInput = document.getElementById('sage-chat-question');
+            const sageMsgs = document.getElementById('sage-chat-messages');
+            if (sageForm && sageInput && sageMsgs) {
+                async function handleSageSend(text) {
+                    if (!text || !text.trim()) return;
+                    const u = document.createElement('p');
+                    u.className = 'sage-chat-bubble sage-chat-user';
+                    u.style.cssText = 'background:var(--sage-primary,#4a6b57);color:#fff;margin-left:auto;border-radius:12px 12px 2px 12px;padding:8px 12px;max-width:85%;';
+                    u.textContent = text.trim();
+                    sageMsgs.appendChild(u);
+                    sageInput.value = '';
+                    sageMsgs.scrollTop = sageMsgs.scrollHeight;
+
+                    const t = document.createElement('p');
+                    t.className = 'sage-chat-bubble';
+                    t.style.opacity = '0.75';
+                    t.textContent = 'Mengetik balasan...';
+                    sageMsgs.appendChild(t);
+                    sageMsgs.scrollTop = sageMsgs.scrollHeight;
+
+                    try {
+                        const data = await sendToAi(text.trim());
+                        t.remove();
+                        const b = document.createElement('p');
+                        b.className = 'sage-chat-bubble';
+                        b.textContent = data.reply || 'Ada yang bisa kami bantu seputar treatment salon?';
+                        sageMsgs.appendChild(b);
+                    } catch (e) {
+                        t.remove();
+                    }
+                    sageMsgs.scrollTop = sageMsgs.scrollHeight;
+                }
+                sageForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    handleSageSend(sageInput.value);
+                }, true);
+                document.querySelectorAll('#sage-chat-panel [data-chat-question]').forEach(b => {
+                    b.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+                        handleSageSend(this.getAttribute('data-chat-question') || this.textContent.trim());
+                    }, true);
+                });
+            }
+
+            const classicForm = document.getElementById('classic-chat-form');
+            const classicInput = document.getElementById('classic-chat-question');
+            const classicBody = document.getElementById('classic-chat-body');
+            if (classicForm && classicInput && classicBody) {
+                async function handleClassicSend(text) {
+                    if (!text || !text.trim()) return;
+                    const u = document.createElement('p');
+                    u.className = 'classic-chat-message classic-chat-user';
+                    u.style.cssText = 'background:#2c2825;color:#f7f4ee;margin-left:auto;border-radius:10px 10px 2px 10px;padding:8px 12px;max-width:85%;';
+                    u.textContent = text.trim();
+                    classicBody.appendChild(u);
+                    classicInput.value = '';
+                    classicBody.scrollTop = classicBody.scrollHeight;
+
+                    const t = document.createElement('p');
+                    t.className = 'classic-chat-message';
+                    t.style.opacity = '0.75';
+                    t.textContent = 'Menyiapkan rekomendasi...';
+                    classicBody.appendChild(t);
+                    classicBody.scrollTop = classicBody.scrollHeight;
+
+                    try {
+                        const data = await sendToAi(text.trim());
+                        t.remove();
+                        const b = document.createElement('p');
+                        b.className = 'classic-chat-message';
+                        b.textContent = data.reply || 'Ada yang bisa kami bantu?';
+                        classicBody.appendChild(b);
+                    } catch (e) {
+                        t.remove();
+                    }
+                    classicBody.scrollTop = classicBody.scrollHeight;
+                }
+                classicForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    handleClassicSend(classicInput.value);
+                }, true);
+            }
+
+            const roseForm = document.querySelector('.rose-chat-form');
+            const roseInput = roseForm ? roseForm.querySelector('input') : null;
+            const roseMsgs = document.querySelector('.rose-chat-messages');
+            if (roseForm && roseInput && roseMsgs) {
+                async function handleRoseSend(text) {
+                    if (!text || !text.trim()) return;
+                    const u = document.createElement('div');
+                    u.className = 'rose-chat-message rose-user-message';
+                    u.style.cssText = 'background:#8d5b65;color:#fff;margin-left:auto;border-radius:12px 12px 2px 12px;padding:8px 12px;max-width:85%;';
+                    u.textContent = text.trim();
+                    roseMsgs.appendChild(u);
+                    roseInput.value = '';
+                    roseMsgs.scrollTop = roseMsgs.scrollHeight;
+
+                    const t = document.createElement('div');
+                    t.className = 'rose-chat-message rose-bot-message';
+                    t.style.opacity = '0.75';
+                    t.textContent = 'Mengetik jawaban...';
+                    roseMsgs.appendChild(t);
+                    roseMsgs.scrollTop = roseMsgs.scrollHeight;
+
+                    try {
+                        const data = await sendToAi(text.trim());
+                        t.remove();
+                        const b = document.createElement('div');
+                        b.className = 'rose-chat-message rose-bot-message';
+                        b.textContent = data.reply || 'Ada yang bisa kami bantu seputar perawatan rambut & kecantikan?';
+                        roseMsgs.appendChild(b);
+                    } catch (e) {
+                        t.remove();
+                    }
+                    roseMsgs.scrollTop = roseMsgs.scrollHeight;
+                }
+                roseForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    handleRoseSend(roseInput.value);
+                }, true);
+                document.querySelectorAll('.rose-chat-quick button').forEach(b => {
+                    b.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+                        handleRoseSend(this.textContent.trim());
+                    }, true);
+                });
+            }
+        });
     });
 })();
 </script>

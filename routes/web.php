@@ -236,6 +236,21 @@ Route::view(
 )->name('webia.template.beauty.visage-editorial-makeup-artist');
 
 Route::view(
+    '/webia/template/salon-modern-sage',
+    'website-bisnis.templates.salon-modern-sage'
+)->name('webia.template.salon-modern-sage');
+
+Route::view(
+    '/webia/template/salon-classic-warm-neutral',
+    'website-bisnis.templates.salon-classic-warm-neutral'
+)->name('webia.template.salon-classic-warm-neutral');
+
+Route::view(
+    '/webia/template/salon-elegant-soft-pink',
+    'website-bisnis.templates.salon-elegant-soft-pink'
+)->name('webia.template.salon-elegant-soft-pink');
+
+Route::view(
     '/webia/template/voltrix-futuristic-automotive',
     'website-bisnis.templates.automotive.voltrix-futuristic-automotive'
 )->name('webia.template.automotive.voltrix-futuristic-automotive');

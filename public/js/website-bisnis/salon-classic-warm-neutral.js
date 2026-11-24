@@ -38,7 +38,7 @@
         if (!form.reportValidity()) return;
         const data = new FormData(form);
         // Ganti nomor ini dengan nomor WhatsApp resmi salon, menggunakan kode negara tanpa tanda +.
-        const whatsappNumber = '6281234567890';
+        const whatsappNumber = form.dataset.whatsapp || '6281234567890';
         const message = [
             'Halo Maison Élise Salon, saya ingin mengajukan booking.',
             '',
