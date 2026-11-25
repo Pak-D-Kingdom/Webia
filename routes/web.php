@@ -2272,6 +2272,14 @@ Route::prefix('webia/template')->group(function () {
         '/kencana-wastra-traditional-costume-rental',
         'website-bisnis.templates.traditional-textiles-heritage-fashion.traditional-costume-rental.kencana-wastra.kencana-wastra'
     )->name('webia.template.kencana-wastra-traditional-costume-rental');
+    Route::view(
+        '/voltcourt-racquet-academy',
+        'website-bisnis.templates.sport-others.racquet-sports.voltcourt.voltcourt'
+    )->name('webia.template.voltcourt-racquet-academy');
+    Route::view(
+        '/volta-sports-academy',
+        'website-bisnis.templates.sport-others.racquet-sports.volta-academy.volta-academy'
+    )->name('webia.template.volta-sports-academy');
 });
 
 Route::get('webia/template/{path}', TemplatePreviewController::class)
