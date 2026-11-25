@@ -80,6 +80,4 @@
             <p class="bca-muted" style="margin-top:32px">Seluruh visual adalah render grafis demo dengan merek fiktif, bukan foto proyek nyata.</p>
         </div>
     </section>
-
-    @include('website-bisnis.template.professional-service.creative.branding-creative-agency-cobalt-pop.partials.pager', ['prev_route' => 'portfolio', 'prev_label' => 'Portfolio', 'next_route' => 'process', 'next_label' => 'Our Process'])
 @endsection

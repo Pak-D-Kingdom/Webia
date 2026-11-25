@@ -10,18 +10,21 @@
     <section class="bca-section bca-tone-paper" aria-labelledby="bca-pfp-h" data-bca-filter-scope>
         <div class="bca-wrap">
             <h2 class="bca-sr" id="bca-pfp-h">Daftar proyek</h2>
-            <div class="bca-filter" role="group" aria-label="Filter kategori">
-                @foreach($site['portfolio_filters'] as $f)
-                    <button type="button" data-bca-filter="{{ $f }}" aria-pressed="{{ $loop->first ? 'true' : 'false' }}">{{ $f }}</button>
-                @endforeach
+            <div class="bca-toolbar">
+                <div class="bca-filter" role="group" aria-label="Filter kategori">
+                    @foreach($site['portfolio_filters'] as $f)
+                        <button type="button" data-bca-filter="{{ $f }}" aria-pressed="{{ $loop->first ? 'true' : 'false' }}">{{ $f }}</button>
+                    @endforeach
+                </div>
+                <label class="bca-finder" for="bca-pf-find">@include('website-bisnis.template.professional-service.creative.branding-creative-agency-cobalt-pop.partials.icon', ['name' => 'search'])<input id="bca-pf-find" type="search" placeholder="Cari proyek…" autocomplete="off" data-bca-find aria-label="Cari proyek"><button type="button" data-bca-find-clear aria-label="Hapus kata kunci" hidden>@include('website-bisnis.template.professional-service.creative.branding-creative-agency-cobalt-pop.partials.icon', ['name' => 'close'])</button></label>
             </div>
             <p class="bca-pf-count" aria-live="polite" data-bca-count-label></p>
             <div class="bca-pf-grid">
                 @foreach($site['portfolio'] as $p)
-                    <button type="button" class="bca-pf-item bca-reveal" id="{{ $p['slug'] }}" data-bca-category="{{ $p['category'] }}" data-bca-open="bca-pf-{{ $p['slug'] }}">
+                    <button type="button" class="bca-pf-item bca-reveal" id="{{ $p['slug'] }}" data-bca-category="{{ $p['category'] }}" data-bca-text="{{ $p['title'] }} {{ $p['client'] }} {{ $p['category'] }} {{ implode(' ', $p['services']) }} {{ $p['desc'] }}" data-bca-open="bca-pf-{{ $p['slug'] }}">
                         <span class="bca-pf-item__img">
                             <img src="{{ asset($site['asset_base'] . $p['image']) }}" width="{{ $p['w'] }}" height="{{ $p['h'] }}" loading="lazy" alt="{{ $p['title'] }}: {{ $p['desc'] }}">
-                            <span class="bca-pf-item__veil" aria-hidden="true"><span>Detail</span></span>
+                            <span class="bca-pf-item__veil" aria-hidden="true"><span>Detail</span></span><span class="bca-bubble" aria-hidden="true">Lihat</span>
                         </span>
                         <span class="bca-pf-item__cap">
                             <span class="bca-pf-item__title">{{ $p['title'] }}</span>
@@ -30,6 +33,7 @@
                     </button>
                 @endforeach
             </div>
+            <div class="bca-empty" data-bca-empty hidden><b>Tidak ada proyek yang cocok.</b><p>Coba kata lain atau pilih kategori “Semua”.</p></div>
             <p class="bca-muted">Semua proyek dan klien di halaman ini adalah contoh fiktif untuk keperluan template.</p>
         </div>
     </section>
@@ -60,6 +64,4 @@
             </div>
         </dialog>
     @endforeach
-
-    @include('website-bisnis.template.professional-service.creative.branding-creative-agency-cobalt-pop.partials.pager', ['prev_route' => 'services', 'prev_label' => 'Services', 'next_route' => 'branding', 'next_label' => 'Branding Showcase'])
 @endsection

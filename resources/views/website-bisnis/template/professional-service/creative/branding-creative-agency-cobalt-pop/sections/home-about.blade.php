@@ -7,7 +7,7 @@
         <div class="bca-about__copy">
             <div class="bca-shead" style="margin:0">
                 <span class="bca-label">About Agency</span>
-                <h2 class="bca-h2" id="bca-about-h">Studio kecil dengan satu keyakinan: merek yang jelas lebih mudah dicintai.</h2>
+                <h2 class="bca-h2" id="bca-about-h">Studio kecil dengan satu keyakinan: <mark class="bca-hl">merek yang jelas</mark> lebih mudah dicintai.</h2>
             </div>
             <p class="bca-lead">{{ $site['about']['story'][0] }}</p>
             <ul class="bca-pillars">

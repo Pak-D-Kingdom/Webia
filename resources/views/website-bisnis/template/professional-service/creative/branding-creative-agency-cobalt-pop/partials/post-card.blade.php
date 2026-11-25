@@ -1,5 +1,5 @@
 {{-- Parameter: $p (artikel), $mode ('home' | 'page'), $lead (true|false) --}}
-<article class="bca-post @if($lead) bca-post--lead @endif bca-reveal" id="{{ $p['slug'] }}" data-bca-category="{{ $p['category'] }}">
+<article class="bca-post @if($lead) bca-post--lead @endif bca-reveal" id="{{ $p['slug'] }}" data-bca-category="{{ $p['category'] }}" data-bca-text="{{ $p['title'] }} {{ $p['category'] }} {{ $p['excerpt'] }}">
     @if($mode === 'home')
         <a class="bca-post__img" href="{{ route($site['routes']['journal']) }}#{{ $p['slug'] }}" tabindex="-1" aria-hidden="true"><img src="{{ asset($site['asset_base'] . $p['image']) }}" width="1200" height="800" loading="lazy" alt=""></a>
         <div style="display:grid;gap:10px;align-content:start">

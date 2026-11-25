@@ -38,6 +38,4 @@
             </div>
         </div>
     </section>
-
-    @include('website-bisnis.template.professional-service.creative.branding-creative-agency-cobalt-pop.partials.pager', ['prev_route' => 'branding', 'prev_label' => 'Branding Showcase', 'next_route' => 'team', 'next_label' => 'Our Team'])
 @endsection

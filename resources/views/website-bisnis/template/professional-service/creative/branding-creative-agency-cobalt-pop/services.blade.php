@@ -7,9 +7,11 @@
 @section('content')
     @include('website-bisnis.template.professional-service.creative.branding-creative-agency-cobalt-pop.partials.page-header', ['tone' => 'yellow', 'crumb' => 'Services', 'title' => 'Layanan kreatif lengkap.', 'lead' => 'Tujuh layanan yang bisa dipesan terpisah atau digabung menjadi satu paket sesuai tahap bisnis Anda.'])
 
-    <div class="bca-jump" aria-label="Lompat ke layanan">
+    <div class="bca-jump" data-bca-jump>
         <div class="bca-wrap">
-            @foreach($site['services'] as $s)<a href="#{{ $s['key'] }}">{{ $s['title'] }}</a>@endforeach
+            <nav class="bca-jump__rail" aria-label="Lompat ke layanan">
+                @foreach($site['services'] as $s)<a href="#{{ $s['key'] }}" data-bca-spy="{{ $s['key'] }}">@include('website-bisnis.template.professional-service.creative.branding-creative-agency-cobalt-pop.partials.icon', ['name' => $s['icon']]){{ $s['title'] }}</a>@endforeach
+            </nav>
         </div>
     </div>
     @foreach($site['services'] as $s)
@@ -30,6 +32,4 @@
             </div>
         </section>
     @endforeach
-
-    @include('website-bisnis.template.professional-service.creative.branding-creative-agency-cobalt-pop.partials.pager', ['prev_route' => 'about', 'prev_label' => 'About Us', 'next_route' => 'portfolio', 'next_label' => 'Portfolio'])
 @endsection

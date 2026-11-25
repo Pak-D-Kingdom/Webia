@@ -2,7 +2,7 @@
     <div class="bca-wrap">
         <div class="bca-shead">
             <span class="bca-label">Creative Services</span>
-            <h2 class="bca-h2" id="bca-svc-h">Tujuh layanan, satu cara pandang.</h2>
+            <h2 class="bca-h2" id="bca-svc-h">Tujuh layanan, <mark class="bca-hl">satu cara pandang.</mark></h2>
             <p class="bca-lead bca-muted">Dari strategi sampai kampanye, semuanya dikerjakan tim yang sama agar pesan merek Anda tidak tercecer.</p>
         </div>
         <ul class="bca-svc-list">
