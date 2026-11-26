@@ -1,0 +1,121 @@
+/* Formal Tactical Precision Cursor + Blackout Combat Theme */
+    body {
+      background-color: #111318;
+      color: #D6D0C5;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+      cursor: default;
+    }
+    a, button, select, input, [role="button"] {
+      cursor: pointer;
+    }
+    .tactical-crosshair {
+      cursor: crosshair;
+    }
+
+    /* ========== ABUNDANT KINETIC TACTICAL ANIMATIONS ACROSS ALL SECTIONS ========== */
+    @keyframes floatCombat {
+      0%, 100% { transform: translateY(0px) rotate(-2deg); }
+      50% { transform: translateY(-14px) rotate(2.5deg); }
+    }
+    @keyframes floatCombatAlt {
+      0%, 100% { transform: translateY(0px) rotate(2deg); }
+      50% { transform: translateY(12px) rotate(-2.5deg); }
+    }
+    @keyframes radarSweep {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    @keyframes dashFlow {
+      to { stroke-dashoffset: -120; }
+    }
+    @keyframes pulseNode {
+      0%, 100% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.25); opacity: 0.45; }
+    }
+    @keyframes pulseRing {
+      0% { transform: scale(0.95); opacity: 0.85; }
+      75% { transform: scale(1.45); opacity: 0; }
+      100% { transform: scale(1.45); opacity: 0; }
+    }
+    @keyframes marqueeCombat {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
+    }
+    @keyframes beltWeaveSlide {
+      0% { background-position: 0 0; }
+      100% { background-position: 40px 40px; }
+    }
+    @keyframes scanlineMove {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(450%); }
+    }
+
+    .anim-float { animation: floatCombat 5.5s ease-in-out infinite; }
+    .anim-float-alt { animation: floatCombatAlt 6.4s ease-in-out infinite; }
+    .anim-radar { animation: radarSweep 22s linear infinite; }
+    .anim-dash {
+      stroke-dasharray: 10 8;
+      animation: dashFlow 4s linear infinite;
+    }
+    .anim-marquee {
+      display: flex;
+      width: max-content;
+      animation: marqueeCombat 28s linear infinite;
+    }
+    .anim-marquee:hover { animation-play-state: paused; }
+
+    /* Tactical Chamfered Geometry & Pearl-Weave Gi Texture */
+    .chamfer-card {
+      clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 22px 100%, 0 calc(100% - 22px));
+    }
+    .chamfer-sm {
+      clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+    }
+    .tatami-grid {
+      background-image:
+        linear-gradient(to right, rgba(214, 208, 197, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(214, 208, 197, 0.05) 1px, transparent 1px),
+        radial-gradient(circle at 20px 20px, rgba(196, 59, 53, 0.12) 1.5px, transparent 2px);
+      background-size: 40px 40px;
+    }
+    .pearl-weave {
+      background-image:
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.06) 0px, rgba(255,255,255,0.06) 2px, transparent 2px, transparent 6px),
+        repeating-linear-gradient(-45deg, rgba(0,0,0,0.14) 0px, rgba(0,0,0,0.14) 2px, transparent 2px, transparent 6px);
+    }
+
+    /* Interactive Tactical Card Lift */
+    .tactical-card {
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s ease, box-shadow 0.35s ease;
+    }
+    .tactical-card:hover {
+      transform: translateY(-6px);
+      border-color: #C43B35;
+      box-shadow: 0 20px 40px -15px rgba(196, 59, 53, 0.32);
+    }
+
+    /* Scroll Reveal */
+    /* Content stays visible without JavaScript; reveal animation activates only after observer setup. */
+    .reveal {
+      opacity: 1;
+      transform: none;
+      transition: all 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .js-reveal .reveal:not(.visible) {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    .js-reveal .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #111318; }
+    ::-webkit-scrollbar-thumb { background: #555D68; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #C43B35; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .js-reveal .reveal:not(.visible) { transition: none; transform: none; }
+}

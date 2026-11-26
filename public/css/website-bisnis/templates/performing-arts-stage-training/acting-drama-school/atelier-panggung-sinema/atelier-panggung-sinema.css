@@ -1,0 +1,175 @@
+/* Base Dramatic Cinematic Theme ("Spotlight Gold") */
+    body {
+      background-color: #22201D;
+      color: #F8F1E4;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Formal Refined Spotlight Cursor (Desktop Pointer Only) */
+    #formal-cursor-ring,
+    #formal-cursor-dot {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      transition: width 0.25s ease, height 0.25s ease, border-color 0.25s ease, opacity 0.25s ease, background-color 0.25s ease;
+      border-radius: 9999px;
+    }
+    #formal-cursor-ring {
+      width: 28px;
+      height: 28px;
+      border: 1px solid rgba(229, 199, 122, 0.65);
+      box-shadow: 0 0 12px rgba(182, 138, 58, 0.2);
+    }
+    #formal-cursor-dot {
+      width: 5px;
+      height: 5px;
+      background-color: #E5C77A;
+    }
+    body.cursor-link-hover #formal-cursor-ring {
+      width: 40px;
+      height: 40px;
+      border-color: #E5C77A;
+      background-color: rgba(182, 138, 58, 0.1);
+    }
+    @media (hover: none), (pointer: coarse) {
+      #formal-cursor-ring,
+      #formal-cursor-dot {
+        display: none !important;
+      }
+    }
+
+    /* ========== ABUNDANT REALISTIC KINETIC ANIMATIONS ACROSS ALL SECTIONS ========== */
+    @keyframes beamSweepLeft {
+      0%, 100% { transform: rotate(-18deg) translateX(-4%); opacity: 0.34; }
+      50% { transform: rotate(9deg) translateX(6%); opacity: 0.62; }
+    }
+    @keyframes beamSweepRight {
+      0%, 100% { transform: rotate(19deg) translateX(4%); opacity: 0.3; }
+      50% { transform: rotate(-10deg) translateX(-6%); opacity: 0.58; }
+    }
+    @keyframes curtainPartLeft {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-86%); }
+    }
+    @keyframes curtainPartRight {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(86%); }
+    }
+    @keyframes propDriftA {
+      0%, 100% { transform: translateY(0px) rotate(-2.5deg); }
+      50% { transform: translateY(-13px) rotate(2.5deg); }
+    }
+    @keyframes propDriftB {
+      0%, 100% { transform: translateY(0px) rotate(2.5deg); }
+      50% { transform: translateY(12px) rotate(-2deg); }
+    }
+    @keyframes filmGrainShift {
+      0% { background-position: 0 0, 20px 40px; }
+      50% { background-position: 45px -30px, -15px 60px; }
+      100% { background-position: -30px 25px, 35px -20px; }
+    }
+    @keyframes voiceWaveBar {
+      0%, 100% { transform: scaleY(0.28); }
+      50% { transform: scaleY(1); }
+    }
+    @keyframes teleprompterScroll {
+      0% { transform: translateY(0%); }
+      100% { transform: translateY(-50%); }
+    }
+    @keyframes filmstripRoll {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
+    }
+    @keyframes vuNeedleSwing {
+      0%, 100% { transform: rotate(-26deg); }
+      35% { transform: rotate(22deg); }
+      68% { transform: rotate(8deg); }
+    }
+    @keyframes pulseHalo {
+      0% { transform: scale(0.95); opacity: 0.7; }
+      75% { transform: scale(1.42); opacity: 0; }
+      100% { transform: scale(1.42); opacity: 0; }
+    }
+
+    .spotlight-cone-left {
+      background: linear-gradient(180deg, rgba(229, 199, 122, 0.34) 0%, rgba(182, 138, 58, 0.1) 55%, rgba(34, 32, 29, 0) 100%);
+      clip-path: polygon(38% 0%, 62% 0%, 100% 100%, 0% 100%);
+      animation: beamSweepLeft 9s ease-in-out infinite;
+      transform-origin: top center;
+    }
+    .spotlight-cone-right {
+      background: linear-gradient(180deg, rgba(229, 199, 122, 0.28) 0%, rgba(182, 138, 58, 0.08) 55%, rgba(34, 32, 29, 0) 100%);
+      clip-path: polygon(42% 0%, 58% 0%, 100% 100%, 0% 100%);
+      animation: beamSweepRight 11s ease-in-out infinite;
+      transform-origin: top center;
+    }
+    .velvet-curtain-left {
+      background: repeating-linear-gradient(90deg, #3A1513 0px, #5A1E1B 14px, #260D0C 28px);
+      animation: curtainPartLeft 2.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    .velvet-curtain-right {
+      background: repeating-linear-gradient(90deg, #260D0C 0px, #5A1E1B 14px, #3A1513 28px);
+      animation: curtainPartRight 2.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    .anim-prop-a { animation: propDriftA 6s ease-in-out infinite; }
+    .anim-prop-b { animation: propDriftB 6.8s ease-in-out infinite; }
+    .film-grain-overlay {
+      background-image:
+        radial-gradient(rgba(248, 241, 228, 0.14) 1px, transparent 0),
+        radial-gradient(rgba(229, 199, 122, 0.1) 1px, transparent 0);
+      background-size: 28px 28px;
+      animation: filmGrainShift 2.2s steps(2) infinite;
+    }
+    .voice-bar {
+      transform-origin: bottom;
+      animation: voiceWaveBar 1.15s ease-in-out infinite;
+    }
+    .teleprompter-track {
+      animation: teleprompterScroll 18s linear infinite;
+    }
+    .teleprompter-track:hover { animation-play-state: paused; }
+    .filmstrip-marquee {
+      display: flex;
+      width: max-content;
+      animation: filmstripRoll 30s linear infinite;
+    }
+    .filmstrip-marquee:hover { animation-play-state: paused; }
+    .vu-needle {
+      transform-origin: 50% 88%;
+      animation: vuNeedleSwing 3.4s ease-in-out infinite;
+    }
+
+    /* Proscenium Frame & Playbill Surfaces */
+    .proscenium-arch {
+      border: 1px solid rgba(182, 138, 58, 0.45);
+      box-shadow: inset 0 0 0 1px rgba(229, 199, 122, 0.15), 0 24px 60px -15px rgba(0, 0, 0, 0.75);
+    }
+    .cinema-card {
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s ease, box-shadow 0.35s ease;
+    }
+    .cinema-card:hover {
+      transform: translateY(-6px);
+      border-color: #E5C77A;
+      box-shadow: 0 22px 45px -15px rgba(182, 138, 58, 0.28);
+    }
+    .film-perforations {
+      background-image: radial-gradient(circle, #22201D 45%, transparent 48%);
+      background-size: 22px 14px;
+      background-repeat: repeat-x;
+      background-position: center;
+    }
+
+    /* Scroll Reveal */
+    .reveal-stage { opacity: 1; transform: translateY(0); transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1), transform 0.75s cubic-bezier(0.22, 1, 0.36, 1); }
+    body.reveal-stage-ready .reveal-stage { opacity: 0; transform: translateY(24px); }
+    body.reveal-stage-ready .reveal-stage.visible { opacity: 1; transform: translateY(0); }
+
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #22201D; }
+    ::-webkit-scrollbar-thumb { background: #574633; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #B68A3A; }
