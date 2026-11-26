@@ -1015,6 +1015,8 @@ class CustomerSiteController extends Controller
     private const TRANSPORTATION_STANDALONE_VIEWS = [
         'cocoexpress-delivery-service' => ['home' => 'website-bisnis.templates.transportation-logistics.delivery-service.cocoexpress.cocoexpress'],
         'reloko-moving-company' => ['home' => 'website-bisnis.templates.transportation-logistics.moving-company.reloko.reloko'],
+        'nusavektor-logistics-corporate' => ['home' => 'website-bisnis.templates.transportation-logistics.nusavektor-logistics-corporate'],
+        'paketdream-logistics-creative' => ['home' => 'website-bisnis.templates.company.paketdream-logistics-creative'],
     ];
 
     private const TRANSPORTATION_CONFIG_TEMPLATES = [
@@ -1208,6 +1210,11 @@ class CustomerSiteController extends Controller
                 'HEARTH & HAUL' => strtoupper($bizName),
                 'Atelier Move' => $bizName,
                 'ATELIER MOVE' => strtoupper($bizName),
+                'NusaVektor Logistics' => $bizName,
+                'NusaVektor' => $bizName,
+                'NUSAVEKTOR' => strtoupper($bizName),
+                'PaketDream' => $bizName,
+                'PAKETDREAM' => strtoupper($bizName),
             ];
             $html = str_replace(array_keys($brandMap), array_values($brandMap), $html);
         }
@@ -1253,6 +1260,7 @@ class CustomerSiteController extends Controller
                     'Jakarta · Indonesia',
                     'Greater Jakarta',
                     'Jakarta, Indonesia',
+                    'Alamat kantor pusat (ganti)',
                 ],
                 $address,
                 $html
@@ -1270,6 +1278,25 @@ class CustomerSiteController extends Controller
                     'hello@ateliermove.example',
                 ],
                 $email,
+                $html
+            );
+        }
+
+        if ($slug === 'nusavektor-logistics-corporate') {
+            $contactLines = [];
+            if (! empty($business['email'])) {
+                $contactLines[] = '<li>'.e($business['email']).'</li>';
+            }
+            if ($whatsapp !== '') {
+                $contactLines[] = '<li>WhatsApp: '.e($whatsapp).'</li>';
+            }
+            $html = str_replace(
+                ['<li>Email dan WhatsApp (ganti)</li>', '<li>Hotline 24/7 (ganti)</li>', '<b>ganti nomor</b>'],
+                [
+                    implode('', $contactLines),
+                    $whatsapp !== '' ? '<li>WhatsApp: '.e($whatsapp).'</li>' : '<li>Hotline 24/7</li>',
+                    e($whatsapp),
+                ],
                 $html
             );
         }
@@ -2602,6 +2629,7 @@ class CustomerSiteController extends Controller
     private const COMPANY_CONTRACTOR_VIEWS = [
         'bangun-karsa-contractor-professional' => ['home' => 'website-bisnis.templates.company.bangun-karsa-contractor-professional'],
         'langit-karya-contractor-minimalist' => ['home' => 'website-bisnis.templates.company.langit-karya-contractor-minimalist'],
+        'zamrud-karya-contractor-luxury' => ['home' => 'website-bisnis.templates.company.zamrud-karya-contractor-luxury'],
     ];
 
     private function handleCompanyContractor(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
@@ -2637,6 +2665,9 @@ class CustomerSiteController extends Controller
             $brandMap = [
                 'Bangun Karsa' => $bizName,
                 'Langit Karya' => $bizName,
+                'ZAMRUD<small>KARYA</small>' => strtoupper($bizName),
+                'ZAMRUD KARYA' => strtoupper($bizName),
+                'Zamrud Karya' => $bizName,
             ];
             $html = str_replace(array_keys($brandMap), array_values($brandMap), $html);
         }
