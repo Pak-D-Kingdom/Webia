@@ -57,7 +57,7 @@
   'use strict';
   const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
   let D = {}; try { D = JSON.parse($('#lib-data').textContent); } catch (_) {}
-  const B = (D.books || []).map((b, i) => ({ id: i, title: b[0], author: b[1], fmt: b[2], cat: b[3], rate: b[4], year: b[5], isbn: `978-602-${1200 + i * 7}-${10 + i}-${i % 10}`, pub: 'Penerbit Cahaya Ilmu' }));
+  const B = (D.books || []).map((b, i) => ({ id: i, title: b[0], author: b[1], fmt: b[2], cat: b[3], rate: b[4], year: b[5], isbn: `978-602-${1200 + i * 7}-${10 + i}-${i % 10}`, pub: 'Penerbit Cahaya Ilmu', readers: b[6] || '' }));
   const base = D.base || '', H = [210, 200, 222, 195, 215, 205], q = new URLSearchParams(location.search), UP = () => document.dispatchEvent(new Event('dl:update'));
   const S = { get: (k, d) => { try { const v = localStorage.getItem('dlaf.' + k); return v ? JSON.parse(v) : d; } catch (_) { return d; } }, set: (k, v) => { try { localStorage.setItem('dlaf.' + k, JSON.stringify(v)); } catch (_) {} } };
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -66,7 +66,7 @@
   const cover = (b) => `<div class="bk" style="--h:${H[b.id % 6]}"><b>${esc(b.title)}</b><small>${esc(b.author)}</small></div>`;
   const notify = (t) => S.set('nt', [t, ...S.get('nt', [])].slice(0, 5));
   const notes = () => [...S.get('nt', []), ...(D.notifs || [])].slice(0, 6);
-  const card = (b) => `<article class="bcard"><a href="${url('detail-buku', '?b=' + b.id)}" aria-label="${esc(b.title)}">${cover(b)}</a><div><h4><a href="${url('detail-buku', '?b=' + b.id)}">${esc(b.title)}</a></h4><small>${esc(b.author)} · ${b.year}</small><span class="rt">${stars(b.rate)} ${b.rate}</span><em>${esc(b.fmt)}</em></div><div class="acts"><button data-wish="${b.id}" aria-label="Wishlist">${S.get('wish', []).includes(b.id) ? '♥' : '♡'}</button><button data-borrow="${b.id}">Pinjam</button></div></article>`;
+  const card = (b) => `<article class="bcard"><a href="${url('detail-buku', '?b=' + b.id)}" aria-label="${esc(b.title)}">${cover(b)}</a><div><h4><a href="${url('detail-buku', '?b=' + b.id)}">${esc(b.title)}</a></h4><small>${esc(b.author)} · ${b.year}${b.readers ? ' · ' + b.readers + ' pembaca' : ''}</small><span class="rt">${stars(b.rate)} ${b.rate}</span><em>${esc(b.fmt)}</em></div><div class="acts"><button data-wish="${b.id}" aria-label="Wishlist">${S.get('wish', []).includes(b.id) ? '♥' : '♡'}</button><button data-borrow="${b.id}">Pinjam</button></div></article>`;
   const dl = (id) => { const b = B[id]; if (!b) return; const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([`${b.title}\n${b.author}\nISBN ${b.isbn}\n\n(Berkas contoh unduhan statis)`], { type: 'text/plain' })); a.download = b.title.replace(/\W+/g, '-') + '.txt'; document.body.append(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 800); toast('Unduhan dimulai'); };
 
   document.addEventListener('click', (e) => {
@@ -83,13 +83,13 @@
     const el = $('[data-filters]').elements, g = $('[data-grid]'), n = $('[data-count]'), pre = cat.dataset.preset;
     if (q.get('q')) el.q.value = q.get('q'); if (q.get('cat')) el.cat.value = q.get('cat');
     el.sort.value = { featured: 'rate', new: 'year', popular: 'rate' }[pre] || 'title';
-    const run = () => {
+    let lim = 8; const run = () => {
       let r = B.filter((b) => (b.title + b.author + b.isbn).toLowerCase().includes(el.q.value.toLowerCase()) && (!el.cat.value || b.cat === el.cat.value) && (!el.fmt.value || b.fmt === el.fmt.value) && (!el.author.value || b.author.toLowerCase().includes(el.author.value.toLowerCase())) && b.rate >= +el.rate.value && (!el.year.value || b.year >= +el.year.value));
       if (pre === 'featured') r = r.filter((b) => b.rate >= 4.5);
       const s = el.sort.value; r.sort((a, b) => s === 'title' ? a.title.localeCompare(b.title) : s === 'year' ? b.year - a.year || b.rate - a.rate : b.rate - a.rate);
-      n.textContent = r.length + ' buku ditemukan'; g.innerHTML = r.map(card).join('') || '<p class="empty">Tidak ada buku yang cocok. Ubah kata kunci atau filter.</p>';
+      n.textContent = r.length + ' buku ditemukan'; g.innerHTML = r.slice(0, lim).map(card).join('') + (r.length > lim ? '<p class="more-row"><button class="btn ghost" data-more>Muat Lebih Banyak</button></p>' : '') || '<p class="empty">Tidak ada buku yang cocok. Ubah kata kunci atau filter.</p>';
     };
-    $('[data-filters]').addEventListener('input', run); $('[data-filters]').addEventListener('submit', (e) => { e.preventDefault(); run(); }); document.addEventListener('dl:update', run); run();
+    $('[data-filters]').addEventListener('input', () => { lim = 8; run(); }); g.addEventListener('click', (e) => { if (e.target.matches('[data-more]')) { lim += 8; run(); } }); $('[data-filters]').addEventListener('submit', (e) => { e.preventDefault(); run(); }); document.addEventListener('dl:update', run); run();
   }
 
   const cg = $('[data-view="cats"]');
@@ -127,7 +127,7 @@
   if (ac) { const A = D.acad || {}, ks = Object.keys(A); let k = ks[0]; const draw = () => { ac.innerHTML = `<div class="tabs">${ks.map((x) => `<button class="${x === k ? 'on' : ''}" data-k="${esc(x)}">${esc(x)}</button>`).join('')}</div><ul class="arows">${(A[k] || []).map((i) => `<li><span class="bk sm" style="--h:210"></span><div><b>${esc(i[0])}</b><small>${esc(i[1])}</small></div><a class="btn sm" href="${url('katalog')}">Lihat</a></li>`).join('')}</ul>`; }; ac.addEventListener('click', (e) => { const t = e.target.closest('[data-k]'); if (t) { k = t.dataset.k; draw(); } }); draw(); }
 
   const ar = $('[data-view="article"]');
-  if (ar && (D.arts || []).length) { const i = +q.get('a') || 0, a = D.arts[i] || D.arts[0]; ar.innerHTML = `<article class="card art-full"><span class="thumb wide" style="--h:${H[i % 6]}"></span><em>${esc(a[1])}</em><h2>${esc(a[0])}</h2><p>${esc(a[2])}</p><p>Membaca secara rutin melatih fokus, memperkaya kosakata, dan membuka sudut pandang baru. Mulailah dari topik yang Anda sukai, lalu perluas ke bidang lain secara bertahap.</p><p>Manfaatkan fitur bookmark, catatan, dan pelacak progres agar setiap sesi membaca terasa terarah.</p><a class="btn sm" href="${url('knowledge-hub')}">← Kembali ke Knowledge Hub</a></article>`; }
+  if (ar && (D.arts || []).length) { const i = +q.get('a') || 0, a = D.arts[i] || D.arts[0]; ar.innerHTML = `<article class="card art-full"><span class="thumb wide" style="--h:${H[i % 6]}"></span><em>${esc(a[1])}</em><h2>${esc(a[0])}</h2><p>${esc(a[2])}</p><p>Membaca secara rutin melatih fokus, memperkaya kosakata, dan membuka sudut pandang baru. Mulailah dari topik yang Anda sukai, lalu perluas ke bidang lain secara bertahap.</p><p>Manfaatkan fitur bookmark, catatan, dan pelacak progres agar setiap sesi membaca terasa terarah.</p><div class="author"><span class="av" style="--h:210">D</span><div><b>Tim Kurator Digital Library</b><small>Penulis · Knowledge Hub</small></div></div><a class="btn sm" href="${url('knowledge-hub')}">← Kembali ke Knowledge Hub</a></article><section class="card art-full"><h3>Artikel Terkait</h3><ul class="revs">${D.arts.map((x, k) => [x, k]).filter((x) => x[1] !== i).slice(0, 3).map((x) => `<li><a href="${url('artikel', '?a=' + x[1])}">${esc(x[0][0])}</a></li>`).join('')}</ul></section>`; }
 
   const ls = $('[data-view="list"]');
   if (ls) {
@@ -160,4 +160,12 @@
   document.querySelector('[data-a11y]')?.addEventListener('click', (e) => { e.preventDefault(); document.body.classList.toggle('a11y'); });
   const par = document.querySelector('[data-par]');
   if (par && !matchMedia('(prefers-reduced-motion: reduce)').matches) { let t = false; addEventListener('scroll', () => { if (t) return; t = true; requestAnimationFrame(() => { par.style.transform = `translateY(${Math.min(scrollY * .06, 24)}px)`; t = false; }); }, { passive: true }); }
+})();
+
+(() => {
+  'use strict';
+  document.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-scroll]'); if (!b) return;
+    const t = b.parentElement.querySelector('[data-track]'); if (t) t.scrollBy({ left: +b.dataset.scroll * 260, behavior: 'smooth' });
+  });
 })();

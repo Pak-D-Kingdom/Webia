@@ -1000,6 +1000,25 @@ class WebiaTemplateNabiilaSeeder extends Seeder
                 'is_active' => true,
                 'sort_order' => 72,
             ],
+            [
+                'name' => 'Astraly — Digital Products Digital Asset Marketplace Creative Tech Galaxy',
+                'slug' => 'digital-products-digital-asset-marketplace-galaxy',
+                'category_slug' => 'digital-products',
+                'category_label' => 'Digital Products',
+                'business_types' => ['Digital Asset Marketplace'],
+                'design_style' => 'Creative Tech',
+                'color_theme' => 'Galaxy',
+                'description' => 'Website marketplace aset digital creative tech dengan warna galaxy, kategori aset, aset unggulan & trending, bundle, profil kreator, smart search, filter lanjutan, preview produk, pemilih lisensi, keranjang & checkout, simulasi unduhan, ulasan, rekomendasi AI, WhatsApp, dan asisten AI FAQ Nova.',
+                'preview_style' => 'preview-glow',
+                'eyebrow' => 'DISCOVER • CREATE • DOWNLOAD',
+                'headline' => 'Temukan aset digital<br>dari galaksi kreator.',
+                'tag' => 'Digital Products · Digital Asset Marketplace · Creative Tech',
+                'preview_folder' => null,
+                'template_url' => '/webia/template/digital-products/creative-tech/digital-asset-marketplace-galaksi',
+                'site_config_path' => 'digital-products/creative-tech/digital-asset-marketplace-galaksi/digital-asset-marketplace',
+                'is_active' => true,
+                'sort_order' => 73,
+            ],
         ];
 
         foreach ($templates as $template) {
