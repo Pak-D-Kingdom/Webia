@@ -307,15 +307,14 @@
             document.getElementById('bookingModal').classList.remove('hidden');
         }
 
-        const VERBA_WHATSAPP_NUMBER = '6281234567890'; // Replace with the business WhatsApp number.
+        const VERBA_WHATSAPP_NUMBER = window.WEBIA_WHATSAPP_NUMBER || '6281234567890'; // Replace with the business WhatsApp number.
         function handleBookingSubmit(e) {
             e.preventDefault();
             const form = e.currentTarget;
             const values = new FormData(form);
             const title = document.getElementById('modalTitle')?.textContent || 'Project inquiry';
             const lines = [
-                'VERBA — Translation & Interpreter Inquiry',
-                'Request: ' + title,
+                (window.WEBIA_BRAND_NAME || 'VERBA') + ' — Translation & Interpreter Inquiry',                'Request: ' + title,
                 'Name: ' + (values.get('customer_name') || '-'),
                 'Email: ' + (values.get('customer_email') || '-'),
                 'Target date: ' + (values.get('target_date') || '-'),
@@ -388,6 +387,6 @@
 // WEBIA contact integration
 window.addEventListener('DOMContentLoaded', () => {
   const wa = document.getElementById('verbaWhatsApp');
-  if (wa) wa.href = 'https://wa.me/' + VERBA_WHATSAPP_NUMBER + '?text=' + encodeURIComponent('Hello VERBA, I would like to ask about your translation and interpreter services.');
+  if (wa) wa.href = 'https://wa.me/' + VERBA_WHATSAPP_NUMBER + '?text=' + encodeURIComponent('Hello ' + (window.WEBIA_BRAND_NAME || 'VERBA') + ', I would like to ask about your translation and interpreter services.');
   calculateEstimate();
 });

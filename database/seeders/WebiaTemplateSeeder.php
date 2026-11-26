@@ -833,6 +833,7 @@ class WebiaTemplateSeeder extends Seeder
                 'preview_folder' => 'professional-service/translation-interpreter/verba',
                 'template_url' => '/webia/template/verba-translation-interpreter',
                 'preview_view' => 'website-bisnis.templates.professional-service.translation-interpreter.verba.verba',
+                'site_config_path' => 'professional-service/verba-translation-interpreter',
                 'is_active' => true,
                 'sort_order' => 40,
             ],
@@ -852,6 +853,7 @@ class WebiaTemplateSeeder extends Seeder
                 'preview_folder' => 'vanguard',
                 'template_url' => '/webia/template/vanguard-lawyer',
                 'preview_view' => 'website-bisnis.templates.professional-service.lawyer.vanguard.vanguard',
+                'site_config_path' => 'professional-service/vanguard-lawyer',
                 'is_active' => true,
                 'sort_order' => 41,
             ],
@@ -1095,7 +1097,6 @@ class WebiaTemplateSeeder extends Seeder
                 'is_active' => true,
                 'sort_order' => 45,
             ],
-
 
         ];
 

@@ -865,6 +865,7 @@ class WebiaTemplateNabiilaSeeder extends Seeder
                 'tag' => 'Professional Service · Branding & Creative Agency · Artistic',
                 'preview_folder' => null,
                 'template_url' => '/webia/template/professional-service/artistic/branding-creative-agency-terracotta',
+                'site_config_path' => 'professional-service/artistic/branding-creative-agency-terracotta/branding-creative-agency',
                 'is_active' => true,
                 'sort_order' => 65,
             ],
