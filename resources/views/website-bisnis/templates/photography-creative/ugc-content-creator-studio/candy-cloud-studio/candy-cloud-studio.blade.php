@@ -716,15 +716,15 @@
                     class="fas fa-times"></i></button>
         </div>
 
-        <div id="candy-ai-messages" class="flex-1 p-4 overflow-y-auto space-y-3 font-mono text-xs">
+        <div id="candy-ai-messages" data-webia-ai-messages class="flex-1 p-4 overflow-y-auto space-y-3 font-mono text-xs">
             <div class="bg-white p-3 rounded-2xl rounded-tl-none border border-candy-pinkLight max-w-[85%] shadow-sm">
                 Hi there! ✨ Selamat datang di Candy Cloud Studio. Ada yang bisa dibantu mengenai Rate Card atau jadwal
                 shooting?
             </div>
         </div>
 
-        <form onsubmit="handleCandyAiSubmit(event)" class="p-3 bg-white border-t border-candy-pinkLight flex gap-2">
-            <input type="text" id="candy-ai-input" placeholder="Tanyakan sesuatu..."
+        <form data-webia-ai-form onsubmit="handleCandyAiSubmit(event)" class="p-3 bg-white border-t border-candy-pinkLight flex gap-2">
+            <input type="text" id="candy-ai-input" data-webia-ai-input placeholder="Tanyakan sesuatu..."
                 class="flex-1 bg-candy-bg text-candy-dark text-xs px-4 py-2 rounded-full border border-candy-pinkLight focus:outline-none">
             <button type="submit"
                 class="w-8 h-8 rounded-full bg-candy-pink text-white flex items-center justify-center text-xs"><i

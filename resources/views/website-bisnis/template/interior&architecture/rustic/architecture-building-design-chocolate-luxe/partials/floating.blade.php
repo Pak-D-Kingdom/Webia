@@ -39,19 +39,19 @@
             <p>Asisten FAQ layanan arsitektur {{ $site['brand']['name'] }}. Pilih topik di bawah atau tulis pertanyaan Anda.</p>
             <div class="abd-topics">
                 @foreach ($site['topics'] as $t)
-                    <button type="button" class="abd-topic" data-chat-topic="{{ $t[2] }}">
+                    <button type="button" class="abd-topic" data-chat-topic="{{ $t[2] }}" data-webia-ai-prompt="architecture" data-webia-ai-question="{{ $t[2] }}">
                         <span class="abd-topic__ico" aria-hidden="true"><svg class="i"><use href="#i-{{ $t[1] }}"/></svg></span>
                         <span class="abd-topic__t">{{ $t[0] }}</span>
                     </button>
                 @endforeach
             </div>
         </div>
-        <div class="abd-chat__thread" id="abd-chat-thread"></div>
+    <div class="abd-chat__thread" id="abd-chat-thread" data-webia-ai-log="architecture"></div>
     </div>
 
     <div class="abd-chat__quick" id="abd-chat-quick" aria-label="Pertanyaan lanjutan"></div>
-    <form class="abd-chat__form" id="abd-chat-form" autocomplete="off">
-        <input type="text" id="abd-chat-input" placeholder="Tulis pertanyaan Anda..." maxlength="200" aria-label="Pertanyaan Anda">
+    <form class="abd-chat__form" id="abd-chat-form" data-webia-ai-form="architecture" autocomplete="off">
+        <input type="text" id="abd-chat-input" data-webia-ai-input="architecture" placeholder="Tulis pertanyaan Anda..." maxlength="200" aria-label="Pertanyaan Anda">
         <button type="submit" class="abd-chat__send" aria-label="Kirim pertanyaan"><svg class="i" aria-hidden="true"><use href="#i-send"/></svg></button>
     </form>
     <p class="abd-chat__note">Jawaban otomatis dari FAQ. Untuk kebutuhan khusus, lanjutkan lewat WhatsApp.</p>

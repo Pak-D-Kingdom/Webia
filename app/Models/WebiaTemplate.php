@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class WebiaTemplate extends Model
 {
+    protected static function booted(): void
+    {
+        static::saved(fn () => WebiaOrder::flushAllCustomerSiteCaches());
+        static::deleted(fn () => WebiaOrder::flushAllCustomerSiteCaches());
+    }
     protected $fillable = [
         'name', 'slug', 'category_slug', 'category_label', 'business_types',
         'design_style', 'color_theme', 'description', 'preview_style',

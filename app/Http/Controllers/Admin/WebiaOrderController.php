@@ -23,7 +23,7 @@ class WebiaOrderController extends Controller
 {
     public function __construct(private OrderMail $orderMail) {}
 
-    protected const STATUSES = ['awaiting_payment', 'payment_uploaded', 'paid', 'rejected'];
+    protected const STATUSES = ['awaiting_payment', 'payment_uploaded', 'paid', 'rejected', 'cancelled'];
 
     protected const DELIVERY_STATUSES = ['not_started', 'in_progress', 'delivered'];
 

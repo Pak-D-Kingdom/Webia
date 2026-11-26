@@ -367,6 +367,7 @@ class WebiaOrderController extends Controller
     public function saveKnowledgeBase(Request $request, WebiaOrder $order): RedirectResponse
     {
         abort_unless($order->user_id === $request->user()->id, 404);
+        abort_if(! ($order->customer_ai_knowledge_editable ?? true), 403, 'Editor Knowledge Base saat ini dikelola oleh tim WEBIA.');
         abort_unless($order->status === 'paid' && $order->delivery_status !== 'delivered', 422);
 
         $validated = $request->validate([

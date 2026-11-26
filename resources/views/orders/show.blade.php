@@ -4,6 +4,19 @@
 
 @section('content')
     @php $uploadedAt = $order->payments->last()?->created_at ?? $order->logs->where('to_status', 'payment_uploaded')->last()?->created_at; @endphp
+    <style>
+        .kb-editor-status { display: inline-flex; align-items: center; gap: .35rem; margin-top: .5rem; font-size: .78rem; color: #64748b; }
+        .kb-editor-status::before { content: ''; width: .5rem; height: .5rem; border-radius: 999px; background: #94a3b8; }
+        .kb-editor-status.is-dirty { color: #b45309; }
+        .kb-editor-status.is-dirty::before { background: #f59e0b; }
+        .kb-editor-status.is-saved { color: #15803d; }
+        .kb-editor-status.is-saved::before { background: #22c55e; }
+        @media (max-width: 640px) {
+            .kb-tabs-row { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+            .kb-tabs-row button { white-space: normal !important; min-height: 44px; }
+            .kb-two-column, .kb-card-two-column { grid-template-columns: 1fr !important; }
+        }
+    </style>
     <section class="dashboard-panel" aria-labelledby="order-title">
         <div class="customer-detail-head">
             <a class="customer-create-back" href="{{ route('orders.index') }}">
@@ -133,10 +146,12 @@
                                     <span class="material-symbols-outlined" style="font-size: 1.05rem;">storefront</span>
                                     Data Profil Website
                                 </button>
-                                <button type="button" id="tabBtnKnowledge" onclick="switchOrderTab('ai-kb')">
-                                    <span class="material-symbols-outlined" style="font-size: 1.05rem;">psychology</span>
-                                    Knowledge Base AI
-                                </button>
+                                @if ($order->customer_ai_knowledge_editable ?? true)
+                                    <button type="button" id="tabBtnKnowledge" onclick="switchOrderTab('ai-kb')">
+                                        <span class="material-symbols-outlined" style="font-size: 1.05rem;">psychology</span>
+                                        Knowledge Base AI
+                                    </button>
+                                @endif
                             </nav>
                         </div>
 
@@ -181,20 +196,16 @@
                         </div>
 
                         {{-- Panel 2: Knowledge Base Asisten AI --}}
+                        @if ($order->customer_ai_knowledge_editable ?? true)
                         <div id="panelOrderKnowledge" style="display: none;">
                             @php
                                 $siteSlug = $order->site_slug;
                                 $kb = $siteSlug ? \App\Services\AiQuotaService::getTenantKnowledge($siteSlug) : [];
                                 
-                                $defaultLayananDemo = "# Layanan & Produk Unggulan\n\n- **Paket Reguler**: Layanan standar dengan pengerjaan profesional. Mulai Rp150.000.\n- **Paket Premium**: Layanan terlengkap prioritas tinggi dengan garansi penuh. Mulai Rp350.000.\n- **Layanan Kustom**: Konsultasikan kebutuhan spesifik Anda langsung via CS WhatsApp.\n";
-                                $defaultFaqDemo = "# Tanya Jawab (FAQ)\n\n### Q: Bagaimana cara melakukan pemesanan?\nA: Anda dapat memesan langsung melalui tombol di website kami atau menghubungi WhatsApp CS resmi.\n\n### Q: Jam berapa toko buka dan beroperasi?\nA: Kami beroperasi setiap hari Senin – Sabtu pukul 08.00 – 17.00 WIB.\n\n### Q: Apakah melayani pengiriman atau layanan ke lokasi?\nA: Ya, kami siap melayani pesanan Anda dengan jadwal yang telah disepakati bersama.\n";
-                                $defaultKebijakanDemo = "# Kebijakan & Ketentuan Layanan\n\n## 1. Pembayaran Resmi\nPembayaran dilakukan melalui rekening resmi dan verifikasi konfirmasi otomatis.\n\n## 2. Perubahan & Pembatalan Jadwal\nPermintaan perubahan jadwal atau pembatalan wajib diajukan maksimal H-1 sebelum tanggal pengerjaan.\n\n## 3. Garansi & Jaminan Kualitas\nKami menjamin kepuasan pelanggan dengan jaminan revisi atau penggantian apabila layanan tidak sesuai dengan kesepakatan awal.\n";
-                                $defaultProfilDemo = "# Profil & Identitas Bisnis AI\n\n- **Nama Brand**: " . ($business['business_name'] ?? 'Bisnis Klien') . "\n- **Tagline**: " . ($business['tagline'] ?? 'Layanan Profesional dan Terpercaya') . "\n- **Sapaan AI**: Halo! Selamat datang di " . ($business['business_name'] ?? 'website kami') . ", ada yang bisa kami bantu hari ini? 😊\n- **Karakter Chatbot**: Ramah, sopan, informatif, dan solutif.\n";
-
-                                $kbLayanan = old('kb_layanan', $business['kb_layanan'] ?? (!empty($kb['layanan']) ? $kb['layanan'] : $defaultLayananDemo));
-                                $kbFaq = old('kb_faq', $business['kb_faq'] ?? (!empty($kb['faq_raw']) ? $kb['faq_raw'] : (is_string($kb['faq'] ?? null) && !empty($kb['faq']) ? $kb['faq'] : $defaultFaqDemo)));
-                                $kbKebijakan = old('kb_kebijakan', $business['kb_kebijakan'] ?? (!empty($kb['kebijakan']) ? $kb['kebijakan'] : $defaultKebijakanDemo));
-                                $kbProfil = old('kb_profil', $business['kb_profil'] ?? (!empty($kb['profil']) ? $kb['profil'] : $defaultProfilDemo));
+                                $kbLayanan = old('kb_layanan', $business['kb_layanan'] ?? ($kb['layanan'] ?? ''));
+                                $kbFaq = old('kb_faq', $business['kb_faq'] ?? (!empty($kb['faq_raw']) ? $kb['faq_raw'] : (is_string($kb['faq'] ?? null) ? $kb['faq'] : '')));
+                                $kbKebijakan = old('kb_kebijakan', $business['kb_kebijakan'] ?? ($kb['kebijakan'] ?? ''));
+                                $kbProfil = old('kb_profil', $business['kb_profil'] ?? ($kb['profil'] ?? ''));
                             @endphp
 
                             <form class="customer-create-card" method="POST" action="{{ route('orders.knowledge-base', $order) }}" id="orderKnowledgeForm" onsubmit="syncAllStructuredToRaw()">
@@ -205,8 +216,9 @@
                                         Knowledge Base Asisten AI
                                     </h2>
                                     <p class="customer-create-option-desc" style="margin-top: 0.35rem;">
-                                        Latih Chatbot AI di website Anda agar dapat menjawab pertanyaan calon pelanggan secara cerdas dan akurat sesuai data bisnis Anda.
+                                        Tambahkan informasi yang memang berlaku untuk bisnis Anda. Setiap bagian bersifat opsional dan tidak dibatasi jenis usaha tertentu.
                                     </p>
+                                    <p id="kbEditorStatus" class="kb-editor-status" role="status">Belum ada perubahan</p>
                                 </div>
 
                                 {{-- Sub-dokumen segmented filter (1 baris penuh tanpa teks .md) --}}
@@ -214,7 +226,7 @@
                                     <nav class="customer-filter kb-tabs-row" aria-label="Pilih kategori knowledge base" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; width: 100%;">
                                         <button type="button" id="subBtnLayanan" aria-current="page" onclick="switchKbSubDoc('layanan')" style="justify-content: center; text-align: center; white-space: nowrap; padding: 10px 8px;">
                                             <span class="material-symbols-outlined" style="font-size: 1.15rem; margin-right: 4px;">restaurant_menu</span>
-                                            Layanan
+                                            Informasi
                                         </button>
                                         <button type="button" id="subBtnFaq" onclick="switchKbSubDoc('faq')" style="justify-content: center; text-align: center; white-space: nowrap; padding: 10px 8px;">
                                             <span class="material-symbols-outlined" style="font-size: 1.15rem; margin-right: 4px;">help</span>
@@ -226,7 +238,7 @@
                                         </button>
                                         <button type="button" id="subBtnProfil" onclick="switchKbSubDoc('profil')" style="justify-content: center; text-align: center; white-space: nowrap; padding: 10px 8px;">
                                             <span class="material-symbols-outlined" style="font-size: 1.15rem; margin-right: 4px;">badge</span>
-                                            Profil AI
+                                            Profil
                                         </button>
                                     </nav>
                                 </div>
@@ -238,12 +250,12 @@
                                 <textarea id="kb_profil" name="kb_profil" style="display: none;">{{ $kbProfil }}</textarea>
 
                                 {{-- ======================================================== --}}
-                                {{-- Tab 1: Layanan --}}
+                                {{-- Tab 1: Informasi bisnis --}}
                                 {{-- ======================================================== --}}
                                 <div id="subDocLayanan" class="kb-sub-doc">
                                     <div style="background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 10px; padding: 0.85rem 1rem; margin-bottom: 1rem; font-size: 0.825rem; color: #475569; display: flex; align-items: center; gap: 0.5rem;">
                                         <span class="material-symbols-outlined" style="color: var(--account-action, #1a146b); font-size: 1.15rem;">info</span>
-                                        <span>Tuliskan paket layanan, produk, atau menu bisnis Anda. AI akan menggunakannya untuk memberikan rekomendasi harga dan fitur kepada pelanggan.</span>
+                                        <span>Tambahkan informasi yang sering ditanyakan: produk, jasa, program, fasilitas, area, proses, portofolio, atau informasi lain yang relevan untuk bisnis Anda.</span>
                                     </div>
 
                                     <div id="layananItemsContainer">
@@ -252,7 +264,7 @@
 
                                     <button type="button" onclick="addLayananItem()" style="display: inline-flex; align-items: center; gap: 0.4rem; background: #ffffff; border: 1px dashed var(--account-action, #1a146b); color: var(--account-action, #1a146b); padding: 0.65rem 1rem; border-radius: 8px; font-size: 0.825rem; font-weight: 700; cursor: pointer; width: 100%; justify-content: center; margin-top: 0.5rem; transition: background 0.2s;">
                                         <span class="material-symbols-outlined" style="font-size: 1.15rem;">add_circle</span>
-                                        Tambah Layanan / Produk
+                                        Tambah Informasi
                                     </button>
                                 </div>
 
@@ -281,32 +293,32 @@
                                 <div id="subDocKebijakan" class="kb-sub-doc" style="display: none;">
                                     <div style="background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 10px; padding: 0.85rem 1rem; margin-bottom: 1rem; font-size: 0.825rem; color: #475569; display: flex; align-items: center; gap: 0.5rem;">
                                         <span class="material-symbols-outlined" style="color: var(--account-action, #1a146b); font-size: 1.15rem;">policy</span>
-                                        <span>Aturan SOP &amp; operasional bisnis agar chatbot tidak memberikan janji yang salah terkait pembayaran, pembatalan, dan garansi.</span>
+                                        <span>Tambahkan aturan, batasan, proses, atau ketentuan yang harus dipatuhi chatbot. Isi hanya bagian yang benar-benar berlaku untuk bisnis Anda.</span>
                                     </div>
 
                                     <div style="display: flex; flex-direction: column; gap: 1rem;">
                                         <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 1rem; box-shadow: 0 1px 2px rgba(0,0,0,0.03);">
                                             <div style="display: flex; align-items: center; gap: 0.45rem; margin-bottom: 0.45rem;">
                                                 <span class="material-symbols-outlined" style="font-size: 1.15rem; color: var(--account-action, #1a146b);">payments</span>
-                                                <strong style="font-size: 0.85rem; color: #1e293b;">1. Kebijakan Pembayaran &amp; DP</strong>
+                                                <strong style="font-size: 0.85rem; color: #1e293b;">1. Ketentuan utama (opsional)</strong>
                                             </div>
-                                            <textarea id="kbPayment" rows="3" placeholder="Contoh: Pembayaran dilakukan melalui rekening resmi dan verifikasi konfirmasi otomatis..." oninput="syncKebijakanToRaw()" style="width: 100%; border: 1px solid #cbd5e1; border-radius: 8px; padding: 0.6rem; font-size: 0.825rem;"></textarea>
+                                            <textarea id="kbPayment" rows="3" placeholder="Contoh: Ketentuan pemesanan, akses layanan, jadwal, atau aturan utama bisnis." oninput="syncKebijakanToRaw()" style="width: 100%; border: 1px solid #cbd5e1; border-radius: 8px; padding: 0.6rem; font-size: 0.825rem;"></textarea>
                                         </div>
 
                                         <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 1rem; box-shadow: 0 1px 2px rgba(0,0,0,0.03);">
                                             <div style="display: flex; align-items: center; gap: 0.45rem; margin-bottom: 0.45rem;">
                                                 <span class="material-symbols-outlined" style="font-size: 1.15rem; color: var(--account-action, #1a146b);">event_busy</span>
-                                                <strong style="font-size: 0.85rem; color: #1e293b;">2. Perubahan Jadwal &amp; Pembatalan</strong>
+                                                <strong style="font-size: 0.85rem; color: #1e293b;">2. Batasan atau pengecualian (opsional)</strong>
                                             </div>
-                                            <textarea id="kbCancel" rows="3" placeholder="Contoh: Permintaan perubahan jadwal wajib diajukan maksimal H-1 sebelum tanggal pengerjaan..." oninput="syncKebijakanToRaw()" style="width: 100%; border: 1px solid #cbd5e1; border-radius: 8px; padding: 0.6rem; font-size: 0.825rem;"></textarea>
+                                            <textarea id="kbCancel" rows="3" placeholder="Contoh: Hal yang tidak tersedia, syarat khusus, batas wilayah, atau batas waktu." oninput="syncKebijakanToRaw()" style="width: 100%; border: 1px solid #cbd5e1; border-radius: 8px; padding: 0.6rem; font-size: 0.825rem;"></textarea>
                                         </div>
 
                                         <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 1rem; box-shadow: 0 1px 2px rgba(0,0,0,0.03);">
                                             <div style="display: flex; align-items: center; gap: 0.45rem; margin-bottom: 0.45rem;">
                                                 <span class="material-symbols-outlined" style="font-size: 1.15rem; color: var(--account-action, #1a146b);">verified_user</span>
-                                                <strong style="font-size: 0.85rem; color: #1e293b;">3. Garansi &amp; Jaminan Kepuasan</strong>
+                                                <strong style="font-size: 0.85rem; color: #1e293b;">3. Proses tindak lanjut (opsional)</strong>
                                             </div>
-                                            <textarea id="kbWarranty" rows="3" placeholder="Contoh: Kami menjamin kepuasan dengan revisi atau penggantian jika layanan tidak sesuai..." oninput="syncKebijakanToRaw()" style="width: 100%; border: 1px solid #cbd5e1; border-radius: 8px; padding: 0.6rem; font-size: 0.825rem;"></textarea>
+                                            <textarea id="kbWarranty" rows="3" placeholder="Contoh: Cara menghubungi admin, alur pengajuan, atau tindak lanjut pertanyaan khusus." oninput="syncKebijakanToRaw()" style="width: 100%; border: 1px solid #cbd5e1; border-radius: 8px; padding: 0.6rem; font-size: 0.825rem;"></textarea>
                                         </div>
 
                                         <div id="kebijakanExtraContainer">
@@ -321,16 +333,16 @@
                                 </div>
 
                                 {{-- ======================================================== --}}
-                                {{-- Tab 4: Profil AI --}}
+                                {{-- Tab 4: Profil --}}
                                 {{-- ======================================================== --}}
                                 <div id="subDocProfil" class="kb-sub-doc" style="display: none;">
                                     <div style="background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 10px; padding: 0.85rem 1rem; margin-bottom: 1rem; font-size: 0.825rem; color: #475569; display: flex; align-items: center; gap: 0.5rem;">
                                         <span class="material-symbols-outlined" style="color: var(--account-action, #1a146b); font-size: 1.15rem;">badge</span>
-                                        <span>Atur identitas brand, karakter sapaan, dan kepribadian Asisten AI saat menyapa calon pembeli pertama kali.</span>
+                                        <span>Atur identitas bisnis serta gaya komunikasi yang diinginkan saat chatbot menyapa pengunjung.</span>
                                     </div>
 
                                     <div style="display: flex; flex-direction: column; gap: 1rem;">
-                                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                                        <div class="kb-two-column" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
                                             <div class="form-field" style="margin: 0;">
                                                 <label for="profBrandName" style="font-size: 0.78rem;">Nama Brand / Usaha</label>
                                                 <input type="text" id="profBrandName" value="{{ $business['business_name'] ?? 'Bisnis Klien' }}" oninput="syncProfilToRaw()">
@@ -342,7 +354,7 @@
                                         </div>
 
                                         <div class="form-field" style="margin: 0;">
-                                            <label for="profTone" style="font-size: 0.78rem;">Karakter &amp; Gaya Bahasa AI</label>
+                                            <label for="profTone" style="font-size: 0.78rem;">Gaya komunikasi</label>
                                             <select id="profTone" onchange="syncProfilToRaw()" style="width: 100%; border: 1px solid #cbd5e1; border-radius: 8px; padding: 0.6rem; font-size: 0.825rem;">
                                                 <option value="Ramah, sopan, informatif, dan solutif.">Ramah, Sopan &amp; Solutif (Disarankan untuk Bisnis Jasa / Toko)</option>
                                                 <option value="Kasual, santai, akrab, dan bersahabat.">Kasual, Santai &amp; Akrab (Cocok untuk Kafe / Brand Komunitas)</option>
@@ -351,7 +363,7 @@
                                         </div>
 
                                         <div class="form-field" style="margin: 0;">
-                                            <label for="profGreeting" style="font-size: 0.78rem;">Kalimat Sapaan Pembuka Chatbot</label>
+                                            <label for="profGreeting" style="font-size: 0.78rem;">Sapaan pembuka</label>
                                             <textarea id="profGreeting" rows="3" placeholder="Sapaan yang diucapkan bot saat balon chat dibuka pengunjung..." oninput="syncProfilToRaw()" style="width: 100%; border: 1px solid #cbd5e1; border-radius: 8px; padding: 0.6rem; font-size: 0.825rem;">Halo! Selamat datang di {{ $business['business_name'] ?? 'website kami' }}, ada yang bisa kami bantu hari ini? 😊</textarea>
                                             <p class="form-hint" style="margin-top: 0.25rem;">Gunakan sapaan ramah agar chatbot terasa hidup dan menyenangkan bagi pelanggan.</p>
                                         </div>
@@ -369,6 +381,7 @@
                                 </div>
                             </form>
                         </div>
+                        @endif
 
                         <script>
                             // Tab Switching: Data Profil vs Knowledge Base
@@ -422,14 +435,14 @@
                                             <span class="material-symbols-outlined" style="font-size: 1.15rem;">delete</span>
                                         </button>
                                     </div>
-                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; margin-bottom: 0.65rem;">
+                                    <div class="kb-card-two-column" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; margin-bottom: 0.65rem;">
                                         <div>
-                                            <label style="display: block; font-size: 0.75rem; color: #475569; margin-bottom: 0.25rem;">Nama Layanan / Paket</label>
-                                            <input type="text" class="lay-name" value="${escapeHtml(name)}" placeholder="Contoh: Paket Reguler" oninput="syncLayananToRaw()" style="width: 100%; border: 1px solid #cbd5e1; border-radius: 6px; padding: 0.5rem; font-size: 0.825rem;">
+                                            <label style="display: block; font-size: 0.75rem; color: #475569; margin-bottom: 0.25rem;">Judul informasi</label>
+                                            <input type="text" class="lay-name" value="${escapeHtml(name)}" placeholder="Contoh: Area layanan atau program unggulan" oninput="syncLayananToRaw()" style="width: 100%; border: 1px solid #cbd5e1; border-radius: 6px; padding: 0.5rem; font-size: 0.825rem;">
                                         </div>
                                         <div>
-                                            <label style="display: block; font-size: 0.75rem; color: #475569; margin-bottom: 0.25rem;">Kisaran Harga</label>
-                                            <input type="text" class="lay-price" value="${escapeHtml(price)}" placeholder="Contoh: Mulai Rp150.000" oninput="syncLayananToRaw()" style="width: 100%; border: 1px solid #cbd5e1; border-radius: 6px; padding: 0.5rem; font-size: 0.825rem;">
+                                            <label style="display: block; font-size: 0.75rem; color: #475569; margin-bottom: 0.25rem;">Nilai, harga, atau status (opsional)</label>
+                                            <input type="text" class="lay-price" value="${escapeHtml(price)}" placeholder="Contoh: Mulai Rp150.000 atau Tersedia online" oninput="syncLayananToRaw()" style="width: 100%; border: 1px solid #cbd5e1; border-radius: 6px; padding: 0.5rem; font-size: 0.825rem;">
                                         </div>
                                     </div>
                                     <div>
@@ -538,7 +551,7 @@
                                 const rawTextarea = document.getElementById('kb_layanan');
                                 if (!container || !rawTextarea) return;
 
-                                let md = "# Layanan & Produk Unggulan\n\n";
+                                let md = "# Informasi Bisnis\n\n";
                                 const cards = container.querySelectorAll('.kb-layanan-card');
                                 cards.forEach(card => {
                                     const name = card.querySelector('.lay-name')?.value?.trim();
@@ -572,14 +585,14 @@
                                 const rawTextarea = document.getElementById('kb_kebijakan');
                                 if (!rawTextarea) return;
 
-                                const pay = document.getElementById('kbPayment')?.value?.trim() || 'Pembayaran resmi dilakukan via rekening terverifikasi.';
-                                const cancel = document.getElementById('kbCancel')?.value?.trim() || 'Perubahan jadwal wajib diajukan maksimal H-1.';
-                                const warranty = document.getElementById('kbWarranty')?.value?.trim() || 'Jaminan revisi apabila hasil tidak sesuai kesepakatan awal.';
+                                const pay = document.getElementById('kbPayment')?.value?.trim();
+                                const cancel = document.getElementById('kbCancel')?.value?.trim();
+                                const warranty = document.getElementById('kbWarranty')?.value?.trim();
 
-                                let md = "# Kebijakan & Ketentuan Layanan\n\n";
-                                md += `## 1. Pembayaran Resmi\n${pay}\n\n`;
-                                md += `## 2. Perubahan & Pembatalan Jadwal\n${cancel}\n\n`;
-                                md += `## 3. Garansi & Jaminan Kualitas\n${warranty}\n\n`;
+                                let md = "# Aturan & Ketentuan\n\n";
+                                if (pay) md += `## 1. Ketentuan Utama\n${pay}\n\n`;
+                                if (cancel) md += `## 2. Batasan atau Pengecualian\n${cancel}\n\n`;
+                                if (warranty) md += `## 3. Proses Tindak Lanjut\n${warranty}\n\n`;
 
                                 const extras = document.querySelectorAll('.kb-keb-extra-card');
                                 extras.forEach((ex, idx) => {
@@ -602,11 +615,11 @@
                                 const tone = document.getElementById('profTone')?.value || 'Ramah, sopan, informatif, dan solutif.';
                                 const greeting = document.getElementById('profGreeting')?.value?.trim() || `Halo! Selamat datang di ${brand}, ada yang bisa kami bantu? 😊`;
 
-                                let md = "# Profil & Identitas Bisnis AI\n\n";
+                                let md = "# Profil Bisnis\n\n";
                                 md += `- **Nama Brand**: ${brand}\n`;
                                 md += `- **Tagline**: ${tagline}\n`;
                                 md += `- **Sapaan AI**: ${greeting}\n`;
-                                md += `- **Karakter Chatbot**: ${tone}\n`;
+                                md += `- **Gaya Komunikasi**: ${tone}\n`;
 
                                 rawTextarea.value = md;
                             }
@@ -640,10 +653,6 @@
                                         addLayananItem(name, price, desc);
                                     }
                                 }
-                                if (!foundLayanan) {
-                                    addLayananItem('Paket Reguler', 'Mulai Rp150.000', 'Layanan standar dengan pengerjaan profesional');
-                                    addLayananItem('Paket Premium', 'Mulai Rp350.000', 'Layanan prioritas tinggi dengan garansi penuh');
-                                }
 
                                 // 2. FAQ
                                 const rawFaq = document.getElementById('kb_faq')?.value || '';
@@ -652,9 +661,6 @@
                                     faqMatches.forEach(m => {
                                         addFaqItem(m[1].trim(), m[2].trim());
                                     });
-                                } else {
-                                    addFaqItem('Bagaimana cara melakukan pemesanan?', 'Anda dapat memesan langsung melalui tombol di website kami atau menghubungi WhatsApp CS.');
-                                    addFaqItem('Jam berapa operasional bisnis buka?', 'Kami beroperasi setiap hari Senin – Sabtu pukul 08.00 – 17.00 WIB.');
                                 }
 
                                 // 3. Kebijakan
@@ -683,6 +689,46 @@
                             // Initialize on page load
                             document.addEventListener('DOMContentLoaded', function() {
                                 initStructuredForms();
+                                const knowledgeForm = document.getElementById('orderKnowledgeForm');
+                                const editorStatus = document.getElementById('kbEditorStatus');
+                                let hasUnsavedChanges = false;
+
+                                const setEditorStatus = function(state, message) {
+                                    if (!editorStatus) return;
+                                    editorStatus.className = 'kb-editor-status' + (state ? ' is-' + state : '');
+                                    editorStatus.textContent = message;
+                                };
+
+                                const markKnowledgeDirty = function() {
+                                    hasUnsavedChanges = true;
+                                    setEditorStatus('dirty', 'Perubahan belum disimpan');
+                                };
+
+                                if (knowledgeForm) {
+                                    knowledgeForm.addEventListener('input', markKnowledgeDirty);
+                                    knowledgeForm.addEventListener('change', markKnowledgeDirty);
+                                    knowledgeForm.addEventListener('submit', function() {
+                                        syncAllStructuredToRaw();
+                                        hasUnsavedChanges = false;
+                                        setEditorStatus('saved', 'Menyimpan perubahan…');
+                                    });
+
+                                    const editableAreas = [
+                                        document.getElementById('layananItemsContainer'),
+                                        document.getElementById('faqItemsContainer'),
+                                        document.getElementById('kebijakanExtraContainer'),
+                                    ].filter(Boolean);
+                                    editableAreas.forEach(function(area) {
+                                        new MutationObserver(markKnowledgeDirty).observe(area, { childList: true });
+                                    });
+                                }
+
+                                window.addEventListener('beforeunload', function(event) {
+                                    if (!hasUnsavedChanges) return;
+                                    event.preventDefault();
+                                    event.returnValue = '';
+                                });
+
                                 const urlParams = new URLSearchParams(window.location.search);
                                 if (urlParams.get('tab') === 'ai-kb') {
                                     switchOrderTab('ai-kb');

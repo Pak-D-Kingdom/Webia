@@ -9,16 +9,48 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\Cache;
 
 #[Fillable([
     'user_id', 'guest_name', 'guest_email', 'order_number', 'webia_package_id', 'package_snapshot', 'webia_template_id', 'template_snapshot', 'category_slug',
     'addon_ids', 'addon_snapshot', 'status', 'credential_status', 'credential_requires_password_setup', 'total_price', 'payment_receipt_path', 'payment_note', 'paid_at',
-    'business_data', 'delivery_status', 'site_slug',
+    'business_data', 'delivery_status', 'site_slug', 'customer_ai_knowledge_editable',
 ])]
 class WebiaOrder extends Model
 {
     /** @use HasFactory<WebiaOrderFactory> */
     use HasFactory;
+
+    protected static function booted(): void
+    {
+        static::saved(function (WebiaOrder $order): void {
+            self::flushCustomerSiteCache($order->site_slug);
+            $originalSlug = $order->getOriginal('site_slug');
+            if ($originalSlug && $originalSlug !== $order->site_slug) {
+                self::flushCustomerSiteCache($originalSlug);
+            }
+        });
+
+        static::deleted(function (WebiaOrder $order): void {
+            self::flushCustomerSiteCache($order->site_slug);
+        });
+    }
+
+    public static function flushCustomerSiteCache(?string $siteSlug): void
+    {
+        if (blank($siteSlug)) {
+            return;
+        }
+
+        $verKey = "webia_site_ver:{$siteSlug}";
+        Cache::forever($verKey, ((int) Cache::get($verKey, 1)) + 1);
+    }
+
+    public static function flushAllCustomerSiteCaches(): void
+    {
+        $verKey = 'webia_site_global_ver';
+        Cache::forever($verKey, ((int) Cache::get($verKey, 1)) + 1);
+    }
 
     public function user(): BelongsTo
     {
@@ -83,6 +115,7 @@ class WebiaOrder extends Model
             'business_data' => 'array',
             'paid_at' => 'datetime',
             'credential_requires_password_setup' => 'boolean',
+            'customer_ai_knowledge_editable' => 'boolean',
         ];
     }
 }

@@ -1183,7 +1183,7 @@
                 <button onclick="closePusakaAI()" class="text-terracotta-600 hover:text-coral-600 font-mono text-lg font-bold">&times;</button>
             </div>
             
-            <div id="pusaka-chat-stream" class="h-64 overflow-y-auto space-y-3 font-sans text-xs pr-2">
+            <div id="pusaka-chat-stream" data-webia-ai-messages class="h-64 overflow-y-auto space-y-3 font-sans text-xs pr-2">
                 <div class="p-3 rounded-2xl bg-peach-100 border border-coral-200 text-terracotta-900">
                     <strong>PusakaAI:</strong> Rahayu! Saya asisten cerdas PusakaMotion. Anda dapat menanyakan estimasi durasi render, teknik fotogrametri candi, legalitas ornamen tradisional, atau format deliverable 4K/8K.
                 </div>
@@ -1198,7 +1198,7 @@
 
             <!-- Chat Input -->
             <div class="flex gap-2 pt-2">
-                <input type="text" id="ai-chat-input" placeholder="Tanyakan seputar produksi 3D kultural..." onkeydown="if(event.key === 'Enter') sendPusakaMessage()" class="flex-1 px-4 py-2.5 rounded-xl border border-coral-300 text-xs focus:outline-none focus:border-coral-600">
+                <input type="text" id="ai-chat-input" data-webia-ai-input placeholder="Tanyakan seputar produksi 3D kultural..." onkeydown="if(event.key === 'Enter') sendPusakaMessage()" class="flex-1 px-4 py-2.5 rounded-xl border border-coral-300 text-xs focus:outline-none focus:border-coral-600">
                 <button onclick="sendPusakaMessage()" class="px-4 py-2.5 rounded-xl bg-coral-600 text-white font-mono text-xs font-bold hover:bg-coral-700 transition">Kirim</button>
             </div>
         </div>

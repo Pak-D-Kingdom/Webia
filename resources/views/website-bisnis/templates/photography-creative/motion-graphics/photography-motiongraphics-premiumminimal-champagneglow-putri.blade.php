@@ -991,7 +991,7 @@
                 </button>
             </div>
 
-            <div class="h-64 overflow-y-auto space-y-3 p-3 rounded-2xl bg-champagne-50/70 border border-champagne-200 text-xs font-sans" id="chat-stream">
+            <div class="h-64 overflow-y-auto space-y-3 p-3 rounded-2xl bg-champagne-50/70 border border-champagne-200 text-xs font-sans" id="chat-stream" data-webia-ai-messages>
                 <div class="p-3.5 rounded-2xl bg-white border border-champagne-300/80 text-stone-800">
                     <strong>AuraMotion AI:</strong> Salam. Saya dapat membantu memberikan rekomendasi pipeline 3D, kalkulasi estimasi lead-time render, atau menjadwalkan creative brief privat bersama Art Director kami.
                 </div>
@@ -1011,7 +1011,7 @@
             </div>
 
             <div class="flex gap-2 font-mono">
-                <input type="text" id="ai-input" placeholder="Tanyakan seputar spesifikasi 3D / motion..."
+                <input type="text" id="ai-input" data-webia-ai-input placeholder="Tanyakan seputar spesifikasi 3D / motion..."
                     class="flex-1 px-4 py-2 rounded-xl bg-white border border-champagne-300 text-stone-900 placeholder-stone-400 text-xs focus:outline-none focus:border-champagne-600 font-sans">
                 <button onclick="sendChatMessage()" class="px-4 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-bold text-xs uppercase tracking-wider border border-champagne-400">
                     Kirim

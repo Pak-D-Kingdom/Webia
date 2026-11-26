@@ -183,6 +183,75 @@
         transform: translateY(-1px) !important;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
     }
+
+    .admin-kb-card-list { display: flex; flex-direction: column; gap: 8px; }
+    .admin-kb-entry { border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px; background: #fff; }
+    .admin-kb-entry__top { display: flex; gap: 8px; margin-bottom: 7px; }
+    .admin-kb-entry input { flex: 1; min-width: 0; border: 1px solid #cbd5e1; border-radius: 7px; padding: 7px 9px; font-size: 12px; line-height: 1.3; font-weight: 700; }
+    .admin-kb-entry textarea { width: 100%; min-height: 104px; box-sizing: border-box; border: 1px solid #cbd5e1; border-radius: 7px; padding: 8px 9px; font-size: 12px; line-height: 1.5; resize: vertical; }
+    .admin-kb-entry button { border: 0; border-radius: 7px; background: #fef2f2; color: #dc2626; cursor: pointer; padding: 6px; font-size: 13px; line-height: 1; }
+    .admin-kb-add { width: 100%; margin-top: 8px; padding: 8px; border: 1px dashed #4f46e5; border-radius: 8px; background: #f8fafc; color: #4338ca; cursor: pointer; font-size: 11px; font-weight: 700; }
+    .admin-kb-raw { display: none !important; }
+    #knowContent .quick-snippet-chip { display: none !important; }
+
+    #tierModal .tier-modal-card {
+        border: 0 !important;
+        border-radius: 16px !important;
+        background: #ffffff !important;
+        box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25) !important;
+        overflow: hidden;
+    }
+
+    #tierModal .tier-modal-card > .tier-modal-header {
+        padding: 16px 20px;
+        margin: 0;
+        background: #ffffff;
+    }
+
+    #tierModal .tier-option {
+        border: 0 !important;
+        outline: none !important;
+        box-shadow: none !important;
+    }
+
+    #tierModal .tier-option.border-indigo-600 {
+        background-color: #eef2ff !important;
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.14) !important;
+    }
+
+    #tierModal input,
+    #tierModal select {
+        border: 0 !important;
+        box-shadow: none !important;
+        background-color: #f8fafc !important;
+    }
+
+    #tierModal .tier-option:focus-visible,
+    #tierModal select:focus-visible,
+    #tierModal input:focus-visible,
+    #tierModal button:focus-visible {
+        outline: none !important;
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.16) !important;
+    }
+
+    .ai-stats-grid {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 0.75rem;
+        width: 100%;
+    }
+
+    @media (max-width: 1279px) {
+        .ai-stats-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 767px) {
+        .ai-stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 420px) {
+        .ai-stats-grid { grid-template-columns: minmax(0, 1fr); }
+    }
 </style>
 <div class="mb-space-md flex flex-col gap-space-md">
     <!-- Header Halaman Superadmin -->
@@ -193,16 +262,17 @@
                 @if ($aiOnline)
                     <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-0.5 font-label-sm text-label-sm font-bold text-emerald-800">
                         <span aria-hidden="true" class="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-600"></span>
-                        Live Sync Terhubung
+                        AI Engine & 9-router aktif
                     </span>
                 @else
                     <span class="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-2.5 py-0.5 font-label-sm text-label-sm font-bold text-amber-900">
                         <span aria-hidden="true" class="h-1.5 w-1.5 rounded-full bg-amber-600"></span>
-                        Sinkronisasi Standby
+                        AI Engine offline{{ ($aiConnection['sqlite_available'] ?? false) ? ' · data lokal tersedia' : '' }}
                     </span>
                 @endif
             </div>
             <p class="mt-0.5 font-body-md text-body-md text-on-surface-variant">Pantau kuota percakapan AI chatbot klien, deteksi kebutuhan upgrade paket, dan kelola upselling.</p>
+            <p class="mt-1 text-[11px] text-on-surface-variant">Halaman dimuat: {{ now()->translatedFormat('d M Y, H:i') }} WIB</p>
         </div>
 
         <div class="flex flex-wrap items-center gap-space-xs">
@@ -223,8 +293,12 @@
         </div>
     @endif
 
-    <!-- Stat cards Bento Grid (1 Baris Horisontal Kesamping Penuh) -->
-    <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.75rem; width: 100%;" class="w-full">
+    @php
+        $cacheHitRatio = $cacheStats['hit_ratio_percent'] ?? null;
+        $cacheTokensSaved = $cacheStats['tokens_saved_estimate'] ?? null;
+    @endphp
+    <!-- Stat cards Bento Grid -->
+    <div class="ai-stats-grid">
         <!-- Card 1: Total Klien Aktif -->
         <div class="group relative overflow-hidden rounded-xl bg-surface-container-lowest p-3 shadow-xs transition-all hover:shadow-md border border-outline-variant/60" style="min-width: 0;">
             <div class="absolute left-0 top-0 h-full w-1 bg-primary"></div>
@@ -296,12 +370,12 @@
                 </div>
             </div>
             <div class="mt-1 flex items-baseline gap-1">
-                <span class="font-display font-extrabold text-emerald-600 text-xl tracking-tight">{{ $cacheStats['hit_ratio_percent'] ?? 68.4 }}%</span>
+                <span class="font-display font-extrabold text-emerald-600 text-xl tracking-tight">{{ $cacheHitRatio === null ? '—' : $cacheHitRatio . '%' }}</span>
                 <span class="text-[11px] text-on-surface-variant font-medium">Hit Rate</span>
             </div>
             <div class="mt-1 flex items-center justify-between text-[10px]">
-                <span class="text-on-surface-variant truncate">Hemat {{ number_format($cacheStats['tokens_saved_estimate'] ?? 158200, 0, ',', '.') }} token</span>
-                <span class="rounded bg-emerald-100 px-1.5 py-0.2 text-emerald-800 font-bold">&lt;20ms</span>
+                <span class="text-on-surface-variant truncate">{{ $cacheTokensSaved === null ? 'Data cache belum tersedia' : 'Hemat ' . number_format($cacheTokensSaved, 0, ',', '.') . ' token' }}</span>
+                <span class="rounded bg-emerald-100 px-1.5 py-0.2 text-emerald-800 font-bold">{{ $cacheHitRatio === null ? 'menunggu data' : '<20ms' }}</span>
             </div>
         </div>
 
@@ -581,7 +655,7 @@ Apakah ingin tambah kuota atau upgrade paket website agar chatbot tetap aktif me
             </div>
             <div class="btn-text-content">
                 <span class="btn-title">Kelola Pengetahuan AI</span>
-                <span class="btn-desc">Profil, Layanan &amp; FAQ Resmi</span>
+                <span class="btn-desc">Profil, informasi bisnis, aturan, dan FAQ</span>
             </div>
             <span class="material-symbols-outlined" style="font-size: 16px; color: #94a3b8;">chevron_right</span>
         </button>
@@ -630,8 +704,8 @@ Apakah ingin tambah kuota atau upgrade paket website agar chatbot tetap aktif me
 
 <!-- Modal Dialog: Ubah Paket & Tambah Kuota Klien -->
 <div id="tierModal" class="fixed inset-0 z-[70] hidden items-center justify-center p-4 bg-slate-900/50 backdrop-blur-xs">
-    <div class="w-full max-w-md rounded-2xl bg-surface-container-lowest border border-outline-variant p-6 shadow-xl transition-all">
-        <div class="flex items-center justify-between border-b border-surface-container pb-3 mb-4">
+    <div class="tier-modal-card w-full max-w-md transition-all">
+        <div class="tier-modal-header flex items-center justify-between">
             <div class="flex items-center gap-2">
                 <span class="material-symbols-outlined text-primary text-2xl">tune</span>
                 <h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Ubah Paket &amp; Tambah Kuota</h3>
@@ -641,49 +715,56 @@ Apakah ingin tambah kuota atau upgrade paket website agar chatbot tetap aktif me
 
         <form id="tierForm" method="POST" action="">
             @csrf
-            <div class="space-y-4">
+            <div class="space-y-5 px-6 py-5">
                 {{-- Info Klien --}}
-                <div class="rounded-lg bg-surface-container-low p-3">
-                    <span class="font-caption text-caption text-on-surface-variant block mb-0.5">Klien Bisnis / Tenant:</span>
-                    <div id="modalTenantName" class="font-label-md font-bold text-on-surface"></div>
-                    <div class="flex items-center justify-between mt-1">
-                        <span id="modalTenantId" class="font-mono text-xs text-primary"></span>
-                        <span id="modalCurrentQuotaBadge" class="text-xs font-bold text-on-surface-variant bg-surface-container px-2 py-0.5 rounded"></span>
+                <div class="flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-slate-50 px-4 py-3.5">
+                    <div class="min-w-0">
+                        <span class="block text-[10px] font-bold uppercase tracking-[.12em] text-slate-500">Tenant yang dikelola</span>
+                        <div id="modalTenantName" class="mt-1 truncate text-sm font-bold text-slate-900"></div>
+                        <span id="modalTenantId" class="mt-1 block font-mono text-[11px] font-semibold text-indigo-600"></span>
+                    </div>
+                    <div class="rounded-xl bg-white px-3 py-2 text-right shadow-sm">
+                        <span class="block text-[10px] font-semibold uppercase tracking-wide text-slate-500">Kuota berjalan</span>
+                        <span id="modalCurrentQuotaBadge" class="mt-0.5 block text-xs font-bold text-slate-800"></span>
                     </div>
                 </div>
 
                 {{-- Catatan SOP Verifikasi Manual --}}
-                <div class="rounded-lg bg-amber-500/10 border border-amber-500/20 p-2.5 text-xs text-amber-800 flex items-start gap-2">
-                    <span class="material-symbols-outlined text-[16px] text-amber-600 shrink-0 mt-0.5">receipt_long</span>
-                    <span><strong>SOP Upgrade Manual:</strong> Karena payment gateway sedang dalam pengembangan, klien mengonfirmasi pesanan via WhatsApp. Pastikan bukti transfer sudah valid sebelum menyimpan.</span>
+                <div class="flex items-start gap-2.5 rounded-xl bg-amber-50 p-3 text-xs leading-relaxed text-amber-900">
+                    <span class="material-symbols-outlined mt-0.5 shrink-0 text-[17px] text-amber-600">verified_user</span>
+                    <span><strong>Verifikasi terlebih dahulu.</strong> Pastikan pembayaran atau persetujuan klien telah tervalidasi sebelum menyimpan perubahan paket maupun kuota.</span>
                 </div>
 
                 {{-- Opsi Cepat Tambah Kuota Instan (Top-Up) --}}
                 <div>
-                    <div class="flex items-center justify-between mb-1.5">
-                        <label class="font-label-md font-bold text-on-surface block">Tambah Kuota Cepat (+Pesan):</label>
-                        <span class="text-[11px] text-on-surface-variant font-normal">Klik untuk memilih</span>
+                    <div class="mb-2 flex items-end justify-between gap-3">
+                        <div>
+                            <span class="text-sm font-bold text-slate-900">Tambah kapasitas sekali jalan</span>
+                            <p class="mt-0.5 text-[11px] text-slate-500">Pilih nominal, lalu tinjau total kuota baru di bawah.</p>
+                        </div>
+                        <span class="rounded-full bg-indigo-50 px-2 py-1 text-[10px] font-bold text-indigo-700">TOP-UP</span>
                     </div>
                     <div class="grid grid-cols-3 gap-2" id="quickAddQuotaGroup">
-                        <button type="button" id="btn-add-500" onclick="applyAddQuota(500)" class="quick-add-btn cursor-pointer py-2 px-2 text-xs font-bold rounded-xl border border-outline-variant bg-surface-container-low hover:border-primary hover:bg-primary/5 transition-all text-on-surface text-center flex flex-col items-center justify-center">
+                        <button type="button" id="btn-add-500" onclick="applyAddQuota(500)" class="tier-option quick-add-btn cursor-pointer rounded-xl bg-white p-3 text-left transition-all">
                             <span class="block font-bold">+500 Pesan</span>
-                            <span class="text-[10px] text-on-surface-variant font-normal">Rp49.000</span>
+                            <span class="mt-1 block text-[10px] font-medium text-slate-500">Rp49.000</span>
                         </button>
-                        <button type="button" id="btn-add-1000" onclick="applyAddQuota(1000)" class="quick-add-btn cursor-pointer py-2 px-2 text-xs font-bold rounded-xl border border-outline-variant bg-surface-container-low hover:border-primary hover:bg-primary/5 transition-all text-on-surface text-center flex flex-col items-center justify-center">
+                        <button type="button" id="btn-add-1000" onclick="applyAddQuota(1000)" class="tier-option quick-add-btn cursor-pointer rounded-xl bg-white p-3 text-left transition-all">
                             <span class="block font-bold">+1.000 Pesan</span>
-                            <span class="text-[10px] text-on-surface-variant font-normal">Rp89.000</span>
+                            <span class="mt-1 block text-[10px] font-medium text-slate-500">Rp89.000</span>
                         </button>
-                        <button type="button" id="btn-add-2500" onclick="applyAddQuota(2500)" class="quick-add-btn cursor-pointer py-2 px-2 text-xs font-bold rounded-xl border border-outline-variant bg-surface-container-low hover:border-primary hover:bg-primary/5 transition-all text-on-surface text-center flex flex-col items-center justify-center">
+                        <button type="button" id="btn-add-2500" onclick="applyAddQuota(2500)" class="tier-option quick-add-btn cursor-pointer rounded-xl bg-white p-3 text-left transition-all">
                             <span class="block font-bold">+2.500 Pesan</span>
-                            <span class="text-[10px] text-on-surface-variant font-normal">Rp199.000</span>
+                            <span class="mt-1 block text-[10px] font-medium text-slate-500">Rp199.000</span>
                         </button>
                     </div>
                 </div>
 
                 {{-- Pilihan Upgrade Tingkatan Paket --}}
-                <div>
-                    <label for="packageTierSelect" class="font-label-md font-bold text-on-surface block mb-1.5">Atau Upgrade Paket Website:</label>
-                    <select id="packageTierSelect" name="package_tier" onchange="onTierChange(this.value)" class="h-10 w-full cursor-pointer rounded-lg border border-outline-variant bg-surface-container-low px-3 font-body-sm text-body-sm text-on-surface transition-all focus:bg-surface-container-lowest focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
+                <div class="rounded-2xl bg-slate-50 p-4">
+                    <label for="packageTierSelect" class="block text-sm font-bold text-slate-900">Atau ubah paket bulanan</label>
+                    <p class="mt-0.5 text-[11px] text-slate-500">Memilih paket akan menyesuaikan batas kuota standar.</p>
+                    <select id="packageTierSelect" name="package_tier" onchange="onTierChange(this.value)" class="mt-3 h-11 w-full cursor-pointer rounded-xl bg-slate-100 px-3 text-sm font-semibold text-slate-800 transition-all focus:outline-none focus:ring-4 focus:ring-indigo-100">
                         <option value="pixel">Pixel — 500 Pesan / Bulan (Starter)</option>
                         <option value="pulse">Pulse — 1.500 Pesan / Bulan (Standard)</option>
                         <option value="nexus">Nexus — 2.500 Pesan / Bulan (Business CMS)</option>
@@ -693,34 +774,32 @@ Apakah ingin tambah kuota atau upgrade paket website agar chatbot tetap aktif me
 
                 {{-- Batas Kuota Baru Hasil Hitung / Kustom --}}
                 <div>
-                    <div class="flex justify-between items-center mb-1.5">
-                        <label for="customQuotaInput" class="font-label-md font-bold text-on-surface">
-                            Total Batas Kuota Baru:
-                        </label>
-                        <button type="button" onclick="resetToTierDefault()" class="text-[11px] text-primary hover:underline cursor-pointer">
+                    <div class="mb-2 flex items-center justify-between gap-3">
+                        <label for="customQuotaInput" class="text-sm font-bold text-slate-900">Total batas kuota baru</label>
+                        <button type="button" onclick="resetToTierDefault()" class="cursor-pointer text-[11px] font-bold text-indigo-600 hover:text-indigo-800 hover:underline">
                             Reset ke Default
                         </button>
                     </div>
-                    <input type="number" id="customQuotaInput" name="custom_quota" placeholder="Otomatis mengikuti paket atau isi kustom" min="100" step="50" class="h-10 w-full rounded-lg border border-outline-variant bg-surface-container-low px-3 font-body-sm text-body-sm text-on-surface placeholder:text-outline transition-all focus:bg-surface-container-lowest focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
-                    <span id="quotaCalcNotice" class="font-caption text-caption text-on-surface-variant mt-1 block"></span>
+                    <input type="number" id="customQuotaInput" name="custom_quota" placeholder="Mengikuti paket bila dikosongkan" min="100" step="50" class="h-11 w-full rounded-xl bg-slate-100 px-3 text-sm font-semibold text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-indigo-100">
+                    <span id="quotaCalcNotice" class="mt-2 block text-[11px] leading-relaxed text-slate-500"></span>
                 </div>
             </div>
 
-            <div class="mt-6 flex justify-end gap-2 border-t border-surface-container pt-4">
-                <button type="button" data-close-tier-modal onclick="closeTierModal()" class="cursor-pointer rounded-lg border-2 border-outline-variant px-4 py-2 font-label-md text-label-md font-bold text-on-surface-variant hover:bg-surface-container-low">
+            <div class="flex justify-end gap-2 bg-slate-50 px-6 py-4">
+                <button type="button" data-close-tier-modal onclick="closeTierModal()" class="cursor-pointer rounded-xl bg-white px-4 py-2.5 text-sm font-bold text-slate-600 shadow-sm hover:bg-slate-100">
                     Batal
                 </button>
-                <button type="submit" class="cursor-pointer rounded-lg bg-primary px-4 py-2 font-label-md text-label-md font-bold text-on-primary shadow-sm hover:bg-primary/90">
-                    Simpan Perubahan
+                <button type="submit" class="cursor-pointer rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-bold text-white shadow-sm shadow-indigo-200 hover:bg-indigo-700">
+                    Terapkan Perubahan
                 </button>
             </div>
         </form>
     </div>
 </div>
 
-<!-- Modal Dialog: Kelola Pengetahuan AI Bisnis (Upgraded Clean UI/UX) -->
+<!-- Modal Dialog: Kelola Pengetahuan AI Bisnis -->
 <div id="knowledgeModal" class="fixed inset-0 z-[70] hidden items-center justify-center p-3 md:p-6 bg-slate-900/60 backdrop-blur-sm">
-    <div class="knowledge-modal-card animate-in fade-in zoom-in-95 duration-150" style="max-width: 620px; width: 100%;">
+    <div class="knowledge-modal-card animate-in fade-in zoom-in-95 duration-150" style="width: 100%;">
         {{-- Header Modal --}}
         <div class="flex items-center justify-between border-b border-surface-container px-5 py-3 bg-surface-container-lowest">
             <div class="flex items-center gap-2.5">
@@ -754,6 +833,19 @@ Apakah ingin tambah kuota atau upgrade paket website agar chatbot tetap aktif me
             </div>
         </div>
 
+        <div class="px-5 py-3 border-b border-surface-container bg-surface-container-lowest">
+            <label class="flex items-start gap-3 cursor-pointer">
+                <input id="customerKnowledgeAccessToggle" type="checkbox" class="mt-0.5 h-4 w-4 rounded border-outline-variant text-primary focus:ring-primary" aria-label="Izinkan pemilik website mengedit Knowledge Base">
+                <span>
+                    <span class="flex flex-wrap items-center gap-2 text-xs font-bold text-on-surface">
+                        Akses editor untuk pemilik website
+                        <span id="customerKnowledgeAccessStatus" class="rounded-full bg-surface-container px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-on-surface-variant">Memuat</span>
+                    </span>
+                    <span id="customerKnowledgeAccessHint" class="block mt-0.5 text-[11px] text-on-surface-variant">Pengaturan sedang dimuat.</span>
+                </span>
+            </label>
+        </div>
+
         {{-- Loading State --}}
         <div id="knowLoading" class="py-12 flex flex-col items-center justify-center gap-2">
             <div class="h-7 w-7 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
@@ -765,13 +857,13 @@ Apakah ingin tambah kuota atau upgrade paket website agar chatbot tetap aktif me
             {{-- Modern Segmented Tab Bar (5 Tabs) --}}
             <div class="flex gap-1.5 pb-2 overflow-x-auto border-b border-surface-container">
                 <button type="button" id="tabBtnProfil" onclick="switchKnowTab('profil')" class="know-tab-btn active">
-                    <span class="material-symbols-outlined text-[15px]">storefront</span> Profil Usaha
+                    <span class="material-symbols-outlined text-[15px]">storefront</span> Profil
                 </button>
                 <button type="button" id="tabBtnLayanan" onclick="switchKnowTab('layanan')" class="know-tab-btn inactive">
-                    <span class="material-symbols-outlined text-[15px]">inventory_2</span> Layanan &amp; Harga
+                    <span class="material-symbols-outlined text-[15px]">inventory_2</span> Informasi Bisnis
                 </button>
                 <button type="button" id="tabBtnKebijakan" onclick="switchKnowTab('kebijakan')" class="know-tab-btn inactive">
-                    <span class="material-symbols-outlined text-[15px]">gavel</span> Kebijakan Layanan
+                    <span class="material-symbols-outlined text-[15px]">gavel</span> Aturan &amp; Ketentuan
                 </button>
                 <button type="button" id="tabBtnFaq" onclick="switchKnowTab('faq')" class="know-tab-btn inactive">
                     <span class="material-symbols-outlined text-[15px]">quiz</span> FAQ Resmi
@@ -804,7 +896,8 @@ Apakah ingin tambah kuota atau upgrade paket website agar chatbot tetap aktif me
                     </div>
                 </div>
                 <div class="relative">
-                    <textarea id="knowProfilInput" rows="7" oninput="updateCharCount('knowProfilInput', 'charCountProfil')" class="know-editor-textarea" placeholder="Contoh: Toko Roti Syifa adalah toko roti keluarga sejak 2018..."></textarea>
+                    <textarea id="knowProfilInput" rows="7" oninput="updateCharCount('knowProfilInput', 'charCountProfil')" class="know-editor-textarea admin-kb-raw"></textarea>
+                    <div class="admin-kb-card-list" data-admin-kb-list="profil"></div><button type="button" class="admin-kb-add" onclick="addAdminKbCard('profil')">+ Tambah informasi profil</button>
                     <div class="flex justify-between items-center mt-1">
                         <span class="text-[10px] text-slate-400">Gunakan format markdown `- **Label**: Nilai` untuk hasil RAG AI terbaik.</span>
                         <div id="charCountProfil" class="text-[10.5px] text-slate-500 font-mono">0 karakter</div>
@@ -818,7 +911,7 @@ Apakah ingin tambah kuota atau upgrade paket website agar chatbot tetap aktif me
                 <div class="flex items-center justify-between flex-wrap gap-2 p-2.5 rounded-xl bg-indigo-50/70 border border-indigo-200/60 text-xs">
                     <div class="flex items-center gap-1.5">
                         <span class="font-mono text-[11px] font-bold text-indigo-900 bg-indigo-100/80 px-2 py-0.5 rounded">📄 layanan.md</span>
-                        <span class="text-indigo-800 text-[11.5px]">Katalog produk, daftar harga, dan paket layanan unggulan.</span>
+                        <span class="text-indigo-800 text-[11.5px]">Produk, jasa, program, fasilitas, harga, atau informasi bisnis lain.</span>
                     </div>
                     <div class="flex items-center gap-1 flex-wrap">
                         <button type="button" onclick="insertSnippet('knowLayananInput', 'charCountLayanan', '### Paket Layanan &amp; Tarif\n- **Paket Standar**: Rp150.000 (Konsultasi &amp; Pengerjaan Cepat)\n- **Paket Lengkap**: Rp350.000 (Semua Fitur + Garansi 1 Bulan)')" class="quick-snippet-chip">
@@ -827,9 +920,10 @@ Apakah ingin tambah kuota atau upgrade paket website agar chatbot tetap aktif me
                     </div>
                 </div>
                 <div class="relative">
-                    <textarea id="knowLayananInput" rows="7" oninput="updateCharCount('knowLayananInput', 'charCountLayanan')" class="know-editor-textarea" placeholder="Contoh: Paket Website Personal Rp499.000..."></textarea>
+                    <textarea id="knowLayananInput" rows="7" oninput="updateCharCount('knowLayananInput', 'charCountLayanan')" class="know-editor-textarea admin-kb-raw"></textarea>
+                    <div class="admin-kb-card-list" data-admin-kb-list="layanan"></div><button type="button" class="admin-kb-add" onclick="addAdminKbCard('layanan')">+ Tambah informasi bisnis</button>
                     <div class="flex justify-between items-center mt-1">
-                        <span class="text-[10px] text-slate-400">Rincian harga mempermudah bot merespon saat calon pelanggan bertanya tarif.</span>
+                        <span class="text-[10px] text-slate-400">Tambahkan hanya informasi yang berlaku; harga bersifat opsional.</span>
                         <div id="charCountLayanan" class="text-[10.5px] text-slate-500 font-mono">0 karakter</div>
                     </div>
                 </div>
@@ -841,18 +935,19 @@ Apakah ingin tambah kuota atau upgrade paket website agar chatbot tetap aktif me
                 <div class="flex items-center justify-between flex-wrap gap-2 p-2.5 rounded-xl bg-emerald-50/70 border border-emerald-200/60 text-xs">
                     <div class="flex items-center gap-1.5">
                         <span class="font-mono text-[11px] font-bold text-emerald-900 bg-emerald-100/80 px-2 py-0.5 rounded">📄 kebijakan.md</span>
-                        <span class="text-emerald-800 text-[11.5px]">Ketentuan pemesanan, proses refund, syarat DP, dan garansi.</span>
+                        <span class="text-emerald-800 text-[11.5px]">Aturan, batasan, proses, atau ketentuan yang berlaku untuk bisnis ini.</span>
                     </div>
                     <div class="flex items-center gap-1 flex-wrap">
-                        <button type="button" onclick="insertSnippet('knowKebijakanInput', 'charCountKebijakan', '### Ketentuan Pemesanan &amp; Pembayaran\n- Pembayaran DP minimal 50% di awal sebelum pesanan diproses.\n- Pelunasan dilakukan setelah pekerjaan selesai terverifikasi.')" class="quick-snippet-chip">
-                            + Format Pembayaran
+                        <button type="button" onclick="insertSnippet('knowKebijakanInput', 'charCountKebijakan', '### Ketentuan Utama\n- Jelaskan aturan atau proses yang perlu diketahui pengunjung.\n- Arahkan pertanyaan khusus ke kontak resmi bila diperlukan.')" class="quick-snippet-chip">
+                            + Format Ketentuan
                         </button>
                     </div>
                 </div>
                 <div class="relative">
-                    <textarea id="knowKebijakanInput" rows="7" oninput="updateCharCount('knowKebijakanInput', 'charCountKebijakan')" class="know-editor-textarea" placeholder="Contoh: Pembayaran DP minimal 50%, sisa dilunasi setelah..."></textarea>
+                    <textarea id="knowKebijakanInput" rows="7" oninput="updateCharCount('knowKebijakanInput', 'charCountKebijakan')" class="know-editor-textarea admin-kb-raw"></textarea>
+                    <div class="admin-kb-card-list" data-admin-kb-list="kebijakan"></div><button type="button" class="admin-kb-add" onclick="addAdminKbCard('kebijakan')">+ Tambah ketentuan</button>
                     <div class="flex justify-between items-center mt-1">
-                        <span class="text-[10px] text-slate-400">Bot akan merujuk kebijakan ini untuk menjawab pertanyaan syarat dan komplain.</span>
+                        <span class="text-[10px] text-slate-400">Bot akan merujuk bagian ini dan tidak boleh membuat janji di luar ketentuan.</span>
                         <div id="charCountKebijakan" class="text-[10.5px] text-slate-500 font-mono">0 karakter</div>
                     </div>
                 </div>
@@ -873,7 +968,8 @@ Apakah ingin tambah kuota atau upgrade paket website agar chatbot tetap aktif me
                     </div>
                 </div>
                 <div class="relative">
-                    <textarea id="knowFaqInput" rows="7" oninput="updateCharCount('knowFaqInput', 'charCountFaq')" placeholder="Q: Apakah melayani konsultasi gratis?&#10;A: Ya, kami menyediakan konsultasi gratis melalui WhatsApp kami." class="know-editor-textarea"></textarea>
+                    <textarea id="knowFaqInput" rows="7" oninput="updateCharCount('knowFaqInput', 'charCountFaq')" class="know-editor-textarea admin-kb-raw"></textarea>
+                    <div class="admin-kb-card-list" data-admin-kb-list="faq"></div><button type="button" class="admin-kb-add" onclick="addAdminKbCard('faq')">+ Tambah FAQ</button>
                     <div class="flex justify-between items-center mt-1">
                         <span class="text-[10px] text-slate-400">Format: Baris `Q: [Pertanyaan]` diikuti baris `A: [Jawaban]`.</span>
                         <div id="charCountFaq" class="text-[10.5px] text-slate-500 font-mono">0 karakter</div>
@@ -883,20 +979,21 @@ Apakah ingin tambah kuota atau upgrade paket website agar chatbot tetap aktif me
 
             {{-- Tab 5: Pertanyaan Pengunjung Belum Terjawab --}}
             <div id="tabPanelUnanswered" class="space-y-2.5 hidden">
-                <div class="rounded-xl bg-amber-500/10 border border-amber-500/20 p-3 text-xs text-amber-900 flex items-start gap-2.5">
+                <div class="rounded-xl bg-amber-500/10 p-3 text-xs text-amber-900 flex items-start gap-2.5">
                     <span class="material-symbols-outlined text-lg text-amber-600 shrink-0 mt-0.5">lightbulb</span>
                     <div>
                         <strong class="block mb-0.5 font-bold">Peluang Penyempurnaan Knowledge Base:</strong>
                         <span class="text-amber-800 leading-relaxed">Pertanyaan di bawah diajukan oleh calon pelanggan namun memicu *fallback* / belum ada di database bot. Klik <strong>"Jadikan FAQ"</strong> untuk langsung memasukkannya ke daftar FAQ resmi.</span>
                     </div>
                 </div>
-                <div id="unansweredListContainer" class="space-y-2 max-h-[260px] overflow-y-auto pr-1">
+                <div id="unansweredListContainer" class="space-y-3 max-h-[260px] overflow-y-auto pr-1">
                     {{-- Dinamis via JS --}}
                 </div>
             </div>
 
             {{-- Status simpan alert --}}
             <div id="knowSaveStatus" class="hidden rounded-xl p-3 text-xs font-bold transition-all shadow-xs"></div>
+            <div id="knowSyncStatus" class="text-[11px] text-on-surface-variant"></div>
         </div>
 
         {{-- Footer Modal --}}
@@ -919,13 +1016,13 @@ Apakah ingin tambah kuota atau upgrade paket website agar chatbot tetap aktif me
 </div>
 
 <script>
-    let activeClientQuota = 500;
-    let selectedQuickAdd = null;
-    let activeKnowledgeTenantId = null;
-    let activeKnowledgeTier = 'pixel';
-    let activeActionClient = null;
+    var activeClientQuota = 500;
+    var selectedQuickAdd = null;
+    var activeKnowledgeTenantId = null;
+    var activeKnowledgeTier = 'pixel';
+    var activeActionClient = null;
 
-    const TIER_DEFAULT_QUOTAS = {
+    var TIER_DEFAULT_QUOTAS = {
         'pixel': 500,
         'pulse': 1500,
         'nexus': 2500,
@@ -933,7 +1030,7 @@ Apakah ingin tambah kuota atau upgrade paket website agar chatbot tetap aktif me
     };
 
     // ==================== ACTION DROPDOWN SCRIPT (KOMPAK & MENEMPEL) ====================
-    let activeActionButton = null;
+    var activeActionButton = null;
 
     window.openClientActionPopup = function(buttonEl, evt) {
         const ev = evt || window.event;
@@ -1102,9 +1199,9 @@ Apakah ingin tambah kuota atau upgrade paket website agar chatbot tetap aktif me
             const btn = document.getElementById(`btn-add-${amt}`);
             if (!btn) return;
             if (selectedAmount === amt) {
-                btn.className = 'quick-add-btn cursor-pointer py-2 px-2 text-xs font-extrabold rounded-xl border-2 border-primary bg-primary/10 text-primary shadow-xs transition-all text-center flex flex-col items-center justify-center ring-2 ring-primary/20';
+                btn.className = 'tier-option quick-add-btn cursor-pointer rounded-xl bg-indigo-50 p-3 text-left text-indigo-700 shadow-sm ring-2 ring-indigo-100 transition-all';
             } else {
-                btn.className = 'quick-add-btn cursor-pointer py-2 px-2 text-xs font-bold rounded-xl border border-outline-variant bg-surface-container-low hover:border-primary hover:bg-primary/5 transition-all text-on-surface text-center flex flex-col items-center justify-center';
+                btn.className = 'tier-option quick-add-btn cursor-pointer rounded-xl bg-white p-3 text-left text-slate-800 transition-all';
             }
         });
     }
@@ -1191,6 +1288,7 @@ Apakah ingin tambah kuota atau upgrade paket website agar chatbot tetap aktif me
             statusEl.className = 'hidden';
             statusEl.innerText = '';
         }
+        setCustomerKnowledgeAccessState(null);
 
         modal.classList.remove('hidden');
         modal.classList.add('flex');
@@ -1228,7 +1326,7 @@ Apakah ingin tambah kuota atau upgrade paket website agar chatbot tetap aktif me
                     list.forEach(item => {
                         const safeQ = item.question.replace(/'/g, "\\'");
                         html += `
-                            <div class="flex items-center justify-between p-3.5 rounded-xl border border-outline-variant/80 bg-surface-container-lowest hover:border-primary/40 hover:bg-surface-container-low transition-all shadow-2xs">
+                            <div class="flex items-center justify-between p-3.5 rounded-xl bg-surface-container-lowest hover:bg-surface-container-low transition-all shadow-2xs">
                                 <div class="min-w-0 pr-3 flex items-start gap-2.5">
                                     <div class="w-7 h-7 rounded-lg bg-amber-500/10 text-amber-600 flex items-center justify-center shrink-0 mt-0.5">
                                         <span class="material-symbols-outlined text-[16px]">chat_bubble</span>
@@ -1261,6 +1359,13 @@ Apakah ingin tambah kuota atau upgrade paket website agar chatbot tetap aktif me
                 contentEl.classList.remove('hidden');
 
                 const k = data.knowledge || {};
+                const sync = data.knowledge_sync || {};
+                const syncEl = document.getElementById('knowSyncStatus');
+                if (syncEl) {
+                    const format = value => value ? new Intl.DateTimeFormat('id-ID', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(value)) : 'belum tercatat';
+                    syncEl.textContent = `Terakhir disimpan: ${format(sync.saved_at)} · Indeks RAG: ${sync.rag_indexed_at ? format(sync.rag_indexed_at) : 'menunggu engine'}`;
+                }
+                setCustomerKnowledgeAccessState(data.customer_ai_knowledge_editable !== false);
                 document.getElementById('knowProfilInput').value = k.profil || '';
                 document.getElementById('knowLayananInput').value = k.layanan || '';
                 document.getElementById('knowKebijakanInput').value = k.kebijakan || '';
@@ -1277,6 +1382,7 @@ Apakah ingin tambah kuota atau upgrade paket website agar chatbot tetap aktif me
                 updateCharCount('knowLayananInput', 'charCountLayanan');
                 updateCharCount('knowKebijakanInput', 'charCountKebijakan');
                 updateCharCount('knowFaqInput', 'charCountFaq');
+                ['profil', 'layanan', 'kebijakan', 'faq'].forEach(renderAdminKbCards);
             })
             .catch(err => {
                 loadingEl.classList.add('hidden');
@@ -1304,6 +1410,46 @@ Apakah ingin tambah kuota atau upgrade paket website agar chatbot tetap aktif me
         });
     };
 
+    var adminKbInputs = { profil: 'knowProfilInput', layanan: 'knowLayananInput', kebijakan: 'knowKebijakanInput', faq: 'knowFaqInput' };
+    function syncAdminKbCards(section) {
+        const input = document.getElementById(adminKbInputs[section]);
+        const cards = document.querySelectorAll('[data-admin-kb-list="' + section + '"] .admin-kb-entry');
+        if (!input) return;
+        input.value = Array.from(cards).map(card => {
+            const title = card.querySelector('[data-admin-title]').value.trim();
+            const body = card.querySelector('[data-admin-body]').value.trim();
+            return section === 'faq' ? 'Pertanyaan: ' + title + '\nJawaban: ' + body : title + (body ? '\n' + body : '');
+        }).filter(Boolean).join('\n\n');
+    }
+    window.addAdminKbCard = function(section, title = '', body = '') {
+        const list = document.querySelector('[data-admin-kb-list="' + section + '"]');
+        if (!list) return;
+        const card = document.createElement('div');
+        card.className = 'admin-kb-entry';
+        const top = document.createElement('div'); top.className = 'admin-kb-entry__top';
+        const input = document.createElement('input'); input.dataset.adminTitle = ''; input.placeholder = section === 'faq' ? 'Pertanyaan' : 'Subjudul'; input.value = title;
+        const remove = document.createElement('button'); remove.type = 'button'; remove.innerHTML = '×';
+        const textarea = document.createElement('textarea'); textarea.dataset.adminBody = ''; textarea.placeholder = section === 'faq' ? 'Jawaban resmi' : 'Isi penjelasan'; textarea.value = body;
+        [input, textarea].forEach(el => el.addEventListener('input', () => syncAdminKbCards(section)));
+        remove.addEventListener('click', () => { card.remove(); syncAdminKbCards(section); });
+        top.append(input, remove); card.append(top, textarea); list.appendChild(card);
+    };
+    function renderAdminKbCards(section) {
+        const input = document.getElementById(adminKbInputs[section]);
+        const list = document.querySelector('[data-admin-kb-list="' + section + '"]');
+        if (!input || !list) return;
+        list.innerHTML = '';
+        const text = input.value.trim();
+        if (!text) return;
+        if (section === 'faq') {
+            const matches = text.matchAll(/(?:Pertanyaan|Q)\s*:\s*([^\n]+)\n(?:Jawaban|A)\s*:\s*([\s\S]*?)(?=(?:\n\s*(?:Pertanyaan|Q)\s*:)|$)/gi);
+            let found = false;
+            for (const match of matches) { addAdminKbCard(section, match[1].trim(), match[2].trim()); found = true; }
+            if (!found) addAdminKbCard(section, 'FAQ', text);
+            return;
+        }
+        text.split(/\n\s*\n/).forEach(block => { const lines = block.split('\n'); addAdminKbCard(section, lines.shift().replace(/^#+\s*/, '').replace(/\*\*/g, '').trim(), lines.join('\n').replace(/\*\*/g, '').replace(/^\s*[-*]\s*/gm, '').trim()); });
+    }
     window.saveKnowledgeData = function() {
         if (!activeKnowledgeTenantId) return;
         const btn = document.getElementById('btnSaveKnowledge');
@@ -1313,6 +1459,7 @@ Apakah ingin tambah kuota atau upgrade paket website agar chatbot tetap aktif me
         btn.disabled = true;
         btn.innerHTML = '<span class="material-symbols-outlined text-[18px] animate-spin">refresh</span> Menyimpan...';
 
+        ['profil', 'layanan', 'kebijakan', 'faq'].forEach(syncAdminKbCards);
         const payload = {
             profil: document.getElementById('knowProfilInput').value,
             layanan: document.getElementById('knowLayananInput').value,
@@ -1329,7 +1476,13 @@ Apakah ingin tambah kuota atau upgrade paket website agar chatbot tetap aktif me
             },
             body: JSON.stringify(payload),
         })
-        .then(res => res.json())
+        .then(async res => {
+            const data = await res.json();
+            if (!res.ok || data.status === 'error') {
+                throw new Error(data.message || 'Server tidak dapat menyimpan Knowledge Base.');
+            }
+            return data;
+        })
         .then(data => {
             btn.disabled = false;
             btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">save</span> Simpan Knowledge Base';
@@ -1341,6 +1494,12 @@ Apakah ingin tambah kuota atau upgrade paket website agar chatbot tetap aktif me
                     statusEl.classList.add('hidden');
                 }, 4000);
             }
+            const syncEl = document.getElementById('knowSyncStatus');
+            if (syncEl) {
+                const format = value => value ? new Intl.DateTimeFormat('id-ID', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(value)) : 'baru saja';
+                syncEl.textContent = `Terakhir disimpan: ${format(data.knowledge_saved_at)} · Indeks RAG: ${data.rag_indexed_at ? format(data.rag_indexed_at) : 'menunggu engine'}`;
+            }
+            showKnowledgeSaveToast('Knowledge Base berhasil disimpan dan langsung dipakai chatbot.', 'success');
         })
         .catch(err => {
             btn.disabled = false;
@@ -1350,8 +1509,84 @@ Apakah ingin tambah kuota atau upgrade paket website agar chatbot tetap aktif me
                 statusEl.className = 'rounded-lg p-3 text-xs font-bold bg-error-container text-on-error-container block';
                 statusEl.innerText = 'Gagal menyimpan perubahan: ' + err.message;
             }
+            showKnowledgeSaveToast('Knowledge Base gagal disimpan. ' + err.message, 'error');
         });
     };
+
+    function showKnowledgeSaveToast(message, type) {
+        const current = document.getElementById('knowledgeSaveToast');
+        if (current) current.remove();
+
+        const toast = document.createElement('div');
+        toast.id = 'knowledgeSaveToast';
+        toast.setAttribute('role', 'status');
+        toast.style.cssText = 'position:fixed;right:1.5rem;top:1.5rem;z-index:10000;display:flex;align-items:flex-start;gap:.7rem;max-width:min(26rem,calc(100vw - 2rem));padding:1rem 1.1rem;border-radius:.9rem;color:#fff;font-size:.825rem;font-weight:700;line-height:1.45;box-shadow:0 16px 36px rgba(15,23,42,.2);animation:knowledge-toast-in .2s ease-out;';
+        toast.style.background = type === 'success' ? '#16794b' : '#ba1a1a';
+        toast.innerHTML = '<span class="material-symbols-outlined" style="font-size:1.25rem;line-height:1.2;">' + (type === 'success' ? 'check_circle' : 'error') + '</span><span></span>';
+        toast.querySelector('span:last-child').textContent = message;
+        document.body.appendChild(toast);
+        window.setTimeout(() => toast.remove(), 4500);
+    }
+
+    document.getElementById('customerKnowledgeAccessToggle')?.addEventListener('change', function() {
+        if (!activeKnowledgeTenantId) return;
+        const toggle = this;
+        const enabled = toggle.checked;
+        const hint = document.getElementById('customerKnowledgeAccessHint');
+        const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}';
+        toggle.disabled = true;
+
+        fetch(`/admin/ai-quotas/${encodeURIComponent(activeKnowledgeTenantId)}/knowledge-access`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': token,
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({ customer_ai_knowledge_editable: enabled }),
+        })
+        .then(async res => {
+            if (!res.ok) throw new Error((await res.json()).message || 'Tidak dapat menyimpan pengaturan.');
+            return res.json();
+        })
+        .then(data => {
+            const active = data.customer_ai_knowledge_editable === true;
+            setCustomerKnowledgeAccessState(active);
+        })
+        .catch(err => {
+            setCustomerKnowledgeAccessState(!enabled, 'Gagal menyimpan pengaturan: ' + err.message);
+        })
+        .finally(() => { toggle.disabled = false; });
+    });
+
+    function setCustomerKnowledgeAccessState(active, message = null) {
+        const toggle = document.getElementById('customerKnowledgeAccessToggle');
+        const hint = document.getElementById('customerKnowledgeAccessHint');
+        const badge = document.getElementById('customerKnowledgeAccessStatus');
+
+        if (active === null) {
+            if (toggle) toggle.checked = false;
+            if (badge) {
+                badge.className = 'rounded-full bg-slate-200 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-slate-600';
+                badge.innerText = 'Memuat';
+            }
+            if (hint) hint.innerText = 'Memeriksa pengaturan akses editor untuk tenant ini.';
+            return;
+        }
+
+        if (toggle) toggle.checked = active;
+        if (badge) {
+            badge.className = active
+                ? 'rounded-full bg-emerald-100 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-emerald-700'
+                : 'rounded-full bg-slate-200 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-slate-600';
+            badge.innerText = active ? 'Aktif' : 'Dikelola WEBIA';
+        }
+        if (hint) {
+            hint.innerText = message || (active
+                ? 'Pemilik website dapat mengelola dokumen panduan AI melalui portal konsumen.'
+                : 'Editor portal konsumen disembunyikan. Chatbot tetap memakai knowledge base terakhir yang aktif.');
+        }
+    }
 
     window.adoptAsFaq = function(question) {
         switchKnowTab('faq');

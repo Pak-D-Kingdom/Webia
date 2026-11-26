@@ -37,6 +37,8 @@ return [
 
     'ai_engine' => [
         'url' => env('AI_ENGINE_URL', 'http://127.0.0.1:8001'),
+        'internal_key' => env('AI_ENGINE_INTERNAL_KEY'),
+        'allow_local_fallback' => env('AI_ENGINE_ALLOW_LOCAL_FALLBACK', env('APP_ENV', 'local') !== 'production'),
     ],
 
 ];

@@ -31,11 +31,24 @@
      <script src="{{ asset('js/website-bisnis/webia-galaxy.js') }}" defer></script> {{-- setelah website-bisnis.js --}}
      @stack('scripts')
 
-     <script 
-         src="http://localhost:8001/widget/widget.js" 
-         data-site-key="site_webia_public" 
-         data-layer="l3" 
-         defer>
+     <script>
+     (function() {
+         function loadWebiaWidget() {
+             if (document.getElementById('webia-public-ai-widget')) return;
+             var s = document.createElement('script');
+             s.id = 'webia-public-ai-widget';
+             s.src = 'http://localhost:8001/widget/widget.js';
+             s.dataset.siteKey = 'site_webia_public';
+             s.dataset.layer = 'l3';
+             s.defer = true;
+             document.body.appendChild(s);
+         }
+         if ('requestIdleCallback' in window) {
+             requestIdleCallback(loadWebiaWidget, { timeout: 1500 });
+         } else {
+             setTimeout(loadWebiaWidget, 250);
+         }
+     })();
      </script>
 
      @include('website-bisnis.components.portal-dkreasi')

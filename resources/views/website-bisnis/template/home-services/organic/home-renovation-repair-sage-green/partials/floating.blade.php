@@ -22,7 +22,7 @@
     <div class="hr-chat__views">
         {{-- Tab 1: Obrolan --}}
         <div class="hr-view is-on" data-view="chat" role="tabpanel" aria-label="Obrolan">
-            <div class="hr-chat__log" data-chat-log aria-live="polite">
+            <div class="hr-chat__log" data-chat-log data-webia-ai-log="home-services" aria-live="polite">
                 <div class="hr-welcome" data-chat-welcome>
                     <div class="hr-welcome__hero">
                         <span class="hr-welcome__bot">@include($vp.'robot')</span>
@@ -39,9 +39,9 @@
                 </div>
             </div>
             <div class="hr-chat__quick" data-chat-quick></div>
-            <form class="hr-chat__form" data-chat-form autocomplete="off">
+            <form class="hr-chat__form" data-chat-form data-webia-ai-form="home-services" autocomplete="off">
                 <label class="sr-only" for="hrChatInput">Pertanyaan Anda</label>
-                <input id="hrChatInput" type="text" data-chat-input placeholder="Tulis pertanyaan Anda…" maxlength="200" enterkeyhint="send">
+                <input id="hrChatInput" type="text" data-chat-input data-webia-ai-input="home-services" placeholder="Tulis pertanyaan Anda…" maxlength="200" enterkeyhint="send">
                 <button type="submit" aria-label="Kirim pertanyaan">{{ $i('send') }}</button>
             </form>
         </div>

@@ -92,7 +92,7 @@ class CustomerAccountsSeeder extends Seeder
             'email_verified_at' => $now,
         ]);
 
-        // 2.2 Pending Payment
+        // 2.2 Menunggu Pembayaran
         $uPending = User::create([
             'name' => 'Dina Maharani',
             'email' => 'dina.pending@gmail.com',
@@ -120,7 +120,8 @@ class CustomerAccountsSeeder extends Seeder
                 'tag' => 'F&B · Bakery',
             ],
             'category_slug' => 'fnb',
-            'status' => 'pending',
+            // Gunakan status resmi aplikasi, bukan "pending" lama.
+            'status' => 'awaiting_payment',
             'credential_status' => 'issued',
             'total_price' => 899000,
             'paid_at' => null,
@@ -227,7 +228,55 @@ class CustomerAccountsSeeder extends Seeder
             'note' => 'Bukti transfer buram dan nominal tidak sesuai (kurang Rp 50.000). Silakan hubungi admin atau lakukan pemesanan ulang.',
         ]);
 
-        // 2.5 5 Akun Paid - Dalam Proses Mengisi Knowledge Base (KB Masih Kosong)
+        // 2.5 Pesanan Dibatalkan oleh konsumen (tetap terlihat pada riwayat portal).
+        $uCancelled = User::create([
+            'name' => 'Nanda Prakoso',
+            'email' => 'nanda.cancelled@gmail.com',
+            'password' => Hash::make('password123'),
+            'role' => 'customer',
+            'email_verified_at' => $now,
+        ]);
+        $tmplCancelled = WebiaTemplate::where('slug', 'daily-crumb')->orWhere('slug', 'fnb-bakery-playful-colorful-pastel-mix')->first();
+        $oCancelled = WebiaOrder::create([
+            'order_number' => 'WEB-261111-CAN',
+            'user_id' => $uCancelled->id,
+            'guest_name' => $uCancelled->name,
+            'guest_email' => $uCancelled->email,
+            'webia_package_id' => $pkgPulse?->id ?? 2,
+            'package_snapshot' => [
+                'name' => 'Pulse',
+                'slug' => 'pulse',
+                'price' => 899000,
+                'chatbot_monthly_quota' => 1500,
+            ],
+            'webia_template_id' => $tmplCancelled?->id,
+            'template_snapshot' => [
+                'name' => $tmplCancelled?->name ?? 'Sweet Crumb Bakery',
+                'slug' => $tmplCancelled?->slug ?? 'daily-crumb',
+                'tag' => 'F&B · Bakery',
+            ],
+            'category_slug' => 'fnb',
+            'status' => 'cancelled',
+            'credential_status' => 'issued',
+            'total_price' => 899000,
+            'business_data' => [
+                'business_name' => 'Nanda Cookies',
+                'owner_name' => 'Nanda Prakoso',
+                'whatsapp' => '081234560005',
+                'city' => 'Malang',
+            ],
+            'delivery_status' => 'not_started',
+            'site_slug' => null,
+        ]);
+        WebiaOrderLog::create([
+            'webia_order_id' => $oCancelled->id,
+            'actor_id' => $uCancelled->id,
+            'from_status' => 'awaiting_payment',
+            'to_status' => 'cancelled',
+            'note' => 'Pesanan dibatalkan oleh konsumen sebelum pembayaran.',
+        ]);
+
+        // 2.6 5 Akun Paid - Dalam Proses Mengisi Knowledge Base (KB Masih Kosong)
         $unfilledKbClients = [
             [
                 'name' => 'Ruli Hidayat (Testing KB)',
@@ -248,7 +297,7 @@ class CustomerAccountsSeeder extends Seeder
                 'order_num' => 'WEB-261111-KB02',
                 'pkg_slug' => 'pulse',
                 'business' => 'Senja Corner Coffee & Roastery',
-                'tmpl_slug' => 'origins-cafe',
+                'tmpl_slug' => 'fnb-cafe-minimalis',
                 'cat' => 'fnb',
                 'tag' => 'F&B · Coffee Shop',
                 'phone' => '081234560006',

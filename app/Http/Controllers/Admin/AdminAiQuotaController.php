@@ -87,7 +87,8 @@ class AdminAiQuotaController extends Controller
         $search = strtolower(trim((string) $request->query('q', '')));
 
         $clients = $this->getClientsData();
-        $aiOnline = AiQuotaService::isOnline();
+        $aiConnection = AiQuotaService::connectionStatus();
+        $aiOnline = $aiConnection['engine_online'];
 
         // Ambil daftar unik seluruh kategori bisnis tenant
         $categories = collect($clients)->pluck('category')->filter()->unique()->values()->all();
@@ -144,6 +145,7 @@ class AdminAiQuotaController extends Controller
             'exhaustedCount',
             'warningCount',
             'safeCount',
+            'aiConnection',
             'totalUsedMessages',
             'totalQuotaMessages',
             'statusFilter',
@@ -258,12 +260,38 @@ class AdminAiQuotaController extends Controller
     {
         $knowledge = AiQuotaService::getTenantKnowledge($tenantId);
         $insights = AiQuotaService::getTenantInsights($tenantId);
+        $order = WebiaOrder::where('site_slug', $tenantId)->first();
 
         return response()->json([
             'status' => 'success',
             'tenant_id' => $tenantId,
             'knowledge' => $knowledge,
             'insights' => $insights,
+            'customer_ai_knowledge_editable' => $order?->customer_ai_knowledge_editable ?? true,
+            'knowledge_sync' => [
+                'saved_at' => $order?->business_data['ai_knowledge_saved_at'] ?? null,
+                'rag_indexed_at' => $order?->business_data['ai_rag_indexed_at'] ?? null,
+            ],
+        ]);
+    }
+
+    /**
+     * Mengatur apakah pemilik website boleh mengubah knowledge base dari portalnya.
+     */
+    public function updateCustomerKnowledgeAccess(Request $request, string $tenantId): JsonResponse
+    {
+        $validated = $request->validate([
+            'customer_ai_knowledge_editable' => ['required', 'boolean'],
+        ]);
+
+        $order = WebiaOrder::where('site_slug', $tenantId)->firstOrFail();
+        $order->update([
+            'customer_ai_knowledge_editable' => $validated['customer_ai_knowledge_editable'],
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'customer_ai_knowledge_editable' => $order->customer_ai_knowledge_editable,
         ]);
     }
 
@@ -274,6 +302,15 @@ class AdminAiQuotaController extends Controller
     {
         $payload = $request->only(['profil', 'layanan', 'kebijakan', 'faq']);
         $result = AiQuotaService::saveTenantKnowledge($tenantId, $payload);
+        if (($result['status'] ?? '') === 'success') {
+            $order = WebiaOrder::where('site_slug', $tenantId)->first();
+            if ($order) {
+                $business = $order->business_data ?? [];
+                $business['ai_knowledge_saved_at'] = $result['knowledge_saved_at'] ?? now()->toIso8601String();
+                $business['ai_rag_indexed_at'] = $result['rag_indexed_at'] ?? null;
+                $order->update(['business_data' => $business]);
+            }
+        }
 
         return response()->json($result);
     }

@@ -5,6 +5,8 @@ namespace Tests\Feature;
 use App\Models\WebiaOrder;
 use App\Models\WebiaTemplate;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Client\Request;
+use Illuminate\Support\Facades\Http;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
@@ -61,6 +63,7 @@ class CustomerSitePhotographyTest extends TestCase
             ->assertSee('Lensa Nusantara Studio')
             ->assertSee('6281298765432', false)
             ->assertSee('webia-native-ai-bridge', false)
+            ->assertSee('bindPhotographyAiAdapters', false)
             ->assertDontSee($demoBrand);
     }
 
@@ -98,5 +101,51 @@ class CustomerSitePhotographyTest extends TestCase
         ]);
 
         $this->get('/s/peachy-photo-test/halaman-tidak-ada')->assertNotFound();
+    }
+
+    public function test_published_photography_site_sends_chat_to_its_own_tenant(): void
+    {
+        $template = $this->template('lumiere-photography-studio');
+        $order = WebiaOrder::factory()->create([
+            'webia_template_id' => $template->id,
+            'template_snapshot' => [
+                'slug' => $template->slug,
+                'site_config_path' => $template->site_config_path,
+            ],
+            'status' => 'paid',
+            'delivery_status' => 'delivered',
+            'site_slug' => 'lensa-nusantara',
+            'business_data' => [
+                'business_name' => 'Lensa Nusantara Studio',
+                'whatsapp' => '0812-9876-5432',
+            ],
+        ]);
+
+        Http::fake(function (Request $request) {
+            if (str_ends_with($request->url(), '/quota')) {
+                return Http::response(['is_quota_exhausted' => false]);
+            }
+
+            if (str_ends_with($request->url(), '/chat')) {
+                return Http::response([
+                    'message' => ['content' => 'Kami tersedia untuk konsultasi sesi foto produk.'],
+                    'meta' => ['provider' => 'test'],
+                ]);
+            }
+
+            return Http::response([], 404);
+        });
+
+        $this->postJson(route('sites.chat', ['order' => $order->site_slug]), [
+            'message' => 'Apakah ada sesi foto produk?',
+        ])->assertOk()
+            ->assertJsonPath('status', 'success')
+            ->assertJsonPath('reply', 'Kami tersedia untuk konsultasi sesi foto produk.');
+
+        Http::assertSent(function (Request $request) use ($order) {
+            return str_ends_with($request->url(), '/api/v1/chat')
+                && $request['layer'] === 'l4'
+                && $request['tenant_id'] === $order->site_slug;
+        });
     }
 }
