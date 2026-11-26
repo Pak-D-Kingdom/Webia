@@ -137,6 +137,10 @@ class CustomerSiteController extends Controller
             return $this->handlePropertyStandalone($order, $siteConfigPath, $pageKey);
         }
 
+        if (str_starts_with($siteConfigPath, 'wedding-event/creative/') || str_starts_with($siteConfigPath, 'wedding-event/bold/')) {
+            return $this->handleWeddingConfig($order, $siteConfigPath, $pageKey);
+        }
+
         if (str_starts_with($siteConfigPath, 'wedding-standalone/') || str_starts_with($siteConfigPath, 'wedding-event/')) {
             return $this->handleWeddingStandalone($order, $siteConfigPath, $pageKey);
         }
@@ -157,12 +161,20 @@ class CustomerSiteController extends Controller
             return $this->handlePhotographyConfig($order, $siteConfigPath, $pageKey);
         }
 
+        if (str_starts_with($siteConfigPath, 'interior&architecture/rustic/architecture-building-design-chocolate-luxe')) {
+            return $this->handleInteriorArchitectureConfig($order, $siteConfigPath, $pageKey);
+        }
+
         if (str_starts_with($siteConfigPath, 'interior&architecture/')) {
             return $this->handleInteriorConfig($order, $siteConfigPath, $pageKey);
         }
 
         if (str_starts_with($siteConfigPath, 'nonprofit&community/')) {
             return $this->handleNonprofitConfig($order, $siteConfigPath, $pageKey);
+        }
+
+        if (str_starts_with($siteConfigPath, 'travel&tourism/classic/umrah-haji-emerald-green') || str_starts_with($siteConfigPath, 'travel&tourism/elegan/umrah-haji-navy-champagne-gold')) {
+            return $this->handleUmrahConfig($order, $siteConfigPath, $pageKey);
         }
 
         if (str_starts_with($siteConfigPath, 'travel&tourism/')) {
@@ -2899,6 +2911,110 @@ class CustomerSiteController extends Controller
         return $html;
     }
 
+    private function handleWeddingConfig(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $custWa = $whatsapp ?: '62895630300345';
+        $bizName = $business['business_name'] ?? '';
+
+        if (str_starts_with($siteConfigPath, 'wedding-event/bold/event-organizer-sunset-gradient')) {
+            $configKey = 'template.wedding-event.bold.event-organizer-sunset-gradient.event-organizer';
+            $siteConfig = config($configKey);
+            if (! is_array($siteConfig)) {
+                $siteConfig = require config_path('template/wedding-event/bold/event-organizer-sunset-gradient/event-organizer.php');
+            }
+            if (is_array($siteConfig)) {
+                if (isset($siteConfig['brand']) && is_array($siteConfig['brand']) && $bizName !== '') {
+                    $siteConfig['brand']['name'] = $bizName;
+                }
+                if (isset($siteConfig['contact']) && is_array($siteConfig['contact'])) {
+                    if ($whatsapp !== '') {
+                        $siteConfig['contact']['wa'] = preg_replace('/[^0-9]/', '', $custWa);
+                    }
+                    if (! empty($business['email'])) {
+                        $siteConfig['contact']['email'] = $business['email'];
+                    }
+                }
+                config([$configKey => $siteConfig]);
+            }
+            $cfg = $siteConfig ?? config($configKey);
+            $page = $pageKey === 'home' ? null : $pageKey;
+            if ($page !== null && ! isset($cfg['pages'][$page])) {
+                abort(404);
+            }
+            $renderedHtml = view('website-bisnis.template.wedding-event.bold.event-organizer-sunset-gradient.event-organizer', [
+                'c' => $cfg,
+                'page' => $page,
+            ])->render();
+
+            if ($bizName !== '') {
+                $renderedHtml = str_replace('Eventora', $bizName, $renderedHtml);
+            }
+            $renderedHtml = str_replace('62895630300345', preg_replace('/[^0-9]/', '', $custWa), $renderedHtml);
+            if (! empty($business['email'])) {
+                $renderedHtml = str_replace('hello@eventora.id', $business['email'], $renderedHtml);
+            }
+
+            $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+            return response($renderedHtml);
+        }
+
+        // purple-dream (multi page)
+        $configKey = 'template.wedding-event.creative.event-organizer-purple-dream.event-organizer';
+        $siteConfig = config($configKey);
+        if (! is_array($siteConfig)) {
+            $siteConfig = require config_path('template/wedding-event/creative/event-organizer-purple-dream/event-organizer.php');
+            config([$configKey => $siteConfig]);
+        }
+        if (is_array($siteConfig)) {
+            if (isset($siteConfig['brand']) && is_array($siteConfig['brand']) && $bizName !== '') {
+                $siteConfig['brand']['name'] = $bizName;
+            }
+            if (isset($siteConfig['whatsapp']) && is_array($siteConfig['whatsapp'])) {
+                if ($whatsapp !== '') {
+                    $siteConfig['whatsapp']['number'] = preg_replace('/[^0-9]/', '', $custWa);
+                }
+            }
+            if (isset($siteConfig['contact']) && is_array($siteConfig['contact']) && ! empty($business['email'])) {
+                $siteConfig['contact']['email'] = $business['email'];
+            }
+            config([$configKey => $siteConfig]);
+        }
+
+        $pageMap = [
+            'home' => 'beranda',
+            'layanan' => 'layanan',
+            'paket-event' => 'paket-event',
+            'portofolio' => 'portofolio',
+            'proyek-kami' => 'proyek-kami',
+            'proses' => 'proses',
+            'klien' => 'klien',
+            'penawaran' => 'penawaran',
+            'faq-ai' => 'faq-ai',
+            'beranda' => 'beranda',
+        ];
+        $viewPage = $pageMap[$pageKey] ?? null;
+        abort_unless($viewPage !== null, 404);
+        $viewName = 'website-bisnis.template.wedding-event.creative.event-organizer-purple-dream.'.$viewPage;
+        abort_unless(view()->exists($viewName), 404);
+
+        $renderedHtml = view($viewName, ['page' => $pageKey === 'home' ? 'home' : $pageKey])->render();
+
+        if ($bizName !== '') {
+            $renderedHtml = str_replace('Eventora', $bizName, $renderedHtml);
+        }
+        $renderedHtml = str_replace('62895630300345', preg_replace('/[^0-9]/', '', $custWa), $renderedHtml);
+        if (! empty($business['email'])) {
+            $renderedHtml = str_replace('hello@eventora.id', $business['email'], $renderedHtml);
+        }
+
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+        return response($renderedHtml);
+    }
+
     private const TRAVEL_BAITUL_VIEWS = [
         'baitul-safar-umrah-haji' => ['home' => 'website-bisnis.templates.travel-tourism.umrah-haji.baitul-safar.baitul-safar'],
     ];
@@ -2940,6 +3056,111 @@ class CustomerSiteController extends Controller
         $html = str_replace('6281234567890', $custWa, $html);
 
         return $html;
+    }
+
+    private function handleUmrahConfig(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $custWa = $whatsapp ?: '62895630300345';
+        $bizName = $business['business_name'] ?? '';
+
+        if (str_starts_with($siteConfigPath, 'travel&tourism/elegan/umrah-haji-navy-champagne-gold')) {
+            $configKey = 'template.travel&tourism.elegan.umrah-haji-navy-champagne-gold.umrah-haji';
+            $siteConfig = config($configKey);
+            if (! is_array($siteConfig)) {
+                $siteConfig = require config_path('template/travel&tourism/elegan/umrah-haji-navy-champagne-gold/umrah-haji.php');
+            }
+            if (is_array($siteConfig)) {
+                if (isset($siteConfig['brand']) && is_array($siteConfig['brand']) && $bizName !== '') {
+                    $siteConfig['brand']['name'] = $bizName;
+                }
+                if (isset($siteConfig['contact']) && is_array($siteConfig['contact'])) {
+                    if ($whatsapp !== '') {
+                        $siteConfig['contact']['wa'] = 'https://wa.me/'.preg_replace('/[^0-9]/', '', $custWa);
+                    }
+                    if (! empty($business['email'])) {
+                        $siteConfig['contact']['email'] = $business['email'];
+                    }
+                    if (! empty($business['address'])) {
+                        $siteConfig['contact']['address'] = $business['address'];
+                    }
+                }
+                config([$configKey => $siteConfig]);
+            }
+            $cfg = $siteConfig ?? config($configKey);
+
+            abort_unless($pageKey === 'home', 404);
+            $viewBase = 'website-bisnis.template.travel&tourism.elegan.umrah-haji-navy-champagne-gold';
+            $imgBase = 'images/website-bisnis/template/travel&tourism/elegan/umrah-haji-navy-champagne-gold/';
+            $cssFile = 'css/website-bisnis/template/travel&tourism/elegan/umrah-haji-navy-champagne-gold/umrah-haji.css';
+            $jsFile = 'js/website-bisnis/template/travel&tourism/elegan/umrah-haji-navy-champagne-gold/umrah-haji.js';
+            $renderedHtml = view($viewBase.'.umrah-haji', [
+                'd' => $cfg,
+                'page' => 'home',
+                'v' => $viewBase,
+                'css' => asset($cssFile),
+                'js' => asset($jsFile),
+                'img' => fn ($file) => asset($imgBase.$file),
+                'r' => fn ($route) => url('/s/'.$order->site_slug),
+                'rp' => fn ($n) => 'Rp '.number_format($n, 0, ',', '.'),
+                'wa' => fn ($text = null) => 'https://wa.me/'.preg_replace('/[^0-9]/', '', $custWa).($text ? '?text='.rawurlencode($text) : ''),
+            ])->render();
+
+            if ($bizName !== '') {
+                $renderedHtml = str_replace('Al Hijrah Travel', $bizName, $renderedHtml);
+            }
+            $renderedHtml = str_replace('62895630300345', preg_replace('/[^0-9]/', '', $custWa), $renderedHtml);
+            if (! empty($business['email'])) {
+                $renderedHtml = str_replace('info@alhijrahtravel.co.id', $business['email'], $renderedHtml);
+            }
+            if (! empty($business['address'])) {
+                $renderedHtml = str_replace('Jl. Melati No. 25, Jakarta Selatan', $business['address'], $renderedHtml);
+            }
+
+            $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+            return response($renderedHtml);
+        }
+
+        // emerald-green (view composer provides shared data)
+        $configKey = 'template.travel&tourism.classic.umrah-haji-emerald-green.umrah-haji';
+        $siteConfig = config($configKey);
+        if (! is_array($siteConfig)) {
+            $siteConfig = require config_path('template/travel&tourism/classic/umrah-haji-emerald-green/umrah-haji.php');
+        }
+        if (is_array($siteConfig)) {
+            if (isset($siteConfig['brand']) && is_array($siteConfig['brand'])) {
+                if ($bizName !== '') {
+                    $siteConfig['brand']['name'] = $bizName;
+                }
+                if ($whatsapp !== '') {
+                    $siteConfig['brand']['whatsapp'] = preg_replace('/[^0-9]/', '', $custWa);
+                }
+                if (! empty($business['email'])) {
+                    $siteConfig['brand']['email'] = $business['email'];
+                }
+            }
+            config([$configKey => $siteConfig]);
+        }
+
+        abort_unless($pageKey === 'home', 404);
+        $viewName = 'website-bisnis.template.travel&tourism.classic.umrah-haji-emerald-green.index';
+        abort_unless(view()->exists($viewName), 404);
+
+        $renderedHtml = view($viewName)->render();
+
+        if ($bizName !== '') {
+            $renderedHtml = str_replace('Nur Rahmat Travel', $bizName, $renderedHtml);
+        }
+        $renderedHtml = str_replace('62895630300345', preg_replace('/[^0-9]/', '', $custWa), $renderedHtml);
+        if (! empty($business['email'])) {
+            $renderedHtml = str_replace('info@nurrahmattravel.co.id', $business['email'], $renderedHtml);
+        }
+
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+        return response($renderedHtml);
     }
 
     private const HEALTHCARE_STANDALONE_VIEWS = [
@@ -3558,6 +3779,73 @@ class CustomerSiteController extends Controller
         };
         foreach ($previewBases as $pb) {
             $renderedHtml = str_replace($pb, $siteBase, $renderedHtml);
+        }
+
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+        return response($renderedHtml);
+    }
+
+    private function handleInteriorArchitectureConfig(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $configKey = 'template.interior&architecture.rustic.architecture-building-design-chocolate-luxe.architecture-building-design';
+        $siteConfig = config($configKey);
+        if (! is_array($siteConfig)) {
+            $siteConfig = require config_path('template/interior&architecture/rustic/architecture-building-design-chocolate-luxe/architecture-building-design.php');
+        }
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $custWa = $whatsapp ?: '62895630300345';
+        $bizName = $business['business_name'] ?? '';
+
+        if (is_array($siteConfig)) {
+            if (isset($siteConfig['brand']) && is_array($siteConfig['brand']) && $bizName !== '') {
+                $siteConfig['brand']['name'] = $bizName;
+            }
+            if (isset($siteConfig['contact']) && is_array($siteConfig['contact'])) {
+                if ($whatsapp !== '') {
+                    $siteConfig['contact']['whatsapp'] = $custWa;
+                }
+                if (! empty($business['email'])) {
+                    $siteConfig['contact']['email'] = $business['email'];
+                }
+                if (! empty($business['address'])) {
+                    $siteConfig['contact']['address'] = $business['address'];
+                }
+            }
+            config([$configKey => $siteConfig]);
+        }
+
+        $pageMap = [
+            'home' => 'beranda',
+            'beranda' => 'beranda',
+            'portofolio' => 'portofolio',
+            'proyek' => 'proyek',
+            'layanan' => 'layanan',
+            'denah-3d' => 'denah-3d',
+            'proses' => 'proses',
+            'sertifikasi' => 'sertifikasi',
+            'konsultasi' => 'konsultasi',
+            'penawaran' => 'penawaran',
+        ];
+        $viewPage = $pageMap[$pageKey] ?? null;
+        abort_unless($viewPage !== null, 404);
+        $viewName = 'website-bisnis.template.interior&architecture.rustic.architecture-building-design-chocolate-luxe.'.$viewPage;
+        abort_unless(view()->exists($viewName), 404);
+
+        $renderedHtml = view($viewName)->render();
+
+        if ($bizName !== '') {
+            $renderedHtml = str_replace('ArchiDesign', $bizName, $renderedHtml);
+            $renderedHtml = str_replace('ARCHIDESIGN', strtoupper($bizName), $renderedHtml);
+        }
+        $renderedHtml = str_replace('62895630300345', preg_replace('/[^0-9]/', '', $custWa), $renderedHtml);
+        if (! empty($business['email'])) {
+            $renderedHtml = str_replace('hello@archidesign.co.id', $business['email'], $renderedHtml);
+        }
+        $address = $this->businessAddress($business);
+        if ($address !== '') {
+            $renderedHtml = str_replace('Jl. Melati No. 45, Jakarta Selatan', $address, $renderedHtml);
         }
 
         $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
@@ -5594,7 +5882,7 @@ class CustomerSiteController extends Controller
             );
         }
 
-        $renderedHtml = str_replace('6281234567890', $custWa, $renderedHtml);
+        $renderedHtml = str_replace('62895630300345', preg_replace('/[^0-9]/', '', $custWa), $renderedHtml);
 
         if (! empty($business['email'])) {
             $renderedHtml = str_replace('HELLO@STUDIO-BOLD.COM', strtoupper($business['email']), $renderedHtml);
