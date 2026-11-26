@@ -2956,6 +2956,10 @@ class CustomerSiteController extends Controller
                 $renderedHtml = str_replace('hello@eventora.id', $business['email'], $renderedHtml);
             }
 
+            $siteBase = url('/s/'.$order->site_slug);
+            $previewBase = url('/webia/template/wedding-event/bold/event-organizer-sunset-gradient');
+            $renderedHtml = str_replace($previewBase, $siteBase, $renderedHtml);
+
             $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
 
             return response($renderedHtml);
@@ -2980,6 +2984,7 @@ class CustomerSiteController extends Controller
             if (isset($siteConfig['contact']) && is_array($siteConfig['contact']) && ! empty($business['email'])) {
                 $siteConfig['contact']['email'] = $business['email'];
             }
+            $siteConfig['base'] = '/s/'.$order->site_slug;
             config([$configKey => $siteConfig]);
         }
 
@@ -3009,6 +3014,10 @@ class CustomerSiteController extends Controller
         if (! empty($business['email'])) {
             $renderedHtml = str_replace('hello@eventora.id', $business['email'], $renderedHtml);
         }
+
+        $siteBase = url('/s/'.$order->site_slug);
+        $previewBase = url('/webia/template/wedding-event/creative/event-organizer-purple-dream');
+        $renderedHtml = str_replace($previewBase, $siteBase, $renderedHtml);
 
         $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
 
@@ -3090,19 +3099,23 @@ class CustomerSiteController extends Controller
             }
             $cfg = $siteConfig ?? config($configKey);
 
-            abort_unless($pageKey === 'home', 404);
+            $allowedPages = ['home', 'paket', 'jadwal', 'harga', 'hotel', 'itinerary', 'tim', 'persyaratan', 'testimoni', 'chat'];
+            abort_unless(in_array($pageKey, $allowedPages, true), 404);
+
             $viewBase = 'website-bisnis.template.travel&tourism.elegan.umrah-haji-navy-champagne-gold';
             $imgBase = 'images/website-bisnis/template/travel&tourism/elegan/umrah-haji-navy-champagne-gold/';
             $cssFile = 'css/website-bisnis/template/travel&tourism/elegan/umrah-haji-navy-champagne-gold/umrah-haji.css';
             $jsFile = 'js/website-bisnis/template/travel&tourism/elegan/umrah-haji-navy-champagne-gold/umrah-haji.js';
             $renderedHtml = view($viewBase.'.umrah-haji', [
                 'd' => $cfg,
-                'page' => 'home',
+                'page' => $pageKey === 'home' ? 'home' : $pageKey,
                 'v' => $viewBase,
                 'css' => asset($cssFile),
                 'js' => asset($jsFile),
                 'img' => fn ($file) => asset($imgBase.$file),
-                'r' => fn ($route) => url('/s/'.$order->site_slug),
+                'r' => fn ($route) => $route === 'home'
+                    ? url('/s/'.$order->site_slug)
+                    : url('/s/'.$order->site_slug.'/'.ltrim((string) $route, '/')),
                 'rp' => fn ($n) => 'Rp '.number_format($n, 0, ',', '.'),
                 'wa' => fn ($text = null) => 'https://wa.me/'.preg_replace('/[^0-9]/', '', $custWa).($text ? '?text='.rawurlencode($text) : ''),
             ])->render();
@@ -3117,6 +3130,10 @@ class CustomerSiteController extends Controller
             if (! empty($business['address'])) {
                 $renderedHtml = str_replace('Jl. Melati No. 25, Jakarta Selatan', $business['address'], $renderedHtml);
             }
+
+            $siteBase = url('/s/'.$order->site_slug);
+            $previewBase = url('/webia/template/travel-tourism/elegan/umrah-haji-navy-champagne-gold');
+            $renderedHtml = str_replace($previewBase, $siteBase, $renderedHtml);
 
             $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
 
@@ -3144,8 +3161,22 @@ class CustomerSiteController extends Controller
             config([$configKey => $siteConfig]);
         }
 
-        abort_unless($pageKey === 'home', 404);
-        $viewName = 'website-bisnis.template.travel&tourism.classic.umrah-haji-emerald-green.index';
+        $pageMap = [
+            'home' => 'index',
+            'packages' => 'packages',
+            'schedules' => 'schedules',
+            'prices' => 'prices',
+            'hotel-flight' => 'hotel-flight',
+            'itinerary' => 'itinerary',
+            'team' => 'team',
+            'requirements' => 'requirements',
+            'testimonials' => 'testimonials',
+            'chatbot' => 'chatbot',
+        ];
+        $viewPage = $pageMap[$pageKey] ?? null;
+        abort_unless($viewPage !== null, 404);
+
+        $viewName = 'website-bisnis.template.travel&tourism.classic.umrah-haji-emerald-green.'.$viewPage;
         abort_unless(view()->exists($viewName), 404);
 
         $renderedHtml = view($viewName)->render();
@@ -3157,6 +3188,10 @@ class CustomerSiteController extends Controller
         if (! empty($business['email'])) {
             $renderedHtml = str_replace('info@nurrahmattravel.co.id', $business['email'], $renderedHtml);
         }
+
+        $siteBase = url('/s/'.$order->site_slug);
+        $previewBase = url('/webia/template/travel-tourism/classic/umrah-haji-emerald-green');
+        $renderedHtml = str_replace($previewBase, $siteBase, $renderedHtml);
 
         $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
 
@@ -3813,6 +3848,7 @@ class CustomerSiteController extends Controller
                     $siteConfig['contact']['address'] = $business['address'];
                 }
             }
+            $siteConfig['base'] = '/s/'.$order->site_slug;
             config([$configKey => $siteConfig]);
         }
 
@@ -3847,6 +3883,10 @@ class CustomerSiteController extends Controller
         if ($address !== '') {
             $renderedHtml = str_replace('Jl. Melati No. 45, Jakarta Selatan', $address, $renderedHtml);
         }
+
+        $siteBase = url('/s/'.$order->site_slug);
+        $previewBase = url('/webia/template/interior-architecture/rustic/architecture-building-design-chocolate-luxe');
+        $renderedHtml = str_replace($previewBase, $siteBase, $renderedHtml);
 
         $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
 
