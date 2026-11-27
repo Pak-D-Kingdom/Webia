@@ -5,9 +5,10 @@
     $cfg = config('template.libraries-digital-archives.academic-minimalist.digital-library-platform-arctic-frost.digital-library-platform', []);
     $g = fn ($k, $d = null) => data_get($cfg, $k, $d);
     $u = fn ($s = '') => url('/webia/template/libraries-digital-archives/academic-minimalist/digital-library-platform-arctic-frost'.($s ? '/'.$s : ''));
+    $img = fn ($f) => asset('images/website-bisnis/template/libraries-digital-archives/academic-minimalist/digital-library-platform-arctic-frost/'.$f);
     $meta = $g('pages.'.$page, ['Halaman', '', '']);
 @endphp
-<section class="phead"><div class="wrap"><nav class="crumb" aria-label="Breadcrumb"><a href="{{ $u() }}">Beranda</a> › {{ $meta[0] }}</nav><h1>{{ $meta[0] }}</h1><p>{{ $meta[1] }}</p></div></section>
+<section class="phead" style="background-image:linear-gradient(110deg,#1b2f4bf2 30%,#35608fb3),url('{{ $img('hero-scene.jpg') }}')"><div class="wrap"><nav class="crumb" aria-label="Breadcrumb"><a href="{{ $u() }}">Beranda</a> › {{ $meta[0] }}</nav><h1>{{ $meta[0] }}</h1><p>{{ $meta[1] }}</p></div></section>
 <div class="wrap pbody" data-view="{{ $meta[2] }}" data-preset="{{ $meta[3] ?? '' }}">
 @switch($meta[2])
 @case('catalog')
@@ -37,6 +38,7 @@
     <h3 class="st" style="margin-top:24px">Tim Kami</h3><div class="arts">@foreach ([['Dr. Ratna Wulandari', 'Kepala Perpustakaan'], ['Bima Saputra', 'Kurator Koleksi'], ['Citra Ayu', 'Layanan Anggota'], ['Dani Pratama', 'Pengembangan Digital']] as $i => $t)<article class="card team"><span class="av" style="--h:{{ [210, 200, 222, 195][$i] }}">{{ mb_substr($t[0], 0, 1) }}</span><b>{{ $t[0] }}</b><small>{{ $t[1] }}</small></article>@endforeach</div>
 @break
 @case('faq')
+    <div class="plans" style="margin-bottom:18px">@foreach ([['📖', 'Cara Meminjam', 'Buka detail buku lalu tekan Pinjam.'], ['💻', 'Membaca Online', 'Tekan Baca Online dan lanjutkan kapan saja.'], ['⬇️', 'Mengunduh Buku', 'Gunakan tombol Unduh pada detail buku.']] as $gd)<article class="card plan"><b style="font-size:1.8rem">{{ $gd[0] }}</b><h3>{{ $gd[1] }}</h3><p>{{ $gd[2] }}</p></article>@endforeach</div>
     <input class="card faqs" type="search" data-faq-search placeholder="Cari pertanyaan..." aria-label="Cari pertanyaan">
     <div data-faq>@foreach (array_merge($g('faq', []), [['Bagaimana cara membaca buku secara online?', 'Buka detail buku lalu klik Baca Online. Progres tersimpan otomatis.'], ['Bagaimana cara mengunduh buku?', 'Anggota dapat menekan tombol Unduh pada halaman detail atau pembaca online.'], ['Bagaimana menyimpan buku favorit?', 'Tekan ikon hati untuk menyimpan buku ke wishlist.']]) as $f)<details class="card qa"><summary>{{ $f[0] }}</summary><p>{{ $f[1] }}</p></details>@endforeach</div>
 @break

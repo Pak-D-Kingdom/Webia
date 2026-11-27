@@ -1826,15 +1826,6 @@ foreach (['katalog', 'kategori', 'detail-buku', 'baca', 'koleksi-pilihan', 'terb
     Route::get($prefix.'/'.$slug, fn () => view($view.'.page', ['page' => $slug]))->name('webia.dlaf.'.$slug);
 }
 
-$prefixOcean = '/webia/template/libraries-digital-archives/modern/digital-library-platform-ocean-blue';
-$viewOcean = 'website-bisnis.template.libraries-digital-archives.modern.digital-library-platform-ocean-blue';
-
-Route::get($prefixOcean, fn () => view($viewOcean.'.index'))->name('webia.dl.home');
-
-foreach (['katalog', 'kategori', 'detail-buku', 'baca', 'koleksi-pilihan', 'terbaru', 'terpopuler', 'akademik', 'keanggotaan', 'tentang-kami', 'knowledge-hub', 'artikel', 'faq', 'kontak', 'masuk', 'daftar', 'dashboard', 'pinjaman', 'riwayat', 'wishlist', 'profil'] as $slug) {
-    Route::get($prefixOcean.'/'.$slug, fn () => view($viewOcean.'.page', ['page' => $slug]))->name('webia.dl.'.$slug);
-}
-
 Route::prefix('webia/template/libraries-digital-archives/vintage-editorial/historical-document-archive-burgundy-classic')
     ->name('webia.hda-burgundy.')
     ->group(function () {
@@ -1947,6 +1938,39 @@ Route::prefix('webia/template/libraries-digital-archives/vintage-editorial/histo
                     'slug' => $slug,
                 ]);
             })->name($def['name']);
+        }
+    });
+
+Route::prefix('webia/template/digital-products/creative-tech/digital-asset-marketplace-galaksi')
+    ->name('webia.template.digital-asset-marketplace-galaksi.')
+    ->group(function () {
+        $view = 'website-bisnis.template.digital-products.creative-tech.digital-asset-marketplace-galaksi';
+
+        // Beranda
+        Route::view('/', $view . '.index')->name('home');
+
+        // Halaman pendukung (product-details menerima ?asset=slug, creator-profile menerima ?creator=c01)
+        foreach ([
+            'explore-assets',
+            'categories',
+            'product-details',
+            'creator-profile',
+            'become-a-creator',
+            'creator-dashboard',
+            'cart',
+            'checkout',
+            'order-confirmation',
+            'my-downloads',
+            'user-profile',
+            'wishlist',
+            'about-us',
+            'contact-us',
+            'help-center',
+            'blog',
+            'subscription-plans',
+            'legal',
+        ] as $page) {
+            Route::view('/' . $page, $view . '.' . $page)->name($page);
         }
     });
 
