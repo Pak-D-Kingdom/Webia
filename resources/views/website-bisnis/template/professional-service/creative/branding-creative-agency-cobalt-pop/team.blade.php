@@ -18,6 +18,4 @@
             <p class="bca-muted" style="margin-top:44px">Nama anggota tim bersifat fiktif. Potret ditampilkan sebagai monogram grafis; ganti dengan foto asli tim Anda.</p>
         </div>
     </section>
-
-    @include('website-bisnis.template.professional-service.creative.branding-creative-agency-cobalt-pop.partials.pager', ['prev_route' => 'process', 'prev_label' => 'Our Process', 'next_route' => 'clients', 'next_label' => 'Our Clients'])
 @endsection

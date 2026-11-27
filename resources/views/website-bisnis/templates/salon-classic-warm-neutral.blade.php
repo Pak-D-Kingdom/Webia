@@ -65,7 +65,7 @@
 
     <section class="classic-booking" id="classic-booking">
         <div class="classic-booking-copy"><div class="classic-section-label"><span>04</span><i></i> YOUR NEXT APPOINTMENT</div><h2>A little time<br><em>for yourself.</em></h2><p>Isi detail kunjunganmu. Kami akan membantu melanjutkan permintaan booking melalui WhatsApp.</p><div class="classic-booking-contact"><span>✳</span><div><b>Prefer to chat first?</b><small>Tanyakan layanan, ketersediaan jadwal, atau rekomendasi perawatan.</small></div></div></div>
-        <form class="classic-booking-form" id="classic-booking-form">
+        <form class="classic-booking-form" id="classic-booking-form" data-whatsapp="6281234567890">
             <label>Nama lengkap<input type="text" name="name" placeholder="Nama kamu" required></label>
             <label>Nomor WhatsApp<input type="tel" name="phone" placeholder="08xxxxxxxxxx" required></label>
             <label>Layanan pilihan<select name="service" id="classic-booking-service" required><option value="">Pilih layanan</option><option>Cut & Styling</option><option>Hair Coloring</option><option>Hair Treatment</option><option>Konsultasi layanan</option></select></label>

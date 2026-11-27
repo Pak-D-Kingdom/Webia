@@ -18,19 +18,19 @@
     <script src="{{ asset("js/$base/digital-library-platform.js") }}" defer></script>
 </head>
 <body id="top" class="dlaf" data-wa="{{ $g('whatsapp') }}" data-base="{{ $u() }}">
-<div class="topbar"><div class="wrap">
+<div class="topbar tb2"><div class="wrap">
     <span>🎓 Welcome to Digital Library</span>
     <span class="tb-mid">★ New Collections Available!</span>
-    <span class="tb-r"><span class="tb-h">🕘 Library Hours: {{ $g('hours') }}</span><a href="{{ $u('faq') }}">Help Center</a><a href="#" data-a11y title="Accessibility">Aa</a><b>ID</b> / EN</span>
+    <span class="tb-r"><span class="tb-h">🕘 Library Hours: {{ $g('hours') }}</span><i class="tb-h"></i><a href="{{ $u('faq') }}">Help Center</a><i></i><a href="#" data-a11y title="Accessibility">Aa</a><i></i><span><b>ID</b> / EN</span></span>
 </div></div>
 
-<header class="nav"><div class="wrap nav-in">
-    <a class="brand" href="{{ $u() }}"><img src="{{ $img('logo.svg') }}" alt="Logo" width="44" height="44"><span><b>{{ $g('name') }}</b><small>{{ $g('tagline') }}</small></span></a>
+<header class="nav nv2"><div class="wrap nav-in">
+    <a class="brand" href="{{ $u() }}"><img src="{{ $img('logo.png') }}" alt="Logo" width="44" height="38"><span><b>Digital Library</b><small>Read • Learn • Grow</small></span></a>
     <button class="burger" aria-label="Menu" aria-expanded="false" data-burger>☰</button>
     <nav class="menu" data-menu>
-        @foreach ($g('nav', []) as $n)<a href="{{ $u($n[1]) }}" @class(['on' => rtrim(request()->url(), '/') === $u($n[1])])>{{ $n[0] }}</a>@endforeach
+        @foreach ($g('nav', []) as $n)<a href="{{ $u($n[1]) }}" @class(['on' => rtrim(request()->url(), '/') === $u($n[1])])>{{ $n[0] }}@if (! in_array($n[1], ['', 'tentang-kami']))<small aria-hidden="true">▾</small>@endif</a>@endforeach
         <button class="bell" data-bell aria-label="Notifikasi">🔔<i data-nc></i></button><div class="notif" data-notif hidden></div>
-        <a class="lg" href="{{ $u('masuk') }}">Login</a><a class="btn sm" href="{{ $u('daftar') }}">Join Membership</a>
+        <a class="lg" href="{{ $u('masuk') }}">Login / Register</a><a class="btn sm rq" href="{{ $u('keanggotaan') }}">Join Membership</a>
     </nav>
 </div></header>
 
@@ -38,17 +38,16 @@
 @yield('content')
 </main>
 
-<footer class="foot"><div class="wrap fgrid">
-    <div><a class="brand" href="{{ $u() }}"><img src="{{ $img('logo.svg') }}" alt="" width="40" height="40"><span><b>{{ $g('name') }}</b><small>{{ $g('tagline') }}</small></span></a>
+<footer class="foot f2"><div class="wrap fgrid2">
+    <div><a class="brand" href="{{ $u() }}"><img src="{{ $img('logo-light.png') }}" alt="" width="44" height="40"><span><b>Digital Library</b><small>Read • Learn • Grow</small></span></a>
         <p>Perpustakaan digital akademis untuk membaca, belajar, dan menjelajah ilmu pengetahuan tanpa batas.</p>
-        <div class="soc"><a href="#" aria-label="Instagram">IG</a><a href="#" aria-label="X">X</a><a href="#" aria-label="LinkedIn">in</a><a href="#" aria-label="YouTube">▶</a></div></div>
+        <div class="soc"><a href="#" aria-label="Facebook">f</a><a href="#" aria-label="YouTube">▶</a><a href="#" aria-label="LinkedIn">in</a><a href="#" aria-label="Instagram">IG</a></div></div>
     <div><h5>Quick Links</h5>@foreach ($g('nav', []) as $n)<a href="{{ $u($n[1]) }}">{{ $n[0] }}</a>@endforeach</div>
     <div><h5>Browse Categories</h5>@foreach (array_slice($g('categories', []), 0, 6) as $c)<a href="{{ $u('katalog') }}?cat={{ urlencode($c[0]) }}">{{ $c[0] }}</a>@endforeach</div>
-    <div><h5>Library Resources</h5><a href="{{ $u('akademik') }}">Academic Resources</a><a href="{{ $u('terbaru') }}">New Arrivals</a><a href="{{ $u('terpopuler') }}">Popular & Most Read</a><a href="{{ $u('knowledge-hub') }}">Knowledge Hub</a></div>
-    <div><h5>Membership</h5><a href="{{ $u('keanggotaan') }}">Membership Information</a><a href="{{ $u('daftar') }}">Register</a><a href="{{ $u('masuk') }}">Login</a><a href="{{ $u('dashboard') }}">Dashboard</a></div>
-    <div><h5>Help & Contact</h5><a href="{{ $u('faq') }}">Help Center</a><a href="{{ $u('kontak') }}">Contact</a><span>{{ $g('email') }}</span><span>{{ $g('phone') }}</span><span>{{ $g('address') }}</span></div>
+    <div><h5>Library Resources</h5><a href="{{ $u('akademik') }}">Academic Resources</a><a href="{{ $u('terbaru') }}">New Arrivals</a><a href="{{ $u('terpopuler') }}">Popular & Most Read</a><h5 style="margin-top:14px">Membership Information</h5><a href="{{ $u('keanggotaan') }}">Benefits & Plans</a><a href="{{ $u('daftar') }}">Register</a></div>
+    <div><h5>Help Center</h5><a href="{{ $u('faq') }}">FAQ & Guides</a><a href="{{ $u('kontak') }}">Contact Support</a><h5 style="margin-top:14px">Contact Information</h5><span>{{ $g('email') }}</span><span>{{ $g('phone') }}</span><span>{{ $g('address') }}</span></div>
 </div>
-<div class="wrap legal"><a href="{{ $u('faq') }}">Privacy Policy</a><a href="{{ $u('faq') }}">Terms & Conditions</a><span>© 2026 Digital Library</span></div>
+<div class="wrap legal2"><span>© 2026 Digital Library</span><span><a href="{{ $u('faq') }}">Privacy Policy</a> | <a href="{{ $u('faq') }}">Terms & Conditions</a></span></div>
 <p class="credit">© 2026 WEBIA by D-KREASI. Seluruh hak cipta dilindungi.</p></footer>
 
 <a class="wa" href="https://wa.me/{{ $g('whatsapp') }}" target="_blank" rel="noopener" aria-label="WhatsApp" data-tip="Chat WhatsApp"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="#1faa59" d="M12 2a10 10 0 0 0-8.6 15L2 22l5.1-1.3A10 10 0 1 0 12 2z"/><path fill="#fff" d="M9 7l1.5 3-1 1c.7 1.3 1.7 2.3 3 3l1-1 3 1.5-.5 1.5C12 17 7 12 7.5 7.5z"/></svg><span>WhatsApp</span></a>

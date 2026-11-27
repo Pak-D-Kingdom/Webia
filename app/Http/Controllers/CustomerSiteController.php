@@ -205,6 +205,10 @@ class CustomerSiteController extends Controller
             return $this->handlePropertyStandalone($order, $siteConfigPath, $pageKey);
         }
 
+        if (str_starts_with($siteConfigPath, 'wedding-event/creative/') || str_starts_with($siteConfigPath, 'wedding-event/bold/')) {
+            return $this->handleWeddingConfig($order, $siteConfigPath, $pageKey);
+        }
+
         if (str_starts_with($siteConfigPath, 'wedding-standalone/') || str_starts_with($siteConfigPath, 'wedding-event/')) {
             return $this->handleWeddingStandalone($order, $siteConfigPath, $pageKey);
         }
@@ -225,12 +229,20 @@ class CustomerSiteController extends Controller
             return $this->handlePhotographyConfig($order, $siteConfigPath, $pageKey);
         }
 
+        if (str_starts_with($siteConfigPath, 'interior&architecture/rustic/architecture-building-design-chocolate-luxe')) {
+            return $this->handleInteriorArchitectureConfig($order, $siteConfigPath, $pageKey);
+        }
+
         if (str_starts_with($siteConfigPath, 'interior&architecture/')) {
             return $this->handleInteriorConfig($order, $siteConfigPath, $pageKey);
         }
 
         if (str_starts_with($siteConfigPath, 'nonprofit&community/')) {
             return $this->handleNonprofitConfig($order, $siteConfigPath, $pageKey);
+        }
+
+        if (str_starts_with($siteConfigPath, 'travel&tourism/classic/umrah-haji-emerald-green') || str_starts_with($siteConfigPath, 'travel&tourism/elegan/umrah-haji-navy-champagne-gold')) {
+            return $this->handleUmrahConfig($order, $siteConfigPath, $pageKey);
         }
 
         if (str_starts_with($siteConfigPath, 'travel&tourism/')) {
@@ -245,7 +257,7 @@ class CustomerSiteController extends Controller
             return $this->handleHealthcareStandalone($order, $siteConfigPath, $pageKey);
         }
 
-        if (str_starts_with($siteConfigPath, 'traditional-costume-rental/')) {
+        if (str_starts_with($siteConfigPath, 'traditional-costume-rental/') || str_starts_with($siteConfigPath, 'traditional-textiles/')) {
             return $this->handleTraditionalCostumeRental($order, $siteConfigPath, $pageKey);
         }
 
@@ -259,6 +271,10 @@ class CustomerSiteController extends Controller
 
         if (str_starts_with($siteConfigPath, 'professional-service/strike-branding-creative')) {
             return $this->handleStrikeBranding($order, $siteConfigPath, $pageKey);
+        }
+
+        if (str_starts_with($siteConfigPath, 'professional-service/vanguard-') || str_starts_with($siteConfigPath, 'professional-service/verba-')) {
+            return $this->handleProfessionalStandalone($order, $siteConfigPath, $pageKey);
         }
         $views = match (true) {
             $isBrandingAgency => array_fill_keys(['home', 'layanan', 'keahlian', 'portofolio', 'janji'], 'branding-creative-agency'),

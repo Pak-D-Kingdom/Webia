@@ -1,0 +1,34 @@
+{{-- Maskot 3D "Nova" — Asset Crate Bot Galaksi. Param: $mid (id unik gradien) --}}
+@php($mid = $mid ?? 'm')
+<svg class="mascot {{ $mclass ?? '' }}" viewBox="0 0 200 220" role="img" aria-label="Nova, maskot Astraly">
+    <defs>
+        <linearGradient id="{{ $mid }}-f" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9f7aea"/><stop offset="1" stop-color="#4c1d95"/></linearGradient>
+        <linearGradient id="{{ $mid }}-t" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e9d5ff"/><stop offset="1" stop-color="#a78bfa"/></linearGradient>
+        <linearGradient id="{{ $mid }}-s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6d28d9"/><stop offset="1" stop-color="#2e1065"/></linearGradient>
+        <linearGradient id="{{ $mid }}-b" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fef3c7"/><stop offset="1" stop-color="#f59e0b"/></linearGradient>
+        <radialGradient id="{{ $mid }}-g"><stop offset="0" stop-color="#67e8f9"/><stop offset="1" stop-color="#22d3ee" stop-opacity="0"/></radialGradient>
+    </defs>
+    <ellipse class="m-shadow" cx="100" cy="207" rx="54" ry="8" fill="#000" opacity=".5"/>
+    <g class="m-orbit"><ellipse cx="100" cy="118" rx="94" ry="30" fill="none" stroke="#22d3ee" stroke-opacity=".6" stroke-width="2" stroke-dasharray="3 9" stroke-linecap="round" transform="rotate(-16 100 118)"/><circle cx="190" cy="98" r="5" fill="#fbbf24"/><circle cx="10" cy="138" r="3.5" fill="#e879f9"/></g>
+    <line x1="100" y1="50" x2="100" y2="30" stroke="#c4b5fd" stroke-width="4" stroke-linecap="round"/>
+    <circle class="m-glow" cx="100" cy="22" r="18" fill="url(#{{ $mid }}-g)"/>
+    <path class="m-star" d="M100 10l3.4 7.6 7.6 3.4-7.6 3.4L100 32l-3.4-7.6L89 21l7.6-3.4z" fill="#fde68a"/>
+    <rect x="66" y="172" width="26" height="26" rx="9" fill="#3b0f8f"/><rect x="108" y="172" width="26" height="26" rx="9" fill="#3b0f8f"/>
+    <rect x="62" y="190" width="34" height="12" rx="6" fill="#22d3ee"/><rect x="104" y="190" width="34" height="12" rx="6" fill="#22d3ee"/>
+    <path d="M152 72 L172 56 L172 150 L152 170 Z" fill="url(#{{ $mid }}-s)"/>
+    <path d="M44 72 L64 54 L172 54 L152 72 Z" fill="url(#{{ $mid }}-t)"/>
+    <rect x="44" y="72" width="108" height="98" rx="14" fill="url(#{{ $mid }}-f)"/>
+    <path d="M52 80h92" stroke="#fff" stroke-opacity=".35" stroke-width="2" stroke-linecap="round"/>
+    <rect x="56" y="84" width="84" height="46" rx="15" fill="#0b0720" stroke="#22d3ee" stroke-opacity=".55" stroke-width="1.5"/>
+    <ellipse class="m-eye" cx="80" cy="105" rx="8" ry="10" fill="#22d3ee"/><ellipse class="m-eye" cx="116" cy="105" rx="8" ry="10" fill="#22d3ee"/>
+    <circle cx="83" cy="101" r="2.6" fill="#fff"/><circle cx="119" cy="101" r="2.6" fill="#fff"/>
+    <path d="M89 118q9 8 18 0" fill="none" stroke="#22d3ee" stroke-width="3.2" stroke-linecap="round"/>
+    <circle cx="68" cy="118" r="5" fill="#f472b6" opacity=".5"/><circle cx="128" cy="118" r="5" fill="#f472b6" opacity=".5"/>
+    <path d="M56 143H140M56 154H140" stroke="#c4b5fd" stroke-opacity=".35" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="98" cy="150" r="15" fill="url(#{{ $mid }}-b)" stroke="#fff" stroke-opacity=".6" stroke-width="2"/>
+    <path d="M98 143v12m-5.5-5.5L98 156l5.5-5.5" fill="none" stroke="#451a03" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="52" cy="80" r="2.4" fill="#ddd6fe"/><circle cx="144" cy="80" r="2.4" fill="#ddd6fe"/><circle cx="52" cy="162" r="2.4" fill="#ddd6fe"/><circle cx="144" cy="162" r="2.4" fill="#ddd6fe"/>
+    <rect x="22" y="104" width="26" height="13" rx="6.5" fill="#6d28d9"/><circle cx="22" cy="110" r="8" fill="#ddd6fe"/>
+    <g class="m-arm"><rect x="170" y="96" width="28" height="13" rx="6.5" fill="#6d28d9" transform="rotate(-38 172 102)"/><circle cx="194" cy="80" r="8.5" fill="#ddd6fe"/></g>
+    <path class="m-star" d="M28 54l2.2 5 5 2.2-5 2.2-2.2 5-2.2-5-5-2.2 5-2.2z" fill="#e879f9"/><path class="m-star" d="M176 34l1.8 4 4 1.8-4 1.8-1.8 4-1.8-4-4-1.8 4-1.8z" fill="#67e8f9"/>
+</svg>

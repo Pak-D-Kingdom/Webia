@@ -2,7 +2,7 @@
     <div class="bca-wrap">
         <div class="bca-shead">
             <span class="bca-label">Creative Process</span>
-            <h2 class="bca-h2" id="bca-pr-h">Enam tahap yang membuat hasil akhir tidak mengejutkan.</h2>
+            <h2 class="bca-h2" id="bca-pr-h">Enam tahap yang membuat hasil akhir <mark class="bca-hl">tidak mengejutkan.</mark></h2>
         </div>
         <ol class="bca-steps">
             @foreach($site['process'] as $s)

@@ -9,9 +9,9 @@
     $u   = fn (string $p = '') => url($site['base'] . $p);
     $img = fn (string $f) => asset($site['img'] . '/' . $f);
     $thumbs = [
-        ['Rumah Modern Minimalis', 'Jakarta Selatan', 'res-01.jpg'],
-        ['Gedung Perkantoran',     'Jakarta Pusat',   'com-01.jpg'],
-        ['Villa Tropis Modern',    'Bali',            'vil-01.jpg'],
+        ['Rumah Modern Minimalis', 'Jakarta Selatan', 'home-thumb-1.jpg'],
+        ['Gedung Perkantoran',     'Jakarta Pusat',   'home-thumb-2.jpg'],
+        ['Villa Tropis Modern',    'Bali',            'home-thumb-3.jpg'],
     ];
 @endphp
 
@@ -22,15 +22,6 @@
         <span class="abd-hero__sun"></span>
         <span class="abd-hero__glow"></span>
     </div>
-    <div class="abd-hero__sky" aria-hidden="true">
-        <img class="abd-cloud abd-cloud--1" src="{{ $img('hero-cloud.svg') }}" alt="" width="640" height="190">
-        <img class="abd-cloud abd-cloud--2" src="{{ $img('hero-cloud.svg') }}" alt="" width="640" height="190">
-        <img class="abd-cloud abd-cloud--3" src="{{ $img('hero-cloud.svg') }}" alt="" width="640" height="190">
-        <svg class="abd-bird abd-bird--1" viewBox="0 0 40 16" aria-hidden="true"><path class="abd-bird__w" d="M2 10 Q10 0 20 9 Q30 0 38 10"/></svg>
-        <svg class="abd-bird abd-bird--2" viewBox="0 0 40 16" aria-hidden="true"><path class="abd-bird__w" d="M2 10 Q10 0 20 9 Q30 0 38 10"/></svg>
-        <svg class="abd-bird abd-bird--3" viewBox="0 0 40 16" aria-hidden="true"><path class="abd-bird__w" d="M2 10 Q10 0 20 9 Q30 0 38 10"/></svg>
-    </div>
-    <img class="abd-hero__branch" src="{{ $img('hero-leaves.svg') }}" alt="" width="760" height="340" aria-hidden="true" decoding="async">
     <div class="abd-hero__leaves" data-leaves aria-hidden="true"></div>
 
     <div class="abd-container abd-hero__in">
@@ -67,7 +58,7 @@
                 <div class="abd-thumbs">
                     @foreach ($thumbs as [$t, $l, $f])
                         <a class="abd-thumb" href="{{ $u('/portofolio') }}" aria-label="{{ $t }}, {{ $l }}">
-                            <img src="{{ $img($f) }}" alt="Ilustrasi {{ $t }}" loading="lazy" width="800" height="560">
+                            <img src="{{ $img($f) }}" alt="Ilustrasi {{ $t }}" loading="lazy" width="648" height="452">
                             <span class="abd-thumb__cap"><strong>{{ $t }}</strong><small>{{ $l }}</small></span>
                             <span class="abd-thumb__go" aria-hidden="true"><svg class="i"><use href="#i-arrow"/></svg></span>
                         </a>
@@ -84,11 +75,11 @@
                 </header>
                 <div class="abd-tiles">
                     <a class="abd-tile" href="{{ $u('/proyek#residensial') }}">
-                        <img src="{{ $img('res-03.jpg') }}" alt="Ilustrasi proyek residensial" loading="lazy" width="800" height="560">
+                        <img src="{{ $img('home-tile-1.jpg') }}" alt="Ilustrasi proyek residensial" loading="lazy" width="800" height="560">
                         <span class="abd-tile__cap">Proyek Residensial</span><span class="abd-tile__go" aria-hidden="true"><svg class="i"><use href="#i-arrow"/></svg></span>
                     </a>
                     <a class="abd-tile" href="{{ $u('/proyek#komersial') }}">
-                        <img src="{{ $img('com-02.jpg') }}" alt="Ilustrasi proyek komersial" loading="lazy" width="800" height="560">
+                        <img src="{{ $img('home-tile-2.jpg') }}" alt="Ilustrasi proyek komersial" loading="lazy" width="800" height="560">
                         <span class="abd-tile__cap">Proyek Komersial</span><span class="abd-tile__go" aria-hidden="true"><svg class="i"><use href="#i-arrow"/></svg></span>
                     </a>
                 </div>
@@ -96,7 +87,7 @@
 
             {{-- Layanan Desain Kami --}}
             <article class="abd-card abd-card--dark abd-card--layanan" data-reveal>
-                <img class="abd-card__bg" src="{{ $img('interior-service.jpg') }}" alt="" loading="lazy" width="900" height="600">
+                <img class="abd-card__bg" src="{{ $img('home-layanan.jpg') }}" alt="" loading="lazy" width="900" height="600">
                 <div class="abd-card__in">
                     <h2>Layanan Desain Kami</h2>
                     <p>Layanan profesional untuk berbagai kebutuhan Anda.</p>
@@ -111,7 +102,7 @@
 
             {{-- Denah Lantai & 3D Render --}}
             <article class="abd-card abd-card--dark abd-card--denah" data-reveal>
-                <img class="abd-card__bg" src="{{ $img('plan-3d-1.svg') }}" alt="" loading="lazy" width="900" height="560">
+                <img class="abd-card__bg" src="{{ $img('home-denah.jpg') }}" alt="" loading="lazy" width="900" height="560">
                 <div class="abd-card__in">
                     <h2><svg class="i" aria-hidden="true"><use href="#i-cube"/></svg>Denah Lantai &amp; 3D Render</h2>
                     <p>Visualisasi desain dengan detail dan realistis.</p>
@@ -158,7 +149,7 @@
 
             {{-- Booking Konsultasi --}}
             <article class="abd-card abd-card--dark abd-card--booking" data-reveal>
-                <img class="abd-card__bg" src="{{ $img('konsultasi-living.jpg') }}" alt="" loading="lazy" width="900" height="420">
+                <img class="abd-card__bg" src="{{ $img('home-booking.jpg') }}" alt="" loading="lazy" width="900" height="420">
                 <div class="abd-card__in">
                     <h2><svg class="i" aria-hidden="true"><use href="#i-calendar"/></svg>Booking Konsultasi</h2>
                     <p>Atur jadwal konsultasi dengan tim ahli kami.</p>
@@ -168,7 +159,7 @@
 
             {{-- Permintaan Penawaran --}}
             <article class="abd-card abd-card--dark abd-card--penawaran" data-reveal>
-                <img class="abd-card__bg" src="{{ $img('blueprint-desk.jpg') }}" alt="" loading="lazy" width="1000" height="420">
+                <img class="abd-card__bg" src="{{ $img('home-penawaran.jpg') }}" alt="" loading="lazy" width="1000" height="420">
                 <div class="abd-card__in">
                     <h2><svg class="i" aria-hidden="true"><use href="#i-doc"/></svg>Permintaan Penawaran</h2>
                     <p>Dapatkan penawaran terbaik untuk proyek Anda.</p>

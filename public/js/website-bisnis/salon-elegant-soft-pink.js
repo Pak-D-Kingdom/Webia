@@ -1,7 +1,8 @@
 (() => {
     'use strict';
+    const bookingForm = root.querySelector('#rose-booking-form');
     // Ganti dengan nomor WhatsApp resmi salon, gunakan format internasional tanpa tanda +.
-    const WHATSAPP_NUMBER = '6281234567890';
+    const WHATSAPP_NUMBER = bookingForm?.dataset.whatsapp || '6281234567890';
     const root = document.querySelector('.rose-site');
 if (!root) return;
 
