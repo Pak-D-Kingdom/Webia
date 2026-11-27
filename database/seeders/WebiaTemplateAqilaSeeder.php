@@ -310,6 +310,7 @@ class WebiaTemplateAqilaSeeder extends Seeder
                 'tag' => 'Property · Real Estate Agency · Elegant',
                 'preview_folder' => null,
                 'template_url' => '/webia/template/property/hearthstone-property',
+                'site_config_path' => 'property-standalone/hearthstone-property',
                 'is_active' => true,
                 'sort_order' => 46,
             ],

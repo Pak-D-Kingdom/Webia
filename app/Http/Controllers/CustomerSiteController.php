@@ -137,6 +137,10 @@ class CustomerSiteController extends Controller
             return $this->handlePropertyStandalone($order, $siteConfigPath, $pageKey);
         }
 
+        if (str_starts_with($siteConfigPath, 'wedding-event/creative/') || str_starts_with($siteConfigPath, 'wedding-event/bold/')) {
+            return $this->handleWeddingConfig($order, $siteConfigPath, $pageKey);
+        }
+
         if (str_starts_with($siteConfigPath, 'wedding-standalone/') || str_starts_with($siteConfigPath, 'wedding-event/')) {
             return $this->handleWeddingStandalone($order, $siteConfigPath, $pageKey);
         }
@@ -157,12 +161,20 @@ class CustomerSiteController extends Controller
             return $this->handlePhotographyConfig($order, $siteConfigPath, $pageKey);
         }
 
+        if (str_starts_with($siteConfigPath, 'interior&architecture/rustic/architecture-building-design-chocolate-luxe')) {
+            return $this->handleInteriorArchitectureConfig($order, $siteConfigPath, $pageKey);
+        }
+
         if (str_starts_with($siteConfigPath, 'interior&architecture/')) {
             return $this->handleInteriorConfig($order, $siteConfigPath, $pageKey);
         }
 
         if (str_starts_with($siteConfigPath, 'nonprofit&community/')) {
             return $this->handleNonprofitConfig($order, $siteConfigPath, $pageKey);
+        }
+
+        if (str_starts_with($siteConfigPath, 'travel&tourism/classic/umrah-haji-emerald-green') || str_starts_with($siteConfigPath, 'travel&tourism/elegan/umrah-haji-navy-champagne-gold')) {
+            return $this->handleUmrahConfig($order, $siteConfigPath, $pageKey);
         }
 
         if (str_starts_with($siteConfigPath, 'travel&tourism/')) {
@@ -191,6 +203,10 @@ class CustomerSiteController extends Controller
 
         if (str_starts_with($siteConfigPath, 'professional-service/strike-branding-creative')) {
             return $this->handleStrikeBranding($order, $siteConfigPath, $pageKey);
+        }
+
+        if (str_starts_with($siteConfigPath, 'professional-service/vanguard-') || str_starts_with($siteConfigPath, 'professional-service/verba-')) {
+            return $this->handleProfessionalStandalone($order, $siteConfigPath, $pageKey);
         }
         $views = match (true) {
             $isBrandingAgency => array_fill_keys(['home', 'layanan', 'keahlian', 'portofolio', 'janji'], 'branding-creative-agency'),
@@ -1015,6 +1031,8 @@ class CustomerSiteController extends Controller
     private const TRANSPORTATION_STANDALONE_VIEWS = [
         'cocoexpress-delivery-service' => ['home' => 'website-bisnis.templates.transportation-logistics.delivery-service.cocoexpress.cocoexpress'],
         'reloko-moving-company' => ['home' => 'website-bisnis.templates.transportation-logistics.moving-company.reloko.reloko'],
+        'nusavektor-logistics-corporate' => ['home' => 'website-bisnis.templates.transportation-logistics.nusavektor-logistics-corporate'],
+        'paketdream-logistics-creative' => ['home' => 'website-bisnis.templates.company.paketdream-logistics-creative'],
     ];
 
     private const TRANSPORTATION_CONFIG_TEMPLATES = [
@@ -1208,6 +1226,11 @@ class CustomerSiteController extends Controller
                 'HEARTH & HAUL' => strtoupper($bizName),
                 'Atelier Move' => $bizName,
                 'ATELIER MOVE' => strtoupper($bizName),
+                'NusaVektor Logistics' => $bizName,
+                'NusaVektor' => $bizName,
+                'NUSAVEKTOR' => strtoupper($bizName),
+                'PaketDream' => $bizName,
+                'PAKETDREAM' => strtoupper($bizName),
             ];
             $html = str_replace(array_keys($brandMap), array_values($brandMap), $html);
         }
@@ -1253,6 +1276,7 @@ class CustomerSiteController extends Controller
                     'Jakarta · Indonesia',
                     'Greater Jakarta',
                     'Jakarta, Indonesia',
+                    'Alamat kantor pusat (ganti)',
                 ],
                 $address,
                 $html
@@ -1270,6 +1294,25 @@ class CustomerSiteController extends Controller
                     'hello@ateliermove.example',
                 ],
                 $email,
+                $html
+            );
+        }
+
+        if ($slug === 'nusavektor-logistics-corporate') {
+            $contactLines = [];
+            if (! empty($business['email'])) {
+                $contactLines[] = '<li>'.e($business['email']).'</li>';
+            }
+            if ($whatsapp !== '') {
+                $contactLines[] = '<li>WhatsApp: '.e($whatsapp).'</li>';
+            }
+            $html = str_replace(
+                ['<li>Email dan WhatsApp (ganti)</li>', '<li>Hotline 24/7 (ganti)</li>', '<b>ganti nomor</b>'],
+                [
+                    implode('', $contactLines),
+                    $whatsapp !== '' ? '<li>WhatsApp: '.e($whatsapp).'</li>' : '<li>Hotline 24/7</li>',
+                    e($whatsapp),
+                ],
                 $html
             );
         }
@@ -2602,6 +2645,7 @@ class CustomerSiteController extends Controller
     private const COMPANY_CONTRACTOR_VIEWS = [
         'bangun-karsa-contractor-professional' => ['home' => 'website-bisnis.templates.company.bangun-karsa-contractor-professional'],
         'langit-karya-contractor-minimalist' => ['home' => 'website-bisnis.templates.company.langit-karya-contractor-minimalist'],
+        'zamrud-karya-contractor-luxury' => ['home' => 'website-bisnis.templates.company.zamrud-karya-contractor-luxury'],
     ];
 
     private function handleCompanyContractor(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
@@ -2637,6 +2681,9 @@ class CustomerSiteController extends Controller
             $brandMap = [
                 'Bangun Karsa' => $bizName,
                 'Langit Karya' => $bizName,
+                'ZAMRUD<small>KARYA</small>' => strtoupper($bizName),
+                'ZAMRUD KARYA' => strtoupper($bizName),
+                'Zamrud Karya' => $bizName,
             ];
             $html = str_replace(array_keys($brandMap), array_values($brandMap), $html);
         }
@@ -2647,9 +2694,91 @@ class CustomerSiteController extends Controller
         return $html;
     }
 
+    private const PROFESSIONAL_STANDALONE_VIEWS = [
+        'vanguard-lawyer' => ['home' => 'website-bisnis.templates.professional-service.lawyer.vanguard.vanguard'],
+        'verba-translation-interpreter' => ['home' => 'website-bisnis.templates.professional-service.translation-interpreter.verba.verba'],
+    ];
+
+    private function handleProfessionalStandalone(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $slug = Str::after($siteConfigPath, 'professional-service/');
+        abort_unless(isset(self::PROFESSIONAL_STANDALONE_VIEWS[$slug]), 404);
+        abort_unless(isset(self::PROFESSIONAL_STANDALONE_VIEWS[$slug][$pageKey]), 404);
+
+        $viewName = self::PROFESSIONAL_STANDALONE_VIEWS[$slug][$pageKey];
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $instagram = ltrim($business['instagram'] ?? '', '@');
+
+        $renderedHtml = view($viewName, [
+            'order' => $order,
+            'page' => $pageKey,
+            'business' => $business,
+            'whatsapp' => $whatsapp,
+            'instagram' => $instagram,
+        ])->render();
+
+        $renderedHtml = $this->transformProfessionalStandaloneHtml($renderedHtml, $business, $whatsapp);
+
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+        return response($renderedHtml);
+    }
+
+    private function transformProfessionalStandaloneHtml(string $html, array $business, string $whatsapp): string
+    {
+        $bizName = $business['business_name'] ?? '';
+        $custWa = $whatsapp ?: '6281234567890';
+
+        $address = $this->businessAddress($business);
+        if ($address !== '') {
+            $html = str_replace(
+                [
+                    'Jl. Contoh Hukum No. 18, Surabaya, Jawa Timur',
+                    'Gedung Contoh Lt. 12, Jakarta Selatan',
+                    'Pacific Century Place Lt. 28, SCBD Lot 10, Jl. Jend. Sudirman, Jakarta Selatan.',
+                    'Kantor Vanguard SCBD Jakarta / Surabaya Hub',
+                    'Jakarta: SCBD District',
+                ],
+                $address,
+                $html
+            );
+        }
+
+        if ($bizName !== '') {
+            $brandMap = [
+                'VANGUARD HERITAGE COUNSEL' => strtoupper($bizName),
+                'Vanguard Heritage Counsel' => $bizName,
+                'Vanguard Counsel' => $bizName,
+                'VANGUARD' => strtoupper($bizName),
+                'Vanguard' => $bizName,
+                'VERBA Editorial Translation House' => $bizName,
+                'VERBA' => strtoupper($bizName),
+            ];
+            uksort($brandMap, fn ($a, $b) => strlen($b) <=> strlen($a));
+            $html = str_replace(array_keys($brandMap), array_values($brandMap), $html);
+        }
+
+        $html = str_replace(
+            ['6281250887790', '18009843822', '6281234567890'],
+            [$custWa, $custWa, $custWa],
+            $html
+        );
+
+        if (! empty($business['email'])) {
+            $html = str_replace('dispatch@verbalingua.com', $business['email'], $html);
+        }
+
+        $waGlobals = '<script>window.WEBIA_WHATSAPP_NUMBER = '.json_encode($custWa).'; window.WEBIA_BRAND_NAME = '.json_encode($bizName).';</script>';
+        $html = str_replace('</head>', $waGlobals.'</head>', $html);
+
+        return $html;
+    }
+
     private const PROPERTY_STANDALONE_VIEWS = [
         'denim-horizon-property-minimalist' => ['home' => 'website-bisnis.templates.property.property-minimalist'],
         'pusaka-asri-property-traditional' => ['home' => 'website-bisnis.templates.property.property-traditional'],
+        'hearthstone-property' => ['home' => 'website-bisnis.templates.property.hearthstone-property'],
     ];
 
     private function handlePropertyStandalone(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
@@ -2694,14 +2823,17 @@ class CustomerSiteController extends Controller
             $brandMap = [
                 'Denim Horizon' => $bizName,
                 'Pusaka Asri' => $bizName,
+                'Hearthstone Property' => $bizName,
+                'Asisten Hearthstone' => 'Asisten '.$bizName,
+                'Hearthstone' => $bizName,
             ];
             $html = str_replace(array_keys($brandMap), array_values($brandMap), $html);
         }
 
         $rawWa = $business['whatsapp'] ?? $custWa;
         $html = str_replace(
-            ['6281277004674', '6281198708889'],
-            [$custWa, $custWa],
+            ['6281277004674', '6281198708889', '6281234567890', '+62 812-3456-7890'],
+            [$custWa, $custWa, $custWa, $rawWa],
             $html
         );
 
@@ -2719,7 +2851,7 @@ class CustomerSiteController extends Controller
 
         if (! empty($business['email'])) {
             $html = str_replace(
-                ['gallery@denimhorizon.id', 'concierge@pusakaasri.co.id'],
+                ['gallery@denimhorizon.id', 'concierge@pusakaasri.co.id', 'halo@hearthstone.id'],
                 $business['email'],
                 $html
             );
@@ -2779,6 +2911,119 @@ class CustomerSiteController extends Controller
         return $html;
     }
 
+    private function handleWeddingConfig(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $custWa = $whatsapp ?: '62895630300345';
+        $bizName = $business['business_name'] ?? '';
+
+        if (str_starts_with($siteConfigPath, 'wedding-event/bold/event-organizer-sunset-gradient')) {
+            $configKey = 'template.wedding-event.bold.event-organizer-sunset-gradient.event-organizer';
+            $siteConfig = config($configKey);
+            if (! is_array($siteConfig)) {
+                $siteConfig = require config_path('template/wedding-event/bold/event-organizer-sunset-gradient/event-organizer.php');
+            }
+            if (is_array($siteConfig)) {
+                if (isset($siteConfig['brand']) && is_array($siteConfig['brand']) && $bizName !== '') {
+                    $siteConfig['brand']['name'] = $bizName;
+                }
+                if (isset($siteConfig['contact']) && is_array($siteConfig['contact'])) {
+                    if ($whatsapp !== '') {
+                        $siteConfig['contact']['wa'] = preg_replace('/[^0-9]/', '', $custWa);
+                    }
+                    if (! empty($business['email'])) {
+                        $siteConfig['contact']['email'] = $business['email'];
+                    }
+                }
+                config([$configKey => $siteConfig]);
+            }
+            $cfg = $siteConfig ?? config($configKey);
+            $page = $pageKey === 'home' ? null : $pageKey;
+            if ($page !== null && ! isset($cfg['pages'][$page])) {
+                abort(404);
+            }
+            $renderedHtml = view('website-bisnis.template.wedding-event.bold.event-organizer-sunset-gradient.event-organizer', [
+                'c' => $cfg,
+                'page' => $page,
+            ])->render();
+
+            if ($bizName !== '') {
+                $renderedHtml = str_replace('Eventora', $bizName, $renderedHtml);
+            }
+            $renderedHtml = str_replace('62895630300345', preg_replace('/[^0-9]/', '', $custWa), $renderedHtml);
+            if (! empty($business['email'])) {
+                $renderedHtml = str_replace('hello@eventora.id', $business['email'], $renderedHtml);
+            }
+
+            $siteBase = url('/s/'.$order->site_slug);
+            $previewBase = url('/webia/template/wedding-event/bold/event-organizer-sunset-gradient');
+            $renderedHtml = str_replace($previewBase, $siteBase, $renderedHtml);
+
+            $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+            return response($renderedHtml);
+        }
+
+        // purple-dream (multi page)
+        $configKey = 'template.wedding-event.creative.event-organizer-purple-dream.event-organizer';
+        $siteConfig = config($configKey);
+        if (! is_array($siteConfig)) {
+            $siteConfig = require config_path('template/wedding-event/creative/event-organizer-purple-dream/event-organizer.php');
+            config([$configKey => $siteConfig]);
+        }
+        if (is_array($siteConfig)) {
+            if (isset($siteConfig['brand']) && is_array($siteConfig['brand']) && $bizName !== '') {
+                $siteConfig['brand']['name'] = $bizName;
+            }
+            if (isset($siteConfig['whatsapp']) && is_array($siteConfig['whatsapp'])) {
+                if ($whatsapp !== '') {
+                    $siteConfig['whatsapp']['number'] = preg_replace('/[^0-9]/', '', $custWa);
+                }
+            }
+            if (isset($siteConfig['contact']) && is_array($siteConfig['contact']) && ! empty($business['email'])) {
+                $siteConfig['contact']['email'] = $business['email'];
+            }
+            $siteConfig['base'] = '/s/'.$order->site_slug;
+            config([$configKey => $siteConfig]);
+        }
+
+        $pageMap = [
+            'home' => 'beranda',
+            'layanan' => 'layanan',
+            'paket-event' => 'paket-event',
+            'portofolio' => 'portofolio',
+            'proyek-kami' => 'proyek-kami',
+            'proses' => 'proses',
+            'klien' => 'klien',
+            'penawaran' => 'penawaran',
+            'faq-ai' => 'faq-ai',
+            'beranda' => 'beranda',
+        ];
+        $viewPage = $pageMap[$pageKey] ?? null;
+        abort_unless($viewPage !== null, 404);
+        $viewName = 'website-bisnis.template.wedding-event.creative.event-organizer-purple-dream.'.$viewPage;
+        abort_unless(view()->exists($viewName), 404);
+
+        $renderedHtml = view($viewName, ['page' => $pageKey === 'home' ? 'home' : $pageKey])->render();
+
+        if ($bizName !== '') {
+            $renderedHtml = str_replace('Eventora', $bizName, $renderedHtml);
+        }
+        $renderedHtml = str_replace('62895630300345', preg_replace('/[^0-9]/', '', $custWa), $renderedHtml);
+        if (! empty($business['email'])) {
+            $renderedHtml = str_replace('hello@eventora.id', $business['email'], $renderedHtml);
+        }
+
+        $siteBase = url('/s/'.$order->site_slug);
+        $previewBase = url('/webia/template/wedding-event/creative/event-organizer-purple-dream');
+        $renderedHtml = str_replace($previewBase, $siteBase, $renderedHtml);
+
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+        return response($renderedHtml);
+    }
+
     private const TRAVEL_BAITUL_VIEWS = [
         'baitul-safar-umrah-haji' => ['home' => 'website-bisnis.templates.travel-tourism.umrah-haji.baitul-safar.baitul-safar'],
     ];
@@ -2820,6 +3065,137 @@ class CustomerSiteController extends Controller
         $html = str_replace('6281234567890', $custWa, $html);
 
         return $html;
+    }
+
+    private function handleUmrahConfig(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $custWa = $whatsapp ?: '62895630300345';
+        $bizName = $business['business_name'] ?? '';
+
+        if (str_starts_with($siteConfigPath, 'travel&tourism/elegan/umrah-haji-navy-champagne-gold')) {
+            $configKey = 'template.travel&tourism.elegan.umrah-haji-navy-champagne-gold.umrah-haji';
+            $siteConfig = config($configKey);
+            if (! is_array($siteConfig)) {
+                $siteConfig = require config_path('template/travel&tourism/elegan/umrah-haji-navy-champagne-gold/umrah-haji.php');
+            }
+            if (is_array($siteConfig)) {
+                if (isset($siteConfig['brand']) && is_array($siteConfig['brand']) && $bizName !== '') {
+                    $siteConfig['brand']['name'] = $bizName;
+                }
+                if (isset($siteConfig['contact']) && is_array($siteConfig['contact'])) {
+                    if ($whatsapp !== '') {
+                        $siteConfig['contact']['wa'] = 'https://wa.me/'.preg_replace('/[^0-9]/', '', $custWa);
+                    }
+                    if (! empty($business['email'])) {
+                        $siteConfig['contact']['email'] = $business['email'];
+                    }
+                    if (! empty($business['address'])) {
+                        $siteConfig['contact']['address'] = $business['address'];
+                    }
+                }
+                config([$configKey => $siteConfig]);
+            }
+            $cfg = $siteConfig ?? config($configKey);
+
+            $allowedPages = ['home', 'paket', 'jadwal', 'harga', 'hotel', 'itinerary', 'tim', 'persyaratan', 'testimoni', 'chat'];
+            abort_unless(in_array($pageKey, $allowedPages, true), 404);
+
+            $viewBase = 'website-bisnis.template.travel&tourism.elegan.umrah-haji-navy-champagne-gold';
+            $imgBase = 'images/website-bisnis/template/travel&tourism/elegan/umrah-haji-navy-champagne-gold/';
+            $cssFile = 'css/website-bisnis/template/travel&tourism/elegan/umrah-haji-navy-champagne-gold/umrah-haji.css';
+            $jsFile = 'js/website-bisnis/template/travel&tourism/elegan/umrah-haji-navy-champagne-gold/umrah-haji.js';
+            $renderedHtml = view($viewBase.'.umrah-haji', [
+                'd' => $cfg,
+                'page' => $pageKey === 'home' ? 'home' : $pageKey,
+                'v' => $viewBase,
+                'css' => asset($cssFile),
+                'js' => asset($jsFile),
+                'img' => fn ($file) => asset($imgBase.$file),
+                'r' => fn ($route) => $route === 'home'
+                    ? url('/s/'.$order->site_slug)
+                    : url('/s/'.$order->site_slug.'/'.ltrim((string) $route, '/')),
+                'rp' => fn ($n) => 'Rp '.number_format($n, 0, ',', '.'),
+                'wa' => fn ($text = null) => 'https://wa.me/'.preg_replace('/[^0-9]/', '', $custWa).($text ? '?text='.rawurlencode($text) : ''),
+            ])->render();
+
+            if ($bizName !== '') {
+                $renderedHtml = str_replace('Al Hijrah Travel', $bizName, $renderedHtml);
+            }
+            $renderedHtml = str_replace('62895630300345', preg_replace('/[^0-9]/', '', $custWa), $renderedHtml);
+            if (! empty($business['email'])) {
+                $renderedHtml = str_replace('info@alhijrahtravel.co.id', $business['email'], $renderedHtml);
+            }
+            if (! empty($business['address'])) {
+                $renderedHtml = str_replace('Jl. Melati No. 25, Jakarta Selatan', $business['address'], $renderedHtml);
+            }
+
+            $siteBase = url('/s/'.$order->site_slug);
+            $previewBase = url('/webia/template/travel-tourism/elegan/umrah-haji-navy-champagne-gold');
+            $renderedHtml = str_replace($previewBase, $siteBase, $renderedHtml);
+
+            $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+            return response($renderedHtml);
+        }
+
+        // emerald-green (view composer provides shared data)
+        $configKey = 'template.travel&tourism.classic.umrah-haji-emerald-green.umrah-haji';
+        $siteConfig = config($configKey);
+        if (! is_array($siteConfig)) {
+            $siteConfig = require config_path('template/travel&tourism/classic/umrah-haji-emerald-green/umrah-haji.php');
+        }
+        if (is_array($siteConfig)) {
+            if (isset($siteConfig['brand']) && is_array($siteConfig['brand'])) {
+                if ($bizName !== '') {
+                    $siteConfig['brand']['name'] = $bizName;
+                }
+                if ($whatsapp !== '') {
+                    $siteConfig['brand']['whatsapp'] = preg_replace('/[^0-9]/', '', $custWa);
+                }
+                if (! empty($business['email'])) {
+                    $siteConfig['brand']['email'] = $business['email'];
+                }
+            }
+            config([$configKey => $siteConfig]);
+        }
+
+        $pageMap = [
+            'home' => 'index',
+            'packages' => 'packages',
+            'schedules' => 'schedules',
+            'prices' => 'prices',
+            'hotel-flight' => 'hotel-flight',
+            'itinerary' => 'itinerary',
+            'team' => 'team',
+            'requirements' => 'requirements',
+            'testimonials' => 'testimonials',
+            'chatbot' => 'chatbot',
+        ];
+        $viewPage = $pageMap[$pageKey] ?? null;
+        abort_unless($viewPage !== null, 404);
+
+        $viewName = 'website-bisnis.template.travel&tourism.classic.umrah-haji-emerald-green.'.$viewPage;
+        abort_unless(view()->exists($viewName), 404);
+
+        $renderedHtml = view($viewName)->render();
+
+        if ($bizName !== '') {
+            $renderedHtml = str_replace('Nur Rahmat Travel', $bizName, $renderedHtml);
+        }
+        $renderedHtml = str_replace('62895630300345', preg_replace('/[^0-9]/', '', $custWa), $renderedHtml);
+        if (! empty($business['email'])) {
+            $renderedHtml = str_replace('info@nurrahmattravel.co.id', $business['email'], $renderedHtml);
+        }
+
+        $siteBase = url('/s/'.$order->site_slug);
+        $previewBase = url('/webia/template/travel-tourism/classic/umrah-haji-emerald-green');
+        $renderedHtml = str_replace($previewBase, $siteBase, $renderedHtml);
+
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+        return response($renderedHtml);
     }
 
     private const HEALTHCARE_STANDALONE_VIEWS = [
@@ -3439,6 +3815,78 @@ class CustomerSiteController extends Controller
         foreach ($previewBases as $pb) {
             $renderedHtml = str_replace($pb, $siteBase, $renderedHtml);
         }
+
+        $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
+
+        return response($renderedHtml);
+    }
+
+    private function handleInteriorArchitectureConfig(WebiaOrder $order, string $siteConfigPath, string $pageKey): Response
+    {
+        $configKey = 'template.interior&architecture.rustic.architecture-building-design-chocolate-luxe.architecture-building-design';
+        $siteConfig = config($configKey);
+        if (! is_array($siteConfig)) {
+            $siteConfig = require config_path('template/interior&architecture/rustic/architecture-building-design-chocolate-luxe/architecture-building-design.php');
+        }
+        $business = $order->business_data ?? [];
+        $whatsapp = $this->whatsappNumber($business['whatsapp'] ?? '');
+        $custWa = $whatsapp ?: '62895630300345';
+        $bizName = $business['business_name'] ?? '';
+
+        if (is_array($siteConfig)) {
+            if (isset($siteConfig['brand']) && is_array($siteConfig['brand']) && $bizName !== '') {
+                $siteConfig['brand']['name'] = $bizName;
+            }
+            if (isset($siteConfig['contact']) && is_array($siteConfig['contact'])) {
+                if ($whatsapp !== '') {
+                    $siteConfig['contact']['whatsapp'] = $custWa;
+                }
+                if (! empty($business['email'])) {
+                    $siteConfig['contact']['email'] = $business['email'];
+                }
+                if (! empty($business['address'])) {
+                    $siteConfig['contact']['address'] = $business['address'];
+                }
+            }
+            $siteConfig['base'] = '/s/'.$order->site_slug;
+            config([$configKey => $siteConfig]);
+        }
+
+        $pageMap = [
+            'home' => 'beranda',
+            'beranda' => 'beranda',
+            'portofolio' => 'portofolio',
+            'proyek' => 'proyek',
+            'layanan' => 'layanan',
+            'denah-3d' => 'denah-3d',
+            'proses' => 'proses',
+            'sertifikasi' => 'sertifikasi',
+            'konsultasi' => 'konsultasi',
+            'penawaran' => 'penawaran',
+        ];
+        $viewPage = $pageMap[$pageKey] ?? null;
+        abort_unless($viewPage !== null, 404);
+        $viewName = 'website-bisnis.template.interior&architecture.rustic.architecture-building-design-chocolate-luxe.'.$viewPage;
+        abort_unless(view()->exists($viewName), 404);
+
+        $renderedHtml = view($viewName)->render();
+
+        if ($bizName !== '') {
+            $renderedHtml = str_replace('ArchiDesign', $bizName, $renderedHtml);
+            $renderedHtml = str_replace('ARCHIDESIGN', strtoupper($bizName), $renderedHtml);
+        }
+        $renderedHtml = str_replace('62895630300345', preg_replace('/[^0-9]/', '', $custWa), $renderedHtml);
+        if (! empty($business['email'])) {
+            $renderedHtml = str_replace('hello@archidesign.co.id', $business['email'], $renderedHtml);
+        }
+        $address = $this->businessAddress($business);
+        if ($address !== '') {
+            $renderedHtml = str_replace('Jl. Melati No. 45, Jakarta Selatan', $address, $renderedHtml);
+        }
+
+        $siteBase = url('/s/'.$order->site_slug);
+        $previewBase = url('/webia/template/interior-architecture/rustic/architecture-building-design-chocolate-luxe');
+        $renderedHtml = str_replace($previewBase, $siteBase, $renderedHtml);
 
         $renderedHtml = $this->attachAiChatWidget($renderedHtml, $order, $business, $whatsapp);
 
@@ -5474,7 +5922,7 @@ class CustomerSiteController extends Controller
             );
         }
 
-        $renderedHtml = str_replace('6281234567890', $custWa, $renderedHtml);
+        $renderedHtml = str_replace('62895630300345', preg_replace('/[^0-9]/', '', $custWa), $renderedHtml);
 
         if (! empty($business['email'])) {
             $renderedHtml = str_replace('HELLO@STUDIO-BOLD.COM', strtoupper($business['email']), $renderedHtml);
@@ -6751,6 +7199,98 @@ class CustomerSiteController extends Controller
                 });
             }
         });
+    });
+
+    // 23. Hooking untuk Professional Service AI (#aiChatBody/#aiInput)
+    document.addEventListener('DOMContentLoaded', function() {
+        const aiBody = document.getElementById('aiChatBody');
+        const aiInput = document.getElementById('aiInput');
+        if (!aiBody || !aiInput) return;
+
+        window.handleAiChatSubmit = async function(e) {
+            if (e && typeof e.preventDefault === 'function') e.preventDefault();
+            const text = aiInput.value.trim();
+            if (!text) return;
+
+            const user = document.createElement('div');
+            user.className = 'p-3 rounded-lg bg-ink-light border border-gold/20 max-w-[85%] ml-auto';
+            user.style.textAlign = 'right';
+            user.textContent = text;
+            aiBody.appendChild(user);
+            aiInput.value = '';
+            aiBody.scrollTop = aiBody.scrollHeight;
+
+            const typing = document.createElement('div');
+            typing.className = 'p-3 rounded-lg bg-ink-light border border-gold/20 max-w-[85%]';
+            typing.style.opacity = '0.75';
+            typing.textContent = 'Mengetik jawaban...';
+            aiBody.appendChild(typing);
+            aiBody.scrollTop = aiBody.scrollHeight;
+
+            try {
+                const data = await sendToAi(text);
+                typing.remove();
+                const bot = document.createElement('div');
+                bot.className = 'p-3 rounded-lg bg-ink-light border border-gold/20 max-w-[85%]';
+                bot.textContent = data.reply || 'Ada yang bisa kami bantu?';
+                aiBody.appendChild(bot);
+            } catch (err) {
+                typing.remove();
+            }
+            aiBody.scrollTop = aiBody.scrollHeight;
+        };
+    });
+
+    // 24. Hooking untuk Property assistant (#msgs)
+    document.addEventListener('DOMContentLoaded', function() {
+        const hsChat = document.getElementById('chat');
+        const hsMsgs = document.getElementById('msgs');
+        if (!hsChat || !hsMsgs) return;
+
+        function addBubble(text, role) {
+            const el = document.createElement('div');
+            el.className = 'm ' + role;
+            el.textContent = text;
+            hsMsgs.appendChild(el);
+            hsMsgs.scrollTop = hsMsgs.scrollHeight;
+            return el;
+        }
+
+        async function askHs(text) {
+            if (!text || !text.trim()) return;
+            addBubble(text.trim(), 'me');
+            const typing = addBubble('Mengetik jawaban...', 'bot');
+            typing.style.opacity = '0.7';
+            try {
+                const data = await sendToAi(text.trim());
+                typing.remove();
+                addBubble(data.reply || 'Ada yang bisa kami bantu soal properti?', 'bot');
+            } catch (err) {
+                typing.remove();
+                addBubble('Mohon maaf, terjadi kendala jaringan.', 'bot');
+            }
+        }
+
+        document.querySelectorAll('.cq button').forEach(b => {
+            b.onclick = function(e) {
+                e.preventDefault();
+                askHs(this.textContent.trim());
+            };
+        });
+
+        if (!document.getElementById('hsAiForm')) {
+            const form = document.createElement('form');
+            form.id = 'hsAiForm';
+            form.style.cssText = 'display:flex;gap:8px;padding:10px;border-top:1px solid var(--line,#46341f)';
+            form.innerHTML = '<input type="text" placeholder="Tulis pertanyaan..." aria-label="Pertanyaan" style="flex:1;min-width:0;padding:9px 10px;border:1px solid var(--line,#46341f);border-radius:8px;background:var(--surface,#251a11);color:var(--text,#f7ead2);font:inherit"><button type="submit" style="padding:9px 14px;border:0;border-radius:8px;background:var(--acc,#e6c27a);color:#2d2015;font-weight:600;cursor:pointer">Kirim</button>';
+            hsChat.appendChild(form);
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const input = form.querySelector('input');
+                askHs(input.value);
+                input.value = '';
+            });
+        }
     });
 })();
 </script>

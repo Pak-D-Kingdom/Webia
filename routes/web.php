@@ -1950,6 +1950,39 @@ Route::prefix('webia/template/libraries-digital-archives/vintage-editorial/histo
         }
     });
 
+Route::prefix('webia/template/digital-products/creative-tech/digital-asset-marketplace-galaksi')
+    ->name('webia.template.digital-asset-marketplace-galaksi.')
+    ->group(function () {
+        $view = 'website-bisnis.template.digital-products.creative-tech.digital-asset-marketplace-galaksi';
+
+        // Beranda
+        Route::view('/', $view . '.index')->name('home');
+
+        // Halaman pendukung (product-details menerima ?asset=slug, creator-profile menerima ?creator=c01)
+        foreach ([
+            'explore-assets',
+            'categories',
+            'product-details',
+            'creator-profile',
+            'become-a-creator',
+            'creator-dashboard',
+            'cart',
+            'checkout',
+            'order-confirmation',
+            'my-downloads',
+            'user-profile',
+            'wishlist',
+            'about-us',
+            'contact-us',
+            'help-center',
+            'blog',
+            'subscription-plans',
+            'legal',
+        ] as $page) {
+            Route::view('/' . $page, $view . '.' . $page)->name($page);
+        }
+    });
+
 // ------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Route::prefix('webia/template/transportation-logistics/delivery/logistics-company-emerald-express')->group(function () {
