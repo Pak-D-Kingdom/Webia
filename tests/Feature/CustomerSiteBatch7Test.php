@@ -13,7 +13,7 @@ class CustomerSiteBatch7Test extends TestCase
     use RefreshDatabase;
 
     #[DataProvider('batch7TemplatesProvider')]
-    public function test_batch7_templates_publish_customer_site(string $slug, string $categorySlug, string $siteConfigPath, string $demoBrand): void
+    public function test_batch7_templates_publish_customer_site(string $slug, string $categorySlug, string $siteConfigPath, string $demoBrand, string $previewPath): void
     {
         $template = WebiaTemplate::updateOrCreate(
             ['slug' => $slug],
@@ -54,6 +54,10 @@ class CustomerSiteBatch7Test extends TestCase
             ->assertSee('Bintang Nusantara Group')
             ->assertSee('6281299887766', false)
             ->assertSee('webia-native-ai-bridge', false)
+            ->assertSee('js/webia-client-bridge.js', false)
+            ->assertSee(route('sites.chat', ['order' => $order->site_slug]), false)
+            ->assertSee(url('/s/'.$order->site_slug), false)
+            ->assertDontSee(url('/'.$previewPath), false)
             ->assertDontSee($demoBrand);
     }
 
@@ -143,11 +147,11 @@ class CustomerSiteBatch7Test extends TestCase
     public static function batch7TemplatesProvider(): array
     {
         return [
-            ['wedding-event-organizer-sunset-gradient', 'wedding-event', 'wedding-event/bold/event-organizer-sunset-gradient/event-organizer', 'Eventora'],
-            ['wedding-event-organizer-purple-dream', 'wedding-event', 'wedding-event/creative/event-organizer-purple-dream/event-organizer', 'Eventora'],
-            ['travel-umrah-haji-navy-champagne-gold', 'travel-tourism', 'travel&tourism/elegan/umrah-haji-navy-champagne-gold/umrah-haji', 'Al Hijrah Travel'],
-            ['travel-umrah-haji-emerald-green', 'travel-tourism', 'travel&tourism/classic/umrah-haji-emerald-green/umrah-haji', 'Nur Rahmat Travel'],
-            ['interior-architecture-building-design-chocolate-luxe', 'interior-architecture', 'interior&architecture/rustic/architecture-building-design-chocolate-luxe/architecture-building-design', 'ArchiDesign'],
+            ['wedding-event-organizer-sunset-gradient', 'wedding-event', 'wedding-event/bold/event-organizer-sunset-gradient/event-organizer', 'Eventora', 'webia/template/wedding-event/bold/event-organizer-sunset-gradient'],
+            ['wedding-event-organizer-purple-dream', 'wedding-event', 'wedding-event/creative/event-organizer-purple-dream/event-organizer', 'Eventora', 'webia/template/wedding-event/creative/event-organizer-purple-dream'],
+            ['travel-umrah-haji-navy-champagne-gold', 'travel-tourism', 'travel&tourism/elegan/umrah-haji-navy-champagne-gold/umrah-haji', 'Al Hijrah Travel', 'webia/template/travel-tourism/elegan/umrah-haji-navy-champagne-gold'],
+            ['travel-umrah-haji-emerald-green', 'travel-tourism', 'travel&tourism/classic/umrah-haji-emerald-green/umrah-haji', 'Nur Rahmat Travel', 'webia/template/travel-tourism/classic/umrah-haji-emerald-green'],
+            ['interior-architecture-building-design-chocolate-luxe', 'interior-architecture', 'interior&architecture/rustic/architecture-building-design-chocolate-luxe/architecture-building-design', 'ArchiDesign', 'webia/template/interior-architecture/rustic/architecture-building-design-chocolate-luxe'],
         ];
     }
 }

@@ -244,6 +244,7 @@ class CustomerAiController extends Controller
         ]);
 
         $isSuccess = (($res['status'] ?? '') === 'success');
+        $aiSynced = $isSuccess && ($res['sync_source'] ?? null) !== 'local_file';
 
         $bizData = $order->business_data ?? [];
         if ($request->filled('welcome_message')) {
@@ -257,7 +258,7 @@ class CustomerAiController extends Controller
         }
         $order->update(['business_data' => $bizData]);
 
-        $msg = $isSuccess
+        $msg = $aiSynced
             ? 'Pengaturan & informasi bisnis berhasil disimpan! Asisten AI website Anda langsung diperbarui.'
             : 'Pengaturan bisnis berhasil disimpan di portal. Sinkronisasi ke chatbot akan berjalan saat layanan AI aktif.';
 
@@ -265,7 +266,7 @@ class CustomerAiController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => $msg,
-                'ai_synced' => $isSuccess,
+                'ai_synced' => $aiSynced,
             ], 200);
         }
 

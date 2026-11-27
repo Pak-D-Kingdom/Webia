@@ -545,7 +545,11 @@ class AiQuotaService
             if (is_dir($dir)) {
                 foreach (['profil', 'layanan', 'kebijakan', 'faq'] as $k) {
                     if (isset($payload[$k]) && ! empty($payload[$k])) {
-                        file_put_contents("{$dir}/{$k}.md", trim($payload[$k])."\n");
+                        $document = self::knowledgeDocument($payload, $k);
+
+                        if ($document !== '') {
+                            file_put_contents("{$dir}/{$k}.md", $document."\n");
+                        }
                     }
                 }
 
@@ -561,6 +565,44 @@ class AiQuotaService
         }
 
         return ['status' => 'error', 'message' => 'Gagal memperbarui knowledge base.'];
+    }
+
+    /**
+     * Normalize a knowledge field before persisting it to its Markdown document.
+     *
+     * The offline reader exposes FAQ as structured items for the portal, while
+     * the local fallback persists Markdown. Keep both representations compatible.
+     *
+     * @param  array<string, mixed>  $payload
+     */
+    private static function knowledgeDocument(array $payload, string $field): string
+    {
+        $value = $payload[$field] ?? '';
+
+        if (is_string($value)) {
+            return trim($value);
+        }
+
+        if ($field !== 'faq' || ! is_array($value)) {
+            return '';
+        }
+
+        if (is_string($payload['faq_raw'] ?? null)) {
+            return trim($payload['faq_raw']);
+        }
+
+        return collect($value)
+            ->filter(fn (mixed $item): bool => is_array($item))
+            ->map(function (array $item): string {
+                $question = trim((string) ($item['tanya'] ?? $item['question'] ?? ''));
+                $answer = trim((string) ($item['jawab'] ?? $item['answer'] ?? ''));
+
+                return $question !== '' && $answer !== ''
+                    ? "* **{$question}**  \n  {$answer}"
+                    : '';
+            })
+            ->filter()
+            ->implode("\n");
     }
 
     /**
