@@ -1098,6 +1098,44 @@ class WebiaTemplateSeeder extends Seeder
                 'sort_order' => 45,
             ],
 
+            [
+                'name' => 'GARDA GRAPPLE — Tactical Brazilian Jiu-Jitsu Academy',
+                'slug' => 'garda-grapple-brazilian-jiu-jitsu-academy',
+                'category_slug' => 'martial-arts-self-defense',
+                'category_label' => 'Martial Arts & Self Defense Academy',
+                'business_types' => ['Brazilian Jiu-Jitsu Academy'],
+                'design_style' => 'Tactical Modern',
+                'color_theme' => 'Blackout Combat',
+                'description' => 'Tactical Brazilian Jiu-Jitsu academy website for kids, teens, adults, women-only classes, belt progression, weekly schedule, and trial booking.',
+                'preview_style' => 'preview-tactical-bjj',
+                'eyebrow' => 'Tactical BJJ & Submission Lab',
+                'headline' => 'Master The Art Of Human Chess',
+                'tag' => 'Brazilian Jiu-Jitsu Academy',
+                'preview_folder' => 'martial-arts-self-defense/brazilian-jiu-jitsu/garda-grapple',
+                'template_url' => '/webia/template/garda-grapple-brazilian-jiu-jitsu-academy',
+                'is_active' => true,
+                'sort_order' => 46,
+            ],
+            [
+                'name' => 'Atelier Panggung & Sinema',
+                'slug' => 'atelier-panggung-sinema-acting-drama-school',
+                'category_slug' => 'performing-arts-stage-training',
+                'category_label' => 'Performing Arts & Stage Training',
+                'business_types' => ['Acting & Drama School'],
+                'design_style' => 'Dramatic Cinematic',
+                'color_theme' => 'Spotlight Gold',
+                'description' => 'Acting and drama conservatory for film, theatre, television, voice acting, and musical theatre.',
+                'preview_style' => 'preview-cinematic',
+                'eyebrow' => 'Acting & Drama Conservatory',
+                'headline' => 'Where Truth Meets the Spotlight',
+                'tag' => 'Acting & Drama School',
+                'preview_folder' => 'performing-arts-stage-training/acting-drama-school/atelier-panggung-sinema',
+                'template_url' => '/webia/template/atelier-panggung-sinema-acting-drama-school',
+                'is_active' => true,
+                'sort_order' => 47,
+            ],
+
+
         ];
 
         foreach ($templates as $template) {
