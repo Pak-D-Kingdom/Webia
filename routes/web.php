@@ -46,6 +46,9 @@ Route::get('/s/{order:site_slug}/{page?}', CustomerSiteController::class)
 Route::post('/s/{order:site_slug}/chat', [CustomerSiteController::class, 'chat'])
     ->middleware('throttle:60,1')
     ->name('sites.chat');
+Route::post('/s/{order:site_slug}/bridge-event', [CustomerSiteController::class, 'bridgeEvent'])
+    ->middleware('throttle:30,1')
+    ->name('sites.bridge-event');
 
 Route::middleware('guest')->group(function (): void {
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
@@ -127,6 +130,7 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
         Route::post('ai-quotas/{tenant_id}/tier', [AdminAiQuotaController::class, 'updateTier'])->name('ai.update-tier');
         Route::get('ai-quotas/{tenant_id}/knowledge', [AdminAiQuotaController::class, 'getKnowledge'])->name('ai.knowledge.get');
         Route::post('ai-quotas/{tenant_id}/knowledge', [AdminAiQuotaController::class, 'saveKnowledge'])->name('ai.knowledge.save');
+        Route::post('ai-quotas/{tenant_id}/knowledge-access', [AdminAiQuotaController::class, 'updateCustomerKnowledgeAccess'])->name('ai.knowledge.access');
         Route::get('ai-quotas/{tenant_id}/unanswered', [AdminAiQuotaController::class, 'getUnanswered'])->name('ai.unanswered');
     });
 });

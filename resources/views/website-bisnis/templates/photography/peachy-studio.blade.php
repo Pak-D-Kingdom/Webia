@@ -183,7 +183,7 @@ section{padding:60px 0}
 </div></footer>
 
 <div class="floating-buttons">
-<button class="float-btn ai-btn" onclick="alert('Hi! Welcome to Peachy Studio. How can I help you today? 💗')" title="AI Assistant" aria-label="AI Assistant">✦</button>
+<button class="float-btn ai-btn" data-webia-ai-trigger onclick="alert('Hi! Welcome to Peachy Studio. How can I help you today? 💗')" title="AI Assistant" aria-label="AI Assistant">✦</button>
 <a href="https://wa.me/6281234567890" class="float-btn wa-btn" title="WhatsApp" aria-label="WhatsApp">☎</a>
 </div>
 <script>

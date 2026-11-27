@@ -177,11 +177,11 @@
                     </div>
                     <ul class="abd-chatprev__chips">
                         @foreach ($site['quick'] as $q)
-                            <li style="--i:{{ $loop->iteration }}"><button type="button" data-chat-ask="{{ $q }}"><svg class="i" aria-hidden="true"><use href="#i-spark"/></svg><span>{{ $q }}</span></button></li>
+                            <li style="--i:{{ $loop->iteration }}"><button type="button" data-chat-ask="{{ $q }}" data-webia-ai-prompt="architecture" data-webia-ai-question="{{ $q }}"><svg class="i" aria-hidden="true"><use href="#i-spark"/></svg><span>{{ $q }}</span></button></li>
                         @endforeach
                     </ul>
-                    <form class="abd-chatprev__form" data-chatprev-form autocomplete="off">
-                        <input type="text" placeholder="Tulis pertanyaan Anda..." aria-label="Tulis pertanyaan Anda" maxlength="200">
+                    <form class="abd-chatprev__form" data-chatprev-form data-webia-ai-preview-form="architecture" autocomplete="off">
+                        <input type="text" data-webia-ai-preview-input="architecture" placeholder="Tulis pertanyaan Anda..." aria-label="Tulis pertanyaan Anda" maxlength="200">
                         <button type="submit" aria-label="Kirim pertanyaan"><svg class="i" aria-hidden="true"><use href="#i-send"/></svg></button>
                     </form>
                 </div>

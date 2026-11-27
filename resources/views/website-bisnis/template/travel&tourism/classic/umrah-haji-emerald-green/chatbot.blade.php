@@ -18,7 +18,7 @@
                     </div>
                 </header>
 
-                <div class="uh-chatwin__log" data-uh-chat-log role="log" aria-live="polite" aria-label="Percakapan dengan AI Assistant"></div>
+                <div class="uh-chatwin__log" data-uh-chat-log data-webia-ai-log="travel" role="log" aria-live="polite" aria-label="Percakapan dengan AI Assistant"></div>
 
                 <div class="uh-chatwin__chips" data-uh-chat-chips aria-label="Pertanyaan cepat">
                     @foreach ($uh['ai']['items'] as $it)
@@ -26,13 +26,13 @@
                     @endforeach
                 </div>
 
-                <form class="uh-chatwin__form" data-uh-chat-form autocomplete="off">
+                <form class="uh-chatwin__form" data-uh-chat-form data-webia-ai-form="travel" autocomplete="off">
                     <span class="uh-sr" id="uh-chat-label">Tulis pertanyaan Anda</span>
                     <div class="uh-chatfield">
             <div class="uh-sugg" data-uh-chat-suggest id="uh-chat-input-sugg" role="listbox" aria-label="Saran pertanyaan" hidden></div>
             <label class="uh-chatfield__box" for="uh-chat-input">
                 <svg class="uh-i uh-chatfield__lens" aria-hidden="true"><use href="#i-search"/></svg>
-                <input id="uh-chat-input" class="uh-chatfield__input" type="text" name="q" maxlength="200" placeholder="Cari atau tulis pertanyaan Anda, misalnya: syarat pendaftaran" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="uh-chat-input-sugg" data-uh-chat-input>
+                <input id="uh-chat-input" class="uh-chatfield__input" type="text" name="q" maxlength="200" placeholder="Cari atau tulis pertanyaan Anda, misalnya: syarat pendaftaran" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="uh-chat-input-sugg" data-uh-chat-input data-webia-ai-input="travel">
                 <span class="uh-chatfield__count" data-uh-chat-count hidden></span>
                 <button type="button" class="uh-chatfield__clear" data-uh-chat-clear aria-label="Hapus pertanyaan" hidden>
                     <svg class="uh-i" aria-hidden="true"><use href="#i-x"/></svg>

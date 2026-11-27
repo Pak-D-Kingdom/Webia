@@ -2,22 +2,40 @@
 
 namespace App\Services;
 
+use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
 use PDO;
 use Throwable;
 
 class AiQuotaService
 {
+    private static function aiRequest(int $timeout): PendingRequest
+    {
+        $request = Http::acceptJson()->timeout($timeout);
+        $internalKey = config('services.ai_engine.internal_key');
+
+        if (is_string($internalKey) && $internalKey !== '') {
+            $request = $request->withHeaders(['X-Internal-Api-Key' => $internalKey]);
+        }
+
+        return $request;
+    }
+
+    private static function allowsLocalFallback(): bool
+    {
+        return (bool) config('services.ai_engine.allow_local_fallback', false);
+    }
+
     /**
      * Ambil seluruh tenant yang terdaftar di AI Engine (14 tenant).
      */
     public static function getAllTenants(): array
     {
-        $candidates = [
+        $candidates = self::allowsLocalFallback() ? [
             config('services.ai_engine.db_path'),
             base_path('../AI-Assistant-DKreasi/data/app.db'),
             'D:/Intern/Kreasi/AI-Assistant-DKreasi/data/app.db',
-        ];
+        ] : [];
 
         foreach ($candidates as $sqlitePath) {
             if ($sqlitePath && file_exists($sqlitePath)) {
@@ -52,7 +70,7 @@ class AiQuotaService
 
         // Prioritas 1: REST API ke AI Engine
         try {
-            $response = Http::timeout(1)->get("{$aiBaseUrl}/api/v1/tenants/{$tenantId}/quota");
+            $response = self::aiRequest(1)->get("{$aiBaseUrl}/api/v1/tenants/{$tenantId}/quota");
             if ($response->successful()) {
                 $data = $response->json();
                 $data['sync_source'] = 'api';
@@ -65,11 +83,11 @@ class AiQuotaService
         }
 
         // Prioritas 2: Baca langsung SQLite app.db dari AI Engine (Direct Source of Truth)
-        $candidates = [
+        $candidates = self::allowsLocalFallback() ? [
             config('services.ai_engine.db_path'),
             base_path('../AI-Assistant-DKreasi/data/app.db'),
             'D:/Intern/Kreasi/AI-Assistant-DKreasi/data/app.db',
-        ];
+        ] : [];
 
         foreach ($candidates as $sqlitePath) {
             if ($sqlitePath && file_exists($sqlitePath)) {
@@ -130,33 +148,53 @@ class AiQuotaService
     }
 
     /**
-     * Cek apakah AI Engine API atau SQLite Source of Truth tersedia.
+     * Status koneksi dipisahkan agar data SQLite lokal tidak pernah dikira
+     * sebagai AI Engine/9-router yang sedang melayani percakapan.
      */
-    public static function isOnline(): bool
+    public static function connectionStatus(): array
     {
+        $engineOnline = false;
+        $gatewayStatus = 'unknown';
+        $gatewayLatencyMs = null;
         $aiBaseUrl = rtrim(config('services.ai_engine.url', 'http://127.0.0.1:8001'), '/');
         try {
-            $res = Http::timeout(1)->get("{$aiBaseUrl}/api/v1/health");
-            if ($res->successful()) {
-                return true;
-            }
+            $response = self::aiRequest(2)->get("{$aiBaseUrl}/api/v1/health/ready");
+            $payload = $response->json();
+            $engineOnline = $response->successful()
+                && ($payload['status'] ?? null) === 'ready'
+                && (bool) data_get($payload, 'gateway.reachable');
+            $gatewayStatus = (string) ($payload['status'] ?? 'unknown');
+            $gatewayLatencyMs = data_get($payload, 'gateway.latency_ms');
         } catch (Throwable $e) {
-            // API offline
+            // Engine tidak dapat dijangkau; status SQLite diperiksa terpisah.
         }
 
-        $candidates = [
+        $sqliteAvailable = false;
+        foreach (self::allowsLocalFallback() ? [
             config('services.ai_engine.db_path'),
             base_path('../AI-Assistant-DKreasi/data/app.db'),
             'D:/Intern/Kreasi/AI-Assistant-DKreasi/data/app.db',
-        ];
-
-        foreach ($candidates as $sqlitePath) {
+        ] : [] as $sqlitePath) {
             if ($sqlitePath && file_exists($sqlitePath)) {
-                return true;
+                $sqliteAvailable = true;
+                break;
             }
         }
 
-        return false;
+        return [
+            'engine_online' => $engineOnline,
+            'gateway_status' => $gatewayStatus,
+            'gateway_latency_ms' => $gatewayLatencyMs,
+            'sqlite_available' => $sqliteAvailable,
+        ];
+    }
+
+    /**
+     * Cek apakah AI Engine/9-router benar-benar dapat dijangkau.
+     */
+    public static function isOnline(): bool
+    {
+        return self::connectionStatus()['engine_online'];
     }
 
     /**
@@ -173,7 +211,7 @@ class AiQuotaService
 
         // Coba via REST API
         try {
-            $res = Http::timeout(2)->post("{$aiBaseUrl}/api/v1/tenants/{$tenantId}/tier", $payload);
+            $res = self::aiRequest(2)->post("{$aiBaseUrl}/api/v1/tenants/{$tenantId}/tier", $payload);
             if ($res->successful()) {
                 return $res->json();
             }
@@ -182,11 +220,11 @@ class AiQuotaService
         }
 
         // Direct SQLite fallback
-        $candidates = [
+        $candidates = self::allowsLocalFallback() ? [
             config('services.ai_engine.db_path'),
             base_path('../AI-Assistant-DKreasi/data/app.db'),
             'D:/Intern/Kreasi/AI-Assistant-DKreasi/data/app.db',
-        ];
+        ] : [];
         $quotaMap = ['pixel' => 500, 'pulse' => 1500, 'nexus' => 2500, 'infinity' => 5000];
         $limit = $customQuota ?: ($quotaMap[$tier] ?? 500);
 
@@ -221,7 +259,7 @@ class AiQuotaService
         $aiBaseUrl = rtrim(config('services.ai_engine.url', 'http://127.0.0.1:8001'), '/');
 
         try {
-            $res = Http::timeout(2)->get("{$aiBaseUrl}/api/v1/tenants/{$tenantId}/insights");
+            $res = self::aiRequest(2)->get("{$aiBaseUrl}/api/v1/tenants/{$tenantId}/insights");
             if ($res->successful()) {
                 return $res->json();
             }
@@ -230,11 +268,11 @@ class AiQuotaService
         }
 
         // Ambil tren 7 hari riil dari SQLite usages
-        $sqliteCandidates = [
+        $sqliteCandidates = self::allowsLocalFallback() ? [
             config('services.ai_engine.db_path'),
             base_path('../AI-Assistant-DKreasi/data/app.db'),
             'D:/Intern/Kreasi/AI-Assistant-DKreasi/data/app.db',
-        ];
+        ] : [];
 
         $countsByDate = [];
         foreach ($sqliteCandidates as $sqlitePath) {
@@ -300,14 +338,20 @@ class AiQuotaService
             if (empty($trimmed) || str_starts_with($trimmed, '#')) {
                 continue;
             }
-            if (preg_match('/^[-*]\s*\*\*(?:Q:\s*)?(.*?)\*\*/i', $trimmed, $m)) {
+            if (preg_match('/^(?:q|pertanyaan)\s*:\s*(.+)$/i', $trimmed, $m)) {
+                if ($currentQ && ! empty($currentA)) {
+                    $items[] = ['tanya' => $currentQ, 'jawab' => trim(implode(' ', $currentA))];
+                }
+                $currentQ = trim($m[1]);
+                $currentA = [];
+            } elseif (preg_match('/^[-*]\s*\*\*(?:Q:\s*)?(.*?)\*\*/i', $trimmed, $m)) {
                 if ($currentQ && ! empty($currentA)) {
                     $items[] = ['tanya' => $currentQ, 'jawab' => trim(implode(' ', $currentA))];
                 }
                 $currentQ = trim($m[1]);
                 $currentA = [];
             } elseif ($currentQ) {
-                $cleaned = preg_match('/^[-*]?\s*(?:A:\s*)?(.*)$/i', $trimmed, $m2) ? trim($m2[1]) : $trimmed;
+                $cleaned = preg_match('/^[-*]?\s*(?:(?:a|jawaban)\s*:\s*)?(.*)$/i', $trimmed, $m2) ? trim($m2[1]) : $trimmed;
                 if (! empty($cleaned)) {
                     $currentA[] = $cleaned;
                 }
@@ -328,11 +372,21 @@ class AiQuotaService
         $aiBaseUrl = rtrim(config('services.ai_engine.url', 'http://127.0.0.1:8001'), '/');
 
         try {
-            $res = Http::timeout(2)->get("{$aiBaseUrl}/api/v1/tenants/{$tenantId}/knowledge");
+            $res = self::aiRequest(2)->get("{$aiBaseUrl}/api/v1/tenants/{$tenantId}/knowledge");
             if ($res->successful()) {
                 return $res->json();
             }
         } catch (Throwable $e) {
+        }
+
+        if (! self::allowsLocalFallback()) {
+            return [
+                'tenant_id' => $tenantId,
+                'profil' => '',
+                'layanan' => '',
+                'kebijakan' => '',
+                'faq' => '',
+            ];
         }
 
         $candidates = [
@@ -391,6 +445,10 @@ class AiQuotaService
         string $packageTier = 'pixel',
         int $monthlyQuota = 500
     ): string {
+        if (! self::allowsLocalFallback()) {
+            return '';
+        }
+
         $candidates = [
             base_path("../AI-Assistant-DKreasi/knowledge_base/l4_tenant/{$tenantId}"),
             "D:/Intern/Kreasi/AI-Assistant-DKreasi/knowledge_base/l4_tenant/{$tenantId}",
@@ -464,11 +522,15 @@ class AiQuotaService
         $aiBaseUrl = rtrim(config('services.ai_engine.url', 'http://127.0.0.1:8001'), '/');
 
         try {
-            $res = Http::timeout(4)->post("{$aiBaseUrl}/api/v1/tenants/{$tenantId}/knowledge", $payload);
+            $res = self::aiRequest(4)->post("{$aiBaseUrl}/api/v1/tenants/{$tenantId}/knowledge", $payload);
             if ($res->successful()) {
                 return $res->json();
             }
         } catch (Throwable $e) {
+        }
+
+        if (! self::allowsLocalFallback()) {
+            return ['status' => 'error', 'message' => 'AI Engine tidak dapat dihubungi. Knowledge base tidak diubah.'];
         }
 
         $candidates = [
@@ -487,7 +549,14 @@ class AiQuotaService
                     }
                 }
 
-                return ['status' => 'success', 'message' => 'Knowledge base berhasil diperbarui via file system.'];
+                $syncedAt = now()->toIso8601String();
+                return [
+                    'status' => 'success',
+                    'message' => 'Knowledge base berhasil diperbarui via file system.',
+                    'knowledge_saved_at' => $syncedAt,
+                    'rag_indexed_at' => null,
+                    'sync_source' => 'local_file',
+                ];
             }
         }
 
@@ -518,7 +587,7 @@ class AiQuotaService
         $aiBaseUrl = rtrim(config('services.ai_engine.url', 'http://127.0.0.1:8001'), '/');
 
         try {
-            $res = Http::timeout(2)->get("{$aiBaseUrl}/api/v1/analytics/cache");
+            $res = self::aiRequest(2)->get("{$aiBaseUrl}/api/v1/analytics/cache");
             if ($res->successful()) {
                 $data = $res->json();
 
@@ -545,7 +614,7 @@ class AiQuotaService
         $aiBaseUrl = rtrim(config('services.ai_engine.url', 'http://127.0.0.1:8001'), '/');
 
         try {
-            $res = Http::timeout(2)->get("{$aiBaseUrl}/api/v1/tenants/{$tenantId}/unanswered");
+            $res = self::aiRequest(2)->get("{$aiBaseUrl}/api/v1/tenants/{$tenantId}/unanswered");
             if ($res->successful()) {
                 $data = $res->json();
 
@@ -682,7 +751,7 @@ class AiQuotaService
         $aiBaseUrl = rtrim(config('services.ai_engine.url', 'http://127.0.0.1:8001'), '/');
 
         try {
-            $res = Http::timeout(45)->post("{$aiBaseUrl}/api/v1/chat", [
+            $res = self::aiRequest(45)->post("{$aiBaseUrl}/api/v1/chat", [
                 'layer' => 'l4',
                 'tenant_id' => $tenantId,
                 'messages' => [
@@ -850,11 +919,11 @@ class AiQuotaService
      */
     public static function recordUsage(string $tenantId, string $provider = 'google', string $model = 'gemini-1.5-flash'): bool
     {
-        $candidates = [
+        $candidates = self::allowsLocalFallback() ? [
             config('services.ai_engine.db_path'),
             base_path('../AI-Assistant-DKreasi/data/app.db'),
             'D:/Intern/Kreasi/AI-Assistant-DKreasi/data/app.db',
-        ];
+        ] : [];
 
         foreach ($candidates as $sqlitePath) {
             if ($sqlitePath && file_exists($sqlitePath)) {

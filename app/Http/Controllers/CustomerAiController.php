@@ -37,6 +37,7 @@ class CustomerAiController extends Controller
         // Tentukan status kelayakan AI murni dari akun pengguna sendiri (TIDAK ADA mode demo/dummy)
         $hasOrder = ($order !== null);
         $isDelivered = $hasOrder && $order->delivery_status === 'delivered' && $order->status === 'paid' && ! empty($order->site_slug);
+        $canEditKnowledge = $isDelivered && ($order?->customer_ai_knowledge_editable ?? true);
 
         $tenantId = $isDelivered ? $order->site_slug : null;
         $tierSlug = $order?->package?->slug ?? 'pixel';
@@ -47,7 +48,8 @@ class CustomerAiController extends Controller
             ? AiQuotaService::getTenantQuota($tenantId, $tierSlug, $monthlyLimit)
             : null;
 
-        $aiOnline = AiQuotaService::isOnline();
+        $aiConnection = AiQuotaService::connectionStatus();
+        $aiOnline = $aiConnection['engine_online'];
         $aiError = null;
 
         // Ambil wawasan analitik HANYA jika akun ini memiliki website yang sudah aktif
@@ -93,8 +95,10 @@ class CustomerAiController extends Controller
             'order',
             'hasOrder',
             'isDelivered',
+            'canEditKnowledge',
             'quotaData',
             'aiOnline',
+            'aiConnection',
             'aiError',
             'resetDateFormatted',
             'daysUntilReset',
@@ -105,6 +109,7 @@ class CustomerAiController extends Controller
             'knowledge',
             'currentWelcome',
             'currentWhatsappCs',
+            'currentJamOperasional',
             'currentAlamat',
             'currentHotline',
             'currentPengumuman',
@@ -277,7 +282,12 @@ class CustomerAiController extends Controller
             'layanan' => 'nullable|string|max:20000',
             'faq' => 'nullable|string|max:20000',
             'kebijakan' => 'nullable|string|max:20000',
-            'profil' => 'nullable|string|max:20000',
+            'business_name' => 'nullable|string|max:150',
+            'whatsapp_cs' => 'nullable|string|max:25',
+            'jam_operasional' => 'nullable|string|max:255',
+            'alamat' => 'nullable|string|max:500',
+            'welcome_message' => 'nullable|string|max:255',
+            'profil_context' => 'nullable|string|max:3000',
         ]);
 
         $user = $request->user();
@@ -294,14 +304,46 @@ class CustomerAiController extends Controller
             return redirect()->back()->with('error', $err);
         }
 
-        $res = AiQuotaService::saveTenantKnowledge($order->site_slug, $validated);
+        if (! ($order->customer_ai_knowledge_editable ?? true)) {
+            $err = 'Editor Knowledge Base saat ini dikelola oleh tim WEBIA.';
+            if ($request->wantsJson() || $request->ajax()) {
+                return response()->json(['status' => 'error', 'message' => $err], 403);
+            }
+
+            return redirect()->back()->with('error', $err);
+        }
+
+        $profil = collect([
+            filled($validated['business_name'] ?? null) ? '# '.$validated['business_name'] : null,
+            filled($validated['welcome_message'] ?? null) ? '- **Sapaan**: '.$validated['welcome_message'] : null,
+            filled($validated['whatsapp_cs'] ?? null) ? '- **WhatsApp**: '.$validated['whatsapp_cs'] : null,
+            filled($validated['jam_operasional'] ?? null) ? '- **Jam Operasional**: '.$validated['jam_operasional'] : null,
+            filled($validated['alamat'] ?? null) ? '- **Alamat**: '.$validated['alamat'] : null,
+            filled($validated['profil_context'] ?? null) ? "\n## Konteks Jawaban AI\n".$validated['profil_context'] : null,
+        ])->filter()->implode("\n");
+        $knowledgePayload = [
+            'layanan' => $validated['layanan'] ?? null,
+            'faq' => $validated['faq'] ?? null,
+            'kebijakan' => $validated['kebijakan'] ?? null,
+            'profil' => $profil,
+        ];
+        $res = AiQuotaService::saveTenantKnowledge($order->site_slug, $knowledgePayload);
 
         // Simpan juga ke business_data di order
         $current = $order->business_data ?? [];
         $current['kb_layanan'] = $validated['layanan'] ?? null;
         $current['kb_faq'] = $validated['faq'] ?? null;
         $current['kb_kebijakan'] = $validated['kebijakan'] ?? null;
-        $current['kb_profil'] = $validated['profil'] ?? null;
+        $current['kb_profil'] = $profil;
+        foreach (['business_name', 'whatsapp_cs', 'alamat', 'jam_operasional', 'welcome_message'] as $field) {
+            if (filled($validated[$field] ?? null)) {
+                $current[$field === 'whatsapp_cs' ? 'whatsapp' : $field] = $validated[$field];
+            }
+        }
+        if (($res['status'] ?? '') === 'success') {
+            $current['ai_knowledge_saved_at'] = $res['knowledge_saved_at'] ?? now()->toIso8601String();
+            $current['ai_rag_indexed_at'] = $res['rag_indexed_at'] ?? null;
+        }
         $order->update(['business_data' => $current]);
 
         $isSuccess = (($res['status'] ?? '') === 'success');
@@ -313,6 +355,8 @@ class CustomerAiController extends Controller
             return response()->json([
                 'status' => $isSuccess ? 'success' : 'error',
                 'message' => $msg,
+                'knowledge_saved_at' => $current['ai_knowledge_saved_at'] ?? null,
+                'rag_indexed_at' => $current['ai_rag_indexed_at'] ?? null,
             ], $isSuccess ? 200 : 500);
         }
 

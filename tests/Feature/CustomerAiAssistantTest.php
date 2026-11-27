@@ -137,4 +137,59 @@ class CustomerAiAssistantTest extends TestCase
         $this->order->refresh();
         $this->assertSame('Halo dari AI online!', $this->order->business_data['welcome_message']);
     }
+
+    public function test_saving_knowledge_records_when_the_rag_index_was_updated(): void
+    {
+        Http::preventStrayRequests();
+        Http::fake([
+            '*/api/v1/tenants/*/knowledge' => Http::response([
+                'status' => 'success',
+                'knowledge_saved_at' => '2026-11-23T09:10:00Z',
+                'rag_indexed_at' => '2026-11-23T09:10:02Z',
+            ]),
+        ]);
+
+        $this->actingAs($this->customer)
+            ->postJson(route('customer.ai.knowledge'), [
+                'profil' => 'Profil bisnis yang diperbarui',
+                'layanan' => 'Layanan utama',
+            ])
+            ->assertOk()
+            ->assertJsonPath('status', 'success')
+            ->assertJsonPath('knowledge_saved_at', '2026-11-23T09:10:00Z')
+            ->assertJsonPath('rag_indexed_at', '2026-11-23T09:10:02Z');
+
+        $this->order->refresh();
+        $this->assertSame('2026-11-23T09:10:00Z', $this->order->business_data['ai_knowledge_saved_at']);
+        $this->assertSame('2026-11-23T09:10:02Z', $this->order->business_data['ai_rag_indexed_at']);
+    }
+
+    public function test_returns_403_and_hides_knowledge_editor_when_customer_access_is_disabled(): void
+    {
+        $this->order->update([
+            'customer_ai_knowledge_editable' => false,
+            'business_data' => ['kb_layanan' => 'Data resmi sebelumnya'],
+        ]);
+        $this->fakeQuota([
+            'monthly_quota' => 500,
+            'used_messages' => 10,
+            'remaining_messages' => 490,
+            'percentage_used' => 2.0,
+            'is_quota_exhausted' => false,
+        ]);
+
+        $this->actingAs($this->customer)
+            ->get(route('customer.ai'))
+            ->assertOk()
+            ->assertDontSee('custKnowledgeForm', false)
+            ->assertSee('Knowledge Base dikelola WEBIA');
+
+        $this->actingAs($this->customer)
+            ->postJson(route('customer.ai.knowledge'), ['layanan' => 'Data yang tidak boleh tersimpan'])
+            ->assertForbidden()
+            ->assertJsonPath('message', 'Editor Knowledge Base saat ini dikelola oleh tim WEBIA.');
+
+        $this->order->refresh();
+        $this->assertSame('Data resmi sebelumnya', $this->order->business_data['kb_layanan']);
+    }
 }

@@ -54,6 +54,7 @@ class CustomerSiteNewMergedTemplatesTest extends TestCase
             ->assertSee('Pustaka Wastra Nusantara')
             ->assertSee('6281298765432', false)
             ->assertSee('webia-native-ai-bridge', false)
+            ->assertSee('bindLegacyDataChatContract', false)
             ->assertDontSee($demoBrand);
     }
 
@@ -124,7 +125,8 @@ class CustomerSiteNewMergedTemplatesTest extends TestCase
         $this->get('/s/'.$order->site_slug.'/katalog')
             ->assertOk()
             ->assertSee('Pustaka Cendekia')
-            ->assertSee('webia-native-ai-bridge', false);
+            ->assertSee('webia-native-ai-bridge', false)
+            ->assertSee('bindLegacyDataChatContract', false);
 
         $this->get('/s/'.$order->site_slug.'/halaman-tidak-ada')->assertNotFound();
     }
@@ -166,12 +168,14 @@ class CustomerSiteNewMergedTemplatesTest extends TestCase
         $this->get('/s/'.$order->site_slug.'/collections')
             ->assertOk()
             ->assertSee('Arsip Kuno Nusantara')
-            ->assertSee('webia-native-ai-bridge', false);
+            ->assertSee('webia-native-ai-bridge', false)
+            ->assertSee('bindLegacyDataChatContract', false);
 
         $this->get('/s/'.$order->site_slug.'/collections/cartography-through-the-ages')
             ->assertOk()
             ->assertSee('Arsip Kuno Nusantara')
-            ->assertSee('webia-native-ai-bridge', false);
+            ->assertSee('webia-native-ai-bridge', false)
+            ->assertSee('bindLegacyDataChatContract', false);
 
         $this->get('/s/'.$order->site_slug.'/collections/koleksi-tidak-ada')->assertNotFound();
     }

@@ -27,6 +27,12 @@ class WebiaPackage extends Model
     /** @use HasFactory<WebiaPackageFactory> */
     use HasFactory;
 
+    protected static function booted(): void
+    {
+        static::saved(fn () => WebiaOrder::flushAllCustomerSiteCaches());
+        static::deleted(fn () => WebiaOrder::flushAllCustomerSiteCaches());
+    }
+
     public function orders(): HasMany
     {
         return $this->hasMany(WebiaOrder::class);
