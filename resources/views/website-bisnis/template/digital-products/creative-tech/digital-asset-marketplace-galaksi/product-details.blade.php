@@ -20,6 +20,7 @@
 @endphp
 @section('title', $a['title'] . ' — Astraly')
 @section('page', 'product-details')
+@section('body_class', 'has-buybar')
 
 @section('content')
     <section class="section-sm" style="padding-top:36px">
@@ -98,6 +99,11 @@
             </div>
         </div>
     </section>
+
+    <div class="buybar" id="buybar">
+        <div class="bb-info"><b class="price" data-price-now>{{ $rp($a['price']) }}</b><small class="dim">{{ $a['title'] }}</small></div>
+        @if ($a['price'])<button type="button" class="btn btn-primary" data-add-lic="{{ $a['id'] }}">{{ $ic('cart', 'ico-sm') }} Keranjang</button>@else<button type="button" class="btn btn-primary" data-download="{{ $a['id'] }}">{{ $ic('download', 'ico-sm') }} Unduh Gratis</button>@endif
+    </div>
 
     <section class="section-sm">
         <div class="wrap">

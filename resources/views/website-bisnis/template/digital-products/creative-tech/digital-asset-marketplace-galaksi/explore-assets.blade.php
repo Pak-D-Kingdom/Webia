@@ -24,7 +24,7 @@
                 <aside class="filters mobile-hidden" id="filters" aria-label="Filter lanjutan">
                     <form id="filterForm" onsubmit="return false">
                         <div class="flex items-center justify-between mb-4"><h3 class="text-xl">Filter</h3><button type="button" class="tiny" style="color:var(--cyan)" id="filterReset">Reset</button></div>
-                        <div class="filter-group"><h4>Kata Kunci</h4><label class="sf" style="display:flex;gap:10px;align-items:center" for="fq"><input class="input" id="fq" type="search" name="q" placeholder="Cari judul, tag, kreator…" autocomplete="off"></label></div>
+                        <div class="filter-group"><h4>Kata Kunci</h4><div class="search-field">{{ $ic('search') }}<input id="fq" type="search" name="q" placeholder="Cari judul, tag, kreator…" autocomplete="off" aria-label="Kata kunci"><button type="button" class="sf-clear" data-clear="#fq" aria-label="Hapus">{{ $ic('close', 'ico-sm') }}</button></div></div>
                         <div class="filter-group"><h4>Kategori</h4>
                             @foreach ($dam['categories'] as $slug => $c)
                                 <div class="opt"><label><input type="checkbox" name="cat" value="{{ $slug }}"> {{ $c['name'] }}</label><em>{{ $all->where('cat', $slug)->count() }}</em></div>
@@ -48,6 +48,7 @@
                 <div>
                     <div class="toolbar">
                         <div class="flex items-center gap-3 flex-wrap"><button type="button" class="btn btn-ghost btn-sm lg:hidden" id="filterToggle">{{ $ic('filter', 'ico-sm') }} Filter</button><p class="muted"><b id="resultCount" style="color:var(--tx)">{{ $all->count() }}</b> aset ditemukan</p></div>
+                        <div class="view-toggle" role="group" aria-label="Tampilan"><button type="button" class="on" data-view="grid" aria-label="Tampilan grid">{{ $ic('grid') }}</button><button type="button" data-view="list" aria-label="Tampilan daftar">{{ $ic('menu') }}</button></div>
                         <label class="flex items-center gap-3"><span class="dim tiny hidden sm:inline">Urutkan</span>
                             <select class="select" id="sortSelect" style="width:auto;padding-block:10px" aria-label="Urutkan">
                                 <option value="relevance">Paling Relevan</option><option value="popular">Terpopuler</option><option value="new">Terbaru</option><option value="rating">Rating Tertinggi</option><option value="price-asc">Harga Terendah</option><option value="price-desc">Harga Tertinggi</option>

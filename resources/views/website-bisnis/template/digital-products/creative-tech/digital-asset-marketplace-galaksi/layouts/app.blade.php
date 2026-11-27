@@ -25,6 +25,8 @@
             'days' => $a['days'], 'size' => $a['size'], 'img' => $img($a['img']), 'url' => $aurl($a),
         ])->values(),
         'categories' => collect($dam['categories'])->map(fn ($c, $k) => ['slug' => $k, 'name' => $c['name']])->values(),
+        'creators' => collect($dam['creators'])->map(fn ($c, $k) => ['id' => $k, 'name' => $c['name'], 'role' => $c['role'], 'handle' => $c['handle'], 'avatar' => $img($c['avatar']), 'url' => $u('creator-profile') . '?creator=' . $k])->values(),
+        'help' => collect($dam['help'])->map(fn ($h) => ['g' => $h[0], 'items' => $h[2]])->values(),
         'licenses' => $dam['licenses'],
         'ai' => $dam['ai'],
         'coupons' => collect($dam['promos']['coupons'])->map(fn ($c) => $c[0])->values(),
@@ -39,6 +41,7 @@
     <title>@yield('title', 'Astraly — Digital Asset Marketplace')</title>
     <meta name="description" content="@yield('description', 'Astraly adalah marketplace aset digital bertema galaksi: model 3D, UI kit, template web, ilustrasi, ikon, audio, motion, dan e-book dari kreator terbaik.')">
     <meta name="theme-color" content="#05030f">
+    <script>document.documentElement.classList.add('js')</script>
     <link rel="icon" type="image/svg+xml" href="{{ $img('favicon.svg') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

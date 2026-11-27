@@ -26,7 +26,7 @@
             <h2 class="text-3xl">Kirim Pesan</h2><p class="muted -mt-2">Pesan akan dikirim langsung via WhatsApp.</p>
             <div class="grid gap-4 sm:grid-cols-2"><div class="field"><label class="label" for="ctName">Nama</label><input class="input" id="ctName" name="name" required placeholder="Nama kamu"><span class="err-msg"></span></div><div class="field"><label class="label" for="ctEmail">Email</label><input class="input" id="ctEmail" name="email" type="email" required placeholder="email@contoh.com"><span class="err-msg"></span></div></div>
             <div class="field"><label class="label" for="ctTopic">Topik</label><select class="select" id="ctTopic" name="topic"><option>Pertanyaan Umum</option><option>Pembayaran</option><option>Lisensi</option><option>Kolaborasi Kreator</option><option>Refund</option></select></div>
-            <div class="field"><label class="label" for="ctMsg">Pesan</label><textarea class="textarea" id="ctMsg" name="message" required placeholder="Tulis pesanmu…"></textarea><span class="err-msg"></span></div>
+            <div class="field"><label class="label" for="ctMsg">Pesan</label><textarea class="textarea" id="ctMsg" name="message" required maxlength="500" placeholder="Tulis pesanmu…"></textarea><span class="err-msg"></span></div>
             <button class="btn btn-wa btn-lg" type="submit">{{ $ic('send', 'ico-sm') }} Kirim via WhatsApp</button>
         </form>
     </div></section>

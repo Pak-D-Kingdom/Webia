@@ -30,6 +30,18 @@
     check: '<path d="m5 12.5 4.5 4.5L19 7.5"/>',
     arrow: '<path d="M5 12h14m-6-6 6 6-6 6"/>',
     send: '<path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/>',
+    chev: '<path d="m6 9 6 6 6-6"/>',
+    search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
+    user: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+    mail: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
+    phone: '<path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2z"/>',
+    package: '<path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="m3 8 9 5 9-5M7.5 5.5l9 5"/>',
+    pin: '<path d="M12 22s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/>',
+    globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.2 3 14.8 0 18M12 3c-3 3.2-3 14.8 0 18"/>',
+    lock: '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
+    chat: '<path d="M21 12a8 8 0 0 1-11.6 7.1L3 20l1-4.6A8 8 0 1 1 21 12z"/>',
+    book: '<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5M9 7h6"/>',
+    clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
   };
   const ic = (n, c = 'ico-sm') => `<svg class="ico ${c}" viewBox="0 0 24 24" aria-hidden="true">${P[n] || ''}</svg>`;
   const stars = (r) => `<span class="stars">${[1, 2, 3, 4, 5].map((i) => `<svg viewBox="0 0 24 24"${i <= Math.round(r) ? '' : ' class="off"'}>${P.star}</svg>`).join('')}</span>`;
@@ -118,9 +130,9 @@
     }
     const list = $('#cartList');
     if (list) {
-      list.innerHTML = cart.map((c) => { const a = byId(c.id); return `<div class="line-item"><a href="${a.url}"><img src="${a.img}" alt="" width="110" height="70"></a><div><h4><a href="${a.url}">${esc(a.title)}</a></h4><p class="dim tiny mb-2">${esc(a.catName)} · ${esc(a.creator)}</p><select class="select" style="width:auto;padding:7px 36px 7px 12px;font-size:13px" data-lic-change="${a.id}" aria-label="Lisensi">${Object.entries(D.licenses).map(([k, l]) => `<option value="${k}" ${k === c.lic ? 'selected' : ''}>${l.name}</option>`).join('')}</select></div><div class="text-right"><b class="price">${rp(licPrice(a, c.lic))}</b><br><button class="rm tiny mt-2" data-remove="${a.id}">${ic('trash')} Hapus</button></div></div>`; }).join('');
+      list.innerHTML = cart.map((c) => { const a = byId(c.id); return `<div class="line-item"><a href="${a.url}"><img src="${a.img}" alt="" width="110" height="70"></a><div><h4><a href="${a.url}">${esc(a.title)}</a></h4><p class="dim tiny mb-2">${esc(a.catName)} · ${esc(a.creator)}</p><select class="select" data-cs-size="sm" data-lic-change="${a.id}" aria-label="Lisensi">${Object.entries(D.licenses).map(([k, l]) => `<option value="${k}" ${k === c.lic ? 'selected' : ''}>${l.name}</option>`).join('')}</select></div><div class="text-right"><b class="price">${rp(licPrice(a, c.lic))}</b><br><button class="rm tiny mt-2" data-remove="${a.id}">${ic('trash')} Hapus</button></div></div>`; }).join('');
       $('#cartEmpty').classList.toggle('hidden', cart.length > 0);
-      $('#cartClear').classList.toggle('hidden', !cart.length);
+      $('#cartClear').classList.toggle('hidden', !cart.length); enhanceSelects(list);
     }
     const co = $('#checkoutItems');
     if (co) {
@@ -156,7 +168,7 @@
       <label class="field"><span class="label">Lisensi</span><select class="select" id="pvLic">${Object.entries(D.licenses).map(([k, l]) => `<option value="${k}">${l.name} — ${l.desc}</option>`).join('')}</select></label>
       <div class="flex items-end justify-between"><span class="dim">Harga</span><span class="price" style="font-size:30px" id="pvPrice">${rp(a.price)}</span></div>
       <div class="grid gap-3 sm:grid-cols-2">${a.price ? `<button class="btn btn-primary" data-pv-add="${a.id}">${ic('cart')} Tambah ke Keranjang</button>` : `<button class="btn btn-primary" data-download="${a.id}">${ic('download')} Unduh Gratis</button>`}<a class="btn btn-ghost" href="${a.url}">Lihat Detail ${ic('arrow')}</a></div></div></div>`;
-    openOv($('#previewOverlay'));
+    enhanceSelects(m); openOv($('#previewOverlay'));
   };
   let dlTimer;
   const openDownload = (id, lic = 'personal') => {
@@ -182,30 +194,110 @@
     l.innerHTML = library.map((e) => { const a = byId(e.id); if (!a) return ''; return `<div class="line-item" style="grid-template-columns:110px 1fr auto"><a href="${a.url}"><img src="${a.img}" alt="" width="110" height="70"></a><div><h4><a href="${a.url}">${esc(a.title)}</a></h4><p class="dim tiny">${esc(a.format)} · ${esc(a.size)} · Lisensi ${esc(D.licenses[e.lic].name)}</p><p class="dim tiny">Diperoleh ${new Date(e.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })} · ${esc(e.order)}</p></div><button class="btn btn-primary btn-sm" data-download="${a.id}" data-lic="${e.lic}">${ic('download')} Unduh</button></div>`; }).join('');
   };
 
-  /* ---------- 7. SMART SEARCH ---------- */
+  /* ---------- 7. SMART SEARCH (command palette + typeahead) ---------- */
   const so = $('#searchOverlay'), si = $('#searchInput'), sr = $('#searchResults');
-  const hl = (t, q) => (q ? esc(t).replace(new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'ig'), '<mark>$1</mark>') : esc(t));
+  const SYN = { musik: 'audio', suara: 'audio', sfx: 'audio', lagu: 'audio', beat: 'audio', video: 'motion', animasi: 'motion', transisi: 'motion', desain: 'ui-kits', ui: 'ui-kits', aplikasi: 'ui-kits', dashboard: 'ui-kits', ikon: 'icons', icon: 'icons', template: 'web-templates', website: 'web-templates', web: 'web-templates', laravel: 'web-templates', '3d': '3d-models', model: '3d-models', game: '3d-models', ilustrasi: 'illustrations', vektor: 'illustrations', background: 'illustrations', buku: 'ebooks', ebook: 'ebooks', kursus: 'ebooks', belajar: 'ebooks' };
+  let sTab = 'all'; const qf = { free: false, sale: false, fresh: false, cheap: false };
+  const recents = () => store.get('recent', []);
+  const saveRecent = (q) => { q = (q || '').trim(); if (q.length < 2) return; store.set('recent', [q, ...recents().filter((x) => x !== q)].slice(0, 6)); };
+  const hl = (t, terms) => { const ts = (terms || []).filter(Boolean).map((x) => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')); return ts.length ? esc(t).replace(new RegExp('(' + ts.join('|') + ')', 'ig'), '<mark>$1</mark>') : esc(t); };
+  const parseQ = (raw) => {
+    const f = { free: qf.free, sale: qf.sale, cheap: qf.cheap, fresh: qf.fresh, cat: null, terms: [] };
+    raw.toLowerCase().split(/\s+/).filter(Boolean).forEach((t) => {
+      if (['gratis', 'free'].includes(t)) f.free = true; else if (['diskon', 'promo', 'sale'].includes(t)) f.sale = true; else if (['murah', 'hemat'].includes(t)) f.cheap = true; else if (['baru', 'terbaru', 'new'].includes(t)) f.fresh = true;
+      else { if (SYN[t]) f.cat = f.cat || SYN[t]; f.terms.push(t); }
+    });
+    return f;
+  };
+  const scoreAsset = (a, f) => {
+    if ((f.free && a.price) || (f.sale && !a.old) || (f.cheap && a.price > 150000) || (f.fresh && a.days > 14)) return 0;
+    const h = (a.title + ' ' + a.tags.join(' ') + ' ' + a.catName + ' ' + a.creator).toLowerCase(); let s = 0;
+    if (!f.terms.length && !f.cat) return 1 + a.rating / 10;
+    if (f.cat && a.cat === f.cat) s += 4;
+    for (const t of f.terms) { if (a.title.toLowerCase().includes(t)) s += 5; else if (a.tags.some((x) => x.includes(t))) s += 3; else if (h.includes(t)) s += 1; else if (!(f.cat && SYN[t] === f.cat && a.cat === f.cat)) return 0; }
+    return s > 0 ? s + a.rating / 10 + a.sales / 20000 : 0;
+  };
+  const searchAll = (raw) => {
+    const f = parseQ(raw), ts = f.terms; const has = ts.length || f.cat;
+    const assets = D.assets.map((a) => [scoreAsset(a, f), a]).filter((x) => x[0] > 0).sort((x, y) => y[0] - x[0]).map((x) => x[1]);
+    const cats = has ? D.categories.filter((c) => f.cat === c.slug || (ts.length && ts.every((t) => c.name.toLowerCase().includes(t) || c.slug.includes(t)))) : [];
+    const creators = ts.length ? (D.creators || []).filter((c) => ts.every((t) => (c.name + ' ' + c.role + ' ' + c.handle).toLowerCase().includes(t))) : [];
+    const help = ts.length ? (D.help || []).flatMap((g) => g.items.map((t) => ({ t, g: g.g }))).filter((h) => ts.every((t) => (h.g + ' ' + h.t).toLowerCase().includes(t))) : [];
+    return { f, ts, assets, cats, creators, help };
+  };
+  const iAsset = (a, ts) => `<a class="sr-item" href="${a.url}"><img class="sr-thumb" src="${a.img}" alt="" width="68" height="44"><span class="sr-meta"><b>${hl(a.title, ts)}</b><small>${esc(a.catName)} · ${esc(a.creator)} · ★ ${a.rating}</small></span><span class="sr-price ${a.price ? '' : 'free'}">${rp(a.price)}</span></a>`;
+  const iCat = (c, ts) => `<a class="sr-item" href="${D.pages['explore-assets']}?cat=${c.slug}"><span class="sr-ico">${ic('package', 'ico-sm')}</span><span class="sr-meta"><b>${hl(c.name, ts)}</b><small>Jelajahi kategori</small></span>${ic('arrow')}</a>`;
+  const iCreator = (c, ts) => `<a class="sr-item" href="${c.url}"><img class="sr-av" src="${c.avatar}" alt="" width="44" height="44"><span class="sr-meta"><b>${hl(c.name, ts)}</b><small>${esc(c.role)} · ${esc(c.handle)}</small></span>${ic('arrow')}</a>`;
+  const iHelp = (h, ts) => `<a class="sr-item" href="${D.pages['help-center']}"><span class="sr-ico">${ic('book', 'ico-sm')}</span><span class="sr-meta"><b>${hl(h.t, ts)}</b><small>${esc(h.g)}</small></span>${ic('arrow')}</a>`;
+  const sec = (title, html, extra = '') => (html ? `<div class="sr-sec"><span>${title}</span>${extra}</div>${html}` : '');
+  const exploreUrl = (raw) => {
+    const f = parseQ(raw), p = new URLSearchParams(), q = f.terms.filter((t) => !SYN[t]).join(' ');
+    if (q) p.set('q', q); if (f.cat) p.set('cat', f.cat); if (f.free) p.set('free', 1); if (f.sale) p.set('sale', 1); if (f.fresh) p.set('sort', 'new');
+    return D.pages['explore-assets'] + (p.toString() ? '?' + p : '');
+  };
   const renderSearch = (q) => {
-    if (!sr) return; q = q.trim().toLowerCase();
-    if (!q) {
-      sr.innerHTML = `<h5>Pencarian populer</h5><div class="chip-row p-2">${['dashboard', 'spaceship', 'icons', 'ambient', 'laravel', 'blender'].map((t) => `<button class="chip" data-fill="${t}">${t}</button>`).join('')}</div><h5>Aset trending</h5>${D.assets.filter((a) => a.flags.includes('trending')).slice(0, 4).map((a) => `<a class="sr-item" href="${a.url}"><img src="${a.img}" alt="" width="64" height="40"><span><b>${esc(a.title)}</b><br><small class="dim">${esc(a.catName)} · ${rp(a.price)}</small></span></a>`).join('')}`;
+    if (!sr) return; const raw = (q || '').trim(); const flags = Object.values(qf).some(Boolean);
+    $$('[data-sq]').forEach((b) => b.classList.toggle('on', qf[b.dataset.sq]));
+    const und = $('#searchUnderstood');
+    if (!raw && !flags) {
+      und.hidden = true; $$('.stab em').forEach((e) => { e.textContent = ''; });
+      const rc = recents();
+      sr.innerHTML = (rc.length ? sec('Pencarian terakhir', rc.map((r) => `<div class="sr-recent" data-fill="${esc(r)}">${ic('clock', 'ico-sm')}<span>${esc(r)}</span><button type="button" class="rm" data-rmrecent="${esc(r)}" aria-label="Hapus">${ic('close', 'ico-sm')}</button></div>`).join(''), '<button type="button" data-clear-recent>Hapus semua</button>') : '')
+        + sec('Sedang dicari', `<div class="sr-chips">${['dashboard', 'spaceship', 'icons', 'ambient', 'laravel', 'blender'].map((t) => `<button type="button" class="chip" data-fill="${t}">${t}</button>`).join('')}</div>`)
+        + sec('Coba pakai bahasa sehari-hari', `<div class="sr-chips">${['musik gratis untuk game', 'template web laravel murah', 'ui kit dashboard terbaru'].map((t) => `<button type="button" class="chip" data-fill="${t}">${ic('sparkle', 'ico-sm')} ${t}</button>`).join('')}</div>`)
+        + sec('Aset trending', D.assets.filter((a) => a.flags.includes('trending')).slice(0, 4).map((a) => iAsset(a, [])).join(''));
       return;
     }
-    const sc = (a) => { const h = (a.title + ' ' + a.tags.join(' ') + ' ' + a.catName + ' ' + a.creator).toLowerCase(); let s = 0; if (a.title.toLowerCase().includes(q)) s += 5; if (a.tags.some((t) => t.includes(q))) s += 3; if (h.includes(q)) s += 1; return s; };
-    const res = D.assets.map((a) => [sc(a), a]).filter((x) => x[0] > 0).sort((x, y) => y[0] - x[0]).slice(0, 6).map((x) => x[1]);
-    const cats = D.categories.filter((c) => c.name.toLowerCase().includes(q));
-    sr.innerHTML = (cats.length ? `<h5>Kategori</h5>${cats.map((c) => `<a class="sr-item" href="${D.pages['explore-assets']}?cat=${c.slug}"><span class="di" style="width:40px;height:40px;border-radius:11px;display:grid;place-items:center;background:var(--grad-soft)">${ic('sparkle')}</span><b>${hl(c.name, q)}</b></a>`).join('')}` : '')
-      + (res.length ? `<h5>Aset (${res.length})</h5>${res.map((a) => `<a class="sr-item" href="${a.url}"><img src="${a.img}" alt="" width="64" height="40"><span><b>${hl(a.title, q)}</b><br><small class="dim">${esc(a.catName)} · ${esc(a.creator)} · ${rp(a.price)}</small></span></a>`).join('')}` : `<div class="empty" style="border:0"><p>Tidak ada hasil untuk “${esc(q)}”.</p></div>`)
-      + `<a class="sr-item" href="${D.pages['explore-assets']}?q=${encodeURIComponent(q)}" style="justify-content:center;color:var(--cyan)">Lihat semua hasil untuk “${esc(q)}” ${ic('arrow')}</a>`;
+    const r = searchAll(raw), ts = r.ts;
+    const tot = { asset: r.assets.length, cat: r.cats.length, creator: r.creators.length, help: r.help.length }; tot.all = tot.asset + tot.cat + tot.creator + tot.help;
+    $$('.stab').forEach((b) => { b.querySelector('em').textContent = tot[b.dataset.stab]; });
+    const bits = []; if (r.f.cat) bits.push(`Kategori <b>${esc((D.categories.find((c) => c.slug === r.f.cat) || {}).name || '')}</b>`);
+    if (r.f.free) bits.push('<b>Gratis</b>'); if (r.f.sale) bits.push('<b>Diskon</b>'); if (r.f.cheap) bits.push('<b>≤ Rp 150rb</b>'); if (r.f.fresh) bits.push('<b>Terbaru</b>');
+    und.hidden = !bits.length; und.innerHTML = bits.length ? ic('sparkle', 'ico-sm') + ' Dipahami sebagai: ' + bits.join(' · ') : '';
+    const all = sTab === 'all', lim = (n) => (all ? n : 12);
+    const html = (sTab === 'all' || sTab === 'asset' ? sec(`Aset (${tot.asset})`, r.assets.slice(0, lim(5)).map((a) => iAsset(a, ts)).join('')) : '')
+      + (all || sTab === 'cat' ? sec(`Kategori (${tot.cat})`, r.cats.slice(0, lim(3)).map((c) => iCat(c, ts)).join('')) : '')
+      + (all || sTab === 'creator' ? sec(`Kreator (${tot.creator})`, r.creators.slice(0, lim(3)).map((c) => iCreator(c, ts)).join('')) : '')
+      + (all || sTab === 'help' ? sec(`Bantuan (${tot.help})`, r.help.slice(0, lim(4)).map((h) => iHelp(h, ts)).join('')) : '');
+    sr.innerHTML = html || `<div class="sr-empty">${ic('search')}<b>Tidak ada hasil${raw ? ` untuk “${esc(raw)}”` : ''}</b><p class="tiny mt-1">Coba kata kunci lain, lepas filter, atau tanya Nova.</p><button type="button" class="btn btn-ghost btn-sm mt-4" data-chat-open>Tanya Nova</button></div>`;
   };
   const openSearch = () => { openOv(so); renderSearch(si.value); setTimeout(() => si.focus(), 60); };
   const closeSearch = () => closeOv(so);
   on(si, 'input', () => renderSearch(si.value));
   on(si, 'keydown', (e) => {
-    const items = $$('.sr-item', sr); let i = items.findIndex((x) => x.classList.contains('act'));
+    const items = $$('.sr-item, .sr-recent', sr); let i = items.findIndex((x) => x.classList.contains('act'));
     if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); if (!items.length) return; items[i] && items[i].classList.remove('act'); i = (i + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length; items[i].classList.add('act'); items[i].scrollIntoView({ block: 'nearest' }); }
-    if (e.key === 'Enter') { e.preventDefault(); const t = items[i] || (si.value.trim() && items[items.length - 1]); if (t) location.href = t.href; }
+    if (e.key === 'Enter') { e.preventDefault(); const t = items[i]; if (t && t.matches('.sr-recent')) { si.value = t.dataset.fill; renderSearch(si.value); return; } saveRecent(si.value); location.href = t ? t.href : exploreUrl(si.value); }
   });
+  on(so, 'click', (e) => {
+    const t = (s) => e.target.closest(s); let el;
+    if ((el = t('[data-stab]'))) { sTab = el.dataset.stab; $$('.stab').forEach((b) => b.classList.toggle('on', b === el)); renderSearch(si.value); }
+    else if ((el = t('[data-sq]'))) { qf[el.dataset.sq] = !qf[el.dataset.sq]; renderSearch(si.value); }
+    else if ((el = t('[data-rmrecent]'))) { e.stopPropagation(); store.set('recent', recents().filter((x) => x !== el.dataset.rmrecent)); renderSearch(si.value); }
+    else if (t('[data-clear-recent]')) { store.set('recent', []); renderSearch(si.value); }
+    else if ((el = t('[data-fill]'))) { si.value = el.dataset.fill; renderSearch(si.value); si.focus(); si.dispatchEvent(new Event('input', { bubbles: true })); }
+    else if (t('.sr-item')) saveRecent(si.value);
+  });
+  /* typeahead di hero */
+  const hq = $('#heroQ'), hs = $('#heroSuggest');
+  if (hq && hs) {
+    const upd = () => {
+      const raw = hq.value.trim(); if (!raw) { hs.hidden = true; return; }
+      const r = searchAll(raw);
+      hs.innerHTML = (r.assets.slice(0, 4).map((a) => iAsset(a, r.ts)).join('') + r.cats.slice(0, 2).map((c) => iCat(c, r.ts)).join(''))
+        + `<a class="sr-item" href="${exploreUrl(raw)}" style="justify-content:center;color:var(--cyan)">Lihat semua hasil untuk “${esc(raw)}” ${ic('arrow')}</a>`;
+      if (!r.assets.length && !r.cats.length) hs.innerHTML = `<div class="sr-empty">${ic('search')}<p>Belum ada yang cocok dengan “${esc(raw)}”.</p></div>`;
+      hs.hidden = false;
+    };
+    on(hq, 'input', upd); on(hq, 'focus', () => hq.value.trim() && upd());
+    on(hq, 'keydown', (e) => {
+      const items = $$('.sr-item', hs); let i = items.findIndex((x) => x.classList.contains('act'));
+      if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && !hs.hidden && items.length) { e.preventDefault(); items[i] && items[i].classList.remove('act'); i = (i + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length; items[i].classList.add('act'); }
+      else if (e.key === 'Enter' && i > -1) { e.preventDefault(); saveRecent(hq.value); location.href = items[i].href; }
+      else if (e.key === 'Escape') hs.hidden = true;
+    });
+    on(document, 'click', (e) => { if (!e.target.closest('.hero-search')) hs.hidden = true; });
+  }
 
   /* ---------- 8. REKOMENDASI AI ---------- */
   const initAiRec = (root) => {
@@ -272,7 +364,7 @@
     const params = new URLSearchParams(location.search);
     if (params.get('q')) form.q.value = params.get('q');
     if (params.get('cat')) $$('[name=cat]', form).forEach((c) => { c.checked = c.value === params.get('cat'); });
-    if (params.get('free')) form.free.checked = true; if (params.get('sale')) form.sale.checked = true; if (params.get('sort')) sort.value = params.get('sort');
+    if (params.get('free')) form.free.checked = true; if (params.get('sale')) form.sale.checked = true; if (params.get('sort')) { sort.value = params.get('sort'); sort.dispatchEvent(new Event('csync')); }
     const state = () => ({ q: form.q.value.trim().toLowerCase(), cats: $$('[name=cat]:checked', form).map((x) => x.value), pmax: Number(form.pmax.value), rating: Number($$('[name=rating]:checked', form)[0].value), formats: $$('[name=format]:checked', form).map((x) => x.value), free: form.free.checked, sale: form.sale.checked, sort: sort.value });
     const apply = (reset) => {
       if (reset) shown = 12; const s = state();
@@ -294,7 +386,7 @@
       const u = new URLSearchParams(); if (s.q) u.set('q', s.q); if (s.cats.length === 1) u.set('cat', s.cats[0]); if (s.free) u.set('free', 1); if (s.sale) u.set('sale', 1); if (s.sort !== 'relevance') u.set('sort', s.sort);
       history.replaceState(null, '', location.pathname + (u.toString() ? '?' + u : ''));
     };
-    const reset = () => { form.reset(); sort.value = 'relevance'; apply(true); };
+    const reset = () => { form.reset(); sort.value = 'relevance'; sort.dispatchEvent(new Event('csync')); $$('.search-field', form).forEach((f) => f.classList.remove('has-val')); apply(true); };
     on(form, 'input', () => apply(true)); on(form, 'change', () => apply(true)); on(sort, 'change', () => apply(true));
     on($('#filterReset'), 'click', reset); on($('#emptyReset'), 'click', reset);
     on($('#loadMore'), 'click', () => { shown += 12; apply(false); });
@@ -304,6 +396,8 @@
       if (k === 'q') form.q.value = ''; if (k === 'cat') $$('[name=cat]', form).forEach((x) => { if (x.value === v) x.checked = false; }); if (k === 'free') form.free.checked = false; if (k === 'sale') form.sale.checked = false;
       if (k === 'rating') $$('[name=rating]', form)[0].checked = true; if (k === 'format') $$('[name=format]', form).forEach((x) => { if (x.value === v) x.checked = false; }); apply(true);
     });
+    const gv = store.get('view', 'grid'); const setView = (v) => { $$('[data-view]').forEach((x) => x.classList.toggle('on', x.dataset.view === v)); grid.classList.toggle('is-list', v === 'list'); store.set('view', v); };
+    $$('[data-view]').forEach((b) => on(b, 'click', () => setView(b.dataset.view))); setView(gv);
     apply(true);
   };
 
@@ -311,7 +405,7 @@
   const initProduct = () => {
     const root = $('[data-product]'); if (!root) return; const a = byId(root.dataset.product);
     const lic = $('#licenseSelector'); const sel = () => ($('[name=license]:checked', lic) || {}).value || 'personal';
-    const upd = () => { const l = sel(); const now = $('[data-price-now]'), old = $('[data-price-old]'); now.textContent = rp(licPrice(a, l)); if (old) old.textContent = rp(licPrice({ price: a.old }, l)); };
+    const upd = () => { const l = sel(); const old = $('[data-price-old]'); $$('[data-price-now]').forEach((n) => { n.textContent = rp(licPrice(a, l)); }); if (old) old.textContent = rp(licPrice({ price: a.old }, l)); };
     on(lic, 'change', upd);
     const view = $('#pdViewer'), img = $('#pdImg'); let mode = 'render';
     const modes = { render: ['', 1], wire: ['grayscale(1) contrast(1.6) brightness(1.1)', 1], night: ['hue-rotate(70deg) saturate(1.3)', 1], zoom: ['', 1.8] };
@@ -330,19 +424,48 @@
       e.preventDefault(); const name = rf.name.value.trim(), text = rf.text.value.trim();
       if (!name || text.length < 5) return toast('Isi nama dan ulasan (min. 5 karakter)', 'info');
       const r = { name, text, rate: Number(rf.rate.value) }; const all = store.get(key, []); all.unshift(r); store.set(key, all);
-      list.insertAdjacentHTML('afterbegin', rev(r)); rf.reset(); toast('Terima kasih atas ulasanmu!');
+      busy(rf, () => { list.insertAdjacentHTML('afterbegin', rev(r)); rf.reset(); resetStates(rf); toast('Terima kasih atas ulasanmu!'); }, 600);
     });
   };
 
   /* ---------- 12. HALAMAN LAIN ---------- */
-  const validate = (form) => {
-    let ok = true;
-    $$('input[required],textarea[required]', form).forEach((i) => {
-      const bad = i.type === 'checkbox' ? !i.checked : !i.value.trim() || (i.type === 'email' && !/^\S+@\S+\.\S+$/.test(i.value)) || (i.name === 'phone' && i.value.replace(/\D/g, '').length < 9);
-      i.classList.toggle('err', bad); const m = i.closest('.field') && $('.err-msg', i.closest('.field')); if (m) m.textContent = bad ? 'Field ini wajib diisi dengan benar.' : ''; if (bad) ok = false;
-    });
-    return ok;
+  const fieldMsg = (i) => {
+    const v = i.value.trim(); if (i.type === 'checkbox') return i.checked ? '' : 'Centang untuk melanjutkan';
+    if (i.required && !v) return 'Wajib diisi'; if (!v) return '';
+    if (i.type === 'email' && !/^\S+@\S+\.\S+$/.test(v)) return 'Format email belum valid';
+    if (i.name === 'phone' && v.replace(/\D/g, '').length < 9) return 'Nomor minimal 9 digit';
+    if (i.tagName === 'TEXTAREA' && i.required && v.length < 5) return 'Tulis minimal 5 karakter'; return '';
   };
+  const setState = (i, show = true) => {
+    const m = fieldMsg(i), w = i.closest('.inp'), fd = i.closest('.field');
+    if (w) { w.classList.toggle('err', show && !!m); w.classList.toggle('valid', show && !m && !!i.value.trim()); } else i.classList.toggle('err', show && !!m);
+    const em = fd && $('.err-msg', fd); if (em) em.textContent = show ? m : ''; return !m;
+  };
+  const validate = (form) => {
+    let ok = true, first = null;
+    $$('input[required],textarea[required]', form).forEach((i) => {
+      if (i.type === 'checkbox') { const m = fieldMsg(i), c = i.closest('.check'); c && c.classList.toggle('err', !!m); const ee = $('#agreeErr'); if (ee) ee.textContent = m; if (m) { ok = false; first = first || i; } return; }
+      i.dataset.touched = '1'; if (!setState(i)) { ok = false; first = first || i; }
+    });
+    if (first) first.focus(); return ok;
+  };
+  const busy = (form, fn, ms = 800) => { const b = $('[type=submit]', form); if (!b) return fn(); b.classList.add('loading'); b.disabled = true; setTimeout(() => { b.classList.remove('loading'); b.disabled = false; fn(); }, reduce ? 0 : ms); };
+  const resetStates = (form) => $$('.inp', form).forEach((w) => w.classList.remove('valid', 'err'));
+  const FIELD_ICO = { name: 'user', email: 'mail', phone: 'phone', company: 'package', city: 'pin', link: 'globe', q: 'search', message: 'chat', text: 'chat', bio: 'chat' };
+  const enhanceFields = (root = document) => {
+    $$('.field', root).forEach((fd) => {
+      const inp = $('input.input, textarea.textarea', fd); if (!inp || fd.dataset.ef) return; fd.dataset.ef = '1';
+      const area = inp.tagName === 'TEXTAREA', icon = inp.type === 'email' ? 'mail' : inp.type === 'password' ? 'lock' : FIELD_ICO[inp.name] || (area ? 'chat' : '');
+      const w = document.createElement('div'); w.className = 'inp' + (area ? ' inp-area' : '') + (icon ? ' has-ico' : ''); inp.parentNode.insertBefore(w, inp);
+      if (icon) w.insertAdjacentHTML('beforeend', `<span class="inp-ico">${ic(icon, '')}</span>`);
+      w.appendChild(inp); w.insertAdjacentHTML('beforeend', '<span class="inp-state" aria-hidden="true"></span>');
+      if (inp.type === 'password') { const b = document.createElement('button'); b.type = 'button'; b.className = 'inp-eye'; b.setAttribute('aria-label', 'Tampilkan kata sandi'); b.innerHTML = ic('eye', ''); on(b, 'click', () => { inp.type = inp.type === 'password' ? 'text' : 'password'; }); w.appendChild(b); }
+      if (area && inp.maxLength > 0) { const c = document.createElement('span'); c.className = 'cnt'; w.appendChild(c); const u = () => { c.textContent = inp.value.length + '/' + inp.maxLength; }; on(inp, 'input', u); u(); }
+      if (!$('.err-msg', fd)) { const em = document.createElement('span'); em.className = 'err-msg'; em.setAttribute('role', 'alert'); fd.appendChild(em); }
+      on(inp, 'blur', () => { inp.dataset.touched = '1'; setState(inp); }); on(inp, 'input', () => { if (inp.dataset.touched) setState(inp); });
+    });
+  };
+
   const initPages = () => {
     // checkout
     const cf = $('#checkoutForm');
@@ -378,7 +501,7 @@
     }
     // creator
     on($('[data-follow]'), 'click', function () { const f = this.classList.toggle('on'); this.querySelector('span').textContent = f ? 'Mengikuti' : 'Ikuti'; toast(f ? 'Kamu mengikuti kreator ini' : 'Berhenti mengikuti'); });
-    const cr = $('#creatorForm'); on(cr, 'submit', (e) => { e.preventDefault(); if (!validate(cr)) return toast('Lengkapi form pendaftaran', 'info'); cr.reset(); toast('Pendaftaran terkirim! Kami menghubungimu dalam 2 hari kerja.'); });
+    const cr = $('#creatorForm'); on(cr, 'submit', (e) => { e.preventDefault(); if (!validate(cr)) return toast('Lengkapi form pendaftaran', 'info'); busy(cr, () => { cr.reset(); resetStates(cr); toast('Pendaftaran terkirim! Kami menghubungimu dalam 2 hari kerja.'); }); });
     const cp = $('#calcPrice'), cs = $('#calcSales');
     if (cp) { const calc = () => { $('#calcPriceLbl').textContent = rp(cp.value); $('#calcSalesLbl').textContent = cs.value + ' penjualan'; $('#calcOut').textContent = rp(cp.value * cs.value * 0.8); }; on(cp, 'input', calc); on(cs, 'input', calc); calc(); }
     // dashboard
@@ -396,7 +519,7 @@
     on($('[data-submit-upload]'), 'click', () => { closeOv(up); toast('Aset dikirim untuk kurasi (demo)'); });
     // kontak → WhatsApp
     const ct = $('#contactForm');
-    on(ct, 'submit', (e) => { e.preventDefault(); if (!validate(ct)) return toast('Lengkapi form terlebih dahulu', 'info'); const t = `Halo Astraly, saya ${ct.name.value} (${ct.email.value}).\nTopik: ${ct.topic.value}\n\n${ct.message.value}`; window.open(`https://wa.me/${D.wa.number}?text=${encodeURIComponent(t)}`, '_blank', 'noopener'); toast('Membuka WhatsApp…'); });
+    on(ct, 'submit', (e) => { e.preventDefault(); if (!validate(ct)) return toast('Lengkapi form terlebih dahulu', 'info'); const t = `Halo Astraly, saya ${ct.name.value} (${ct.email.value}).\nTopik: ${ct.topic.value}\n\n${ct.message.value}`; busy(ct, () => { window.open(`https://wa.me/${D.wa.number}?text=${encodeURIComponent(t)}`, '_blank', 'noopener'); toast('Membuka WhatsApp…'); }); });
     // help
     const hs = $('#helpSearch');
     on(hs, 'input', () => { const q = hs.value.toLowerCase().trim(); let n = 0; $$('.help-card').forEach((c) => { const v = !q || c.dataset.text.includes(q); c.style.display = v ? '' : 'none'; if (v) n++; }); $('#helpEmpty').classList.toggle('hidden', n > 0); });
@@ -483,7 +606,9 @@
     else if (t('[data-close-cart]') && (t('#cartOverlay') || t('button'))) { closeOv($('#cartOverlay')); $('#cartDrawer').classList.remove('open'); }
     else if (t('[data-open-search]')) openSearch();
     else if (t('[data-close-search]') || e.target === so) closeSearch();
-    else if ((el = t('[data-fill]'))) { si.value = el.dataset.fill; renderSearch(si.value); si.focus(); }
+    else if ((el = t('[data-clear]'))) { const i = $(el.dataset.clear); if (i) { i.value = ''; i.dispatchEvent(new Event('input', { bubbles: true })); i.focus(); } }
+    else if ((el = t('[data-fill-input]'))) { const i = $(el.dataset.fillInput); if (i) { i.value = el.dataset.v; i.dispatchEvent(new Event('input', { bubbles: true })); i.focus(); } }
+    else if ((el = t('[data-scroll-to]'))) { const x = $(el.dataset.scrollTo); if (x) x.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }); }
     else if (t('[data-open-menu]')) { $('#mobileMenu').classList.add('open'); lockCheck(); $('[data-open-menu]').setAttribute('aria-expanded', 'true'); }
     else if (t('[data-close-menu]') || t('#mobileMenu a')) { $('#mobileMenu').classList.remove('open'); lockCheck(); }
     else if (t('[data-close-preview]') || e.target === $('#previewOverlay')) closeOv($('#previewOverlay'));
@@ -502,15 +627,91 @@
   on(document, 'pointermove', (e) => { const z = e.target.closest && e.target.closest('[data-pv-zoom]'); if (z && fine) { const r = z.getBoundingClientRect(), i = $('img', z); i.style.transformOrigin = `${((e.clientX - r.left) / r.width) * 100}% ${((e.clientY - r.top) / r.height) * 100}%`; i.style.transform = 'scale(1.6)'; } });
   on(document, 'pointerout', (e) => { const z = e.target.closest && e.target.closest('[data-pv-zoom]'); if (z && !z.contains(e.relatedTarget)) $('img', z).style.transform = ''; });
   on(document, 'keydown', (e) => {
-    if (e.key === 'Escape') { closeSearch(); closeOv($('#previewOverlay')); closeOv($('#downloadOverlay')); closeOv($('#uploadOverlay')); closeOv($('#cartOverlay')); const d = $('#cartDrawer'); d && d.classList.remove('open'); $('#mobileMenu') && $('#mobileMenu').classList.remove('open'); closeChat(); lockCheck(); }
+    if (e.key === 'Escape') { $$('.menu > li.open').forEach((li) => li.classList.remove('open')); closeSearch(); closeOv($('#previewOverlay')); closeOv($('#downloadOverlay')); closeOv($('#uploadOverlay')); closeOv($('#cartOverlay')); const d = $('#cartDrawer'); d && d.classList.remove('open'); $('#mobileMenu') && $('#mobileMenu').classList.remove('open'); closeChat(); lockCheck(); }
     const typing = /input|textarea|select/i.test(document.activeElement.tagName);
     if ((e.key === '/' && !typing) || ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k')) { e.preventDefault(); openSearch(); }
   });
 
+  /* ---------- 14b. DROPDOWN KUSTOM (select) ---------- */
+  const enhanceSelects = (root = document) => {
+    $$('select', root).forEach((sel) => {
+      if (sel.dataset.cs || sel.multiple) return; sel.dataset.cs = '1';
+      const w = document.createElement('div');
+      w.className = 'cs ' + (sel.classList.contains('select') ? 'cs-field' : 'cs-ghost') + (sel.dataset.csSize === 'sm' ? ' cs-sm' : '') + (sel.style.width === 'auto' ? ' cs-auto' : '');
+      sel.parentNode.insertBefore(w, sel); w.appendChild(sel); sel.classList.add('cs-native'); sel.tabIndex = -1; sel.setAttribute('aria-hidden', 'true');
+      const btn = document.createElement('button'); btn.type = 'button'; btn.className = 'cs-btn'; btn.setAttribute('aria-haspopup', 'listbox'); btn.setAttribute('aria-expanded', 'false');
+      btn.innerHTML = '<span class="cs-val"></span>' + ic('chev', ''); w.appendChild(btn);
+      const lab = sel.getAttribute('aria-label'); if (lab) btn.setAttribute('aria-label', lab);
+      const sync = () => { const o = sel.options[sel.selectedIndex]; btn.querySelector('.cs-val').textContent = o ? o.text.split(' — ')[0] : ''; };
+      sync(); on(sel, 'csync', sync); if (sel.form) on(sel.form, 'reset', () => setTimeout(sync, 0));
+      let panel = null;
+      const away = (e) => { if (panel && !panel.contains(e.target) && !w.contains(e.target)) close(); };
+      const scr = (e) => { if (!(panel && panel.contains(e.target))) close(); };
+      const close = () => { if (!panel) return; panel.remove(); panel = null; w.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); document.removeEventListener('click', away, true); window.removeEventListener('scroll', scr, true); window.removeEventListener('resize', close); };
+      const open = () => {
+        if (panel) return close(); $$('.cs-panel').forEach((p) => p.remove()); $$('.cs.open').forEach((x) => x.classList.remove('open'));
+        panel = document.createElement('div'); panel.className = 'cs-panel'; panel.setAttribute('role', 'listbox');
+        panel.innerHTML = Array.from(sel.options).map((o, i) => { const [a, b] = o.text.split(' — '); return `<button type="button" class="cs-opt ${i === sel.selectedIndex ? 'sel' : ''}" role="option" data-i="${i}"><span>${esc(a)}${b ? `<small>${esc(b)}</small>` : ''}</span>${ic('check')}</button>`; }).join('');
+        document.body.appendChild(panel); w.classList.add('open'); btn.setAttribute('aria-expanded', 'true');
+        const r = btn.getBoundingClientRect(), h = Math.min(panel.scrollHeight, 280), below = innerHeight - r.bottom, wd = Math.max(r.width, 200);
+        panel.style.minWidth = wd + 'px'; panel.style.left = Math.max(8, Math.min(r.left, innerWidth - wd - 12)) + 'px'; panel.style.top = (below < h + 16 && r.top > below ? r.top - h - 8 : r.bottom + 8) + 'px';
+        const cur = $('.cs-opt.sel', panel) || $('.cs-opt', panel); if (cur) { cur.focus({ preventScroll: true }); cur.scrollIntoView({ block: 'nearest' }); }
+        on(panel, 'click', (e) => { const o = e.target.closest('.cs-opt'); if (!o) return; sel.selectedIndex = Number(o.dataset.i); sync(); sel.dispatchEvent(new Event('input', { bubbles: true })); sel.dispatchEvent(new Event('change', { bubbles: true })); close(); btn.focus(); });
+        on(panel, 'keydown', (e) => { const os = $$('.cs-opt', panel), i = os.indexOf(document.activeElement); if (e.key === 'ArrowDown') { e.preventDefault(); os[(i + 1) % os.length].focus(); } else if (e.key === 'ArrowUp') { e.preventDefault(); os[(i - 1 + os.length) % os.length].focus(); } else if (e.key === 'Escape') { e.stopPropagation(); close(); btn.focus(); } else if (e.key === 'Tab') close(); });
+        setTimeout(() => { document.addEventListener('click', away, true); window.addEventListener('scroll', scr, true); window.addEventListener('resize', close); }, 0);
+      };
+      on(btn, 'click', open); on(btn, 'keydown', (e) => { if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); open(); } });
+    });
+  };
+
+  /* ---------- 14c. NAVBAR DROPDOWN (hover-intent, keyboard, touch) ---------- */
+  const initNav = () => {
+    const items = $$('.menu > li.has-dd'); const closeAll = (ex) => items.forEach((li) => { if (li !== ex) { li.classList.remove('open'); const l = $('.nlink', li); l && l.setAttribute('aria-expanded', 'false'); } });
+    const openLi = (li) => { closeAll(li); li.classList.add('open'); const l = $('.nlink', li); l && l.setAttribute('aria-expanded', 'true'); };
+    items.forEach((li) => {
+      on(li, 'mouseenter', () => { if (!fine) return; clearTimeout(li._t); openLi(li); });
+      on(li, 'mouseleave', () => { if (!fine) return; li._t = setTimeout(() => li.classList.remove('open'), 200); });
+      on(li, 'focusin', () => openLi(li)); on(li, 'focusout', (e) => { if (!li.contains(e.relatedTarget)) li.classList.remove('open'); });
+      on($('.nlink', li), 'click', (e) => { if (!fine && !li.classList.contains('open')) { e.preventDefault(); openLi(li); } });
+    });
+    on(document, 'click', (e) => { if (!e.target.closest('.menu')) closeAll(); });
+  };
+
+  /* ---------- 14d. HERO: orbit planet, typed, konstelasi ---------- */
+  const initHero = () => {
+    const h = $('#hero'); if (!h) return; const bg = $('#heroBg'), orb = $('#heroOrbit');
+    const place = () => { const W = bg.clientWidth, H = bg.clientHeight, k = Math.max(W / 3840, H / 2160), ox = W - 3840 * k, oy = (H - 2160 * k) / 2; orb.style.setProperty('--ox', ox + 2760 * k + 'px'); orb.style.setProperty('--oy', oy + 1060 * k + 'px'); orb.style.setProperty('--ow', 640 * k * 6 + 'px'); };
+    place(); on(window, 'resize', place);
+    const ty = $('#heroTyped');
+    if (ty) { const words = JSON.parse(ty.dataset.words); let wi = 0, ci = 0, del = false; const tick = () => { const w = words[wi]; ci += del ? -1 : 1; ty.textContent = w.slice(0, ci); let d = del ? 38 : 85; if (!del && ci === w.length) { del = true; d = 1500; } else if (del && ci === 0) { del = false; wi = (wi + 1) % words.length; d = 320; } setTimeout(tick, d); }; if (reduce) ty.textContent = words[0]; else { ci = words[0].length; del = true; setTimeout(tick, 1800); } }
+    const cv = $('#heroFx'); if (!cv || reduce) return;
+    const ctx = cv.getContext('2d'), dpr = Math.min(devicePixelRatio || 1, 1.5); let W, H, nodes = [], mx = -999, my = -999, run = true, going = false;
+    const size = () => { W = cv.width = h.clientWidth * dpr; H = cv.height = h.clientHeight * dpr; const n = Math.min(72, Math.round((h.clientWidth * h.clientHeight) / 15000)); nodes = Array.from({ length: n }, () => ({ x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - 0.5) * 0.35 * dpr, vy: (Math.random() - 0.5) * 0.35 * dpr, r: (Math.random() * 1.6 + 0.6) * dpr, c: Math.random() < 0.5 ? '167,139,250' : '34,211,238' })); };
+    size(); on(window, 'resize', size);
+    on(h, 'pointermove', (e) => { const r = h.getBoundingClientRect(); mx = (e.clientX - r.left) * dpr; my = (e.clientY - r.top) * dpr; }); on(h, 'pointerleave', () => { mx = my = -999; });
+    const L = 140 * dpr, M = 180 * dpr;
+    const frame = () => {
+      if (!run) { going = false; return; }
+      ctx.clearRect(0, 0, W, H);
+      nodes.forEach((n) => { n.x += n.vx; n.y += n.vy; if (n.x < 0 || n.x > W) n.vx *= -1; if (n.y < 0 || n.y > H) n.vy *= -1; const dx = mx - n.x, dy = my - n.y; if (Math.hypot(dx, dy) < M) { n.x += dx * 0.012; n.y += dy * 0.012; } ctx.beginPath(); ctx.fillStyle = 'rgba(' + n.c + ',.85)'; ctx.arc(n.x, n.y, n.r, 0, 6.283); ctx.fill(); });
+      ctx.lineWidth = dpr * 0.8;
+      for (let i = 0; i < nodes.length; i++) for (let j = i + 1; j < nodes.length; j++) { const a = nodes[i], b = nodes[j], d = Math.hypot(a.x - b.x, a.y - b.y); if (d < L) { ctx.strokeStyle = 'rgba(' + a.c + ',' + (1 - d / L) * 0.32 + ')'; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); } }
+      if (mx > 0) nodes.forEach((n) => { const d = Math.hypot(mx - n.x, my - n.y); if (d < M) { ctx.strokeStyle = 'rgba(232,121,249,' + (1 - d / M) * 0.55 + ')'; ctx.beginPath(); ctx.moveTo(mx, my); ctx.lineTo(n.x, n.y); ctx.stroke(); } });
+      requestAnimationFrame(frame);
+    };
+    const start = () => { if (!going) { going = true; requestAnimationFrame(frame); } };
+    if ('IntersectionObserver' in window) new IntersectionObserver(([en]) => { run = en.isIntersecting; if (run) start(); }).observe(h); start();
+  };
+
   /* ---------- 15. INIT ---------- */
   const init = () => {
+    document.documentElement.classList.add('js');
     $$('[data-ai-rec]').forEach(initAiRec);
+    enhanceSelects(); enhanceFields(); initNav(); initHero();
     initExplore(); initProduct(); initPages(); initFx();
+    $$('.search-field input').forEach((i) => i.closest('.search-field').classList.toggle('has-val', !!i.value));
+    on(document, 'input', (e) => { const f = e.target.closest && e.target.closest('.search-field'); if (f) f.classList.toggle('has-val', !!e.target.value); });
+    on(document, 'change', (e) => { if (e.target.type === 'checkbox') { const c = e.target.closest('.check'); c && c.classList.remove('err'); } });
     renderCart(); renderWish(); renderLibrary(); updateUI();
     const done = () => { const l = $('#loader'); l && l.classList.add('done'); };
     document.readyState === 'complete' ? setTimeout(done, 250) : on(window, 'load', () => setTimeout(done, 250)); setTimeout(done, 2800);

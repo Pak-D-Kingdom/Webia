@@ -30,7 +30,7 @@
                     </div>
                 </div>
                 <div class="glass p-6 grid gap-4"><h3 class="text-xl">Metode Pembayaran</h3>
-                    <div class="pay-opt">@foreach (['QRIS', 'Transfer Bank (VA)', 'E-Wallet', 'Kartu Kredit / Debit'] as $p)<label><input type="radio" name="pay" value="{{ $p }}" @checked($loop->first)> {{ $p }}</label>@endforeach</div>
+                    <div class="pay-opt">@foreach ([['QRIS', 'wave', 'Semua e-wallet & m-banking'], ['Transfer Bank (VA)', 'wallet', 'BCA, Mandiri, BNI, BRI'], ['E-Wallet', 'bolt', 'GoPay, OVO, DANA, ShopeePay'], ['Kartu Kredit / Debit', 'lock', 'Visa, Mastercard, JCB']] as $p)<label><input type="radio" name="pay" value="{{ $p[0] }}" @checked($loop->first)><span class="po-ico">{{ $ic($p[1], 'ico-sm') }}</span><span><b>{{ $p[0] }}</b><small>{{ $p[2] }}</small></span></label>@endforeach</div>
                     <label class="check"><input type="checkbox" name="agree" required> Saya setuju dengan <a href="{{ $u('legal') }}" style="color:var(--cyan)">Syarat, Lisensi &amp; Kebijakan Refund</a>.</label><span class="err-msg" id="agreeErr"></span>
                 </div>
                 <button class="btn btn-primary btn-lg" type="submit" id="placeOrder">{{ $ic('lock', 'ico-sm') }} Bayar &amp; Selesaikan Pesanan</button>

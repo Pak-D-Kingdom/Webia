@@ -18,7 +18,8 @@
 @section('content')
     @include($v . '.partials.page-hero', ['title' => 'Pusat <span class="gt">Bantuan</span>', 'desc' => 'Temukan panduan dan jawaban cepat seputar Astraly.', 'crumbs' => [['Pusat Bantuan', null]]])
     <section class="section-sm"><div class="wrap">
-        <div class="hero-search mx-auto -mt-2" style="max-width:640px"><label class="sf">{{ $ic('search') }}<input type="search" id="helpSearch" placeholder="Cari artikel bantuan…" aria-label="Cari bantuan"></label></div>
+        <div class="search-field big mx-auto" style="max-width:680px">{{ $ic('search') }}<input type="search" id="helpSearch" placeholder="Cari artikel bantuan…" aria-label="Cari bantuan" autocomplete="off"><button type="button" class="sf-clear" data-clear="#helpSearch" aria-label="Hapus">{{ $ic('close', 'ico-sm') }}</button></div>
+        <div class="chip-row justify-center mt-4">@foreach (['lisensi', 'pembayaran', 'unduh', 'refund', 'kreator'] as $hq)<button type="button" class="chip" data-fill-input="#helpSearch" data-v="{{ $hq }}">{{ $hq }}</button>@endforeach</div>
         <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3 mt-12" id="helpGrid">
             @foreach ($dam['help'] as $h)
                 <div class="why-card help-card reveal" data-text="{{ strtolower($h[0] . ' ' . implode(' ', $h[2])) }}"><span class="wi">{{ $ic($h[1], 'ico-lg') }}</span><h3>{{ $h[0] }}</h3><ul class="grid gap-2 mt-3" style="list-style:none;padding:0">@foreach ($h[2] as $art)<li><a href="{{ $u('contact-us') }}" class="flex justify-between muted" style="font-size:14.5px;padding:6px 0">{{ $art }} {{ $ic('arrow', 'ico-sm') }}</a></li>@endforeach</ul></div>

@@ -1,32 +1,48 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="800" height="880" viewBox="0 0 200 220" role="img" aria-label="Nova, maskot Astraly">
+<svg xmlns="http://www.w3.org/2000/svg" width="840" height="1000" viewBox="0 0 210 250" role="img" aria-label="Nova, maskot Astraly">
     <defs>
-        <linearGradient id="nova-f" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9f7aea"/><stop offset="1" stop-color="#4c1d95"/></linearGradient>
-        <linearGradient id="nova-t" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e9d5ff"/><stop offset="1" stop-color="#a78bfa"/></linearGradient>
-        <linearGradient id="nova-s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6d28d9"/><stop offset="1" stop-color="#2e1065"/></linearGradient>
+        <linearGradient id="nova-f" x1="0" y1="0" x2=".9" y2="1"><stop offset="0" stop-color="#b79bff"/><stop offset=".55" stop-color="#7240ee"/><stop offset="1" stop-color="#3a1b9c"/></linearGradient>
+        <linearGradient id="nova-t" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#c9b2ff"/><stop offset="1" stop-color="#f6efff"/></linearGradient>
+        <linearGradient id="nova-s" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4d25bd"/><stop offset="1" stop-color="#1f0d5e"/></linearGradient>
+        <linearGradient id="nova-v" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a1050"/><stop offset="1" stop-color="#090521"/></linearGradient>
+        <linearGradient id="nova-e" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cffafe"/><stop offset="1" stop-color="#22d3ee"/></linearGradient>
         <linearGradient id="nova-b" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fef3c7"/><stop offset="1" stop-color="#f59e0b"/></linearGradient>
-        <radialGradient id="nova-g"><stop offset="0" stop-color="#67e8f9"/><stop offset="1" stop-color="#22d3ee" stop-opacity="0"/></radialGradient>
+        <linearGradient id="nova-h" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#c4b5fd"/></linearGradient>
+        <linearGradient id="nova-fl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0f7ff"/><stop offset=".4" stop-color="#22d3ee"/><stop offset="1" stop-color="#8b5cf6" stop-opacity="0"/></linearGradient>
+        <radialGradient id="nova-a"><stop offset="0" stop-color="#8b5cf6" stop-opacity=".5"/><stop offset="1" stop-color="#8b5cf6" stop-opacity="0"/></radialGradient>
+        <radialGradient id="nova-g"><stop offset="0" stop-color="#a5f3fc"/><stop offset=".5" stop-color="#22d3ee" stop-opacity=".6"/><stop offset="1" stop-color="#22d3ee" stop-opacity="0"/></radialGradient>
+        <filter id="nova-bl" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3"/></filter>
     </defs>
-    <ellipse cx="100" cy="207" rx="54" ry="8" fill="#000" opacity=".5"/>
-    <g><ellipse cx="100" cy="118" rx="94" ry="30" fill="none" stroke="#22d3ee" stroke-opacity=".6" stroke-width="2" stroke-dasharray="3 9" stroke-linecap="round" transform="rotate(-16 100 118)"/><circle cx="190" cy="98" r="5" fill="#fbbf24"/><circle cx="10" cy="138" r="3.5" fill="#e879f9"/></g>
-    <line x1="100" y1="50" x2="100" y2="30" stroke="#c4b5fd" stroke-width="4" stroke-linecap="round"/>
-    <circle cx="100" cy="22" r="18" fill="url(#nova-g)"/>
-    <path d="M100 10l3.4 7.6 7.6 3.4-7.6 3.4L100 32l-3.4-7.6L89 21l7.6-3.4z" fill="#fde68a"/>
-    <rect x="66" y="172" width="26" height="26" rx="9" fill="#3b0f8f"/><rect x="108" y="172" width="26" height="26" rx="9" fill="#3b0f8f"/>
-    <rect x="62" y="190" width="34" height="12" rx="6" fill="#22d3ee"/><rect x="104" y="190" width="34" height="12" rx="6" fill="#22d3ee"/>
-    <path d="M152 72 L172 56 L172 150 L152 170 Z" fill="url(#nova-s)"/>
-    <path d="M44 72 L64 54 L172 54 L152 72 Z" fill="url(#nova-t)"/>
-    <rect x="44" y="72" width="108" height="98" rx="14" fill="url(#nova-f)"/>
-    <path d="M52 80h92" stroke="#fff" stroke-opacity=".35" stroke-width="2" stroke-linecap="round"/>
-    <rect x="56" y="84" width="84" height="46" rx="15" fill="#0b0720" stroke="#22d3ee" stroke-opacity=".55" stroke-width="1.5"/>
-    <ellipse cx="80" cy="105" rx="8" ry="10" fill="#22d3ee"/><ellipse cx="116" cy="105" rx="8" ry="10" fill="#22d3ee"/>
-    <circle cx="83" cy="101" r="2.6" fill="#fff"/><circle cx="119" cy="101" r="2.6" fill="#fff"/>
-    <path d="M89 118q9 8 18 0" fill="none" stroke="#22d3ee" stroke-width="3.2" stroke-linecap="round"/>
-    <circle cx="68" cy="118" r="5" fill="#f472b6" opacity=".5"/><circle cx="128" cy="118" r="5" fill="#f472b6" opacity=".5"/>
-    <path d="M56 143H140M56 154H140" stroke="#c4b5fd" stroke-opacity=".35" stroke-width="3" stroke-linecap="round"/>
-    <circle cx="98" cy="150" r="15" fill="url(#nova-b)" stroke="#fff" stroke-opacity=".6" stroke-width="2"/>
-    <path d="M98 143v12m-5.5-5.5L98 156l5.5-5.5" fill="none" stroke="#451a03" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-    <circle cx="52" cy="80" r="2.4" fill="#ddd6fe"/><circle cx="144" cy="80" r="2.4" fill="#ddd6fe"/><circle cx="52" cy="162" r="2.4" fill="#ddd6fe"/><circle cx="144" cy="162" r="2.4" fill="#ddd6fe"/>
-    <rect x="22" y="104" width="26" height="13" rx="6.5" fill="#6d28d9"/><circle cx="22" cy="110" r="8" fill="#ddd6fe"/>
-    <g><rect x="170" y="96" width="28" height="13" rx="6.5" fill="#6d28d9" transform="rotate(-38 172 102)"/><circle cx="194" cy="80" r="8.5" fill="#ddd6fe"/></g>
-    <path d="M28 54l2.2 5 5 2.2-5 2.2-2.2 5-2.2-5-5-2.2 5-2.2z" fill="#e879f9"/><path d="M176 34l1.8 4 4 1.8-4 1.8-1.8 4-1.8-4-4-1.8 4-1.8z" fill="#67e8f9"/>
+    <circle cx="105" cy="122" r="104" fill="url(#nova-a)"/>
+    <ellipse cx="105" cy="240" rx="44" ry="6.5" fill="#000" opacity=".5"/>
+    <g transform="rotate(-12 105 128)"><ellipse cx="105" cy="128" rx="98" ry="24" fill="none" stroke="#22d3ee" stroke-opacity=".5" stroke-width="1.6" stroke-dasharray="3 8" stroke-linecap="round"/></g>
+    <g><path d="M91 188Q105 238 119 188Z" fill="url(#nova-fl)"/><path d="M98 188Q105 218 112 188Z" fill="#fff" opacity=".85"/></g>
+    <ellipse cx="105" cy="186" rx="27" ry="7" fill="#1b0b55"/><ellipse cx="105" cy="185" rx="18" ry="4" fill="#22d3ee" opacity=".75"/>
+    <path d="M154 84 L178 64 L178 160 L154 180Z" fill="url(#nova-s)" stroke="#341690" stroke-width="6" stroke-linejoin="round"/>
+    <path d="M50 84 L74 64 L178 64 L154 84Z" fill="url(#nova-t)" stroke="#d8c9ff" stroke-width="6" stroke-linejoin="round"/>
+    <rect x="50" y="84" width="104" height="96" rx="18" fill="url(#nova-f)"/>
+    <rect x="52" y="86" width="100" height="92" rx="16" fill="none" stroke="#fff" stroke-opacity=".28" stroke-width="2"/>
+    <path d="M56 92Q56 86 62 86H122Q92 112 56 132Z" fill="#fff" opacity=".12"/>
+    <line x1="154" y1="90" x2="154" y2="176" stroke="#67e8f9" stroke-width="5" opacity=".6" filter="url(#nova-bl)"/><line x1="154" y1="90" x2="154" y2="176" stroke="#cffafe" stroke-width="2" stroke-linecap="round"/>
+    <rect x="62" y="96" width="80" height="50" rx="17" fill="url(#nova-v)" stroke="#22d3ee" stroke-opacity=".55" stroke-width="1.5"/>
+    <path d="M64 100H98L78 144H64Z" fill="#fff" opacity=".06"/>
+    <g>
+        <rect x="76" y="106" width="19" height="27" rx="9.5" fill="#22d3ee" opacity=".55" filter="url(#nova-bl)"/><rect x="111" y="106" width="19" height="27" rx="9.5" fill="#22d3ee" opacity=".55" filter="url(#nova-bl)"/>
+        <rect x="78" y="108" width="15" height="23" rx="7.5" fill="url(#nova-e)"/><rect x="113" y="108" width="15" height="23" rx="7.5" fill="url(#nova-e)"/>
+        <circle cx="83" cy="114" r="3" fill="#fff"/><circle cx="118" cy="114" r="3" fill="#fff"/>
+    </g>
+    <path d="M93 138q12 8 24 0" fill="none" stroke="#22d3ee" stroke-width="3.4" stroke-linecap="round"/>
+    <circle cx="71" cy="136" r="5" fill="#f472b6" opacity=".45"/><circle cx="135" cy="136" r="5" fill="#f472b6" opacity=".45"/>
+    <circle cx="66" cy="164" r="3" fill="#34d399"/><circle cx="140" cy="164" r="3" fill="#e879f9"/>
+    <circle cx="103" cy="163" r="13" fill="none" stroke="#fbbf24" stroke-width="2"/>
+    <circle cx="103" cy="163" r="13" fill="url(#nova-b)" stroke="#fff" stroke-opacity=".6" stroke-width="2"/>
+    <path d="M103 157v11m-5.5-5.5L103 168l5.5-5.5" fill="none" stroke="#451a03" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <line x1="114" y1="64" x2="114" y2="42" stroke="#d8c9ff" stroke-width="4" stroke-linecap="round"/><ellipse cx="114" cy="64" rx="7" ry="2.6" fill="#c4b5fd"/>
+    <circle cx="114" cy="32" r="15" fill="url(#nova-g)"/><circle cx="114" cy="32" r="6" fill="#cffafe"/>
+    <path d="M114 6l2.6 6 6 2.6-6 2.6-2.6 6-2.6-6-6-2.6 6-2.6z" fill="#fde68a"/>
+    <g><circle cx="30" cy="130" r="11" fill="url(#nova-h)"/><ellipse cx="27" cy="126" rx="4" ry="3" fill="#fff" opacity=".8"/></g>
+    <g><circle cx="186" cy="118" r="11" fill="url(#nova-h)"/><circle cx="195" cy="108" r="4.5" fill="url(#nova-h)"/><ellipse cx="183" cy="114" rx="4" ry="3" fill="#fff" opacity=".8"/></g>
+    <g transform="rotate(-12 105 128)">
+        <g><circle r="9" fill="#2a1070" stroke="#fbbf24" stroke-width="1.6"/><g transform="translate(-6,-6) scale(.5)" fill="none" stroke="#fbbf24" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="4"/><path d="m11 12 9-9M16 7l3 3"/></g><animateMotion dur="10s" repeatCount="indefinite" path="M203,128 A98,24 0 1,1 7,128 A98,24 0 1,1 203,128"/></g>
+        <g><circle r="9" fill="#0b2a4a" stroke="#22d3ee" stroke-width="1.6"/><g transform="translate(-6,-6) scale(.5)" fill="none" stroke="#22d3ee" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8zM14 3v5h5"/></g><animateMotion dur="10s" begin="-5s" repeatCount="indefinite" path="M203,128 A98,24 0 1,1 7,128 A98,24 0 1,1 203,128"/></g>
+    </g>
 </svg>
